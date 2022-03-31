@@ -1,4 +1,3 @@
-
 import {
   FaGlobe,
   FaRegEnvelope,
@@ -10,112 +9,290 @@ import classes from "./Machinaries.module.css";
 
 const Machinaries = () => {
   return (
-    <div className={classes['machinaries-container']}>
-      <div className={classes['machinaries-options-wrapper']}>
-        <div className={classes['machinaries-options-wrapper__ticket-amount']}>
-          1 ticket
-        </div>
-        <div className={classes['machinaries-options-wrapper__search-wrapper']}>
-          <div className={classes['machinaries-options-wrapper__search-wrapper_icon']}>
+    <div className={classes["machinaries-container"]}>
+      <div className={classes["machinaries-options-wrapper"]}>
+        <div className={classes["machinaries-options-wrapper__search-wrapper"]}>
+          <div
+            className={
+              classes["machinaries-options-wrapper__search-wrapper_icon"]
+            }
+          >
             <FaSearch />
           </div>
           <input type="text" name="" id="" placeholder="Search" />
         </div>
 
-        <button className={classes['machinaries-options-wrapper__filter']}>
+        <button className={classes["machinaries-options-wrapper__filter"]}>
           <FaPlus />
           <span>Filter</span>
         </button>
       </div>
-      <div className={classes['machinaries-wrapper']}>
-        <div className={classes['machinaries-wrapper__user-details-container']}>
-          <div className={classes['machinaries-wrapper__user-details-wrapper']}>
-            <img
-              className={classes['machinaries-wrapper__user-details__icon']}
-              src="./avatar.jpg"
-              alt=""
-            />
-            <div className={classes['machinaries-wrapper__user-details__user-info-wrapper']}>
-              <div className={classes['machinaries-wrapper__user-details__fullname']}>
-                Ibrahimu Naishu
-              </div>
-              <div className={classes['machinaries-wrapper__user-details__email-wrapper']}>
-                <div className={classes['machinaries-wrapper__user-details__email__icon']}>
-                  <FaRegEnvelope />
+      <div className={classes["machinaries-wrapper"]}>
+        <div className={classes["machinaries-wrapper__user-details-container"]}>
+          <div className={classes["machinaries-wrapper__user-details-wrapper"]}>
+            <div
+              className={
+                classes["machinaries-wrapper__ticket-details__info-wrapper"]
+              }
+            >
+              <div
+                className={
+                  classes[
+                    "machinaries-wrapper__ticket-details__priority-wrapper"
+                  ]
+                }
+              >
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__priority-title"
+                    ]
+                  }
+                >
+                  {" "}
+                  1{" "}
                 </div>
-                <div className={classes['machinaries-wrapper__user-details__email__text']}>
-                  Naishu@gmail.com
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__category-title"
+                    ]
+                  }
+                >
+                  Ex-31
                 </div>
-              </div>
-              <div className={classes['machinaries-wrapper__user-details__created-date-wrapper']}>
-                <div className={classes['machinaries-wrapper__user-details__created-date__icon']}>
-                  <FaGlobe />
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__category-title"
+                    ]
+                  }
+                >
+                  North - Centara
                 </div>
-                <div className={classes['machinaries-wrapper__user-details__created-date__date']}>
-                  Created at 01/01/2022
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={classes['machinaries-wrapper__divider']}></div>
-          <div className={classes['machinaries-wrapper__ticket-details-wrapper']}>
-            <div className={classes['machinaries-wrapper__ticket-details__title']}>
-              T01 - change password
-            </div>
-            <div className={classes['machinaries-wrapper__ticket-details__info-container']}>
-              <div className={classes['machinaries-wrapper__ticket-details__info-wrapper']}>
-                <div className={classes['machinaries-wrapper__ticket-details__category-wrapper']}>
-                  <div className={classes['machinaries-wrapper__ticket-details__category-title']}>
-                    Category
-                  </div>
-                  <div className={classes['machinaries-wrapper__ticket-details__category-type']}>
-                    problem
-                  </div>
-                </div>
-                <div className={classes['machinaries-wrapper__ticket-details__priority-wrapper']}>
-                  <div className={classes['machinaries-wrapper__ticket-details__priority-title']}>
-                    Priority
-                  </div>
-                  <div className={classes['machinaries-wrapper__ticket-details__priority-type']}>
-                    Medium
-                  </div>
-                </div>
-              </div>
-              <div className={classes['machinaries-wrapper__ticket-details__info-wrapper']}>
-                <div className={classes['machinaries-wrapper__ticket-details__group-wrapper']}>
-                  <div className={classes['machinaries-wrapper__ticket-details__group-title']}>
-                    Group
-                  </div>
-                  <div className={classes['machinaries-wrapper__ticket-details__group-name']}>
-                    Software
-                  </div>
-                </div>
-                <div className={classes['machinaries-wrapper__ticket-details__agent-wrapper']}>
-                  <div className={classes['machinaries-wrapper__ticket-details__agent-title']}>
-                    Agent
-                  </div>
-                  <div className={classes['machinaries-wrapper__ticket-details__agent-name']}>
-                    Unassigned
-                  </div>
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__category-title"
+                    ]
+                  }
+                >
+                  <FaGlobe /> Registered at <span>9/3/2022</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className={classes['machinaries-wrapper__ticket-activity-wrapper']}>
-            <div className={classes['machinaries-wrapper__ticket-activity__started-wrapper']}>
-              <div className={classes['machinaries-wrapper__ticket-activity__started']}>
-                Started:
-                <span className={classes['machinaries-wrapper__ticket-activity__started-date']}>
+          <div className={classes["machinaries-wrapper__divider"]}></div>
+          <div
+            className={classes["machinaries-wrapper__ticket-details-wrapper"]}
+          >
+            <div
+              className={classes["machinaries-wrapper__ticket-details__title"]}
+            ></div>
+            <div
+              className={
+                classes["machinaries-wrapper__ticket-details__info-container"]
+              }
+            >
+              <div
+                className={
+                  classes["machinaries-wrapper__ticket-details__info-wrapper"]
+                }
+              >
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__category-wrapper"
+                    ]
+                  }
+                >
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__category-title"
+                      ]
+                    }
+                  >
+                    Model:{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      KOBELCO
+                    </span>
+                  </div>
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__category-title"
+                      ]
+                    }
+                  >
+                    Type:{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      Excavator
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__priority-wrapper"
+                    ]
+                  }
+                >
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__priority-title"
+                      ]
+                    }
+                  >
+                    Current running (hr):{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      3146
+                    </span>
+                  </div>
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__category-title"
+                      ]
+                    }
+                  >
+                    Last service (hr):{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      3133
+                    </span>
+                  </div>
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__category-title"
+                      ]
+                    }
+                  >
+                    Inter service (hr):{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      13
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  classes["machinaries-wrapper__ticket-details__info-wrapper"]
+                }
+              >
+                <div
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-details__agent-wrapper"
+                    ]
+                  }
+                >
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__agent-title"
+                      ]
+                    }
+                  >
+                    Spare pr date:{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      12/2/2022
+                    </span>
+                  </div>
+                  <div
+                    className={
+                      classes[
+                        "machinaries-wrapper__ticket-details__agent-title"
+                      ]
+                    }
+                  >
+                    Spare pr status:{" "}
+                    <span
+                      className={
+                        classes[
+                          "machinaries-wrapper__ticket-details__group-name"
+                        ]
+                      }
+                    >
+                      Status
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={classes["machinaries-wrapper__ticket-activity-wrapper"]}
+          >
+            <div
+              className={
+                classes["machinaries-wrapper__ticket-activity__started-wrapper"]
+              }
+            >
+              <div
+                className={
+                  classes["machinaries-wrapper__ticket-activity__started"]
+                }
+              >
+                Estimated Completion:
+                <span
+                  className={
+                    classes[
+                      "machinaries-wrapper__ticket-activity__started-date"
+                    ]
+                  }
+                >
                   11/11/2021
                 </span>
               </div>
-              <div className={classes['machinaries-wrapper__ticket-activity__status']}>
-                open
+              <div
+                className={
+                  classes["machinaries-wrapper__ticket-activity__status"]
+                }
+              >
+                Working
               </div>
             </div>
           </div>
         </div>
-        <div className={classes['machinaries-wrapper__icon-wrapper']}>
+        <div className={classes["machinaries-wrapper__icon-wrapper"]}>
           <FaEllipsisV />
         </div>
       </div>

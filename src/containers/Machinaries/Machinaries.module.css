@@ -55,16 +55,7 @@
 .machinaries-container .machinaries-options-wrapper__filter > span {
   margin-left: 5px;
 }
-/*
-.machinaries-container .machinaries-list-wrapper {
-  width: 100%;
-  height: calc(100% - 160px);
-  margin-top: 10px;
-  border-radius: 20px;
-  border: 2px solid grey;
-  border-radius: 20px;
-}
-*/
+
 .machinaries-container .machinaries-wrapper {
   font-size: 0.75rem;
   display: flex;
@@ -73,7 +64,7 @@
   padding: 5px;
   margin: 10px 0;
   border-radius: 6px;
-  background-color: rgb(224, 224, 224);
+  background-color: rgb(156, 240, 170);
 }
 
 .machinaries-container .machinaries-wrapper__user-details-wrapper {
@@ -128,7 +119,7 @@
 }
 .machinaries-container .machinaries-wrapper__ticket-details__priority-wrapper {
   margin-left: 5px;
-  width: 125px;
+  width: 200px;
 }
 .machinaries-container .machinaries-wrapper__ticket-details__group-wrapper {
   margin-right: 5px;
@@ -136,7 +127,7 @@
 }
 .machinaries-container .machinaries-wrapper__ticket-details__agent-wrapper {
   margin-left: 5px;
-  width: 125px;
+  width: 150px;
 }
 
 .machinaries-container .machinaries-wrapper__ticket-details__category-title,
