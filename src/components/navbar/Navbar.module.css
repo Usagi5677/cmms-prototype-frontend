@@ -1,0 +1,50 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 2;
+  font-size: 0.875rem;
+}
+
+.navbar-wrapper {
+  background-color: #2fad81;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar__left-side-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__title {
+  color: white;
+  transition: margin-left 0.2s ease-in;
+  cursor: pointer;
+}
+
+.navbar__icon {
+  color: white;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+@media only screen and (min-width: 600px) {
+  .navbar__title {
+    font-size: 1.25rem;
+  }
+  .navbar__title.active {
+    margin-left: 250px;
+  }
+  .navbar__icon {
+    font-size: 1.25rem;
+    margin: 0 10px;
+  }
+  .navbar-wrapper {
+    padding: 20px;
+  }
+}

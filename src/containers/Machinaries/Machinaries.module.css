@@ -1,0 +1,250 @@
+.machinaries-container {
+  width: 100%;
+  min-height: 500px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px 10px;
+}
+
+.machinaries-container .machinaries-options-wrapper {
+  width: 100%;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 0.75rem;
+}
+.machinaries-container .machinaries-options-wrapper__search-wrapper {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  max-width: 200px;
+  padding-top: 8px;
+  padding-left: 8px;
+  max-height: 40px;
+  align-items: center;
+  margin: 10px 0;
+}
+.machinaries-container .machinaries-options-wrapper__search-wrapper_icon {
+  color: #ccc;
+}
+.machinaries-container .machinaries-options-wrapper__search-wrapper input {
+  width: 100%;
+  padding-left: 10px;
+  padding-bottom: 6px;
+}
+
+.machinaries-container .machinaries-options-wrapper__filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 30px;
+  text-align: center;
+  border-radius: 6px;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  transition: all var(--speed) ease;
+  cursor: pointer;
+}
+.machinaries-container .machinaries-options-wrapper__filter:hover {
+  background-color: var(--primary);
+  color: white;
+}
+.machinaries-container .machinaries-options-wrapper__filter > span {
+  margin-left: 5px;
+}
+/*
+.machinaries-container .machinaries-list-wrapper {
+  width: 100%;
+  height: calc(100% - 160px);
+  margin-top: 10px;
+  border-radius: 20px;
+  border: 2px solid grey;
+  border-radius: 20px;
+}
+*/
+.machinaries-container .machinaries-wrapper {
+  font-size: 0.75rem;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 5px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background-color: rgb(224, 224, 224);
+}
+
+.machinaries-container .machinaries-wrapper__user-details-wrapper {
+  display: flex;
+  align-items: center;
+}
+.machinaries-container .machinaries-wrapper__user-details__icon {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid #ccc;
+}
+
+.machinaries-container .machinaries-wrapper__user-details__fullname {
+  margin-bottom: 2px;
+}
+.machinaries-container .machinaries-wrapper__user-details__email-wrapper {
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 6px;
+  align-items: center;
+  line-height: 0;
+}
+.machinaries-container .machinaries-wrapper__user-details__email__text {
+  margin-left: 5px;
+}
+
+.machinaries-container .machinaries-wrapper__user-details__fullname {
+  margin-left: 10px;
+}
+.machinaries-container .machinaries-wrapper__user-details__created-date-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  line-height: 0;
+}
+.machinaries-container .machinaries-wrapper__user-details__created-date__date {
+  margin-left: 5px;
+}
+
+.machinaries-container .machinaries-wrapper__ticket-details__title {
+  font-weight: 800;
+}
+.machinaries-container .machinaries-wrapper__ticket-details__info-wrapper {
+  display: flex;
+  margin-bottom: 5px;
+}
+.machinaries-container .machinaries-wrapper__ticket-details__category-wrapper {
+  margin-right: 5px;
+  width: 125px;
+}
+.machinaries-container .machinaries-wrapper__ticket-details__priority-wrapper {
+  margin-left: 5px;
+  width: 125px;
+}
+.machinaries-container .machinaries-wrapper__ticket-details__group-wrapper {
+  margin-right: 5px;
+  width: 125px;
+}
+.machinaries-container .machinaries-wrapper__ticket-details__agent-wrapper {
+  margin-left: 5px;
+  width: 125px;
+}
+
+.machinaries-container .machinaries-wrapper__ticket-details__category-title,
+.machinaries-container .machinaries-wrapper__ticket-details__priority-title,
+.machinaries-container .machinaries-wrapper__ticket-details__group-title,
+.machinaries-container .machinaries-wrapper__ticket-details__agent-title {
+  font-weight: 700;
+  color: rgb(75, 74, 74);
+}
+.machinaries-container .machinaries-wrapper__ticket-details__category-type,
+.machinaries-container .machinaries-wrapper__ticket-details__priority-type,
+.machinaries-container .machinaries-wrapper__ticket-details__group-name,
+.machinaries-container .machinaries-wrapper__ticket-details__agent-name {
+  font-weight: 400;
+  color: rgb(75, 74, 74);
+}
+
+.machinaries-container .machinaries-wrapper__ticket-activity__started-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.machinaries-container .machinaries-wrapper__ticket-activity__response-wrapper {
+  display: flex;
+}
+
+.machinaries-container .machinaries-wrapper__ticket-activity__started {
+  font-weight: 700;
+  color: rgb(75, 74, 74);
+}
+.machinaries-container .machinaries-wrapper__ticket-activity__started-date {
+  font-weight: 400;
+  color: rgb(75, 74, 74);
+  margin-left: 5px;
+}
+.machinaries-container .machinaries-wrapper__ticket-activity__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em 0.6em;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 10rem;
+  color: rgb(2, 87, 87);
+  background-color: rgba(0, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background-color var(--speed) ease;
+}
+.machinaries-container .machinaries-wrapper__ticket-activity__status:hover {
+  background-color: cyan;
+}
+
+.machinaries-container .machinaries-wrapper__divider {
+  margin: 10px 0;
+  height: 1px;
+  width: calc(100%);
+  background-color: #ccc;
+}
+
+.machinaries-container .machinaries-wrapper__icon-wrapper {
+  padding-top: 5px;
+  cursor: pointer;
+  height: 20px;
+}
+
+.machinaries-container .machinaries-wrapper__user-details-container {
+  width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+  .machinaries-container .machinaries-wrapper__ticket-details__info-container {
+    display: flex;
+  }
+  .machinaries-container .machinaries-options-wrapper {
+    font-size: 0.875rem;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .machinaries-container .machinaries-wrapper__divider {
+    display: none;
+  }
+  .machinaries-container .machinaries-wrapper__user-details-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 2;
+  }
+  .machinaries-container .machinaries-wrapper__ticket-details-wrapper {
+    margin-left: 20px;
+  }
+  .machinaries-container .machinaries-wrapper__user-details__fullname {
+    margin-bottom: 0;
+  }
+  .machinaries-container .machinaries-wrapper__ticket-activity__started-wrapper {
+    flex-direction: column;
+  }
+  .machinaries-container .machinaries-wrapper__icon-wrapper {
+    width: 40px;
+    display: flex;
+    justify-content: end;
+  }
+  .machinaries-container .machinaries-options-wrapper {
+    font-size: 1rem;
+  }
+  .machinaries-container .machinaries-options-wrapper__filter {
+    width: 100px;
+  }
+}
