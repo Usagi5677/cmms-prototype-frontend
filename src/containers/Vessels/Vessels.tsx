@@ -6,7 +6,7 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Vessels.module.css";
-import { Input, Select } from 'antd';
+import { Button, Input, Select } from 'antd';
 import 'antd/dist/antd.css';
 
 //Search
@@ -43,6 +43,7 @@ const Vessels = () => {
         <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Location" onChange={handleChange}>
         {children}
         </Select>
+        <span style={{float: 'right'}}>  <Button>Create Vessels</Button></span>
       </div>
       <div className={classes["vessels-wrapper"]}>
         <div className={classes["vessels-wrapper__user-details-container"]}>

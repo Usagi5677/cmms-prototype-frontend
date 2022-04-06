@@ -239,3 +239,11 @@
     width: 100px;
   }
 }
+@media only screen and (max-width: 600px) {
+  .machinaries-container .machinaries-options-wrapper  {
+    height: 150px;
+  }
+}
+
+
+

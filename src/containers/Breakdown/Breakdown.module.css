@@ -9,7 +9,7 @@
 
 .breakdown-container .breakdown-options-wrapper {
   width: 100%;
-  height: 150px;
+  height: 50px;
   border: 1px solid #ccc;
   border-radius: 20px;
   padding: 10px;
@@ -55,16 +55,7 @@
 .breakdown-container .breakdown-options-wrapper__filter > span {
   margin-left: 5px;
 }
-/*
-.breakdown-container .breakdown-list-wrapper {
-  width: 100%;
-  height: calc(100% - 160px);
-  margin-top: 10px;
-  border-radius: 20px;
-  border: 2px solid grey;
-  border-radius: 20px;
-}
-*/
+
 .breakdown-container .breakdown-wrapper {
   font-size: 0.75rem;
   display: flex;
@@ -73,7 +64,7 @@
   padding: 5px;
   margin: 10px 0;
   border-radius: 6px;
-  background-color: rgb(224, 224, 224);
+  background-color: rgba(214, 213, 213, 0.829);
 }
 
 .breakdown-container .breakdown-wrapper__user-details-wrapper {
@@ -115,63 +106,63 @@
   margin-left: 5px;
 }
 
-.breakdown-container .breakdown-wrapper__ticket-details__title {
+.breakdown-container .breakdown-wrapper__breakdown-details__title {
   font-weight: 800;
 }
-.breakdown-container .breakdown-wrapper__ticket-details__info-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-details__info-wrapper {
   display: flex;
   margin-bottom: 5px;
 }
-.breakdown-container .breakdown-wrapper__ticket-details__category-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-details__category-wrapper {
   margin-right: 5px;
   width: 125px;
 }
-.breakdown-container .breakdown-wrapper__ticket-details__priority-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-details__priority-wrapper {
   margin-left: 5px;
-  width: 125px;
+  width: 200px;
 }
-.breakdown-container .breakdown-wrapper__ticket-details__group-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-details__group-wrapper {
   margin-right: 5px;
   width: 125px;
 }
-.breakdown-container .breakdown-wrapper__ticket-details__agent-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-details__agent-wrapper {
   margin-left: 5px;
-  width: 125px;
+  width: 150px;
 }
 
-.breakdown-container .breakdown-wrapper__ticket-details__category-title,
-.breakdown-container .breakdown-wrapper__ticket-details__priority-title,
-.breakdown-container .breakdown-wrapper__ticket-details__group-title,
-.breakdown-container .breakdown-wrapper__ticket-details__agent-title {
+.breakdown-container .breakdown-wrapper__breakdown-details__category-title,
+.breakdown-container .breakdown-wrapper__breakdown-details__priority-title,
+.breakdown-container .breakdown-wrapper__breakdown-details__group-title,
+.breakdown-container .breakdown-wrapper__breakdown-details__agent-title {
   font-weight: 700;
   color: rgb(75, 74, 74);
 }
-.breakdown-container .breakdown-wrapper__ticket-details__category-type,
-.breakdown-container .breakdown-wrapper__ticket-details__priority-type,
-.breakdown-container .breakdown-wrapper__ticket-details__group-name,
-.breakdown-container .breakdown-wrapper__ticket-details__agent-name {
+.breakdown-container .breakdown-wrapper__breakdown-details__category-type,
+.breakdown-container .breakdown-wrapper__breakdown-details__priority-type,
+.breakdown-container .breakdown-wrapper__breakdown-details__group-name,
+.breakdown-container .breakdown-wrapper__breakdown-details__agent-name {
   font-weight: 400;
   color: rgb(75, 74, 74);
 }
 
-.breakdown-container .breakdown-wrapper__ticket-activity__started-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-activity__started-wrapper {
   display: flex;
   justify-content: space-between;
 }
-.breakdown-container .breakdown-wrapper__ticket-activity__response-wrapper {
+.breakdown-container .breakdown-wrapper__breakdown-activity__response-wrapper {
   display: flex;
 }
 
-.breakdown-container .breakdown-wrapper__ticket-activity__started {
+.breakdown-container .breakdown-wrapper__breakdown-activity__started {
   font-weight: 700;
   color: rgb(75, 74, 74);
 }
-.breakdown-container .breakdown-wrapper__ticket-activity__started-date {
+.breakdown-container .breakdown-wrapper__breakdown-activity__started-date {
   font-weight: 400;
   color: rgb(75, 74, 74);
   margin-left: 5px;
 }
-.breakdown-container .breakdown-wrapper__ticket-activity__status {
+.breakdown-container .breakdown-wrapper__breakdown-activity__status {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,12 +173,13 @@
   text-align: center;
   white-space: nowrap;
   border-radius: 10rem;
+  margin-top: 25px;
   color: rgb(2, 87, 87);
-  background-color: rgba(0, 255, 255, 0.3);
+  background-color: rgba(255, 38, 0, 0.473);
   cursor: pointer;
   transition: background-color var(--speed) ease;
 }
-.breakdown-container .breakdown-wrapper__ticket-activity__status:hover {
+.breakdown-container .breakdown-wrapper__breakdown-activity__status:hover {
   background-color: cyan;
 }
 
@@ -209,7 +201,7 @@
 }
 
 @media only screen and (min-width: 600px) {
-  .breakdown-container .breakdown-wrapper__ticket-details__info-container {
+  .breakdown-container .breakdown-wrapper__breakdown-details__info-container {
     display: flex;
   }
   .breakdown-container .breakdown-options-wrapper {
@@ -227,13 +219,13 @@
     justify-content: space-between;
     line-height: 2;
   }
-  .breakdown-container .breakdown-wrapper__ticket-details-wrapper {
+  .breakdown-container .breakdown-wrapper__breakdown-details-wrapper {
     margin-left: 20px;
   }
   .breakdown-container .breakdown-wrapper__user-details__fullname {
     margin-bottom: 0;
   }
-  .breakdown-container .breakdown-wrapper__ticket-activity__started-wrapper {
+  .breakdown-container .breakdown-wrapper__breakdown-activity__started-wrapper {
     flex-direction: column;
   }
   .breakdown-container .breakdown-wrapper__icon-wrapper {
@@ -248,3 +240,16 @@
     width: 100px;
   }
 }
+@media only screen and (max-width: 600px) {
+  .breakdown-container .breakdown-options-wrapper  {
+    height: 150px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .breakdown-container .breakdown-options-wrapper  {
+    height: 150px;
+  }
+}
+
+
+
