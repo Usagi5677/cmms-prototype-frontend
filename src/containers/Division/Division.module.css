@@ -9,7 +9,7 @@
 
 .division-container .division-options-wrapper {
   width: 100%;
-  height: 150px;
+  height: 50px;
   border: 1px solid #ccc;
   border-radius: 20px;
   padding: 10px;
@@ -246,5 +246,10 @@
   }
   .division-container .division-options-wrapper__filter {
     width: 100px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .division-container .division-options-wrapper  {
+    height: 50px;
   }
 }

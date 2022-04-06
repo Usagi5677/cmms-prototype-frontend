@@ -3,7 +3,6 @@ import "./index.css";
 import Machinaries from "./containers/Machinaries/Machinaries";
 import Vessels from "./containers/Vessels/Vessels";
 import Vehicles from "./containers/Vehicles/Vehicles";
-import Location from "./containers/Location/Location";
 import Division from "./containers/Division/Division";
 import Breakdown from "./containers/Breakdown/Breakdown";
 import Service from "./containers/Service/Service";
@@ -26,8 +25,6 @@ function App() {
             <Route path="/machinaries" element={<Machinaries />} />
             <Route path="/vessels" element={<Vessels />} />
             <Route path="/vehicles" element={<Vehicles />} />
-
-            <Route path="/location" element={<Location />} />
             <Route path="/division" element={<Division />} />
             <Route path="/breakdown" element={<Breakdown />} />
             <Route path="/service" element={<Service />} />

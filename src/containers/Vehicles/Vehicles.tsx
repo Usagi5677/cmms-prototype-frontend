@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import classes from "./Vehicles.module.css";
 import 'antd/dist/antd.css';
-import { Input, Select } from "antd";
+import { Button, Input, Select } from "antd";
 
 //Search
 const { Search } = Input;
@@ -43,6 +43,7 @@ const Vehicles = () => {
         <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Location" onChange={handleChange}>
         {children}
         </Select>
+        <span style={{float: 'right'}} className="">  <Button>Create Vehicles</Button></span>
       </div>
       <div className={classes["vehicles-wrapper"]}>
         <div className={classes["vehicles-wrapper__user-details-container"]}>

@@ -9,7 +9,7 @@
 
 .service-container .service-options-wrapper {
   width: 100%;
-  height: 150px;
+  height: 50px;
   border: 1px solid #ccc;
   border-radius: 20px;
   padding: 10px;
@@ -55,16 +55,7 @@
 .service-container .service-options-wrapper__filter > span {
   margin-left: 5px;
 }
-/*
-.service-container .service-list-wrapper {
-  width: 100%;
-  height: calc(100% - 160px);
-  margin-top: 10px;
-  border-radius: 20px;
-  border: 2px solid grey;
-  border-radius: 20px;
-}
-*/
+
 .service-container .service-wrapper {
   font-size: 0.75rem;
   display: flex;
@@ -73,7 +64,7 @@
   padding: 5px;
   margin: 10px 0;
   border-radius: 6px;
-  background-color: rgb(224, 224, 224);
+  background-color: rgba(214, 213, 213, 0.829);
 }
 
 .service-container .service-wrapper__user-details-wrapper {
@@ -115,63 +106,63 @@
   margin-left: 5px;
 }
 
-.service-container .service-wrapper__ticket-details__title {
+.service-container .service-wrapper__service-details__title {
   font-weight: 800;
 }
-.service-container .service-wrapper__ticket-details__info-wrapper {
+.service-container .service-wrapper__service-details__info-wrapper {
   display: flex;
   margin-bottom: 5px;
 }
-.service-container .service-wrapper__ticket-details__category-wrapper {
+.service-container .service-wrapper__service-details__category-wrapper {
   margin-right: 5px;
   width: 125px;
 }
-.service-container .service-wrapper__ticket-details__priority-wrapper {
+.service-container .service-wrapper__service-details__priority-wrapper {
   margin-left: 5px;
-  width: 125px;
+  width: 200px;
 }
-.service-container .service-wrapper__ticket-details__group-wrapper {
+.service-container .service-wrapper__service-details__group-wrapper {
   margin-right: 5px;
   width: 125px;
 }
-.service-container .service-wrapper__ticket-details__agent-wrapper {
+.service-container .service-wrapper__service-details__agent-wrapper {
   margin-left: 5px;
-  width: 125px;
+  width: 150px;
 }
 
-.service-container .service-wrapper__ticket-details__category-title,
-.service-container .service-wrapper__ticket-details__priority-title,
-.service-container .service-wrapper__ticket-details__group-title,
-.service-container .service-wrapper__ticket-details__agent-title {
+.service-container .service-wrapper__service-details__category-title,
+.service-container .service-wrapper__service-details__priority-title,
+.service-container .service-wrapper__service-details__group-title,
+.service-container .service-wrapper__service-details__agent-title {
   font-weight: 700;
   color: rgb(75, 74, 74);
 }
-.service-container .service-wrapper__ticket-details__category-type,
-.service-container .service-wrapper__ticket-details__priority-type,
-.service-container .service-wrapper__ticket-details__group-name,
-.service-container .service-wrapper__ticket-details__agent-name {
+.service-container .service-wrapper__service-details__category-type,
+.service-container .service-wrapper__service-details__priority-type,
+.service-container .service-wrapper__service-details__group-name,
+.service-container .service-wrapper__service-details__agent-name {
   font-weight: 400;
   color: rgb(75, 74, 74);
 }
 
-.service-container .service-wrapper__ticket-activity__started-wrapper {
+.service-container .service-wrapper__service-activity__started-wrapper {
   display: flex;
   justify-content: space-between;
 }
-.service-container .service-wrapper__ticket-activity__response-wrapper {
+.service-container .service-wrapper__service-activity__response-wrapper {
   display: flex;
 }
 
-.service-container .service-wrapper__ticket-activity__started {
+.service-container .service-wrapper__service-activity__started {
   font-weight: 700;
   color: rgb(75, 74, 74);
 }
-.service-container .service-wrapper__ticket-activity__started-date {
+.service-container .service-wrapper__service-activity__started-date {
   font-weight: 400;
   color: rgb(75, 74, 74);
   margin-left: 5px;
 }
-.service-container .service-wrapper__ticket-activity__status {
+.service-container .service-wrapper__service-activity__status {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,12 +173,13 @@
   text-align: center;
   white-space: nowrap;
   border-radius: 10rem;
+  margin-top: 25px;
   color: rgb(2, 87, 87);
   background-color: rgba(0, 255, 255, 0.3);
   cursor: pointer;
   transition: background-color var(--speed) ease;
 }
-.service-container .service-wrapper__ticket-activity__status:hover {
+.service-container .service-wrapper__service-activity__status:hover {
   background-color: cyan;
 }
 
@@ -209,7 +201,7 @@
 }
 
 @media only screen and (min-width: 600px) {
-  .service-container .service-wrapper__ticket-details__info-container {
+  .service-container .service-wrapper__service-details__info-container {
     display: flex;
   }
   .service-container .service-options-wrapper {
@@ -227,13 +219,13 @@
     justify-content: space-between;
     line-height: 2;
   }
-  .service-container .service-wrapper__ticket-details-wrapper {
+  .service-container .service-wrapper__service-details-wrapper {
     margin-left: 20px;
   }
   .service-container .service-wrapper__user-details__fullname {
     margin-bottom: 0;
   }
-  .service-container .service-wrapper__ticket-activity__started-wrapper {
+  .service-container .service-wrapper__service-activity__started-wrapper {
     flex-direction: column;
   }
   .service-container .service-wrapper__icon-wrapper {
@@ -248,3 +240,11 @@
     width: 100px;
   }
 }
+@media only screen and (max-width: 600px) {
+  .service-container .service-options-wrapper  {
+    height: 150px;
+  }
+}
+
+
+

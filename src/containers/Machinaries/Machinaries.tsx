@@ -6,7 +6,7 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Machinaries.module.css";
-import { Input, Select } from 'antd';
+import { Input, Select, Button } from 'antd';
 import 'antd/dist/antd.css';
 
 //Search
@@ -32,7 +32,7 @@ const Machinaries = () => {
 
         <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Model" onChange={handleChange}>
         {children}
-        </Select>
+        </Select> 
         <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Type" onChange={handleChange}>
         {children}
         </Select>
@@ -44,6 +44,8 @@ const Machinaries = () => {
         <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Location" onChange={handleChange}>
         {children}
         </Select>
+        <span style={{float: 'right'}} className="createMachinaries">  <Button>Create Machinaries</Button></span>
+      
       </div>
       <div className={classes["machinaries-wrapper"]}>
         <div className={classes["machinaries-wrapper__user-details-container"]}>

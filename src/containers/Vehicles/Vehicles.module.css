@@ -239,3 +239,9 @@
     width: 100px;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .vehicles-container .vehicles-options-wrapper  {
+    height: 150px;
+  }
+}
