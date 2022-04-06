@@ -6,26 +6,43 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Vehicles.module.css";
+import 'antd/dist/antd.css';
+import { Input, Select } from "antd";
 
+//Search
+const { Search } = Input;
+const onSearch = value => console.log(value);
+
+//Filter
+const { Option } = Select;
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
+const children = [] as any;
+for (let i = 10; i < 36; i++) {
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
 const Vehicles = () => {
   return (
     <div className={classes["vehicles-container"]}>
       <div className={classes["vehicles-options-wrapper"]}>
-        <div className={classes["vehicles-options-wrapper__search-wrapper"]}>
-          <div
-            className={
-              classes["vehicles-options-wrapper__search-wrapper_icon"]
-            }
-          >
-            <FaSearch />
-          </div>
-          <input type="text" name="" id="" placeholder="Search" />
-        </div>
+        {/* Search & Filters */}
+        <Search placeholder="Search" onSearch={onSearch} style={{ width: 200 }} />
 
-        <button className={classes["vehicles-options-wrapper__filter"]}>
-          <FaPlus />
-          <span>Filter</span>
-        </button>
+        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Model" onChange={handleChange}>
+        {children}
+        </Select>
+        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Type" onChange={handleChange}>
+        {children}
+        </Select>
+        <Select defaultValue="Filter Status" style={{ width: 120 }} onChange={handleChange}>
+        <Option default value="Working">Working</Option>
+        <Option value="Pending">Pending</Option>
+        <Option value="Breakdown">Breakdown</Option>
+        </Select>
+        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Location" onChange={handleChange}>
+        {children}
+        </Select>
       </div>
       <div className={classes["vehicles-wrapper"]}>
         <div className={classes["vehicles-wrapper__user-details-container"]}>

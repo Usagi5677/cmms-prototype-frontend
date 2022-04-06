@@ -6,26 +6,43 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Vessels.module.css";
+import { Input, Select } from 'antd';
+import 'antd/dist/antd.css';
 
+//Search
+const { Search } = Input;
+const onSearch = value => console.log(value);
+
+//Filter
+const { Option } = Select;
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
+const children = [] as any;
+for (let i = 10; i < 36; i++) {
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
 const Vessels = () => {
   return (
     <div className={classes["vessels-container"]}>
       <div className={classes["vessels-options-wrapper"]}>
-        <div className={classes["vessels-options-wrapper__search-wrapper"]}>
-          <div
-            className={
-              classes["vessels-options-wrapper__search-wrapper_icon"]
-            }
-          >
-            <FaSearch />
-          </div>
-          <input type="text" name="" id="" placeholder="Search" />
-        </div>
+        {/* Search & Filters */}
+        <Search placeholder="Search" onSearch={onSearch} style={{ width: 200 }} />
 
-        <button className={classes["vessels-options-wrapper__filter"]}>
-          <FaPlus />
-          <span>Filter</span>
-        </button>
+        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Model" onChange={handleChange}>
+        {children}
+        </Select>
+        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Type" onChange={handleChange}>
+        {children}
+        </Select>
+        <Select defaultValue="Filter Status" style={{ width: 120 }} onChange={handleChange}>
+        <Option default value="Working">Working</Option>
+        <Option value="Pending">Pending</Option>
+        <Option value="Breakdown">Breakdown</Option>
+        </Select>
+        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Location" onChange={handleChange}>
+        {children}
+        </Select>
       </div>
       <div className={classes["vessels-wrapper"]}>
         <div className={classes["vessels-wrapper__user-details-container"]}>

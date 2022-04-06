@@ -1,7 +1,7 @@
 import AntLayout from "antd/lib/layout";
 import { useState } from "react";
-import Navbar from "../../components/Navbar/Navbar";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/Sidebar";
 import { LeftOutlined } from "@ant-design/icons";
 
 const Layout = ({ children }: any) => {
