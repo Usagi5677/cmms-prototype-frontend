@@ -15,6 +15,7 @@ import qs from "qs";
 import UserContext from "./contexts/UserContext";
 import LoggedOut from "./components/common/LoggedOut";
 import "antd/dist/antd.css";
+import ViewMachinaries from "./containers/Machinaries/ViewMachinaries";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/machinaries" element={<Machinaries />} />
+            <Route path="/machinaries/:id" element={<ViewMachinaries />} />
             <Route path="/vessels" element={<Vessels />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/division" element={<Division />} />

@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import classes from "./Vehicles.module.css";
 import 'antd/dist/antd.css';
-import { Button, Input, Select } from "antd";
+import { Button, Input, Select, Menu, Dropdown  } from 'antd';
 
 //Search
 const { Search } = Input;
@@ -22,6 +22,18 @@ const children = [] as any;
 for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
+
+//Edit & Delete
+const menu = (
+  <Menu>
+    <Menu.Item key="0">
+      <a href="https://www.antgroup.com">Edit</a>
+    </Menu.Item>
+    <Menu.Item key="1">
+      <a href="https://www.aliyun.com">Delete</a>
+    </Menu.Item>
+  </Menu>
+);
 const Vehicles = () => {
   return (
     <div className={classes["vehicles-container"]}>
@@ -362,7 +374,11 @@ const Vehicles = () => {
           </div>
         </div>
         <div className={classes["vehicles-wrapper__icon-wrapper"]}>
-          <FaEllipsisV />
+        <Dropdown overlay={menu} trigger={['click']}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+            <FaEllipsisV />
+            </a>
+          </Dropdown>,
         </div>
       </div>
     </div>

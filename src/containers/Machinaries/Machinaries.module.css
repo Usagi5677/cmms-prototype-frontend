@@ -106,63 +106,63 @@
   margin-left: 5px;
 }
 
-.machinaries-container .machinaries-wrapper__ticket-details__title {
+.machinaries-container .machinaries-wrapper__machinaries-details__title {
   font-weight: 800;
 }
-.machinaries-container .machinaries-wrapper__ticket-details__info-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-details__info-wrapper {
   display: flex;
   margin-bottom: 5px;
 }
-.machinaries-container .machinaries-wrapper__ticket-details__category-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-details__category-wrapper {
   margin-right: 5px;
   width: 125px;
 }
-.machinaries-container .machinaries-wrapper__ticket-details__priority-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-details__priority-wrapper {
   margin-left: 5px;
   width: 200px;
 }
-.machinaries-container .machinaries-wrapper__ticket-details__group-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-details__group-wrapper {
   margin-right: 5px;
   width: 125px;
 }
-.machinaries-container .machinaries-wrapper__ticket-details__agent-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-details__agent-wrapper {
   margin-left: 5px;
   width: 150px;
 }
 
-.machinaries-container .machinaries-wrapper__ticket-details__category-title,
-.machinaries-container .machinaries-wrapper__ticket-details__priority-title,
-.machinaries-container .machinaries-wrapper__ticket-details__group-title,
-.machinaries-container .machinaries-wrapper__ticket-details__agent-title {
+.machinaries-container .machinaries-wrapper__machinaries-details__category-title,
+.machinaries-container .machinaries-wrapper__machinaries-details__priority-title,
+.machinaries-container .machinaries-wrapper__machinaries-details__group-title,
+.machinaries-container .machinaries-wrapper__machinaries-details__agent-title {
   font-weight: 700;
   color: rgb(75, 74, 74);
 }
-.machinaries-container .machinaries-wrapper__ticket-details__category-type,
-.machinaries-container .machinaries-wrapper__ticket-details__priority-type,
-.machinaries-container .machinaries-wrapper__ticket-details__group-name,
-.machinaries-container .machinaries-wrapper__ticket-details__agent-name {
+.machinaries-container .machinaries-wrapper__machinaries-details__category-type,
+.machinaries-container .machinaries-wrapper__machinaries-details__priority-type,
+.machinaries-container .machinaries-wrapper__machinaries-details__group-name,
+.machinaries-container .machinaries-wrapper__machinaries-details__agent-name {
   font-weight: 400;
   color: rgb(75, 74, 74);
 }
 
-.machinaries-container .machinaries-wrapper__ticket-activity__started-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-activity__started-wrapper {
   display: flex;
   justify-content: space-between;
 }
-.machinaries-container .machinaries-wrapper__ticket-activity__response-wrapper {
+.machinaries-container .machinaries-wrapper__machinaries-activity__response-wrapper {
   display: flex;
 }
 
-.machinaries-container .machinaries-wrapper__ticket-activity__started {
+.machinaries-container .machinaries-wrapper__machinaries-activity__started {
   font-weight: 700;
   color: rgb(75, 74, 74);
 }
-.machinaries-container .machinaries-wrapper__ticket-activity__started-date {
+.machinaries-container .machinaries-wrapper__machinaries-activity__started-date {
   font-weight: 400;
   color: rgb(75, 74, 74);
   margin-left: 5px;
 }
-.machinaries-container .machinaries-wrapper__ticket-activity__status {
+.machinaries-container .machinaries-wrapper__machinaries-activity__status {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,7 +178,7 @@
   cursor: pointer;
   transition: background-color var(--speed) ease;
 }
-.machinaries-container .machinaries-wrapper__ticket-activity__status:hover {
+.machinaries-container .machinaries-wrapper__machinaries-activity__status:hover {
   background-color: cyan;
 }
 
@@ -200,7 +200,7 @@
 }
 
 @media only screen and (min-width: 600px) {
-  .machinaries-container .machinaries-wrapper__ticket-details__info-container {
+  .machinaries-container .machinaries-wrapper__machinaries-details__info-container {
     display: flex;
   }
   .machinaries-container .machinaries-options-wrapper {
@@ -218,13 +218,13 @@
     justify-content: space-between;
     line-height: 2;
   }
-  .machinaries-container .machinaries-wrapper__ticket-details-wrapper {
+  .machinaries-container .machinaries-wrapper__machinaries-details-wrapper {
     margin-left: 20px;
   }
   .machinaries-container .machinaries-wrapper__user-details__fullname {
     margin-bottom: 0;
   }
-  .machinaries-container .machinaries-wrapper__ticket-activity__started-wrapper {
+  .machinaries-container .machinaries-wrapper__machinaries-activity__started-wrapper {
     flex-direction: column;
   }
   .machinaries-container .machinaries-wrapper__icon-wrapper {

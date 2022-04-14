@@ -6,7 +6,8 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Vessels.module.css";
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Select, Menu, Dropdown  } from 'antd';
+import 'antd/dist/antd.css';
 import 'antd/dist/antd.css';
 
 //Search
@@ -22,6 +23,18 @@ const children = [] as any;
 for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
+//Edit & Delete
+const menu = (
+  <Menu>
+    <Menu.Item key="0">
+      <a href="https://www.antgroup.com">Edit</a>
+    </Menu.Item>
+    <Menu.Item key="1">
+      <a href="https://www.aliyun.com">Delete</a>
+    </Menu.Item>
+  </Menu>
+);
+
 const Vessels = () => {
   return (
     <div className={classes["vessels-container"]}>
@@ -362,7 +375,11 @@ const Vessels = () => {
           </div>
         </div>
         <div className={classes["vessels-wrapper__icon-wrapper"]}>
-          <FaEllipsisV />
+        <Dropdown overlay={menu} trigger={['click']}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+            <FaEllipsisV />
+            </a>
+          </Dropdown>,
         </div>
       </div>
     </div>

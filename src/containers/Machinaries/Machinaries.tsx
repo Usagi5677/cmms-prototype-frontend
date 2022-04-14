@@ -6,7 +6,7 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Machinaries.module.css";
-import { Input, Select, Button } from 'antd';
+import { Input, Select, Button, Menu, Dropdown } from 'antd';
 import 'antd/dist/antd.css';
 
 //Search
@@ -22,6 +22,17 @@ const children = [] as any;
 for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
+//Edit & Delete
+const menu = (
+  <Menu>
+    <Menu.Item key="0">
+      <a href="https://www.antgroup.com">Edit</a>
+    </Menu.Item>
+    <Menu.Item key="1">
+      <a href="https://www.aliyun.com">Delete</a>
+    </Menu.Item>
+  </Menu>
+);
 
 const Machinaries = () => {
   return (
@@ -47,25 +58,26 @@ const Machinaries = () => {
         <span style={{float: 'right'}} className="createMachinaries">  <Button>Create Machinaries</Button></span>
       
       </div>
+      <a href="machinaries/:1">
       <div className={classes["machinaries-wrapper"]}>
         <div className={classes["machinaries-wrapper__user-details-container"]}>
           <div className={classes["machinaries-wrapper__user-details-wrapper"]}>
             <div
               className={
-                classes["machinaries-wrapper__ticket-details__info-wrapper"]
+                classes["machinaries-wrapper__machinaries-details__info-wrapper"]
               }
             >
               <div
                 className={
                   classes[
-                    "machinaries-wrapper__ticket-details__priority-wrapper"
+                    "machinaries-wrapper__machinaries-details__priority-wrapper"
                   ]
                 }
               >
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__priority-title"
+                      "machinaries-wrapper__machinaries-details__priority-title"
                     ]
                   }
                 >
@@ -75,7 +87,7 @@ const Machinaries = () => {
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__category-title"
+                      "machinaries-wrapper__machinaries-details__category-title"
                     ]
                   }
                 >
@@ -84,7 +96,7 @@ const Machinaries = () => {
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__category-title"
+                      "machinaries-wrapper__machinaries-details__category-title"
                     ]
                   }
                 >
@@ -93,7 +105,7 @@ const Machinaries = () => {
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__category-title"
+                      "machinaries-wrapper__machinaries-details__category-title"
                     ]
                   }
                 >
@@ -104,32 +116,32 @@ const Machinaries = () => {
           </div>
           <div className={classes["machinaries-wrapper__divider"]}></div>
           <div
-            className={classes["machinaries-wrapper__ticket-details-wrapper"]}
+            className={classes["machinaries-wrapper__machinaries-details-wrapper"]}
           >
             <div
-              className={classes["machinaries-wrapper__ticket-details__title"]}
+              className={classes["machinaries-wrapper__machinaries-details__title"]}
             ></div>
             <div
               className={
-                classes["machinaries-wrapper__ticket-details__info-container"]
+                classes["machinaries-wrapper__machinaries-details__info-container"]
               }
             >
               <div
                 className={
-                  classes["machinaries-wrapper__ticket-details__info-wrapper"]
+                  classes["machinaries-wrapper__machinaries-details__info-wrapper"]
                 }
               >
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__category-wrapper"
+                      "machinaries-wrapper__machinaries-details__category-wrapper"
                     ]
                   }
                 >
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__category-title"
+                        "machinaries-wrapper__machinaries-details__category-title"
                       ]
                     }
                   >
@@ -137,7 +149,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -147,7 +159,7 @@ const Machinaries = () => {
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__category-title"
+                        "machinaries-wrapper__machinaries-details__category-title"
                       ]
                     }
                   >
@@ -155,7 +167,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -166,14 +178,14 @@ const Machinaries = () => {
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__priority-wrapper"
+                      "machinaries-wrapper__machinaries-details__priority-wrapper"
                     ]
                   }
                 >
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__priority-title"
+                        "machinaries-wrapper__machinaries-details__priority-title"
                       ]
                     }
                   >
@@ -181,7 +193,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -191,7 +203,7 @@ const Machinaries = () => {
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__category-title"
+                        "machinaries-wrapper__machinaries-details__category-title"
                       ]
                     }
                   >
@@ -199,7 +211,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -209,7 +221,7 @@ const Machinaries = () => {
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__category-title"
+                        "machinaries-wrapper__machinaries-details__category-title"
                       ]
                     }
                   >
@@ -217,7 +229,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -228,20 +240,20 @@ const Machinaries = () => {
               </div>
               <div
                 className={
-                  classes["machinaries-wrapper__ticket-details__info-wrapper"]
+                  classes["machinaries-wrapper__machinaries-details__info-wrapper"]
                 }
               >
                 <div
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-details__agent-wrapper"
+                      "machinaries-wrapper__machinaries-details__agent-wrapper"
                     ]
                   }
                 >
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__agent-title"
+                        "machinaries-wrapper__machinaries-details__agent-title"
                       ]
                     }
                   >
@@ -249,7 +261,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -259,7 +271,7 @@ const Machinaries = () => {
                   <div
                     className={
                       classes[
-                        "machinaries-wrapper__ticket-details__agent-title"
+                        "machinaries-wrapper__machinaries-details__agent-title"
                       ]
                     }
                   >
@@ -267,7 +279,7 @@ const Machinaries = () => {
                     <span
                       className={
                         classes[
-                          "machinaries-wrapper__ticket-details__group-name"
+                          "machinaries-wrapper__machinaries-details__group-name"
                         ]
                       }
                     >
@@ -279,23 +291,23 @@ const Machinaries = () => {
             </div>
           </div>
           <div
-            className={classes["machinaries-wrapper__ticket-activity-wrapper"]}
+            className={classes["machinaries-wrapper__machinaries-activity-wrapper"]}
           >
             <div
               className={
-                classes["machinaries-wrapper__ticket-activity__started-wrapper"]
+                classes["machinaries-wrapper__machinaries-activity__started-wrapper"]
               }
             >
               <div
                 className={
-                  classes["machinaries-wrapper__ticket-activity__started"]
+                  classes["machinaries-wrapper__machinaries-activity__started"]
                 }
               >
                 Estimated Completion:
                 <span
                   className={
                     classes[
-                      "machinaries-wrapper__ticket-activity__started-date"
+                      "machinaries-wrapper__machinaries-activity__started-date"
                     ]
                   }
                 >
@@ -304,7 +316,7 @@ const Machinaries = () => {
               </div>
               <div
                 className={
-                  classes["machinaries-wrapper__ticket-activity__status"]
+                  classes["machinaries-wrapper__machinaries-activity__status"]
                 }
               >
                 Working
@@ -313,10 +325,16 @@ const Machinaries = () => {
           </div>
         </div>
         <div className={classes["machinaries-wrapper__icon-wrapper"]}>
-          <FaEllipsisV />
+          <Dropdown overlay={menu} trigger={['click']}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+            <FaEllipsisV />
+            </a>
+          </Dropdown>,
         </div>
       </div>
+      </a>
     </div>
+
   );
 };
 
