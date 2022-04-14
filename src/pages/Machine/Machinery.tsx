@@ -5,7 +5,7 @@ import {
   FaSearch,
   FaPlus,
 } from "react-icons/fa";
-import classes from "./Machinaries.module.css";
+import classes from "./Machinery.module.css";
 import { Input, Select, Button, Menu, Dropdown } from 'antd';
 import 'antd/dist/antd.css';
 

@@ -54,7 +54,7 @@ const Layout = ({ children }: any) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "rgb(36, 218, 157)",
+                backgroundColor: "var(--primary)",
                 height: 50,
               }}
             >

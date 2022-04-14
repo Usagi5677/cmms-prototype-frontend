@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import classes from "./Machinaries.module.css";
+import classes from "./Machinery.module.css";
 import { Tabs, Button} from 'antd';
 const { TabPane } = Tabs;
 

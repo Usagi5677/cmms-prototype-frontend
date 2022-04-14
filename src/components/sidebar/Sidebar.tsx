@@ -61,7 +61,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
     {
       name: "Divider",
-      path: "divider1",
+      path: "divider2",
     },
     {
       name: "Division",
@@ -85,12 +85,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
     {
       name: "Divider",
-      path: "divider2",
-    },
-    {
-      name: "Knowledge Base",
-      path: "/knowledgebase",
-      icon: <FaBook />,
+      path: "divider3",
     },
   ];
 

@@ -1,13 +1,268 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/*** The new CSS Reset - version 1.4.3 (last updated 19.12.2021) ***/
+
+/*
+    Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
+    - The "symbol *" part is to solve Firefox SVG sprite bug
+ */
+*:where(:not(iframe, canvas, img, svg, video):not(svg *, symbol *)) {
+  all: unset;
+  display: revert;
+  font-family: "Nunito", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Preferred box-sizing value */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+/* For images to not be able to exceed their container */
+img {
+  max-width: 100%;
+}
+
+/* removes spacing between cells in tables */
+table {
+  border-collapse: collapse;
+}
+
+/* revert the 'white-space' property for textarea elements on Safari */
+textarea {
+  white-space: revert;
+}
+
+/* fix the feature of 'hidden' attribute.
+   display:revert; revert to element instead of attribute */
+:where([hidden]) {
+  display: none;
+}
+
+/* revert for bug in Chromium browsers
+   - fix for the content editable attribute will work properly. */
+:where([contenteditable]) {
+  -moz-user-modify: read-write;
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-line-break: after-white-space;
+}
+
+html {
+  background-color: var(--html-bg-color) !important;
+  scrollbar-width: thin !important;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: #ccc !important;
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5 !important;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: var(--primary) !important;
+}
+
+body {
+  background-color: var(--html-bg-color) !important;
+  font-family: "Nunito";
+}
+
+a {
+  color: initial !important;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+:root {
+  --html-bg-color: #f0f1f1;
+  --primary: #1aaa7a;
+  --secondary: #cbffee;
+  --sidebar-bg-color: #fff;
+  --sidebar-text-color: black;
+  --sidebar-item-hover-color: rgba(49, 166, 245, 0.2);
+  --speed: 500ms;
+  --error: #ff4d4f;
+}
+
+.ant-btn-primary {
+  background-color: #263b83 !important;
+  border-color: #263b83 !important;
+}
+
+.anticon,
+.ant-menu-item .anticon {
+  font-size: 14px;
+}
+
+.ant-modal-content {
+  border-radius: 20px !important;
+}
+
+.ant-modal-header {
+  border-top-right-radius: 20px !important;
+  border-top-left-radius: 20px !important;
+}
+
+.ant-popover-inner {
+  border-radius: 20px !important;
+}
+
+.ant-popover-buttons .ant-btn {
+  border-radius: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.ant-card-actions {
+  border-top: 1px solid #ccc !important;
+}
+.ant-card-actions > li:not(:last-child) {
+  border-right: 1px solid #ccc !important;
+}
+
+.ql-container.ql-disabled .ql-tooltip {
+  display: none !important;
+}
+
+.ant-drawer-header {
+  padding: 0 !important;
+  border-bottom: none !important;
+  height: 50px !important;
+}
+
+.ant-drawer-title {
+  height: 50px !important;
+}
+
+.ant-drawer-body {
+  padding: 5px !important;
+}
+
+.ant-tabs-content-top {
+  height: 100%;
+}
+
+#AddChecklistItemInput::placeholder {
+  color: rgb(191, 191, 191, 1);
+}
+
+#SearchInput::placeholder {
+  color: rgb(191, 191, 191, 1);
+}
+
+h1 {
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+
+u {
+  text-decoration: underline;
+}
+
+em {
+  font-style: italic;
+}
+
+.ant-menu-inline {
+  border-right: none !important;
+}
+.ant-menu-item-selected {
+  color: var(--primary) !important;
+}
+.ant-menu-item-selected > * {
+  transform: translateX(10px) !important;
+}
+
+.ant-menu-light .ant-menu-item:hover,
+.ant-menu-light .ant-menu-item-active,
+.ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-light .ant-menu-submenu-active,
+.ant-menu-light .ant-menu-submenu-title:hover {
+  color: var(--primary) !important;
+}
+
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid var(--primary) !important;
+}
+
+.ant-menu-submenu:hover
+  > .ant-menu-submenu-title
+  > .ant-menu-submenu-expand-icon,
+.ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
+  color: var(--primary) !important;
+}
+
+.ant-menu-item-divider {
+  border-color: #ccc !important;
+}
+
+.ant-menu-inline.ant-menu-root .ant-menu-item,
+.ant-menu-inline.ant-menu-root .ant-menu-submenu-title {
+  transition: transform 0.3s, border-color 0.3s, background 0.3s,
+    padding 0.1s cubic-bezier(0.215, 0.61, 0.355, 1) !important;
+}
+
+.ant-menu-submenu-selected {
+  color: var(--primary) !important;
+}
+
+.ant-picker-panel-container {
+  border-radius: 20px !important;
+}
+
+.ant-dropdown {
+  position: fixed !important;
+}
+
+.ant-collapse-header {
+  padding-bottom: 0px !important;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: var(--secondary) !important;
 }
