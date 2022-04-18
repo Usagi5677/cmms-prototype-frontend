@@ -45,8 +45,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "divider1",
     },
     {
-      name: "Machinaries",
-      path: "/machinaries",
+      name: "Machinery",
+      path: "/machinery",
       icon: <AiFillDatabase />,
     },
     {

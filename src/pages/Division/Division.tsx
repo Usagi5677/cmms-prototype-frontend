@@ -12,7 +12,7 @@ import 'antd/dist/antd.css';
 
 //Search
 const { Search } = Input;
-const onSearch = value => console.log(value);
+const onSearch = (value: any) => console.log(value);
 
 const Division = () => {
   return (

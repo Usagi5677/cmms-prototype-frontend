@@ -11,11 +11,11 @@ import 'antd/dist/antd.css';
 
 //Search
 const { Search } = Input;
-const onSearch = value => console.log(value);
+const onSearch = (value: any) => console.log(value);
 
 //Filter
 const { Option } = Select;
-function handleChange(value) {
+function handleChange(value: any) {
   console.log(`selected ${value}`);
 }
 const children = [] as any;

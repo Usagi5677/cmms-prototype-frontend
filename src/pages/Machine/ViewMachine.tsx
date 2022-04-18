@@ -5,7 +5,7 @@ import classes from "./Machinery.module.css";
 import { Tabs, Button} from 'antd';
 const { TabPane } = Tabs;
 
-function callback(key) {
+function callback(key: any) {
   console.log(key);
 }
 const ViewMachinaries = () => (

@@ -19,6 +19,7 @@ import { apolloClient } from "./api/client";
 import { ME_QUERY } from "./api/queries";
 import { message } from "antd";
 import jwtDecode from "jwt-decode";
+import Machinery from "./pages/Machine/Machinery";
 
 function App() {
   {
@@ -144,8 +145,8 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/machinaries" element={<Machinaries />} />
-            <Route path="/machinaries/:id" element={<ViewMachinaries />} />
+            <Route path="/machinery" element={<Machinery />} />
+            <Route path="/machine/:id" element={<ViewMachinaries />} />
             <Route path="/vessels" element={<Vessels />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/division" element={<Division />} />

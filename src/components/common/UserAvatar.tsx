@@ -1,6 +1,6 @@
 import { Avatar } from "antd";
 import { stringToColor } from "../../helpers/style";
-import User from "../models/User";
+import User from "../../models/User";
 
 const UserAvatar = ({ user }: { user?: User | null }) => {
   return (

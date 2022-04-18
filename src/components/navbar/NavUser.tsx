@@ -7,6 +7,7 @@ import UserAvatar from "../common/UserAvatar";
 
 const NavUser = () => {
   const { user, logout } = useContext(UserContext);
+  console.log(logout)
   return (
     <Dropdown
       placement="bottomRight"

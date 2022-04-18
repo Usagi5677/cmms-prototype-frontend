@@ -28,3 +28,26 @@ export const APS_USER_FRAGMENT = gql`
   }
 `;
 
+export const MACHINE_FRAGMENT = gql`
+  ${USER_FRAGMENT}
+  fragment MachineFields on Machine {
+    id
+    createdAt
+    createdBy {
+      ...UserFields
+      email
+    }
+    machineNumber
+    registeredDate
+    model
+    type
+    zone
+    location
+    currentRunningHrs
+    lastServiceHrs
+    interServiceHrs
+    assignees {
+      ...UserFields
+    }
+  }
+`;

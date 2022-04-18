@@ -6,336 +6,133 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import classes from "./Machinery.module.css";
-import { Input, Select, Button, Menu, Dropdown } from 'antd';
-import 'antd/dist/antd.css';
+import { Input, Button, Menu, Dropdown, Spin } from "antd";
+import Search from "../../components/common/Search";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import Machine from "../../components/Machine/Machine";
+import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
+import PaginationArgs from "../../models/PaginationArgs";
+import { errorMessage } from "../../helpers/gql";
+import { useLazyQuery } from "@apollo/client";
+import { ALL_MACHINES } from "../../api/queries";
+import { PAGE_LIMIT } from "../../helpers/constants";
+import PaginationButtons from "../../components/common/PaginationButtons";
+import AddMachine from "../../components/AddMachine";
 
-//Search
-const { Search } = Input;
-const onSearch = value => console.log(value);
+const Machinery = () => {
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [timerId, setTimerId] = useState(null);
+  // Filter has an intersection type as it has PaginationArgs + other args
+  const [filter, setFilter] = useState<
+    PaginationArgs & {
+      search: string;
+    }
+  >({
+    ...DefaultPaginationArgs,
+    search: "",
+  });
 
-//Filter
-const { Option } = Select;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
-const children = [] as any;
-for (let i = 10; i < 36; i++) {
-  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
-//Edit & Delete
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="https://www.antgroup.com">Edit</a>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="https://www.aliyun.com">Delete</a>
-    </Menu.Item>
-  </Menu>
-);
+  const [getAllMachine, { data, loading }] = useLazyQuery(ALL_MACHINES, {
+    onError: (err) => {
+      errorMessage(err, "Error loading machines.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
-const Machinaries = () => {
+  // Fetch tickets when component mounts or when the filter object changes
+  useEffect(() => {
+    getAllMachine({ variables: filter });
+  }, [filter, getAllMachine]);
+
+  // Debounce the search, meaning the search will only execute 500ms after the
+  // last input. This prevents unnecessary API calls. useRef is used to prevent
+  // this useEffect from running on the initial render (which would waste an API
+  // call as well).
+  const searchDebounced = (value: string) => {
+    if (timerId) clearTimeout(timerId);
+    setTimerId(
+      //@ts-ignore
+      setTimeout(() => {
+        setFilter((filter) => ({
+          ...filter,
+          search: value,
+          ...DefaultPaginationArgs,
+        }));
+        setPage(1);
+      }, 500)
+    );
+  };
+  const initialRender = useRef<boolean>(true);
+  useEffect(() => {
+    if (initialRender.current === true) {
+      initialRender.current = false;
+      return;
+    }
+    searchDebounced(search);
+    // eslint-disable-next-line
+  }, [search]);
+
+  // Pagination functions
+  const next = () => {
+    setFilter({
+      ...filter,
+      first: PAGE_LIMIT,
+      after: pageInfo.endCursor,
+      last: null,
+      before: null,
+    });
+    setPage(page + 1);
+  };
+
+  const back = () => {
+    setFilter({
+      ...filter,
+      last: PAGE_LIMIT,
+      before: pageInfo.startCursor,
+      first: null,
+      after: null,
+    });
+    setPage(page - 1);
+  };
+
+  const pageInfo = data?.getAllMachine.pageInfo ?? {};
+
   return (
     <div className={classes["machinaries-container"]}>
       <div className={classes["machinaries-options-wrapper"]}>
-        {/* Search & Filters */}
-        <Search placeholder="Search" onSearch={onSearch} style={{ width: 200 }} />
-
-        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Model" onChange={handleChange}>
-        {children}
-        </Select> 
-        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Type" onChange={handleChange}>
-        {children}
-        </Select>
-          <Select defaultValue="Filter Status" style={{ width: 120 }} onChange={handleChange}>
-          <Option default value="Working">Working</Option>
-          <Option value="Pending">Pending</Option>
-          <Option value="Breakdown">Breakdown</Option>
-        </Select>
-        <Select mode="tags" style={{ width: '15%' }} placeholder="Filter Location" onChange={handleChange}>
-        {children}
-        </Select>
-        <span style={{float: 'right'}} className="createMachinaries">  <Button>Create Machinaries</Button></span>
-      
-      </div>
-      <a href="machinaries/:1">
-      <div className={classes["machinaries-wrapper"]}>
-        <div className={classes["machinaries-wrapper__user-details-container"]}>
-          <div className={classes["machinaries-wrapper__user-details-wrapper"]}>
-            <div
-              className={
-                classes["machinaries-wrapper__machinaries-details__info-wrapper"]
-              }
-            >
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__priority-wrapper"
-                  ]
-                }
-              >
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__priority-title"
-                    ]
-                  }
-                >
-                  {" "}
-                  1{" "}
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  Ex-31
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  North - Centara
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  <FaGlobe /> Registered at <span>9/3/2022</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={classes["machinaries-wrapper__divider"]}></div>
-          <div
-            className={classes["machinaries-wrapper__machinaries-details-wrapper"]}
-          >
-            <div
-              className={classes["machinaries-wrapper__machinaries-details__title"]}
-            ></div>
-            <div
-              className={
-                classes["machinaries-wrapper__machinaries-details__info-container"]
-              }
-            >
-              <div
-                className={
-                  classes["machinaries-wrapper__machinaries-details__info-wrapper"]
-                }
-              >
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-wrapper"
-                    ]
-                  }
-                >
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__category-title"
-                      ]
-                    }
-                  >
-                    Model:{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      KOBELCO
-                    </span>
-                  </div>
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__category-title"
-                      ]
-                    }
-                  >
-                    Type:{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      Excavator
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__priority-wrapper"
-                    ]
-                  }
-                >
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__priority-title"
-                      ]
-                    }
-                  >
-                    Current running (hr):{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      3146
-                    </span>
-                  </div>
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__category-title"
-                      ]
-                    }
-                  >
-                    Last service (hr):{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      3133
-                    </span>
-                  </div>
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__category-title"
-                      ]
-                    }
-                  >
-                    Inter service (hr):{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      13
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className={
-                  classes["machinaries-wrapper__machinaries-details__info-wrapper"]
-                }
-              >
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__agent-wrapper"
-                    ]
-                  }
-                >
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__agent-title"
-                      ]
-                    }
-                  >
-                    Spare pr date:{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      12/2/2022
-                    </span>
-                  </div>
-                  <div
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__agent-title"
-                      ]
-                    }
-                  >
-                    Spare pr status:{" "}
-                    <span
-                      className={
-                        classes[
-                          "machinaries-wrapper__machinaries-details__group-name"
-                        ]
-                      }
-                    >
-                      Status
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            className={classes["machinaries-wrapper__machinaries-activity-wrapper"]}
-          >
-            <div
-              className={
-                classes["machinaries-wrapper__machinaries-activity__started-wrapper"]
-              }
-            >
-              <div
-                className={
-                  classes["machinaries-wrapper__machinaries-activity__started"]
-                }
-              >
-                Estimated Completion:
-                <span
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-activity__started-date"
-                    ]
-                  }
-                >
-                  11/11/2021
-                </span>
-              </div>
-              <div
-                className={
-                  classes["machinaries-wrapper__machinaries-activity__status"]
-                }
-              >
-                Working
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={classes["machinaries-wrapper__icon-wrapper"]}>
-          <Dropdown overlay={menu} trigger={['click']}>
-            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-            <FaEllipsisV />
-            </a>
-          </Dropdown>,
+        <Search
+          searchValue={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onClick={() => setSearch("")}
+        />
+        <div>
+          <AddMachine />
         </div>
       </div>
-      </a>
+      {loading && (
+        <div>
+          <Spin style={{ width: "100%", margin: "2rem auto" }} />
+        </div>
+      )}
+      {data?.getAllMachine.edges.map((rec: { node: any }) => {
+        const machine = rec.node;
+        return (
+          <Link to={"/machine/" + machine.id} key={machine.id}>
+            <Machine machine={machine} />
+          </Link>
+        );
+      })}
+      <PaginationButtons
+        pageInfo={pageInfo}
+        page={page}
+        next={next}
+        back={back}
+      />
     </div>
-
   );
 };
 
-export default Machinaries;
+export default Machinery;
