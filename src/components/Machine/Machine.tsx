@@ -1,9 +1,87 @@
-import { FaGlobe } from "react-icons/fa";
+import {
+  FaGlobe,
+  FaMapMarkerAlt,
+  FaQuestionCircle,
+  FaRegClock,
+  FaTractor,
+} from "react-icons/fa";
+import StatusTag from "../common/StatusTag";
 import classes from "./Machine.module.css";
+import Machine from "../../models/Machine";
+import moment from "moment";
+import { DATETIME_FORMATS } from "../../helpers/constants";
 
-const Machine = (props:any) => {
+const Machines = ({ machine }: { machine: Machine }) => {
   return (
-    <div className={classes["machinaries-wrapper"]}>
+    <div className={classes["container"]}>
+      <div className={classes["first-wrapper"]}>
+        <div className={classes["first-block"]}>
+          <div className={classes["title-wrapper"]}>
+            <FaTractor />
+            <span className={classes["title"]}>{machine?.machineNumber}</span>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <FaMapMarkerAlt />
+            <span className={classes["title"]}>{machine?.zone}</span> -
+            <span>{machine?.location}</span>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <FaRegClock />
+            <span className={classes["title"]}>{moment(machine?.registeredDate).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}</span>
+          </div>
+        </div>
+        <div className={classes["second-block"]}>
+          <div>
+            <span>Model:</span>
+            <span className={classes["title"]}>{machine?.model}</span>
+          </div>
+          <div>
+            <span>Type:</span>
+            <span className={classes["title"]}>{machine?.type}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className={classes["second-wrapper"]}>
+        <div className={classes["third-block"]}>
+          <div>
+            <span>Current running (hr):</span>
+            <span className={classes["title"]}>{machine?.currentRunningHrs}</span>
+          </div>
+          <div>
+            <span>Last service (hr):</span>
+            <span className={classes["title"]}>{machine?.lastServiceHrs}</span>
+          </div>
+          <div>
+            <span>Inter service (hr):</span>
+            <span className={classes["title"]}>{machine?.interServiceHrs}</span>
+          </div>
+        </div>
+        <div className={classes["fourth-block"]}>
+          <div>
+            <span>Spare PR date:</span>
+            <span className={classes["title"]}>{machine?.sparePRs}</span>
+          </div>
+          <div>
+            <span>Spare PR status:</span>
+            <span className={classes["title"]}>
+              <FaQuestionCircle />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className={classes["fifth-block"]}>
+        <StatusTag status={machine?.status} />
+      </div>
+    </div>
+  );
+};
+
+export default Machines;
+
+/*
+<div className={classes["machinaries-wrapper"]}>
       <div className={classes["machinaries-wrapper__user-details-container"]}>
         <div className={classes["machinaries-wrapper__user-details-wrapper"]}>
           <div
@@ -282,7 +360,4 @@ const Machine = (props:any) => {
         </div>
       </div>
     </div>
-  );
-};
-
-export default Machine;
+*/

@@ -9,6 +9,7 @@ export const CREATE_MACHINE = gql`
     $location: String!
     $currentRunningHrs: Int!
     $lastServiceHrs: Int!
+    $registeredDate: Date!
   ) {
     createMachine(
       machineNumber: $machineNumber
@@ -18,6 +19,7 @@ export const CREATE_MACHINE = gql`
       location: $location
       currentRunningHrs: $currentRunningHrs
       lastServiceHrs: $lastServiceHrs
+      registeredDate: $registeredDate
     )
   }
 `;

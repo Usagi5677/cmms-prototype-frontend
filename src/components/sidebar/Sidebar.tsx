@@ -10,7 +10,8 @@ import {
   FaUserLock,
   FaUsers,
   FaWrench,
-  FaTruck
+  FaTruck,
+  FaTractor
 } from "react-icons/fa";
 import { BsPeopleFill } from "react-icons/bs";
 import { IoLocationSharp} from "react-icons/io5";
@@ -47,7 +48,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     {
       name: "Machinery",
       path: "/machinery",
-      icon: <AiFillDatabase />,
+      icon: <FaTractor />,
     },
     {
       name: "Vessels",

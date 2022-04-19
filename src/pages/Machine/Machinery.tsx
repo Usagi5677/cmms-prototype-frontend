@@ -10,7 +10,6 @@ import { Input, Button, Menu, Dropdown, Spin } from "antd";
 import Search from "../../components/common/Search";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Machine from "../../components/Machine/Machine";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
@@ -19,6 +18,8 @@ import { ALL_MACHINES } from "../../api/queries";
 import { PAGE_LIMIT } from "../../helpers/constants";
 import PaginationButtons from "../../components/common/PaginationButtons";
 import AddMachine from "../../components/AddMachine";
+import Machines from "../../components/Machine/Machine";
+import Machine from "../../models/Machine";
 
 const Machinery = () => {
   const [page, setPage] = useState(1);
@@ -117,11 +118,11 @@ const Machinery = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllMachine.edges.map((rec: { node: any }) => {
+      {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
         const machine = rec.node;
         return (
           <Link to={"/machine/" + machine.id} key={machine.id}>
-            <Machine machine={machine} />
+            <Machines machine={machine} />
           </Link>
         );
       })}

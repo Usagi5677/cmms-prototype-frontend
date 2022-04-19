@@ -46,6 +46,7 @@ export const MACHINE_FRAGMENT = gql`
     currentRunningHrs
     lastServiceHrs
     interServiceHrs
+    status
     assignees {
       ...UserFields
     }

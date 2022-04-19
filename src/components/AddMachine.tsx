@@ -1,5 +1,14 @@
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import { CREATE_MACHINE } from "../api/mutations";
@@ -40,6 +49,7 @@ const AddMachine = () => {
       location,
       currentRunningHrs,
       lastServiceHrs,
+      registeredDate
     } = values;
 
     if (!machineNumber) {
@@ -71,16 +81,17 @@ const AddMachine = () => {
       return;
     }
     createMachine({
-        variables: {
-          machineNumber,
-          model,
-          type,
-          zone,
-          location,
-          currentRunningHrs: parseInt(currentRunningHrs),
-          lastServiceHrs: parseInt(lastServiceHrs),
-        },
-      });
+      variables: {
+        machineNumber,
+        model,
+        type,
+        zone,
+        location,
+        currentRunningHrs: parseInt(currentRunningHrs),
+        lastServiceHrs: parseInt(lastServiceHrs),
+        registeredDate
+      },
+    });
   };
   return (
     <>
@@ -89,7 +100,12 @@ const AddMachine = () => {
         size="middle"
         onClick={() => setVisible(true)}
         loading={loadingMachine}
-        style={{ width: "100%", color: "var(--primary)", borderRadius: 20, maxWidth: 120 }}
+        style={{
+          width: "100%",
+          color: "var(--primary)",
+          borderRadius: 20,
+          maxWidth: 120,
+        }}
       >
         Add Machine
       </Button>
@@ -145,6 +161,21 @@ const AddMachine = () => {
             ]}
           >
             <Input placeholder="Type" />
+          </Form.Item>
+          <Form.Item
+            label="Registered Date"
+            name="registeredDate"
+            required={false}
+          >
+            <DatePicker
+              placeholder="Select registered date"
+              style={{
+                width: 200,
+                marginRight: "1rem",
+              }}
+              allowClear={false}
+              
+            />
           </Form.Item>
           <Form.Item
             label="Zone"
