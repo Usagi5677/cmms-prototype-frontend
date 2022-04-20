@@ -1,4 +1,3 @@
-import Site from "./Site";
 import UserRole from "./UserRole";
 
 export default interface User {
@@ -11,10 +10,4 @@ export default interface User {
   isAdmin?: boolean;
   isAgent?: boolean;
   isSuperAdmin: boolean;
-  sites: Site[];
-  siteAccess: {
-    admin: Site[];
-    agent: Site[];
-    adminOrAgent: Site[];
-  };
 }

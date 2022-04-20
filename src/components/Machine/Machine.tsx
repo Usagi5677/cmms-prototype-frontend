@@ -10,10 +10,32 @@ import classes from "./Machine.module.css";
 import Machine from "../../models/Machine";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
+import { Tooltip } from "antd";
 
 const Machines = ({ machine }: { machine: Machine }) => {
+  let borderLeft: string;
+  let border: string;
+  if (machine?.interServiceHrs! >= 500) {
+    borderLeft = "8px solid red";
+    border = "2px solid red";
+  } else if (machine?.interServiceHrs! >= 400) {
+    borderLeft = "8px solid orange";
+    border = "2px solid orange";
+  } else {
+    borderLeft = "8px solid #39e95c";
+    border = "2px solid #39e95c";
+  }
+
   return (
-    <div className={classes["container"]}>
+    <div
+      className={classes["container"]}
+      style={{
+        borderTop: border,
+        borderRight: border,
+        borderBottom: border,
+        borderLeft: borderLeft,
+      }}
+    >
       <div className={classes["first-wrapper"]}>
         <div className={classes["first-block"]}>
           <div className={classes["title-wrapper"]}>
@@ -27,7 +49,11 @@ const Machines = ({ machine }: { machine: Machine }) => {
           </div>
           <div className={classes["title-wrapper"]}>
             <FaRegClock />
-            <span className={classes["title"]}>{moment(machine?.registeredDate).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}</span>
+            <span className={classes["title"]}>
+              {moment(machine?.registeredDate).format(
+                DATETIME_FORMATS.DAY_MONTH_YEAR
+              )}
+            </span>
           </div>
         </div>
         <div className={classes["second-block"]}>
@@ -46,7 +72,9 @@ const Machines = ({ machine }: { machine: Machine }) => {
         <div className={classes["third-block"]}>
           <div>
             <span>Current running (hr):</span>
-            <span className={classes["title"]}>{machine?.currentRunningHrs}</span>
+            <span className={classes["title"]}>
+              {machine?.currentRunningHrs}
+            </span>
           </div>
           <div>
             <span>Last service (hr):</span>
@@ -58,16 +86,51 @@ const Machines = ({ machine }: { machine: Machine }) => {
           </div>
         </div>
         <div className={classes["fourth-block"]}>
-          <div>
-            <span>Spare PR date:</span>
-            <span className={classes["title"]}>{machine?.sparePRs}</span>
+          <div className={classes["title-wrapper"]}>
+            <span>Spare PR details:</span>
+            <Tooltip
+              title={
+                <>
+                  {"Requested Date: "}
+                  {moment(machine?.sparePRs[0]?.requestedDate).format(
+                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                  )}
+                  <br />
+                  {"Title: "}
+                  {machine?.sparePRs[0]?.title}
+                  <br />
+                  {"Description: "}
+                  {machine?.sparePRs[0]?.description}
+                  <br />
+                  {"Status: "}
+                  {machine?.sparePRs[0]?.status}
+                </>
+              }
+            >
+              <FaQuestionCircle style={{ marginLeft: 5 }} />
+            </Tooltip>
           </div>
-          <div>
-            <span>Spare PR status:</span>
-            <span className={classes["title"]}>
-              <FaQuestionCircle />
-            </span>
-          </div>
+          {machine?.breakdowns[0] && (
+            <div className={classes["title-wrapper"]}>
+              <span>Breakdown details:</span>
+              <Tooltip
+                title={
+                  <>
+                    {"Title: "}
+                    {machine?.breakdowns[0]?.title}
+                    <br />
+                    {"Description: "}
+                    {machine?.breakdowns[0]?.description}
+                    <br />
+                    {"Status: "}
+                    {machine?.breakdowns[0]?.status}
+                  </>
+                }
+              >
+                <FaQuestionCircle style={{ marginLeft: 5 }} />
+              </Tooltip>
+            </div>
+          )}
         </div>
       </div>
 

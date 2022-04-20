@@ -19,12 +19,12 @@ export default interface Machine {
   currentRunningHrs?: number;
   lastServiceHrs?: number;
   interServiceHrs?: number;
-  status?: MachineStatus;
-  statusChangedAt?: Date;
-  assignees?: User[];
-  periodicMaintenancePlans?: PeriodicMaintenance[];
-  repairs?: Repair[];
-  breakdowns?: Breakdown[];
-  sparePRs?: SparePR[];
-  histories?: History[];
+  status: MachineStatus;
+  statusChangedAt: Date;
+  assignees: User[];
+  periodicMaintenancePlans: PeriodicMaintenance[];
+  repairs: Repair[];
+  breakdowns: Breakdown[];
+  sparePRs: SparePR[];
+  histories: History[];
 }

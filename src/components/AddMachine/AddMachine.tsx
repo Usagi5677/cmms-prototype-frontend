@@ -11,9 +11,10 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
-import { CREATE_MACHINE } from "../api/mutations";
-import UserContext from "../contexts/UserContext";
-import { errorMessage } from "../helpers/gql";
+import { CREATE_MACHINE } from "../../api/mutations";
+import UserContext from "../../contexts/UserContext";
+import { errorMessage } from "../../helpers/gql";
+import classes from "./AddMachine.module.css"
 
 const AddMachine = () => {
   const { user } = useContext(UserContext);
@@ -100,12 +101,7 @@ const AddMachine = () => {
         size="middle"
         onClick={() => setVisible(true)}
         loading={loadingMachine}
-        style={{
-          width: "100%",
-          color: "var(--primary)",
-          borderRadius: 20,
-          maxWidth: 120,
-        }}
+        className={classes["custom-btn-secondary"]}
       >
         Add Machine
       </Button>
@@ -235,7 +231,7 @@ const AddMachine = () => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  style={{ color: "var(--primary)", borderRadius: 20 }}
+                  className={classes["custom-btn-secondary"]}
                 >
                   Cancel
                 </Button>
@@ -247,7 +243,7 @@ const AddMachine = () => {
                   type="primary"
                   htmlType="submit"
                   loading={loadingMachine}
-                  style={{ borderRadius: 20 }}
+                  className={classes["custom-btn-primary"]}
                 >
                   Add
                 </Button>

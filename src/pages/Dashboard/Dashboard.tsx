@@ -11,7 +11,7 @@ import StatusCard from "../../components/UI/StatusCard/StatusCard";
 import classes from "./Dashboard.module.css";
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import Timeline from "../../components/Timeline/Timeline";
+
 Chart.register(...registerables);
 
 const data = {

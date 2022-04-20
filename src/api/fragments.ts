@@ -50,5 +50,16 @@ export const MACHINE_FRAGMENT = gql`
     assignees {
       ...UserFields
     }
+    sparePRs {
+      requestedDate
+      title
+      description
+      status
+    }
+    breakdowns {
+      title
+      description
+      status
+    }
   }
 `;

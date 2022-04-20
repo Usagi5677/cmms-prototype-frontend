@@ -101,16 +101,7 @@ body,
   --error: #ff4d4f;
 }
 
-.ant-btn-primary {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
-}
 
-.ant-btn:hover, .ant-btn:focus {
-  color: white !important;
-  border-color: var(--primary) !important;
-  background-color: var(--primary) !important;
-}
 
 .anticon,
 .ant-menu-item .anticon {

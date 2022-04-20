@@ -5,6 +5,7 @@ export default interface SparePR {
   id: number;
   title: string;
   description: string;
+  requestedDate: Date;
   completedBy?: User;
   completedAt?: Date;
   status: SparePRStatus;
