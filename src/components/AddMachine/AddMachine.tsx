@@ -5,6 +5,7 @@ import {
   DatePicker,
   Form,
   Input,
+  InputNumber,
   message,
   Modal,
   Row,
@@ -14,7 +15,7 @@ import { useContext, useState } from "react";
 import { CREATE_MACHINE } from "../../api/mutations";
 import UserContext from "../../contexts/UserContext";
 import { errorMessage } from "../../helpers/gql";
-import classes from "./AddMachine.module.css"
+import classes from "./AddMachine.module.css";
 
 const AddMachine = () => {
   const { user } = useContext(UserContext);
@@ -50,7 +51,7 @@ const AddMachine = () => {
       location,
       currentRunningHrs,
       lastServiceHrs,
-      registeredDate
+      registeredDate,
     } = values;
 
     if (!machineNumber) {
@@ -88,9 +89,9 @@ const AddMachine = () => {
         type,
         zone,
         location,
-        currentRunningHrs: parseInt(currentRunningHrs),
-        lastServiceHrs: parseInt(lastServiceHrs),
-        registeredDate
+        currentRunningHrs,
+        lastServiceHrs,
+        registeredDate,
       },
     });
   };
@@ -101,7 +102,7 @@ const AddMachine = () => {
         size="middle"
         onClick={() => setVisible(true)}
         loading={loadingMachine}
-        className={classes["custom-btn-secondary"]}
+        className={classes["custom-btn-primary"]}
       >
         Add Machine
       </Button>
@@ -119,112 +120,143 @@ const AddMachine = () => {
           onFinish={onFinish}
           id="myForm"
         >
-          <Form.Item
-            label="Machine Number"
-            name="machineNumber"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the machine number.",
-              },
-            ]}
-          >
-            <Input placeholder="Machine Number" />
-          </Form.Item>
-          <Form.Item
-            label="Model"
-            name="model"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the model.",
-              },
-            ]}
-          >
-            <Input placeholder="Model" />
-          </Form.Item>
-          <Form.Item
-            label="Type"
-            name="type"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the type.",
-              },
-            ]}
-          >
-            <Input placeholder="Type" />
-          </Form.Item>
-          <Form.Item
-            label="Registered Date"
-            name="registeredDate"
-            required={false}
-          >
-            <DatePicker
-              placeholder="Select registered date"
-              style={{
-                width: 200,
-                marginRight: "1rem",
-              }}
-              allowClear={false}
-              
-            />
-          </Form.Item>
-          <Form.Item
-            label="Zone"
-            name="zone"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the zone.",
-              },
-            ]}
-          >
-            <Input placeholder="Zone" />
-          </Form.Item>
-          <Form.Item
-            label="Location"
-            name="location"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the location.",
-              },
-            ]}
-          >
-            <Input placeholder="Location" />
-          </Form.Item>
-          <Form.Item
-            label="Current running hrs"
-            name="currentRunningHrs"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the current running hrs.",
-              },
-            ]}
-          >
-            <Input placeholder="Current running hrs" />
-          </Form.Item>
-          <Form.Item
-            label="Last service hrs"
-            name="lastServiceHrs"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the last service hrs.",
-              },
-            ]}
-          >
-            <Input placeholder="Last service hrs" />
-          </Form.Item>
+          <Row>
+            <Col span={12}>
+              <Form.Item
+                label="Machine Number"
+                name="machineNumber"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the machine number.",
+                  },
+                ]}
+                style={{ paddingRight: 40 }}
+              >
+                <Input placeholder="Machine Number" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Model"
+                name="model"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the model.",
+                  },
+                ]}
+              >
+                <Input placeholder="Model" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col span={12}>
+              <Form.Item
+                label="Type"
+                name="type"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the type.",
+                  },
+                ]}
+                style={{ paddingRight: 40 }}
+              >
+                <Input placeholder="Type" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Registered Date"
+                name="registeredDate"
+                required={false}
+              >
+                <DatePicker
+                  placeholder="Select registered date"
+                  style={{
+                    width: 200,
+                    marginRight: "1rem",
+                  }}
+                  allowClear={false}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col span={12}>
+              <Form.Item
+                label="Zone"
+                name="zone"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the zone.",
+                  },
+                ]}
+                style={{ paddingRight: 40 }}
+              >
+                <Input placeholder="Zone" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Location"
+                name="location"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the location.",
+                  },
+                ]}
+              >
+                <Input placeholder="Location" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col span={12}>
+              <Form.Item
+                label="Current running hrs"
+                name="currentRunningHrs"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the current running hrs.",
+                  },
+                ]}
+                style={{ paddingRight: 40 }}
+              >
+                <InputNumber placeholder="Current running hrs" style={{width: '100%'}}/>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Last service hrs"
+                name="lastServiceHrs"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the last service hrs.",
+                  },
+                ]}
+              >
+                <InputNumber placeholder="Last service hrs" style={{width: '100%'}}/>
+              </Form.Item>
+            </Col>
+          </Row>
+
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>

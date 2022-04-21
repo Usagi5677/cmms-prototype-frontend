@@ -1,25 +1,18 @@
-import {
-  FaGlobe,
-  FaRegEnvelope,
-  FaEllipsisV,
-  FaSearch,
-  FaPlus,
-} from "react-icons/fa";
-import classes from "./Machinery.module.css";
-import { Input, Button, Menu, Dropdown, Spin } from "antd";
-import Search from "../../components/common/Search";
+import { Spin } from "antd";
+import Search from "../../../components/common/Search";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
-import PaginationArgs from "../../models/PaginationArgs";
-import { errorMessage } from "../../helpers/gql";
+import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
+import PaginationArgs from "../../../models/PaginationArgs";
+import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_MACHINES } from "../../api/queries";
-import { PAGE_LIMIT } from "../../helpers/constants";
-import PaginationButtons from "../../components/common/PaginationButtons";
-import AddMachine from "../../components/AddMachine/AddMachine";
-import Machines from "../../components/Machine/Machine";
-import Machine from "../../models/Machine";
+import { ALL_MACHINES } from "../../../api/queries";
+import { PAGE_LIMIT } from "../../../helpers/constants";
+import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
+import AddMachine from "../../../components/AddMachine/AddMachine";
+import Machines from "../../../components/Machine/Machine";
+import Machine from "../../../models/Machine";
+import classes from "./ViewAllMachine.module.css";
 
 const Machinery = () => {
   const [page, setPage] = useState(1);
@@ -102,14 +95,14 @@ const Machinery = () => {
   const pageInfo = data?.getAllMachine.pageInfo ?? {};
 
   return (
-    <div className={classes["machinaries-container"]}>
-      <div className={classes["machinaries-options-wrapper"]}>
+    <div className={classes["container"]}>
+      <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
         />
-        <div>
+        <div className={classes["add-machine-wrapper"]}>
           <AddMachine />
         </div>
       </div>

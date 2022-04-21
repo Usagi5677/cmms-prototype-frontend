@@ -1,5 +1,6 @@
 import { Button } from "antd";
-import { PAGE_LIMIT } from "../../helpers/constants";
+import { PAGE_LIMIT } from "../../../helpers/constants";
+import classes from "./PaginationButtons.module.css";
 
 const PaginationButtons = ({
   page,
@@ -15,14 +16,7 @@ const PaginationButtons = ({
   return (
     <>
       {(pageInfo.hasNextPage || pageInfo.hasPreviousPage) && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "20px",
-            alignItems: "center",
-          }}
-        >
+        <div className={classes["button-wrapper"]}>
           <div>
             Page {page} of {Math.ceil(pageInfo.count / PAGE_LIMIT)}
           </div>
@@ -33,11 +27,7 @@ const PaginationButtons = ({
                   htmlType="button"
                   size="middle"
                   onClick={back}
-                  style={{
-                    width: "100%",
-                    color: "var(--primary)",
-                    borderRadius: 20,
-                  }}
+                  className={classes["custom-btn-secondary"]}
                 >
                   Back
                 </Button>
@@ -49,11 +39,7 @@ const PaginationButtons = ({
                   htmlType="button"
                   size="middle"
                   onClick={next}
-                  style={{
-                    width: "100%",
-                    color: "var(--primary)",
-                    borderRadius: 20,
-                  }}
+                  className={classes["custom-btn-secondary"]}
                 >
                   Next
                 </Button>

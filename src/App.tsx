@@ -1,6 +1,6 @@
 import Layout from "./hoc/Layout/Layout";
 import "./index.css";
-import Machinery from "./pages/Machine/Machinery";
+import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
 import ViewMachine from "./pages/Machine/ViewMachine";
 import Vessels from "./pages/Vessels/Vessels";
 import Vehicles from "./pages/Vehicles/Vehicles";
@@ -144,7 +144,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/machinery" element={<Machinery />} />
+            <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/machine/:id" element={<ViewMachine />} />
             <Route path="/vessels" element={<Vessels />} />
             <Route path="/vehicles" element={<Vehicles />} />

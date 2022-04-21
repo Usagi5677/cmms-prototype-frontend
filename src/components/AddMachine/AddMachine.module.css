@@ -1,31 +1,33 @@
 .custom-btn-secondary {
-  width: 100%;
-  color: var(--primary);
-  background-color: white;
-  border-radius: 20px;
-  border-color: var(--primary);
-  max-width: 120px;
+  width: 100% !important;
+  color: var(--primary) !important;
+  background-color: white !important;
+  border-radius: 20px !important;
+  border-color: var(--primary) !important;
+  max-width: 120px !important;
 }
 
-.custom-btn-secondary:hover,
-.custom-btn-secondary:focus {
-  color: white;
-  border-color: var(--primary);
-  background-color: var(--primary);
+.custom-btn-secondary:hover {
+  color: white !important;
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
 }
 
 .custom-btn-primary {
-  width: 100%;
-  color: white;
-  background-color: var(--primary);
-  border-radius: 20px;
-  border-color: var(--primary);
-  max-width: 120px;
+  width: 100% !important;
+  color: white !important;
+  background-color: var(--primary) !important;
+  border-radius: 20px !important;
+  border-color: var(--primary) !important;
+  max-width: 120px !important;
 }
 
-.custom-btn-primary:hover,
-.custom-btn-primary:focus {
-  color: white;
-  border-color: #22d197;
-  background-color: #22d197;
+.custom-btn-primary:hover {
+  color: white !important;
+  border-color: #22d197 !important;
+  background-color: #22d197 !important;
+}
+
+.modal-header {
+  font-size: 16px;
 }

@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  min-height: 500px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px;
+}
+
+.options-wrapper {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-machine-wrapper {
+  padding-top: 10px
+}
+
+@media only screen and (min-width: 600px) {
+  .container .options-wrapper {
+    font-size: 0.875rem;
+  }
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0
+  }
+  .add-machine-wrapper {
+    padding-top: 0
+  }
+}
