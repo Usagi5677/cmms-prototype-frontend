@@ -1,12 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { Button, Col, DatePicker, Form, Input, InputNumber, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import moment from "moment";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_MACHINE } from "../../api/mutations";
+import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
-import Machine from "../../models/Machine";
 import classes from "./EditMachine.module.css";
 
 interface MachineEditData {
@@ -34,7 +35,7 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating machine.");
       },
-      refetchQueries: ["getAllMachine", "getSingleMachine"],
+      refetchQueries: ["getSingleMachine"],
     });
     
   const handleCancel = () => {
@@ -175,7 +176,7 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
                 label="Registered Date"
                 name="registeredDate"
                 required={false}
-                initialValue={machine?.registeredDate}
+                initialValue={moment(machine?.registeredDate)}
               >
                 <DatePicker
                   placeholder="Select registered date"
