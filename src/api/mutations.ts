@@ -49,3 +49,9 @@ export const EDIT_MACHINE = gql`
     )
   }
 `;
+
+export const DELETE_MACHINE = gql`
+  mutation ($machineId: Int!) {
+    removeMachine(machineId: $machineId)
+  }
+`;

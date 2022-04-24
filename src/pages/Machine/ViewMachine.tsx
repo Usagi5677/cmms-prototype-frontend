@@ -11,6 +11,7 @@ import Machine from "../../models/Machine";
 import EditMachine from "../../components/EditMachine/EditMachine";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
+import DeleteMachine from "../../components/DeleteMachine/DeleteMachine";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -45,6 +46,9 @@ const ViewMachine = () => {
     lastServiceHrs: machineData?.lastServiceHrs,
     registeredDate: machineData?.registeredDate,
   };
+  const machineDeleteData = {
+    id: machineData?.id,
+  };
   return (
     <>
       <div className={classes["container"]}>
@@ -59,7 +63,9 @@ const ViewMachine = () => {
                 Back
               </Button>
               <div className={classes["tab-header-wrapper"]}>
-                <div className={classes["tab-header"]}>{machineData?.machineNumber}</div>
+                <div className={classes["tab-header"]}>
+                  {machineData?.machineNumber}
+                </div>
               </div>
               <div style={{ width: 28 }}>{false && <Spin />}</div>
             </div>
@@ -159,7 +165,11 @@ const ViewMachine = () => {
             </Tabs>
           </div>
           <div className={classes["info-container"]}>
-            <EditMachine machine={machineEditData} />
+            <div className={classes["info-btn-wrapper"]}>
+              <EditMachine machine={machineEditData} />
+              <DeleteMachine machine={machineDeleteData} />
+            </div>
+
             <div className={classes["info-title-wrapper"]}>
               <div>Machine ID</div>
               <div className={classes["info-content"]}>{machineData?.id}</div>
