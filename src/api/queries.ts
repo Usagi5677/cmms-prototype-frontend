@@ -46,3 +46,17 @@ export const ALL_MACHINES = gql`
     }
   }
 `;
+
+export const GETSINGLEMACHINE = gql`
+  ${MACHINE_FRAGMENT}
+  query getSingleMachine($machineId: Int!) {
+    getSingleMachine(machineId: $machineId) {
+      ...MachineFields
+      repairs {
+        id
+        title
+        description
+      }
+    }
+  }
+`;

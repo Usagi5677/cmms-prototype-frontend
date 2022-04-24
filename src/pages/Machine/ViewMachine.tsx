@@ -1,14 +1,226 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
+import { LeftOutlined } from "@ant-design/icons";
+import { useLazyQuery } from "@apollo/client";
+import { Button, Spin, Tabs, Tooltip } from "antd";
+import React, { useEffect } from "react";
+import { FaEdit } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router";
+import { GETSINGLEMACHINE } from "../../api/queries";
+import { errorMessage } from "../../helpers/gql";
 import classes from "./ViewMachine.module.css";
-import { Tabs, Button, Row, Col,Checkbox, Layout, Card, Dropdown, Menu, message, TimePicker, Table, Tag, Divider } from 'antd';
-import { ImCross } from "react-icons/im";
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import moment from 'moment';
-const { Header, Content, Footer } = Layout;
-const { TabPane } = Tabs;
+import Machine from "../../models/Machine";
+import EditMachine from "../../components/EditMachine/EditMachine";
+import moment from "moment";
+import { DATETIME_FORMATS } from "../../helpers/constants";
 
+const ViewMachine = () => {
+  const { id }: any = useParams();
+  const navigate = useNavigate();
+
+  const [
+    getSingleMachine,
+    { data: machine, loading: loadingMachine, refetch: refetchMachine },
+  ] = useLazyQuery(GETSINGLEMACHINE, {
+    onError: (err) => {
+      errorMessage(err, "Error loading request.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
+  });
+
+  // Fetch knowledgebase when component mount
+  useEffect(() => {
+    getSingleMachine({ variables: { machineId: parseInt(id) } });
+  }, [getSingleMachine, id]);
+
+  const machineData: Machine = machine?.getSingleMachine;
+  const machineEditData = {
+    id: machineData?.id,
+    machineNumber: machineData?.machineNumber,
+    model: machineData?.model,
+    type: machineData?.type,
+    zone: machineData?.zone,
+    location: machineData?.location,
+    currentRunningHrs: machineData?.currentRunningHrs,
+    lastServiceHrs: machineData?.lastServiceHrs,
+    registeredDate: machineData?.registeredDate,
+  };
+  return (
+    <>
+      <div className={classes["container"]}>
+        <div className={classes["first-wrapper"]}>
+          <div className={classes["tab-container"]}>
+            <div className={classes["view-ticket-wrapper__header"]}>
+              <Button
+                className={classes["custom-btn-secondary"]}
+                onClick={() => navigate(-1)}
+                icon={<LeftOutlined />}
+              >
+                Back
+              </Button>
+              <div className={classes["tab-header-wrapper"]}>
+                <div className={classes["tab-header"]}>{machineData?.machineNumber}</div>
+              </div>
+              <div style={{ width: 28 }}>{false && <Spin />}</div>
+            </div>
+            <Tabs
+              defaultActiveKey="checksheets"
+              style={{
+                flex: 1,
+              }}
+            >
+              <Tabs.TabPane tab="Checksheets" key="checksheets">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 1
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab="Scheduled Maintenance"
+                key="scheduledMaintenance"
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 2
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Spare PR" key="sparePR">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 3
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Repair" key="repair">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 4
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Breakdown" key="breakdown">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 5
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="History" key="history">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 6
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Gallery" key="gallery">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    fontSize: 12,
+                  }}
+                >
+                  tab 7
+                </div>
+              </Tabs.TabPane>
+            </Tabs>
+          </div>
+          <div className={classes["info-container"]}>
+            <EditMachine machine={machineEditData} />
+            <div className={classes["info-title-wrapper"]}>
+              <div>Machine ID</div>
+              <div className={classes["info-content"]}>{machineData?.id}</div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Machine Number</div>
+              <div className={classes["info-content"]}>
+                {machineData?.machineNumber}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Model</div>
+              <div className={classes["info-content"]}>
+                {machineData?.model}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Type</div>
+              <div className={classes["info-content"]}>{machineData?.type}</div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Zone</div>
+              <div className={classes["info-content"]}>{machineData?.zone}</div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Location</div>
+              <div className={classes["info-content"]}>
+                {machineData?.location}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Current running hrs</div>
+              <div className={classes["info-content"]}>
+                {machineData?.currentRunningHrs}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Last service hrs</div>
+              <div className={classes["info-content"]}>
+                {machineData?.lastServiceHrs}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Registered date</div>
+              <div className={classes["info-content"]}>
+                {moment(machineData?.registeredDate).format(
+                  DATETIME_FORMATS.DAY_MONTH_YEAR
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={classes["usage-container"]}></div>
+      </div>
+    </>
+  );
+};
+
+export default ViewMachine;
+
+/*
 function callback(key: any) {
   console.log(key);
 }
@@ -155,7 +367,6 @@ const history = [
   },
 ];
 
-
 const data = [
   {
     key: '1',
@@ -167,25 +378,26 @@ const data = [
 
 ];
 
+*/
 
-const ViewMachine = () => (
-  <div className={classes["machinaries-container"]}>
+/*
+<div className={classes["machinaries-container"]}>
   <Row className='machinaries-container'>
   <Col span={16}>
   <Button>Back</Button>
-    <Tabs defaultActiveKey="1" onChange={callback}>
+    <Tabs defaultActiveKey="1">
       <TabPane tab="Checksheets" key="1">
       <Row>
         <Col span={8}>
           <ul>
           <h1>Daily</h1>
-          <Button type="text"><ImCross/> </Button> <Checkbox onChange={onChange}>Check Water Seperator</Checkbox>
+          <Button type="text"><ImCross/> </Button> <Checkbox >Check Water Seperator</Checkbox>
           </ul>
         </Col>
         <Col span={8}>
           <ul>
           <h1>Weekly</h1>
-          <Button type="text"><ImCross/> </Button> <Checkbox onChange={onChange}>Deep clean machine</Checkbox>
+          <Button type="text"><ImCross/> </Button> <Checkbox >Deep clean machine</Checkbox>
           </ul>
         </Col>
         <Col span={3} style={{float: 'right'}}>
@@ -272,6 +484,5 @@ const ViewMachine = () => (
   </Col>
   </Row>
   </div>
-  );
-  
-  export default ViewMachine;
+
+*/
