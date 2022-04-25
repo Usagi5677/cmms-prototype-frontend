@@ -6,10 +6,8 @@ import { DELETE_MACHINE } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import classes from "./DeleteMachine.module.css";
 
-interface machineDeleteData {
-  id: number;
-}
-const DeleteMachine = ({ machine }: { machine: machineDeleteData }) => {
+
+const DeleteMachine = ({ machineID }: { machineID: number }) => {
   const navigate = useNavigate();
 
   const [removeMachine, { loading: deleting }] = useMutation(DELETE_MACHINE, {
@@ -26,7 +24,7 @@ const DeleteMachine = ({ machine }: { machine: machineDeleteData }) => {
   const remove = () => {
     removeMachine({
       variables: {
-        machineId: machine.id,
+        machineId: machineID,
       },
     });
   };

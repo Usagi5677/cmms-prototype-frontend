@@ -168,7 +168,7 @@ const ViewMachine = () => {
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
               <EditMachine machine={machineEditData} />
-              <DeleteMachine machine={machineDeleteData} />
+              <DeleteMachine machineID={machineData?.id} />
             </div>
 
             <div className={classes["info-title-wrapper"]}>
