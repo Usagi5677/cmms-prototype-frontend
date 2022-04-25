@@ -4,7 +4,7 @@
   background-color: white !important;
   border-radius: 20px !important;
   border-color: var(--primary) !important;
-  max-width: 120px !important;
+  max-width: 140px !important;
 }
 
 .custom-btn-secondary:hover {
@@ -19,7 +19,7 @@
   background-color: var(--primary) !important;
   border-radius: 20px !important;
   border-color: var(--primary) !important;
-  max-width: 120px !important;
+  max-width: 140px !important;
 }
 
 .custom-btn-primary:hover {

@@ -101,8 +101,6 @@ body,
   --error: #ff4d4f;
 }
 
-
-
 .anticon,
 .ant-menu-item .anticon {
   font-size: 14px;
@@ -262,4 +260,22 @@ em {
 
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: var(--secondary) !important;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--primary) !important;
+}
+
+.ant-tabs-tab:hover {
+  color: var(--primary) !important;
+}
+.ant-tabs-ink-bar {
+  background: var(--primary) !important;
+}
+
+.ant-tabs-tab-btn:focus,
+.ant-tabs-tab-remove:focus,
+.ant-tabs-tab-btn:active,
+.ant-tabs-tab-remove:active {
+  color: var(--primary) !important;
 }

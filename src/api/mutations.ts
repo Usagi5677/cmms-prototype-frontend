@@ -55,3 +55,29 @@ export const DELETE_MACHINE = gql`
     removeMachine(machineId: $machineId)
   }
 `;
+
+export const ADD_MACHINE_CHECKLIST_ITEM = gql`
+  mutation (
+    $machineId: Int!
+    $description: String!
+    $type: String!
+  ) {
+    addMachineChecklistItem(
+      machineId: $machineId
+      description: $description
+      type: $type
+    )
+  }
+`;
+
+export const TOGGLE_MACHINE_CHECKLIST_ITEM = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleMachineChecklistItem(id: $id, complete: $complete)
+  }
+`;
+
+export const DELETE_MACHINE_CHECKLIST_ITEM = gql`
+  mutation ($id: Int!) {
+    deleteMachineChecklistItem(id: $id)
+  }
+`;

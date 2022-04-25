@@ -1,4 +1,5 @@
 import Breakdown from "./Breakdown";
+import ChecklistItem from "./ChecklistItem";
 import { MachineStatus } from "./Enums";
 import History from "./History";
 import PeriodicMaintenance from "./PeriodicMaintenance";
@@ -22,6 +23,7 @@ export default interface Machine {
   status: MachineStatus;
   statusChangedAt: Date;
   assignees: User[];
+  checklistItems: ChecklistItem[];
   periodicMaintenancePlans: PeriodicMaintenance[];
   repairs: Repair[];
   breakdowns: Breakdown[];

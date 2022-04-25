@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { MACHINE_FRAGMENT } from "./fragments";
+import { MACHINE_FRAGMENT, USER_FRAGMENT } from "./fragments";
 
 export const ME_QUERY = gql`
   query {
@@ -49,6 +49,7 @@ export const ALL_MACHINES = gql`
 
 export const GETSINGLEMACHINE = gql`
   ${MACHINE_FRAGMENT}
+  ${USER_FRAGMENT}
   query getSingleMachine($machineId: Int!) {
     getSingleMachine(machineId: $machineId) {
       ...MachineFields
@@ -56,6 +57,15 @@ export const GETSINGLEMACHINE = gql`
         id
         title
         description
+      }
+      checklistItems {
+        id
+        description
+        type
+        completedAt
+        completedBy {
+          ...UserFields
+        }
       }
     }
   }

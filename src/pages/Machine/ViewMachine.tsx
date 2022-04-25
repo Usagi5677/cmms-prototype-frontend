@@ -1,6 +1,6 @@
 import { LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Button, Spin, Tabs, Tooltip } from "antd";
+import { Button, Checkbox, Spin, Tabs, Tooltip } from "antd";
 import React, { useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router";
@@ -12,6 +12,8 @@ import EditMachine from "../../components/EditMachine/EditMachine";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import DeleteMachine from "../../components/DeleteMachine/DeleteMachine";
+import AddChecklist from "../../components/AddChecklist/AddChecklist";
+import ChecklistItem from "../../components/ChecklistItem/ChecklistItem";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -29,7 +31,6 @@ const ViewMachine = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  //test commit 2
   // Fetch machine when component mount
   useEffect(() => {
     getSingleMachine({ variables: { machineId: parseInt(id) } });
@@ -47,9 +48,8 @@ const ViewMachine = () => {
     lastServiceHrs: machineData?.lastServiceHrs,
     registeredDate: machineData?.registeredDate,
   };
-  const machineDeleteData = {
-    id: machineData?.id,
-  };
+
+  console.log(machineData?.checklistItems);
   return (
     <>
       <div className={classes["container"]}>
@@ -68,7 +68,7 @@ const ViewMachine = () => {
                   {machineData?.machineNumber}
                 </div>
               </div>
-              <div style={{ width: 28 }}>{false && <Spin />}</div>
+              <div style={{ width: 28 }}>{loadingMachine && <Spin />}</div>
             </div>
             <Tabs
               defaultActiveKey="checksheets"
@@ -76,16 +76,33 @@ const ViewMachine = () => {
                 flex: 1,
               }}
             >
-              <Tabs.TabPane tab="Checksheets" key="checksheets">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 1
+              <Tabs.TabPane tab="Checklists" key="checklists">
+                <div className={classes["checklist-container"]}>
+                  <div className={classes["checklist-options"]}>
+                    <AddChecklist machineID={machineData?.id} />
+                  </div>
+                  <div className={classes["checklist-content"]}>
+                    <div className={classes["checklist-content-wrapper"]}>
+                      <div className={classes["checklist-content-title"]}>
+                        Daily
+                      </div>
+                      {machineData?.checklistItems.map((item) =>
+                        item.type === "Daily" ? (
+                          <ChecklistItem key={item.id} item={item} />
+                        ) : null
+                      )}
+                    </div>
+                    <div className={classes["checklist-content-wrapper"]}>
+                      <div className={classes["checklist-content-title"]}>
+                        Weekly
+                      </div>
+                      {machineData?.checklistItems.map((item) =>
+                        item.type === "Weekly" ? (
+                          <ChecklistItem key={item.id} item={item} />
+                        ) : null
+                      )}
+                    </div>
+                  </div>
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane
