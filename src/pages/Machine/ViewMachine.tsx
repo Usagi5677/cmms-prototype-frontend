@@ -29,6 +29,7 @@ const ViewMachine = () => {
     notifyOnNetworkStatusChange: true,
   });
 
+  //test commit
   // Fetch knowledgebase when component mount
   useEffect(() => {
     getSingleMachine({ variables: { machineId: parseInt(id) } });
