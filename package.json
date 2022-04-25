@@ -60,7 +60,13 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.19",
+    "cz-conventional-changelog": "^3.3.0",
     "prettier": "^2.5.1",
     "typescript-plugin-css-modules": "^3.4.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
