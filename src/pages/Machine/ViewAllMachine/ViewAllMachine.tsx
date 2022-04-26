@@ -9,8 +9,8 @@ import { useLazyQuery } from "@apollo/client";
 import { ALL_MACHINES } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachine from "../../../components/AddMachine/AddMachine";
-import Machines from "../../../components/Machine/Machine";
+import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
+import Machines from "../../../components/MachineComponents/Machine/Machine";
 import Machine from "../../../models/Machine";
 import classes from "./ViewAllMachine.module.css";
 

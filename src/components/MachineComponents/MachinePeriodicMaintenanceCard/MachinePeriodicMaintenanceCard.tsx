@@ -1,11 +1,12 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { FaEdit, FaRegBell, FaRegClock } from "react-icons/fa";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance";
+import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
+import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
 import SelectMachinePeriodicMaintenance from "../SelectMachinePeriodicMaintenance/SelectMachinePeriodicMaintenance";
-import classes from "./PeriodicMaintenanceCard.module.css";
+import classes from "./MachinePeriodicMaintenanceCard.module.css";
 
-const PeriodicMaintenanceCard = ({
+const MachinePeriodicMaintenanceCard = ({
   periodicMaintenance,
 }: {
   periodicMaintenance: PeriodicMaintenance;
@@ -47,10 +48,10 @@ const PeriodicMaintenanceCard = ({
 
       <div className={classes["fourth-block"]}>
         <FaEdit className={classes["edit-icon"]} />
-        <CloseCircleOutlined className={classes["delete-icon"]} />
+        <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id}/>
       </div>
     </div>
   );
 };
 
-export default PeriodicMaintenanceCard;
+export default MachinePeriodicMaintenanceCard;

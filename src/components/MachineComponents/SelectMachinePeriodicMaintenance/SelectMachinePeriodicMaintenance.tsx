@@ -1,10 +1,10 @@
 import { useMutation } from "@apollo/client";
 import { Select } from "antd";
-import { SET_MACHINE_PERIODIC_MAINTENANCE } from "../../api/mutations";
-import { errorMessage } from "../../helpers/gql";
-import { PeriodicMaintenanceStatus } from "../../models/Enums";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance";
-import PeriodicMaintenanceStatusTag from "../common/PeriodicMaintenanceStatusTag";
+import { SET_MACHINE_PERIODIC_MAINTENANCE } from "../../../api/mutations";
+import { errorMessage } from "../../../helpers/gql";
+import { PeriodicMaintenanceStatus } from "../../../models/Enums";
+import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
+import PeriodicMaintenanceStatusTag from "../../common/PeriodicMaintenanceStatusTag";
 
 const SelectMachinePeriodicMaintenance = ({
   periodicMaintenance,

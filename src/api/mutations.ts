@@ -101,3 +101,9 @@ export const SET_MACHINE_PERIODIC_MAINTENANCE = gql`
     setMachinePeriodicMaintenanceStatus(id: $id, status: $status)
   }
 `;
+
+export const DELETE_MACHINE_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!) {
+    deleteMachinePeriodicMaintenance(id: $id)
+  }
+`;

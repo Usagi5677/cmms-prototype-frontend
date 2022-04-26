@@ -5,11 +5,11 @@ import {
   FaRegClock,
   FaTractor,
 } from "react-icons/fa";
-import StatusTag from "../common/StatusTag";
+import StatusTag from "../../common/StatusTag";
 import classes from "./Machine.module.css";
-import Machine from "../../models/Machine";
+import Machine from "../../../models/Machine";
 import moment from "moment";
-import { DATETIME_FORMATS } from "../../helpers/constants";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { Tooltip } from "antd";
 
 const Machines = ({ machine }: { machine: Machine }) => {

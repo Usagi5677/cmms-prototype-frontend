@@ -15,9 +15,9 @@ import { useContext, useState } from "react";
 import {
   ADD_MACHINE_PERIODIC_MAINTENANCE,
   CREATE_MACHINE,
-} from "../../api/mutations";
-import UserContext from "../../contexts/UserContext";
-import { errorMessage } from "../../helpers/gql";
+} from "../../../api/mutations";
+import UserContext from "../../../contexts/UserContext";
+import { errorMessage } from "../../../helpers/gql";
 import classes from "./AddScheduleMaintenance.module.css";
 
 const AddPeriodicMaintenance = ({ machineID }: { machineID: number }) => {

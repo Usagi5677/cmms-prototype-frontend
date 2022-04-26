@@ -2,12 +2,12 @@ import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Radio, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
-import { ADD_MACHINE_CHECKLIST_ITEM } from "../../api/mutations";
-import UserContext from "../../contexts/UserContext";
-import { errorMessage } from "../../helpers/gql";
-import classes from "./AddChecklist.module.css";
+import { ADD_MACHINE_CHECKLIST_ITEM } from "../../../api/mutations";
+import UserContext from "../../../contexts/UserContext";
+import { errorMessage } from "../../../helpers/gql";
+import classes from "./AddMachineChecklist.module.css";
 
-const AddChecklist = ({ machineID }: { machineID: number }) => {
+const AddMachineChecklist = ({ machineID }: { machineID: number }) => {
   const { user } = useContext(UserContext);
 
   const [visible, setVisible] = useState(false);
@@ -127,4 +127,4 @@ const AddChecklist = ({ machineID }: { machineID: number }) => {
   );
 };
 
-export default AddChecklist;
+export default AddMachineChecklist;

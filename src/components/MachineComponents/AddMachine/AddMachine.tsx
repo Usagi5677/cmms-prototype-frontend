@@ -12,9 +12,9 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
-import { CREATE_MACHINE } from "../../api/mutations";
-import UserContext from "../../contexts/UserContext";
-import { errorMessage } from "../../helpers/gql";
+import { CREATE_MACHINE } from "../../../api/mutations";
+import UserContext from "../../../contexts/UserContext";
+import { errorMessage } from "../../../helpers/gql";
 import classes from "./AddMachine.module.css";
 
 const AddMachine = () => {

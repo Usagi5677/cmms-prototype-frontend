@@ -1,21 +1,20 @@
-import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Button, Checkbox, Spin, Tabs, Tooltip } from "antd";
+import { Button, Spin, Tabs } from "antd";
 import React, { useEffect } from "react";
-import { FaEdit, FaRegBell, FaRegClock, FaTimesCircle } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router";
 import { GETSINGLEMACHINE } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewMachine.module.css";
 import Machine from "../../../models/Machine";
-import EditMachine from "../../../components/EditMachine/EditMachine";
+import EditMachine from "../../../components/MachineComponents/EditMachine/EditMachine";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import DeleteMachine from "../../../components/DeleteMachine/DeleteMachine";
-import AddChecklist from "../../../components/AddChecklist/AddChecklist";
-import ChecklistItem from "../../../components/ChecklistItem/ChecklistItem";
-import AddPeriodicMaintenance from "../../../components/AddPeriodicMaintenance/AddScheduleMaintenance";
-import PeriodicMaintenanceCard from "../../../components/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
+import DeleteMachine from "../../../components/MachineComponents/DeleteMachine/DeleteMachine";
+import AddMachineChecklist from "../../../components/MachineComponents/AddMachineChecklist/AddMachineChecklist";
+import MachineChecklistItem from "../../../components/MachineComponents/MachineChecklistItem/MachineChecklistItem";
+import AddMachinePeriodicMaintenance from "../../../components/MachineComponents/AddPeriodicMaintenance/AddScheduleMaintenance";
+import MachinePeriodicMaintenanceCard from "../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -80,7 +79,7 @@ const ViewMachine = () => {
               <Tabs.TabPane tab="Checklists" key="checklists">
                 <div className={classes["checklist-container"]}>
                   <div className={classes["checklist-options"]}>
-                    <AddChecklist machineID={machineData?.id} />
+                    <AddMachineChecklist machineID={machineData?.id} />
                   </div>
                   <div className={classes["checklist-content"]}>
                     <div className={classes["checklist-content-wrapper"]}>
@@ -89,7 +88,7 @@ const ViewMachine = () => {
                       </div>
                       {machineData?.checklistItems.map((item) =>
                         item.type === "Daily" ? (
-                          <ChecklistItem key={item.id} item={item} />
+                          <MachineChecklistItem key={item.id} item={item} />
                         ) : null
                       )}
                     </div>
@@ -99,7 +98,7 @@ const ViewMachine = () => {
                       </div>
                       {machineData?.checklistItems.map((item) =>
                         item.type === "Weekly" ? (
-                          <ChecklistItem key={item.id} item={item} />
+                          <MachineChecklistItem key={item.id} item={item} />
                         ) : null
                       )}
                     </div>
@@ -112,11 +111,11 @@ const ViewMachine = () => {
               >
                 <div className={classes["periodic-container"]}>
                   <div className={classes["periodic-options"]}>
-                    <AddPeriodicMaintenance machineID={machineData?.id} />
+                    <AddMachinePeriodicMaintenance machineID={machineData?.id} />
                   </div>
                   {machineData?.periodicMaintenancePlans.map(
                     (periodicMaintenance) => (
-                      <PeriodicMaintenanceCard
+                      <MachinePeriodicMaintenanceCard
                         key={periodicMaintenance.id}
                         periodicMaintenance={periodicMaintenance}
                       />

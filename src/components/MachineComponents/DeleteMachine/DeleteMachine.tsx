@@ -2,8 +2,8 @@ import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import { DELETE_MACHINE } from "../../api/mutations";
-import { errorMessage } from "../../helpers/gql";
+import { DELETE_MACHINE } from "../../../api/mutations";
+import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteMachine.module.css";
 
 

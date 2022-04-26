@@ -5,9 +5,9 @@ import moment from "moment";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_MACHINE } from "../../api/mutations";
-import { DATETIME_FORMATS } from "../../helpers/constants";
-import { errorMessage } from "../../helpers/gql";
+import { EDIT_MACHINE } from "../../../api/mutations";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
+import { errorMessage } from "../../../helpers/gql";
 import classes from "./EditMachine.module.css";
 
 interface MachineEditData {

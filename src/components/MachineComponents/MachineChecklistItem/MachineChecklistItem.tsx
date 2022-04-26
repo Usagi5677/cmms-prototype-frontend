@@ -3,15 +3,15 @@ import { Checkbox, Spin } from "antd";
 import {
   DELETE_MACHINE_CHECKLIST_ITEM,
   TOGGLE_MACHINE_CHECKLIST_ITEM,
-} from "../../api/mutations";
-import { errorMessage } from "../../helpers/gql";
-import ChecklistItemModel from "../../models/ChecklistItem";
+} from "../../../api/mutations";
+import { errorMessage } from "../../../helpers/gql";
+import ChecklistItemModel from "../../../models/ChecklistItem";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { DATETIME_FORMATS } from "../../helpers/constants";
-import classes from "./ChecklistItem.module.css";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
+import classes from "./MachineChecklistItem.module.css";
 
-const ChecklistItem = ({
+const MachineChecklistItem = ({
   item,
 }: {
   item: ChecklistItemModel;
@@ -78,4 +78,4 @@ const ChecklistItem = ({
   );
 };
 
-export default ChecklistItem;
+export default MachineChecklistItem;
