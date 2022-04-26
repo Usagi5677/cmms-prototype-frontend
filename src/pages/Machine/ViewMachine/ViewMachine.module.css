@@ -70,7 +70,6 @@
   font-size: 0.875rem;
 }
 
-
 .info-edit {
   display: flex;
   justify-content: flex-end;
@@ -98,24 +97,27 @@
   align-items: center;
 }
 
-.view-ticket-wrapper__header{
+.view-ticket-wrapper__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.checklist-container {
+.checklist-container,
+.periodic-container {
   width: 100%;
   height: 100%;
 }
 
-.checklist-options {
+.checklist-options,
+.periodic-options {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.checklist-content {
+.checklist-content,
+.scheduled-content {
   display: flex;
   flex-direction: column;
   height: calc(100% - 15%);
@@ -135,6 +137,8 @@
   border: 1px solid #ccc;
   overflow-y: auto;
 }
+
+
 @media only screen and (min-width: 800px) {
   .container {
     flex-direction: column;
@@ -142,17 +146,14 @@
   .tab-container {
     height: calc(100vh - 100px);
   }
-  
-  
+
   .checklist-content {
     flex-direction: row;
     height: calc(100% - 25%);
   }
-  
 }
 
 @media only screen and (min-width: 1000px) {
-  
   .first-wrapper {
     flex-direction: row;
     margin-bottom: 20px;

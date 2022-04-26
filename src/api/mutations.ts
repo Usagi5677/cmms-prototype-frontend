@@ -57,11 +57,7 @@ export const DELETE_MACHINE = gql`
 `;
 
 export const ADD_MACHINE_CHECKLIST_ITEM = gql`
-  mutation (
-    $machineId: Int!
-    $description: String!
-    $type: String!
-  ) {
+  mutation ($machineId: Int!, $description: String!, $type: String!) {
     addMachineChecklistItem(
       machineId: $machineId
       description: $description
@@ -79,5 +75,29 @@ export const TOGGLE_MACHINE_CHECKLIST_ITEM = gql`
 export const DELETE_MACHINE_CHECKLIST_ITEM = gql`
   mutation ($id: Int!) {
     deleteMachineChecklistItem(id: $id)
+  }
+`;
+
+export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $machineId: Int!
+    $title: String!
+    $description: String!
+    $period: Int!
+    $notificationReminder: Int!
+  ) {
+    addMachinePeriodicMaintenance(
+      machineId: $machineId
+      title: $title
+      description: $description
+      period: $period
+      notificationReminder: $notificationReminder
+    )
+  }
+`;
+
+export const SET_MACHINE_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
+    setMachinePeriodicMaintenanceStatus(id: $id, status: $status)
   }
 `;

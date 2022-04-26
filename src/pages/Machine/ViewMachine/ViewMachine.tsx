@@ -1,19 +1,21 @@
-import { LeftOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
 import { Button, Checkbox, Spin, Tabs, Tooltip } from "antd";
 import React, { useEffect } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaRegBell, FaRegClock, FaTimesCircle } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router";
-import { GETSINGLEMACHINE } from "../../api/queries";
-import { errorMessage } from "../../helpers/gql";
+import { GETSINGLEMACHINE } from "../../../api/queries";
+import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewMachine.module.css";
-import Machine from "../../models/Machine";
-import EditMachine from "../../components/EditMachine/EditMachine";
+import Machine from "../../../models/Machine";
+import EditMachine from "../../../components/EditMachine/EditMachine";
 import moment from "moment";
-import { DATETIME_FORMATS } from "../../helpers/constants";
-import DeleteMachine from "../../components/DeleteMachine/DeleteMachine";
-import AddChecklist from "../../components/AddChecklist/AddChecklist";
-import ChecklistItem from "../../components/ChecklistItem/ChecklistItem";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
+import DeleteMachine from "../../../components/DeleteMachine/DeleteMachine";
+import AddChecklist from "../../../components/AddChecklist/AddChecklist";
+import ChecklistItem from "../../../components/ChecklistItem/ChecklistItem";
+import AddPeriodicMaintenance from "../../../components/AddPeriodicMaintenance/AddScheduleMaintenance";
+import PeriodicMaintenanceCard from "../../../components/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -48,8 +50,7 @@ const ViewMachine = () => {
     lastServiceHrs: machineData?.lastServiceHrs,
     registeredDate: machineData?.registeredDate,
   };
-
-  console.log(machineData?.checklistItems);
+  console.log(machineData?.periodicMaintenancePlans);
   return (
     <>
       <div className={classes["container"]}>
@@ -71,7 +72,7 @@ const ViewMachine = () => {
               <div style={{ width: 28 }}>{loadingMachine && <Spin />}</div>
             </div>
             <Tabs
-              defaultActiveKey="checksheets"
+              defaultActiveKey="checklists"
               style={{
                 flex: 1,
               }}
@@ -106,18 +107,21 @@ const ViewMachine = () => {
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane
-                tab="Scheduled Maintenance"
-                key="scheduledMaintenance"
+                tab="Periodic Maintenance"
+                key="periodicMaintenance"
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 2
+                <div className={classes["periodic-container"]}>
+                  <div className={classes["periodic-options"]}>
+                    <AddPeriodicMaintenance machineID={machineData?.id} />
+                  </div>
+                  {machineData?.periodicMaintenancePlans.map(
+                    (periodicMaintenance) => (
+                      <PeriodicMaintenanceCard
+                        key={periodicMaintenance.id}
+                        periodicMaintenance={periodicMaintenance}
+                      />
+                    )
+                  )}
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">

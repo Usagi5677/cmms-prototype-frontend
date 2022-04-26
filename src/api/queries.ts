@@ -67,6 +67,18 @@ export const GETSINGLEMACHINE = gql`
           ...UserFields
         }
       }
+      periodicMaintenancePlans {
+        id
+        machineId
+        title
+        description
+        period
+        notificationReminder
+        completedAt
+        completedBy {
+          ...UserFields
+        }
+      }
     }
   }
 `;

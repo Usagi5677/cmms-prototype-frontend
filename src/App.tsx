@@ -1,7 +1,7 @@
 import Layout from "./hoc/Layout/Layout";
 import "./index.css";
 import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
-import ViewMachine from "./pages/Machine/ViewMachine";
+import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
 import Vessels from "./pages/Vessels/Vessels";
 import Vehicles from "./pages/Vehicles/Vehicles";
 import Division from "./pages/Division/Division";

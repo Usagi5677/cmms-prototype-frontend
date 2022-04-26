@@ -36,4 +36,9 @@
   color: var(--primary);
   cursor: pointer;
   margin-bottom: 20px;
+  transition: color 0.3s ease;
+
+}
+.info-edit:hover {
+  color: #137e5a;
 }
