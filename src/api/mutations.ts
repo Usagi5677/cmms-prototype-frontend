@@ -96,6 +96,24 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
+export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $period: Int!
+    $notificationReminder: Int!
+  ) {
+    editMachinePeriodicMaintenance(
+      id: $id
+      title: $title
+      description: $description
+      period: $period
+      notificationReminder: $notificationReminder
+    )
+  }
+`;
+
 export const SET_MACHINE_PERIODIC_MAINTENANCE = gql`
   mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
     setMachinePeriodicMaintenanceStatus(id: $id, status: $status)

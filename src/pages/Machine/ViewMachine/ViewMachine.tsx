@@ -13,7 +13,7 @@ import { DATETIME_FORMATS } from "../../../helpers/constants";
 import DeleteMachine from "../../../components/MachineComponents/DeleteMachine/DeleteMachine";
 import AddMachineChecklist from "../../../components/MachineComponents/AddMachineChecklist/AddMachineChecklist";
 import MachineChecklistItem from "../../../components/MachineComponents/MachineChecklistItem/MachineChecklistItem";
-import AddMachinePeriodicMaintenance from "../../../components/MachineComponents/AddPeriodicMaintenance/AddScheduleMaintenance";
+import AddMachinePeriodicMaintenance from "../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
 import MachinePeriodicMaintenanceCard from "../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
 
 const ViewMachine = () => {

@@ -14,13 +14,12 @@ import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import {
   ADD_MACHINE_PERIODIC_MAINTENANCE,
-  CREATE_MACHINE,
 } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./AddScheduleMaintenance.module.css";
+import classes from "./AddMachinePeriodicMaintenance.module.css";
 
-const AddPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
+const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   const { user } = useContext(UserContext);
 
   const [visible, setVisible] = useState(false);
@@ -190,4 +189,4 @@ const AddPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   );
 };
 
-export default AddPeriodicMaintenance;
+export default AddMachinePeriodicMaintenance;

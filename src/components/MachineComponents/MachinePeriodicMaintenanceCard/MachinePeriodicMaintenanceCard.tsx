@@ -3,6 +3,7 @@ import { Tooltip } from "antd";
 import { FaEdit, FaRegBell, FaRegClock } from "react-icons/fa";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
 import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
+import EditMachinePeriodicMaintenance from "../EditMachinePeriodicMaintenance/EditMachinePeriodicMaintenance";
 import SelectMachinePeriodicMaintenance from "../SelectMachinePeriodicMaintenance/SelectMachinePeriodicMaintenance";
 import classes from "./MachinePeriodicMaintenanceCard.module.css";
 
@@ -17,9 +18,11 @@ const MachinePeriodicMaintenanceCard = ({
         <div className={classes["first-block"]}>
           <div>{periodicMaintenance?.title}</div>
           <div>{periodicMaintenance?.description}</div>
-          <div className={classes["completedBy"]}>
-            Completed by {periodicMaintenance?.completedBy?.fullName}
-          </div>
+          {periodicMaintenance?.completedBy?.fullName && (
+            <div className={classes["completedBy"]}>
+              Completed by {periodicMaintenance?.completedBy?.fullName}
+            </div>
+          )}
         </div>
         <div className={classes["second-block"]}>
           <div className={classes["second-block-wrapper"]}>
@@ -47,8 +50,10 @@ const MachinePeriodicMaintenanceCard = ({
       </div>
 
       <div className={classes["fourth-block"]}>
-        <FaEdit className={classes["edit-icon"]} />
-        <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id}/>
+        <EditMachinePeriodicMaintenance
+          periodicMaintenance={periodicMaintenance}
+        />
+        <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id} />
       </div>
     </div>
   );

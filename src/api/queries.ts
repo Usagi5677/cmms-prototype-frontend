@@ -74,6 +74,7 @@ export const GETSINGLEMACHINE = gql`
         description
         period
         notificationReminder
+        status
         completedAt
         completedBy {
           ...UserFields

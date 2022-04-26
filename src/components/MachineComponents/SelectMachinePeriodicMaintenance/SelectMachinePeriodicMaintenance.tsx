@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { Select } from "antd";
+import { message, Select } from "antd";
 import { SET_MACHINE_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { PeriodicMaintenanceStatus } from "../../../models/Enums";
@@ -13,7 +13,9 @@ const SelectMachinePeriodicMaintenance = ({
 }) => {
   const [setMachinePeriodicMaintenanceStatus, { loading: settingStatus }] =
     useMutation(SET_MACHINE_PERIODIC_MAINTENANCE, {
-      onCompleted: () => {},
+      onCompleted: () => {
+        message.success("Successfully updated periodic maintenance status.");
+      },
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
@@ -40,7 +42,7 @@ const SelectMachinePeriodicMaintenance = ({
         value={periodicMaintenance?.status}
         onChange={(status) =>
           setMachinePeriodicMaintenanceStatus({
-            variables: { id: periodicMaintenance?.machineId, status },
+            variables: { id: periodicMaintenance?.id, status },
           })
         }
       >
