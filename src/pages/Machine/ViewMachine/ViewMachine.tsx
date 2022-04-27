@@ -15,6 +15,7 @@ import AddMachineChecklist from "../../../components/MachineComponents/AddMachin
 import MachineChecklistItem from "../../../components/MachineComponents/MachineChecklistItem/MachineChecklistItem";
 import AddMachinePeriodicMaintenance from "../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
 import MachinePeriodicMaintenanceCard from "../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
+import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -49,7 +50,7 @@ const ViewMachine = () => {
     lastServiceHrs: machineData?.lastServiceHrs,
     registeredDate: machineData?.registeredDate,
   };
-  console.log(machineData?.periodicMaintenancePlans);
+  
   return (
     <>
       <div className={classes["container"]}>
@@ -109,19 +110,7 @@ const ViewMachine = () => {
                 tab="Periodic Maintenance"
                 key="periodicMaintenance"
               >
-                <div className={classes["periodic-container"]}>
-                  <div className={classes["periodic-options"]}>
-                    <AddMachinePeriodicMaintenance machineID={machineData?.id} />
-                  </div>
-                  {machineData?.periodicMaintenancePlans.map(
-                    (periodicMaintenance) => (
-                      <MachinePeriodicMaintenanceCard
-                        key={periodicMaintenance.id}
-                        periodicMaintenance={periodicMaintenance}
-                      />
-                    )
-                  )}
-                </div>
+                <ViewPeriodicMaintenance machineID={machineData?.id}/>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <div

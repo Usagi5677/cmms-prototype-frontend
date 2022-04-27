@@ -40,7 +40,7 @@ const EditMachinePeriodicMaintenance = ({ periodicMaintenance }: { periodicMaint
         "Unexpected error while updating periodic maintenance."
       );
     },
-    refetchQueries: ["getSingleMachine"],
+    refetchQueries: ["getAllPeriodicMaintenanceOfMachine"],
   });
 
   const handleCancel = () => {

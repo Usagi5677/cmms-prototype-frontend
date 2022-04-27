@@ -39,7 +39,7 @@ const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => 
         "Unexpected error while creating periodic maintenance."
       );
     },
-    refetchQueries: ["getSingleMachine"],
+    refetchQueries: ["getAllPeriodicMaintenanceOfMachine"],
   });
 
   const handleCancel = () => {

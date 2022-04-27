@@ -22,7 +22,7 @@ const DeleteMachinePeriodicMaintenance = ({
           "Unexpected error while removing periodic maintenance."
         );
       },
-      refetchQueries: ["getSingleMachine"],
+      refetchQueries: ["getAllPeriodicMaintenanceOfMachine"],
     }
   );
 
