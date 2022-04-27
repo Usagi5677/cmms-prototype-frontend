@@ -1,11 +1,10 @@
 import { Tag } from "antd";
-import { PeriodicMaintenanceStatus } from "../../models/Enums";
+import { SparePRStatus } from "../../models/Enums";
 
-const PeriodicMaintenanceStatusTag = ({ status }: { status: PeriodicMaintenanceStatus | undefined }) => {
+const SparePRStatusTag = ({ status }: { status: SparePRStatus | undefined }) => {
   let color: string | undefined = undefined;
   if (status === "Done") color = "cyan";
   else if (status === "Pending") color = "orange";
-  else if (status === "Missed") color = "red";
   return (
     <Tag color={color} style={{ fontWeight: 700, borderRadius: 20, textAlign:'center', maxWidth: 250 }}>
       {status}
@@ -13,4 +12,4 @@ const PeriodicMaintenanceStatusTag = ({ status }: { status: PeriodicMaintenanceS
   );
 };
 
-export default PeriodicMaintenanceStatusTag;
+export default SparePRStatusTag;

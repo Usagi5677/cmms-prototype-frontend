@@ -1,19 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useRef, useState } from "react";
-
-import { GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_SPARE_PR_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachinePeriodicMaintenance from "../../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
-import MachinePeriodicMaintenanceCard from "../../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
-
+import AddMachineSparePR from "../../../../components/MachineComponents/AddMachineSparePR/AddMachineSparePR";
+import MachineSparePRCard from "../../../../components/MachineComponents/MachineSparePRCard/MachineSparePRCard";
 import { errorMessage } from "../../../../helpers/gql";
-import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
-
 import PaginationArgs from "../../../../models/PaginationArgs";
-import PeriodicMaintenance from "../../../../models/PeriodicMaintenance";
-import classes from "./ViewPeriodicMaintenance.module.css";
+import SparePR from "../../../../models/SparePR";
+import classes from "./ViewSparePR.module.css";
 
-const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
+const ViewSparePR = ({ machineID }: { machineID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -32,11 +28,11 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
     machineId: machineID,
   });
 
-  const [getAllPeriodicMaintenanceOfMachine, { data, loading }] = useLazyQuery(
-    GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE,
+  const [getAllSparePROfMachine, { data, loading }] = useLazyQuery(
+    GET_ALL_SPARE_PR_OF_MACHINE,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading periodic maintenance.");
+        errorMessage(err, "Error loading spare PR.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -45,8 +41,8 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    getAllPeriodicMaintenanceOfMachine({ variables: filter });
-  }, [filter, getAllPeriodicMaintenanceOfMachine]);
+    getAllSparePROfMachine({ variables: filter });
+  }, [filter, getAllSparePROfMachine]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -102,24 +98,17 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllPeriodicMaintenanceOfMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllSparePROfMachine.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachinePeriodicMaintenance machineID={machineID} />
+        <AddMachineSparePR machineID={machineID} />
       </div>
-      {data?.getAllPeriodicMaintenanceOfMachine.edges.map(
-        (rec: { node: PeriodicMaintenance }) => {
-          const periodicMaintenance = rec.node;
-          return (
-            <MachinePeriodicMaintenanceCard
-              key={periodicMaintenance.id}
-              periodicMaintenance={periodicMaintenance}
-            />
-          );
-        }
-      )}
+      {data?.getAllSparePROfMachine.edges.map((rec: { node: SparePR }) => {
+        const sparePR = rec.node;
+        return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} />;
+      })}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}
@@ -131,4 +120,4 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   );
 };
 
-export default ViewPeriodicMaintenance;
+export default ViewSparePR;

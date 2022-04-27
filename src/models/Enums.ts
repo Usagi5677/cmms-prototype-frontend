@@ -17,9 +17,8 @@ export enum BreakdownStatus {
 }
 
 export enum SparePRStatus {
-  Working = "Working",
+  Done = "Done",
   Pending = "Pending",
-  Breakdown = "Breakdown",
 }
 
 export enum PeriodicMaintenanceStatus {

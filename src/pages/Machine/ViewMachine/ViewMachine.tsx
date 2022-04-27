@@ -16,6 +16,7 @@ import MachineChecklistItem from "../../../components/MachineComponents/MachineC
 import AddMachinePeriodicMaintenance from "../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
 import MachinePeriodicMaintenanceCard from "../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
 import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
+import ViewSparePR from "./ViewSparePR/ViewSparePR";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -50,7 +51,7 @@ const ViewMachine = () => {
     lastServiceHrs: machineData?.lastServiceHrs,
     registeredDate: machineData?.registeredDate,
   };
-  
+
   return (
     <>
       <div className={classes["container"]}>
@@ -110,19 +111,10 @@ const ViewMachine = () => {
                 tab="Periodic Maintenance"
                 key="periodicMaintenance"
               >
-                <ViewPeriodicMaintenance machineID={machineData?.id}/>
+                <ViewPeriodicMaintenance machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 3
-                </div>
+                <ViewSparePR machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
                 <div

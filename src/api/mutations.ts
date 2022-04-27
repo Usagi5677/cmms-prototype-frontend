@@ -114,7 +114,7 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
-export const SET_MACHINE_PERIODIC_MAINTENANCE = gql`
+export const SET_MACHINE_PERIODIC_MAINTENANCE_STATUS = gql`
   mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
     setMachinePeriodicMaintenanceStatus(id: $id, status: $status)
   }
@@ -123,5 +123,49 @@ export const SET_MACHINE_PERIODIC_MAINTENANCE = gql`
 export const DELETE_MACHINE_PERIODIC_MAINTENANCE = gql`
   mutation ($id: Int!) {
     deleteMachinePeriodicMaintenance(id: $id)
+  }
+`;
+
+export const ADD_MACHINE_SPARE_PR = gql`
+  mutation (
+    $machineId: Int!
+    $title: String!
+    $description: String!
+    $requestedDate: Date!
+  ) {
+    addMachineSparePR(
+      machineId: $machineId
+      title: $title
+      description: $description
+      requestedDate: $requestedDate
+    )
+  }
+`;
+
+export const EDIT_MACHINE_SPARE_PR = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $requestedDate: Date!
+  ) {
+    editMachineSparePR(
+      id: $id
+      title: $title
+      description: $description
+      requestedDate: $requestedDate
+    )
+  }
+`;
+
+export const DELETE_MACHINE_SPARE_PR = gql`
+  mutation ($id: Int!) {
+    deleteMachineSparePR(id: $id)
+  }
+`;
+
+export const SET_MACHINE_SPARE_PR_STATUS = gql`
+  mutation ($id: Int!, $status: SparePRStatus!) {
+    setMachineSparePRStatus(id: $id, status: $status)
   }
 `;

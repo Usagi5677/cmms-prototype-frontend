@@ -1,10 +1,9 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
-import { FaEdit, FaRegBell, FaRegClock } from "react-icons/fa";
+import { FaRegBell, FaRegClock } from "react-icons/fa";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
 import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
 import EditMachinePeriodicMaintenance from "../EditMachinePeriodicMaintenance/EditMachinePeriodicMaintenance";
-import SelectMachinePeriodicMaintenance from "../SelectMachinePeriodicMaintenance/SelectMachinePeriodicMaintenance";
+import MachinePeriodicMaintenanceStatus from "../MachinePeriodicMaintenanceStatus/MachinePeriodicMaintenanceStatus";
 import classes from "./MachinePeriodicMaintenanceCard.module.css";
 
 const MachinePeriodicMaintenanceCard = ({
@@ -43,7 +42,7 @@ const MachinePeriodicMaintenanceCard = ({
           </div>
         </div>
         <div className={classes["third-block"]}>
-          <SelectMachinePeriodicMaintenance
+          <MachinePeriodicMaintenanceStatus
             periodicMaintenance={periodicMaintenance}
           />
         </div>
