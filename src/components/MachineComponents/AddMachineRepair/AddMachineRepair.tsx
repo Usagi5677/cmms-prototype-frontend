@@ -1,35 +1,26 @@
 import { useMutation } from "@apollo/client";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Row,
-} from "antd";
+import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { ADD_MACHINE_SPARE_PR } from "../../../api/mutations";
+import { ADD_MACHINE_REPAIR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./AddMachineSparePR.module.css";
+import classes from "./AddMachineRepair.module.css";
 
-const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
+const AddMachineRepair = ({ machineID }: { machineID: number }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [addMachineSparePR, { loading: loadingSparePR }] = useMutation(
-    ADD_MACHINE_SPARE_PR,
+  const [addMachineRepair, { loading: loadingRepair }] = useMutation(
+    ADD_MACHINE_REPAIR,
     {
       onCompleted: () => {
-        message.success("Successfully created spare PR.");
+        message.success("Successfully created repair.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while creating spare PR.");
+        errorMessage(error, "Unexpected error while creating repair.");
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllRepairOfMachine"],
     }
   );
 
@@ -39,7 +30,7 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, requestedDate } = values;
+    const { title, description } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -49,17 +40,12 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
       message.error("Please enter the description.");
       return;
     }
-    if (!requestedDate) {
-      message.error("Please enter the requested date.");
-      return;
-    }
 
-    addMachineSparePR({
+    addMachineRepair({
       variables: {
         machineId: machineID,
         title,
         description,
-        requestedDate,
       },
     });
   };
@@ -69,10 +55,10 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
         htmlType="button"
         size="middle"
         onClick={() => setVisible(true)}
-        loading={loadingSparePR}
+        loading={loadingRepair}
         className={classes["custom-btn-primary"]}
       >
-        Add Spare PR
+        Add Repair
       </Button>
       <Modal
         visible={visible}
@@ -115,21 +101,6 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
             <Input placeholder="Description" />
           </Form.Item>
 
-          <Form.Item
-            label="Requested Date"
-            name="requestedDate"
-            required={false}
-          >
-            <DatePicker
-              placeholder="Select requested date"
-              style={{
-                width: 200,
-                marginRight: "1rem",
-              }}
-              allowClear={false}
-            />
-          </Form.Item>
-
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
@@ -147,7 +118,7 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  loading={loadingSparePR}
+                  loading={loadingRepair}
                   className={classes["custom-btn-primary"]}
                 >
                   Add
@@ -161,4 +132,4 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
   );
 };
 
-export default AddMachineSparePR;
+export default AddMachineRepair;

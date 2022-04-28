@@ -17,6 +17,7 @@ import AddMachinePeriodicMaintenance from "../../../components/MachineComponents
 import MachinePeriodicMaintenanceCard from "../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
 import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
 import ViewSparePR from "./ViewSparePR/ViewSparePR";
+import ViewRepair from "./ViewRepair/ViewRepair";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -117,16 +118,7 @@ const ViewMachine = () => {
                 <ViewSparePR machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 4
-                </div>
+                <ViewRepair machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
                 <div

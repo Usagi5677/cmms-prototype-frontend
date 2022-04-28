@@ -279,3 +279,7 @@ em {
 .ant-tabs-tab-remove:active {
   color: var(--primary) !important;
 }
+
+.ant-spin-dot-item {
+  background-color: var(--primary) !important;
+}

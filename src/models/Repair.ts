@@ -7,5 +7,6 @@ export default interface Repair {
   description: string;
   completedBy?: User;
   completedAt?: Date;
+  createdAt?: Date;
   status: RepairStatus;
 }

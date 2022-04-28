@@ -10,4 +10,5 @@ export default interface SparePR {
   completedBy?: User;
   completedAt?: Date;
   status: SparePRStatus;
+  createdAt?: Date;
 }

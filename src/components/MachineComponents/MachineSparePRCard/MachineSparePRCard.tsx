@@ -1,4 +1,6 @@
+import { Tooltip } from "antd";
 import moment from "moment";
+import { FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import SparePR from "../../../models/SparePR";
 import DeleteMachineSparePR from "../DeleteMachineSparePR/DeleteMachineSparePR";
@@ -11,10 +13,15 @@ const MachineSparePRCard = ({ sparePR }: { sparePR: SparePR }) => {
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
-          <div>
-            {moment(sparePR?.requestedDate).format(
-              DATETIME_FORMATS.DAY_MONTH_YEAR
-            )}
+          <div className={classes["time-wrapper"]}>
+            <Tooltip title="Requested Date">
+              <FaRegClock />
+            </Tooltip>
+            <div className={classes["time"]}>
+              {moment(sparePR?.requestedDate).format(
+                DATETIME_FORMATS.DAY_MONTH_YEAR
+              )}
+            </div>
           </div>
           <div>{sparePR?.title}</div>
           <div>{sparePR?.description}</div>
@@ -25,12 +32,12 @@ const MachineSparePRCard = ({ sparePR }: { sparePR: SparePR }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-            <EditMachineSparePR sparePR={sparePR} />
-            <DeleteMachineSparePR id={sparePR?.id} />
-          </div>
+          <EditMachineSparePR sparePR={sparePR} />
+          <DeleteMachineSparePR id={sparePR?.id} />
+        </div>
         <div className={classes["status"]}>
-            <MachineSparePRStatus sparePR={sparePR} />
-          </div>
+          <MachineSparePRStatus sparePR={sparePR} />
+        </div>
       </div>
     </div>
   );

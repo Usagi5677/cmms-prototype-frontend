@@ -1,4 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
+import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { GET_ALL_SPARE_PR_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
@@ -105,6 +106,11 @@ const ViewSparePR = ({ machineID }: { machineID: number }) => {
       <div className={classes["options"]}>
         <AddMachineSparePR machineID={machineID} />
       </div>
+      {loading && (
+        <div>
+          <Spin style={{ width: "100%", margin: "2rem auto" }} />
+        </div>
+      )}
       {data?.getAllSparePROfMachine.edges.map((rec: { node: SparePR }) => {
         const sparePR = rec.node;
         return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} />;

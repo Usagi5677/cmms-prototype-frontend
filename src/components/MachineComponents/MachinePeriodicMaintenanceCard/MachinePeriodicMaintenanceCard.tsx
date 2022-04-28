@@ -1,5 +1,7 @@
 import { Tooltip } from "antd";
+import moment from "moment";
 import { FaRegBell, FaRegClock } from "react-icons/fa";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
 import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
 import EditMachinePeriodicMaintenance from "../EditMachinePeriodicMaintenance/EditMachinePeriodicMaintenance";
@@ -15,6 +17,16 @@ const MachinePeriodicMaintenanceCard = ({
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
+          <div className={classes["time-wrapper"]}>
+            <Tooltip title="Created At">
+              <FaRegClock />
+            </Tooltip>
+            <div className={classes["time"]}>
+              {moment(periodicMaintenance?.createdAt).format(
+                DATETIME_FORMATS.DAY_MONTH_YEAR
+              )}
+            </div>
+          </div>
           <div>{periodicMaintenance?.title}</div>
           <div>{periodicMaintenance?.description}</div>
           {periodicMaintenance?.completedBy?.fullName && (

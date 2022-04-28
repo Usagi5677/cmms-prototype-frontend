@@ -11,4 +11,5 @@ export default interface PeriodicMaintenance {
   status: PeriodicMaintenanceStatus;
   completedBy?: User;
   completedAt?: Date;
+  createdAt?: Date;
 }

@@ -169,3 +169,44 @@ export const SET_MACHINE_SPARE_PR_STATUS = gql`
     setMachineSparePRStatus(id: $id, status: $status)
   }
 `;
+
+
+export const ADD_MACHINE_REPAIR = gql`
+  mutation (
+    $machineId: Int!
+    $title: String!
+    $description: String!
+  ) {
+    addMachineRepair(
+      machineId: $machineId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const EDIT_MACHINE_REPAIR = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+  ) {
+    editMachineRepair(
+      id: $id
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const DELETE_MACHINE_REPAIR = gql`
+  mutation ($id: Int!) {
+    deleteMachineRepair(id: $id)
+  }
+`;
+
+export const SET_MACHINE_REPAIR_STATUS = gql`
+  mutation ($id: Int!, $status: RepairStatus!) {
+    setMachineRepairStatus(id: $id, status: $status)
+  }
+`;

@@ -106,6 +106,7 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           notificationReminder
           status
           completedAt
+          createdAt
           completedBy {
             ...UserFields
           }
@@ -148,6 +149,50 @@ export const GET_ALL_SPARE_PR_OF_MACHINE = gql`
           title
           description
           requestedDate
+          status
+          completedAt
+          createdAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_REPAIR_OF_MACHINE = gql`
+  ${USER_FRAGMENT}
+  query getAllRepairOfMachine(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $machineId: Int!
+  ) {
+    getAllRepairOfMachine(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      machineId: $machineId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineId
+          title
+          description
+          createdAt
           status
           completedAt
           completedBy {

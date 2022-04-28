@@ -1,20 +1,16 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-
-import { GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_REPAIR_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachinePeriodicMaintenance from "../../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
-import MachinePeriodicMaintenanceCard from "../../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
-
+import AddMachineRepair from "../../../../components/MachineComponents/AddMachineRepair/AddMachineRepair";
+import MachineRepairCard from "../../../../components/MachineComponents/MachineRepairCard/MachineRepairCard";
 import { errorMessage } from "../../../../helpers/gql";
-import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
-
 import PaginationArgs from "../../../../models/PaginationArgs";
-import PeriodicMaintenance from "../../../../models/PeriodicMaintenance";
-import classes from "./ViewPeriodicMaintenance.module.css";
+import Repair from "../../../../models/Repair";
+import classes from "./ViewRepair.module.css";
 
-const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
+const ViewRepair = ({ machineID }: { machineID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -33,11 +29,11 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
     machineId: machineID,
   });
 
-  const [getAllPeriodicMaintenanceOfMachine, { data, loading }] = useLazyQuery(
-    GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE,
+  const [getAllRepairOfMachine, { data, loading }] = useLazyQuery(
+    GET_ALL_REPAIR_OF_MACHINE,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading periodic maintenance.");
+        errorMessage(err, "Error loading repair.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -46,8 +42,8 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    getAllPeriodicMaintenanceOfMachine({ variables: filter });
-  }, [filter, getAllPeriodicMaintenanceOfMachine]);
+    getAllRepairOfMachine({ variables: filter });
+  }, [filter, getAllRepairOfMachine]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -103,29 +99,22 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllPeriodicMaintenanceOfMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllRepairOfMachine.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachinePeriodicMaintenance machineID={machineID} />
+        <AddMachineRepair machineID={machineID} />
       </div>
       {loading && (
         <div>
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllPeriodicMaintenanceOfMachine.edges.map(
-        (rec: { node: PeriodicMaintenance }) => {
-          const periodicMaintenance = rec.node;
-          return (
-            <MachinePeriodicMaintenanceCard
-              key={periodicMaintenance.id}
-              periodicMaintenance={periodicMaintenance}
-            />
-          );
-        }
-      )}
+      {data?.getAllRepairOfMachine.edges.map((rec: { node: Repair }) => {
+        const repair = rec.node;
+        return <MachineRepairCard key={repair.id} repair={repair} />;
+      })}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}
@@ -137,4 +126,4 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   );
 };
 
-export default ViewPeriodicMaintenance;
+export default ViewRepair;
