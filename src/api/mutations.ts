@@ -210,3 +210,44 @@ export const SET_MACHINE_REPAIR_STATUS = gql`
     setMachineRepairStatus(id: $id, status: $status)
   }
 `;
+
+
+export const ADD_MACHINE_BREAKDOWN = gql`
+  mutation (
+    $machineId: Int!
+    $title: String!
+    $description: String!
+  ) {
+    addMachineBreakdown(
+      machineId: $machineId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const EDIT_MACHINE_BREAKDOWN = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+  ) {
+    editMachineBreakdown(
+      id: $id
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const DELETE_MACHINE_BREAKDOWN = gql`
+  mutation ($id: Int!) {
+    deleteMachineBreakdown(id: $id)
+  }
+`;
+
+export const SET_MACHINE_BREAKDOWN_STATUS = gql`
+  mutation ($id: Int!, $status: BreakdownStatus!) {
+    setMachineBreakdownStatus(id: $id, status: $status)
+  }
+`;

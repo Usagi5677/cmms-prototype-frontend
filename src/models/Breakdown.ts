@@ -8,4 +8,5 @@ export default interface Breakdown {
   completedBy?: User;
   completedAt?: Date;
   status: BreakdownStatus;
+  createdAt?: Date;
 }

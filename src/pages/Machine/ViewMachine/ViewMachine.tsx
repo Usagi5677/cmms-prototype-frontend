@@ -18,6 +18,7 @@ import MachinePeriodicMaintenanceCard from "../../../components/MachineComponent
 import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
 import ViewSparePR from "./ViewSparePR/ViewSparePR";
 import ViewRepair from "./ViewRepair/ViewRepair";
+import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -121,16 +122,7 @@ const ViewMachine = () => {
                 <ViewRepair machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 5
-                </div>
+                <ViewBreakdown machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
                 <div

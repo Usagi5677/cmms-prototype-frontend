@@ -1,39 +1,29 @@
 import { useMutation } from "@apollo/client";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Row,
-  Tooltip,
-} from "antd";
+import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import moment from "moment";
+
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_MACHINE_SPARE_PR } from "../../../api/mutations";
+import { EDIT_MACHINE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import SparePR from "../../../models/SparePR";
-import classes from "./EditMachineSparePR.module.css";
+import Breakdown from "../../../models/Breakdown";
+import classes from "./EditMachineBreakdown.module.css";
 
-const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
+const EditMachineRepair = ({ breakdown }: { breakdown: Breakdown }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editMachineSparePR, { loading: loadingSparePR }] = useMutation(
-    EDIT_MACHINE_SPARE_PR,
+  const [editMachineBreakdown, { loading: loadingBreakdown }] = useMutation(
+    EDIT_MACHINE_BREAKDOWN,
     {
       onCompleted: () => {
-        message.success("Successfully updated spare PR.");
+        message.success("Successfully updated breakdown.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while updating spare PR.");
+        errorMessage(error, "Unexpected error while updating breakdown.");
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllBreakdownOfMachine"],
     }
   );
 
@@ -43,7 +33,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, requestedDate } = values;
+    const { title, description } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -53,17 +43,12 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
       message.error("Please enter the description.");
       return;
     }
-    if (!requestedDate) {
-      message.error("Please enter the requested date.");
-      return;
-    }
 
-    editMachineSparePR({
+    editMachineBreakdown({
       variables: {
-        id: sparePR.id,
+        id: breakdown.id,
         title,
         description,
-        requestedDate,
       },
     });
   };
@@ -91,7 +76,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
               label="Title"
               name="title"
               required={false}
-              initialValue={sparePR?.title}
+              initialValue={breakdown?.title}
               rules={[
                 {
                   required: true,
@@ -105,7 +90,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
               label="Description"
               name="description"
               required={false}
-              initialValue={sparePR?.description}
+              initialValue={breakdown?.description}
               rules={[
                 {
                   required: true,
@@ -115,23 +100,6 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
             >
               <Input placeholder="Description" />
             </Form.Item>
-
-            <Form.Item
-              label="Requested Date"
-              name="requestedDate"
-              required={false}
-              initialValue={moment(sparePR?.requestedDate)}
-            >
-              <DatePicker
-                placeholder="Select requested date"
-                style={{
-                  width: 200,
-                  marginRight: "1rem",
-                }}
-                allowClear={false}
-              />
-            </Form.Item>
-
             <Row justify="end" gutter={16}>
               <Col>
                 <Form.Item style={{ marginBottom: 0 }}>
@@ -149,7 +117,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    loading={loadingSparePR}
+                    loading={loadingBreakdown}
                     className={classes["custom-btn-primary"]}
                   >
                     Edit
@@ -164,4 +132,4 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
   );
 };
 
-export default EditMachineSparePR;
+export default EditMachineRepair;

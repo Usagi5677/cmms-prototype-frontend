@@ -10,7 +10,7 @@ export enum RepairStatus {
 }
 
 export enum BreakdownStatus {
-  Working = "Working",
+  Done = "Done",
   Pending = "Pending",
   Breakdown = "Breakdown",
 }

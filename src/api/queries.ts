@@ -203,3 +203,46 @@ export const GET_ALL_REPAIR_OF_MACHINE = gql`
     }
   }
 `;
+
+export const GET_ALL_BREAKDOWN_OF_MACHINE = gql`
+  ${USER_FRAGMENT}
+  query getAllBreakdownOfMachine(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $machineId: Int!
+  ) {
+    getAllBreakdownOfMachine(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      machineId: $machineId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineId
+          title
+          description
+          createdAt
+          status
+          completedAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;
