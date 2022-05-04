@@ -92,6 +92,7 @@ const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => 
         visible={visible}
         onCancel={handleCancel}
         footer={null}
+        title={"Add Periodic Maintenance"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >

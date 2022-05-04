@@ -77,6 +77,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
           visible={visible}
           onCancel={handleCancel}
           footer={null}
+          title={"Edit Spare PR"}
           width="90vw"
           style={{ maxWidth: 700 }}
         >

@@ -64,6 +64,7 @@ const AddMachineRepair = ({ machineID }: { machineID: number }) => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
+        title={"Add Repair"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >

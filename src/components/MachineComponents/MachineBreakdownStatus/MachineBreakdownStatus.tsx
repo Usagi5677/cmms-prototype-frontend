@@ -16,7 +16,7 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine"],
+      refetchQueries: ["getAllBreakdownOfMachine", "getSingleMachine"],
     }
   );
 

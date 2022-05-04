@@ -19,6 +19,7 @@ import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaint
 import ViewSparePR from "./ViewSparePR/ViewSparePR";
 import ViewRepair from "./ViewRepair/ViewRepair";
 import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
+import MachineStatuses from "../../../components/MachineComponents/MachineStatuses/MachineStatuses";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -204,6 +205,15 @@ const ViewMachine = () => {
                 {moment(machineData?.registeredDate).format(
                   DATETIME_FORMATS.DAY_MONTH_YEAR
                 )}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Status</div>
+              <div className={classes["info-content"]}>
+                <MachineStatuses
+                  machineStatus={machineData?.status}
+                  machineID={machineData?.id}
+                />
               </div>
             </div>
           </div>

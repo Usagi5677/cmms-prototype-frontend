@@ -9,7 +9,6 @@ import classes from "./AddMachineBreakdown.module.css";
 const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-
   const [addMachineBreakdown, { loading: loadingBreakdown }] = useMutation(
     ADD_MACHINE_BREAKDOWN,
     {
@@ -20,7 +19,7 @@ const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating breakdown.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine"],
+      refetchQueries: ["getAllBreakdownOfMachine", "getSingleMachine"],
     }
   );
 
@@ -64,6 +63,7 @@ const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
+        title={"Add Breakdown"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >

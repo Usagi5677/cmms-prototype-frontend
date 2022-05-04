@@ -66,6 +66,7 @@ const AddMachineChecklist = ({ machineID }: { machineID: number }) => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
+        title={"Add Checklist"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >

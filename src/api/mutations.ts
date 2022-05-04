@@ -251,3 +251,9 @@ export const SET_MACHINE_BREAKDOWN_STATUS = gql`
     setMachineBreakdownStatus(id: $id, status: $status)
   }
 `;
+
+export const SET_MACHINE_STATUS = gql`
+  mutation ($machineId: Int!, $status: MachineStatus!) {
+    setMachineStatus(machineId: $machineId, status: $status)
+  }
+`;

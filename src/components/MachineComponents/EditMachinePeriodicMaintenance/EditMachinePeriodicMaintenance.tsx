@@ -88,6 +88,7 @@ const EditMachinePeriodicMaintenance = ({ periodicMaintenance }: { periodicMaint
           visible={visible}
           onCancel={handleCancel}
           footer={null}
+          title={"Edit Periodic Maintenance"}
           width="90vw"
           style={{ maxWidth: 700 }}
         >

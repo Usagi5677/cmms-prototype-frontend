@@ -62,6 +62,7 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
           visible={visible}
           onCancel={handleCancel}
           footer={null}
+          title={"Edit Repair"}
           width="90vw"
           style={{ maxWidth: 700 }}
         >

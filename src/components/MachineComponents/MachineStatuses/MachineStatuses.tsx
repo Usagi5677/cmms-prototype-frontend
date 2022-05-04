@@ -1,35 +1,49 @@
 import { useMutation } from "@apollo/client";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Row,
-} from "antd";
+import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { ADD_MACHINE_SPARE_PR } from "../../../api/mutations";
+import {
+  ADD_MACHINE_BREAKDOWN,
+  SET_MACHINE_STATUS,
+} from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./AddMachineSparePR.module.css";
+import { MachineStatus } from "../../../models/Enums";
+import StatusTag from "../../common/StatusTag";
+import classes from "./MachineStatuses.module.css";
 
-const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
-  const [visible, setVisible] = useState(false);
-  const [form] = useForm();
-
-  const [addMachineSparePR, { loading: loadingSparePR }] = useMutation(
-    ADD_MACHINE_SPARE_PR,
+const MachineStatuses = ({
+  machineID,
+  machineStatus,
+}: {
+  machineID: number;
+  machineStatus: MachineStatus;
+}) => {
+  const [setMachineStatus, { loading: settingStatus }] = useMutation(
+    SET_MACHINE_STATUS,
     {
       onCompleted: () => {
-        message.success("Successfully created spare PR.");
+        message.success("Successfully updated machine status.");
+      },
+      onError: (error) => {
+        errorMessage(error, "Unexpected error occured.");
+      },
+      refetchQueries: ["getSingleMachine", "getAllBreakdownOfMachine", "getAllRepairOfMachine"],
+    }
+  );
+
+  const [visible, setVisible] = useState(false);
+  const [form] = useForm();
+  const [addMachineBreakdown, { loading: loadingBreakdown }] = useMutation(
+    ADD_MACHINE_BREAKDOWN,
+    {
+      onCompleted: () => {
+        message.success("Successfully created breakdown.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while creating spare PR.");
+        errorMessage(error, "Unexpected error while creating breakdown.");
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllBreakdownOfMachine", "getSingleMachine"],
     }
   );
 
@@ -39,7 +53,7 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, requestedDate } = values;
+    const { title, description } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -49,37 +63,33 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
       message.error("Please enter the description.");
       return;
     }
-    if (!requestedDate) {
-      message.error("Please enter the requested date.");
-      return;
-    }
 
-    addMachineSparePR({
+    addMachineBreakdown({
       variables: {
         machineId: machineID,
         title,
         description,
-        requestedDate,
       },
     });
   };
+  const onChangeClick = async (status: MachineStatus) => {
+    if (status === "Breakdown") {
+      setVisible(true);
+    } else {
+      setMachineStatus({
+        variables: { machineId: machineID, status },
+      });
+    }
+  };
+
   return (
     <>
-      <Button
-        htmlType="button"
-        size="middle"
-        onClick={() => setVisible(true)}
-        loading={loadingSparePR}
-        className={classes["custom-btn-primary"]}
-      >
-        Add Spare PR
-      </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Spare PR"}
         width="90vw"
+        title={"Add Breakdown"}
         style={{ maxWidth: 700 }}
       >
         <Form
@@ -116,21 +126,6 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
             <Input placeholder="Description" />
           </Form.Item>
 
-          <Form.Item
-            label="Requested Date"
-            name="requestedDate"
-            required={false}
-          >
-            <DatePicker
-              placeholder="Select requested date"
-              style={{
-                width: 200,
-                marginRight: "1rem",
-              }}
-              allowClear={false}
-            />
-          </Form.Item>
-
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
@@ -148,7 +143,7 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  loading={loadingSparePR}
+                  loading={loadingBreakdown}
                   className={classes["custom-btn-primary"]}
                 >
                   Add
@@ -158,8 +153,36 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
           </Row>
         </Form>
       </Modal>
+      <div
+        style={{
+          display: "flex",
+          border: "1px solid #ccc",
+          borderRadius: 20,
+          padding: "1px 5px 1px 5px",
+          alignItems: "center",
+          width: 150,
+        }}
+      >
+        <Select
+          showArrow
+          loading={settingStatus}
+          style={{ width: "100%" }}
+          bordered={false}
+          placeholder="Select status"
+          value={machineStatus}
+          onChange={(status) => onChangeClick(status)}
+        >
+          {(
+            Object.keys(MachineStatus) as Array<keyof typeof MachineStatus>
+          ).map((status: any) => (
+            <Select.Option key={status} value={status}>
+              <StatusTag status={status} />
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
     </>
   );
 };
 
-export default AddMachineSparePR;
+export default MachineStatuses;
