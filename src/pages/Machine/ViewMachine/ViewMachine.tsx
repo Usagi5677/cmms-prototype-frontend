@@ -20,6 +20,7 @@ import ViewSparePR from "./ViewSparePR/ViewSparePR";
 import ViewRepair from "./ViewRepair/ViewRepair";
 import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 import MachineStatuses from "../../../components/MachineComponents/MachineStatuses/MachineStatuses";
+import ViewHistory from "./ViewHistory/ViewHistory";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -76,12 +77,12 @@ const ViewMachine = () => {
               <div style={{ width: 28 }}>{loadingMachine && <Spin />}</div>
             </div>
             <Tabs
-              defaultActiveKey="checklists"
+              defaultActiveKey="checklist"
               style={{
                 flex: 1,
               }}
             >
-              <Tabs.TabPane tab="Checklists" key="checklists">
+              <Tabs.TabPane tab="Checklist" key="checklist">
                 <div className={classes["checklist-container"]}>
                   <div className={classes["checklist-options"]}>
                     <AddMachineChecklist machineID={machineData?.id} />
@@ -126,16 +127,7 @@ const ViewMachine = () => {
                 <ViewBreakdown machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 6
-                </div>
+                <ViewHistory machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
                 <div

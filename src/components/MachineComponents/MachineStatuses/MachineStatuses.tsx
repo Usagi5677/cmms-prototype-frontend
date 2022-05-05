@@ -27,7 +27,7 @@ const MachineStatuses = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getSingleMachine", "getAllBreakdownOfMachine", "getAllRepairOfMachine"],
+      refetchQueries: ["getSingleMachine", "getAllBreakdownOfMachine", "getAllRepairOfMachine", "getAllHistoryOfMachine"],
     }
   );
 
