@@ -99,7 +99,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
   };
 
   const pageInfo = data?.getAllHistoryOfMachine.pageInfo ?? {};
-
+  //test
   return (
     <div className={classes["container"]}>
       {loading && (
