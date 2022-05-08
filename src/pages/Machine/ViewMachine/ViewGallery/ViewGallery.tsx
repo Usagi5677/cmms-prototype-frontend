@@ -1,20 +1,21 @@
+import { UploadOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Spin } from "antd";
+import { Button, message, Spin, Tooltip, Upload } from "antd";
+import { RcFile, UploadChangeParam } from "antd/lib/upload";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-
-import { GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_ATTACHMENT_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachinePeriodicMaintenance from "../../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
-import MachinePeriodicMaintenanceCard from "../../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
-
+import AddMachineAttachment from "../../../../components/MachineComponents/AddMachineAttachment/AddMachineAttachment";
+import ParsedMachineAttachment from "../../../../components/MachineComponents/MachineAttachment/ParsedMachineAttachment";
 import { errorMessage } from "../../../../helpers/gql";
-import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
-
+import MachineAttachment from "../../../../models/MachineAttachment";
 import PaginationArgs from "../../../../models/PaginationArgs";
-import PeriodicMaintenance from "../../../../models/PeriodicMaintenance";
-import classes from "./ViewPeriodicMaintenance.module.css";
+import classes from "./ViewGallery.module.css";
 
-const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
+const ViewGallery = ({ machineID }: { machineID: number }) => {
+  
+
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -25,29 +26,29 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
       machineId: number;
     }
   >({
-    first: 3,
+    first: 6,
     last: null,
     before: null,
     after: null,
     search: "",
     machineId: machineID,
   });
+  // This query only loads the attachment's info from the db, not the file
+  const [
+    getAttachment,
+    { data: attachment, loading: loadingAttachment, error },
+  ] = useLazyQuery(GET_ALL_ATTACHMENT_OF_MACHINE, {
+    onError: (err) => {
+      errorMessage(err, "Error loading attachment.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
-  const [getAllPeriodicMaintenanceOfMachine, { data, loading }] = useLazyQuery(
-    GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading periodic maintenance.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
-  // Fetch periodic maintenance when component mounts or when the filter object changes
+  // Fetch attachments when component mounts or when the filter object changes
   useEffect(() => {
-    getAllPeriodicMaintenanceOfMachine({ variables: filter });
-  }, [filter, getAllPeriodicMaintenanceOfMachine]);
+    getAttachment({ variables: filter });
+  }, [filter, getAttachment]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -61,7 +62,7 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          first: 3,
+          first: 6,
           last: null,
           before: null,
           after: null,
@@ -84,7 +85,7 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   const next = () => {
     setFilter({
       ...filter,
-      first: 3,
+      first: 6,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -95,7 +96,7 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 6,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -103,38 +104,43 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllPeriodicMaintenanceOfMachine.pageInfo ?? {};
+  const pageInfo = attachment?.machineAttachments.pageInfo ?? {};
+
+  
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachinePeriodicMaintenance machineID={machineID} />
+        <AddMachineAttachment machineID={machineID}/>
+        {loadingAttachment && (
+          <div>
+            <Spin style={{ width: "100%", margin: "2rem auto" }} />
+          </div>
+        )}
       </div>
-      {loading && (
-        <div>
-          <Spin style={{ width: "100%", margin: "2rem auto" }} />
-        </div>
-      )}
-      {data?.getAllPeriodicMaintenanceOfMachine.edges.map(
-        (rec: { node: PeriodicMaintenance }) => {
-          const periodicMaintenance = rec.node;
-          return (
-            <MachinePeriodicMaintenanceCard
-              key={periodicMaintenance.id}
-              periodicMaintenance={periodicMaintenance}
-            />
-          );
-        }
-      )}
+      <div className={classes["grid-container"]}>
+        {attachment?.machineAttachments.edges.map(
+          (rec: { node: MachineAttachment }) => {
+            const attachment = rec.node;
+            return (
+              <ParsedMachineAttachment
+                key={attachment.id}
+                attachmentData={attachment}
+              />
+            );
+          }
+        )}
+      </div>
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={6}
       />
     </div>
   );
 };
 
-export default ViewPeriodicMaintenance;
+export default ViewGallery;

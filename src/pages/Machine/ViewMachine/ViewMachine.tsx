@@ -21,6 +21,7 @@ import ViewRepair from "./ViewRepair/ViewRepair";
 import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 import MachineStatuses from "../../../components/MachineComponents/MachineStatuses/MachineStatuses";
 import ViewHistory from "./ViewHistory/ViewHistory";
+import ViewGallery from "./ViewGallery/ViewGallery";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -130,16 +131,7 @@ const ViewMachine = () => {
                 <ViewHistory machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    fontSize: 12,
-                  }}
-                >
-                  tab 7
-                </div>
+                <ViewGallery machineID={machineData?.id} />
               </Tabs.TabPane>
             </Tabs>
           </div>

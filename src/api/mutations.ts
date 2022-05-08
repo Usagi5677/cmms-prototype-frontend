@@ -170,13 +170,8 @@ export const SET_MACHINE_SPARE_PR_STATUS = gql`
   }
 `;
 
-
 export const ADD_MACHINE_REPAIR = gql`
-  mutation (
-    $machineId: Int!
-    $title: String!
-    $description: String!
-  ) {
+  mutation ($machineId: Int!, $title: String!, $description: String!) {
     addMachineRepair(
       machineId: $machineId
       title: $title
@@ -186,16 +181,8 @@ export const ADD_MACHINE_REPAIR = gql`
 `;
 
 export const EDIT_MACHINE_REPAIR = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-  ) {
-    editMachineRepair(
-      id: $id
-      title: $title
-      description: $description
-    )
+  mutation ($id: Int!, $title: String!, $description: String!) {
+    editMachineRepair(id: $id, title: $title, description: $description)
   }
 `;
 
@@ -211,13 +198,8 @@ export const SET_MACHINE_REPAIR_STATUS = gql`
   }
 `;
 
-
 export const ADD_MACHINE_BREAKDOWN = gql`
-  mutation (
-    $machineId: Int!
-    $title: String!
-    $description: String!
-  ) {
+  mutation ($machineId: Int!, $title: String!, $description: String!) {
     addMachineBreakdown(
       machineId: $machineId
       title: $title
@@ -227,16 +209,8 @@ export const ADD_MACHINE_BREAKDOWN = gql`
 `;
 
 export const EDIT_MACHINE_BREAKDOWN = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-  ) {
-    editMachineBreakdown(
-      id: $id
-      title: $title
-      description: $description
-    )
+  mutation ($id: Int!, $title: String!, $description: String!) {
+    editMachineBreakdown(id: $id, title: $title, description: $description)
   }
 `;
 
@@ -255,5 +229,17 @@ export const SET_MACHINE_BREAKDOWN_STATUS = gql`
 export const SET_MACHINE_STATUS = gql`
   mutation ($machineId: Int!, $status: MachineStatus!) {
     setMachineStatus(machineId: $machineId, status: $status)
+  }
+`;
+
+export const DELETE_MACHINE_ATTACHMENT = gql`
+  mutation ($id: Int!) {
+    removeMachineAttachment(id: $id)
+  }
+`;
+
+export const EDIT_MACHINE_ATTACHMENT = gql`
+  mutation ($id: Int!, $description: String!) {
+    editMachineAttachment(id: $id, description: $description)
   }
 `;

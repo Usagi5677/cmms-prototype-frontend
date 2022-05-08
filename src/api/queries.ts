@@ -116,7 +116,6 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
   }
 `;
 
-
 export const GET_ALL_SPARE_PR_OF_MACHINE = gql`
   ${USER_FRAGMENT}
   query getAllSparePROfMachine(
@@ -278,6 +277,63 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
           machineId
           type
           description
+          createdAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const SINGLE_MACHINE_ATTACHMENT = gql`
+  query machineAttachment($id: Int!) {
+    machineAttachment(id: $id) {
+      id
+      createdAt
+      mimeType
+      originalName
+      description
+      mode
+    }
+  }
+`;
+
+export const GET_ALL_ATTACHMENT_OF_MACHINE = gql`
+  ${USER_FRAGMENT}
+  query machineAttachments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $machineId: Int!
+  ) {
+    machineAttachments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      machineId: $machineId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineId
+          createdAt
+          mimeType
+          originalName
+          description
+          mode
           createdAt
           completedBy {
             ...UserFields

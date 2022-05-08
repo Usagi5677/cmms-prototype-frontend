@@ -40,7 +40,7 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
     }
   );
 
-  // Fetch tickets when component mounts or when the filter object changes
+  // Fetch repairs when component mounts or when the filter object changes
   useEffect(() => {
     getAllRepairOfMachine({ variables: filter });
   }, [filter, getAllRepairOfMachine]);

@@ -40,7 +40,7 @@ const ViewSparePR = ({ machineID }: { machineID: number }) => {
     }
   );
 
-  // Fetch tickets when component mounts or when the filter object changes
+  // Fetch spare pr when component mounts or when the filter object changes
   useEffect(() => {
     getAllSparePROfMachine({ variables: filter });
   }, [filter, getAllSparePROfMachine]);

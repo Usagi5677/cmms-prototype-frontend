@@ -283,3 +283,15 @@ em {
 .ant-spin-dot-item {
   background-color: var(--primary) !important;
 }
+.ant-btn-round.ant-btn-icon-only {
+  width: 100% !important;
+}
+.ant-upload {
+  width: 100% !important;
+}
+.ant-image-mask {
+  border-radius: 6px !important;
+}
+.ant-image-img {
+  border-radius: 6px !important;
+}

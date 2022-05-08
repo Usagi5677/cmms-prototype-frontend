@@ -39,7 +39,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     }
   );
 
-  // Fetch tickets when component mounts or when the filter object changes
+  // Fetch history when component mounts or when the filter object changes
   useEffect(() => {
     getAllHistoryOfMachine({ variables: filter });
   }, [filter, getAllHistoryOfMachine]);

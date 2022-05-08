@@ -40,7 +40,7 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
     }
   );
 
-  // Fetch tickets when component mounts or when the filter object changes
+  // Fetch breakdowns when component mounts or when the filter object changes
   useEffect(() => {
     getAllBreakdownOfMachine({ variables: filter });
   }, [filter, getAllBreakdownOfMachine]);
