@@ -295,3 +295,49 @@ em {
 .ant-image-img {
   border-radius: 6px !important;
 }
+
+.ant-input:hover {
+  border-color: var(--primary) !important;
+}
+.ant-input:focus,
+.ant-input-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(24, 255, 139, 0.2) !important;
+}
+.ant-radio-button-wrapper:hover {
+  color: var(--primary) !important;
+}
+
+.ant-radio-group-solid
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.ant-input-number:hover {
+  border-color: var(--primary) !important;
+}
+.ant-input-number:focus,
+.ant-input-number-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(24, 255, 139, 0.2) !important;
+}
+.ant-btn:hover,
+.ant-btn:focus {
+  color: white !important;
+  border-color: #22d197 !important;
+  background-color: #22d197 !important;
+}
+.ant-btn-primary {
+  border-color: var(--primary) !important;
+  background: var(--primary) !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  border-color: var(--primary) !important;
+  background: var(--primary) !important;
+}
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: var(--primary) !important;
+}

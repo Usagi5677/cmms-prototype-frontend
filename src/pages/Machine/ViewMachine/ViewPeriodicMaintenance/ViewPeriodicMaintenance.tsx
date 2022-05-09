@@ -115,17 +115,20 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllPeriodicMaintenanceOfMachine.edges.map(
-        (rec: { node: PeriodicMaintenance }) => {
-          const periodicMaintenance = rec.node;
-          return (
-            <MachinePeriodicMaintenanceCard
-              key={periodicMaintenance.id}
-              periodicMaintenance={periodicMaintenance}
-            />
-          );
-        }
-      )}
+      <div className={classes["content"]}>
+        {data?.getAllPeriodicMaintenanceOfMachine.edges.map(
+          (rec: { node: PeriodicMaintenance }) => {
+            const periodicMaintenance = rec.node;
+            return (
+              <MachinePeriodicMaintenanceCard
+                key={periodicMaintenance.id}
+                periodicMaintenance={periodicMaintenance}
+              />
+            );
+          }
+        )}
+      </div>
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

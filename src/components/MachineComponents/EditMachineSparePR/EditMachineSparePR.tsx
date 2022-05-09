@@ -33,7 +33,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating spare PR.");
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllSparePROfMachine", "getAllHistoryOfMachine"],
     }
   );
 

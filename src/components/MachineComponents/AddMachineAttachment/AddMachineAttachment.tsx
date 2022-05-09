@@ -7,7 +7,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { ADD_MACHINE_BREAKDOWN } from "../../../api/mutations";
-import { GET_ALL_ATTACHMENT_OF_MACHINE } from "../../../api/queries";
+import {
+  GET_ALL_ATTACHMENT_OF_MACHINE,
+  GET_ALL_HISTORY_OF_MACHINE,
+} from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import PaginationArgs from "../../../models/PaginationArgs";
 import classes from "./AddMachineAttachment.module.css";
@@ -21,6 +24,17 @@ const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
   const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_MACHINE, {
     variables: {
       first: 6,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      machineId: machineID,
+    },
+  });
+
+  const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_MACHINE, {
+    variables: {
+      first: 3,
       last: null,
       before: null,
       after: null,
@@ -89,6 +103,14 @@ const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
     setTimeout(() => {
       refetch({
         first: 6,
+        last: null,
+        before: null,
+        after: null,
+        search: "",
+        machineId: machineID,
+      });
+      refetchHistory({
+        first: 3,
         last: null,
         before: null,
         after: null,

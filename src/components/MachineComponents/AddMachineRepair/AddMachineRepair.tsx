@@ -20,7 +20,7 @@ const AddMachineRepair = ({ machineID }: { machineID: number }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating repair.");
       },
-      refetchQueries: ["getAllRepairOfMachine"],
+      refetchQueries: ["getAllRepairOfMachine", "getAllHistoryOfMachine"],
     }
   );
 

@@ -22,7 +22,7 @@ const DeleteMachineRepair = ({
           "Unexpected error while removing repair."
         );
       },
-      refetchQueries: ["getAllRepairOfMachine"],
+      refetchQueries: ["getAllRepairOfMachine", "getAllHistoryOfMachine"],
     }
   );
 

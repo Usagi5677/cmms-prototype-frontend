@@ -111,10 +111,13 @@ const ViewSparePR = ({ machineID }: { machineID: number }) => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllSparePROfMachine.edges.map((rec: { node: SparePR }) => {
-        const sparePR = rec.node;
-        return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} />;
-      })}
+      <div className={classes["content"]}>
+        {data?.getAllSparePROfMachine.edges.map((rec: { node: SparePR }) => {
+          const sparePR = rec.node;
+          return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} />;
+        })}
+      </div>
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

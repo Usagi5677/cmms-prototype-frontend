@@ -13,6 +13,7 @@ const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
+          <div>{breakdown?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Created At">
               <FaRegClock />

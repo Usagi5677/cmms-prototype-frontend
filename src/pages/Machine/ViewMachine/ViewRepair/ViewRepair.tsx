@@ -111,10 +111,13 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllRepairOfMachine.edges.map((rec: { node: Repair }) => {
-        const repair = rec.node;
-        return <MachineRepairCard key={repair.id} repair={repair} />;
-      })}
+      <div className={classes["content"]}>
+        {data?.getAllRepairOfMachine.edges.map((rec: { node: Repair }) => {
+          const repair = rec.node;
+          return <MachineRepairCard key={repair.id} repair={repair} />;
+        })}
+      </div>
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

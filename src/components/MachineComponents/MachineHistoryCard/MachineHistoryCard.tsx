@@ -22,7 +22,7 @@ const MachineHistoryCard = ({ history }: { history: History }) => {
           </div>
           {history?.completedBy?.fullName && (
             <div className={classes["completedBy"]}>
-              Done by {history?.completedBy?.fullName}
+              {history?.completedBy?.fullName}{" "}{"("+history?.completedBy?.rcno+")"}
             </div>
           )}
         </div>

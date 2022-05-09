@@ -22,7 +22,7 @@ const DeleteMachineBreakdown = ({
           "Unexpected error while removing breakdown."
         );
       },
-      refetchQueries: ["getAllBreakdownOfMachine"],
+      refetchQueries: ["getAllBreakdownOfMachine", "getAllHistoryOfMachine"],
     }
   );
 

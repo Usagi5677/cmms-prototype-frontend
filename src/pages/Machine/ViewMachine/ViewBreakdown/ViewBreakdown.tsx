@@ -111,10 +111,17 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllBreakdownOfMachine.edges.map((rec: { node: Breakdown }) => {
-        const breakdown = rec.node;
-        return <MachineBreakdownCard key={breakdown.id} breakdown={breakdown} />;
-      })}
+      <div className={classes["content"]}>
+        {data?.getAllBreakdownOfMachine.edges.map(
+          (rec: { node: Breakdown }) => {
+            const breakdown = rec.node;
+            return (
+              <MachineBreakdownCard key={breakdown.id} breakdown={breakdown} />
+            );
+          }
+        )}
+      </div>
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

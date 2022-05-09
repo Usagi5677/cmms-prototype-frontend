@@ -13,6 +13,7 @@ const MachineRepairCard = ({ repair }: { repair: Repair }) => {
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
+        <div>{repair?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Created At">
               <FaRegClock />

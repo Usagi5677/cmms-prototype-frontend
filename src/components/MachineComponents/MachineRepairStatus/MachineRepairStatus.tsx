@@ -16,7 +16,7 @@ const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllRepairOfMachine"],
+      refetchQueries: ["getAllRepairOfMachine", "getAllHistoryOfMachine"],
     }
   );
 

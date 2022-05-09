@@ -23,7 +23,7 @@ const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating attachment.");
       },
-      refetchQueries: ["machineAttachments"],
+      refetchQueries: ["machineAttachments", "getAllHistoryOfMachine"],
     }
   );
 

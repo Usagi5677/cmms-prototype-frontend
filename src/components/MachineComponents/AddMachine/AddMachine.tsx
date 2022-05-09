@@ -110,6 +110,7 @@ const AddMachine = () => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
+        title={"Add Machine"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >

@@ -23,7 +23,7 @@ const EditMachineRepair = ({ breakdown }: { breakdown: Breakdown }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating breakdown.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine"],
+      refetchQueries: ["getAllBreakdownOfMachine", "getAllHistoryOfMachine"],
     }
   );
 

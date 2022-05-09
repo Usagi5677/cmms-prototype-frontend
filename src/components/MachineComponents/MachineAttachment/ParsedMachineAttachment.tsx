@@ -81,21 +81,25 @@ const ParsedMachineAttachment = ({
 
   return (
     <div className={classes["container"]}>
-      <div className={classes["options"]}>
-        {fileLoading && (
-          <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
-        )}
-        {file && <EditMachineAttachment attachment={attachmentData} />}
-        {file && <DeleteMachineAttachment id={attachmentData?.id} />}
-        {file && (
-          <Tooltip title={"Download"}>
-            <DownloadOutlined
-              className={classes["download-icon"]}
-              onClick={download}
-            />
-          </Tooltip>
-        )}
+      <div className={classes["option-wrapper"]}>
+        <div>{attachmentData?.id}</div>
+        <div className={classes["options"]}>
+          {fileLoading && (
+            <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
+          )}
+          {file && <EditMachineAttachment attachment={attachmentData} />}
+          {file && <DeleteMachineAttachment id={attachmentData?.id} />}
+          {file && (
+            <Tooltip title={"Download"}>
+              <DownloadOutlined
+                className={classes["download-icon"]}
+                onClick={download}
+              />
+            </Tooltip>
+          )}
+        </div>
       </div>
+
       {file && isImage && (
         <div className={classes["image-container"]}>
           <Image height={"80%"} width={"80%"} src={file} />

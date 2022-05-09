@@ -45,3 +45,9 @@
 .container:hover {
   transform: scale(1.1);
 }
+
+.option-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

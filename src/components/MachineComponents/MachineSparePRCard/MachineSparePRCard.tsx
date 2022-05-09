@@ -13,6 +13,7 @@ const MachineSparePRCard = ({ sparePR }: { sparePR: SparePR }) => {
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
+        <div>{sparePR?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Requested Date">
               <FaRegClock />

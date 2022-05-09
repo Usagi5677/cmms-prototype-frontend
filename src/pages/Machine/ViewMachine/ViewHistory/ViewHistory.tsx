@@ -107,10 +107,13 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllHistoryOfMachine.edges.map((rec: { node: History }) => {
-        const history = rec.node;
-        return <MachineHistoryCard key={history.id} history={history} />;
-      })}
+      <div className={classes["content"]}>
+        {data?.getAllHistoryOfMachine.edges.map((rec: { node: History }) => {
+          const history = rec.node;
+          return <MachineHistoryCard key={history.id} history={history} />;
+        })}
+      </div>
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

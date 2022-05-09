@@ -16,7 +16,7 @@ const MachineSparePRStatus = ({ sparePR }: { sparePR: SparePR }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllSparePROfMachine", "getAllHistoryOfMachine"],
     }
   );
 

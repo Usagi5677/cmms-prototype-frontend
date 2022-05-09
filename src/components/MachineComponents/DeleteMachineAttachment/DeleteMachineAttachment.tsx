@@ -22,7 +22,7 @@ const DeleteMachineAttachment = ({
           "Unexpected error while removing attachment."
         );
       },
-      refetchQueries: ["machineAttachments"],
+      refetchQueries: ["machineAttachments", "getAllHistoryOfMachine"],
     }
   );
 

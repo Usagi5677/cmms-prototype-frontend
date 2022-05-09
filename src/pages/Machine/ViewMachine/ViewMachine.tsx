@@ -22,6 +22,7 @@ import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 import MachineStatuses from "../../../components/MachineComponents/MachineStatuses/MachineStatuses";
 import ViewHistory from "./ViewHistory/ViewHistory";
 import ViewGallery from "./ViewGallery/ViewGallery";
+import ViewChecklist from "./ViewChecklist/ViewChecklist";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -84,33 +85,7 @@ const ViewMachine = () => {
               }}
             >
               <Tabs.TabPane tab="Checklist" key="checklist">
-                <div className={classes["checklist-container"]}>
-                  <div className={classes["checklist-options"]}>
-                    <AddMachineChecklist machineID={machineData?.id} />
-                  </div>
-                  <div className={classes["checklist-content"]}>
-                    <div className={classes["checklist-content-wrapper"]}>
-                      <div className={classes["checklist-content-title"]}>
-                        Daily
-                      </div>
-                      {machineData?.checklistItems.map((item) =>
-                        item.type === "Daily" ? (
-                          <MachineChecklistItem key={item.id} item={item} />
-                        ) : null
-                      )}
-                    </div>
-                    <div className={classes["checklist-content-wrapper"]}>
-                      <div className={classes["checklist-content-title"]}>
-                        Weekly
-                      </div>
-                      {machineData?.checklistItems.map((item) =>
-                        item.type === "Weekly" ? (
-                          <MachineChecklistItem key={item.id} item={item} />
-                        ) : null
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <ViewChecklist machineData={machineData} />
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab="Periodic Maintenance"

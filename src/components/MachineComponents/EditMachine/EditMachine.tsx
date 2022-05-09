@@ -1,5 +1,16 @@
 import { useMutation } from "@apollo/client";
-import { Button, Col, DatePicker, Form, Input, InputNumber, message, Modal, Row, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Modal,
+  Row,
+  Tooltip,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 
@@ -25,24 +36,23 @@ interface MachineEditData {
 const EditMachine = ({ machine }: { machine: MachineEditData }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  
-  const [editMachine, { loading: loadingMachine }] =
-    useMutation(EDIT_MACHINE, {
-      onCompleted: () => {
-        message.success("Successfully updated machine.");
-        handleCancel();
-      },
-      onError: (error) => {
-        errorMessage(error, "Unexpected error while updating machine.");
-      },
-      refetchQueries: ["getSingleMachine"],
-    });
-    
+
+  const [editMachine, { loading: loadingMachine }] = useMutation(EDIT_MACHINE, {
+    onCompleted: () => {
+      message.success("Successfully updated machine.");
+      handleCancel();
+    },
+    onError: (error) => {
+      errorMessage(error, "Unexpected error while updating machine.");
+    },
+    refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine"],
+  });
+
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
   };
-  
+
   const onFinish = async (values: any) => {
     const {
       machineNumber,
@@ -97,16 +107,17 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
       },
     });
   };
-  
+
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit onClick={() => setVisible(true)}/>
+        <FaEdit onClick={() => setVisible(true)} />
       </Tooltip>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
+        title={"Edit Machine"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -241,7 +252,10 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
                 ]}
                 style={{ paddingRight: 40 }}
               >
-                <InputNumber placeholder="Current running hrs" style={{width: '100%'}}/>
+                <InputNumber
+                  placeholder="Current running hrs"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -257,7 +271,10 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
                   },
                 ]}
               >
-                <InputNumber placeholder="Last service hrs" style={{width: '100%'}}/>
+                <InputNumber
+                  placeholder="Last service hrs"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
           </Row>

@@ -23,7 +23,7 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating repair.");
       },
-      refetchQueries: ["getAllRepairOfMachine"],
+      refetchQueries: ["getAllRepairOfMachine", "getAllHistoryOfMachine"],
     }
   );
 

@@ -12,7 +12,10 @@
   box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
   transition: all 0.3s ease;
 }
-
+.container:hover {
+  background-color: #f0f0f0;
+  transform: translateX(6px);
+}
 .completedBy {
   font-size: 10;
   opacity: 0.5;
@@ -36,7 +39,7 @@
 .icon-wrapper {
   display: flex;
   justify-content: flex-end;
-  align-items:flex-start;
+  align-items: flex-start;
   grid-area: icon-wrapper;
 }
 .wrapper {
@@ -70,9 +73,7 @@
   .wrapper {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas:
-      "first-block icon-wrapper"
-  
+    grid-template-areas: "first-block icon-wrapper";
   }
   .status {
     grid-area: icon-wrapper;

@@ -12,7 +12,10 @@
   box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
   transition: all 0.3s ease;
 }
-
+.container:hover {
+  background-color: #f0f0f0;
+  transform: translateX(6px);
+}
 .completedBy {
   font-size: 10;
   opacity: 0.5;

@@ -16,7 +16,11 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine", "getSingleMachine"],
+      refetchQueries: [
+        "getAllBreakdownOfMachine",
+        "getSingleMachine",
+        "getAllHistoryOfMachine",
+      ],
     }
   );
 
@@ -44,13 +48,13 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
           })
         }
       >
-        {(Object.keys(BreakdownStatus) as Array<keyof typeof BreakdownStatus>).map(
-          (status: any) => (
-            <Select.Option key={status} value={status}>
-              <BreakdownStatusTag status={status} />
-            </Select.Option>
-          )
-        )}
+        {(
+          Object.keys(BreakdownStatus) as Array<keyof typeof BreakdownStatus>
+        ).map((status: any) => (
+          <Select.Option key={status} value={status}>
+            <BreakdownStatusTag status={status} />
+          </Select.Option>
+        ))}
       </Select>
     </div>
   );

@@ -29,7 +29,7 @@ const AddMachineSparePR = ({ machineID }: { machineID: number }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating spare PR.");
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllSparePROfMachine", "getAllHistoryOfMachine"],
     }
   );
 

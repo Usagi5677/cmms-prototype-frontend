@@ -20,7 +20,7 @@ const MachinePeriodicMaintenanceStatus = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllPeriodicMaintenanceOfMachine"],
+      refetchQueries: ["getAllPeriodicMaintenanceOfMachine", "getAllHistoryOfMachine"],
     });
 
   return (

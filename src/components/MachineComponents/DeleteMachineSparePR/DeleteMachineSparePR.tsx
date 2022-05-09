@@ -22,7 +22,7 @@ const DeleteMachineSparePR = ({
           "Unexpected error while removing spare PR."
         );
       },
-      refetchQueries: ["getAllSparePROfMachine"],
+      refetchQueries: ["getAllSparePROfMachine", "getAllHistoryOfMachine"],
     }
   );
 

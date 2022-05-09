@@ -23,7 +23,7 @@ const MachineChecklistItem = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while deleting checklist item.");
       },
-      refetchQueries: ["getSingleMachine"],
+      refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine"],
     }
   );
   const [toggleMachineChecklistItem, { loading: toggling }] = useMutation(
@@ -33,7 +33,7 @@ const MachineChecklistItem = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating checklist item.");
       },
-      refetchQueries: ["getSingleMachine"],
+      refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine"],
     }
   );
   return (
