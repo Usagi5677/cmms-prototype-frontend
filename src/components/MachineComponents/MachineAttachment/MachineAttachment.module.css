@@ -10,7 +10,7 @@
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .options {
@@ -40,4 +40,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.container:hover {
+  transform: scale(1.1);
 }

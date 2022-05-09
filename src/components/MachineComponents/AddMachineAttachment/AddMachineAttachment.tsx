@@ -64,7 +64,7 @@ const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
     const token = localStorage.getItem("cmms_token");
     const url = `${
       process.env.REACT_APP_API_URL?.split("graphql")[0]
-    }attachment/upload`;
+    }attachment/machine-upload`;
     axios({
       method: "post",
       url,
