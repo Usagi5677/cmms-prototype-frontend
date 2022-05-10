@@ -3,7 +3,7 @@ import "./index.css";
 import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
 import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
 import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
-import Vehicles from "./pages/Vehicles/Vehicles";
+import ViewAllVehicle from "./pages/Transportation/ViewAllVehicle/ViewAllVehicle";
 import Division from "./pages/Division/Division";
 import Breakdown from "./pages/Breakdown/Breakdown";
 import Service from "./pages/Service/Service";
@@ -147,7 +147,7 @@ function App() {
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/machine/:id" element={<ViewMachine />} />
             <Route path="/vessels" element={<ViewAllVessel />} />
-            <Route path="/vehicles" element={<Vehicles />} />
+            <Route path="/vehicles" element={<ViewAllVehicle />} />
             <Route path="/division" element={<Division />} />
             <Route path="/breakdown" element={<Breakdown />} />
             <Route path="/service" element={<Service />} />

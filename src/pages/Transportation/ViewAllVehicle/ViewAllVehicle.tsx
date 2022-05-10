@@ -9,12 +9,12 @@ import { useLazyQuery } from "@apollo/client";
 import { ALL_TRANSPORTATION } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import classes from "./ViewAllVessel.module.css";
+import classes from "./ViewAllVehicle.module.css";
 import Transportation from "../../../models/Transportation";
 import TransportationCard from "../../../components/TransportationComponents/Transportation/TransportationCard";
 import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
 
-const Vessels = () => {
+const Vehicles = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -27,7 +27,7 @@ const Vessels = () => {
   >({
     ...DefaultPaginationArgs,
     search: "",
-    transportType: "Vessel",
+    transportType: "Vehicle",
   });
 
   const [getAllTransportation, { data, loading }] = useLazyQuery(
@@ -134,4 +134,4 @@ const Vessels = () => {
   );
 };
 
-export default Vessels;
+export default Vehicles;
