@@ -63,3 +63,42 @@ export const MACHINE_FRAGMENT = gql`
     }
   }
 `;
+
+export const TRANSPORTATION_FRAGMENT = gql`
+  ${USER_FRAGMENT}
+  fragment TransportationFields on Transportation {
+    id
+    createdAt
+    createdBy {
+      ...UserFields
+      email
+    }
+    machineNumber
+    registeredDate
+    model
+    type
+    department
+    engine
+    location
+    currentMileage
+    lastServiceMileage
+    interServiceMileage
+    status
+    measurement
+    transportType
+    assignees {
+      ...UserFields
+    }
+    sparePRs {
+      requestedDate
+      title
+      description
+      status
+    }
+    breakdowns {
+      title
+      description
+      status
+    }
+  }
+`;

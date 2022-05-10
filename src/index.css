@@ -341,3 +341,20 @@ em {
 .ant-checkbox-input:focus + .ant-checkbox-inner {
   border-color: var(--primary) !important;
 }
+
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: var(--primary) !important;
+}
+.ant-picker-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(24, 255, 139, 0.2) !important;
+}
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: var(--primary) !important;
+}
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid var(--primary) !important;
+}

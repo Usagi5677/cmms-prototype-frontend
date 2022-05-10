@@ -4,6 +4,13 @@ export enum MachineStatus {
   Breakdown = "Breakdown",
 }
 
+export enum TransportationStatus {
+  Working = "Working",
+  Pending = "Pending",
+  Breakdown = "Breakdown",
+}
+
+
 export enum RepairStatus {
   Done = "Done",
   Pending = "Pending",

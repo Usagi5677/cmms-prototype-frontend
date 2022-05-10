@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { MACHINE_FRAGMENT, USER_FRAGMENT } from "./fragments";
+import { MACHINE_FRAGMENT, TRANSPORTATION_FRAGMENT, USER_FRAGMENT } from "./fragments";
 
 export const ME_QUERY = gql`
   query {
@@ -338,6 +338,42 @@ export const GET_ALL_ATTACHMENT_OF_MACHINE = gql`
           completedBy {
             ...UserFields
           }
+        }
+      }
+    }
+  }
+`;
+
+export const ALL_TRANSPORTATION = gql`
+  ${TRANSPORTATION_FRAGMENT}
+  query getAllTransportation(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $createdByUserId: String
+    $transportType: String
+  ) {
+    getAllTransportation(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      createdByUserId: $createdByUserId
+      transportType: $transportType
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...TransportationFields
         }
       }
     }

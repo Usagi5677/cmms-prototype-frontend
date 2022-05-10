@@ -1,7 +1,7 @@
 import { Tag } from "antd";
 import { MachineStatus } from "../../models/Enums";
 
-const StatusTag = ({ status }: { status: MachineStatus | undefined }) => {
+const MachineStatusTag = ({ status }: { status: MachineStatus | undefined }) => {
   let color: string | undefined = undefined;
   if (status === "Working") color = "cyan";
   else if (status === "Pending") color = "orange";
@@ -13,4 +13,4 @@ const StatusTag = ({ status }: { status: MachineStatus | undefined }) => {
   );
 };
 
-export default StatusTag;
+export default MachineStatusTag;

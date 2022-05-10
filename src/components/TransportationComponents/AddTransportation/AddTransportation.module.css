@@ -4,7 +4,7 @@
   background-color: white !important;
   border-radius: 20px !important;
   border-color: var(--primary) !important;
-  max-width: 140px !important;
+  max-width: 180px !important;
 }
 
 .custom-btn-secondary:hover {
@@ -19,7 +19,7 @@
   background-color: var(--primary) !important;
   border-radius: 20px !important;
   border-color: var(--primary) !important;
-  max-width: 140px !important;
+  max-width: 180px !important;
 }
 
 .custom-btn-primary:hover {
@@ -40,7 +40,7 @@
   flex: 1;
 }
 
-@media only screen and (min-width: 600px) { 
+@media only screen and (min-width: 700px) { 
   .row {
     flex-direction: row;
   }

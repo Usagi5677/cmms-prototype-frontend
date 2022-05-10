@@ -5,14 +5,14 @@ import {
   FaRegClock,
   FaTractor,
 } from "react-icons/fa";
-import StatusTag from "../../common/StatusTag";
-import classes from "./Machine.module.css";
+import MachineStatusTag from "../../common/MachineStatusTag";
+import classes from "./MachineCard.module.css";
 import Machine from "../../../models/Machine";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { Tooltip } from "antd";
 
-const Machines = ({ machine }: { machine: Machine }) => {
+const MachineCard = ({ machine }: { machine: Machine }) => {
   let borderLeft: string;
   let border: string;
   if (machine?.interServiceHrs! >= 500) {
@@ -44,7 +44,8 @@ const Machines = ({ machine }: { machine: Machine }) => {
           </div>
           <div className={classes["title-wrapper"]}>
             <FaMapMarkerAlt />
-            <span className={classes["title"]}>{machine?.zone}</span> -
+            <span className={classes["title"]}>{machine?.zone}</span>
+            <span className={classes["dash"]}>-</span>
             <span>{machine?.location}</span>
           </div>
           <div className={classes["title-wrapper"]}>
@@ -92,9 +93,11 @@ const Machines = ({ machine }: { machine: Machine }) => {
               title={
                 <>
                   {"Requested Date: "}
-                  {moment(machine?.sparePRs[0]?.requestedDate).format(
-                    DATETIME_FORMATS.DAY_MONTH_YEAR
-                  )}
+                  {machine?.sparePRs[0]?.requestedDate
+                    ? moment(machine?.sparePRs[0]?.requestedDate).format(
+                        DATETIME_FORMATS.DAY_MONTH_YEAR
+                      )
+                    : null}
                   <br />
                   {"Title: "}
                   {machine?.sparePRs[0]?.title}
@@ -135,13 +138,13 @@ const Machines = ({ machine }: { machine: Machine }) => {
       </div>
 
       <div className={classes["fifth-block"]}>
-        <StatusTag status={machine?.status} />
+        <MachineStatusTag status={machine?.status} />
       </div>
     </div>
   );
 };
 
-export default Machines;
+export default MachineCard;
 
 /*
 <div className={classes["machinaries-wrapper"]}>

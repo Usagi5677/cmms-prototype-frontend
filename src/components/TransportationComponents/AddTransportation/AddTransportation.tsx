@@ -8,34 +8,33 @@ import {
   InputNumber,
   message,
   Modal,
+  Radio,
   Row,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
-import { CREATE_MACHINE } from "../../../api/mutations";
+import { CREATE_TRANSPORTATION } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./AddMachine.module.css";
+import classes from "./AddTransportation.module.css";
 
-const AddMachine = () => {
+const AddTransportation = () => {
   const { user } = useContext(UserContext);
 
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [createMachine, { loading: loadingMachine }] = useMutation(
-    CREATE_MACHINE,
-    {
+  const [createTransportation, { loading: loadingTransportation }] =
+    useMutation(CREATE_TRANSPORTATION, {
       onCompleted: () => {
-        message.success("Successfully created machine.");
+        message.success("Successfully created transportation.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while creating machine.");
+        errorMessage(error, "Unexpected error while creating transportation.");
       },
-      refetchQueries: ["getAllMachine"],
-    }
-  );
+      refetchQueries: ["getAllTransportation"],
+    });
 
   const handleCancel = () => {
     form.resetFields();
@@ -47,10 +46,13 @@ const AddMachine = () => {
       machineNumber,
       model,
       type,
-      zone,
+      department,
       location,
-      currentRunningHrs,
-      lastServiceHrs,
+      currentMileage,
+      lastServiceMileage,
+      measurement,
+      transportType,
+      engine,
       registeredDate,
     } = values;
 
@@ -66,32 +68,47 @@ const AddMachine = () => {
       message.error("Please enter the type.");
       return;
     }
-    if (!zone) {
-      message.error("Please enter the zone.");
+    if (!department) {
+      message.error("Please enter the department.");
       return;
     }
     if (!location) {
       message.error("Please enter the location.");
       return;
     }
-    if (!currentRunningHrs) {
-      message.error("Please enter the current running hrs.");
+    if (!currentMileage) {
+      message.error("Please enter the current mileage.");
       return;
     }
-    if (!lastServiceHrs) {
-      message.error("Please enter the last service hrs.");
+    if (!lastServiceMileage) {
+      message.error("Please enter the last service mileage.");
       return;
     }
-    createMachine({
+    if (!measurement) {
+      message.error("Please select the measurement.");
+      return;
+    }
+    if (!transportType) {
+      message.error("Please select the vessel/vehicle.");
+      return;
+    }
+    if (!engine) {
+      message.error("Please enter the engine.");
+      return;
+    }
+    createTransportation({
       variables: {
         machineNumber,
         model,
         type,
-        zone,
+        department,
         location,
-        currentRunningHrs,
-        lastServiceHrs,
+        currentMileage,
+        lastServiceMileage,
         registeredDate,
+        measurement,
+        transportType,
+        engine,
       },
     });
   };
@@ -101,16 +118,16 @@ const AddMachine = () => {
         htmlType="button"
         size="middle"
         onClick={() => setVisible(true)}
-        loading={loadingMachine}
+        loading={loadingTransportation}
         className={classes["custom-btn-primary"]}
       >
-        Add Machine
+        Add Transportation
       </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Machine"}
+        title={"Add Transportation"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -191,17 +208,17 @@ const AddMachine = () => {
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
-                label="Zone"
-                name="zone"
+                label="Department"
+                name="department"
                 required={false}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the zone.",
+                    message: "Please enter the department.",
                   },
                 ]}
               >
-                <Input placeholder="Zone" />
+                <Input placeholder="Department" />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -224,38 +241,72 @@ const AddMachine = () => {
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
-                label="Current running hrs"
-                name="currentRunningHrs"
+                label="Current mileage"
+                name="currentMileage"
                 required={false}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the current running hrs.",
+                    message: "Please enter the current mileage.",
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder="Current running hrs"
+                  placeholder="Current mileage"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
               <Form.Item
-                label="Last service hrs"
-                name="lastServiceHrs"
+                label="Last service mileage"
+                name="lastServiceMileage"
                 required={false}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the last service hrs.",
+                    message: "Please enter the last service mileage.",
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder="Last service hrs"
+                  placeholder="Last service mileage"
                   style={{ width: "100%" }}
                 />
+              </Form.Item>
+            </div>
+          </div>
+
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
+              <Form.Item
+                label="Engine"
+                name="engine"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the engine.",
+                  },
+                ]}
+              >
+                <Input placeholder="Engine" />
+              </Form.Item>
+            </div>
+            <div className={classes["col"]}>
+              <Form.Item label="Measurement" name="measurement">
+                <Radio.Group buttonStyle="solid" optionType="button">
+                  <Radio.Button value="km">KM</Radio.Button>
+                  <Radio.Button value="h">H</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+            </div>
+            <div className={classes["col"]}>
+              <Form.Item label="Transportation Type" name="transportType">
+                <Radio.Group buttonStyle="solid" optionType="button">
+                  <Radio.Button value={"Vessel"}>Vessel</Radio.Button>
+                  <Radio.Button value={"Vehicle"}>Vehicle</Radio.Button>
+                </Radio.Group>
               </Form.Item>
             </div>
           </div>
@@ -277,7 +328,7 @@ const AddMachine = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  loading={loadingMachine}
+                  loading={loadingTransportation}
                   className={classes["custom-btn-primary"]}
                 >
                   Add
@@ -291,4 +342,4 @@ const AddMachine = () => {
   );
 };
 
-export default AddMachine;
+export default AddTransportation;

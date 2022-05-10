@@ -8,7 +8,7 @@ import {
 } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { MachineStatus } from "../../../models/Enums";
-import StatusTag from "../../common/StatusTag";
+import MachineStatusTag from "../../common/MachineStatusTag";
 import classes from "./MachineStatuses.module.css";
 
 const MachineStatuses = ({
@@ -181,7 +181,7 @@ const MachineStatuses = ({
             Object.keys(MachineStatus) as Array<keyof typeof MachineStatus>
           ).map((status: any) => (
             <Select.Option key={status} value={status}>
-              <StatusTag status={status} />
+              <MachineStatusTag status={status} />
             </Select.Option>
           ))}
         </Select>

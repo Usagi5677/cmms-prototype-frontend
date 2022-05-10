@@ -243,3 +243,33 @@ export const EDIT_MACHINE_ATTACHMENT = gql`
     editMachineAttachment(id: $id, description: $description)
   }
 `;
+
+export const CREATE_TRANSPORTATION = gql`
+  mutation (
+    $machineNumber: String!
+    $model: String!
+    $type: String!
+    $department: String!
+    $location: String!
+    $engine: String!
+    $measurement: String!
+    $transportType: String!
+    $currentMileage: Int!
+    $lastServiceMileage: Int!
+    $registeredDate: Date!
+  ) {
+    createTransportation(
+      machineNumber: $machineNumber
+      model: $model
+      type: $type
+      department: $department
+      location: $location
+      engine: $engine
+      measurement: $measurement
+      transportType: $transportType
+      currentMileage: $currentMileage
+      lastServiceMileage: $lastServiceMileage
+      registeredDate: $registeredDate
+    )
+  }
+`;

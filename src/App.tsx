@@ -2,7 +2,7 @@ import Layout from "./hoc/Layout/Layout";
 import "./index.css";
 import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
 import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
-import Vessels from "./pages/Vessels/Vessels";
+import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
 import Vehicles from "./pages/Vehicles/Vehicles";
 import Division from "./pages/Division/Division";
 import Breakdown from "./pages/Breakdown/Breakdown";
@@ -137,7 +137,7 @@ function App() {
   if (!appLoading && loggedOut) {
     return <Login login={redirect} />;
   }
-  
+
   return (
     <UserContext.Provider value={{ user, setUser, logout }}>
       <ApolloProvider client={apolloClient}>
@@ -146,7 +146,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/machine/:id" element={<ViewMachine />} />
-            <Route path="/vessels" element={<Vessels />} />
+            <Route path="/vessels" element={<ViewAllVessel />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/division" element={<Division />} />
             <Route path="/breakdown" element={<Breakdown />} />
