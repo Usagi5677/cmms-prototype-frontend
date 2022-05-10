@@ -273,3 +273,174 @@ export const CREATE_TRANSPORTATION = gql`
     )
   }
 `;
+
+export const EDIT_TRANSPORTATION = gql`
+  mutation (
+    $id: Int!
+    $machineNumber: String!
+    $model: String!
+    $type: String!
+    $department: String!
+    $location: String!
+    $engine: String!
+    $measurement: String!
+    $transportType: String!
+    $currentMileage: Int!
+    $lastServiceMileage: Int!
+    $registeredDate: Date!
+  ) {
+    editTransportation(
+      id: $id
+      machineNumber: $machineNumber
+      model: $model
+      type: $type
+      department: $department
+      location: $location
+      engine: $engine
+      measurement: $measurement
+      transportType: $transportType
+      currentMileage: $currentMileage
+      lastServiceMileage: $lastServiceMileage
+      registeredDate: $registeredDate
+    )
+  }
+`;
+
+export const DELETE_TRANSPORTATION = gql`
+  mutation ($transportationId: Int!) {
+    removeTransportation(transportationId: $transportationId)
+  }
+`;
+
+export const SET_TRANSPORTATION_STATUS = gql`
+  mutation ($transportationId: Int!, $status: TransportationStatus!) {
+    setTransportationStatus(
+      transportationId: $transportationId
+      status: $status
+    )
+  }
+`;
+
+export const ADD_TRANSPORTATION_BREAKDOWN = gql`
+  mutation ($transportationId: Int!, $title: String!, $description: String!) {
+    addTransportationBreakdown(
+      transportationId: $transportationId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const ADD_TRANSPORTATION_CHECKLIST_ITEM = gql`
+  mutation ($transportationId: Int!, $description: String!, $type: String!) {
+    addTransportationChecklistItem(
+      transportationId: $transportationId
+      description: $description
+      type: $type
+    )
+  }
+`;
+
+export const DELETE_TRANSPORTATION_CHECKLIST_ITEM = gql`
+  mutation ($id: Int!) {
+    deleteTransportationChecklistItem(id: $id)
+  }
+`;
+
+export const TOGGLE_TRANSPORTATION_CHECKLIST_ITEM = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleTransportationChecklistItem(id: $id, complete: $complete)
+  }
+`;
+
+export const ADD_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $transportationId: Int!
+    $title: String!
+    $description: String!
+    $period: Int!
+    $notificationReminder: Int!
+  ) {
+    addTransportationPeriodicMaintenance(
+      transportationId: $transportationId
+      title: $title
+      description: $description
+      period: $period
+      notificationReminder: $notificationReminder
+    )
+  }
+`;
+
+export const SET_TRANSPORTATION_PERIODIC_MAINTENANCE_STATUS = gql`
+  mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
+    setTransportationPeriodicMaintenanceStatus(id: $id, status: $status)
+  }
+`;
+
+export const EDIT_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $period: Int!
+    $notificationReminder: Int!
+  ) {
+    editTransportationPeriodicMaintenance(
+      id: $id
+      title: $title
+      description: $description
+      period: $period
+      notificationReminder: $notificationReminder
+    )
+  }
+`;
+
+export const DELETE_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!) {
+    deleteTransportationPeriodicMaintenance(id: $id)
+  }
+`;
+
+export const ADD_TRANSPORTATION_SPARE_PR = gql`
+  mutation (
+    $transportationId: Int!
+    $title: String!
+    $description: String!
+    $requestedDate: Date!
+  ) {
+    addTransportationSparePR(
+      transportationId: $transportationId
+      title: $title
+      description: $description
+      requestedDate: $requestedDate
+    )
+  }
+`;
+
+export const EDIT_TRANSPORTATION_SPARE_PR = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $requestedDate: Date!
+  ) {
+    editTransportationSparePR(
+      id: $id
+      title: $title
+      description: $description
+      requestedDate: $requestedDate
+    )
+  }
+`;
+
+export const DELETE_TRANSPORTATION_SPARE_PR = gql`
+  mutation ($id: Int!) {
+    deleteTransportationSparePR(id: $id)
+  }
+`;
+
+export const SET_TRANSPORTATION_SPARE_PR_STATUS = gql`
+  mutation ($id: Int!, $status: SparePRStatus!) {
+    setTransportationSparePRStatus(id: $id, status: $status)
+  }
+`;

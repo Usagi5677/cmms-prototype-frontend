@@ -1,5 +1,9 @@
 import { gql } from "@apollo/client";
-import { MACHINE_FRAGMENT, TRANSPORTATION_FRAGMENT, USER_FRAGMENT } from "./fragments";
+import {
+  MACHINE_FRAGMENT,
+  TRANSPORTATION_FRAGMENT,
+  USER_FRAGMENT,
+} from "./fragments";
 
 export const ME_QUERY = gql`
   query {
@@ -47,17 +51,12 @@ export const ALL_MACHINES = gql`
   }
 `;
 
-export const GETSINGLEMACHINE = gql`
+export const GET_SINGLE_MACHINE = gql`
   ${MACHINE_FRAGMENT}
   ${USER_FRAGMENT}
   query getSingleMachine($machineId: Int!) {
     getSingleMachine(machineId: $machineId) {
       ...MachineFields
-      repairs {
-        id
-        title
-        description
-      }
       checklistItems {
         id
         description
@@ -374,6 +373,115 @@ export const ALL_TRANSPORTATION = gql`
       edges {
         node {
           ...TransportationFields
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SINGLE_TRANSPORTATION = gql`
+  ${TRANSPORTATION_FRAGMENT}
+  ${USER_FRAGMENT}
+  query getSingleTransportation($transportationId: Int!) {
+    getSingleTransportation(transportationId: $transportationId) {
+      ...TransportationFields
+      checklistItems {
+        id
+        description
+        type
+        completedAt
+        completedBy {
+          ...UserFields
+        }
+      }
+    }
+  }
+`;
+
+
+export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
+  ${USER_FRAGMENT}
+  query getAllPeriodicMaintenanceOfTransportation(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $transportationId: Int!
+  ) {
+    getAllPeriodicMaintenanceOfTransportation(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      transportationId: $transportationId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          transportationId
+          title
+          description
+          period
+          notificationReminder
+          status
+          completedAt
+          createdAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_SPARE_PR_OF_TRANSPORTATION = gql`
+  ${USER_FRAGMENT}
+  query getAllSparePROfTransportation(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $transportationId: Int!
+  ) {
+    getAllSparePROfTransportation(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      transportationId: $transportationId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          transportationId
+          title
+          description
+          requestedDate
+          status
+          completedAt
+          createdAt
+          completedBy {
+            ...UserFields
+          }
         }
       }
     }

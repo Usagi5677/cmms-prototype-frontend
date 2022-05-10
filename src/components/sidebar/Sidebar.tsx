@@ -52,12 +52,12 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
     {
       name: "Vessels",
-      path: "/vessels",
+      path: "/transportation/vessels",
       icon: <RiSailboatFill />,
     },
     {
       name: "Vehicles",
-      path: "/vehicles",
+      path: "/transportation/vehicles",
       icon: <FaTruck />,
     },
     {

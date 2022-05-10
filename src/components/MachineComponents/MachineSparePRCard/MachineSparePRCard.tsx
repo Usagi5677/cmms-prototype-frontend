@@ -2,7 +2,7 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import SparePR from "../../../models/SparePR";
+import SparePR from "../../../models/Machine/MachineSparePR";
 import DeleteMachineSparePR from "../DeleteMachineSparePR/DeleteMachineSparePR";
 import EditMachineSparePR from "../EditMachineSparePR/EditMachineSparePR";
 import MachineSparePRStatus from "../MachineSparePRStatus/MachineSparePRStatus";

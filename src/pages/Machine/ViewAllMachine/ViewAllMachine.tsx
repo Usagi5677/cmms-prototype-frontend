@@ -10,7 +10,7 @@ import { ALL_MACHINES } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
-import MachineCard from "../../../components/MachineComponents/Machine/MachineCard";
+import MachineCard from "../../../components/MachineComponents/MachineCard/MachineCard";
 import Machine from "../../../models/Machine";
 import classes from "./ViewAllMachine.module.css";
 

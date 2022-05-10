@@ -16,7 +16,7 @@ import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_MACHINE_SPARE_PR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import SparePR from "../../../models/SparePR";
+import SparePR from "../../../models/Machine/MachineSparePR";
 import classes from "./EditMachineSparePR.module.css";
 
 const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {

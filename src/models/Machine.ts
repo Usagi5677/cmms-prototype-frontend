@@ -2,10 +2,10 @@ import Breakdown from "./Breakdown";
 import ChecklistItem from "./ChecklistItem";
 import { MachineStatus } from "./Enums";
 import History from "./History";
-import PeriodicMaintenance from "./PeriodicMaintenance";
+import MachinePeriodicMaintenance from "./Machine/MachinePeriodicMaintenance";
 import Repair from "./Repair";
-import SparePR from "./SparePR";
 import User from "./User";
+import MachineSparePR from "./Machine/MachineSparePR";
 
 export default interface Machine {
   id: number;
@@ -24,9 +24,9 @@ export default interface Machine {
   statusChangedAt: Date;
   assignees: User[];
   checklistItems: ChecklistItem[];
-  periodicMaintenancePlans: PeriodicMaintenance[];
+  periodicMaintenancePlans: MachinePeriodicMaintenance[];
   repairs: Repair[];
   breakdowns: Breakdown[];
-  sparePRs: SparePR[];
+  sparePRs: MachineSparePR[];
   histories: History[];
 }

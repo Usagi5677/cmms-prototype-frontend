@@ -17,10 +17,14 @@ import { FaEdit } from "react-icons/fa";
 import { EDIT_MACHINE_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
-import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
+import PeriodicMaintenance from "../../../models/Machine/MachinePeriodicMaintenance";
 import classes from "./EditMachinePeriodicMaintenance.module.css";
 
-const EditMachinePeriodicMaintenance = ({ periodicMaintenance }: { periodicMaintenance: PeriodicMaintenance }) => {
+const EditMachinePeriodicMaintenance = ({
+  periodicMaintenance,
+}: {
+  periodicMaintenance: PeriodicMaintenance;
+}) => {
   const { user } = useContext(UserContext);
 
   const [visible, setVisible] = useState(false);
@@ -40,7 +44,10 @@ const EditMachinePeriodicMaintenance = ({ periodicMaintenance }: { periodicMaint
         "Unexpected error while updating periodic maintenance."
       );
     },
-    refetchQueries: ["getAllPeriodicMaintenanceOfMachine", "getAllHistoryOfMachine"],
+    refetchQueries: [
+      "getAllPeriodicMaintenanceOfMachine",
+      "getAllHistoryOfMachine",
+    ],
   });
 
   const handleCancel = () => {

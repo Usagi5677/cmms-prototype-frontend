@@ -1,9 +1,9 @@
-import { SparePRStatus } from "./Enums";
-import User from "./User";
+import { SparePRStatus } from "../Enums";
+import User from "../User";
 
-export default interface SparePR {
+export default interface TransportationSparePR {
   id: number;
-  machineId: number;
+  transportationId: number;
   title: string;
   description: string;
   requestedDate: Date;

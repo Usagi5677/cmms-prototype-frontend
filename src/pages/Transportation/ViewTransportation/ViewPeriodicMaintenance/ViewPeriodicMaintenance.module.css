@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+  overflow-y: auto;
+}
+
+.options {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.content {
+  padding: 0 10px
+}

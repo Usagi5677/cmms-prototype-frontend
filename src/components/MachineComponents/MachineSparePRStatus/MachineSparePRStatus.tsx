@@ -3,7 +3,7 @@ import { message, Select } from "antd";
 import { SET_MACHINE_SPARE_PR_STATUS } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { SparePRStatus } from "../../../models/Enums";
-import SparePR from "../../../models/SparePR";
+import SparePR from "../../../models/Machine/MachineSparePR";
 import SparePRStatusTag from "../../common/SparePRStatusTag";
 
 const MachineSparePRStatus = ({ sparePR }: { sparePR: SparePR }) => {

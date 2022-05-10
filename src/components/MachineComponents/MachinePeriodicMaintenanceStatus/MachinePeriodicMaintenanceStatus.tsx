@@ -3,7 +3,7 @@ import { message, Select } from "antd";
 import { SET_MACHINE_PERIODIC_MAINTENANCE_STATUS } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { PeriodicMaintenanceStatus } from "../../../models/Enums";
-import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
+import PeriodicMaintenance from "../../../models/Machine/MachinePeriodicMaintenance";
 
 import PeriodicMaintenanceStatusTag from "../../common/PeriodicMaintenanceStatusTag";
 

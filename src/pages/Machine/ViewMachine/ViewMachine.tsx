@@ -3,7 +3,7 @@ import { useLazyQuery } from "@apollo/client";
 import { Button, Spin, Tabs } from "antd";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { GETSINGLEMACHINE } from "../../../api/queries";
+import { GET_SINGLE_MACHINE } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewMachine.module.css";
 import Machine from "../../../models/Machine";
@@ -11,10 +11,6 @@ import EditMachine from "../../../components/MachineComponents/EditMachine/EditM
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import DeleteMachine from "../../../components/MachineComponents/DeleteMachine/DeleteMachine";
-import AddMachineChecklist from "../../../components/MachineComponents/AddMachineChecklist/AddMachineChecklist";
-import MachineChecklistItem from "../../../components/MachineComponents/MachineChecklistItem/MachineChecklistItem";
-import AddMachinePeriodicMaintenance from "../../../components/MachineComponents/AddMachinePeriodicMaintenance/AddMachinePeriodicMaintenance";
-import MachinePeriodicMaintenanceCard from "../../../components/MachineComponents/MachinePeriodicMaintenanceCard/MachinePeriodicMaintenanceCard";
 import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
 import ViewSparePR from "./ViewSparePR/ViewSparePR";
 import ViewRepair from "./ViewRepair/ViewRepair";
@@ -30,8 +26,8 @@ const ViewMachine = () => {
 
   const [
     getSingleMachine,
-    { data: machine, loading: loadingMachine, refetch: refetchMachine },
-  ] = useLazyQuery(GETSINGLEMACHINE, {
+    { data: machine, loading: loadingMachine },
+  ] = useLazyQuery(GET_SINGLE_MACHINE, {
     onError: (err) => {
       errorMessage(err, "Error loading request.");
     },
@@ -156,6 +152,12 @@ const ViewMachine = () => {
               <div>Last service hrs</div>
               <div className={classes["info-content"]}>
                 {machineData?.lastServiceHrs}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Inter service hrs</div>
+              <div className={classes["info-content"]}>
+                {machineData?.interServiceHrs}
               </div>
             </div>
             <div className={classes["info-title-wrapper"]}>

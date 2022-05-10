@@ -11,7 +11,7 @@ import { errorMessage } from "../../../../helpers/gql";
 import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
 
 import PaginationArgs from "../../../../models/PaginationArgs";
-import PeriodicMaintenance from "../../../../models/PeriodicMaintenance";
+import PeriodicMaintenance from "../../../../models/Machine/MachinePeriodicMaintenance";
 import classes from "./ViewPeriodicMaintenance.module.css";
 
 const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {

@@ -2,7 +2,7 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import { FaRegBell, FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import PeriodicMaintenance from "../../../models/PeriodicMaintenance";
+import PeriodicMaintenance from "../../../models/Machine/MachinePeriodicMaintenance";
 import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
 import EditMachinePeriodicMaintenance from "../EditMachinePeriodicMaintenance/EditMachinePeriodicMaintenance";
 import MachinePeriodicMaintenanceStatus from "../MachinePeriodicMaintenanceStatus/MachinePeriodicMaintenanceStatus";

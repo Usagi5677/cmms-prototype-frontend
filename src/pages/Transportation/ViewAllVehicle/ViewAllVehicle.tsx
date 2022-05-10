@@ -119,7 +119,7 @@ const Vehicles = () => {
       {data?.getAllTransportation.edges.map((rec: { node: Transportation }) => {
         const transportation = rec.node;
         return (
-          <Link to={"/vessel/" + transportation.id} key={transportation.id}>
+          <Link to={"/transportation/" + transportation.id} key={transportation.id}>
             <TransportationCard transportation={transportation} />
           </Link>
         );

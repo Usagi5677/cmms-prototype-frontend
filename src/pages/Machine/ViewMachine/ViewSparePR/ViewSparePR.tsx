@@ -7,7 +7,7 @@ import AddMachineSparePR from "../../../../components/MachineComponents/AddMachi
 import MachineSparePRCard from "../../../../components/MachineComponents/MachineSparePRCard/MachineSparePRCard";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
-import SparePR from "../../../../models/SparePR";
+import SparePR from "../../../../models/Machine/MachineSparePR";
 import classes from "./ViewSparePR.module.css";
 
 const ViewSparePR = ({ machineID }: { machineID: number }) => {

@@ -1,9 +1,10 @@
-import { PeriodicMaintenanceStatus } from "./Enums";
-import User from "./User";
+import { PeriodicMaintenanceStatus } from "../Enums";
+import User from "../User";
 
-export default interface PeriodicMaintenance {
+
+export default interface TransportationPeriodicMaintenance {
   id: number;
-  machineId: number;
+  transportationId: number;
   title: string;
   description: string;
   period?: number;
