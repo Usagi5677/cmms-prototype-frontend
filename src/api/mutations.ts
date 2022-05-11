@@ -494,3 +494,15 @@ export const SET_TRANSPORTATION_BREAKDOWN_STATUS = gql`
     setTransportationBreakdownStatus(id: $id, status: $status)
   }
 `;
+
+export const EDIT_TRANSPORTATION_ATTACHMENT = gql`
+  mutation ($id: Int!, $description: String!) {
+    editTransportationAttachment(id: $id, description: $description)
+  }
+`;
+
+export const DELETE_TRANSPORTATION_ATTACHMENT = gql`
+  mutation ($id: Int!) {
+    removeTransportationAttachment(id: $id)
+  }
+`;

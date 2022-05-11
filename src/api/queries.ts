@@ -613,3 +613,47 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
     }
   }
 `;
+
+export const GET_ALL_ATTACHMENT_OF_TRANSPORTATION = gql`
+  ${USER_FRAGMENT}
+  query transportationAttachments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $transportationId: Int!
+  ) {
+    transportationAttachments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      transportationId: $transportationId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          transportationId
+          createdAt
+          mimeType
+          originalName
+          description
+          mode
+          createdAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;

@@ -11,7 +11,7 @@ import { PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVehicle.module.css";
 import Transportation from "../../../models/Transportation";
-import TransportationCard from "../../../components/TransportationComponents/Transportation/TransportationCard";
+import TransportationCard from "../../../components/TransportationComponents/TransportationCard/TransportationCard";
 import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
 
 const Vehicles = () => {

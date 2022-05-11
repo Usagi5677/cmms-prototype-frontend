@@ -18,6 +18,7 @@ import ViewSparePR from "./ViewSparePR/ViewSparePR";
 import ViewRepair from "./ViewRepair/ViewRepair";
 import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 import ViewHistory from "./ViewHistory/ViewHistory";
+import ViewGallery from "./ViewGallery/ViewGallery";
 
 const ViewTransportation = () => {
   const { id }: any = useParams();
@@ -105,7 +106,7 @@ const ViewTransportation = () => {
                 <ViewHistory transportationID={transportationData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                
+                <ViewGallery transportationID={transportationData?.id} />
               </Tabs.TabPane>
             </Tabs>
           </div>

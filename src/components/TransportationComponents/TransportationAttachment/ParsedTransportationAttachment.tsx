@@ -1,30 +1,25 @@
-import { Button, Image, Spin, Tooltip } from "antd";
+import { Image, Spin, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLazyQuery } from "@apollo/client";
-
 import {
   FileOutlined,
   DownloadOutlined,
   WarningOutlined,
-  WindowsFilled,
 } from "@ant-design/icons";
-import useIsVisible from "../../../helpers/useIsVisible";
-import MachineAttachment from "../../../models/Machine/MachineAttachment";
-import { errorMessage } from "../../../helpers/gql";
-import classes from "./MachineAttachment.module.css";
-import DeleteMachineAttachment from "../DeleteMachineAttachment/DeleteMachineAttachment";
-import EditMachineAttachment from "../EditMachineAttachment/EditMachineAttachment";
+import classes from "./TransportationAttachment.module.css";
+import TransportationAttachment from "../../../models/Transportation/TransportationAttachment";
+import EditTransportationAttachment from "../EditTransportationAttachment/EditTransportationAttachment";
+import DeleteTransportationAttachment from "../DeleteTransportationAttachment/DeleteTransportationAttachment";
 
-const ParsedMachineAttachment = ({
+const ParsedTransportationAttachment = ({
   attachmentData,
 }: {
-  attachmentData: MachineAttachment;
+  attachmentData: TransportationAttachment;
 }) => {
   const attachmentId = attachmentData.id;
   const url = `${
     process.env.REACT_APP_API_URL?.split("graphql")[0]
-  }attachment/machine/${attachmentId}`;
+  }attachment/transportation/${attachmentId}`;
   const token = localStorage.getItem("cmms_token");
 
   const [file, setFile] = useState<any>(null);
@@ -87,8 +82,8 @@ const ParsedMachineAttachment = ({
           {fileLoading && (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
           )}
-          {file && <EditMachineAttachment attachment={attachmentData} />}
-          {file && <DeleteMachineAttachment id={attachmentData?.id} />}
+          {file && <EditTransportationAttachment attachment={attachmentData} />}
+          {file && <DeleteTransportationAttachment id={attachmentData?.id} />}
           {file && (
             <Tooltip title={"Download"}>
               <DownloadOutlined
@@ -124,4 +119,4 @@ const ParsedMachineAttachment = ({
   );
 };
 
-export default ParsedMachineAttachment;
+export default ParsedTransportationAttachment;

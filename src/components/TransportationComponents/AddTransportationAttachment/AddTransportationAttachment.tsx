@@ -6,36 +6,36 @@ import { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import { useState } from "react";
 import {
-  GET_ALL_ATTACHMENT_OF_MACHINE,
-  GET_ALL_HISTORY_OF_MACHINE,
+  GET_ALL_ATTACHMENT_OF_TRANSPORTATION,
+  GET_ALL_HISTORY_OF_TRANSPORTATION,
 } from "../../../api/queries";
-import classes from "./AddMachineAttachment.module.css";
+import classes from "./AddTransportationAttachment.module.css";
 
-const AddMachineAttachment = ({ machineID }: { machineID: number }) => {
+const AddTransportationAttachment = ({ transportationID }: { transportationID: number }) => {
   const [fileList, setFileList] = useState<RcFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_MACHINE, {
+  const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_TRANSPORTATION, {
     variables: {
       first: 6,
       last: null,
       before: null,
       after: null,
       search: "",
-      machineId: machineID,
+      transportationId: transportationID,
     },
   });
 
-  const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_MACHINE, {
+  const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_TRANSPORTATION, {
     variables: {
       first: 3,
       last: null,
       before: null,
       after: null,
       search: "",
-      machineId: machineID,
+      transportationId: transportationID,
     },
   });
 
@@ -68,13 +68,13 @@ const AddMachineAttachment = ({ machineID }: { machineID: number }) => {
     setUploading(true);
     // Send request as form data as files cannot be sent through graphql
     const data: any = new FormData();
-    data.append("machineId", `${machineID}`);
+    data.append("transportationId", `${transportationID}`);
     data.append("description", description.trim());
     data.append("attachment", attachment.file);
     const token = localStorage.getItem("cmms_token");
     const url = `${
       process.env.REACT_APP_API_URL?.split("graphql")[0]
-    }attachment/machine-upload`;
+    }attachment/transportation-upload`;
     axios({
       method: "post",
       url,
@@ -103,7 +103,7 @@ const AddMachineAttachment = ({ machineID }: { machineID: number }) => {
         before: null,
         after: null,
         search: "",
-        machineId: machineID,
+        transportationId: transportationID,
       });
       refetchHistory({
         first: 3,
@@ -111,7 +111,7 @@ const AddMachineAttachment = ({ machineID }: { machineID: number }) => {
         before: null,
         after: null,
         search: "",
-        machineId: machineID,
+        transportationId: transportationID,
       });
     }, 1000);
   };
@@ -217,4 +217,4 @@ const AddMachineAttachment = ({ machineID }: { machineID: number }) => {
   );
 };
 
-export default AddMachineAttachment;
+export default AddTransportationAttachment;

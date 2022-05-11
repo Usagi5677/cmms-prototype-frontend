@@ -4,17 +4,17 @@ import { useForm } from "antd/lib/form/Form";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_MACHINE_ATTACHMENT } from "../../../api/mutations";
+import { EDIT_TRANSPORTATION_ATTACHMENT } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import MachineAttachment from "../../../models/Machine/MachineAttachment";
-import classes from "./EditMachineAttachment.module.css";
+import TransportationAttachment from "../../../models/Transportation/TransportationAttachment";
+import classes from "./EditTransportationAttachment.module.css";
 
-const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }) => {
+const EditTransportationAttachment = ({ attachment }: { attachment: TransportationAttachment }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editMachineAttachment, { loading: loadingAttachment }] = useMutation(
-    EDIT_MACHINE_ATTACHMENT,
+  const [editTransportationAttachment, { loading: loadingAttachment }] = useMutation(
+    EDIT_TRANSPORTATION_ATTACHMENT,
     {
       onCompleted: () => {
         message.success("Successfully updated attachment.");
@@ -23,7 +23,7 @@ const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating attachment.");
       },
-      refetchQueries: ["machineAttachments", "getAllHistoryOfMachine"],
+      refetchQueries: ["transportationAttachments", "getAllHistoryOfTransportation"],
     }
   );
 
@@ -40,7 +40,7 @@ const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }
       return;
     }
 
-    editMachineAttachment({
+    editTransportationAttachment({
       variables: {
         id: attachment.id,
         description,
@@ -114,4 +114,4 @@ const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }
   );
 };
 
-export default EditMachineAttachment;
+export default EditTransportationAttachment;

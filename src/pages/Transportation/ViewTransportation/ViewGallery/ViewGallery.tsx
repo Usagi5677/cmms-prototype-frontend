@@ -1,21 +1,16 @@
-import { UploadOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Button, message, Spin, Tooltip, Upload } from "antd";
-import { RcFile, UploadChangeParam } from "antd/lib/upload";
-import axios from "axios";
+import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { GET_ALL_ATTACHMENT_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_ATTACHMENT_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachineAttachment from "../../../../components/MachineComponents/AddMachineAttachment/AddMachineAttachment";
-import ParsedMachineAttachment from "../../../../components/MachineComponents/MachineAttachment/ParsedMachineAttachment";
+import AddTransportationAttachment from "../../../../components/TransportationComponents/AddTransportationAttachment/AddTransportationAttachment";
+import ParsedTransportationAttachment from "../../../../components/TransportationComponents/TransportationAttachment/ParsedTransportationAttachment";
 import { errorMessage } from "../../../../helpers/gql";
-import MachineAttachment from "../../../../models/Machine/MachineAttachment";
 import PaginationArgs from "../../../../models/PaginationArgs";
+import TransportationAttachment from "../../../../models/Transportation/TransportationAttachment";
 import classes from "./ViewGallery.module.css";
 
-const ViewGallery = ({ machineID }: { machineID: number }) => {
-  
-
+const ViewGallery = ({ transportationID }: { transportationID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -23,7 +18,7 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      machineId: number;
+      transportationId: number;
     }
   >({
     first: 6,
@@ -31,13 +26,13 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
     before: null,
     after: null,
     search: "",
-    machineId: machineID,
+    transportationId: transportationID,
   });
   // This query only loads the attachment's info from the db, not the file
   const [
     getAttachment,
     { data: attachment, loading: loadingAttachment, error },
-  ] = useLazyQuery(GET_ALL_ATTACHMENT_OF_MACHINE, {
+  ] = useLazyQuery(GET_ALL_ATTACHMENT_OF_TRANSPORTATION, {
     onError: (err) => {
       errorMessage(err, "Error loading attachment.");
     },
@@ -104,14 +99,12 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = attachment?.machineAttachments.pageInfo ?? {};
-
-  
+  const pageInfo = attachment?.transportationAttachments.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineAttachment machineID={machineID}/>
+        <AddTransportationAttachment transportationID={transportationID}/>
         {loadingAttachment && (
           <div>
             <Spin style={{ width: "100%", margin: "2rem auto" }} />
@@ -119,11 +112,11 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
         )}
       </div>
       <div className={classes["grid-container"]}>
-        {attachment?.machineAttachments.edges.map(
-          (rec: { node: MachineAttachment }) => {
+        {attachment?.transportationAttachments.edges.map(
+          (rec: { node: TransportationAttachment }) => {
             const attachment = rec.node;
             return (
-              <ParsedMachineAttachment
+              <ParsedTransportationAttachment
                 key={attachment.id}
                 attachmentData={attachment}
               />
