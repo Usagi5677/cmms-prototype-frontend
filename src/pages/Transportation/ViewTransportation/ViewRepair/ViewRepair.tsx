@@ -1,16 +1,16 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { GET_ALL_REPAIR_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_REPAIR_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachineRepair from "../../../../components/MachineComponents/AddMachineRepair/AddMachineRepair";
-import MachineRepairCard from "../../../../components/MachineComponents/MachineRepairCard/MachineRepairCard";
+import AddTransportationRepair from "../../../../components/TransportationComponents/AddTransportationRepair/AddTransportationRepair";
+import TransportationRepairCard from "../../../../components/TransportationComponents/TransportationRepairCard/TransportationRepairCard";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
-import Repair from "../../../../models/Machine/MachineRepair";
+import Repair from "../../../../models/Transportation/TransportationRepair";
 import classes from "./ViewRepair.module.css";
 
-const ViewRepair = ({ machineID }: { machineID: number }) => {
+const ViewRepair = ({ transportationID }: { transportationID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -18,7 +18,7 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      machineId: number;
+      transportationId: number;
     }
   >({
     first: 3,
@@ -26,11 +26,11 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
     before: null,
     after: null,
     search: "",
-    machineId: machineID,
+    transportationId: transportationID,
   });
 
-  const [getAllRepairOfMachine, { data, loading }] = useLazyQuery(
-    GET_ALL_REPAIR_OF_MACHINE,
+  const [getAllRepairOfTransportation, { data, loading }] = useLazyQuery(
+    GET_ALL_REPAIR_OF_TRANSPORTATION,
     {
       onError: (err) => {
         errorMessage(err, "Error loading repair.");
@@ -42,8 +42,8 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
 
   // Fetch repairs when component mounts or when the filter object changes
   useEffect(() => {
-    getAllRepairOfMachine({ variables: filter });
-  }, [filter, getAllRepairOfMachine]);
+    getAllRepairOfTransportation({ variables: filter });
+  }, [filter, getAllRepairOfTransportation]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -99,12 +99,12 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllRepairOfMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllRepairOfTransportation.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineRepair machineID={machineID} />
+        <AddTransportationRepair transportationID={transportationID} />
       </div>
       {loading && (
         <div>
@@ -112,9 +112,9 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllRepairOfMachine.edges.map((rec: { node: Repair }) => {
+        {data?.getAllRepairOfTransportation.edges.map((rec: { node: Repair }) => {
           const repair = rec.node;
-          return <MachineRepairCard key={repair.id} repair={repair} />;
+          return <TransportationRepairCard key={repair.id} repair={repair} />;
         })}
       </div>
 

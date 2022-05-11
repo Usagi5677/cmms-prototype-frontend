@@ -444,3 +444,31 @@ export const SET_TRANSPORTATION_SPARE_PR_STATUS = gql`
     setTransportationSparePRStatus(id: $id, status: $status)
   }
 `;
+
+export const ADD_TRANSPORTATION_REPAIR = gql`
+  mutation ($transportationId: Int!, $title: String!, $description: String!) {
+    addTransportationRepair(
+      transportationId: $transportationId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const EDIT_TRANSPORTATION_REPAIR = gql`
+  mutation ($id: Int!, $title: String!, $description: String!) {
+    editTransportationRepair(id: $id, title: $title, description: $description)
+  }
+`;
+
+export const DELETE_TRANSPORTATION_REPAIR = gql`
+  mutation ($id: Int!) {
+    deleteTransportationRepair(id: $id)
+  }
+`;
+
+export const SET_TRANSPORTATION_REPAIR_STATUS = gql`
+  mutation ($id: Int!, $status: RepairStatus!) {
+    setTransportationRepairStatus(id: $id, status: $status)
+  }
+`;

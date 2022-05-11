@@ -398,7 +398,6 @@ export const GET_SINGLE_TRANSPORTATION = gql`
   }
 `;
 
-
 export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
   ${USER_FRAGMENT}
   query getAllPeriodicMaintenanceOfTransportation(
@@ -479,6 +478,49 @@ export const GET_ALL_SPARE_PR_OF_TRANSPORTATION = gql`
           status
           completedAt
           createdAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_REPAIR_OF_TRANSPORTATION = gql`
+  ${USER_FRAGMENT}
+  query getAllRepairOfTransportation(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $transportationId: Int!
+  ) {
+    getAllRepairOfTransportation(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      transportationId: $transportationId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          transportationId
+          title
+          description
+          createdAt
+          status
+          completedAt
           completedBy {
             ...UserFields
           }

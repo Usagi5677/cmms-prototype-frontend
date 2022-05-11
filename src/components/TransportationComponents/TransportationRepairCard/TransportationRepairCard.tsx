@@ -2,13 +2,13 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import Repair from "../../../models/Machine/MachineRepair";
-import DeleteMachineRepair from "../DeleteMachineRepair/DeleteMachineRepair";
-import EditMachineRepair from "../EditMachineRepair/EditMachineRepair";
-import MachineRepairStatus from "../MachineRepairStatus/MachineRepairStatus";
-import classes from "./MachineRepairCard.module.css";
+import Repair from "../../../models/Transportation/TransportationRepair";
+import DeleteTransportationRepair from "../DeleteTransportationRepair/DeleteTransportationRepair";
+import EditTransportationRepair from "../EditTransportationRepair/EditTransportationRepair";
+import TransportationRepairStatus from "../TransportationRepairStatus/TransportationRepairStatus";
+import classes from "./TransportationRepairCard.module.css";
 
-const MachineRepairCard = ({ repair }: { repair: Repair }) => {
+const TransportationRepairCard = ({ repair }: { repair: Repair }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -33,15 +33,15 @@ const MachineRepairCard = ({ repair }: { repair: Repair }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditMachineRepair repair={repair} />
-          <DeleteMachineRepair id={repair?.id} />
+          <EditTransportationRepair repair={repair} />
+          <DeleteTransportationRepair id={repair?.id} />
         </div>
         <div className={classes["status"]}>
-          <MachineRepairStatus repair={repair} />
+          <TransportationRepairStatus repair={repair} />
         </div>
       </div>
     </div>
   );
 };
 
-export default MachineRepairCard;
+export default TransportationRepairCard;

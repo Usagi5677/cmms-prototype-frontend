@@ -4,17 +4,17 @@ import { useForm } from "antd/lib/form/Form";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_MACHINE_REPAIR } from "../../../api/mutations";
+import { EDIT_TRANSPORTATION_REPAIR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import Repair from "../../../models/Machine/MachineRepair";
-import classes from "./EditMachineRepair.module.css";
+import Repair from "../../../models/Transportation/TransportationRepair";
+import classes from "./EditTransportationRepair.module.css";
 
-const EditMachineRepair = ({ repair }: { repair: Repair }) => {
+const EditTransportationRepair = ({ repair }: { repair: Repair }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editMachineRepair, { loading: loadingRepair }] = useMutation(
-    EDIT_MACHINE_REPAIR,
+  const [editTransportationRepair, { loading: loadingRepair }] = useMutation(
+    EDIT_TRANSPORTATION_REPAIR,
     {
       onCompleted: () => {
         message.success("Successfully updated repair.");
@@ -23,7 +23,7 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating repair.");
       },
-      refetchQueries: ["getAllRepairOfMachine", "getAllHistoryOfMachine"],
+      refetchQueries: ["getAllRepairOfTransportation", "getAllHistoryOfTransportation"],
     }
   );
 
@@ -44,7 +44,7 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
       return;
     }
 
-    editMachineRepair({
+    editTransportationRepair({
       variables: {
         id: repair.id,
         title,
@@ -133,4 +133,4 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
   );
 };
 
-export default EditMachineRepair;
+export default EditTransportationRepair;

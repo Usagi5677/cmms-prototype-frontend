@@ -1,14 +1,14 @@
 import { useMutation } from "@apollo/client";
 import { message, Select } from "antd";
-import { SET_MACHINE_REPAIR_STATUS } from "../../../api/mutations";
+import { SET_TRANSPORTATION_REPAIR_STATUS } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { RepairStatus } from "../../../models/Enums";
-import Repair from "../../../models/Machine/MachineRepair";
+import Repair from "../../../models/Transportation/TransportationRepair";
 import RepairStatusTag from "../../common/RepairStatusTag";
 
-const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
-  const [setMachineRepairStatus, { loading: settingStatus }] = useMutation(
-    SET_MACHINE_REPAIR_STATUS,
+const TransportationRepairStatus = ({ repair }: { repair: Repair }) => {
+  const [setTransportationRepairStatus, { loading: settingStatus }] = useMutation(
+    SET_TRANSPORTATION_REPAIR_STATUS,
     {
       onCompleted: () => {
         message.success("Successfully updated repair status.");
@@ -16,7 +16,7 @@ const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllRepairOfMachine", "getAllHistoryOfMachine"],
+      refetchQueries: ["getAllRepairOfTransportation", "getAllHistoryOfTransportation"],
     }
   );
 
@@ -39,7 +39,7 @@ const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
         placeholder="Select status"
         value={repair?.status}
         onChange={(status) =>
-          setMachineRepairStatus({
+          setTransportationRepairStatus({
             variables: { id: repair?.id, status },
           })
         }
@@ -56,4 +56,4 @@ const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
   );
 };
 
-export default MachineRepairStatus;
+export default TransportationRepairStatus;

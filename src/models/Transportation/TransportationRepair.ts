@@ -1,8 +1,9 @@
-import { RepairStatus } from "./Enums";
-import User from "./User";
+import { RepairStatus } from "../Enums";
+import User from "../User";
 
-export default interface Repair {
+export default interface TransportationRepair {
   id: number;
+  transportationId: number;
   title: string;
   description: string;
   completedBy?: User;
