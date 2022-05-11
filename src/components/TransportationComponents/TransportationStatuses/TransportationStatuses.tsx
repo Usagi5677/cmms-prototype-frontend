@@ -3,14 +3,11 @@ import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import {
-  ADD_MACHINE_BREAKDOWN,
   ADD_TRANSPORTATION_BREAKDOWN,
-  SET_MACHINE_STATUS,
   SET_TRANSPORTATION_STATUS,
 } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { MachineStatus, TransportationStatus } from "../../../models/Enums";
-import MachineStatusTag from "../../common/MachineStatusTag";
+import { TransportationStatus } from "../../../models/Enums";
 import TransportationStatusTag from "../../common/TransportationStatusTag";
 import classes from "./TransportationStatuses.module.css";
 
@@ -182,7 +179,9 @@ const TransportationStatuses = ({
           onChange={(status) => onChangeClick(status)}
         >
           {(
-            Object.keys(TransportationStatus) as Array<keyof typeof TransportationStatus>
+            Object.keys(TransportationStatus) as Array<
+              keyof typeof TransportationStatus
+            >
           ).map((status: any) => (
             <Select.Option key={status} value={status}>
               <TransportationStatusTag status={status} />

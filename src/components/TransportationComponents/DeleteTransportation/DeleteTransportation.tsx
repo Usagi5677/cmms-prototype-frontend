@@ -13,7 +13,7 @@ const DeleteTransportation = ({ transportationID }: { transportationID: number }
   const [removeTransportation, { loading: deleting }] = useMutation(DELETE_TRANSPORTATION, {
     onCompleted: () => {
       message.success("Successfully removed transportation.");
-      navigate("/vessels");
+      navigate("/transportation/vessels");
     },
     onError: (error) => {
       errorMessage(error, "Unexpected error while removing machine.");
