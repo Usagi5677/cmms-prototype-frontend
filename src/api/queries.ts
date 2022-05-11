@@ -572,3 +572,44 @@ export const GET_ALL_BREAKDOWN_OF_TRANSPORTATION = gql`
     }
   }
 `;
+
+export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
+  ${USER_FRAGMENT}
+  query getAllHistoryOfTransportation(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $transportationId: Int!
+  ) {
+    getAllHistoryOfTransportation(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      transportationId: $transportationId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          transportationId
+          type
+          description
+          createdAt
+          completedBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;

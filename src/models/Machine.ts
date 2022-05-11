@@ -1,6 +1,6 @@
 import ChecklistItem from "./ChecklistItem";
 import { MachineStatus } from "./Enums";
-import History from "./History";
+import MachineHistory from "./Machine/MachineHistory";
 import MachinePeriodicMaintenance from "./Machine/MachinePeriodicMaintenance";
 import User from "./User";
 import MachineSparePR from "./Machine/MachineSparePR";
@@ -28,5 +28,5 @@ export default interface Machine {
   repairs: MachineRepair[];
   breakdowns: MachineBreakdown[];
   sparePRs: MachineSparePR[];
-  histories: History[];
+  histories: MachineHistory[];
 }

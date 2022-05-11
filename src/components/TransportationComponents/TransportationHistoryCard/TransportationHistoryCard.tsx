@@ -2,10 +2,10 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import History from "../../../models/Machine/MachineHistory";
-import classes from "./MachineHistoryCard.module.css";
+import History from "../../../models/Transportation/TransportationHistory";
+import classes from "./TransportationHistoryCard.module.css";
 
-const MachineHistoryCard = ({ history }: { history: History }) => {
+const TransportationHistoryCard = ({ history }: { history: History }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -41,4 +41,4 @@ const MachineHistoryCard = ({ history }: { history: History }) => {
   );
 };
 
-export default MachineHistoryCard;
+export default TransportationHistoryCard;

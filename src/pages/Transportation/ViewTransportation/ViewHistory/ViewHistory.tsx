@@ -1,15 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { GET_ALL_HISTORY_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_HISTORY_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import MachineHistoryCard from "../../../../components/MachineComponents/MachineHistoryCard/MachineHistoryCard";
+import TransportationHistoryCard from "../../../../components/TransportationComponents/TransportationHistoryCard/TransportationHistoryCard";
 import { errorMessage } from "../../../../helpers/gql";
-import History from "../../../../models/Machine/MachineHistory";
+import History from "../../../../models/Transportation/TransportationHistory";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewHistory.module.css";
 
-const ViewHistory = ({ machineID }: { machineID: number }) => {
+const ViewHistory = ({ transportationID }: { transportationID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -17,7 +17,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      machineId: number;
+      transportationId: number;
     }
   >({
     first: 3,
@@ -25,11 +25,11 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     before: null,
     after: null,
     search: "",
-    machineId: machineID,
+    transportationId: transportationID,
   });
 
-  const [getAllHistoryOfMachine, { data, loading }] = useLazyQuery(
-    GET_ALL_HISTORY_OF_MACHINE,
+  const [getAllHistoryOfTransportation, { data, loading }] = useLazyQuery(
+    GET_ALL_HISTORY_OF_TRANSPORTATION,
     {
       onError: (err) => {
         errorMessage(err, "Error loading history.");
@@ -41,8 +41,8 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
 
   // Fetch history when component mounts or when the filter object changes
   useEffect(() => {
-    getAllHistoryOfMachine({ variables: filter });
-  }, [filter, getAllHistoryOfMachine]);
+    getAllHistoryOfTransportation({ variables: filter });
+  }, [filter, getAllHistoryOfTransportation]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -98,7 +98,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllHistoryOfMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllHistoryOfTransportation.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
@@ -108,9 +108,9 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllHistoryOfMachine.edges.map((rec: { node: History }) => {
+        {data?.getAllHistoryOfTransportation.edges.map((rec: { node: History }) => {
           const history = rec.node;
-          return <MachineHistoryCard key={history.id} history={history} />;
+          return <TransportationHistoryCard key={history.id} history={history} />;
         })}
       </div>
 
