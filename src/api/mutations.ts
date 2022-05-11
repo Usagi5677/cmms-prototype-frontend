@@ -321,16 +321,6 @@ export const SET_TRANSPORTATION_STATUS = gql`
   }
 `;
 
-export const ADD_TRANSPORTATION_BREAKDOWN = gql`
-  mutation ($transportationId: Int!, $title: String!, $description: String!) {
-    addTransportationBreakdown(
-      transportationId: $transportationId
-      title: $title
-      description: $description
-    )
-  }
-`;
-
 export const ADD_TRANSPORTATION_CHECKLIST_ITEM = gql`
   mutation ($transportationId: Int!, $description: String!, $type: String!) {
     addTransportationChecklistItem(
@@ -470,5 +460,37 @@ export const DELETE_TRANSPORTATION_REPAIR = gql`
 export const SET_TRANSPORTATION_REPAIR_STATUS = gql`
   mutation ($id: Int!, $status: RepairStatus!) {
     setTransportationRepairStatus(id: $id, status: $status)
+  }
+`;
+
+export const ADD_TRANSPORTATION_BREAKDOWN = gql`
+  mutation ($transportationId: Int!, $title: String!, $description: String!) {
+    addTransportationBreakdown(
+      transportationId: $transportationId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const EDIT_TRANSPORTATION_BREAKDOWN = gql`
+  mutation ($id: Int!, $title: String!, $description: String!) {
+    editTransportationBreakdown(
+      id: $id
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const DELETE_TRANSPORTATION_BREAKDOWN = gql`
+  mutation ($id: Int!) {
+    deleteTransportationBreakdown(id: $id)
+  }
+`;
+
+export const SET_TRANSPORTATION_BREAKDOWN_STATUS = gql`
+  mutation ($id: Int!, $status: BreakdownStatus!) {
+    setTransportationBreakdownStatus(id: $id, status: $status)
   }
 `;

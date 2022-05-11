@@ -1,12 +1,11 @@
-import Breakdown from "./Breakdown";
 import ChecklistItem from "./ChecklistItem";
 import { TransportationStatus } from "./Enums";
 import History from "./History";
-
 import User from "./User";
 import TransportationPeriodicMaintenance from "./Transportation/TransportationPeriodicMaintenance";
 import TransportationSparePR from "./Transportation/TransportationSparePR";
 import TransportationRepair from "./Transportation/TransportationRepair";
+import TransportationBreakdown from "./Transportation/TransportationBreakdown";
 
 export default interface Transportation {
   id: number;
@@ -30,7 +29,7 @@ export default interface Transportation {
   checklistItems: ChecklistItem[];
   periodicMaintenancePlans: TransportationPeriodicMaintenance[];
   repairs: TransportationRepair[];
-  breakdowns: Breakdown[];
+  breakdowns: TransportationBreakdown[];
   sparePRs: TransportationSparePR[];
   histories: History[];
 }

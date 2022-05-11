@@ -1,8 +1,9 @@
-import { BreakdownStatus } from "./Enums";
-import User from "./User";
+import { BreakdownStatus } from "../Enums";
+import User from "../User";
 
-export default interface Breakdown {
+export default interface MachineBreakdown {
   id: number;
+  machineId: number;
   title: string;
   description: string;
   completedBy?: User;

@@ -4,18 +4,17 @@ import { useForm } from "antd/lib/form/Form";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_MACHINE_BREAKDOWN } from "../../../api/mutations";
+import { EDIT_TRANSPORTATION_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import Breakdown from "../../../models/Machine/MachineBreakdown";
-import classes from "./EditMachineBreakdown.module.css";
+import Breakdown from "../../../models/Transportation/TransportationBreakdown";
+import classes from "./EditTransportationBreakdown.module.css";
 
-const EditMachineBreakdown = ({ breakdown }: { breakdown: Breakdown }) => {
+const EditTransportationBreakdown = ({ breakdown }: { breakdown: Breakdown }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editMachineBreakdown, { loading: loadingBreakdown }] = useMutation(
-    EDIT_MACHINE_BREAKDOWN,
-    {
+  const [editTransportationBreakdown, { loading: loadingBreakdown }] =
+    useMutation(EDIT_TRANSPORTATION_BREAKDOWN, {
       onCompleted: () => {
         message.success("Successfully updated breakdown.");
         handleCancel();
@@ -23,9 +22,11 @@ const EditMachineBreakdown = ({ breakdown }: { breakdown: Breakdown }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating breakdown.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine", "getAllHistoryOfMachine"],
-    }
-  );
+      refetchQueries: [
+        "getAllBreakdownOfTransportation",
+        "getAllHistoryOfTransportation",
+      ],
+    });
 
   const handleCancel = () => {
     form.resetFields();
@@ -44,7 +45,7 @@ const EditMachineBreakdown = ({ breakdown }: { breakdown: Breakdown }) => {
       return;
     }
 
-    editMachineBreakdown({
+    editTransportationBreakdown({
       variables: {
         id: breakdown.id,
         title,
@@ -133,4 +134,4 @@ const EditMachineBreakdown = ({ breakdown }: { breakdown: Breakdown }) => {
   );
 };
 
-export default EditMachineBreakdown;
+export default EditTransportationBreakdown;

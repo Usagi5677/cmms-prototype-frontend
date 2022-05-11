@@ -2,13 +2,14 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import Breakdown from "../../../models/Machine/MachineBreakdown";
-import DeleteMachineBreakdown from "../DeleteMachineBreakdown/DeleteMachineBreakdown";
-import EditMachineBreakdown from "../EditMachineBreakdown/EditMachineBreakdown";
-import MachineBreakdownStatus from "../MachineBreakdownStatus/MachineBreakdownStatus";
-import classes from "./MachineBreakdownCard.module.css";
+import Breakdown from "../../../models/Transportation/TransportationBreakdown";
+import DeleteTransportationBreakdown from "../DeleteTransportationBreakdown/DeleteMachineBreakdown";
+import EditTransportationBreakdown from "../EditTransportationBreakdown/EditTransportationBreakdown";
+import TransportationBreakdownStatus from "../TransportationBreakdownStatus/TransportationBreakdownStatus";
 
-const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
+import classes from "./TransportationBreakdownCard.module.css";
+
+const TransportationBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -33,15 +34,15 @@ const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditMachineBreakdown breakdown={breakdown} />
-          <DeleteMachineBreakdown id={breakdown?.id} />
+          <EditTransportationBreakdown breakdown={breakdown} />
+          <DeleteTransportationBreakdown id={breakdown?.id} />
         </div>
         <div className={classes["status"]}>
-          <MachineBreakdownStatus breakdown={breakdown} />
+          <TransportationBreakdownStatus breakdown={breakdown} />
         </div>
       </div>
     </div>
   );
 };
 
-export default MachineBreakdownCard;
+export default TransportationBreakdownCard;

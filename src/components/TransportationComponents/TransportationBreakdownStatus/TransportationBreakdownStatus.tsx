@@ -1,14 +1,18 @@
 import { useMutation } from "@apollo/client";
 import { message, Select } from "antd";
-import { SET_MACHINE_BREAKDOWN_STATUS } from "../../../api/mutations";
+import { SET_TRANSPORTATION_BREAKDOWN_STATUS } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import Breakdown from "../../../models/Machine/MachineBreakdown";
+import Breakdown from "../../../models/Transportation/TransportationBreakdown";
 import { BreakdownStatus } from "../../../models/Enums";
 import BreakdownStatusTag from "../../common/BreakdownStatusTag";
 
-const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
-  const [setMachineBreakdownStatus, { loading: settingStatus }] = useMutation(
-    SET_MACHINE_BREAKDOWN_STATUS,
+const TransportationBreakdownStatus = ({
+  breakdown,
+}: {
+  breakdown: Breakdown;
+}) => {
+  const [setTransportationBreakdownStatus, { loading: settingStatus }] = useMutation(
+    SET_TRANSPORTATION_BREAKDOWN_STATUS,
     {
       onCompleted: () => {
         message.success("Successfully updated breakdown status.");
@@ -17,9 +21,9 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
         errorMessage(error, "Unexpected error occured.");
       },
       refetchQueries: [
-        "getAllBreakdownOfMachine",
-        "getSingleMachine",
-        "getAllHistoryOfMachine",
+        "getAllBreakdownOfTransportation",
+        "getSingleTransportation",
+        "getAllHistoryOfTransportation",
       ],
     }
   );
@@ -43,7 +47,7 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
         placeholder="Select status"
         value={breakdown?.status}
         onChange={(status) =>
-          setMachineBreakdownStatus({
+          setTransportationBreakdownStatus({
             variables: { id: breakdown?.id, status },
           })
         }
@@ -60,4 +64,4 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
   );
 };
 
-export default MachineBreakdownStatus;
+export default TransportationBreakdownStatus;

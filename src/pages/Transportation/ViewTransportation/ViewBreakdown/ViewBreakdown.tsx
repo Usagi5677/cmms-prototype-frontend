@@ -1,16 +1,16 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { GET_ALL_BREAKDOWN_OF_MACHINE } from "../../../../api/queries";
+import { GET_ALL_BREAKDOWN_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachineBreakdown from "../../../../components/MachineComponents/AddMachineBreakdown/AddMachineBreakdown";
-import MachineBreakdownCard from "../../../../components/MachineComponents/MachineBreakdownCard/MachineBreakdownCard";
+import AddTransportationBreakdown from "../../../../components/TransportationComponents/AddTransportationBreakdown/AddTransportationBreakdown";
+import TransportationBreakdownCard from "../../../../components/TransportationComponents/TransportationBreakdownCard/TransportationBreakdownCard";
 import { errorMessage } from "../../../../helpers/gql";
-import Breakdown from "../../../../models/Machine/MachineBreakdown";
+import Breakdown from "../../../../models/Transportation/TransportationBreakdown";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
 
-const ViewBreakdown = ({ machineID }: { machineID: number }) => {
+const ViewBreakdown = ({ transportationID }: { transportationID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -18,7 +18,7 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      machineId: number;
+      transportationId: number;
     }
   >({
     first: 3,
@@ -26,11 +26,11 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
     before: null,
     after: null,
     search: "",
-    machineId: machineID,
+    transportationId: transportationID,
   });
 
-  const [getAllBreakdownOfMachine, { data, loading }] = useLazyQuery(
-    GET_ALL_BREAKDOWN_OF_MACHINE,
+  const [getAllBreakdownOfTransportation, { data, loading }] = useLazyQuery(
+    GET_ALL_BREAKDOWN_OF_TRANSPORTATION,
     {
       onError: (err) => {
         errorMessage(err, "Error loading breakdown.");
@@ -42,8 +42,8 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
 
   // Fetch breakdowns when component mounts or when the filter object changes
   useEffect(() => {
-    getAllBreakdownOfMachine({ variables: filter });
-  }, [filter, getAllBreakdownOfMachine]);
+    getAllBreakdownOfTransportation({ variables: filter });
+  }, [filter, getAllBreakdownOfTransportation]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -99,12 +99,12 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllBreakdownOfMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllBreakdownOfTransportation.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineBreakdown machineID={machineID} />
+        <AddTransportationBreakdown transportationID={transportationID} />
       </div>
       {loading && (
         <div>
@@ -112,11 +112,14 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllBreakdownOfMachine.edges.map(
+        {data?.getAllBreakdownOfTransportation.edges.map(
           (rec: { node: Breakdown }) => {
             const breakdown = rec.node;
             return (
-              <MachineBreakdownCard key={breakdown.id} breakdown={breakdown} />
+              <TransportationBreakdownCard
+                key={breakdown.id}
+                breakdown={breakdown}
+              />
             );
           }
         )}
