@@ -113,7 +113,7 @@ const AddTransportationAttachment = ({ transportationID }: { transportationID: n
         search: "",
         transportationId: transportationID,
       });
-    }, 1000);
+    }, 6000);
   };
   return (
     <>
