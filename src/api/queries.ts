@@ -657,3 +657,44 @@ export const GET_ALL_ATTACHMENT_OF_TRANSPORTATION = gql`
     }
   }
 `;
+
+
+export const GET_ALL_ROLES = gql`
+  ${USER_FRAGMENT}
+  query getAllRoles(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+  ) {
+    getAllRoles(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          permissionRoles {
+            permission
+          }
+          createdAt
+          createdBy {
+            ...UserFields
+          }
+        }
+      }
+    }
+  }
+`;

@@ -20,6 +20,7 @@ import { ME_QUERY } from "./api/queries";
 import { message } from "antd";
 import jwtDecode from "jwt-decode";
 import ViewTransportation from "./pages/Transportation/ViewTransportation/ViewTransportation";
+import Roles from "./pages/Role/Roles";
 
 function App() {
   {
@@ -150,6 +151,7 @@ function App() {
             <Route path="/transportation/vessels" element={<ViewAllVessel />} />
             <Route path="/transportation/vehicles" element={<ViewAllVehicle />} />
             <Route path="/transportation/:id" element={<ViewTransportation />} />
+            <Route path="/roles" element={<Roles />} />
             <Route path="/division" element={<Division />} />
             <Route path="/breakdown" element={<Breakdown />} />
             <Route path="/service" element={<Service />} />

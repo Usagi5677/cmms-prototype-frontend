@@ -506,3 +506,27 @@ export const DELETE_TRANSPORTATION_ATTACHMENT = gql`
     removeTransportationAttachment(id: $id)
   }
 `;
+
+export const ADD_ROLE = gql`
+  mutation ($name: String!) {
+    addRole(name: $name)
+  }
+`;
+
+export const EDIT_ROLE = gql`
+  mutation ($id: Int!, $name: String!) {
+    editRole(id: $id, name: $name)
+  }
+`;
+
+export const DELETE_ROLE = gql`
+  mutation ($id: Int!) {
+    removeRole(id: $id)
+  }
+`;
+
+export const ASSIGN_PERMISSION = gql`
+  mutation ($roleId: Int!, $permissions: [Permission!]!) {
+    assignPermission(roleId: $roleId, permissions: $permissions)
+  }
+`;

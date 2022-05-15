@@ -1,6 +1,7 @@
-import Site from "./Site";
+import PermissionRole from "./PermissionRole";
 
 export default interface UserRole {
-  site: Site;
+  roleId: number;
   role: string;
+  permission: PermissionRole;
 }

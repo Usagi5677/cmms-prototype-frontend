@@ -1,18 +1,20 @@
 import { Spin } from "antd";
-import Search from "../../../components/common/Search";
+
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
-import PaginationArgs from "../../../models/PaginationArgs";
-import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_TRANSPORTATION } from "../../../api/queries";
-import { PAGE_LIMIT } from "../../../helpers/constants";
-import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import classes from "./ViewAllVehicle.module.css";
-import Transportation from "../../../models/Transportation";
-import TransportationCard from "../../../components/TransportationComponents/TransportationCard/TransportationCard";
-import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
+import classes from "./Roles.module.css";
+import PaginationArgs from "../../models/PaginationArgs";
+import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
+import { errorMessage } from "../../helpers/gql";
+import { PAGE_LIMIT } from "../../helpers/constants";
+import Search from "../../components/common/Search";
+import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
+import User from "../../models/User";
+import Role from "../../models/Role";
+import RoleCard from "../../components/RoleComponents/RoleCard/RoleCard";
+import { GET_ALL_ROLES } from "../../api/queries";
+import AddRole from "../../components/RoleComponents/AddRole/AddRole";
 
 const Vehicles = () => {
   const [page, setPage] = useState(1);
@@ -22,29 +24,24 @@ const Vehicles = () => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      transportType: string;
     }
   >({
     ...DefaultPaginationArgs,
     search: "",
-    transportType: "Vehicle",
   });
 
-  const [getAllTransportation, { data, loading }] = useLazyQuery(
-    ALL_TRANSPORTATION,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading vessels.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
+  const [getAllRoles, { data, loading }] = useLazyQuery(GET_ALL_ROLES, {
+    onError: (err) => {
+      errorMessage(err, "Error loading roles.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
-  // Fetch transportation when component mounts or when the filter object changes
+  // Fetch roles when component mounts or when the filter object changes
   useEffect(() => {
-    getAllTransportation({ variables: filter });
-  }, [filter, getAllTransportation]);
+    getAllRoles({ variables: filter });
+  }, [filter, getAllRoles]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -97,7 +94,7 @@ const Vehicles = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllTransportation.pageInfo ?? {};
+  const pageInfo = data?.getAllRoles.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
@@ -108,7 +105,9 @@ const Vehicles = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-transportation-wrapper"]}>
-          <AddTransportation />
+          <div>
+            <AddRole />
+          </div>
         </div>
       </div>
       {loading && (
@@ -116,13 +115,9 @@ const Vehicles = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportation.edges.map((rec: { node: Transportation }) => {
-        const transportation = rec.node;
-        return (
-          <Link to={"/transportation/" + transportation.id} key={transportation.id}>
-            <TransportationCard transportation={transportation} />
-          </Link>
-        );
+      {data?.getAllRoles.edges.map((rec: { node: Role }) => {
+        const roles = rec.node;
+        return <RoleCard key={roles.id} role={roles} />;
       })}
       <PaginationButtons
         pageInfo={pageInfo}

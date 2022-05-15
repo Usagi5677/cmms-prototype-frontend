@@ -11,7 +11,8 @@ import {
   FaUsers,
   FaWrench,
   FaTruck,
-  FaTractor
+  FaTractor,
+  FaLock
 } from "react-icons/fa";
 import { BsPeopleFill } from "react-icons/bs";
 import { IoLocationSharp} from "react-icons/io5";
@@ -65,6 +66,15 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "divider2",
     },
     {
+      name: "Roles",
+      path: "/roles",
+      icon: <FaLock />,
+    },
+    {
+      name: "Divider",
+      path: "divider3",
+    },
+    {
       name: "Division",
       path: "/division",
       icon: <BsPeopleFill />,
@@ -86,7 +96,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
     {
       name: "Divider",
-      path: "divider3",
+      path: "divider4",
     },
   ];
 

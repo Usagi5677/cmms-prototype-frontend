@@ -32,3 +32,13 @@ export enum PeriodicMaintenanceStatus {
   Pending = "Pending",
   Missed = "Missed",
 }
+
+
+export enum PermissionEnum {
+  ADD_MACHINE = "ADD_MACHINE",
+  EDIT_MACHINE = "EDIT_MACHINE",
+  DELETE_MACHINE = "DELETE_MACHINE",
+  ADD_TRANSPORTATION = "ADD_TRANSPORTATION",
+  EDIT_TRANSPORTATION = "EDIT_TRANSPORTATION",
+  DELETE_TRANSPORTATION = "DELETE_TRANSPORTATION",
+}
