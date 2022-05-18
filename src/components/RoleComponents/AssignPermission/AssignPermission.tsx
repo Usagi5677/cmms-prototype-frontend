@@ -88,8 +88,8 @@ const AssignPermission = ({ role }: { role: Role }) => {
             onFinish={onFinish}
             id="myForm"
           >
-            <Form.Item label="Permissions" name="permissions">
-              <Row>
+            <Form.Item name="permissions">
+              <div className={classes["checkbox-wrapper"]}>
                 {(
                   Object.keys(PermissionEnum) as Array<
                     keyof typeof PermissionEnum
@@ -102,7 +102,7 @@ const AssignPermission = ({ role }: { role: Role }) => {
                     }
                   });
                   return (
-                    <Col span={8} key={index}>
+                    <div key={index}>
                       <Checkbox
                         defaultChecked={exist}
                         onChange={(e) =>
@@ -111,10 +111,10 @@ const AssignPermission = ({ role }: { role: Role }) => {
                       >
                         {PermissionEnum[key]}
                       </Checkbox>
-                    </Col>
+                    </div>
                   );
                 })}
-              </Row>
+              </div>
             </Form.Item>
 
             <Row justify="end" gutter={16}>

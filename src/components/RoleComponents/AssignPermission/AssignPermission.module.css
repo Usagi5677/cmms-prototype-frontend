@@ -40,3 +40,22 @@
 .info-edit:hover {
   color: var(--primary);
 }
+
+.checkbox-wrapper {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media only screen and (min-width: 500px) {
+  .checkbox-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .checkbox-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
