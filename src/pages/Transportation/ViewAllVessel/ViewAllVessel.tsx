@@ -107,7 +107,7 @@ const Vessels = () => {
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
         />
-        <div className={classes["add-transportation-wrapper"]}>
+        <div className={classes["add-wrapper"]}>
           <AddTransportation />
         </div>
       </div>

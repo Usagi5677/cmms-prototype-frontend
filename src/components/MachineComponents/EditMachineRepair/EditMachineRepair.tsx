@@ -65,6 +65,7 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
           title={"Edit Repair"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -72,6 +73,7 @@ const EditMachineRepair = ({ repair }: { repair: Repair }) => {
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Title"

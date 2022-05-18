@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import {
+  APS_USER_FRAGMENT,
   MACHINE_FRAGMENT,
   TRANSPORTATION_FRAGMENT,
   USER_FRAGMENT,
@@ -13,6 +14,16 @@ export const ME_QUERY = gql`
       fullName
       email
       userId
+      roles {
+        roleId
+        role {
+          id
+          name
+          permissionRoles {
+            permission
+          }
+        }
+      }
     }
   }
 `;
@@ -25,7 +36,6 @@ export const ALL_MACHINES = gql`
     $first: Int
     $last: Int
     $search: String
-    $createdByUserId: String
   ) {
     getAllMachine(
       after: $after
@@ -33,7 +43,6 @@ export const ALL_MACHINES = gql`
       first: $first
       last: $last
       search: $search
-      createdByUserId: $createdByUserId
     ) {
       pageInfo {
         endCursor
@@ -53,7 +62,7 @@ export const ALL_MACHINES = gql`
 
 export const GET_SINGLE_MACHINE = gql`
   ${MACHINE_FRAGMENT}
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getSingleMachine($machineId: Int!) {
     getSingleMachine(machineId: $machineId) {
       ...MachineFields
@@ -63,7 +72,7 @@ export const GET_SINGLE_MACHINE = gql`
         type
         completedAt
         completedBy {
-          ...UserFields
+          ...UserFieldsAPS
         }
       }
     }
@@ -71,7 +80,7 @@ export const GET_SINGLE_MACHINE = gql`
 `;
 
 export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllPeriodicMaintenanceOfMachine(
     $after: String
     $before: String
@@ -107,7 +116,7 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           completedAt
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -116,7 +125,7 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
 `;
 
 export const GET_ALL_SPARE_PR_OF_MACHINE = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllSparePROfMachine(
     $after: String
     $before: String
@@ -151,7 +160,7 @@ export const GET_ALL_SPARE_PR_OF_MACHINE = gql`
           completedAt
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -160,7 +169,7 @@ export const GET_ALL_SPARE_PR_OF_MACHINE = gql`
 `;
 
 export const GET_ALL_REPAIR_OF_MACHINE = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllRepairOfMachine(
     $after: String
     $before: String
@@ -194,7 +203,7 @@ export const GET_ALL_REPAIR_OF_MACHINE = gql`
           status
           completedAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -203,7 +212,7 @@ export const GET_ALL_REPAIR_OF_MACHINE = gql`
 `;
 
 export const GET_ALL_BREAKDOWN_OF_MACHINE = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllBreakdownOfMachine(
     $after: String
     $before: String
@@ -237,7 +246,7 @@ export const GET_ALL_BREAKDOWN_OF_MACHINE = gql`
           status
           completedAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -246,7 +255,7 @@ export const GET_ALL_BREAKDOWN_OF_MACHINE = gql`
 `;
 
 export const GET_ALL_HISTORY_OF_MACHINE = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllHistoryOfMachine(
     $after: String
     $before: String
@@ -278,7 +287,7 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
           description
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -300,7 +309,7 @@ export const SINGLE_MACHINE_ATTACHMENT = gql`
 `;
 
 export const GET_ALL_ATTACHMENT_OF_MACHINE = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query machineAttachments(
     $after: String
     $before: String
@@ -335,7 +344,7 @@ export const GET_ALL_ATTACHMENT_OF_MACHINE = gql`
           mode
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -381,7 +390,7 @@ export const ALL_TRANSPORTATION = gql`
 
 export const GET_SINGLE_TRANSPORTATION = gql`
   ${TRANSPORTATION_FRAGMENT}
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getSingleTransportation($transportationId: Int!) {
     getSingleTransportation(transportationId: $transportationId) {
       ...TransportationFields
@@ -391,7 +400,7 @@ export const GET_SINGLE_TRANSPORTATION = gql`
         type
         completedAt
         completedBy {
-          ...UserFields
+          ...UserFieldsAPS
         }
       }
     }
@@ -399,7 +408,7 @@ export const GET_SINGLE_TRANSPORTATION = gql`
 `;
 
 export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllPeriodicMaintenanceOfTransportation(
     $after: String
     $before: String
@@ -435,7 +444,7 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
           completedAt
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -444,7 +453,7 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
 `;
 
 export const GET_ALL_SPARE_PR_OF_TRANSPORTATION = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllSparePROfTransportation(
     $after: String
     $before: String
@@ -479,7 +488,7 @@ export const GET_ALL_SPARE_PR_OF_TRANSPORTATION = gql`
           completedAt
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -488,7 +497,7 @@ export const GET_ALL_SPARE_PR_OF_TRANSPORTATION = gql`
 `;
 
 export const GET_ALL_REPAIR_OF_TRANSPORTATION = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllRepairOfTransportation(
     $after: String
     $before: String
@@ -522,7 +531,7 @@ export const GET_ALL_REPAIR_OF_TRANSPORTATION = gql`
           status
           completedAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -531,7 +540,7 @@ export const GET_ALL_REPAIR_OF_TRANSPORTATION = gql`
 `;
 
 export const GET_ALL_BREAKDOWN_OF_TRANSPORTATION = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllBreakdownOfTransportation(
     $after: String
     $before: String
@@ -565,7 +574,7 @@ export const GET_ALL_BREAKDOWN_OF_TRANSPORTATION = gql`
           status
           completedAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -574,7 +583,7 @@ export const GET_ALL_BREAKDOWN_OF_TRANSPORTATION = gql`
 `;
 
 export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllHistoryOfTransportation(
     $after: String
     $before: String
@@ -606,7 +615,7 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
           description
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -615,7 +624,7 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
 `;
 
 export const GET_ALL_ATTACHMENT_OF_TRANSPORTATION = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query transportationAttachments(
     $after: String
     $before: String
@@ -650,7 +659,7 @@ export const GET_ALL_ATTACHMENT_OF_TRANSPORTATION = gql`
           mode
           createdAt
           completedBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
@@ -658,9 +667,8 @@ export const GET_ALL_ATTACHMENT_OF_TRANSPORTATION = gql`
   }
 `;
 
-
 export const GET_ALL_ROLES = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   query getAllRoles(
     $after: String
     $before: String
@@ -691,10 +699,71 @@ export const GET_ALL_ROLES = gql`
           }
           createdAt
           createdBy {
-            ...UserFields
+            ...UserFieldsAPS
           }
         }
       }
+    }
+  }
+`;
+
+export const SEARCH_APS_QUERY = gql`
+  ${APS_USER_FRAGMENT}
+  query search($query: String!) {
+    searchAPSUsers(query: $query) {
+      ...UserFieldsAPS
+      roles {
+        id
+      }
+    }
+  }
+`;
+
+export const GET_ALL_USERS = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllUsers(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+  ) {
+    getAllUsers(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...UserFieldsAPS
+          roles {
+            roleId
+            userId
+            role {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ROLES = gql`
+  query getRoles {
+    getRoles {
+      id
+      name
     }
   }
 `;

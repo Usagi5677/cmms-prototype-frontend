@@ -66,6 +66,7 @@ const EditTransportationBreakdown = ({ breakdown }: { breakdown: Breakdown }) =>
           title={"Edit Breakdown"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -73,6 +74,7 @@ const EditTransportationBreakdown = ({ breakdown }: { breakdown: Breakdown }) =>
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Title"

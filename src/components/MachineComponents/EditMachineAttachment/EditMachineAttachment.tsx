@@ -60,6 +60,7 @@ const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }
           title={"Edit Attachment"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -67,6 +68,7 @@ const EditMachineAttachment = ({ attachment }: { attachment: MachineAttachment }
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Description"

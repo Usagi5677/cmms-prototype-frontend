@@ -10,13 +10,12 @@ import { errorMessage } from "../../helpers/gql";
 import { PAGE_LIMIT } from "../../helpers/constants";
 import Search from "../../components/common/Search";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
-import User from "../../models/User";
 import Role from "../../models/Role";
 import RoleCard from "../../components/RoleComponents/RoleCard/RoleCard";
 import { GET_ALL_ROLES } from "../../api/queries";
 import AddRole from "../../components/RoleComponents/AddRole/AddRole";
 
-const Vehicles = () => {
+const Roles = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +103,7 @@ const Vehicles = () => {
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
         />
-        <div className={classes["add-transportation-wrapper"]}>
+        <div className={classes["add-wrapper"]}>
           <div>
             <AddRole />
           </div>
@@ -129,4 +128,4 @@ const Vehicles = () => {
   );
 };
 
-export default Vehicles;
+export default Roles;

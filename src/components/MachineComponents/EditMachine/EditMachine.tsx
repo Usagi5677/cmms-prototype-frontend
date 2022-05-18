@@ -120,6 +120,7 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
         title={"Edit Machine"}
         width="90vw"
         style={{ maxWidth: 700 }}
+        destroyOnClose={true}
       >
         <Form
           form={form}
@@ -127,6 +128,7 @@ const EditMachine = ({ machine }: { machine: MachineEditData }) => {
           name="basic"
           onFinish={onFinish}
           id="myForm"
+          preserve={false}
         >
           <Row>
             <Col span={12}>

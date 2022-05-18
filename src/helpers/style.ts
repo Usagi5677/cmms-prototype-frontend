@@ -6,6 +6,14 @@ export const stringToColor = (str: string) => {
   return `hsl(${hash % 360}, 30%, 40%)`;
 };
 
+export const RoleTagStringToColor = (str: string) => {
+  let hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 7) - hash) + str.length;
+  }
+  return `hsl(${hash % 360}, 30%, 40%, .3)`;
+};
+
 export const statusColors = (status: string) => {
   let color = "grey";
   let bgColor = "white";

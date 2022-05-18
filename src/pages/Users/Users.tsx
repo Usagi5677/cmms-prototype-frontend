@@ -1,50 +1,46 @@
-import { Spin } from "antd";
-import Search from "../../../components/common/Search";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
-import PaginationArgs from "../../../models/PaginationArgs";
-import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_TRANSPORTATION } from "../../../api/queries";
-import { PAGE_LIMIT } from "../../../helpers/constants";
-import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import classes from "./ViewAllVehicle.module.css";
-import Transportation from "../../../models/Transportation";
-import TransportationCard from "../../../components/TransportationComponents/TransportationCard/TransportationCard";
-import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Spin } from "antd";
+import { errorMessage } from "../../helpers/gql";
+import UserContext from "../../contexts/UserContext";
+import Search from "../../components/common/Search";
+import PaginationArgs from "../../models/PaginationArgs";
+import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
+import classes from "./Users.module.css";
+import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
+import { PAGE_LIMIT } from "../../helpers/constants";
+import AddUserRoles from "../../components/UserComponents/AddUserRoles/AddUserRoles";
+import { GET_ALL_USERS } from "../../api/queries";
+import User from "../../models/User";
+import UserCard from "../../components/UserComponents/UserCard/UserCard";
 
-const Vehicles = () => {
+const Users = () => {
+  const { user } = useContext(UserContext);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  // Filter has an intersection type as it has PaginationArgs + other args
+
+  const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      transportType: string;
     }
   >({
     ...DefaultPaginationArgs,
     search: "",
-    transportType: "Vehicle",
   });
 
-  const [getAllTransportation, { data, loading }] = useLazyQuery(
-    ALL_TRANSPORTATION,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading vessels.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
+  const [getAllUsers, { data, loading }] = useLazyQuery(GET_ALL_USERS, {
+    onError: (err) => {
+      errorMessage(err, "Error loading app users.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
-  // Fetch transportation when component mounts or when the filter object changes
+  // Fetch users when component mounts
   useEffect(() => {
-    getAllTransportation({ variables: filter });
-  }, [filter, getAllTransportation]);
+    getAllUsers({ variables: filter });
+  }, [filter, getAllUsers]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -96,9 +92,8 @@ const Vehicles = () => {
     });
     setPage(page - 1);
   };
-
-  const pageInfo = data?.getAllTransportation.pageInfo ?? {};
-
+  
+  const pageInfo = data?.getAllUsers?.pageInfo ?? {};
   return (
     <div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
@@ -108,7 +103,7 @@ const Vehicles = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-wrapper"]}>
-          <AddTransportation />
+          <AddUserRoles/>
         </div>
       </div>
       {loading && (
@@ -116,12 +111,10 @@ const Vehicles = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportation.edges.map((rec: { node: Transportation }) => {
-        const transportation = rec.node;
+      {data?.getAllUsers.edges.map((rec: { node: User }) => {
+        const userData = rec.node;
         return (
-          <Link to={"/transportation/" + transportation.id} key={transportation.id}>
-            <TransportationCard transportation={transportation} />
-          </Link>
+          <UserCard userData={userData} key={userData.id} />
         );
       })}
       <PaginationButtons
@@ -134,4 +127,4 @@ const Vehicles = () => {
   );
 };
 
-export default Vehicles;
+export default Users;

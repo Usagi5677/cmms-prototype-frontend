@@ -80,6 +80,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
           title={"Edit Spare PR"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -87,6 +88,7 @@ const EditMachineSparePR = ({ sparePR }: { sparePR: SparePR }) => {
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Title"

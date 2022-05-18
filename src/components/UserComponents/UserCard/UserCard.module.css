@@ -25,16 +25,8 @@
   font-size: 16px;
   transition: color 0.3s ease;
 }
-.delete-icon {
-  font-size: 16px;
-  transition: color 0.3s ease;
-  padding-left: 5px;
-}
 .edit-icon:hover {
   color: var(--primary);
-}
-.delete-icon:hover {
-  color: red;
 }
 .icon-wrapper {
   display: flex;
@@ -46,9 +38,10 @@
   display: grid;
   flex: 1;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
     "first-block icon-wrapper"
+    "status .";
 }
 .first-block {
   grid-area: first-block;
@@ -60,14 +53,15 @@
   align-self: center;
 }
 
-.time-wrapper {
+.user {
   display: flex;
   align-items: center;
 }
 
-.time {
-  padding-left: 5px;
+.user-fullname {
+  margin-left: 0.5rem;
 }
+
 
 @media only screen and (min-width: 800px) {
   .wrapper {

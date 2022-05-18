@@ -21,6 +21,7 @@ import { message } from "antd";
 import jwtDecode from "jwt-decode";
 import ViewTransportation from "./pages/Transportation/ViewTransportation/ViewTransportation";
 import Roles from "./pages/Role/Roles";
+import Users from "./pages/Users/Users";
 
 function App() {
   {
@@ -58,6 +59,8 @@ function App() {
         message.error("An error occurred while logging in.");
       }
     },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
   });
 
   const redirect = () => {
@@ -151,6 +154,7 @@ function App() {
             <Route path="/transportation/vessels" element={<ViewAllVessel />} />
             <Route path="/transportation/vehicles" element={<ViewAllVehicle />} />
             <Route path="/transportation/:id" element={<ViewTransportation />} />
+            <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/division" element={<Division />} />
             <Route path="/breakdown" element={<Breakdown />} />

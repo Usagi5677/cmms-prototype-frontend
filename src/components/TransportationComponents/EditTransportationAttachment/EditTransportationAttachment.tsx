@@ -60,6 +60,7 @@ const EditTransportationAttachment = ({ attachment }: { attachment: Transportati
           title={"Edit Attachment"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -67,6 +68,7 @@ const EditTransportationAttachment = ({ attachment }: { attachment: Transportati
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Description"

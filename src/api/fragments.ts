@@ -29,12 +29,12 @@ export const APS_USER_FRAGMENT = gql`
 `;
 
 export const MACHINE_FRAGMENT = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   fragment MachineFields on Machine {
     id
     createdAt
     createdBy {
-      ...UserFields
+      ...UserFieldsAPS
       email
     }
     machineNumber
@@ -48,7 +48,7 @@ export const MACHINE_FRAGMENT = gql`
     interServiceHrs
     status
     assignees {
-      ...UserFields
+      ...UserFieldsAPS
     }
     sparePRs {
       requestedDate
@@ -65,12 +65,12 @@ export const MACHINE_FRAGMENT = gql`
 `;
 
 export const TRANSPORTATION_FRAGMENT = gql`
-  ${USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   fragment TransportationFields on Transportation {
     id
     createdAt
     createdBy {
-      ...UserFields
+      ...UserFieldsAPS
       email
     }
     machineNumber
@@ -87,7 +87,7 @@ export const TRANSPORTATION_FRAGMENT = gql`
     measurement
     transportType
     assignees {
-      ...UserFields
+      ...UserFieldsAPS
     }
     sparePRs {
       requestedDate

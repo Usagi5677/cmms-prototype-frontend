@@ -98,6 +98,7 @@ const EditMachinePeriodicMaintenance = ({
           title={"Edit Periodic Maintenance"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -105,6 +106,7 @@ const EditMachinePeriodicMaintenance = ({
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Title"

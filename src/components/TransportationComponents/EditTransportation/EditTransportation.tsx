@@ -151,6 +151,7 @@ const EditMachine = ({
         title={"Edit Machine"}
         width="90vw"
         style={{ maxWidth: 700 }}
+        destroyOnClose={true}
       >
         <Form
           form={form}
@@ -158,6 +159,7 @@ const EditMachine = ({
           name="basic"
           onFinish={onFinish}
           id="myForm"
+          preserve={false}
         >
           <div className={classes["row"]}>
             <div className={classes["col"]}>

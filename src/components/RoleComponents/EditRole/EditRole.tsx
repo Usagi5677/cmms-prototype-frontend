@@ -32,17 +32,17 @@ const EditRole = ({ role }: { role: Role }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { title } = values;
+    const { name } = values;
 
-    if (!title) {
-      message.error("Please enter the title.");
+    if (!name) {
+      message.error("Please enter the name.");
       return;
     }
 
     editRole({
       variables: {
         id: role.id,
-        title,
+        name,
       },
     });
   };
@@ -56,9 +56,10 @@ const EditRole = ({ role }: { role: Role }) => {
           visible={visible}
           onCancel={handleCancel}
           footer={null}
-          title={"Edit Breakdown"}
+          title={"Edit Role"}
           width="90vw"
           style={{ maxWidth: 700 }}
+          destroyOnClose={true}
         >
           <Form
             form={form}
@@ -66,6 +67,7 @@ const EditRole = ({ role }: { role: Role }) => {
             name="basic"
             onFinish={onFinish}
             id="myForm"
+            preserve={false}
           >
             <Form.Item
               label="Name"

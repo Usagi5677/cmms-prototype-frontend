@@ -530,3 +530,21 @@ export const ASSIGN_PERMISSION = gql`
     assignPermission(roleId: $roleId, permissions: $permissions)
   }
 `;
+
+export const ADD_USER_ROLE = gql`
+  mutation ($userId: Int!, $roles: [Int!]!) {
+    addUserRole(userId: $userId, roles: $roles)
+  }
+`;
+
+export const REMOVE_USER_ROLE = gql`
+  mutation ($userId: Int!, $roleId: Int!) {
+    removeUserRole(userId: $userId, roleId: $roleId)
+  }
+`;
+
+export const ADD_APP_USER = gql`
+  mutation addAppUser($userId: String!, $roles: [Int!]!) {
+    addAppUser(userId: $userId, roles: $roles)
+  }
+`;

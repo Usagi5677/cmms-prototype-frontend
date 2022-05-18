@@ -66,6 +66,11 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "divider2",
     },
     {
+      name: "Users",
+      path: "/users",
+      icon: <FaUsers />,
+    },
+    {
       name: "Roles",
       path: "/roles",
       icon: <FaLock />,

@@ -1,7 +1,8 @@
 import PermissionRole from "./PermissionRole";
+import Role from "./Role";
 
 export default interface UserRole {
   roleId: number;
-  role: string;
-  permission: PermissionRole;
+  userId: number;
+  role: Role;
 }

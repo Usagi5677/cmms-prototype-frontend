@@ -15,6 +15,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useEffect, useState } from "react";
 import { FaEdit, FaLock } from "react-icons/fa";
 import { ASSIGN_PERMISSION } from "../../../api/mutations";
+import { ME_QUERY } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import { PermissionEnum } from "../../../models/Enums";
 import Role from "../../../models/Role";
@@ -35,7 +36,7 @@ const AssignPermission = ({ role }: { role: Role }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while assigning permission.");
       },
-      refetchQueries: ["getAllRoles"],
+      refetchQueries: ["getAllRoles", { query: ME_QUERY }],
     }
   );
 

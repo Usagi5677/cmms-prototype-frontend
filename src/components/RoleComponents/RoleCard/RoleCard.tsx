@@ -1,7 +1,8 @@
-import { Tooltip } from "antd";
+import { Tag, Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
+import { RoleTagStringToColor } from "../../../helpers/style";
 import Role from "../../../models/Role";
 import AssignPermission from "../AssignPermission/AssignPermission";
 import DeleteRole from "../DeleteRole/DeleteRole";
@@ -22,7 +23,23 @@ const RoleCard = ({ role }: { role: Role }) => {
               {moment(role?.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
             </div>
           </div>
-          <div>{role?.name}</div>
+          <div style={{marginTop: 5, marginBottom: 5}}>
+            <Tag
+              key={role.id}
+              style={{
+                fontWeight: 700,
+                borderRadius: 20,
+                textAlign: "center",
+                maxWidth: 250,
+                backgroundColor: RoleTagStringToColor(role.name),
+
+                borderColor: RoleTagStringToColor(role.name),
+                borderWidth: 1,
+              }}
+            >
+              {role.name}
+            </Tag>
+          </div>
           {role?.createdBy?.fullName && (
             <div className={classes["completedBy"]}>
               {role?.createdBy?.fullName}
@@ -30,7 +47,7 @@ const RoleCard = ({ role }: { role: Role }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <AssignPermission role={role}/>
+          <AssignPermission role={role} />
           <EditRole role={role} />
           <DeleteRole id={role?.id} />
         </div>

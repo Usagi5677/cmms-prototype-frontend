@@ -17,7 +17,7 @@
   align-items: center;
 }
 
-.add-transportation-wrapper {
+.add-wrapper {
   padding-top: 10px
 }
 
@@ -29,7 +29,7 @@
     flex-direction: row;
     margin-bottom: 0
   }
-  .add-machine-wrapper {
+  .add-wrapper {
     padding-top: 0
   }
 }
