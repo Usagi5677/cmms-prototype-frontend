@@ -1,7 +1,7 @@
-import { LeftOutlined } from "@ant-design/icons";
-import { useLazyQuery } from "@apollo/client";
-import { Button, Spin, Tabs } from "antd";
-import React, { useEffect } from "react";
+import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { GET_SINGLE_MACHINE } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
@@ -19,39 +19,102 @@ import MachineStatuses from "../../../components/MachineComponents/MachineStatus
 import ViewHistory from "./ViewHistory/ViewHistory";
 import ViewGallery from "./ViewGallery/ViewGallery";
 import ViewChecklist from "./ViewChecklist/ViewChecklist";
+import SearchAPSUser from "../../../components/common/SearchAPS";
+import UserContext from "../../../contexts/UserContext";
+import { stringToColor } from "../../../helpers/style";
+import MachineAssignment from "../../../components/MachineComponents/MachineAssignment/MachineAssignment";
+import { UNASSIGN_USER_FROM_MACHINE } from "../../../api/mutations";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
   const navigate = useNavigate();
-
-  const [
-    getSingleMachine,
-    { data: machine, loading: loadingMachine },
-  ] = useLazyQuery(GET_SINGLE_MACHINE, {
-    onError: (err) => {
-      errorMessage(err, "Error loading request.");
-    },
-    fetchPolicy: "network-only",
-    nextFetchPolicy: "cache-first",
-    notifyOnNetworkStatusChange: true,
-  });
+  const { user: self } = useContext(UserContext);
+  const [getSingleMachine, { data: machine, loading: loadingMachine }] =
+    useLazyQuery(GET_SINGLE_MACHINE, {
+      onError: (err) => {
+        errorMessage(err, "Error loading request.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+      notifyOnNetworkStatusChange: true,
+    });
 
   // Fetch machine when component mount
   useEffect(() => {
     getSingleMachine({ variables: { machineId: parseInt(id) } });
   }, [getSingleMachine, id]);
 
+  const [unassignUserFromMachine, { loading: unassigning }] = useMutation(
+    UNASSIGN_USER_FROM_MACHINE,
+    {
+      onCompleted: () => {
+        message.success("Successfully unassigned user from machine.");
+      },
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while unassigning user.");
+      },
+      refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine"],
+    }
+  );
+
   const machineData: Machine = machine?.getSingleMachine;
-  const machineEditData = {
-    id: machineData?.id,
-    machineNumber: machineData?.machineNumber,
-    model: machineData?.model,
-    type: machineData?.type,
-    zone: machineData?.zone,
-    location: machineData?.location,
-    currentRunningHrs: machineData?.currentRunningHrs,
-    lastServiceHrs: machineData?.lastServiceHrs,
-    registeredDate: machineData?.registeredDate,
+
+  const renderUsers = () => {
+    return (
+      machineData?.assignees?.length > 0 && (
+        <Avatar.Group
+          maxCount={5}
+          maxStyle={{
+            color: "#f56a00",
+            backgroundColor: "#fde3cf",
+          }}
+        >
+          {machineData?.assignees?.map((user) => {
+            return (
+              <Tooltip
+                title={
+                  <>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      {user.fullName} ({user.rcno})
+                      {self.assignedPermission.hasMachineUnassignmentToUser && (
+                        <CloseCircleOutlined
+                          style={{
+                            cursor: "pointer",
+                            marginLeft: 3,
+                          }}
+                          onClick={() =>
+                            unassignUserFromMachine({
+                              variables: {
+                                machineId: machineData?.id,
+                                userId: user.id,
+                              },
+                            })
+                          }
+                        />
+                      )}
+                    </div>
+                  </>
+                }
+                placement="bottom"
+                key={user.id}
+              >
+                <Avatar
+                  style={{
+                    backgroundColor: stringToColor(user.fullName),
+                  }}
+                >
+                  {user.fullName
+                    .match(/^\w|\b\w(?=\S+$)/g)
+                    ?.join()
+                    .replace(",", "")
+                    .toUpperCase()}
+                </Avatar>
+              </Tooltip>
+            );
+          })}
+        </Avatar.Group>
+      )
+    );
   };
 
   return (
@@ -108,7 +171,7 @@ const ViewMachine = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
-              <EditMachine machine={machineEditData} />
+              <EditMachine machine={machine} />
               <DeleteMachine machineID={machineData?.id} />
             </div>
 
@@ -177,6 +240,18 @@ const ViewMachine = () => {
                 />
               </div>
             </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Assign</div>
+              <div className={classes["info-content"]}>
+                {self.assignedPermission.hasMachineAssignmentToUser ? (
+                  <MachineAssignment machineID={machineData?.id} />
+                ) : (
+                  <>{renderUsers()}</>
+                )}
+              </div>
+            </div>
+            {self.assignedPermission.hasMachineAssignmentToUser &&
+              renderUsers()}
           </div>
         </div>
         <div className={classes["usage-container"]}></div>

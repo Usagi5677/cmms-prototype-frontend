@@ -1,8 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Spin } from "antd";
 import { errorMessage } from "../../helpers/gql";
-import UserContext from "../../contexts/UserContext";
 import Search from "../../components/common/Search";
 import PaginationArgs from "../../models/PaginationArgs";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
@@ -15,10 +14,8 @@ import User from "../../models/User";
 import UserCard from "../../components/UserComponents/UserCard/UserCard";
 
 const Users = () => {
-  const { user } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [timerId, setTimerId] = useState(null);
-
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<
     PaginationArgs & {

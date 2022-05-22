@@ -6,6 +6,7 @@ import TransportationPeriodicMaintenance from "./Transportation/TransportationPe
 import TransportationSparePR from "./Transportation/TransportationSparePR";
 import TransportationRepair from "./Transportation/TransportationRepair";
 import TransportationBreakdown from "./Transportation/TransportationBreakdown";
+import TransportationAssign from "./Transportation/TransportationAssign";
 
 export default interface Transportation {
   id: number;

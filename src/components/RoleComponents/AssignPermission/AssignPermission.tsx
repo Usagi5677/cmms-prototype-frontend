@@ -79,7 +79,7 @@ const AssignPermission = ({ role }: { role: Role }) => {
           footer={null}
           title={"Assign Permission"}
           width="90vw"
-          style={{ maxWidth: 700 }}
+          
         >
           <Form
             form={form}
@@ -108,6 +108,7 @@ const AssignPermission = ({ role }: { role: Role }) => {
                         onChange={(e) =>
                           onClickCheckbox(e, PermissionEnum[key])
                         }
+                        className={classes["checkbox"]}
                       >
                         {PermissionEnum[key]}
                       </Checkbox>

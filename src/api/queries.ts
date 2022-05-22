@@ -75,6 +75,9 @@ export const GET_SINGLE_MACHINE = gql`
           ...UserFieldsAPS
         }
       }
+      assignees {
+        ...UserFieldsAPS
+      }
     }
   }
 `;
@@ -402,6 +405,9 @@ export const GET_SINGLE_TRANSPORTATION = gql`
         completedBy {
           ...UserFieldsAPS
         }
+      }
+      assignees {
+        ...UserFieldsAPS
       }
     }
   }
@@ -764,6 +770,15 @@ export const GET_ROLES = gql`
     getRoles {
       id
       name
+    }
+  }
+`;
+
+export const GET_USERS_WITH_PERMISSION = gql`
+  ${APS_USER_FRAGMENT}
+  query getUsersWithPermission($permissions: [Permission!]!) {
+    getUsersWithPermission(permissions: $permissions) {
+      ...UserFieldsAPS
     }
   }
 `;

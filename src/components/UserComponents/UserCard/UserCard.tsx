@@ -9,13 +9,11 @@ import UserAvatar from "../../common/UserAvatar";
 import classes from "./UserCard.module.css";
 import { v1 } from "uuid";
 import EditUserRoles from "../EditUserRoles/EditUserRoles";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { findPermission } from "../../../helpers/findPermission";
 
 const UserCard = ({ userData }: { userData: User }) => {
   const { user: self } = useContext(UserContext);
-  const [permissionExist, setPermissionExist] = useState(false);
 
   const [removeUserRole, { loading: removingUserRole }] = useMutation(
     REMOVE_USER_ROLE,
@@ -37,11 +35,7 @@ const UserCard = ({ userData }: { userData: User }) => {
       },
     });
   };
-
-  useEffect(() => {
-    setPermissionExist(findPermission(self, "DELETE_ROLE"));
-  }, []);
-
+ 
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -59,7 +53,7 @@ const UserCard = ({ userData }: { userData: User }) => {
         <div className={classes["status"]}>
           {userData.roles?.map((role) => (
             <Popconfirm
-              disabled={removingUserRole || !permissionExist}
+              disabled={removingUserRole || !self.assignedPermission.hasRoleDelete}
               key={v1()}
               title={`Do you want to remove ${role.role.name} role from ${userData.fullName}?`}
               onConfirm={() => remove(role.role.id)}
@@ -76,7 +70,7 @@ const UserCard = ({ userData }: { userData: User }) => {
                   backgroundColor: RoleTagStringToColor(role.role.name),
                   borderColor: RoleTagStringToColor(role.role.name),
                   borderWidth: 1,
-                  cursor: permissionExist ? "pointer" : "initial",
+                  cursor: self.assignedPermission.hasRoleDelete ? "pointer" : "initial",
                 }}
               >
                 {role.role.name}

@@ -19,21 +19,11 @@ import { FaEdit } from "react-icons/fa";
 import { EDIT_MACHINE } from "../../../api/mutations";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
+import Machine from "../../../models/Machine";
 import classes from "./EditMachine.module.css";
 
-interface MachineEditData {
-  id: number;
-  machineNumber: string;
-  model: string;
-  type: string;
-  zone: string;
-  location: string;
-  currentRunningHrs?: number;
-  lastServiceHrs?: number;
-  registeredDate?: Date;
-}
 
-const EditMachine = ({ machine }: { machine: MachineEditData }) => {
+const EditMachine = ({ machine }: { machine: Machine }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 

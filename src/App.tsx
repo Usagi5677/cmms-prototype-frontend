@@ -22,6 +22,7 @@ import jwtDecode from "jwt-decode";
 import ViewTransportation from "./pages/Transportation/ViewTransportation/ViewTransportation";
 import Roles from "./pages/Role/Roles";
 import Users from "./pages/Users/Users";
+import { permissionExist } from "./helpers/assignPermission";
 
 function App() {
   {
@@ -42,8 +43,10 @@ function App() {
   const [me] = useLazyQuery(ME_QUERY, {
     client: apolloClient,
     onCompleted: (data) => {
+      const assignedPermission = permissionExist(data.me);
       setUser({
         ...data.me,
+        assignedPermission
       });
       setAppLoading(false);
       setLoggedOut(false);
@@ -152,8 +155,14 @@ function App() {
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/machine/:id" element={<ViewMachine />} />
             <Route path="/transportation/vessels" element={<ViewAllVessel />} />
-            <Route path="/transportation/vehicles" element={<ViewAllVehicle />} />
-            <Route path="/transportation/:id" element={<ViewTransportation />} />
+            <Route
+              path="/transportation/vehicles"
+              element={<ViewAllVehicle />}
+            />
+            <Route
+              path="/transportation/:id"
+              element={<ViewTransportation />}
+            />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/division" element={<Division />} />

@@ -1,0 +1,276 @@
+import User from "../models/User";
+
+export function permissionExist(data: User) {
+  let hasRoleAdd = false;
+  let hasRoleEdit = false;
+  let hasRoleDelete = false;
+  let hasPermissionAdd = false;
+  let hasPermissionEdit = false;
+  let hasPermissionDelete = false;
+  let hasMachineAdd = false;
+  let hasMachineEdit = false;
+  let hasMachineDelete = false;
+  let hasMachineChecklistAdd = false;
+  let hasMachineChecklistEdit = false;
+  let hasMachineChecklistDelete = false;
+  let hasMachinePeriodicMaintenanceAdd = false;
+  let hasMachinePeriodicMaintenanceEdit = false;
+  let hasMachinePeriodicMaintenanceDelete = false;
+  let hasMachineSparePRAdd = false;
+  let hasMachineSparePREdit = false;
+  let hasMachineSparePRDelete = false;
+  let hasMachineRepairAdd = false;
+  let hasMachineRepairEdit = false;
+  let hasMachineRepairDelete = false;
+  let hasMachineBreakdownAdd = false;
+  let hasMachineBreakdownEdit = false;
+  let hasMachineBreakdownDelete = false;
+  let hasMachineAttachmentAdd = false;
+  let hasMachineAttachmentEdit = false;
+  let hasMachineAttachmentDelete = false;
+  let hasMachineAssignmentToUser = false;
+  let hasMachineUnassignmentToUser = false;
+  let hasTransportationAdd = false;
+  let hasTransportationEdit = false;
+  let hasTransportationDelete = false;
+  let hasTransportationChecklistAdd = false;
+  let hasTransportationChecklistEdit = false;
+  let hasTransportationChecklistDelete = false;
+  let hasTransportationPeriodicMaintenanceAdd = false;
+  let hasTransportationPeriodicMaintenanceEdit = false;
+  let hasTransportationPeriodicMaintenanceDelete = false;
+  let hasTransportationSparePRAdd = false;
+  let hasTransportationSparePREdit = false;
+  let hasTransportationSparePRDelete = false;
+  let hasTransportationRepairAdd = false;
+  let hasTransportationRepairEdit = false;
+  let hasTransportationRepairDelete = false;
+  let hasTransportationBreakdownAdd = false;
+  let hasTransportationBreakdownEdit = false;
+  let hasTransportationBreakdownDelete = false;
+  let hasTransportationAttachmentAdd = false;
+  let hasTransportationAttachmentEdit = false;
+  let hasTransportationAttachmentDelete = false;
+  let hasTransportationAssignmentToUser = false;
+  let hasTransportationUnassignmentToUser = false;
+
+  data?.roles?.forEach((roleData) => {
+    roleData?.role.permissionRoles.forEach((permissionData) => {
+      switch (permissionData.permission) {
+        case "ADD_ROLE":
+          hasRoleAdd = true;
+          break;
+        case "EDIT_ROLE":
+          hasRoleEdit = true;
+          break;
+        case "DELETE_ROLE":
+          hasRoleDelete = true;
+          break;
+        case "ADD_PERMISSION":
+          hasPermissionAdd = true;
+          break;
+        case "EDIT_PERMISSION":
+          hasPermissionEdit = true;
+          break;
+        case "DELETE_PERMISSION":
+          hasPermissionDelete = true;
+          break;
+        case "ADD_MACHINE":
+          hasMachineAdd = true;
+          break;
+        case "EDIT_MACHINE":
+          hasMachineEdit = true;
+          break;
+        case "DELETE_MACHINE":
+          hasMachineDelete = true;
+          break;
+        case "ADD_MACHINE_CHECKLIST":
+          hasMachineChecklistAdd = true;
+          break;
+        case "EDIT_MACHINE_CHECKLIST":
+          hasMachineChecklistEdit = true;
+          break;
+        case "DELETE_MACHINE_CHECKLIST":
+          hasMachineChecklistDelete = true;
+          break;
+        case "ADD_MACHINE_PERIODIC_MAINTENANCE":
+          hasMachinePeriodicMaintenanceAdd = true;
+          break;
+        case "EDIT_MACHINE_PERIODIC_MAINTENANCE":
+          hasMachinePeriodicMaintenanceEdit = true;
+          break;
+        case "DELETE_MACHINE_PERIODIC_MAINTENANCE":
+          hasMachinePeriodicMaintenanceDelete = true;
+          break;
+        case "ADD_MACHINE_SPARE_PR":
+          hasMachineSparePRAdd = true;
+          break;
+        case "EDIT_MACHINE_SPARE_PR":
+          hasMachineSparePREdit = true;
+          break;
+        case "DELETE_MACHINE_SPARE_PR":
+          hasMachineSparePRDelete = true;
+          break;
+        case "ADD_MACHINE_REPAIR":
+          hasMachineRepairAdd = true;
+          break;
+        case "EDIT_MACHINE_REPAIR":
+          hasMachineRepairEdit = true;
+          break;
+        case "DELETE_MACHINE_REPAIR":
+          hasMachineRepairDelete = true;
+          break;
+        case "ADD_MACHINE_BREAKDOWN":
+          hasMachineBreakdownAdd = true;
+          break;
+        case "EDIT_MACHINE_BREAKDOWN":
+          hasMachineBreakdownEdit = true;
+          break;
+        case "DELETE_MACHINE_BREAKDOWN":
+          hasMachineBreakdownDelete = true;
+          break;
+        case "ADD_MACHINE_ATTACHMENT":
+          hasMachineAttachmentAdd = true;
+          break;
+        case "EDIT_MACHINE_ATTACHMENT":
+          hasMachineAttachmentEdit = true;
+          break;
+        case "DELETE_MACHINE_ATTACHMENT":
+          hasMachineAttachmentDelete = true;
+          break;
+        case "ASSIGN_USER_TO_MACHINE":
+          hasMachineAssignmentToUser = true;
+          break;
+        case "UNASSIGN_USER_TO_MACHINE":
+          hasMachineUnassignmentToUser = true;
+          break;
+        case "ADD_TRANSPORTATION":
+          hasTransportationAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION":
+          hasTransportationEdit = true;
+          break;
+        case "DELETE_TRANSPORTATION":
+          hasTransportationDelete = true;
+          break;
+        case "ADD_TRANSPORTATION_CHECKLIST":
+          hasTransportationChecklistAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION_CHECKLIST":
+          hasTransportationChecklistEdit = true;
+          break;
+        case "DELETE_TRANSPORTATION_CHECKLIST":
+          hasTransportationChecklistDelete = true;
+          break;
+        case "ADD_TRANSPORTATION_PERIODIC_MAINTENANCE":
+          hasTransportationPeriodicMaintenanceAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION_PERIODIC_MAINTENANCE":
+          hasTransportationPeriodicMaintenanceEdit = true;
+          break;
+        case "DELETE_TRANSPORTATION_PERIODIC_MAINTENANCE":
+          hasTransportationPeriodicMaintenanceDelete = true;
+          break;
+        case "ADD_TRANSPORTATION_SPARE_PR":
+          hasTransportationSparePRAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION_SPARE_PR":
+          hasTransportationSparePREdit = true;
+          break;
+        case "DELETE_TRANSPORTATION_SPARE_PR":
+          hasTransportationSparePRDelete = true;
+          break;
+        case "ADD_TRANSPORTATION_REPAIR":
+          hasTransportationRepairAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION_REPAIR":
+          hasTransportationRepairEdit = true;
+          break;
+        case "DELETE_TRANSPORTATION_REPAIR":
+          hasTransportationRepairDelete = true;
+          break;
+        case "ADD_TRANSPORTATION_BREAKDOWN":
+          hasTransportationBreakdownAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION_BREAKDOWN":
+          hasTransportationBreakdownEdit = true;
+          break;
+        case "DELETE_TRANSPORTATION_BREAKDOWN":
+          hasTransportationBreakdownDelete = true;
+          break;
+        case "ADD_TRANSPORTATION_ATTACHMENT":
+          hasTransportationAttachmentAdd = true;
+          break;
+        case "EDIT_TRANSPORTATION_ATTACHMENT":
+          hasTransportationAttachmentEdit = true;
+          break;
+        case "DELETE_TRANSPORTATION_ATTACHMENT":
+          hasTransportationAttachmentDelete = true;
+          break;
+        case "ASSIGN_USER_TO_TRANSPORTATION":
+          hasTransportationAssignmentToUser = true;
+          break;
+        case "UNASSIGN_USER_TO_TRANSPORTATION":
+          hasTransportationUnassignmentToUser = true;
+          break;
+      }
+    });
+  });
+
+  const permissions = {
+    hasRoleAdd,
+    hasRoleEdit,
+    hasRoleDelete,
+    hasPermissionAdd,
+    hasPermissionEdit,
+    hasPermissionDelete,
+    hasMachineAdd,
+    hasMachineEdit,
+    hasMachineDelete,
+    hasMachineChecklistAdd,
+    hasMachineChecklistEdit,
+    hasMachineChecklistDelete,
+    hasMachinePeriodicMaintenanceAdd,
+    hasMachinePeriodicMaintenanceEdit,
+    hasMachinePeriodicMaintenanceDelete,
+    hasMachineSparePRAdd,
+    hasMachineSparePREdit,
+    hasMachineSparePRDelete,
+    hasMachineRepairAdd,
+    hasMachineRepairEdit,
+    hasMachineRepairDelete,
+    hasMachineBreakdownAdd,
+    hasMachineBreakdownEdit,
+    hasMachineBreakdownDelete,
+    hasMachineAttachmentAdd,
+    hasMachineAttachmentEdit,
+    hasMachineAttachmentDelete,
+    hasMachineAssignmentToUser,
+    hasMachineUnassignmentToUser,
+    hasTransportationAdd,
+    hasTransportationEdit,
+    hasTransportationDelete,
+    hasTransportationChecklistAdd,
+    hasTransportationChecklistEdit,
+    hasTransportationChecklistDelete,
+    hasTransportationPeriodicMaintenanceAdd,
+    hasTransportationPeriodicMaintenanceEdit,
+    hasTransportationPeriodicMaintenanceDelete,
+    hasTransportationSparePRAdd,
+    hasTransportationSparePREdit,
+    hasTransportationSparePRDelete,
+    hasTransportationRepairAdd,
+    hasTransportationRepairEdit,
+    hasTransportationRepairDelete,
+    hasTransportationBreakdownAdd,
+    hasTransportationBreakdownEdit,
+    hasTransportationBreakdownDelete,
+    hasTransportationAttachmentAdd,
+    hasTransportationAttachmentEdit,
+    hasTransportationAttachmentDelete,
+    hasTransportationAssignmentToUser,
+    hasTransportationUnassignmentToUser,
+  };
+
+  return permissions;
+}

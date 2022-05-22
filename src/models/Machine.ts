@@ -6,6 +6,7 @@ import User from "./User";
 import MachineSparePR from "./Machine/MachineSparePR";
 import MachineRepair from "./Machine/MachineRepair";
 import MachineBreakdown from "./Machine/MachineBreakdown";
+import MachineAssign from "./Machine/MachineAssign";
 
 export default interface Machine {
   id: number;

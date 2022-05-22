@@ -1,7 +1,7 @@
-import { LeftOutlined } from "@ant-design/icons";
-import { useLazyQuery } from "@apollo/client";
-import { Button, Spin, Tabs } from "antd";
-import React, { useEffect } from "react";
+import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { GET_SINGLE_TRANSPORTATION } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
@@ -19,11 +19,15 @@ import ViewRepair from "./ViewRepair/ViewRepair";
 import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 import ViewHistory from "./ViewHistory/ViewHistory";
 import ViewGallery from "./ViewGallery/ViewGallery";
+import UserContext from "../../../contexts/UserContext";
+import { stringToColor } from "../../../helpers/style";
+import { UNASSIGN_USER_FROM_TRANSPORTATION } from "../../../api/mutations";
+import TransportationAssignment from "../../../components/TransportationComponents/TransportationAssignment/TransportationAssignment";
 
 const ViewTransportation = () => {
   const { id }: any = useParams();
   const navigate = useNavigate();
-
+  const { user: self } = useContext(UserContext);
   const [
     getSingleTransportation,
     { data: transportation, loading: loadingTransportation },
@@ -36,26 +40,84 @@ const ViewTransportation = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  // Fetch machine when component mount
+  // Fetch transportation when component mount
   useEffect(() => {
     getSingleTransportation({ variables: { transportationId: parseInt(id) } });
   }, [getSingleTransportation, id]);
 
-  const transportationData: Transportation = transportation?.getSingleTransportation;
+  const [unassignUserFromTransportation, { loading: unassigning }] =
+    useMutation(UNASSIGN_USER_FROM_TRANSPORTATION, {
+      onCompleted: () => {
+        message.success("Successfully unassigned user from transportation.");
+      },
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while unassigning user.");
+      },
+      refetchQueries: [
+        "getSingleTransportation",
+        "getAllHistoryOfTransportation",
+      ],
+    });
 
-  const transportationEditData = {
-    id: transportationData?.id,
-    machineNumber: transportationData?.machineNumber,
-    model: transportationData?.model,
-    type: transportationData?.type,
-    department: transportationData?.department,
-    location: transportationData?.location,
-    currentMileage: transportationData?.currentMileage,
-    lastServiceMileage: transportationData?.lastServiceMileage,
-    engine: transportationData?.engine,
-    measurement: transportationData?.measurement,
-    transportType: transportationData?.transportType,
-    registeredDate: transportationData?.registeredDate,
+  const transportationData: Transportation =
+    transportation?.getSingleTransportation;
+
+  const renderUsers = () => {
+    return (
+      transportationData?.assignees?.length > 0 && (
+        <Avatar.Group
+          maxCount={5}
+          maxStyle={{
+            color: "#f56a00",
+            backgroundColor: "#fde3cf",
+          }}
+        >
+          {transportationData?.assignees?.map((user) => {
+            return (
+              <Tooltip
+                title={
+                  <>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      {user.fullName} ({user.rcno})
+                      {self.assignedPermission.hasTransportationUnassignmentToUser && (
+                        <CloseCircleOutlined
+                          style={{
+                            cursor: "pointer",
+                            marginLeft: 3,
+                          }}
+                          onClick={() =>
+                            unassignUserFromTransportation({
+                              variables: {
+                                transportationId: transportationData?.id,
+                                userId: user.id,
+                              },
+                            })
+                          }
+                        />
+                      )}
+                    </div>
+                  </>
+                }
+                placement="bottom"
+                key={user.id}
+              >
+                <Avatar
+                  style={{
+                    backgroundColor: stringToColor(user.fullName),
+                  }}
+                >
+                  {user.fullName
+                    .match(/^\w|\b\w(?=\S+$)/g)
+                    ?.join()
+                    .replace(",", "")
+                    .toUpperCase()}
+                </Avatar>
+              </Tooltip>
+            );
+          })}
+        </Avatar.Group>
+      )
+    );
   };
 
   return (
@@ -76,7 +138,9 @@ const ViewTransportation = () => {
                   {transportationData?.machineNumber}
                 </div>
               </div>
-              <div style={{ width: 28 }}>{loadingTransportation && <Spin />}</div>
+              <div style={{ width: 28 }}>
+                {loadingTransportation && <Spin />}
+              </div>
             </div>
             <Tabs
               defaultActiveKey="checklist"
@@ -91,7 +155,9 @@ const ViewTransportation = () => {
                 tab="Periodic Maintenance"
                 key="periodicMaintenance"
               >
-                <ViewPeriodicMaintenance transportationID={transportationData?.id} />
+                <ViewPeriodicMaintenance
+                  transportationID={transportationData?.id}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <ViewSparePR transportationID={transportationData?.id} />
@@ -112,13 +178,15 @@ const ViewTransportation = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
-              <EditTransportation transportation={transportationEditData} />
+              <EditTransportation transportation={transportationData} />
               <DeleteTransportation transportationID={transportationData?.id} />
             </div>
 
             <div className={classes["info-title-wrapper"]}>
               <div>Machine ID</div>
-              <div className={classes["info-content"]}>{transportationData?.id}</div>
+              <div className={classes["info-content"]}>
+                {transportationData?.id}
+              </div>
             </div>
             <div className={classes["info-title-wrapper"]}>
               <div>Machine Number</div>
@@ -134,11 +202,15 @@ const ViewTransportation = () => {
             </div>
             <div className={classes["info-title-wrapper"]}>
               <div>Type</div>
-              <div className={classes["info-content"]}>{transportationData?.type}</div>
+              <div className={classes["info-content"]}>
+                {transportationData?.type}
+              </div>
             </div>
             <div className={classes["info-title-wrapper"]}>
               <div>Department</div>
-              <div className={classes["info-content"]}>{transportationData?.department}</div>
+              <div className={classes["info-content"]}>
+                {transportationData?.department}
+              </div>
             </div>
             <div className={classes["info-title-wrapper"]}>
               <div>Location</div>
@@ -199,6 +271,20 @@ const ViewTransportation = () => {
                 />
               </div>
             </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Assign</div>
+              <div className={classes["info-content"]}>
+                {self.assignedPermission.hasTransportationAssignmentToUser ? (
+                  <TransportationAssignment
+                    transportationID={transportationData?.id}
+                  />
+                ) : (
+                  <>{renderUsers()}</>
+                )}
+              </div>
+            </div>
+            {self.assignedPermission.hasTransportationAssignmentToUser &&
+              renderUsers()}
           </div>
         </div>
         <div className={classes["usage-container"]}></div>

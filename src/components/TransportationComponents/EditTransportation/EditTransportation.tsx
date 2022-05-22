@@ -19,27 +19,13 @@ import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_TRANSPORTATION } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
+import Transportation from "../../../models/Transportation";
 import classes from "./EditTransportation.module.css";
-
-interface TransportationEditData {
-  id: number;
-  machineNumber: string;
-  model: string;
-  type: string;
-  department: string;
-  location: string;
-  currentMileage?: number;
-  lastServiceMileage?: number;
-  engine: string;
-  measurement: string;
-  transportType: string;
-  registeredDate?: Date;
-}
 
 const EditMachine = ({
   transportation,
 }: {
-  transportation: TransportationEditData;
+  transportation: Transportation;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();

@@ -548,3 +548,33 @@ export const ADD_APP_USER = gql`
     addAppUser(userId: $userId, roles: $roles)
   }
 `;
+
+export const ASSIGN_USER_TO_MACHINE = gql`
+  mutation ($machineId: Int!, $userIds: [Int!]!) {
+    assignUserToMachine(machineId: $machineId, userIds: $userIds)
+  }
+`;
+
+export const UNASSIGN_USER_FROM_MACHINE = gql`
+  mutation ($machineId: Int!, $userId: Int!) {
+    unassignUserFromMachine(machineId: $machineId, userId: $userId)
+  }
+`;
+
+export const ASSIGN_USER_TO_TRANSPORTATION = gql`
+  mutation ($transportationId: Int!, $userIds: [Int!]!) {
+    assignUserToTransportation(
+      transportationId: $transportationId
+      userIds: $userIds
+    )
+  }
+`;
+
+export const UNASSIGN_USER_FROM_TRANSPORTATION = gql`
+  mutation ($transportationId: Int!, $userId: Int!) {
+    unassignUserFromTransportation(
+      transportationId: $transportationId
+      userId: $userId
+    )
+  }
+`;
