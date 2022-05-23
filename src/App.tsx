@@ -4,7 +4,6 @@ import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
 import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
 import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
 import ViewAllVehicle from "./pages/Transportation/ViewAllVehicle/ViewAllVehicle";
-import Division from "./pages/Division/Division";
 import Breakdown from "./pages/Breakdown/Breakdown";
 import Service from "./pages/Service/Service";
 import Reports from "./pages/Reports/Reports";
@@ -23,6 +22,9 @@ import ViewTransportation from "./pages/Transportation/ViewTransportation/ViewTr
 import Roles from "./pages/Role/Roles";
 import Users from "./pages/Users/Users";
 import { permissionExist } from "./helpers/assignPermission";
+import ViewAssignedMachinery from "./pages/Machine/ViewAssignedMachinery/ViewAssignedMachinery";
+import ViewAssignedVessels from "./pages/Transportation/ViewAssignedVessels/ViewAssignedVessels";
+import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/ViewAssignedVehicles";
 
 function App() {
   {
@@ -163,9 +165,11 @@ function App() {
               path="/transportation/:id"
               element={<ViewTransportation />}
             />
+            <Route path="/assigned-machinery" element={<ViewAssignedMachinery />} />
+            <Route path="/assigned-vessels" element={<ViewAssignedVessels />} />
+            <Route path="/assigned-vehicles" element={<ViewAssignedVehicles />} />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
-            <Route path="/division" element={<Division />} />
             <Route path="/breakdown" element={<Breakdown />} />
             <Route path="/service" element={<Service />} />
             <Route path="/reports" element={<Reports />} />

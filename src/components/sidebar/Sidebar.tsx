@@ -66,6 +66,25 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "divider2",
     },
     {
+      name: "Assigned Machinery",
+      path: "/assigned-machinery",
+      icon: <FaListUl />,
+    },
+    {
+      name: "Assigned Vessels",
+      path: "/assigned-vessels",
+      icon: <FaListUl />,
+    },
+    {
+      name: "Assigned Vehicles",
+      path: "/assigned-vehicles",
+      icon: <FaListUl />,
+    },
+    {
+      name: "Divider",
+      path: "divider3",
+    },
+    {
       name: "Users",
       path: "/users",
       icon: <FaUsers />,
@@ -77,12 +96,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
     {
       name: "Divider",
-      path: "divider3",
-    },
-    {
-      name: "Division",
-      path: "/division",
-      icon: <BsPeopleFill />,
+      path: "divider4",
     },
     {
       name: "Breakdown",
@@ -101,7 +115,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
     {
       name: "Divider",
-      path: "divider4",
+      path: "divider5",
     },
   ];
 

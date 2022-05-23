@@ -36,6 +36,7 @@ export const ALL_MACHINES = gql`
     $first: Int
     $last: Int
     $search: String
+    $assignedToId: Int
   ) {
     getAllMachine(
       after: $after
@@ -43,6 +44,7 @@ export const ALL_MACHINES = gql`
       first: $first
       last: $last
       search: $search
+      assignedToId: $assignedToId
     ) {
       pageInfo {
         endCursor
@@ -365,6 +367,7 @@ export const ALL_TRANSPORTATION = gql`
     $search: String
     $createdByUserId: String
     $transportType: String
+    $assignedToId: Int
   ) {
     getAllTransportation(
       after: $after
@@ -374,6 +377,7 @@ export const ALL_TRANSPORTATION = gql`
       search: $search
       createdByUserId: $createdByUserId
       transportType: $transportType
+      assignedToId: $assignedToId
     ) {
       pageInfo {
         endCursor
