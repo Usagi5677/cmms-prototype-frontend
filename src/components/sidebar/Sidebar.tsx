@@ -12,10 +12,10 @@ import {
   FaWrench,
   FaTruck,
   FaTractor,
-  FaLock
+  FaLock,
 } from "react-icons/fa";
 import { BsPeopleFill } from "react-icons/bs";
-import { IoLocationSharp} from "react-icons/io5";
+import { IoLocationSharp } from "react-icons/io5";
 import { AiFillDatabase } from "react-icons/ai";
 import { RiSailboatFill } from "react-icons/ri";
 
@@ -99,18 +99,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "divider4",
     },
     {
-      name: "Breakdown",
-      path: "/breakdown",
-      icon: <FaCarCrash />,
-    },
-    {
-      name: "Service/Repair",
-      path: "/service",
-      icon: <FaWrench />,
-    },
-    {
-      name: "Reports",
-      path: "/reports",
+      name: "View Machinery Report",
+      path: "/view-machinery-report",
       icon: <FaRegChartBar />,
     },
     {

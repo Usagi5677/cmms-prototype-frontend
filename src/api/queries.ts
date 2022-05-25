@@ -786,3 +786,13 @@ export const GET_USERS_WITH_PERMISSION = gql`
     }
   }
 `;
+
+export const GET_MACHINE_REPORT = gql`
+  query getMachineReport($from: Date!, $to: Date!) {
+    getMachineReport(from: $from, to: $to) {
+      type
+      working
+      breakdown
+    }
+  }
+`;
