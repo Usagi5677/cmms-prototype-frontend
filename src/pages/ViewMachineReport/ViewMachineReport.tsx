@@ -1,27 +1,19 @@
-import { Button, Col, DatePicker, Form, message, Row, Spin } from "antd";
-import Search from "../../components/common/Search";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
-import PaginationArgs from "../../models/PaginationArgs";
+import { Button, DatePicker, Form, message, Spin } from "antd";
+import { useState } from "react";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { GET_MACHINE_REPORT } from "../../api/queries";
-import { DATETIME_FORMATS, PAGE_LIMIT } from "../../helpers/constants";
-import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
-import AddMachine from "../../components/MachineComponents/AddMachine/AddMachine";
-import MachineCard from "../../components/MachineComponents/MachineCard/MachineCard";
-import Machine from "../../models/Machine";
-import classes from "./ViewReport.module.css";
+import { DATETIME_FORMATS } from "../../helpers/constants";
+import classes from "./ViewMachineReport.module.css";
 import MachineReport from "../../models/Machine/MachineReport";
 import { useForm } from "antd/lib/form/Form";
 import MachineReportCard from "../../components/MachineComponents/MachineReportCard/MachineReportCard";
 import moment from "moment";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 
-const ViewReport = () => {
+const ViewMachineReport = () => {
   const [toDate, setToDate] = useState<any>();
   const [fromDate, setFromDate] = useState<any>();
-  const [search, setSearch] = useState("");
   const [form] = useForm();
   const [getMachineReport, { data, loading }] = useLazyQuery(
     GET_MACHINE_REPORT,
@@ -55,6 +47,10 @@ const ViewReport = () => {
       return;
     }
 
+    if (fromDate > toDate) {
+      message.error("Please pick a date less than 'to' date.");
+      return;
+    }
     setFromDate(fromDate);
     setToDate(toDate);
 
@@ -65,6 +61,8 @@ const ViewReport = () => {
       },
     });
   };
+
+  const isSmallDevice = useIsSmallDevice();
 
   return (
     <div className={classes["container"]}>
@@ -138,14 +136,58 @@ const ViewReport = () => {
           {moment(toDate).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
         </div>
       ) : null}
-      {data?.getMachineReport.map((report: MachineReport, index: number) => {
-        return <MachineReportCard key={index} report={report} index={index} />;
-      })}
+      {isSmallDevice ? (
+        <div>
+          {data?.getMachineReport.map(
+            (report: MachineReport, index: number) => {
+              return (
+                <MachineReportCard key={index} report={report} index={index} />
+              );
+            }
+          )}
+        </div>
+      ) : (
+        <div className={classes["table-row"]}>
+          {toDate && (
+            <table className={classes["table"]}>
+              <tbody>
+                <tr>
+                  <th>No</th>
+                  <th>Type</th>
+                  <th>Total</th>
+                  <th>Working</th>
+                  <th>Breakdown</th>
+                  <th>Working %</th>
+                </tr>
+                {data?.getMachineReport.map(
+                  (report: MachineReport, index: number) => {
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{report.type}</td>
+                        <td>{report.working + report.breakdown}</td>
+                        <td>{report.working}</td>
+                        <td>{report.breakdown}</td>
+                        <td>
+                          {(report.working /
+                            (report.working + report.breakdown)) *
+                            100}
+                          %
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
-export default ViewReport;
+export default ViewMachineReport;
 /*
 <div className={classes["table-row"]}>
         <table className={classes["table"]}>

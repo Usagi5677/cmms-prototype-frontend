@@ -99,8 +99,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "divider4",
     },
     {
-      name: "View Machinery Report",
-      path: "/view-machinery-report",
+      name: "Machinery Report",
+      path: "/machinery-report",
+      icon: <FaRegChartBar />,
+    },
+    {
+      name: "Transportation Report",
+      path: "/transportation-report",
       icon: <FaRegChartBar />,
     },
     {

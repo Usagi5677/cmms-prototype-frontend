@@ -76,11 +76,24 @@
   width: 100%;
 }
 
+.table table,
+.table th,
+.table td {
+  border: 1px solid;
+}
+.table th,
+.table td {
+  text-align: center;
+}
+.table th {
+  font-weight: 700;
+}
 .heading {
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 800;
+  margin-bottom: 20px;
 }
 @media only screen and (min-width: 600px) {
   .container .options-wrapper {

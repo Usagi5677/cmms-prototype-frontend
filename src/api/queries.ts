@@ -796,3 +796,13 @@ export const GET_MACHINE_REPORT = gql`
     }
   }
 `;
+
+export const GET_TRANSPORTATION_REPORT = gql`
+  query getTransportationReport($from: Date!, $to: Date!) {
+    getTransportationReport(from: $from, to: $to) {
+      type
+      working
+      breakdown
+    }
+  }
+`;

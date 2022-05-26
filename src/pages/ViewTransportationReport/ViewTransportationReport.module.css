@@ -1,0 +1,115 @@
+.container {
+  width: 100%;
+  min-height: 500px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px;
+}
+
+.options-wrapper {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.first-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.second-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-btn-secondary {
+  width: 100% !important;
+  color: var(--primary) !important;
+  background-color: white !important;
+  border-radius: 20px !important;
+  border-color: var(--primary) !important;
+  max-width: 140px !important;
+}
+
+.custom-btn-secondary:hover {
+  color: white !important;
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
+}
+
+.custom-btn-primary {
+  width: 100% !important;
+  color: white !important;
+  background-color: var(--primary) !important;
+  border-radius: 20px !important;
+  border-color: var(--primary) !important;
+  max-width: 140px !important;
+  margin-left: 10px !important;
+}
+
+.custom-btn-primary:hover {
+  color: white !important;
+  border-color: #22d197 !important;
+  background-color: #22d197 !important;
+}
+
+.table-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table {
+  width: 100%;
+}
+
+.table table,
+.table th,
+.table td {
+  border: 1px solid;
+}
+.table th,
+.table td {
+  text-align: center;
+}
+.table th {
+  font-weight: 700;
+}
+.heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+@media only screen and (min-width: 600px) {
+  .container .options-wrapper {
+    font-size: 0.875rem;
+  }
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .row {
+    flex-direction: row;
+  }
+  .first-block {
+    flex-direction: row;
+  }
+}

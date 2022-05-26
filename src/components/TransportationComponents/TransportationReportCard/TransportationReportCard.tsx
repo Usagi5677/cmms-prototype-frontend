@@ -1,11 +1,11 @@
-import MachineReport from "../../../models/Machine/MachineReport";
-import classes from "./MachineReportCard.module.css";
+import TransportationReport from "../../../models/Transportation/TransportationReport";
+import classes from "./TransportationReportCard.module.css";
 
-const MachineReportCard = ({
+const TransportationReportCard = ({
   report,
   index,
 }: {
-  report: MachineReport;
+  report: TransportationReport;
   index: number;
 }) => {
   return (
@@ -45,4 +45,4 @@ const MachineReportCard = ({
   );
 };
 
-export default MachineReportCard;
+export default TransportationReportCard;

@@ -23,7 +23,8 @@ import { permissionExist } from "./helpers/assignPermission";
 import ViewAssignedMachinery from "./pages/Machine/ViewAssignedMachinery/ViewAssignedMachinery";
 import ViewAssignedVessels from "./pages/Transportation/ViewAssignedVessels/ViewAssignedVessels";
 import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/ViewAssignedVehicles";
-import ViewReport from "./pages/ViewReport/ViewReport";
+import ViewMachineReport from "./pages/ViewMachineReport/ViewMachineReport";
+import ViewTransportationReport from "./pages/ViewTransportationReport/ViewTransportationReport";
 
 function App() {
   {
@@ -47,7 +48,7 @@ function App() {
       const assignedPermission = permissionExist(data.me);
       setUser({
         ...data.me,
-        assignedPermission
+        assignedPermission,
       });
       setAppLoading(false);
       setLoggedOut(false);
@@ -164,12 +165,22 @@ function App() {
               path="/transportation/:id"
               element={<ViewTransportation />}
             />
-            <Route path="/assigned-machinery" element={<ViewAssignedMachinery />} />
+            <Route
+              path="/assigned-machinery"
+              element={<ViewAssignedMachinery />}
+            />
             <Route path="/assigned-vessels" element={<ViewAssignedVessels />} />
-            <Route path="/assigned-vehicles" element={<ViewAssignedVehicles />} />
+            <Route
+              path="/assigned-vehicles"
+              element={<ViewAssignedVehicles />}
+            />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
-            <Route path="/view-machinery-report" element={<ViewReport />} />
+            <Route path="/machinery-report" element={<ViewMachineReport />} />
+            <Route
+              path="/transportation-report"
+              element={<ViewTransportationReport />}
+            />
           </Routes>
         </Layout>
       </ApolloProvider>
