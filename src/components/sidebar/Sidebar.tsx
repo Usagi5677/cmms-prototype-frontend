@@ -1,6 +1,4 @@
 import {
-  FaBook,
-  FaCarCrash,
   FaHome,
   FaLayerGroup,
   FaListAlt,
@@ -9,21 +7,24 @@ import {
   FaTh,
   FaUserLock,
   FaUsers,
-  FaWrench,
   FaTruck,
   FaTractor,
   FaLock,
 } from "react-icons/fa";
-import { BsPeopleFill } from "react-icons/bs";
-import { IoLocationSharp } from "react-icons/io5";
-import { AiFillDatabase } from "react-icons/ai";
 import { RiSailboatFill } from "react-icons/ri";
 
 import classes from "./Sidebar.module.css";
 import { NavLink, useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
-import { Menu } from "antd";
+import { Badge, Menu } from "antd";
+import { useLazyQuery } from "@apollo/client";
+import { errorMessage } from "../../helpers/gql";
+import {
+  GET_BREAKDOWN_MACHINE_COUNT,
+  GET_BREAKDOWN_VEHICLE_COUNT,
+  GET_BREAKDOWN_VESSEL_COUNT,
+} from "../../api/queries";
 
 const { Divider } = Menu;
 interface SidebarItem {
@@ -35,6 +36,44 @@ interface SidebarItem {
 const Sidebar = ({ onClick }: { onClick: () => void }) => {
   const { user } = useContext(UserContext);
   const { pathname } = useLocation();
+
+  const [breakdownMachineCount, { data: machineData }] = useLazyQuery(
+    GET_BREAKDOWN_MACHINE_COUNT,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading request.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+
+  const [breakdownVesselCount, { data: vesselData }] = useLazyQuery(
+    GET_BREAKDOWN_VESSEL_COUNT,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading request.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+
+  const [breakdownVehicleCount, { data: vehicleData }] = useLazyQuery(
+    GET_BREAKDOWN_VEHICLE_COUNT,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading request.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+  useEffect(() => {
+    breakdownMachineCount();
+    breakdownVesselCount();
+    breakdownVehicleCount();
+  }, [breakdownMachineCount, breakdownVesselCount, breakdownVehicleCount]);
 
   let SidebarData: SidebarItem[] = [
     {
@@ -181,6 +220,60 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       >
         {SidebarData.map((item: SidebarItem) => {
           if (item.name === "Divider") return <Divider key={item.path} />;
+          if (item.name === "Machinery") {
+            return (
+              <Menu.Item
+                key={item.path}
+                icon={item.icon}
+                className={classes["newMenuItem"]}
+                onClick={onClick}
+              >
+                <NavLink to={item.path}>
+                  {item.name}{" "}
+                  <Badge
+                    count={machineData?.breakdownMachineCount.count}
+                    style={{ marginLeft: 10 }}
+                  />
+                </NavLink>
+              </Menu.Item>
+            );
+          }
+          if (item.name === "Vessels") {
+            return (
+              <Menu.Item
+                key={item.path}
+                icon={item.icon}
+                className={classes["newMenuItem"]}
+                onClick={onClick}
+              >
+                <NavLink to={item.path}>
+                  {item.name}{" "}
+                  <Badge
+                    count={vesselData?.breakdownVesselCount.count}
+                    style={{ marginLeft: 10 }}
+                  />
+                </NavLink>
+              </Menu.Item>
+            );
+          }
+          if (item.name === "Vehicles") {
+            return (
+              <Menu.Item
+                key={item.path}
+                icon={item.icon}
+                className={classes["newMenuItem"]}
+                onClick={onClick}
+              >
+                <NavLink to={item.path}>
+                  {item.name}{" "}
+                  <Badge
+                    count={vehicleData?.breakdownVehicleCount.count}
+                    style={{ marginLeft: 10 }}
+                  />
+                </NavLink>
+              </Menu.Item>
+            );
+          }
           return (
             <Menu.Item
               key={item.path}

@@ -32,6 +32,7 @@ const MachineStatuses = ({
         "getAllBreakdownOfMachine",
         "getAllRepairOfMachine",
         "getAllHistoryOfMachine",
+        "breakdownMachineCount",
       ],
     }
   );
@@ -48,7 +49,11 @@ const MachineStatuses = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating breakdown.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine", "getSingleMachine"],
+      refetchQueries: [
+        "getAllBreakdownOfMachine",
+        "getSingleMachine",
+        "breakdownMachineCount",
+      ],
     }
   );
 

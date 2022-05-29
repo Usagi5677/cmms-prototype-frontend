@@ -19,7 +19,12 @@ const AddMachineBreakdown = ({ machineID }: { machineID: number }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating breakdown.");
       },
-      refetchQueries: ["getAllBreakdownOfMachine", "getSingleMachine", "getAllHistoryOfMachine"],
+      refetchQueries: [
+        "getAllBreakdownOfMachine",
+        "getSingleMachine",
+        "getAllHistoryOfMachine",
+        "breakdownMachineCount"
+      ],
     }
   );
 

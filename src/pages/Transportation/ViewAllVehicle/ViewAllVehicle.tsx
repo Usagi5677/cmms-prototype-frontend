@@ -1,7 +1,7 @@
 import { Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
@@ -13,21 +13,26 @@ import classes from "./ViewAllVehicle.module.css";
 import Transportation from "../../../models/Transportation";
 import TransportationCard from "../../../components/TransportationComponents/TransportationCard/TransportationCard";
 import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
+import TransportationStatusFilter from "../../../components/common/TransportationStatusFilter";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 const Vehicles = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const [params, setParams] = useSearchParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       transportType: string;
+      status: any;
     }
   >({
     ...DefaultPaginationArgs,
     search: "",
     transportType: "Vehicle",
+    status: params.get("status"),
   });
 
   const [getAllTransportation, { data, loading }] = useLazyQuery(
@@ -40,6 +45,13 @@ const Vehicles = () => {
       nextFetchPolicy: "cache-first",
     }
   );
+
+  // Update url search param on filter change
+  useEffect(() => {
+    let newParams: any = {};
+    if (filter.status) newParams.status = filter.status;
+    setParams(newParams);
+  }, [filter, setParams, params]);
 
   // Fetch transportation when component mounts or when the filter object changes
   useEffect(() => {
@@ -98,6 +110,8 @@ const Vehicles = () => {
   };
 
   const pageInfo = data?.getAllTransportation.pageInfo ?? {};
+  const isSmallDevice = useIsSmallDevice();
+  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   return (
     <div className={classes["container"]}>
@@ -106,6 +120,14 @@ const Vehicles = () => {
           searchValue={search}
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
+        />
+        <TransportationStatusFilter
+          onChange={(status) => {
+            setFilter({ ...filter, status, ...DefaultPaginationArgs });
+            setPage(1);
+          }}
+          value={filter.status}
+          margin={filterMargin}
         />
         <div className={classes["add-wrapper"]}>
           <AddTransportation />
@@ -119,7 +141,10 @@ const Vehicles = () => {
       {data?.getAllTransportation.edges.map((rec: { node: Transportation }) => {
         const transportation = rec.node;
         return (
-          <Link to={"/transportation/" + transportation.id} key={transportation.id}>
+          <Link
+            to={"/transportation/" + transportation.id}
+            key={transportation.id}
+          >
             <TransportationCard transportation={transportation} />
           </Link>
         );

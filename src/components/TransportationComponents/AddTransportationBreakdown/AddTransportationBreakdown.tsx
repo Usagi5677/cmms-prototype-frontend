@@ -26,6 +26,8 @@ const AddTransportationBreakdown = ({
         "getAllBreakdownOfTransportation",
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
+        "breakdownVesselCount",
+        "breakdownVehicleCount"
       ],
     });
 

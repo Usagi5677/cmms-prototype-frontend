@@ -578,3 +578,16 @@ export const UNASSIGN_USER_FROM_TRANSPORTATION = gql`
     )
   }
 `;
+
+
+export const READ_ONE_NOTIFICATION = gql`
+  mutation readNotification($notificationId: Int!) {
+    readNotification(notificationId: $notificationId)
+  }
+`;
+
+export const READ_ALL_NOTIFICATIONS = gql`
+  mutation readAllNotifications {
+    readAllNotifications
+  }
+`;

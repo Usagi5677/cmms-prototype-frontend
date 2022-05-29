@@ -32,6 +32,8 @@ const TransportationStatuses = ({
         "getAllBreakdownOfTransportation",
         "getAllRepairOfTransportation",
         "getAllHistoryOfTransportation",
+        "breakdownVesselCount",
+        "breakdownVehicleCount"
       ],
     }
   );
@@ -50,6 +52,8 @@ const TransportationStatuses = ({
       refetchQueries: [
         "getAllBreakdownOfTransportation",
         "getSingleTransportation",
+        "breakdownVesselCount",
+        "breakdownVehicleCount"
       ],
     });
 

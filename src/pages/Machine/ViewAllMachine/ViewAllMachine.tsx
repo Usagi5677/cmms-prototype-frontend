@@ -1,7 +1,7 @@
 import { Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
@@ -13,20 +13,32 @@ import AddMachine from "../../../components/MachineComponents/AddMachine/AddMach
 import MachineCard from "../../../components/MachineComponents/MachineCard/MachineCard";
 import Machine from "../../../models/Machine";
 import classes from "./ViewAllMachine.module.css";
+import MachineStatusFilter from "../../../components/common/MachineStatusFilter";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 const Machinery = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const [params, setParams] = useSearchParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
+      status: any;
     }
   >({
     ...DefaultPaginationArgs,
     search: "",
+    status: params.get("status"),
   });
+
+  // Update url search param on filter change
+  useEffect(() => {
+    let newParams: any = {};
+    if (filter.status) newParams.status = filter.status;
+    setParams(newParams);
+  }, [filter, setParams, params]);
 
   const [getAllMachine, { data, loading }] = useLazyQuery(ALL_MACHINES, {
     onError: (err) => {
@@ -93,7 +105,9 @@ const Machinery = () => {
   };
 
   const pageInfo = data?.getAllMachine.pageInfo ?? {};
-
+  const isSmallDevice = useIsSmallDevice();
+  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+  
   return (
     <div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
@@ -102,6 +116,14 @@ const Machinery = () => {
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
         />
+        <MachineStatusFilter
+            onChange={(status) => {
+              setFilter({ ...filter, status, ...DefaultPaginationArgs });
+              setPage(1);
+            }}
+            value={filter.status}
+            margin={filterMargin}
+          />
         <div className={classes["add-machine-wrapper"]}>
           <AddMachine />
         </div>

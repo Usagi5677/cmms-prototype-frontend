@@ -37,6 +37,7 @@ export const ALL_MACHINES = gql`
     $last: Int
     $search: String
     $assignedToId: Int
+    $status: MachineStatus
   ) {
     getAllMachine(
       after: $after
@@ -45,6 +46,7 @@ export const ALL_MACHINES = gql`
       last: $last
       search: $search
       assignedToId: $assignedToId
+      status: $status
     ) {
       pageInfo {
         endCursor
@@ -368,6 +370,7 @@ export const ALL_TRANSPORTATION = gql`
     $createdByUserId: String
     $transportType: String
     $assignedToId: Int
+    $status: TransportationStatus
   ) {
     getAllTransportation(
       after: $after
@@ -378,6 +381,7 @@ export const ALL_TRANSPORTATION = gql`
       createdByUserId: $createdByUserId
       transportType: $transportType
       assignedToId: $assignedToId
+      status: $status
     ) {
       pageInfo {
         endCursor
@@ -803,6 +807,43 @@ export const GET_TRANSPORTATION_REPORT = gql`
       type
       working
       breakdown
+    }
+  }
+`;
+
+export const GET_BREAKDOWN_MACHINE_COUNT = gql`
+  query breakdownMachineCount {
+    breakdownMachineCount {
+      count
+    }
+  }
+`;
+
+export const GET_BREAKDOWN_VESSEL_COUNT = gql`
+  query breakdownVesselCount {
+    breakdownVesselCount {
+      count
+    }
+  }
+`;
+
+export const GET_BREAKDOWN_VEHICLE_COUNT = gql`
+  query breakdownVehicleCount {
+    breakdownVehicleCount {
+      count
+    }
+  }
+`;
+
+export const NOTIFICATIONS = gql`
+  query notifications {
+    notifications {
+      body
+      createdAt
+      id
+      readAt
+      link
+      userId
     }
   }
 `;
