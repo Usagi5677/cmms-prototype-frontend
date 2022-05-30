@@ -12,4 +12,5 @@ export default interface MachinePeriodicMaintenance {
   completedBy?: User;
   completedAt?: Date;
   createdAt?: Date;
+  fixedDate?: Date;
 }

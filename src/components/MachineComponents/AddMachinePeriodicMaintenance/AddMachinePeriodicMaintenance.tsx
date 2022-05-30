@@ -48,7 +48,7 @@ const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => 
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, period, notificationReminder } = values;
+    const { title, description, period, notificationReminder, fixedDate } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -66,7 +66,10 @@ const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => 
       message.error("Please enter the notification reminder.");
       return;
     }
-
+    if (!fixedDate) {
+      message.error("Please enter select the fixed date.");
+      return;
+    }
     addMachinePeriodicMaintenance({
       variables: {
         machineId: machineID,
@@ -74,6 +77,7 @@ const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => 
         description,
         period,
         notificationReminder,
+        fixedDate
       },
     });
   };
@@ -157,6 +161,20 @@ const AddMachinePeriodicMaintenance = ({ machineID }: { machineID: number }) => 
             <InputNumber
               placeholder="Notification Reminder"
               style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Fixed Date"
+            name="fixedDate"
+            required={false}
+          >
+            <DatePicker
+              placeholder="Select fixed date"
+              style={{
+                width: 200,
+                marginRight: "1rem",
+              }}
+              allowClear={false}
             />
           </Form.Item>
           <Row justify="end" gutter={16}>

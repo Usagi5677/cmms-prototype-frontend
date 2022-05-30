@@ -28,6 +28,16 @@ const TransportationPeriodicMaintenanceCard = ({
               )}
             </div>
           </div>
+          <div className={classes["time-wrapper"]}>
+            <Tooltip title="Fixed Date">
+              <FaRegClock />
+            </Tooltip>
+            <div className={classes["time"]}>
+              {moment(periodicMaintenance?.fixedDate).format(
+                DATETIME_FORMATS.FULL
+              )}
+            </div>
+          </div>
           <div>{periodicMaintenance?.title}</div>
           <div>{periodicMaintenance?.description}</div>
           {periodicMaintenance?.completedBy?.fullName && (

@@ -85,6 +85,7 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
     $description: String!
     $period: Int!
     $notificationReminder: Int!
+    $fixedDate: Date!
   ) {
     addMachinePeriodicMaintenance(
       machineId: $machineId
@@ -92,6 +93,7 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
       description: $description
       period: $period
       notificationReminder: $notificationReminder
+      fixedDate: $fixedDate
     )
   }
 `;
@@ -350,6 +352,7 @@ export const ADD_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
     $description: String!
     $period: Int!
     $notificationReminder: Int!
+    $fixedDate: Date!
   ) {
     addTransportationPeriodicMaintenance(
       transportationId: $transportationId
@@ -357,6 +360,7 @@ export const ADD_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
       description: $description
       period: $period
       notificationReminder: $notificationReminder
+      fixedDate: $fixedDate
     )
   }
 `;
@@ -578,7 +582,6 @@ export const UNASSIGN_USER_FROM_TRANSPORTATION = gql`
     )
   }
 `;
-
 
 export const READ_ONE_NOTIFICATION = gql`
   mutation readNotification($notificationId: Int!) {

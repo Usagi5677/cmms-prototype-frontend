@@ -13,4 +13,5 @@ export default interface TransportationPeriodicMaintenance {
   completedBy?: User;
   completedAt?: Date;
   createdAt?: Date;
+  fixedDate?: Date;
 }
