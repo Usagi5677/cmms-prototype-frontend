@@ -24,6 +24,7 @@ import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
 import MachineAssignment from "../../../components/MachineComponents/MachineAssignment/MachineAssignment";
 import { UNASSIGN_USER_FROM_MACHINE } from "../../../api/mutations";
+import MachineUsageHistory from "../../../components/MachineComponents/MachineUsageHistory/MachineUsageHistory";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -171,7 +172,7 @@ const ViewMachine = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
-              <EditMachine machine={machine} />
+              <EditMachine machine={machineData} />
               <DeleteMachine machineID={machineData?.id} />
             </div>
 
@@ -254,7 +255,9 @@ const ViewMachine = () => {
               renderUsers()}
           </div>
         </div>
-        <div className={classes["usage-container"]}></div>
+        <div className={classes["usage-container"]}>
+          <MachineUsageHistory />
+        </div>
       </div>
     </>
   );

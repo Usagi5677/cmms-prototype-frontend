@@ -35,7 +35,7 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
     onError: (error) => {
       errorMessage(error, "Unexpected error while updating machine.");
     },
-    refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine"],
+    refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine", "singleMachineUsageHistory"],
   });
 
   const handleCancel = () => {

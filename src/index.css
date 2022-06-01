@@ -69,8 +69,6 @@ a {
   color: initial !important;
 }
 
-
-
 html,
 body,
 #root {
@@ -374,4 +372,35 @@ em {
   border: 1px solid var(--primary) !important;
 }
 
+.ant-picker-cell-in-view.ant-picker-cell-in-range::before {
+  background: #bff7e4 !important;
+}
 
+.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
+.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
+  background: #d2f5e9 !important;
+}
+
+.ant-picker-cell:hover:not(.ant-picker-cell-in-view) .ant-picker-cell-inner,
+.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end)
+  .ant-picker-cell-inner {
+  background: #7bd8b8 !important;
+}
+
+.ant-picker-cell .ant-picker-cell-in-view .ant-picker-cell-range-hover-start {
+  background: #7bd8b8 !important;
+}
+
+.ant-picker-ranges .ant-picker-preset > .ant-tag-blue {
+  color: var(--primary) !important;
+  background: #d2f5e9 !important;
+  border-color: var(--primary) !important;
+}
+
+.ant-picker-range .ant-picker-active-bar {
+  background: var(--primary) !important;
+}
+
+.ant-picker-header-view button:hover {
+  color: var(--primary) !important;
+}
