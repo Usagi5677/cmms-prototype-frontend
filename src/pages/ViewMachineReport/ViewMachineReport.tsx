@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, message, Spin } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { GET_MACHINE_REPORT } from "../../api/queries";
@@ -12,15 +12,14 @@ import moment from "moment";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 
 const ViewMachineReport = () => {
-  const [toDate, setToDate] = useState<any>();
-  const [fromDate, setFromDate] = useState<any>();
+  const [dates, setDates] = useState<any>([
+    moment().subtract(1, "month"),
+    moment(),
+  ]);
   const [form] = useForm();
   const [getMachineReport, { data, loading }] = useLazyQuery(
     GET_MACHINE_REPORT,
     {
-      onCompleted: () => {
-        message.success("Successfully retrieved report.");
-      },
       onError: (err) => {
         errorMessage(err, "Error loading report.");
       },
@@ -29,43 +28,110 @@ const ViewMachineReport = () => {
     }
   );
 
-  const handleCancel = () => {
-    form.resetFields();
-    setFromDate("");
-    setToDate("");
-  };
-
-  const onFinish = async (values: any) => {
-    const { fromDate, toDate } = values;
-
-    if (!fromDate) {
-      message.error("Please enter the 'to' date.");
-      return;
-    }
-    if (!toDate) {
-      message.error("Please enter the 'from' date.");
-      return;
-    }
-
-    if (fromDate > toDate) {
-      message.error("Please pick a date less than 'to' date.");
-      return;
-    }
-    setFromDate(fromDate);
-    setToDate(toDate);
-
+  useEffect(() => {
     getMachineReport({
       variables: {
-        from: fromDate,
-        to: toDate,
+        from: dates[0].toISOString(),
+        to: dates[1].toISOString(),
       },
     });
-  };
-
+  }, [dates, getMachineReport]);
+  
   const isSmallDevice = useIsSmallDevice();
 
   return (
     <div className={classes["container"]}>
+      <div className={classes["datepicker"]}>
+        <DatePicker.RangePicker
+          defaultValue={dates}
+          format={DATETIME_FORMATS.DAY_MONTH_YEAR}
+          style={{ width: 350, borderRadius: 20 }}
+          popupStyle={{ borderRadius: 20 }}
+          disabledDate={(date) => date.isAfter(moment(), "day")}
+          onChange={setDates}
+          allowClear={false}
+          ranges={{
+            "Past 7 Days": [moment().subtract(1, "week"), moment()],
+            "This Week": [moment().startOf("week"), moment()],
+            "Past 30 Days": [moment().subtract(30, "day"), moment()],
+            "This Month": [moment().startOf("month"), moment()],
+          }}
+        />
+      </div>
+      {loading ? (
+        <div className={classes["loading"]}>
+          <Spin size="large" />
+        </div>
+      ) : (
+        <div>
+          {dates[0] || dates[1] ? (
+            <div className={classes["heading"]}>
+              Machinery summary between{" "}
+              {moment(dates[0]).format(DATETIME_FORMATS.DAY_MONTH_YEAR)} to{" "}
+              {moment(dates[1]).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+            </div>
+          ) : null}
+          {isSmallDevice ? (
+            <div>
+              {data?.getMachineReport.map(
+                (report: MachineReport, index: number) => {
+                  return (
+                    <MachineReportCard
+                      key={index}
+                      report={report}
+                      index={index}
+                    />
+                  );
+                }
+              )}
+            </div>
+          ) : (
+            <div className={classes["table-row"]}>
+              {dates[1] && (
+                <table className={classes["table"]}>
+                  <tbody>
+                    <tr>
+                      <th>No</th>
+                      <th>Type</th>
+                      <th>Total</th>
+                      <th>Working</th>
+                      <th>Breakdown</th>
+                      <th>Working %</th>
+                    </tr>
+                    {data?.getMachineReport.map(
+                      (report: MachineReport, index: number) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{report.type}</td>
+                            <td>{report.working + report.breakdown}</td>
+                            <td>{report.working}</td>
+                            <td>{report.breakdown}</td>
+                            <td>
+                              {(report.working /
+                                (report.working + report.breakdown)) *
+                                100}
+                              %
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ViewMachineReport;
+/*
+
+<div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
         <Form
           form={form}
@@ -184,11 +250,6 @@ const ViewMachineReport = () => {
         </div>
       )}
     </div>
-  );
-};
-
-export default ViewMachineReport;
-/*
 <div className={classes["table-row"]}>
         <table className={classes["table"]}>
           <tbody>

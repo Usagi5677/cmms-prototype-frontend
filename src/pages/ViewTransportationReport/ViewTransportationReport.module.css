@@ -93,7 +93,19 @@
   justify-content: center;
   align-items: center;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin: 20px 0;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.datepicker {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
 @media only screen and (min-width: 600px) {
   .container .options-wrapper {

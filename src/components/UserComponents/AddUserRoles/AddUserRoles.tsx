@@ -128,7 +128,17 @@ const AddUserRoles = () => {
             employee will automatically be added to the form value */}
             <SearchAPSUser />
           </Form.Item>
-          <Form.Item label="Roles" name="roles">
+          <Form.Item
+            label="Roles"
+            name="roles"
+            required={false}
+            rules={[
+              {
+                required: true,
+                message: "Please select at least one role.",
+              },
+            ]}
+          >
             <Select
               mode="multiple"
               showArrow
