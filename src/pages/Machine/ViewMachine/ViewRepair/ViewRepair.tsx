@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_REPAIR_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachineRepair from "../../../../components/MachineComponents/AddMachineRepair/AddMachineRepair";
@@ -9,8 +9,10 @@ import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import Repair from "../../../../models/Machine/MachineRepair";
 import classes from "./ViewRepair.module.css";
+import UserContext from "../../../../contexts/UserContext";
 
 const ViewRepair = ({ machineID }: { machineID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +106,9 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineRepair machineID={machineID} />
+        {self.assignedPermission.hasMachineRepairAdd ? (
+          <AddMachineRepair machineID={machineID} />
+        ) : null}
       </div>
       {loading && (
         <div>

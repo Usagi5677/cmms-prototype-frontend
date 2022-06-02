@@ -1,16 +1,18 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_BREAKDOWN_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachineBreakdown from "../../../../components/MachineComponents/AddMachineBreakdown/AddMachineBreakdown";
 import MachineBreakdownCard from "../../../../components/MachineComponents/MachineBreakdownCard/MachineBreakdownCard";
+import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
 import Breakdown from "../../../../models/Machine/MachineBreakdown";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
 
 const ViewBreakdown = ({ machineID }: { machineID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +106,9 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineBreakdown machineID={machineID} />
+        {self.assignedPermission.hasMachineBreakdownAdd ? (
+          <AddMachineBreakdown machineID={machineID} />
+        ) : null}
       </div>
       {loading && (
         <div>

@@ -1,13 +1,18 @@
+import { useContext } from "react";
 import AddMachineChecklist from "../../../../components/MachineComponents/AddMachineChecklist/AddMachineChecklist";
 import MachineChecklistItem from "../../../../components/MachineComponents/MachineChecklistItem/MachineChecklistItem";
+import UserContext from "../../../../contexts/UserContext";
 import Machine from "../../../../models/Machine";
 import classes from "./ViewChecklist.module.css";
 
 const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineChecklist machineID={machineData?.id} />
+        {self.assignedPermission.hasMachineChecklistAdd ? (
+          <AddMachineChecklist machineID={machineData?.id} />
+        ) : null}
       </div>
       <div className={classes["content"]}>
         <div className={classes["content-wrapper-one"]}>

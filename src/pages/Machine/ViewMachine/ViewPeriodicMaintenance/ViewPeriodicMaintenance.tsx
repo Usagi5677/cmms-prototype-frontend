@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
@@ -13,8 +13,10 @@ import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import PeriodicMaintenance from "../../../../models/Machine/MachinePeriodicMaintenance";
 import classes from "./ViewPeriodicMaintenance.module.css";
+import UserContext from "../../../../contexts/UserContext";
 
 const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -108,7 +110,9 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachinePeriodicMaintenance machineID={machineID} />
+        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd ? (
+          <AddMachinePeriodicMaintenance machineID={machineID} />
+        ) : null}
       </div>
       {loading && (
         <div>

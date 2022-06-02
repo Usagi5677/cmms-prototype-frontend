@@ -1,5 +1,5 @@
 import { Button, Image, Spin, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useLazyQuery } from "@apollo/client";
 
@@ -15,12 +15,14 @@ import { errorMessage } from "../../../helpers/gql";
 import classes from "./MachineAttachment.module.css";
 import DeleteMachineAttachment from "../DeleteMachineAttachment/DeleteMachineAttachment";
 import EditMachineAttachment from "../EditMachineAttachment/EditMachineAttachment";
+import UserContext from "../../../contexts/UserContext";
 
 const ParsedMachineAttachment = ({
   attachmentData,
 }: {
   attachmentData: MachineAttachment;
 }) => {
+  const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;
   const url = `${
     process.env.REACT_APP_API_URL?.split("graphql")[0]
@@ -87,8 +89,8 @@ const ParsedMachineAttachment = ({
           {fileLoading && (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
           )}
-          {file && <EditMachineAttachment attachment={attachmentData} />}
-          {file && <DeleteMachineAttachment id={attachmentData?.id} />}
+          {file && self.assignedPermission.hasMachineAttachmentEdit && <EditMachineAttachment attachment={attachmentData} />}
+          {file && self.assignedPermission.hasMachineAttachmentDelete && <DeleteMachineAttachment id={attachmentData?.id} />}
           {file && (
             <Tooltip title={"Download"}>
               <DownloadOutlined

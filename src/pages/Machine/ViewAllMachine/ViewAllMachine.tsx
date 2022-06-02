@@ -1,7 +1,7 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import Search from "../../../components/common/Search";
-import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
@@ -15,12 +15,15 @@ import Machine from "../../../models/Machine";
 import classes from "./ViewAllMachine.module.css";
 import MachineStatusFilter from "../../../components/common/MachineStatusFilter";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
+import UserContext from "../../../contexts/UserContext";
 
 const Machinery = () => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -35,6 +38,10 @@ const Machinery = () => {
 
   // Update url search param on filter change
   useEffect(() => {
+    if (!self.assignedPermission.hasViewAllMachines) {
+      navigate("/");
+      message.error("No permission to view all machines.");
+    }
     let newParams: any = {};
     if (filter.status) newParams.status = filter.status;
     setParams(newParams);

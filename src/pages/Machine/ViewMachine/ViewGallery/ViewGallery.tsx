@@ -3,19 +3,19 @@ import { useLazyQuery } from "@apollo/client";
 import { Button, message, Spin, Tooltip, Upload } from "antd";
 import { RcFile, UploadChangeParam } from "antd/lib/upload";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_ATTACHMENT_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachineAttachment from "../../../../components/MachineComponents/AddMachineAttachment/AddMachineAttachment";
 import ParsedMachineAttachment from "../../../../components/MachineComponents/MachineAttachment/ParsedMachineAttachment";
+import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
 import MachineAttachment from "../../../../models/Machine/MachineAttachment";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewGallery.module.css";
 
 const ViewGallery = ({ machineID }: { machineID: number }) => {
-  
-
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -106,12 +106,13 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
 
   const pageInfo = attachment?.machineAttachments.pageInfo ?? {};
 
-  
-
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineAttachment machineID={machineID}/>
+        {self.assignedPermission.hasMachineAttachmentAdd ? (
+          <AddMachineAttachment machineID={machineID} />
+        ) : null}
+
         {loadingAttachment && (
           <div>
             <Spin style={{ width: "100%", margin: "2rem auto" }} />

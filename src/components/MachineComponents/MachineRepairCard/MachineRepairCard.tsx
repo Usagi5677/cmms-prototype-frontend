@@ -1,6 +1,8 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import Repair from "../../../models/Machine/MachineRepair";
 import DeleteMachineRepair from "../DeleteMachineRepair/DeleteMachineRepair";
@@ -9,11 +11,12 @@ import MachineRepairStatus from "../MachineRepairStatus/MachineRepairStatus";
 import classes from "./MachineRepairCard.module.css";
 
 const MachineRepairCard = ({ repair }: { repair: Repair }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
-        <div>{repair?.id}</div>
+          <div>{repair?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Created At">
               <FaRegClock />
@@ -33,11 +36,17 @@ const MachineRepairCard = ({ repair }: { repair: Repair }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditMachineRepair repair={repair} />
-          <DeleteMachineRepair id={repair?.id} />
+          {self.assignedPermission.hasMachineRepairEdit ? (
+            <EditMachineRepair repair={repair} />
+          ) : null}
+          {self.assignedPermission.hasMachineRepairDelete ? (
+            <DeleteMachineRepair id={repair?.id} />
+          ) : null}
         </div>
         <div className={classes["status"]}>
-          <MachineRepairStatus repair={repair} />
+          {self.assignedPermission.hasMachineRepairEdit ? (
+            <MachineRepairStatus repair={repair} />
+          ) : null}
         </div>
       </div>
     </div>

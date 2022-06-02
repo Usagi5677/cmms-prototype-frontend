@@ -42,6 +42,11 @@ const ViewMachine = () => {
 
   // Fetch machine when component mount
   useEffect(() => {
+    if (!self.assignedPermission.hasViewMachine) {
+      navigate("/");
+      message.error("No permission to view machine.");
+    }
+
     getSingleMachine({ variables: { machineId: parseInt(id) } });
   }, [getSingleMachine, id]);
 
@@ -172,9 +177,15 @@ const ViewMachine = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
-              <EditMachineUsage machine={machineData} />
-              <EditMachine machine={machineData} />
-              <DeleteMachine machineID={machineData?.id} />
+              {self.assignedPermission.hasEditMachineUsage ? (
+                <EditMachineUsage machine={machineData} />
+              ) : null}
+              {self.assignedPermission.hasMachineEdit ? (
+                <EditMachine machine={machineData} />
+              ) : null}
+              {self.assignedPermission.hasMachineDelete ? (
+                <DeleteMachine machineID={machineData?.id} />
+              ) : null}
             </div>
 
             <div className={classes["info-title-wrapper"]}>

@@ -1,6 +1,8 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import Breakdown from "../../../models/Machine/MachineBreakdown";
 import DeleteMachineBreakdown from "../DeleteMachineBreakdown/DeleteMachineBreakdown";
@@ -9,6 +11,7 @@ import MachineBreakdownStatus from "../MachineBreakdownStatus/MachineBreakdownSt
 import classes from "./MachineBreakdownCard.module.css";
 
 const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -33,11 +36,17 @@ const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditMachineBreakdown breakdown={breakdown} />
-          <DeleteMachineBreakdown id={breakdown?.id} />
+          {self.assignedPermission.hasMachineBreakdownEdit ? (
+            <EditMachineBreakdown breakdown={breakdown} />
+          ) : null}
+          {self.assignedPermission.hasMachineBreakdownDelete ? (
+            <DeleteMachineBreakdown id={breakdown?.id} />
+          ) : null}
         </div>
         <div className={classes["status"]}>
-          <MachineBreakdownStatus breakdown={breakdown} />
+          {self.assignedPermission.hasMachineBreakdownEdit ? (
+            <MachineBreakdownStatus breakdown={breakdown} />
+          ) : null}
         </div>
       </div>
     </div>

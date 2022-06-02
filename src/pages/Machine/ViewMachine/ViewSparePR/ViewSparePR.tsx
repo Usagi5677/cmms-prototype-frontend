@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_SPARE_PR_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachineSparePR from "../../../../components/MachineComponents/AddMachineSparePR/AddMachineSparePR";
@@ -9,8 +9,10 @@ import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import SparePR from "../../../../models/Machine/MachineSparePR";
 import classes from "./ViewSparePR.module.css";
+import UserContext from "../../../../contexts/UserContext";
 
 const ViewSparePR = ({ machineID }: { machineID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +106,9 @@ const ViewSparePR = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddMachineSparePR machineID={machineID} />
+        {self.assignedPermission.hasMachineSparePRAdd ? (
+          <AddMachineSparePR machineID={machineID} />
+        ) : null}
       </div>
       {loading && (
         <div>

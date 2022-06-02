@@ -1,6 +1,8 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegBell, FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import PeriodicMaintenance from "../../../models/Machine/MachinePeriodicMaintenance";
 import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
@@ -13,6 +15,7 @@ const MachinePeriodicMaintenanceCard = ({
 }: {
   periodicMaintenance: PeriodicMaintenance;
 }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -65,17 +68,23 @@ const MachinePeriodicMaintenanceCard = ({
           </div>
         </div>
         <div className={classes["third-block"]}>
-          <MachinePeriodicMaintenanceStatus
-            periodicMaintenance={periodicMaintenance}
-          />
+          {self.assignedPermission.hasMachinePeriodicMaintenanceEdit ? (
+            <MachinePeriodicMaintenanceStatus
+              periodicMaintenance={periodicMaintenance}
+            />
+          ) : null}
         </div>
       </div>
 
       <div className={classes["fourth-block"]}>
-        <EditMachinePeriodicMaintenance
-          periodicMaintenance={periodicMaintenance}
-        />
-        <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id} />
+        {self.assignedPermission.hasMachinePeriodicMaintenanceEdit ? (
+          <EditMachinePeriodicMaintenance
+            periodicMaintenance={periodicMaintenance}
+          />
+        ) : null}
+        {self.assignedPermission.hasMachinePeriodicMaintenanceDelete ? (
+          <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id} />
+        ) : null}
       </div>
     </div>
   );
