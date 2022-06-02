@@ -58,7 +58,7 @@ const AddRole = () => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Repair"}
+        title={"Add Role"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
