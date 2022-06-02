@@ -8,7 +8,7 @@ const TransportationStatusTag = ({
 }) => {
   let color: string | undefined = undefined;
   if (status === "Working") color = "cyan";
-  else if (status === "Pending") color = "orange";
+  else if (status === "Idle") color = "orange";
   else if (status === "Breakdown") color = "red";
   return (
     <Tag

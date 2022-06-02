@@ -24,6 +24,7 @@ import { stringToColor } from "../../../helpers/style";
 import { UNASSIGN_USER_FROM_TRANSPORTATION } from "../../../api/mutations";
 import TransportationAssignment from "../../../components/TransportationComponents/TransportationAssignment/TransportationAssignment";
 import TransportationUsageHistory from "../../../components/TransportationComponents/TransportationUsageHistory/TransportationUsageHistory";
+import EditTransportationUsage from "../../../components/TransportationComponents/EditTransportationUsage/EditTransportationUsage";
 
 const ViewTransportation = () => {
   const { id }: any = useParams();
@@ -180,6 +181,7 @@ const ViewTransportation = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
+              <EditTransportationUsage transportation={transportationData} />
               <EditTransportation transportation={transportationData} />
               <DeleteTransportation transportationID={transportationData?.id} />
             </div>

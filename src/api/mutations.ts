@@ -27,14 +27,14 @@ export const CREATE_MACHINE = gql`
 export const EDIT_MACHINE = gql`
   mutation (
     $id: Int!
-    $machineNumber: String!
-    $model: String!
-    $type: String!
-    $zone: String!
-    $location: String!
-    $currentRunningHrs: Int!
-    $lastServiceHrs: Int!
-    $registeredDate: Date!
+    $machineNumber: String
+    $model: String
+    $type: String
+    $zone: String
+    $location: String
+    $currentRunningHrs: Int
+    $lastServiceHrs: Int
+    $registeredDate: Date
   ) {
     editMachine(
       id: $id
@@ -592,5 +592,25 @@ export const READ_ONE_NOTIFICATION = gql`
 export const READ_ALL_NOTIFICATIONS = gql`
   mutation readAllNotifications {
     readAllNotifications
+  }
+`;
+
+export const EDIT_MACHINE_USAGE = gql`
+  mutation ($id: Int!, $currentRunningHrs: Int!, $lastServiceHrs: Int!) {
+    editMachineUsage(
+      id: $id
+      currentRunningHrs: $currentRunningHrs
+      lastServiceHrs: $lastServiceHrs
+    )
+  }
+`;
+
+export const EDIT_TRANSPORTATION_USAGE = gql`
+  mutation ($id: Int!, $currentMileage: Int!, $lastServiceMileage: Int!) {
+    editTransportationUsage(
+      id: $id
+      currentMileage: $currentMileage
+      lastServiceMileage: $lastServiceMileage
+    )
   }
 `;

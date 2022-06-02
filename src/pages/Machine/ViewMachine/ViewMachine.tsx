@@ -19,12 +19,12 @@ import MachineStatuses from "../../../components/MachineComponents/MachineStatus
 import ViewHistory from "./ViewHistory/ViewHistory";
 import ViewGallery from "./ViewGallery/ViewGallery";
 import ViewChecklist from "./ViewChecklist/ViewChecklist";
-import SearchAPSUser from "../../../components/common/SearchAPS";
 import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
 import MachineAssignment from "../../../components/MachineComponents/MachineAssignment/MachineAssignment";
 import { UNASSIGN_USER_FROM_MACHINE } from "../../../api/mutations";
 import MachineUsageHistory from "../../../components/MachineComponents/MachineUsageHistory/MachineUsageHistory";
+import EditMachineUsage from "../../../components/MachineComponents/EditMachineUsage/EditMachineUsage";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -172,6 +172,7 @@ const ViewMachine = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
+              <EditMachineUsage machine={machineData} />
               <EditMachine machine={machineData} />
               <DeleteMachine machineID={machineData?.id} />
             </div>

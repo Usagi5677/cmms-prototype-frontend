@@ -57,7 +57,6 @@ const AddMachineAttachment = ({ machineID }: { machineID: number }) => {
       return;
     }
     // Whenever file is selected, upload
-
     if (attachment.file.status === "removed") return;
     // Max allowed file size in bytes.
     const maxFileSize = 2 * 1000000;

@@ -4,9 +4,6 @@ export function permissionExist(data: User) {
   let hasRoleAdd = false;
   let hasRoleEdit = false;
   let hasRoleDelete = false;
-  let hasPermissionAdd = false;
-  let hasPermissionEdit = false;
-  let hasPermissionDelete = false;
   let hasMachineAdd = false;
   let hasMachineEdit = false;
   let hasMachineDelete = false;
@@ -53,6 +50,24 @@ export function permissionExist(data: User) {
   let hasTransportationAttachmentDelete = false;
   let hasTransportationAssignmentToUser = false;
   let hasTransportationUnassignmentToUser = false;
+  let hasEditTransportationUsage = false;
+  let hasEditMachineUsage = false;
+  let hasAssignPermission = false;
+  let hasAddUserWithRole = false;
+  let hasEditUserWithRole = false;
+  let hasViewAllMachines = false;
+  let hasViewAllVessels = false;
+  let hasViewAllVehicles = false;
+  let hasViewMachine = false;
+  let hasViewVessel = false;
+  let hasViewVehicle = false;
+  let hasViewAllAssignedMachines = false;
+  let hasViewAllAssignedVessels = false;
+  let hasViewAllAssignedVehicles = false;
+  let hasViewUsers = false;
+  let hasViewRoles = false;
+  let hasViewMachineryReport = false;
+  let hasViewTransportationReport = false;
 
   data?.roles?.forEach((roleData) => {
     roleData?.role.permissionRoles.forEach((permissionData) => {
@@ -65,15 +80,6 @@ export function permissionExist(data: User) {
           break;
         case "DELETE_ROLE":
           hasRoleDelete = true;
-          break;
-        case "ADD_PERMISSION":
-          hasPermissionAdd = true;
-          break;
-        case "EDIT_PERMISSION":
-          hasPermissionEdit = true;
-          break;
-        case "DELETE_PERMISSION":
-          hasPermissionDelete = true;
           break;
         case "ADD_MACHINE":
           hasMachineAdd = true;
@@ -213,6 +219,60 @@ export function permissionExist(data: User) {
         case "UNASSIGN_USER_TO_TRANSPORTATION":
           hasTransportationUnassignmentToUser = true;
           break;
+        case "EDIT_MACHINE_USAGE":
+          hasEditMachineUsage = true;
+          break;
+        case "EDIT_TRANSPORTATION_USAGE":
+          hasEditTransportationUsage = true;
+          break;
+        case "ASSIGN_PERMISSION":
+          hasAssignPermission = true;
+          break;
+        case "ADD_USER_WITH_ROLE":
+          hasAddUserWithRole = true;
+          break;
+        case "EDIT_USER_ROLE":
+          hasEditUserWithRole = true;
+          break;
+        case "VIEW_ALL_MACHINES":
+          hasViewAllMachines = true;
+          break;
+        case "VIEW_ALL_VESSELS":
+          hasViewAllVessels = true;
+          break;
+        case "VIEW_ALL_VEHICLES":
+          hasViewAllVehicles = true;
+          break;
+        case "VIEW_MACHINE":
+          hasViewMachine = true;
+          break;
+        case "VIEW_VESSEL":
+          hasViewVessel = true;
+          break;
+        case "VIEW_VEHICLE":
+          hasViewVehicle = true;
+          break;
+        case "VIEW_ALL_ASSIGNED_MACHINES":
+          hasViewAllAssignedMachines = true;
+          break;
+        case "VIEW_ALL_ASSIGNED_VESSELS":
+          hasViewAllAssignedVessels = true;
+          break;
+        case "VIEW_ALL_ASSIGNED_VEHICLES":
+          hasViewAllAssignedVehicles = true;
+          break;
+        case "VIEW_USERS":
+          hasViewUsers = true;
+          break;
+        case "VIEW_ROLES":
+          hasViewRoles = true;
+          break;
+        case "VIEW_MACHINERY_REPORT":
+          hasViewMachineryReport = true;
+          break;
+        case "VIEW_TRANSPORTATION_REPORT":
+          hasViewTransportationReport = true;
+          break;
       }
     });
   });
@@ -221,9 +281,6 @@ export function permissionExist(data: User) {
     hasRoleAdd,
     hasRoleEdit,
     hasRoleDelete,
-    hasPermissionAdd,
-    hasPermissionEdit,
-    hasPermissionDelete,
     hasMachineAdd,
     hasMachineEdit,
     hasMachineDelete,
@@ -270,6 +327,24 @@ export function permissionExist(data: User) {
     hasTransportationAttachmentDelete,
     hasTransportationAssignmentToUser,
     hasTransportationUnassignmentToUser,
+    hasEditMachineUsage,
+    hasEditTransportationUsage,
+    hasAssignPermission,
+    hasAddUserWithRole,
+    hasEditUserWithRole,
+    hasViewAllMachines,
+    hasViewAllVessels,
+    hasViewAllVehicles,
+    hasViewMachine,
+    hasViewVessel,
+    hasViewVehicle,
+    hasViewAllAssignedMachines,
+    hasViewAllAssignedVessels,
+    hasViewAllAssignedVehicles,
+    hasViewUsers,
+    hasViewRoles,
+    hasViewMachineryReport,
+    hasViewTransportationReport,
   };
 
   return permissions;

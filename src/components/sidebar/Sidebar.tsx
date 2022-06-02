@@ -34,7 +34,7 @@ interface SidebarItem {
 }
 
 const Sidebar = ({ onClick }: { onClick: () => void }) => {
-  const { user } = useContext(UserContext);
+  const { user: self } = useContext(UserContext);
   const { pathname } = useLocation();
 
   const [breakdownMachineCount, { data: machineData }] = useLazyQuery(
@@ -85,129 +85,82 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Divider",
       path: "divider1",
     },
-    {
+  ];
+
+  if (self.assignedPermission.hasViewAllMachines) {
+    // Insert at second position
+    SidebarData.splice(2, 0, {
       name: "Machinery",
       path: "/machinery",
       icon: <FaTractor />,
-    },
-    {
+    });
+  }
+
+  if (self.assignedPermission.hasViewAllVessels) {
+    SidebarData.splice(3, 0, {
       name: "Vessels",
       path: "/transportation/vessels",
       icon: <RiSailboatFill />,
-    },
-    {
+    });
+  }
+
+  if (self.assignedPermission.hasViewAllVehicles) {
+    SidebarData.splice(4, 0, {
       name: "Vehicles",
       path: "/transportation/vehicles",
       icon: <FaTruck />,
-    },
-    {
-      name: "Divider",
-      path: "divider2",
-    },
-    {
+    });
+  }
+  if (self.assignedPermission.hasViewAllAssignedMachines) {
+    SidebarData.splice(6, 0, {
       name: "Assigned Machinery",
       path: "/assigned-machinery",
       icon: <FaListUl />,
-    },
-    {
+    });
+  }
+  if (self.assignedPermission.hasViewAllAssignedVehicles) {
+    SidebarData.splice(7, 0, {
       name: "Assigned Vessels",
       path: "/assigned-vessels",
       icon: <FaListUl />,
-    },
-    {
+    });
+  }
+
+  if (self.assignedPermission.hasViewAllAssignedVessels) {
+    SidebarData.splice(8, 0, {
       name: "Assigned Vehicles",
       path: "/assigned-vehicles",
       icon: <FaListUl />,
-    },
-    {
-      name: "Divider",
-      path: "divider3",
-    },
-    {
+    });
+  }
+
+  if (self.assignedPermission.hasViewUsers) {
+    SidebarData.splice(10, 0, {
       name: "Users",
       path: "/users",
       icon: <FaUsers />,
-    },
-    {
+    });
+  }
+  if (self.assignedPermission.hasViewRoles) {
+    SidebarData.splice(11, 0, {
       name: "Roles",
       path: "/roles",
       icon: <FaLock />,
-    },
-    {
-      name: "Divider",
-      path: "divider4",
-    },
-    {
+    });
+  }
+  if (self.assignedPermission.hasViewMachineryReport) {
+    SidebarData.splice(13, 0, {
       name: "Machinery Report",
       path: "/machinery-report",
       icon: <FaRegChartBar />,
-    },
-    {
+    });
+  }
+  if (self.assignedPermission.hasViewTransportationReport) {
+    SidebarData.splice(14, 0, {
       name: "Transportation Report",
       path: "/transportation-report",
       icon: <FaRegChartBar />,
-    },
-    {
-      name: "Divider",
-      path: "divider5",
-    },
-  ];
-
-  // Items only shown to admins and agents
-  if (user?.isAdmin || user?.isAgent) {
-    // Insert at second position
-    SidebarData.splice(3, 0, {
-      name: "All Tickets",
-      path: "/all-tickets",
-      icon: <FaListAlt />,
     });
-    // Insert at the end
-    SidebarData.push(
-      {
-        name: "Categories",
-        path: "/categories",
-        icon: <FaTh />,
-      },
-      {
-        name: "User Groups",
-        path: "/usergroups",
-        icon: <FaUsers />,
-      }
-    );
-  }
-
-  // Items only shown to admins
-  if (user?.isAdmin) {
-    SidebarData.push({
-      name: "Users",
-      path: "/users",
-      icon: <FaUserLock />,
-    });
-  }
-
-  // Items only shown to agents
-  if (user?.isAgent) {
-    // Insert at third position
-    SidebarData.splice(4, 0, {
-      name: "Assigned Tickets",
-      path: "/assigned-tickets",
-      icon: <FaListUl />,
-    });
-  }
-
-  // Items only shown to super admins
-  if (user?.isSuperAdmin) {
-    SidebarData.push(
-      {
-        name: "Divider",
-        path: "divider3",
-      },
-      {
-        name: "Sites",
-        path: "/sites",
-        icon: <FaLayerGroup />,
-      }
-    );
   }
 
   return (

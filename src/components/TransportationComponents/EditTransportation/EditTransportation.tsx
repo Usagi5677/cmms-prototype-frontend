@@ -22,7 +22,7 @@ import { errorMessage } from "../../../helpers/gql";
 import Transportation from "../../../models/Transportation";
 import classes from "./EditTransportation.module.css";
 
-const EditMachine = ({
+const EditTransportation = ({
   transportation,
 }: {
   transportation: Transportation;
@@ -135,7 +135,7 @@ const EditMachine = ({
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Edit Machine"}
+        title={"Edit Transportation"}
         width="90vw"
         style={{ maxWidth: 700 }}
         destroyOnClose={true}
@@ -369,4 +369,4 @@ const EditMachine = ({
   );
 };
 
-export default EditMachine;
+export default EditTransportation;
