@@ -43,6 +43,7 @@ const EditMachine = ({
       refetchQueries: [
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
+        "singleTransportationUsageHistory",
       ],
     }
   );

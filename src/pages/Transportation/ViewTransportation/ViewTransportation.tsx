@@ -23,6 +23,7 @@ import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
 import { UNASSIGN_USER_FROM_TRANSPORTATION } from "../../../api/mutations";
 import TransportationAssignment from "../../../components/TransportationComponents/TransportationAssignment/TransportationAssignment";
+import TransportationUsageHistory from "../../../components/TransportationComponents/TransportationUsageHistory/TransportationUsageHistory";
 
 const ViewTransportation = () => {
   const { id }: any = useParams();
@@ -79,7 +80,8 @@ const ViewTransportation = () => {
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       {user.fullName} ({user.rcno})
-                      {self.assignedPermission.hasTransportationUnassignmentToUser && (
+                      {self.assignedPermission
+                        .hasTransportationUnassignmentToUser && (
                         <CloseCircleOutlined
                           style={{
                             cursor: "pointer",
@@ -287,7 +289,9 @@ const ViewTransportation = () => {
               renderUsers()}
           </div>
         </div>
-        <div className={classes["usage-container"]}></div>
+        <div className={classes["usage-container"]}>
+          <TransportationUsageHistory />
+        </div>
       </div>
     </>
   );

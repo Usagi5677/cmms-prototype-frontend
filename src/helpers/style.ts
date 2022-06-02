@@ -44,6 +44,22 @@ export const statusColors = (status: string) => {
   return [color, bgColor];
 };
 
+export const usageColors = (label: string) => {
+  let color = "grey";
+  let bgColor = "white";
+  if (label === "Current running hrs" || label === "Current mileage") {
+    bgColor = "#89d3a9";
+    color = "#6dd499";
+  } else if (label === "Last service hrs" || label === "Last service mileage") {
+    bgColor = "#63c971";
+    color = "#36753f";
+  } else if (label === "Inter service hrs" || label === "Inter service mileage") {
+    bgColor = "#5ba77c";
+    color = "#33a865";
+  }
+  return [color, bgColor];
+};
+
 export const getEqualValuesUnder140 = (colorCount: number): number[] => {
   const step = Math.round(140 / (colorCount + 1));
   let h:any = [];

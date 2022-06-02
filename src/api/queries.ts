@@ -858,3 +858,22 @@ export const GET_USAGE_HISTORY_OF_MACHINE = gql`
     }
   }
 `;
+
+export const GET_USAGE_HISTORY_OF_TRANSPORTATION = gql`
+  query singleTransportationUsageHistory(
+    $transportationId: Int!
+    $from: Date!
+    $to: Date!
+  ) {
+    singleTransportationUsageHistory(
+      transportationId: $transportationId
+      from: $from
+      to: $to
+    ) {
+      date
+      currentMileage
+      lastServiceMileage
+      interServiceMileage
+    }
+  }
+`;
