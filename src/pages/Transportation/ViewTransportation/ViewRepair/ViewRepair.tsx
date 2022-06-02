@@ -1,16 +1,18 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_REPAIR_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddTransportationRepair from "../../../../components/TransportationComponents/AddTransportationRepair/AddTransportationRepair";
 import TransportationRepairCard from "../../../../components/TransportationComponents/TransportationRepairCard/TransportationRepairCard";
+import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import Repair from "../../../../models/Transportation/TransportationRepair";
 import classes from "./ViewRepair.module.css";
 
 const ViewRepair = ({ transportationID }: { transportationID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +106,9 @@ const ViewRepair = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddTransportationRepair transportationID={transportationID} />
+        {self.assignedPermission.hasTransportationRepairAdd ? (
+          <AddTransportationRepair transportationID={transportationID} />
+        ) : null}
       </div>
       {loading && (
         <div>
@@ -112,10 +116,12 @@ const ViewRepair = ({ transportationID }: { transportationID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllRepairOfTransportation.edges.map((rec: { node: Repair }) => {
-          const repair = rec.node;
-          return <TransportationRepairCard key={repair.id} repair={repair} />;
-        })}
+        {data?.getAllRepairOfTransportation.edges.map(
+          (rec: { node: Repair }) => {
+            const repair = rec.node;
+            return <TransportationRepairCard key={repair.id} repair={repair} />;
+          }
+        )}
       </div>
 
       <PaginationButtons

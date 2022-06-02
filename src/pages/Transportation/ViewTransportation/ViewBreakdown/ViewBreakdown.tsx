@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_BREAKDOWN_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddTransportationBreakdown from "../../../../components/TransportationComponents/AddTransportationBreakdown/AddTransportationBreakdown";
@@ -9,8 +9,10 @@ import { errorMessage } from "../../../../helpers/gql";
 import Breakdown from "../../../../models/Transportation/TransportationBreakdown";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
+import UserContext from "../../../../contexts/UserContext";
 
 const ViewBreakdown = ({ transportationID }: { transportationID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +106,9 @@ const ViewBreakdown = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddTransportationBreakdown transportationID={transportationID} />
+        {self.assignedPermission.hasTransportationBreakdownAdd ? (
+          <AddTransportationBreakdown transportationID={transportationID} />
+        ) : null}
       </div>
       {loading && (
         <div>

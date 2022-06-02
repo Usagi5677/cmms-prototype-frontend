@@ -1,16 +1,18 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_ATTACHMENT_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddTransportationAttachment from "../../../../components/TransportationComponents/AddTransportationAttachment/AddTransportationAttachment";
 import ParsedTransportationAttachment from "../../../../components/TransportationComponents/TransportationAttachment/ParsedTransportationAttachment";
+import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import TransportationAttachment from "../../../../models/Transportation/TransportationAttachment";
 import classes from "./ViewGallery.module.css";
 
 const ViewGallery = ({ transportationID }: { transportationID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -104,7 +106,10 @@ const ViewGallery = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddTransportationAttachment transportationID={transportationID}/>
+        {self.assignedPermission.hasTransportationAttachmentAdd ? (
+          <AddTransportationAttachment transportationID={transportationID} />
+        ) : null}
+
         {loadingAttachment && (
           <div>
             <Spin style={{ width: "100%", margin: "2rem auto" }} />

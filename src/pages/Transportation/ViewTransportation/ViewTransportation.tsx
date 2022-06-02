@@ -44,6 +44,13 @@ const ViewTransportation = () => {
 
   // Fetch transportation when component mount
   useEffect(() => {
+    if (
+      !self.assignedPermission.hasViewVessel ||
+      !self.assignedPermission.hasViewVehicle
+    ) {
+      navigate("/");
+      message.error("No permission to view transportation.");
+    }
     getSingleTransportation({ variables: { transportationId: parseInt(id) } });
   }, [getSingleTransportation, id]);
 
@@ -181,9 +188,17 @@ const ViewTransportation = () => {
           </div>
           <div className={classes["info-container"]}>
             <div className={classes["info-btn-wrapper"]}>
-              <EditTransportationUsage transportation={transportationData} />
-              <EditTransportation transportation={transportationData} />
-              <DeleteTransportation transportationID={transportationData?.id} />
+              {self.assignedPermission.hasEditTransportationUsage ? (
+                <EditTransportationUsage transportation={transportationData} />
+              ) : null}
+              {self.assignedPermission.hasTransportationEdit ? (
+                <EditTransportation transportation={transportationData} />
+              ) : null}
+              {self.assignedPermission.hasTransportationDelete ? (
+                <DeleteTransportation
+                  transportationID={transportationData?.id}
+                />
+              ) : null}
             </div>
 
             <div className={classes["info-title-wrapper"]}>

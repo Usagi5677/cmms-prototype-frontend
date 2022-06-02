@@ -54,7 +54,7 @@ export function permissionExist(data: User) {
   let hasEditMachineUsage = false;
   let hasAssignPermission = false;
   let hasAddUserWithRole = false;
-  let hasEditUserWithRole = false;
+  let hasEditUserRole = false;
   let hasViewAllMachines = false;
   let hasViewAllVessels = false;
   let hasViewAllVehicles = false;
@@ -232,7 +232,7 @@ export function permissionExist(data: User) {
           hasAddUserWithRole = true;
           break;
         case "EDIT_USER_ROLE":
-          hasEditUserWithRole = true;
+          hasEditUserRole = true;
           break;
         case "VIEW_ALL_MACHINES":
           hasViewAllMachines = true;
@@ -331,7 +331,7 @@ export function permissionExist(data: User) {
     hasEditTransportationUsage,
     hasAssignPermission,
     hasAddUserWithRole,
-    hasEditUserWithRole,
+    hasEditUserRole,
     hasViewAllMachines,
     hasViewAllVessels,
     hasViewAllVehicles,

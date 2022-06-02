@@ -1,6 +1,8 @@
 import { Tag, Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { RoleTagStringToColor } from "../../../helpers/style";
 import Role from "../../../models/Role";
@@ -10,6 +12,7 @@ import EditRole from "../EditRole/EditRole";
 import classes from "./RoleCard.module.css";
 
 const RoleCard = ({ role }: { role: Role }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -23,7 +26,7 @@ const RoleCard = ({ role }: { role: Role }) => {
               {moment(role?.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
             </div>
           </div>
-          <div style={{marginTop: 5, marginBottom: 5}}>
+          <div style={{ marginTop: 5, marginBottom: 5 }}>
             <Tag
               key={role.id}
               style={{
@@ -47,9 +50,15 @@ const RoleCard = ({ role }: { role: Role }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <AssignPermission role={role} />
-          <EditRole role={role} />
-          <DeleteRole id={role?.id} />
+          {self.assignedPermission.hasAssignPermission ? (
+            <AssignPermission role={role} />
+          ) : null}
+          {self.assignedPermission.hasRoleEdit ? (
+            <EditRole role={role} />
+          ) : null}
+          {self.assignedPermission.hasRoleDelete ? (
+            <DeleteRole id={role?.id} />
+          ) : null}
         </div>
         <div className={classes["status"]}></div>
       </div>

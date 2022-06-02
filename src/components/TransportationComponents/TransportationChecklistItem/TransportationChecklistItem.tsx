@@ -10,12 +10,15 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import classes from "./TransportationChecklistItem.module.css";
+import { useContext } from "react";
+import UserContext from "../../../contexts/UserContext";
 
 const TransportationChecklistItem = ({
   item,
 }: {
   item: ChecklistItemModel;
 }) => {
+  const { user: self } = useContext(UserContext);
   const [deleteTransportationChecklistItem, { loading: deleting }] =
     useMutation(DELETE_TRANSPORTATION_CHECKLIST_ITEM, {
       onCompleted: () => {},
@@ -40,40 +43,59 @@ const TransportationChecklistItem = ({
     });
   return (
     <div className={classes["container"]}>
-      <Checkbox
-        checked={item.completedAt !== null}
-        onChange={(e) =>
-          toggleTransportationChecklistItem({
-            variables: { id: item.id, complete: e.target.checked },
-          })
-        }
-        className={classes["checkbox"]}
-      >
-        {item.description}{" "}
-        {item.completedAt && (
-          <span
-            className={classes["completedAt"]}
-            title={moment(item.completedAt).format(DATETIME_FORMATS.FULL)}
-          >
-            {moment(item.completedAt).format(DATETIME_FORMATS.SHORT)}
-          </span>
-        )}
-      </Checkbox>
+      {self.assignedPermission.hasTransportationChecklistEdit ? (
+        <Checkbox
+          checked={item.completedAt !== null}
+          onChange={(e) =>
+            toggleTransportationChecklistItem({
+              variables: { id: item.id, complete: e.target.checked },
+            })
+          }
+          className={classes["checkbox"]}
+        >
+          {item.description}{" "}
+          {item.completedAt && (
+            <span
+              className={classes["completedAt"]}
+              title={moment(item.completedAt).format(DATETIME_FORMATS.FULL)}
+            >
+              {moment(item.completedAt).format(DATETIME_FORMATS.SHORT)}
+            </span>
+          )}
+        </Checkbox>
+      ) : (
+        <div>
+          {item.description}{" "}
+          {item.completedAt && (
+            <span
+              className={classes["completedAt"]}
+              title={moment(item.completedAt).format(DATETIME_FORMATS.FULL)}
+            >
+              {moment(item.completedAt).format(DATETIME_FORMATS.SHORT)}
+            </span>
+          )}
+        </div>
+      )}
+
       <div className={classes["deleteWrapper"]}>
         {(deleting || toggling) && (
           <Spin style={{ marginRight: 5 }} size="small" />
         )}
         {!deleting && (
-          <CloseCircleOutlined
-            className={classes["delete"]}
-            onClick={() => {
-              deleteTransportationChecklistItem({
-                variables: {
-                  id: item.id,
-                },
-              });
-            }}
-          />
+          <div>
+            {self.assignedPermission.hasTransportationChecklistDelete ? (
+              <CloseCircleOutlined
+                className={classes["delete"]}
+                onClick={() => {
+                  deleteTransportationChecklistItem({
+                    variables: {
+                      id: item.id,
+                    },
+                  });
+                }}
+              />
+            ) : null}
+          </div>
         )}
       </div>
     </div>

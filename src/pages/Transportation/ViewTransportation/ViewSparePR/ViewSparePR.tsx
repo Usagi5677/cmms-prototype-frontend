@@ -1,10 +1,11 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_SPARE_PR_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddTransportationSparePR from "../../../../components/TransportationComponents/AddTransportationSparePR/AddTransportationSparePR";
 import TransportationSparePRCard from "../../../../components/TransportationComponents/TransportationSparePRCard/TransportationSparePRCard";
+import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import SparePR from "../../../../models/Transportation/TransportationSparePR";
@@ -12,6 +13,7 @@ import SparePR from "../../../../models/Transportation/TransportationSparePR";
 import classes from "./ViewSparePR.module.css";
 
 const ViewSparePR = ({ transportationID }: { transportationID: number }) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -105,7 +107,9 @@ const ViewSparePR = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddTransportationSparePR transportationID={transportationID} />
+        {self.assignedPermission.hasTransportationSparePRAdd ? (
+          <AddTransportationSparePR transportationID={transportationID} />
+        ) : null}
       </div>
       {loading && (
         <div>
@@ -113,12 +117,14 @@ const ViewSparePR = ({ transportationID }: { transportationID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllSparePROfTransportation.edges.map((rec: { node: SparePR }) => {
-          const sparePR = rec.node;
-          return (
-            <TransportationSparePRCard key={sparePR.id} sparePR={sparePR} />
-          );
-        })}
+        {data?.getAllSparePROfTransportation.edges.map(
+          (rec: { node: SparePR }) => {
+            const sparePR = rec.node;
+            return (
+              <TransportationSparePRCard key={sparePR.id} sparePR={sparePR} />
+            );
+          }
+        )}
       </div>
 
       <PaginationButtons

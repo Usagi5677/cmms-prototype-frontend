@@ -21,6 +21,7 @@ const ViewAssignedMachinery = () => {
   const [timerId, setTimerId] = useState(null);
   const { user: self } = useContext(UserContext);
   // Filter has an intersection type as it has PaginationArgs + other args
+  
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;

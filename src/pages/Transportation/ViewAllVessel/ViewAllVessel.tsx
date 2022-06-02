@@ -1,12 +1,12 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import Search from "../../../components/common/Search";
-import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_TRANSPORTATION } from "../../../api/queries";
+import { ALL_TRANSPORTATION_VESSELS } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
@@ -15,12 +15,15 @@ import TransportationCard from "../../../components/TransportationComponents/Tra
 import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import TransportationStatusFilter from "../../../components/common/TransportationStatusFilter";
+import UserContext from "../../../contexts/UserContext";
 
 const Vessels = () => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -35,8 +38,8 @@ const Vessels = () => {
     status: params.get("status"),
   });
 
-  const [getAllTransportation, { data, loading }] = useLazyQuery(
-    ALL_TRANSPORTATION,
+  const [getAllTransportationVessels, { data, loading }] = useLazyQuery(
+    ALL_TRANSPORTATION_VESSELS,
     {
       onError: (err) => {
         errorMessage(err, "Error loading vessels.");
@@ -55,8 +58,12 @@ const Vessels = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    getAllTransportation({ variables: filter });
-  }, [filter, getAllTransportation]);
+    if (!self.assignedPermission.hasViewAllVessels) {
+      navigate('/');
+      message.error("No permission to view all vessels.");
+    }
+    getAllTransportationVessels({ variables: filter });
+  }, [filter, getAllTransportationVessels]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -109,7 +116,7 @@ const Vessels = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllTransportation.pageInfo ?? {};
+  const pageInfo = data?.getAllTransportationVessels.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
@@ -138,7 +145,7 @@ const Vessels = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportation.edges.map((rec: { node: Transportation }) => {
+      {data?.getAllTransportationVessels.edges.map((rec: { node: Transportation }) => {
         const transportation = rec.node;
         return (
           <Link to={"/transportation/" + transportation.id} key={transportation.id}>

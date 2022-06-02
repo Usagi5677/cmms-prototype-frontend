@@ -1,6 +1,8 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegBell, FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import PeriodicMaintenance from "../../../models/Transportation/TransportationPeriodicMaintenance";
 import DeleteTransportationPeriodicMaintenance from "../DeleteTransportationPeriodicMaintenance/DeleteTransportationPeriodicMaintenance";
@@ -13,6 +15,7 @@ const TransportationPeriodicMaintenanceCard = ({
 }: {
   periodicMaintenance: PeriodicMaintenance;
 }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -65,17 +68,25 @@ const TransportationPeriodicMaintenanceCard = ({
           </div>
         </div>
         <div className={classes["third-block"]}>
-          <TransportationPeriodicMaintenanceStatus
-            periodicMaintenance={periodicMaintenance}
-          />
+          {self.assignedPermission.hasTransportationPeriodicMaintenanceEdit ? (
+            <TransportationPeriodicMaintenanceStatus
+              periodicMaintenance={periodicMaintenance}
+            />
+          ) : null}
         </div>
       </div>
 
       <div className={classes["fourth-block"]}>
-        <EditTransportationPeriodicMaintenance
-          periodicMaintenance={periodicMaintenance}
-        />
-        <DeleteTransportationPeriodicMaintenance id={periodicMaintenance?.id} />
+        {self.assignedPermission.hasTransportationPeriodicMaintenanceEdit ? (
+          <EditTransportationPeriodicMaintenance
+            periodicMaintenance={periodicMaintenance}
+          />
+        ) : null}
+        {self.assignedPermission.hasTransportationPeriodicMaintenanceDelete ? (
+          <DeleteTransportationPeriodicMaintenance
+            id={periodicMaintenance?.id}
+          />
+        ) : null}
       </div>
     </div>
   );

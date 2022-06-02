@@ -6,20 +6,29 @@ import { DELETE_TRANSPORTATION } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteTransportation.module.css";
 
-
-const DeleteTransportation = ({ transportationID }: { transportationID: number }) => {
+const DeleteTransportation = ({
+  transportationID,
+}: {
+  transportationID: number;
+}) => {
   const navigate = useNavigate();
 
-  const [removeTransportation, { loading: deleting }] = useMutation(DELETE_TRANSPORTATION, {
-    onCompleted: () => {
-      message.success("Successfully removed transportation.");
-      navigate("/transportation/vessels");
-    },
-    onError: (error) => {
-      errorMessage(error, "Unexpected error while removing machine.");
-    },
-    refetchQueries: ["getAllTransportation"],
-  });
+  const [removeTransportation, { loading: deleting }] = useMutation(
+    DELETE_TRANSPORTATION,
+    {
+      onCompleted: () => {
+        message.success("Successfully removed transportation.");
+        navigate("/transportation/vessels");
+      },
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while removing machine.");
+      },
+      refetchQueries: [
+        "getAllTransportationVessels",
+        "getAllTransportationVehicles",
+      ],
+    }
+  );
 
   const remove = () => {
     removeTransportation({

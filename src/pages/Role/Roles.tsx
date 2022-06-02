@@ -1,7 +1,7 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import classes from "./Roles.module.css";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -14,11 +14,14 @@ import Role from "../../models/Role";
 import RoleCard from "../../components/RoleComponents/RoleCard/RoleCard";
 import { GET_ALL_ROLES } from "../../api/queries";
 import AddRole from "../../components/RoleComponents/AddRole/AddRole";
+import UserContext from "../../contexts/UserContext";
 
 const Roles = () => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -39,6 +42,10 @@ const Roles = () => {
 
   // Fetch roles when component mounts or when the filter object changes
   useEffect(() => {
+    if (!self.assignedPermission.hasViewRoles) {
+      navigate("/");
+      message.error("No permission to view roles.");
+    }
     getAllRoles({ variables: filter });
   }, [filter, getAllRoles]);
 
@@ -104,9 +111,7 @@ const Roles = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-wrapper"]}>
-          <div>
-            <AddRole />
-          </div>
+          {self.assignedPermission.hasRoleAdd ? <AddRole /> : null}
         </div>
       </div>
       {loading && (

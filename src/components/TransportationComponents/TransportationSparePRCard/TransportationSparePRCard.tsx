@@ -1,6 +1,8 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import SparePR from "../../../models/Transportation/TransportationSparePR";
 import DeleteTransportationSparePR from "../DeleteTransportationSparePR/DeleteTransportationSparePR";
@@ -10,11 +12,12 @@ import TransportationSparePRStatus from "../TransportationSparePRStatus/Transpor
 import classes from "./TransportationSparePRCard.module.css";
 
 const TransportationSparePRCard = ({ sparePR }: { sparePR: SparePR }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
-        <div>{sparePR?.id}</div>
+          <div>{sparePR?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Requested Date">
               <FaRegClock />
@@ -34,11 +37,17 @@ const TransportationSparePRCard = ({ sparePR }: { sparePR: SparePR }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditTransportationSparePR sparePR={sparePR} />
-          <DeleteTransportationSparePR id={sparePR?.id} />
+          {self.assignedPermission.hasTransportationSparePREdit ? (
+            <EditTransportationSparePR sparePR={sparePR} />
+          ) : null}
+          {self.assignedPermission.hasTransportationSparePRDelete ? (
+            <DeleteTransportationSparePR id={sparePR?.id} />
+          ) : null}
         </div>
         <div className={classes["status"]}>
-          <TransportationSparePRStatus sparePR={sparePR} />
+          {self.assignedPermission.hasTransportationSparePREdit ? (
+            <TransportationSparePRStatus sparePR={sparePR} />
+          ) : null}
         </div>
       </div>
     </div>

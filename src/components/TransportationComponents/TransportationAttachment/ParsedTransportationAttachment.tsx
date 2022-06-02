@@ -1,5 +1,5 @@
 import { Image, Spin, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
   FileOutlined,
@@ -10,12 +10,14 @@ import classes from "./TransportationAttachment.module.css";
 import TransportationAttachment from "../../../models/Transportation/TransportationAttachment";
 import EditTransportationAttachment from "../EditTransportationAttachment/EditTransportationAttachment";
 import DeleteTransportationAttachment from "../DeleteTransportationAttachment/DeleteTransportationAttachment";
+import UserContext from "../../../contexts/UserContext";
 
 const ParsedTransportationAttachment = ({
   attachmentData,
 }: {
   attachmentData: TransportationAttachment;
 }) => {
+  const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;
   const url = `${
     process.env.REACT_APP_API_URL?.split("graphql")[0]
@@ -82,8 +84,13 @@ const ParsedTransportationAttachment = ({
           {fileLoading && (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
           )}
-          {file && <EditTransportationAttachment attachment={attachmentData} />}
-          {file && <DeleteTransportationAttachment id={attachmentData?.id} />}
+          {file && self.assignedPermission.hasTransportationAttachmentEdit && (
+            <EditTransportationAttachment attachment={attachmentData} />
+          )}
+          {file &&
+            self.assignedPermission.hasTransportationAttachmentDelete && (
+              <DeleteTransportationAttachment id={attachmentData?.id} />
+            )}
           {file && (
             <Tooltip title={"Download"}>
               <DownloadOutlined

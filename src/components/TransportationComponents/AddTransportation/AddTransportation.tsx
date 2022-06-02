@@ -33,7 +33,10 @@ const AddTransportation = () => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating transportation.");
       },
-      refetchQueries: ["getAllTransportation"],
+      refetchQueries: [
+        "getAllTransportationVessels",
+        "getAllTransportationVehicles",
+      ],
     });
 
   const handleCancel = () => {

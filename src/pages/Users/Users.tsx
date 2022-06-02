@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
-import { useEffect, useRef, useState } from "react";
-import { Spin } from "antd";
+import { useContext, useEffect, useRef, useState } from "react";
+import { message, Spin } from "antd";
 import { errorMessage } from "../../helpers/gql";
 import Search from "../../components/common/Search";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -12,11 +12,15 @@ import AddUserRoles from "../../components/UserComponents/AddUserRoles/AddUserRo
 import { GET_ALL_USERS } from "../../api/queries";
 import User from "../../models/User";
 import UserCard from "../../components/UserComponents/UserCard/UserCard";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router";
 
 const Users = () => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
@@ -36,6 +40,10 @@ const Users = () => {
 
   // Fetch users when component mounts
   useEffect(() => {
+    if (!self.assignedPermission.hasViewUsers) {
+      navigate("/");
+      message.error("No permission to view users.");
+    }
     getAllUsers({ variables: filter });
   }, [filter, getAllUsers]);
 
@@ -89,7 +97,7 @@ const Users = () => {
     });
     setPage(page - 1);
   };
-  
+
   const pageInfo = data?.getAllUsers?.pageInfo ?? {};
   return (
     <div className={classes["container"]}>
@@ -100,7 +108,7 @@ const Users = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-wrapper"]}>
-          <AddUserRoles/>
+          {self.assignedPermission.hasAddUserWithRole ? <AddUserRoles /> : null}
         </div>
       </div>
       {loading && (
@@ -110,9 +118,7 @@ const Users = () => {
       )}
       {data?.getAllUsers.edges.map((rec: { node: User }) => {
         const userData = rec.node;
-        return (
-          <UserCard userData={userData} key={userData.id} />
-        );
+        return <UserCard userData={userData} key={userData.id} />;
       })}
       <PaginationButtons
         pageInfo={pageInfo}

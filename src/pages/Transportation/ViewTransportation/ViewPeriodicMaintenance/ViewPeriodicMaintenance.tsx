@@ -1,16 +1,22 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddTransportationPeriodicMaintenance from "../../../../components/TransportationComponents/AddTransportationPeriodicMaintenance/AddTransportationPeriodicMaintenance";
 import TransportationPeriodicMaintenanceCard from "../../../../components/TransportationComponents/TransportationPeriodicMaintenanceCard/TransportationPeriodicMaintenanceCard";
+import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import PeriodicMaintenance from "../../../../models/Transportation/TransportationPeriodicMaintenance";
 import classes from "./ViewPeriodicMaintenance.module.css";
 
-const ViewPeriodicMaintenance = ({ transportationID }: { transportationID: number }) => {
+const ViewPeriodicMaintenance = ({
+  transportationID,
+}: {
+  transportationID: number;
+}) => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -103,7 +109,11 @@ const ViewPeriodicMaintenance = ({ transportationID }: { transportationID: numbe
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddTransportationPeriodicMaintenance transportationID={transportationID} />
+        {self.assignedPermission.hasTransportationPeriodicMaintenanceAdd ? (
+          <AddTransportationPeriodicMaintenance
+            transportationID={transportationID}
+          />
+        ) : null}
       </div>
       {loading && (
         <div>

@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, message, Spin } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { GET_TRANSPORTATION_REPORT } from "../../api/queries";
@@ -10,8 +10,12 @@ import moment from "moment";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import TransportationReport from "../../models/Transportation/TransportationReport";
 import TransportationReportCard from "../../components/TransportationComponents/TransportationReportCard/TransportationReportCard";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router";
 
 const ViewTransportationReport = () => {
+  const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const [dates, setDates] = useState<any>([
     moment().subtract(1, "month"),
     moment(),
@@ -28,6 +32,10 @@ const ViewTransportationReport = () => {
   );
 
   useEffect(() => {
+    if (!self.assignedPermission.hasViewTransportationReport) {
+      navigate("/");
+      message.error("No permission to view transportation report.");
+    }
     getTransportationReport({
       variables: {
         from: dates[0].toISOString(),
@@ -41,21 +49,23 @@ const ViewTransportationReport = () => {
   return (
     <div className={classes["container"]}>
       <div className={classes["datepicker"]}>
-        <DatePicker.RangePicker
-          defaultValue={dates}
-          format={DATETIME_FORMATS.DAY_MONTH_YEAR}
-          style={{ width: 350, borderRadius: 20 }}
-          popupStyle={{ borderRadius: 20 }}
-          disabledDate={(date) => date.isAfter(moment(), "day")}
-          onChange={setDates}
-          allowClear={false}
-          ranges={{
-            "Past 7 Days": [moment().subtract(1, "week"), moment()],
-            "This Week": [moment().startOf("week"), moment()],
-            "Past 30 Days": [moment().subtract(30, "day"), moment()],
-            "This Month": [moment().startOf("month"), moment()],
-          }}
-        />
+        {self.assignedPermission.hasViewTransportationReport ? (
+          <DatePicker.RangePicker
+            defaultValue={dates}
+            format={DATETIME_FORMATS.DAY_MONTH_YEAR}
+            style={{ width: 350, borderRadius: 20 }}
+            popupStyle={{ borderRadius: 20 }}
+            disabledDate={(date) => date.isAfter(moment(), "day")}
+            onChange={setDates}
+            allowClear={false}
+            ranges={{
+              "Past 7 Days": [moment().subtract(1, "week"), moment()],
+              "This Week": [moment().startOf("week"), moment()],
+              "Past 30 Days": [moment().subtract(30, "day"), moment()],
+              "This Month": [moment().startOf("month"), moment()],
+            }}
+          />
+        ) : null}
       </div>
       {loading ? (
         <div className={classes["loading"]}>

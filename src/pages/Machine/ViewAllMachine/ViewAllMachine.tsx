@@ -38,10 +38,6 @@ const Machinery = () => {
 
   // Update url search param on filter change
   useEffect(() => {
-    if (!self.assignedPermission.hasViewAllMachines) {
-      navigate("/");
-      message.error("No permission to view all machines.");
-    }
     let newParams: any = {};
     if (filter.status) newParams.status = filter.status;
     setParams(newParams);
@@ -57,6 +53,10 @@ const Machinery = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
+    if (!self.assignedPermission.hasViewAllMachines) {
+      navigate("/");
+      message.error("No permission to view all machines.");
+    }
     getAllMachine({ variables: filter });
   }, [filter, getAllMachine]);
 
@@ -114,7 +114,7 @@ const Machinery = () => {
   const pageInfo = data?.getAllMachine.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-  
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
@@ -124,15 +124,15 @@ const Machinery = () => {
           onClick={() => setSearch("")}
         />
         <MachineStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
-            }}
-            value={filter.status}
-            margin={filterMargin}
-          />
+          onChange={(status) => {
+            setFilter({ ...filter, status, ...DefaultPaginationArgs });
+            setPage(1);
+          }}
+          value={filter.status}
+          margin={filterMargin}
+        />
         <div className={classes["add-machine-wrapper"]}>
-          <AddMachine />
+          {self.assignedPermission.hasMachineAdd ? <AddMachine /> : null}
         </div>
       </div>
       {loading && (

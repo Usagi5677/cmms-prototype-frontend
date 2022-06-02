@@ -35,7 +35,7 @@ const UserCard = ({ userData }: { userData: User }) => {
       },
     });
   };
- 
+
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -48,12 +48,16 @@ const UserCard = ({ userData }: { userData: User }) => {
           </div>
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditUserRoles userData={userData} />
+          {self.assignedPermission.hasEditUserRole ? (
+            <EditUserRoles userData={userData} />
+          ) : null}
         </div>
         <div className={classes["status"]}>
           {userData.roles?.map((role) => (
             <Popconfirm
-              disabled={removingUserRole || !self.assignedPermission.hasRoleDelete}
+              disabled={
+                removingUserRole || !self.assignedPermission.hasEditUserRole
+              }
               key={v1()}
               title={`Do you want to remove ${role.role.name} role from ${userData.fullName}?`}
               onConfirm={() => remove(role.role.id)}
@@ -70,7 +74,9 @@ const UserCard = ({ userData }: { userData: User }) => {
                   backgroundColor: RoleTagStringToColor(role.role.name),
                   borderColor: RoleTagStringToColor(role.role.name),
                   borderWidth: 1,
-                  cursor: self.assignedPermission.hasRoleDelete ? "pointer" : "initial",
+                  cursor: self.assignedPermission.hasEditUserRole
+                    ? "pointer"
+                    : "initial",
                 }}
               >
                 {role.role.name}

@@ -6,7 +6,7 @@ import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_TRANSPORTATION } from "../../../api/queries";
+import { ALL_TRANSPORTATION_VESSELS } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAssignedVessels.module.css";
@@ -34,8 +34,8 @@ const ViewAssignedVessels = () => {
     assignedToId: self.id,
   });
 
-  const [getAllTransportation, { data, loading }] = useLazyQuery(
-    ALL_TRANSPORTATION,
+  const [getAllTransportationVessels, { data, loading }] = useLazyQuery(
+    ALL_TRANSPORTATION_VESSELS,
     {
       onError: (err) => {
         errorMessage(err, "Error loading vessels.");
@@ -47,8 +47,8 @@ const ViewAssignedVessels = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    getAllTransportation({ variables: filter });
-  }, [filter, getAllTransportation]);
+    getAllTransportationVessels({ variables: filter });
+  }, [filter, getAllTransportationVessels]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -101,7 +101,7 @@ const ViewAssignedVessels = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllTransportation.pageInfo ?? {};
+  const pageInfo = data?.getAllTransportationVessels.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
@@ -112,7 +112,9 @@ const ViewAssignedVessels = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-wrapper"]}>
-          <AddTransportation />
+          {self.assignedPermission.hasTransportationAdd ? (
+            <AddTransportation />
+          ) : null}
         </div>
       </div>
       {loading && (
@@ -120,17 +122,19 @@ const ViewAssignedVessels = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportation.edges.map((rec: { node: Transportation }) => {
-        const transportation = rec.node;
-        return (
-          <Link
-            to={"/transportation/" + transportation.id}
-            key={transportation.id}
-          >
-            <TransportationCard transportation={transportation} />
-          </Link>
-        );
-      })}
+      {data?.getAllTransportationVessels.edges.map(
+        (rec: { node: Transportation }) => {
+          const transportation = rec.node;
+          return (
+            <Link
+              to={"/transportation/" + transportation.id}
+              key={transportation.id}
+            >
+              <TransportationCard transportation={transportation} />
+            </Link>
+          );
+        }
+      )}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

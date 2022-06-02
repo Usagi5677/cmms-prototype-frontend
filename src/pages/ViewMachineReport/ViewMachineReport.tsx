@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, message, Spin } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { GET_MACHINE_REPORT } from "../../api/queries";
@@ -10,8 +10,12 @@ import { useForm } from "antd/lib/form/Form";
 import MachineReportCard from "../../components/MachineComponents/MachineReportCard/MachineReportCard";
 import moment from "moment";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router";
 
 const ViewMachineReport = () => {
+  const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const [dates, setDates] = useState<any>([
     moment().subtract(1, "month"),
     moment(),
@@ -29,6 +33,10 @@ const ViewMachineReport = () => {
   );
 
   useEffect(() => {
+    if (!self.assignedPermission.hasViewMachineryReport) {
+      navigate("/");
+      message.error("No permission to view machinery report.");
+    }
     getMachineReport({
       variables: {
         from: dates[0].toISOString(),
@@ -36,27 +44,29 @@ const ViewMachineReport = () => {
       },
     });
   }, [dates, getMachineReport]);
-  
+
   const isSmallDevice = useIsSmallDevice();
 
   return (
     <div className={classes["container"]}>
       <div className={classes["datepicker"]}>
-        <DatePicker.RangePicker
-          defaultValue={dates}
-          format={DATETIME_FORMATS.DAY_MONTH_YEAR}
-          style={{ width: 350, borderRadius: 20 }}
-          popupStyle={{ borderRadius: 20 }}
-          disabledDate={(date) => date.isAfter(moment(), "day")}
-          onChange={setDates}
-          allowClear={false}
-          ranges={{
-            "Past 7 Days": [moment().subtract(1, "week"), moment()],
-            "This Week": [moment().startOf("week"), moment()],
-            "Past 30 Days": [moment().subtract(30, "day"), moment()],
-            "This Month": [moment().startOf("month"), moment()],
-          }}
-        />
+        {self.assignedPermission.hasViewMachineryReport ? (
+          <DatePicker.RangePicker
+            defaultValue={dates}
+            format={DATETIME_FORMATS.DAY_MONTH_YEAR}
+            style={{ width: 350, borderRadius: 20 }}
+            popupStyle={{ borderRadius: 20 }}
+            disabledDate={(date) => date.isAfter(moment(), "day")}
+            onChange={setDates}
+            allowClear={false}
+            ranges={{
+              "Past 7 Days": [moment().subtract(1, "week"), moment()],
+              "This Week": [moment().startOf("week"), moment()],
+              "Past 30 Days": [moment().subtract(30, "day"), moment()],
+              "This Month": [moment().startOf("month"), moment()],
+            }}
+          />
+        ) : null}
       </div>
       {loading ? (
         <div className={classes["loading"]}>

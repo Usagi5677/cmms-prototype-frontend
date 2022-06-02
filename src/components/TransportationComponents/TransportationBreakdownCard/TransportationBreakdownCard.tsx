@@ -1,6 +1,8 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
+import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import Breakdown from "../../../models/Transportation/TransportationBreakdown";
 import DeleteTransportationBreakdown from "../DeleteTransportationBreakdown/DeleteMachineBreakdown";
@@ -9,7 +11,12 @@ import TransportationBreakdownStatus from "../TransportationBreakdownStatus/Tran
 
 import classes from "./TransportationBreakdownCard.module.css";
 
-const TransportationBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
+const TransportationBreakdownCard = ({
+  breakdown,
+}: {
+  breakdown: Breakdown;
+}) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
@@ -34,11 +41,17 @@ const TransportationBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) =>
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          <EditTransportationBreakdown breakdown={breakdown} />
-          <DeleteTransportationBreakdown id={breakdown?.id} />
+          {self.assignedPermission.hasTransportationBreakdownEdit ? (
+            <EditTransportationBreakdown breakdown={breakdown} />
+          ) : null}
+          {self.assignedPermission.hasTransportationBreakdownDelete ? (
+            <DeleteTransportationBreakdown id={breakdown?.id} />
+          ) : null}
         </div>
         <div className={classes["status"]}>
-          <TransportationBreakdownStatus breakdown={breakdown} />
+          {self.assignedPermission.hasTransportationBreakdownEdit ? (
+            <TransportationBreakdownStatus breakdown={breakdown} />
+          ) : null}
         </div>
       </div>
     </div>

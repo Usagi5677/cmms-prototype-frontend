@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import AddTransportationChecklist from "../../../../components/TransportationComponents/AddTransportationChecklist/AddTransportationChecklist";
 import TransportationChecklistItem from "../../../../components/TransportationComponents/TransportationChecklistItem/TransportationChecklistItem";
+import UserContext from "../../../../contexts/UserContext";
 import Transportation from "../../../../models/Transportation";
 import classes from "./ViewChecklist.module.css";
 
@@ -8,10 +10,15 @@ const ViewChecklist = ({
 }: {
   transportationData: Transportation;
 }) => {
+  const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <AddTransportationChecklist transportationID={transportationData?.id} />
+        {self.assignedPermission.hasTransportationChecklistAdd ? (
+          <AddTransportationChecklist
+            transportationID={transportationData?.id}
+          />
+        ) : null}
       </div>
       <div className={classes["content"]}>
         <div className={classes["content-wrapper-one"]}>

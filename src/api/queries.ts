@@ -359,9 +359,9 @@ export const GET_ALL_ATTACHMENT_OF_MACHINE = gql`
   }
 `;
 
-export const ALL_TRANSPORTATION = gql`
+export const ALL_TRANSPORTATION_VESSELS = gql`
   ${TRANSPORTATION_FRAGMENT}
-  query getAllTransportation(
+  query getAllTransportationVessels(
     $after: String
     $before: String
     $first: Int
@@ -372,7 +372,47 @@ export const ALL_TRANSPORTATION = gql`
     $assignedToId: Int
     $status: TransportationStatus
   ) {
-    getAllTransportation(
+    getAllTransportationVessels(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      createdByUserId: $createdByUserId
+      transportType: $transportType
+      assignedToId: $assignedToId
+      status: $status
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...TransportationFields
+        }
+      }
+    }
+  }
+`;
+
+export const ALL_TRANSPORTATION_VEHICLES = gql`
+  ${TRANSPORTATION_FRAGMENT}
+  query getAllTransportationVehicles(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $createdByUserId: String
+    $transportType: String
+    $assignedToId: Int
+    $status: TransportationStatus
+  ) {
+    getAllTransportationVehicles(
       after: $after
       before: $before
       first: $first
