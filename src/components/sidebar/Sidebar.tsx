@@ -85,6 +85,11 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Divider",
       path: "divider1",
     },
+    {
+      name: "Roles",
+      path: "/roles",
+      icon: <FaLock />,
+    }
   ];
 
   if (self.assignedPermission.hasViewAllMachines) {
@@ -141,13 +146,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       icon: <FaUsers />,
     });
   }
-  if (self.assignedPermission.hasViewRoles) {
-    SidebarData.splice(11, 0, {
-      name: "Roles",
-      path: "/roles",
-      icon: <FaLock />,
-    });
-  }
+  
   if (self.assignedPermission.hasViewMachineryReport) {
     SidebarData.splice(13, 0, {
       name: "Machinery Report",
