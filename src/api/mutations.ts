@@ -27,14 +27,14 @@ export const CREATE_MACHINE = gql`
 export const EDIT_MACHINE = gql`
   mutation (
     $id: Int!
-    $machineNumber: String
-    $model: String
-    $type: String
-    $zone: String
-    $location: String
-    $currentRunningHrs: Int
-    $lastServiceHrs: Int
-    $registeredDate: Date
+    $machineNumber: String!
+    $model: String!
+    $type: String!
+    $zone: String!
+    $location: String!
+    $currentRunningHrs: Int!
+    $lastServiceHrs: Int!
+    $registeredDate: Date!
   ) {
     editMachine(
       id: $id
