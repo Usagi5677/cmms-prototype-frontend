@@ -65,10 +65,6 @@ const Notifications = () => {
             variables: { notificationId: notification.id },
           });
         }
-        console.log('notification')
-        console.log(notification);
-        console.log('prev notif')
-        console.log(prev.notifications);
         const updated = [notification, ...prev.notifications];
         return { notifications: updated };
       },
