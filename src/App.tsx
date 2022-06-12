@@ -48,7 +48,7 @@ function App() {
       const assignedPermission = permissionExist(data.me);
       setUser({
         ...data.me,
-        assignedPermission,
+       assignedPermission,
       });
       setAppLoading(false);
       setLoggedOut(false);

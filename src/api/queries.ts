@@ -20,7 +20,9 @@ export const ME_QUERY = gql`
           id
           name
           permissionRoles {
-            permission
+            permission {
+              name
+            }
           }
         }
       }

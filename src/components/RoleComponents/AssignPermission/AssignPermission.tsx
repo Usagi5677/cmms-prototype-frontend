@@ -97,7 +97,7 @@ const AssignPermission = ({ role }: { role: Role }) => {
                 ).map((key, index) => {
                   let exist = false;
                   role.permissionRoles.map((data) => {
-                    if (data.permission === PermissionEnum[key]) {
+                    if (data.permission.name === PermissionEnum[key]) {
                       exist = true;
                     }
                   });

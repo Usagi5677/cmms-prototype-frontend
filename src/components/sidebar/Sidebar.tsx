@@ -87,7 +87,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
   ];
 
-  if (self.assignedPermission.hasViewAllMachines) {
+  if (self?.assignedPermission?.hasViewAllMachines) {
     // Insert at second position
     SidebarData.splice(2, 0, {
       name: "Machinery",
@@ -96,7 +96,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (self.assignedPermission.hasViewAllVessels) {
+  if (self?.assignedPermission?.hasViewAllVessels) {
     SidebarData.splice(3, 0, {
       name: "Vessels",
       path: "/transportation/vessels",
@@ -104,21 +104,21 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (self.assignedPermission.hasViewAllVehicles) {
+  if (self?.assignedPermission?.hasViewAllVehicles) {
     SidebarData.splice(4, 0, {
       name: "Vehicles",
       path: "/transportation/vehicles",
       icon: <FaTruck />,
     });
   }
-  if (self.assignedPermission.hasViewAllAssignedMachines) {
+  if (self?.assignedPermission?.hasViewAllAssignedMachines) {
     SidebarData.splice(6, 0, {
       name: "Assigned Machinery",
       path: "/assigned-machinery",
       icon: <FaListUl />,
     });
   }
-  if (self.assignedPermission.hasViewAllAssignedVehicles) {
+  if (self?.assignedPermission?.hasViewAllAssignedVehicles) {
     SidebarData.splice(7, 0, {
       name: "Assigned Vessels",
       path: "/assigned-vessels",
@@ -126,7 +126,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (self.assignedPermission.hasViewAllAssignedVessels) {
+  if (self?.assignedPermission?.hasViewAllAssignedVessels) {
     SidebarData.splice(8, 0, {
       name: "Assigned Vehicles",
       path: "/assigned-vehicles",
@@ -134,28 +134,28 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (self.assignedPermission.hasViewUsers) {
+  if (self?.assignedPermission?.hasViewUsers) {
     SidebarData.splice(10, 0, {
       name: "Users",
       path: "/users",
       icon: <FaUsers />,
     });
   }
-  if (self.assignedPermission.hasViewRoles) {
+  if (self?.assignedPermission?.hasViewRoles) {
     SidebarData.splice(11, 0, {
       name: "Roles",
       path: "/roles",
       icon: <FaLock />,
     });
   }
-  if (self.assignedPermission.hasViewMachineryReport) {
+  if (self?.assignedPermission?.hasViewMachineryReport) {
     SidebarData.splice(13, 0, {
       name: "Machinery Report",
       path: "/machinery-report",
       icon: <FaRegChartBar />,
     });
   }
-  if (self.assignedPermission.hasViewTransportationReport) {
+  if (self?.assignedPermission?.hasViewTransportationReport) {
     SidebarData.splice(14, 0, {
       name: "Transportation Report",
       path: "/transportation-report",

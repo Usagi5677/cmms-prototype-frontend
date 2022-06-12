@@ -71,7 +71,7 @@ export function permissionExist(data: User) {
 
   data?.roles?.forEach((roleData) => {
     roleData?.role.permissionRoles.forEach((permissionData) => {
-      switch (permissionData.permission) {
+      switch (permissionData.permission.name) {
         case "ADD_ROLE":
           hasRoleAdd = true;
           break;

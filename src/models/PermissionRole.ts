@@ -1,5 +1,7 @@
-import { PermissionEnum } from "./Enums";
+import PermissionModel from "./Permission";
 
 export default interface PermissionRole {
-  permission: PermissionEnum;
+  roleId: number;
+  permissionId: number;
+  permission: PermissionModel;
 }
