@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { FaEdit, FaLock } from "react-icons/fa";
 import { ASSIGN_PERMISSION } from "../../../api/mutations";
 import { ME_QUERY } from "../../../api/queries";
+import { PERMISSIONS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { PermissionEnum } from "../../../models/Enums";
 import Role from "../../../models/Role";
@@ -90,14 +91,10 @@ const AssignPermission = ({ role }: { role: Role }) => {
           >
             <Form.Item name="permissions">
               <div className={classes["checkbox-wrapper"]}>
-                {(
-                  Object.keys(PermissionEnum) as Array<
-                    keyof typeof PermissionEnum
-                  >
-                ).map((key, index) => {
+                {(PERMISSIONS).map((permission, index) => {
                   let exist = false;
                   role.permissionRoles.map((data) => {
-                    if (data.permission.name === PermissionEnum[key]) {
+                    if (data.permission === permission) {
                       exist = true;
                     }
                   });
@@ -106,11 +103,11 @@ const AssignPermission = ({ role }: { role: Role }) => {
                       <Checkbox
                         defaultChecked={exist}
                         onChange={(e) =>
-                          onClickCheckbox(e, PermissionEnum[key])
+                          onClickCheckbox(e, permission)
                         }
                         className={classes["checkbox"]}
                       >
-                        {PermissionEnum[key]}
+                        {permission}
                       </Checkbox>
                     </div>
                   );

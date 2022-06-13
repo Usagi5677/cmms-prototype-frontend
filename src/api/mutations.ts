@@ -530,7 +530,7 @@ export const DELETE_ROLE = gql`
 `;
 
 export const ASSIGN_PERMISSION = gql`
-  mutation ($roleId: Int!, $permissions: [Permission!]!) {
+  mutation ($roleId: Int!, $permissions: [String!]!) {
     assignPermission(roleId: $roleId, permissions: $permissions)
   }
 `;
