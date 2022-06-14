@@ -67,8 +67,18 @@ export const ADD_MACHINE_CHECKLIST_ITEM = gql`
 `;
 
 export const TOGGLE_MACHINE_CHECKLIST_ITEM = gql`
-  mutation ($id: Int!, $complete: Boolean!) {
-    toggleMachineChecklistItem(id: $id, complete: $complete)
+  mutation (
+    $id: [Int!]!
+    $currentMeterReading: Int!
+    $workingHour: Int!
+    $uncheckId: [Int!]!
+  ) {
+    toggleMachineChecklistItem(
+      id: $id
+      currentMeterReading: $currentMeterReading
+      workingHour: $workingHour
+      uncheckId: $uncheckId
+    )
   }
 `;
 
@@ -340,8 +350,18 @@ export const DELETE_TRANSPORTATION_CHECKLIST_ITEM = gql`
 `;
 
 export const TOGGLE_TRANSPORTATION_CHECKLIST_ITEM = gql`
-  mutation ($id: Int!, $complete: Boolean!) {
-    toggleTransportationChecklistItem(id: $id, complete: $complete)
+  mutation (
+    $id: [Int!]!
+    $currentMeterReading: Int!
+    $workingHour: Int!
+    $uncheckId: [Int!]!
+  ) {
+    toggleTransportationChecklistItem(
+      id: $id
+      currentMeterReading: $currentMeterReading
+      workingHour: $workingHour
+      uncheckId: $uncheckId
+    )
   }
 `;
 

@@ -824,7 +824,7 @@ export const GET_ROLES = gql`
 
 export const GET_USERS_WITH_PERMISSION = gql`
   ${APS_USER_FRAGMENT}
-  query getUsersWithPermission($permissions: [Permission!]!) {
+  query getUsersWithPermission($permissions: [String!]!) {
     getUsersWithPermission(permissions: $permissions) {
       ...UserFieldsAPS
     }
