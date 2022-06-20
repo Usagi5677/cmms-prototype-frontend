@@ -96,6 +96,7 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
     $period: Int!
     $notificationReminder: Int!
     $fixedDate: Date!
+    $tasks: [String!]
   ) {
     addMachinePeriodicMaintenance(
       machineId: $machineId
@@ -104,6 +105,7 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
       period: $period
       notificationReminder: $notificationReminder
       fixedDate: $fixedDate
+      tasks: $tasks
     )
   }
 `;
@@ -632,5 +634,27 @@ export const EDIT_TRANSPORTATION_USAGE = gql`
       currentMileage: $currentMileage
       lastServiceMileage: $lastServiceMileage
     )
+  }
+`;
+
+export const ADD_MACHINE_PERIODIC_MAINTENANCE_SUB_TASK = gql`
+  mutation ($parentTaskId: Int!, $periodicMaintenanceId: Int!, $name: String!) {
+    addMachinePeriodicMaintenanceSubTask(
+      parentTaskId: $parentTaskId
+      periodicMaintenanceId: $periodicMaintenanceId
+      name: $name
+    )
+  }
+`;
+
+export const TOGGLE_TASK = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleTask(id: $id, complete: $complete)
+  }
+`;
+
+export const DELETE_TASK = gql`
+  mutation ($id: Int!) {
+    deleteTask(id: $id)
   }
 `;

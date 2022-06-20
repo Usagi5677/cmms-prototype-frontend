@@ -125,6 +125,36 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           completedBy {
             ...UserFieldsAPS
           }
+          MachinePeriodicMaintenanceTask {
+            id
+            periodicMaintenanceId
+            parentTaskId
+            name
+            completedBy {
+              ...UserFieldsAPS
+            }
+            completedAt
+            subTasks {
+              id
+              periodicMaintenanceId
+              parentTaskId
+              name
+              completedBy {
+                ...UserFieldsAPS
+              }
+              completedAt
+              subTasks {
+                id
+                periodicMaintenanceId
+                parentTaskId
+                name
+                completedBy {
+                  ...UserFieldsAPS
+                }
+                completedAt
+              }
+            }
+          }
         }
       }
     }

@@ -1,7 +1,5 @@
 .container {
   font-size: 0.75rem;
-  display: flex;
-  flex-direction: row;
   flex-grow: 1;
   justify-content: space-between;
   padding: 10px;
@@ -12,10 +10,12 @@
   box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
   transition: all 0.3s ease;
 }
-.container:hover {
-  background-color: #f0f0f0;
-  transform: translateX(6px);
+
+.container-wrapper {
+  display: flex;
+  flex-direction: row;
 }
+
 
 .second-block {
   display: flex;
@@ -64,6 +64,49 @@
   padding-left: 5px;
 }
 
+
+.taskID-bold {
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+
+.checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.checkbox {
+  word-break: break-all;
+}
+
+.completedAt {
+  font-size: 10;
+  opacity: 0.5;
+  display: inline-block;
+}
+
+.deleteWrapper {
+  display: flex;
+  margin-right: 15px;
+}
+
+.delete {
+  cursor: pointer;
+  margin-left: 3px;
+  color: rgb(65, 65, 65, 0.5);
+  transition: color 0.3s ease;
+}
+
+.delete:hover {
+  color: #ff4d4f;
+}
+
+.task-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 @media only screen and (min-width: 800px) {
   .wrapper {
     display: flex;

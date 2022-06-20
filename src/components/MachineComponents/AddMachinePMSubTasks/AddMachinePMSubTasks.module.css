@@ -35,8 +35,22 @@
   color: var(--primary);
   cursor: pointer;
   transition: color 0.3s ease;
-  margin-left: 10px;
+  padding-top: 1px;
 }
 .info-edit:hover {
   color: #137e5a;
+}
+
+.taskID-col {
+  width: 150px;
+  margin-right: 10px;
+}
+
+.taskName-col {
+  margin-right: 10px;
+}
+
+.taskID-bold {
+  font-weight: 700;
+  margin-right: 6px;
 }

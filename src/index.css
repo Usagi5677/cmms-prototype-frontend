@@ -175,6 +175,15 @@ body,
   color: rgb(191, 191, 191, 1);
 }
 
+#AddTask::placeholder {
+  color: rgb(191, 191, 191, 1);
+}
+
+#innerSubTask:hover {
+  background-color: #f0f1f1;
+}
+
+
 h1 {
   display: block;
   font-size: 2em;
