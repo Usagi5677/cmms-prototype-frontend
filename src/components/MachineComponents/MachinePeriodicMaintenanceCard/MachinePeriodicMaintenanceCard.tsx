@@ -73,11 +73,12 @@ const MachinePeriodicMaintenanceCard = ({
   const colors = getEqualValuesUnder140(highestCount());
 
   const taskData = periodicMaintenance?.MachinePeriodicMaintenanceTask!;
-
+  /*
   let completedCounter = 0;
   let subTaskLength = 0;
   let subTaskLengthTwo = 0;
 
+  
   const progressPercentage = () => {
     taskData?.forEach((task: any) => {
       task.subTasks?.forEach((subtask: any) => {
@@ -99,8 +100,13 @@ const MachinePeriodicMaintenanceCard = ({
     const combinedSubTaskLength = subTaskLength + subTaskLengthTwo;
     return Math.round((completedCounter / combinedSubTaskLength) * 100);
   };
-
-  //console.log(combinedSubTaskLength);
+  */
+  const progressPercentage = Math.round(
+    (taskData?.filter((task) => task.completedAt !== null).length /
+      taskData?.length) *
+      100
+  );
+  
   return (
     <div className={classes["container"]}>
       <div className={classes["container-wrapper"]}>
@@ -179,7 +185,7 @@ const MachinePeriodicMaintenanceCard = ({
 
       {periodicMaintenance.MachinePeriodicMaintenanceTask!.length > 0 && (
         <Progress
-          percent={progressPercentage()}
+          percent={progressPercentage}
           strokeWidth={5}
           style={{ marginBottom: 10, paddingRight: 10 }}
         />

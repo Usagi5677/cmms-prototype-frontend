@@ -8,6 +8,7 @@ import {
   InputNumber,
   message,
   Modal,
+  Radio,
   Row,
   Tooltip,
 } from "antd";
@@ -22,7 +23,6 @@ import { errorMessage } from "../../../helpers/gql";
 import Machine from "../../../models/Machine";
 import classes from "./EditMachine.module.css";
 
-
 const EditMachine = ({ machine }: { machine: Machine }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -35,7 +35,11 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
     onError: (error) => {
       errorMessage(error, "Unexpected error while updating machine.");
     },
-    refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine", "singleMachineUsageHistory"],
+    refetchQueries: [
+      "getSingleMachine",
+      "getAllHistoryOfMachine",
+      "singleMachineUsageHistory",
+    ],
   });
 
   const handleCancel = () => {
@@ -50,9 +54,10 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
       type,
       zone,
       location,
-      currentRunningHrs,
-      lastServiceHrs,
+      currentRunning,
+      lastService,
       registeredDate,
+      measurement,
     } = values;
 
     if (!machineNumber) {
@@ -75,12 +80,16 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
       message.error("Please enter the location.");
       return;
     }
-    if (!currentRunningHrs) {
-      message.error("Please enter the current running hrs.");
+    if (!currentRunning) {
+      message.error("Please enter the current running value.");
       return;
     }
-    if (!lastServiceHrs) {
-      message.error("Please enter the last service hrs.");
+    if (!lastService) {
+      message.error("Please enter the last service value.");
+      return;
+    }
+    if (!measurement) {
+      message.error("Please select the measurement.");
       return;
     }
     editMachine({
@@ -91,9 +100,10 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
         type,
         zone,
         location,
-        currentRunningHrs,
-        lastServiceHrs,
+        currentRunning,
+        lastService,
         registeredDate,
+        measurement,
       },
     });
   };
@@ -120,8 +130,8 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
           id="myForm"
           preserve={false}
         >
-          <Row>
-            <Col span={12}>
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
               <Form.Item
                 label="Machine Number"
                 name="machineNumber"
@@ -137,8 +147,8 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
               >
                 <Input placeholder="Machine Number" />
               </Form.Item>
-            </Col>
-            <Col span={12}>
+            </div>
+            <div className={classes["col"]}>
               <Form.Item
                 label="Model"
                 name="model"
@@ -153,11 +163,11 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
               >
                 <Input placeholder="Model" />
               </Form.Item>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
-          <Row>
-            <Col span={12}>
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
               <Form.Item
                 label="Type"
                 name="type"
@@ -173,8 +183,8 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
               >
                 <Input placeholder="Type" />
               </Form.Item>
-            </Col>
-            <Col span={12}>
+            </div>
+            <div className={classes["col"]}>
               <Form.Item
                 label="Registered Date"
                 name="registeredDate"
@@ -190,11 +200,11 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
                   allowClear={false}
                 />
               </Form.Item>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
-          <Row>
-            <Col span={12}>
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
               <Form.Item
                 label="Zone"
                 name="zone"
@@ -210,8 +220,8 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
               >
                 <Input placeholder="Zone" />
               </Form.Item>
-            </Col>
-            <Col span={12}>
+            </div>
+            <div className={classes["col"]}>
               <Form.Item
                 label="Location"
                 name="location"
@@ -226,51 +236,62 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
               >
                 <Input placeholder="Location" />
               </Form.Item>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
-          <Row>
-            <Col span={12}>
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
               <Form.Item
-                label="Current running hrs"
-                name="currentRunningHrs"
+                label="Current running value"
+                name="currentRunning"
                 required={false}
-                initialValue={machine?.currentRunningHrs}
+                initialValue={machine?.currentRunning}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the current running hrs.",
+                    message: "Please enter the current running value.",
                   },
                 ]}
                 style={{ paddingRight: 40 }}
               >
                 <InputNumber
-                  placeholder="Current running hrs"
+                  placeholder="Current running value"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
-            </Col>
-            <Col span={12}>
+            </div>
+            <div className={classes["col"]}>
               <Form.Item
-                label="Last service hrs"
-                name="lastServiceHrs"
+                label="Last service value"
+                name="lastService"
                 required={false}
-                initialValue={machine?.lastServiceHrs}
+                initialValue={machine?.lastService}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the last service hrs.",
+                    message: "Please enter the last service value.",
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder="Last service hrs"
+                  placeholder="Last service value"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
-            </Col>
-          </Row>
-
+            </div>
+          </div>
+          <div className={classes["col"]}>
+            <Form.Item
+              label="Measurement"
+              name="measurement"
+              initialValue={machine?.measurement}
+            >
+              <Radio.Group buttonStyle="solid" optionType="button">
+                <Radio.Button value="km">KM</Radio.Button>
+                <Radio.Button value="hr">Hr</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+          </div>
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>

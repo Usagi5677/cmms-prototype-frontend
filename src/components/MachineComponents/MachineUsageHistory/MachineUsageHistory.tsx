@@ -39,9 +39,9 @@ const MachineUsageHistory = () => {
   }, [dates, singleMachineUsageHistory]);
 
   const labelData = [
-    "Current running hrs",
-    "Last service hrs",
-    "Inter service hrs",
+    "Current running value",
+    "Last service value",
+    "Inter service value",
   ];
 
   let data = () => {
@@ -56,12 +56,12 @@ const MachineUsageHistory = () => {
         borderColor: color,
         borderWidth: 1,
         data: history?.singleMachineUsageHistory.map((rec: any) => {
-          if ("Current running hrs" === label) {
-            return rec.currentRunningHrs;
-          } else if ("Last service hrs" === label) {
-            return rec.lastServiceHrs;
-          } else if ("Inter service hrs" === label) {
-            return rec.interServiceHrs;
+          if ("Current running" === label.substring(0, label.length - 6)) {
+            return rec.currentRunning;
+          } else if ("Last service" === label.substring(0, label.length - 6)) {
+            return rec.lastService;
+          } else if ("Inter service" === label.substring(0, label.length - 6)) {
+            return rec.interService;
           }
         }),
       };

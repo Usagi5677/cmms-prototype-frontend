@@ -922,9 +922,9 @@ export const GET_USAGE_HISTORY_OF_MACHINE = gql`
   query singleMachineUsageHistory($machineId: Int!, $from: Date!, $to: Date!) {
     singleMachineUsageHistory(machineId: $machineId, from: $from, to: $to) {
       date
-      currentRunningHrs
-      lastServiceHrs
-      interServiceHrs
+      currentRunning
+      lastService
+      interService
     }
   }
 `;

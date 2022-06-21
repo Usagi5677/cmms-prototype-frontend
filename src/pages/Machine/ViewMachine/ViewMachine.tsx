@@ -219,21 +219,27 @@ const ViewMachine = () => {
               </div>
             </div>
             <div className={classes["info-title-wrapper"]}>
-              <div>Current running hrs</div>
+              <div>Current running value</div>
               <div className={classes["info-content"]}>
-                {machineData?.currentRunningHrs}
+                {machineData?.currentRunning}
               </div>
             </div>
             <div className={classes["info-title-wrapper"]}>
-              <div>Last service hrs</div>
+              <div>Last service value</div>
               <div className={classes["info-content"]}>
-                {machineData?.lastServiceHrs}
+                {machineData?.lastService}
               </div>
             </div>
             <div className={classes["info-title-wrapper"]}>
-              <div>Inter service hrs</div>
+              <div>Inter service value</div>
               <div className={classes["info-content"]}>
-                {machineData?.interServiceHrs}
+                {machineData?.interService}
+              </div>
+            </div>
+            <div className={classes["info-title-wrapper"]}>
+              <div>Measurement</div>
+              <div className={classes["info-content"]}>
+                {machineData?.measurement}
               </div>
             </div>
             <div className={classes["info-title-wrapper"]}>

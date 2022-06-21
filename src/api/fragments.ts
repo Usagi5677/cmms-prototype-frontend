@@ -43,10 +43,11 @@ export const MACHINE_FRAGMENT = gql`
     type
     zone
     location
-    currentRunningHrs
-    lastServiceHrs
-    interServiceHrs
+    currentRunning
+    lastService
+    interService
     status
+    measurement
     assignees {
       ...UserFieldsAPS
     }

@@ -7,9 +7,10 @@ export const CREATE_MACHINE = gql`
     $type: String!
     $zone: String!
     $location: String!
-    $currentRunningHrs: Int!
-    $lastServiceHrs: Int!
+    $currentRunning: Int!
+    $lastService: Int!
     $registeredDate: Date!
+    $measurement: String!
   ) {
     createMachine(
       machineNumber: $machineNumber
@@ -17,9 +18,10 @@ export const CREATE_MACHINE = gql`
       type: $type
       zone: $zone
       location: $location
-      currentRunningHrs: $currentRunningHrs
-      lastServiceHrs: $lastServiceHrs
+      currentRunning: $currentRunning
+      lastService: $lastService
       registeredDate: $registeredDate
+      measurement: $measurement
     )
   }
 `;
@@ -32,9 +34,10 @@ export const EDIT_MACHINE = gql`
     $type: String!
     $zone: String!
     $location: String!
-    $currentRunningHrs: Int!
-    $lastServiceHrs: Int!
+    $currentRunning: Int!
+    $lastService: Int!
     $registeredDate: Date!
+    $measurement: String!
   ) {
     editMachine(
       id: $id
@@ -43,9 +46,10 @@ export const EDIT_MACHINE = gql`
       type: $type
       zone: $zone
       location: $location
-      currentRunningHrs: $currentRunningHrs
-      lastServiceHrs: $lastServiceHrs
+      currentRunning: $currentRunning
+      lastService: $lastService
       registeredDate: $registeredDate
+      measurement: $measurement
     )
   }
 `;
@@ -117,6 +121,8 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
     $description: String!
     $period: Int!
     $notificationReminder: Int!
+    $fixedDate: Date!
+    $tasks: [String!]
   ) {
     editMachinePeriodicMaintenance(
       id: $id
@@ -124,6 +130,8 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
       description: $description
       period: $period
       notificationReminder: $notificationReminder
+      fixedDate: $fixedDate
+      tasks: $tasks
     )
   }
 `;
@@ -618,11 +626,11 @@ export const READ_ALL_NOTIFICATIONS = gql`
 `;
 
 export const EDIT_MACHINE_USAGE = gql`
-  mutation ($id: Int!, $currentRunningHrs: Int!, $lastServiceHrs: Int!) {
+  mutation ($id: Int!, $currentRunning: Int!, $lastService: Int!) {
     editMachineUsage(
       id: $id
-      currentRunningHrs: $currentRunningHrs
-      lastServiceHrs: $lastServiceHrs
+      currentRunning: $currentRunning
+      lastService: $lastService
     )
   }
 `;

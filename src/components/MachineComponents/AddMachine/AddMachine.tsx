@@ -8,6 +8,7 @@ import {
   InputNumber,
   message,
   Modal,
+  Radio,
   Row,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -49,9 +50,10 @@ const AddMachine = () => {
       type,
       zone,
       location,
-      currentRunningHrs,
-      lastServiceHrs,
+      currentRunning,
+      lastService,
       registeredDate,
+      measurement,
     } = values;
 
     if (!machineNumber) {
@@ -74,12 +76,16 @@ const AddMachine = () => {
       message.error("Please enter the location.");
       return;
     }
-    if (!currentRunningHrs) {
-      message.error("Please enter the current running hrs.");
+    if (!currentRunning) {
+      message.error("Please enter the current running value.");
       return;
     }
-    if (!lastServiceHrs) {
-      message.error("Please enter the last service hrs.");
+    if (!lastService) {
+      message.error("Please enter the last service value.");
+      return;
+    }
+    if (!measurement) {
+      message.error("Please select the measurement.");
       return;
     }
     createMachine({
@@ -89,9 +95,10 @@ const AddMachine = () => {
         type,
         zone,
         location,
-        currentRunningHrs,
-        lastServiceHrs,
+        currentRunning,
+        lastService,
         registeredDate,
+        measurement,
       },
     });
   };
@@ -224,38 +231,48 @@ const AddMachine = () => {
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
-                label="Current running hrs"
-                name="currentRunningHrs"
+                label="Current running value"
+                name="currentRunning"
                 required={false}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the current running hrs.",
+                    message: "Please enter the current running value.",
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder="Current running hrs"
+                  placeholder="Current running value"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
               <Form.Item
-                label="Last service hrs"
-                name="lastServiceHrs"
+                label="Last service value"
+                name="lastService"
                 required={false}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the last service hrs.",
+                    message: "Please enter the last service value.",
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder="Last service hrs"
+                  placeholder="Last service value"
                   style={{ width: "100%" }}
                 />
+              </Form.Item>
+            </div>
+          </div>
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
+              <Form.Item label="Measurement" name="measurement">
+                <Radio.Group buttonStyle="solid" optionType="button">
+                  <Radio.Button value="km">KM</Radio.Button>
+                  <Radio.Button value="hr">Hr</Radio.Button>
+                </Radio.Group>
               </Form.Item>
             </div>
           </div>

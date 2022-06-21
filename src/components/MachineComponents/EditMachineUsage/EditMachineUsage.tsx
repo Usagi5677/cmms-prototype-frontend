@@ -46,21 +46,21 @@ const EditMachineUsage = ({ machine }: { machine: Machine }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { currentRunningHrs, lastServiceHrs } = values;
+    const { currentRunning, lastService } = values;
 
-    if (!currentRunningHrs) {
-      message.error("Please enter the current running hrs.");
+    if (!currentRunning) {
+      message.error("Please enter the current running value.");
       return;
     }
-    if (!lastServiceHrs) {
-      message.error("Please enter the last service hrs.");
+    if (!lastService) {
+      message.error("Please enter the last service value.");
       return;
     }
     editMachineUsage({
       variables: {
         id: machine?.id,
-        currentRunningHrs,
-        lastServiceHrs,
+        currentRunning,
+        lastService,
       },
     });
   };
@@ -90,39 +90,39 @@ const EditMachineUsage = ({ machine }: { machine: Machine }) => {
           <Row>
             <Col span={12}>
               <Form.Item
-                label="Current running hrs"
-                name="currentRunningHrs"
+                label="Current running value"
+                name="currentRunning"
                 required={false}
-                initialValue={machine?.currentRunningHrs}
+                initialValue={machine?.currentRunning}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the current running hrs.",
+                    message: "Please enter the current running value.",
                   },
                 ]}
                 style={{ paddingRight: 40 }}
               >
                 <InputNumber
-                  placeholder="Current running hrs"
+                  placeholder="Current running value"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label="Last service hrs"
-                name="lastServiceHrs"
+                label="Last service value"
+                name="lastService"
                 required={false}
-                initialValue={machine?.lastServiceHrs}
+                initialValue={machine?.lastService}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the last service hrs.",
+                    message: "Please enter the last service value.",
                   },
                 ]}
               >
                 <InputNumber
-                  placeholder="Last service hrs"
+                  placeholder="Last service value"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
