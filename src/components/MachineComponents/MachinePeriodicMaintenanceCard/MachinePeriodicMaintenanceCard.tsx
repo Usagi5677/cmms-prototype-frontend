@@ -73,40 +73,13 @@ const MachinePeriodicMaintenanceCard = ({
   const colors = getEqualValuesUnder140(highestCount());
 
   const taskData = periodicMaintenance?.MachinePeriodicMaintenanceTask!;
-  /*
-  let completedCounter = 0;
-  let subTaskLength = 0;
-  let subTaskLengthTwo = 0;
 
-  
-  const progressPercentage = () => {
-    taskData?.forEach((task: any) => {
-      task.subTasks?.forEach((subtask: any) => {
-        if (subtask.subTasks.length === 0) {
-          console.log(subtask.subTasks.length);
-          subTaskLength++;
-        }
-        if (subtask.completedAt !== null) {
-          completedCounter++;
-        }
-        subtask.subTasks?.forEach((subtaskTwo: any) => {
-          subTaskLengthTwo++;
-          if (subtaskTwo.completedAt !== null) {
-            completedCounter++;
-          }
-        });
-      });
-    });
-    const combinedSubTaskLength = subTaskLength + subTaskLengthTwo;
-    return Math.round((completedCounter / combinedSubTaskLength) * 100);
-  };
-  */
   const progressPercentage = Math.round(
     (taskData?.filter((task) => task.completedAt !== null).length /
       taskData?.length) *
       100
   );
-  
+
   return (
     <div className={classes["container"]}>
       <div className={classes["container-wrapper"]}>
@@ -124,11 +97,11 @@ const MachinePeriodicMaintenanceCard = ({
               </div>
             </div>
             <div className={classes["time-wrapper"]}>
-              <Tooltip title="Fixed Date">
+              <Tooltip title="Start Date">
                 <FaRegClock />
               </Tooltip>
               <div className={classes["time"]}>
-                {moment(periodicMaintenance?.fixedDate).format(
+                {moment(periodicMaintenance?.startDate).format(
                   DATETIME_FORMATS.FULL
                 )}
               </div>
@@ -143,19 +116,11 @@ const MachinePeriodicMaintenanceCard = ({
           </div>
           <div className={classes["second-block"]}>
             <div className={classes["second-block-wrapper"]}>
-              <Tooltip title="Period">
-                <FaRegClock />
-              </Tooltip>
-              <div className={classes["second-block-title"]}>
-                {periodicMaintenance?.period} hrs
-              </div>
-            </div>
-            <div className={classes["second-block-wrapper"]}>
               <Tooltip title="Notification reminder">
                 <FaRegBell />
               </Tooltip>
               <div className={classes["second-block-title"]}>
-                {periodicMaintenance?.notificationReminder} hrs
+                {periodicMaintenance?.value} {periodicMaintenance?.measurement}
               </div>
             </div>
           </div>

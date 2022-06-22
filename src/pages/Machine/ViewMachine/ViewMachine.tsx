@@ -156,7 +156,11 @@ const ViewMachine = () => {
                 tab="Periodic Maintenance"
                 key="periodicMaintenance"
               >
-                <ViewPeriodicMaintenance machineID={machineData?.id} />
+                <ViewPeriodicMaintenance
+                  machineID={machineData?.id}
+                  value={machineData?.currentRunning}
+                  measurement={machineData?.measurement}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <ViewSparePR machineID={machineData?.id} />

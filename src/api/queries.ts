@@ -117,8 +117,9 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           machineId
           title
           description
-          period
-          notificationReminder
+          measurement
+          value
+          startDate
           status
           completedAt
           createdAt

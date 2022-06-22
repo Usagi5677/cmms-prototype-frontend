@@ -9,6 +9,7 @@ import {
   InputNumber,
   message,
   Modal,
+  Radio,
   Row,
   Tooltip,
 } from "antd";
@@ -69,8 +70,13 @@ const EditMachinePeriodicMaintenance = ({
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, period, notificationReminder, fixedDate } =
-      values;
+    const {
+      title,
+      description,
+      measurement,
+      value,
+      startDate,
+    } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -80,15 +86,15 @@ const EditMachinePeriodicMaintenance = ({
       message.error("Please enter the description.");
       return;
     }
-    if (!period) {
+    if (!measurement) {
+      message.error("Please select the measurement.");
+      return;
+    }
+    if (!value) {
       message.error("Please enter the period.");
       return;
     }
-    if (!notificationReminder) {
-      message.error("Please enter the notification reminder.");
-      return;
-    }
-    if (!fixedDate) {
+    if (!startDate) {
       message.error("Please enter select the fixed date.");
       return;
     }
@@ -97,9 +103,9 @@ const EditMachinePeriodicMaintenance = ({
         id: periodicMaintenance.id,
         title,
         description,
-        period,
-        notificationReminder,
-        fixedDate,
+        measurement,
+        value,
+        startDate,
         tasks,
       },
     });
@@ -167,44 +173,38 @@ const EditMachinePeriodicMaintenance = ({
             </Form.Item>
 
             <Form.Item
-              label="Period"
-              name="period"
+              label="Measurement"
+              name="measurement"
+              initialValue={periodicMaintenance?.measurement}
+            >
+              <Radio.Group buttonStyle="solid" optionType="button">
+                <Radio.Button value="km">Km</Radio.Button>
+                <Radio.Button value="hour">Hr</Radio.Button>
+                <Radio.Button value="day">Day</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="Value"
+              name="value"
               required={false}
-              initialValue={periodicMaintenance?.period}
+              initialValue={periodicMaintenance?.value}
               rules={[
                 {
                   required: true,
-                  message: "Please enter the period.",
+                  message: "Please enter the value.",
                 },
               ]}
             >
-              <InputNumber placeholder="Period" style={{ width: "100%" }} />
+              <InputNumber placeholder="Value" style={{ width: "100%" }} />
             </Form.Item>
             <Form.Item
-              label="Notification Reminder"
-              name="notificationReminder"
+              label="Start Date"
+              name="startDate"
               required={false}
-              initialValue={periodicMaintenance?.notificationReminder}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the notification reminder.",
-                },
-              ]}
-            >
-              <InputNumber
-                placeholder="Notification Reminder"
-                style={{ width: "100%" }}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Fixed Date"
-              name="fixedDate"
-              required={false}
-              initialValue={moment(periodicMaintenance?.fixedDate)}
+              initialValue={moment(periodicMaintenance?.startDate)}
             >
               <DatePicker
-                placeholder="Select fixed date"
+                placeholder="Select start date"
                 style={{
                   width: 200,
                   marginRight: "1rem",

@@ -97,18 +97,18 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
     $machineId: Int!
     $title: String!
     $description: String!
-    $period: Int!
-    $notificationReminder: Int!
-    $fixedDate: Date!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
     $tasks: [String!]
   ) {
     addMachinePeriodicMaintenance(
       machineId: $machineId
       title: $title
       description: $description
-      period: $period
-      notificationReminder: $notificationReminder
-      fixedDate: $fixedDate
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
       tasks: $tasks
     )
   }
@@ -119,18 +119,18 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
     $id: Int!
     $title: String!
     $description: String!
-    $period: Int!
-    $notificationReminder: Int!
-    $fixedDate: Date!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
     $tasks: [String!]
   ) {
     editMachinePeriodicMaintenance(
       id: $id
       title: $title
       description: $description
-      period: $period
-      notificationReminder: $notificationReminder
-      fixedDate: $fixedDate
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
       tasks: $tasks
     )
   }

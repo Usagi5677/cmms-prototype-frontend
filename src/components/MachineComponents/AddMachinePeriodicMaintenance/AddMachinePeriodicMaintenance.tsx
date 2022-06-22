@@ -9,6 +9,7 @@ import {
   InputNumber,
   message,
   Modal,
+  Radio,
   Row,
   Select,
 } from "antd";
@@ -22,8 +23,12 @@ import classes from "./AddMachinePeriodicMaintenance.module.css";
 
 const AddMachinePeriodicMaintenance = ({
   machineID,
+  value,
+  measurement,
 }: {
   machineID: number;
+  value?: number;
+  measurement?: string;
 }) => {
   const { user } = useContext(UserContext);
   const [details, setDetails] = useState("");
@@ -67,13 +72,7 @@ const AddMachinePeriodicMaintenance = ({
   };
 
   const onFinish = async (values: any) => {
-    const {
-      title,
-      description,
-      period,
-      notificationReminder,
-      fixedDate,
-    } = values;
+    const { title, description, measurement, value, startDate } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -83,15 +82,15 @@ const AddMachinePeriodicMaintenance = ({
       message.error("Please enter the description.");
       return;
     }
-    if (!period) {
+    if (!measurement) {
+      message.error("Please select the measurement.");
+      return;
+    }
+    if (!value) {
       message.error("Please enter the period.");
       return;
     }
-    if (!notificationReminder) {
-      message.error("Please enter the notification reminder.");
-      return;
-    }
-    if (!fixedDate) {
+    if (!startDate) {
       message.error("Please enter select the fixed date.");
       return;
     }
@@ -100,15 +99,15 @@ const AddMachinePeriodicMaintenance = ({
         machineId: machineID,
         title,
         description,
-        period,
-        notificationReminder,
-        fixedDate,
+        measurement,
+        value,
+        startDate,
         tasks,
       },
     });
   };
 
-  const removeTask = (e: any, task:any) => {
+  const removeTask = (e: any, task: any) => {
     var array = [...tasks];
     var index = array.indexOf(task);
     if (index !== -1) {
@@ -121,7 +120,8 @@ const AddMachinePeriodicMaintenance = ({
   const onClickSetVisible = () => {
     setVisible(true);
     setTasks([]);
-  }
+  };
+  console.log(value);
   return (
     <>
       <Button
@@ -137,7 +137,16 @@ const AddMachinePeriodicMaintenance = ({
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Periodic Maintenance"}
+        title={
+          <>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>Add Periodic Maintenance</div>
+              <div style={{ paddingRight: 50 }}>
+                {value} {"Current running"} {measurement}
+              </div>
+            </div>
+          </>
+        }
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -174,39 +183,29 @@ const AddMachinePeriodicMaintenance = ({
           >
             <Input placeholder="Description" />
           </Form.Item>
-
+          <Form.Item label="Measurement" name="measurement">
+            <Radio.Group buttonStyle="solid" optionType="button">
+              <Radio.Button value="km">Km</Radio.Button>
+              <Radio.Button value="hour">Hr</Radio.Button>
+              <Radio.Button value="day">Day</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
           <Form.Item
-            label="Period"
-            name="period"
+            label="Value"
+            name="value"
             required={false}
             rules={[
               {
                 required: true,
-                message: "Please enter the period.",
+                message: "Please enter the value.",
               },
             ]}
           >
-            <InputNumber placeholder="Period" style={{ width: "100%" }} />
+            <InputNumber placeholder="Value" style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item
-            label="Notification Reminder"
-            name="notificationReminder"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the notification reminder.",
-              },
-            ]}
-          >
-            <InputNumber
-              placeholder="Notification Reminder"
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
-          <Form.Item label="Fixed Date" name="fixedDate" required={false}>
+          <Form.Item label="Start Date" name="startDate" required={false}>
             <DatePicker
-              placeholder="Select fixed date"
+              placeholder="Select start date"
               style={{
                 width: 200,
                 marginRight: "1rem",

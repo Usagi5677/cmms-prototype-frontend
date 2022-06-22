@@ -7,12 +7,12 @@ export default interface MachinePeriodicMaintenance {
   machineId: number;
   title: string;
   description: string;
-  period?: number;
-  notificationReminder?: number;
+  measurement?: string;
+  value?: number;
   status: PeriodicMaintenanceStatus;
   completedBy?: User;
   completedAt?: Date;
   createdAt?: Date;
-  fixedDate?: Date;
+  startDate?: Date;
   MachinePeriodicMaintenanceTask?: MachinePMTask[];
 }
