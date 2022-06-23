@@ -121,7 +121,7 @@ const AddMachinePeriodicMaintenance = ({
     setVisible(true);
     setTasks([]);
   };
-  console.log(value);
+
   return (
     <>
       <Button

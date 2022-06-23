@@ -169,29 +169,37 @@ const MachinePeriodicMaintenanceCard = ({
                         justifyContent: "space-between",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                        }}
-                      >
-                        <Badge
-                          count={task?.subTasks?.length}
-                          showZero
+                      <div>
+                        <div
                           style={{
-                            backgroundColor: `hsla(${
-                              colors[task.subTasks.length]
-                            },100%, 85%, 1)`,
-                            color: "black",
-                            marginRight: ".5rem",
+                            display: "flex",
                           }}
-                        />
-                        <div className={classes["taskID-bold"]}>
-                          {" "}
-                          {task.id}:{" "}
-                        </div>
+                        >
+                          <Badge
+                            count={task?.subTasks?.length}
+                            showZero
+                            style={{
+                              backgroundColor: `hsla(${
+                                colors[task.subTasks.length]
+                              },100%, 85%, 1)`,
+                              color: "black",
+                              marginRight: ".5rem",
+                            }}
+                          />
+                          <div className={classes["taskID-bold"]}>
+                            {" "}
+                            {task.id}:{" "}
+                          </div>
 
-                        {task.name}
+                          {task.name}
+                        </div>
+                        {task?.completedBy?.fullName && (
+                          <div className={classes["completedBy"]}>
+                            Completed by {task?.completedBy?.fullName}
+                          </div>
+                        )}
                       </div>
+
                       <div className={classes["checkbox-container"]}>
                         {self.assignedPermission.hasMachineChecklistEdit ? (
                           <Checkbox
@@ -207,31 +215,35 @@ const MachinePeriodicMaintenanceCard = ({
                             className={classes["checkbox"]}
                           >
                             {task.completedAt && (
-                              <span
-                                className={classes["completedAt"]}
-                                title={moment(task.completedAt).format(
-                                  DATETIME_FORMATS.FULL
-                                )}
-                              >
-                                {moment(task.completedAt).format(
-                                  DATETIME_FORMATS.SHORT
-                                )}
-                              </span>
+                              <div>
+                                <span
+                                  className={classes["completedAt"]}
+                                  title={moment(task.completedAt).format(
+                                    DATETIME_FORMATS.FULL
+                                  )}
+                                >
+                                  {moment(task.completedAt).format(
+                                    DATETIME_FORMATS.SHORT
+                                  )}
+                                </span>
+                              </div>
                             )}
                           </Checkbox>
                         ) : (
                           <div>
                             {task.completedAt && (
-                              <span
-                                className={classes["completedAt"]}
-                                title={moment(task.completedAt).format(
-                                  DATETIME_FORMATS.FULL
-                                )}
-                              >
-                                {moment(task.completedAt).format(
-                                  DATETIME_FORMATS.SHORT
-                                )}
-                              </span>
+                              <div>
+                                <span
+                                  className={classes["completedAt"]}
+                                  title={moment(task.completedAt).format(
+                                    DATETIME_FORMATS.FULL
+                                  )}
+                                >
+                                  {moment(task.completedAt).format(
+                                    DATETIME_FORMATS.SHORT
+                                  )}
+                                </span>
+                              </div>
                             )}
                           </div>
                         )}
@@ -527,16 +539,91 @@ const MachinePeriodicMaintenanceCard = ({
                             borderRadius: 20,
                           }}
                         >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            <strong style={{ marginRight: ".25rem" }}>
-                              {subtask.id}:
-                            </strong>
-                            {subtask.name}
+                          <div>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <strong style={{ marginRight: ".25rem" }}>
+                                {subtask.id}:
+                              </strong>
+                              {subtask.name}
+                            </div>
+                            {subtask?.completedBy?.fullName && (
+                              <div className={classes["completedBy"]}>
+                                Completed by {subtask?.completedBy?.fullName}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className={classes["checkbox-container"]}>
+                            {self.assignedPermission.hasMachineChecklistEdit ? (
+                              <Checkbox
+                                checked={subtask.completedAt !== null}
+                                onChange={(e) =>
+                                  toggleTask({
+                                    variables: {
+                                      id: subtask.id,
+                                      complete: e.target.checked,
+                                    },
+                                  })
+                                }
+                                className={classes["checkbox"]}
+                              >
+                                {subtask.completedAt && (
+                                  <span
+                                    className={classes["completedAt"]}
+                                    title={moment(subtask.completedAt).format(
+                                      DATETIME_FORMATS.FULL
+                                    )}
+                                  >
+                                    {moment(subtask.completedAt).format(
+                                      DATETIME_FORMATS.SHORT
+                                    )}
+                                  </span>
+                                )}
+                              </Checkbox>
+                            ) : (
+                              <div>
+                                {subtask.completedAt && (
+                                  <span
+                                    className={classes["completedAt"]}
+                                    title={moment(subtask.completedAt).format(
+                                      DATETIME_FORMATS.FULL
+                                    )}
+                                  >
+                                    {moment(subtask.completedAt).format(
+                                      DATETIME_FORMATS.SHORT
+                                    )}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+
+                            <div className={classes["deleteWrapper"]}>
+                              {(deleting || toggling) && (
+                                <Spin style={{ marginRight: 5 }} size="small" />
+                              )}
+                              {!deleting && (
+                                <div>
+                                  {self.assignedPermission
+                                    .hasMachineChecklistDelete ? (
+                                    <CloseCircleOutlined
+                                      className={classes["delete"]}
+                                      onClick={() => {
+                                        deleteMachineChecklistItem({
+                                          variables: {
+                                            id: subtask.id,
+                                          },
+                                        });
+                                      }}
+                                    />
+                                  ) : null}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       );

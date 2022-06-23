@@ -183,7 +183,6 @@ body,
   background-color: #f0f1f1;
 }
 
-
 h1 {
   display: block;
   font-size: 2em;
@@ -415,6 +414,14 @@ em {
 }
 
 .ant-collapse {
-  border: 1px solid #ccc !important;
   border-radius: 6px !important;
+  border: 1px solid #ccc !important;
+}
+
+.ant-collapse-ghost > .ant-collapse-item {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.ant-collapse-ghost > .ant-collapse-item:last-child {
+  border-bottom: none !important;
 }
