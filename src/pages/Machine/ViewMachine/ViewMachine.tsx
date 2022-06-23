@@ -1,9 +1,12 @@
 import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
-import React, { useContext, useEffect } from "react";
+import { Avatar, Button, message, Spin, Tabs, Tooltip, Image } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { GET_SINGLE_MACHINE } from "../../../api/queries";
+import {
+  GET_MACHINE_LATEST_ATTACHMENT,
+  GET_SINGLE_MACHINE,
+} from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewMachine.module.css";
 import Machine from "../../../models/Machine";
@@ -25,6 +28,8 @@ import MachineAssignment from "../../../components/MachineComponents/MachineAssi
 import { UNASSIGN_USER_FROM_MACHINE } from "../../../api/mutations";
 import MachineUsageHistory from "../../../components/MachineComponents/MachineUsageHistory/MachineUsageHistory";
 import EditMachineUsage from "../../../components/MachineComponents/EditMachineUsage/EditMachineUsage";
+import axios from "axios";
+import GetLatestMachineImage from "../../../components/MachineComponents/GetLatestMachineImage/GetLatestMachineImage";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -123,9 +128,138 @@ const ViewMachine = () => {
     );
   };
 
+  const [
+    getMachineLatestAttachment,
+    { data: attachmentData, loading: loadingImage, error },
+  ] = useLazyQuery(GET_MACHINE_LATEST_ATTACHMENT, {
+    onError: (err) => {
+      errorMessage(err, "Error loading image.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
+
+  // Fetch attachment when component mounts or when the filter object changes
+  useEffect(() => {
+    getMachineLatestAttachment({
+      variables: {
+        machineId: parseInt(id),
+      },
+    });
+  }, [id, getMachineLatestAttachment]);
+
   return (
     <>
       <div className={classes["container"]}>
+        <div className={classes["info-container"]}>
+          <div className={classes["info-btn-wrapper"]}>
+            {self.assignedPermission.hasEditMachineUsage ? (
+              <EditMachineUsage machine={machineData} />
+            ) : null}
+            {self.assignedPermission.hasMachineEdit ? (
+              <EditMachine machine={machineData} />
+            ) : null}
+            {self.assignedPermission.hasMachineDelete ? (
+              <DeleteMachine machineID={machineData?.id} />
+            ) : null}
+          </div>
+          <div className={classes["info-title-container"]}>
+            <div className={classes["grid-one"]}>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Machine ID</div>
+                <div className={classes["info-content"]}>{machineData?.id}</div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Machine Number</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.machineNumber}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Model</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.model}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Type</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.type}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Zone</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.zone}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Location</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.location}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Assign</div>
+                <div className={classes["info-content"]}>
+                  {self.assignedPermission.hasMachineAssignmentToUser ? (
+                    <MachineAssignment machineID={machineData?.id} />
+                  ) : (
+                    <>{renderUsers()}</>
+                  )}
+                </div>
+              </div>
+              {self.assignedPermission.hasMachineAssignmentToUser &&
+                renderUsers()}
+            </div>
+            <div className={classes["grid-two"]}>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Current running value</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.currentRunning}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Last service value</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.lastService}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Inter service value</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.interService}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Measurement</div>
+                <div className={classes["info-content"]}>
+                  {machineData?.measurement}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Registered date</div>
+                <div className={classes["info-content"]}>
+                  {moment(machineData?.registeredDate).format(
+                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                  )}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Status</div>
+                <div className={classes["info-content"]}>
+                  <MachineStatuses
+                    machineStatus={machineData?.status}
+                    machineID={machineData?.id}
+                  />
+                </div>
+              </div>
+            </div>
+            <GetLatestMachineImage
+              attachmentData={attachmentData?.getMachineLatestAttachment}
+            />
+          </div>
+        </div>
         <div className={classes["first-wrapper"]}>
           <div className={classes["tab-container"]}>
             <div className={classes["view-ticket-wrapper__header"]}>
@@ -141,7 +275,9 @@ const ViewMachine = () => {
                   {machineData?.machineNumber}
                 </div>
               </div>
-              <div style={{ width: 28 }}>{loadingMachine && <Spin />}</div>
+              <div style={{ width: 28 }}>
+                {loadingMachine || (unassigning && <Spin />)}
+              </div>
             </div>
             <Tabs
               defaultActiveKey="checklist"
@@ -178,103 +314,6 @@ const ViewMachine = () => {
                 <ViewGallery machineID={machineData?.id} />
               </Tabs.TabPane>
             </Tabs>
-          </div>
-          <div className={classes["info-container"]}>
-            <div className={classes["info-btn-wrapper"]}>
-              {self.assignedPermission.hasEditMachineUsage ? (
-                <EditMachineUsage machine={machineData} />
-              ) : null}
-              {self.assignedPermission.hasMachineEdit ? (
-                <EditMachine machine={machineData} />
-              ) : null}
-              {self.assignedPermission.hasMachineDelete ? (
-                <DeleteMachine machineID={machineData?.id} />
-              ) : null}
-            </div>
-
-            <div className={classes["info-title-wrapper"]}>
-              <div>Machine ID</div>
-              <div className={classes["info-content"]}>{machineData?.id}</div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Machine Number</div>
-              <div className={classes["info-content"]}>
-                {machineData?.machineNumber}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Model</div>
-              <div className={classes["info-content"]}>
-                {machineData?.model}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Type</div>
-              <div className={classes["info-content"]}>{machineData?.type}</div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Zone</div>
-              <div className={classes["info-content"]}>{machineData?.zone}</div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Location</div>
-              <div className={classes["info-content"]}>
-                {machineData?.location}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Current running value</div>
-              <div className={classes["info-content"]}>
-                {machineData?.currentRunning}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Last service value</div>
-              <div className={classes["info-content"]}>
-                {machineData?.lastService}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Inter service value</div>
-              <div className={classes["info-content"]}>
-                {machineData?.interService}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Measurement</div>
-              <div className={classes["info-content"]}>
-                {machineData?.measurement}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Registered date</div>
-              <div className={classes["info-content"]}>
-                {moment(machineData?.registeredDate).format(
-                  DATETIME_FORMATS.DAY_MONTH_YEAR
-                )}
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Status</div>
-              <div className={classes["info-content"]}>
-                <MachineStatuses
-                  machineStatus={machineData?.status}
-                  machineID={machineData?.id}
-                />
-              </div>
-            </div>
-            <div className={classes["info-title-wrapper"]}>
-              <div>Assign</div>
-              <div className={classes["info-content"]}>
-                {self.assignedPermission.hasMachineAssignmentToUser ? (
-                  <MachineAssignment machineID={machineData?.id} />
-                ) : (
-                  <>{renderUsers()}</>
-                )}
-              </div>
-            </div>
-            {self.assignedPermission.hasMachineAssignmentToUser &&
-              renderUsers()}
           </div>
         </div>
         <div className={classes["usage-container"]}>

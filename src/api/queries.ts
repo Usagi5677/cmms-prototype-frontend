@@ -948,3 +948,16 @@ export const GET_USAGE_HISTORY_OF_TRANSPORTATION = gql`
     }
   }
 `;
+
+export const GET_MACHINE_LATEST_ATTACHMENT = gql`
+  query getMachineLatestAttachment($machineId: Int!) {
+    getMachineLatestAttachment(machineId: $machineId) {
+      id
+      createdAt
+      mimeType
+      originalName
+      description
+      mode
+    }
+  }
+`;
