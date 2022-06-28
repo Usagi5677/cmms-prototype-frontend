@@ -10,4 +10,5 @@ export default interface MachineBreakdown {
   completedAt?: Date;
   status: BreakdownStatus;
   createdAt?: Date;
+  estimatedDateOfRepair?: Date;
 }

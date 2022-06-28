@@ -286,6 +286,7 @@ export const GET_ALL_BREAKDOWN_OF_MACHINE = gql`
           completedBy {
             ...UserFieldsAPS
           }
+          estimatedDateOfRepair
         }
       }
     }
@@ -661,6 +662,7 @@ export const GET_ALL_BREAKDOWN_OF_TRANSPORTATION = gql`
           completedBy {
             ...UserFieldsAPS
           }
+          estimatedDateOfRepair
         }
       }
     }

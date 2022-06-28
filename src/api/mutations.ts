@@ -231,8 +231,18 @@ export const ADD_MACHINE_BREAKDOWN = gql`
 `;
 
 export const EDIT_MACHINE_BREAKDOWN = gql`
-  mutation ($id: Int!, $title: String!, $description: String!) {
-    editMachineBreakdown(id: $id, title: $title, description: $description)
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $estimatedDateOfRepair: Date!
+  ) {
+    editMachineBreakdown(
+      id: $id
+      title: $title
+      description: $description
+      estimatedDateOfRepair: $estimatedDateOfRepair
+    )
   }
 `;
 
@@ -508,11 +518,17 @@ export const ADD_TRANSPORTATION_BREAKDOWN = gql`
 `;
 
 export const EDIT_TRANSPORTATION_BREAKDOWN = gql`
-  mutation ($id: Int!, $title: String!, $description: String!) {
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $estimatedDateOfRepair: Date!
+  ) {
     editTransportationBreakdown(
       id: $id
       title: $title
       description: $description
+      estimatedDateOfRepair: $estimatedDateOfRepair
     )
   }
 `;

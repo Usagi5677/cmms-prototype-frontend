@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
+import { Button, Col, DatePicker, Form, Input, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import moment from "moment";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
@@ -34,7 +35,7 @@ const EditTransportationBreakdown = ({ breakdown }: { breakdown: Breakdown }) =>
   };
 
   const onFinish = async (values: any) => {
-    const { title, description } = values;
+    const { title, description, estimatedDateOfRepair } = values;
 
     if (!title) {
       message.error("Please enter the title.");
@@ -44,12 +45,16 @@ const EditTransportationBreakdown = ({ breakdown }: { breakdown: Breakdown }) =>
       message.error("Please enter the description.");
       return;
     }
-
+    if (!estimatedDateOfRepair) {
+      message.error("Please select the estimated date of repair.");
+      return;
+    }
     editTransportationBreakdown({
       variables: {
         id: breakdown.id,
         title,
         description,
+        estimatedDateOfRepair,
       },
     });
   };
@@ -103,6 +108,25 @@ const EditTransportationBreakdown = ({ breakdown }: { breakdown: Breakdown }) =>
               ]}
             >
               <Input placeholder="Description" />
+            </Form.Item>
+            <Form.Item
+              label="Estimated Date of Repair"
+              name="estimatedDateOfRepair"
+              required={false}
+              initialValue={
+                breakdown?.estimatedDateOfRepair
+                  ? moment(breakdown?.estimatedDateOfRepair)
+                  : moment()
+              }
+            >
+              <DatePicker
+                placeholder="Select Estimated Date of Repair"
+                style={{
+                  width: 200,
+                  marginRight: "1rem",
+                }}
+                allowClear={false}
+              />
             </Form.Item>
             <Row justify="end" gutter={16}>
               <Col>
