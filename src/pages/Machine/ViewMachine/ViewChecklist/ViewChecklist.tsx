@@ -49,7 +49,11 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating checklist item.");
       },
-      refetchQueries: ["getSingleMachine", "getAllHistoryOfMachine"],
+      refetchQueries: [
+        "getSingleMachine",
+        "getAllHistoryOfMachine",
+        "singleMachineUsageHistory",
+      ],
     }
   );
 

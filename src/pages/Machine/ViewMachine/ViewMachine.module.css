@@ -148,6 +148,33 @@
 }
 
 
+.info-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.location-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.title {
+  padding-left: 5px;
+}
+
+.dash {
+  padding: 0 5px;
+}
 @media only screen and (min-width: 800px) {
   .container {
     flex-direction: column;

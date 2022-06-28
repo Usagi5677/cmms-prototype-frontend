@@ -20,35 +20,39 @@ const GetLatestMachineImage = ({
   }attachment/machine/${attachmentId}`;
   const token = localStorage.getItem("cmms_token");
 
-  if (attachmentId) {
-    axios({
-      method: "get",
-      url,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        authorization: token ? `Bearer ${token}` : "",
-      },
-      responseType: "blob",
-    })
-      .then(function (response) {
-        if (response.headers["content-type"].split("/")[0] === "image") {
-          setIsImage(true);
-        }
-        const blob = new Blob([response.data], {
-          type: response.headers["content-type"],
+  useEffect(() => {
+    if (attachmentId) {
+      setFileLoading(true);
+      axios({
+        method: "get",
+        url,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: token ? `Bearer ${token}` : "",
+        },
+        responseType: "blob",
+      })
+        .then(function (response) {
+          if (response.headers["content-type"].split("/")[0] === "image") {
+            setIsImage(true);
+          }
+          const blob = new Blob([response.data], {
+            type: response.headers["content-type"],
+          });
+          const dataURL = URL.createObjectURL(blob);
+          setFile(dataURL);
+          setIsError(false);
+        })
+        .catch(function () {
+          setIsError(true);
+        })
+        .finally(function () {
+          setFileLoading(false);
         });
-        const dataURL = URL.createObjectURL(blob);
-        setFile(dataURL);
-        setIsError(false);
-      })
-      .catch(function () {
-        setIsError(true);
-      })
-      .finally(function () {
-        setFileLoading(false);
-      });
-  }
-
+    } else {
+      setFileLoading(false);
+    }
+  }, [attachmentId]);
   return (
     <div>
       {file && isImage ? (
@@ -60,7 +64,7 @@ const GetLatestMachineImage = ({
           <Spin />
         </div>
       ) : (
-        <div className={classes["image"]}>No Image</div>
+        <div className={classes["image"]}>No image</div>
       )}
     </div>
   );

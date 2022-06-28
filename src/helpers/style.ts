@@ -47,15 +47,15 @@ export const statusColors = (status: string) => {
 export const usageColors = (label: string) => {
   let color = "grey";
   let bgColor = "white";
-  if (label.substring(0, label.length - 6) === "Current running" || label === "Current mileage") {
+  if (label === "Working hour") {
     bgColor = "#e6fffb";
     color = "#08979c";
-  } else if (label.substring(0, label.length - 6) === "Last service" || label === "Last service mileage") {
-    bgColor = "#e6f7ff";
-    color = "#096dd9";
-  } else if (label.substring(0, label.length - 6) === "Inter service" || label === "Inter service mileage") {
+  } else if (label === "Idle hour") {
     bgColor = "#fff7e6";
     color = "#d46b08";
+  } else if (label === "Breakdown hour") {
+    bgColor = "#fad4d4";
+    color = "#ff0000";
   }
   return [color, bgColor];
 };

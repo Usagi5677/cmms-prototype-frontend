@@ -191,7 +191,7 @@ const AddMachinePeriodicMaintenance = ({
             </Radio.Group>
           </Form.Item>
           <Form.Item
-            label="Value"
+            label="Measurement Value"
             name="value"
             required={false}
             rules={[

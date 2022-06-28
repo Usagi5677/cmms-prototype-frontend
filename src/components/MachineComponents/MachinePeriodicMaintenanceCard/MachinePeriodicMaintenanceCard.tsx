@@ -106,8 +106,9 @@ const MachinePeriodicMaintenanceCard = ({
                 )}
               </div>
             </div>
+            
             <div>Title: {periodicMaintenance?.title}</div>
-            <div>Description: {periodicMaintenance?.description}</div>
+            {/* <div>Description: {periodicMaintenance?.description}</div> */}
             {periodicMaintenance?.completedBy?.fullName && (
               <div className={classes["completedBy"]}>
                 Completed by {periodicMaintenance?.completedBy?.fullName}

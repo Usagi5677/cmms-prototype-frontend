@@ -923,9 +923,9 @@ export const GET_USAGE_HISTORY_OF_MACHINE = gql`
   query singleMachineUsageHistory($machineId: Int!, $from: Date!, $to: Date!) {
     singleMachineUsageHistory(machineId: $machineId, from: $from, to: $to) {
       date
-      currentRunning
-      lastService
-      interService
+      workingHour
+      idleHour
+      breakdownHour
     }
   }
 `;
@@ -942,9 +942,9 @@ export const GET_USAGE_HISTORY_OF_TRANSPORTATION = gql`
       to: $to
     ) {
       date
-      currentMileage
-      lastServiceMileage
-      interServiceMileage
+      workingHour
+      idleHour
+      breakdownHour
     }
   }
 `;

@@ -46,6 +46,7 @@ const ViewChecklist = ({
       refetchQueries: [
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
+        "singleTransportationUsageHistory"
       ],
     });
 

@@ -30,6 +30,7 @@ import MachineUsageHistory from "../../../components/MachineComponents/MachineUs
 import EditMachineUsage from "../../../components/MachineComponents/EditMachineUsage/EditMachineUsage";
 import axios from "axios";
 import GetLatestMachineImage from "../../../components/MachineComponents/GetLatestMachineImage/GetLatestMachineImage";
+import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -132,9 +133,6 @@ const ViewMachine = () => {
     getMachineLatestAttachment,
     { data: attachmentData, loading: loadingImage, error },
   ] = useLazyQuery(GET_MACHINE_LATEST_ATTACHMENT, {
-    onError: (err) => {
-      errorMessage(err, "Error loading image.");
-    },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
@@ -152,23 +150,33 @@ const ViewMachine = () => {
     <>
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
-          <div className={classes["info-btn-wrapper"]}>
-            {self.assignedPermission.hasEditMachineUsage ? (
-              <EditMachineUsage machine={machineData} />
-            ) : null}
-            {self.assignedPermission.hasMachineEdit ? (
-              <EditMachine machine={machineData} />
-            ) : null}
-            {self.assignedPermission.hasMachineDelete ? (
-              <DeleteMachine machineID={machineData?.id} />
-            ) : null}
+          <div className={classes["info-wrapper"]}>
+            <div className={classes["location-wrapper"]}>
+              <FaMapMarkerAlt />
+              <span className={classes["title"]}>{machineData?.zone}</span>
+              <span className={classes["dash"]}>-</span>
+              <span>{machineData?.location}</span>
+            </div>
+            <div className={classes["info-btn-wrapper"]}>
+              {self.assignedPermission.hasEditMachineUsage ? (
+                <EditMachineUsage machine={machineData} />
+              ) : null}
+              {self.assignedPermission.hasMachineEdit ? (
+                <EditMachine machine={machineData} />
+              ) : null}
+              {self.assignedPermission.hasMachineDelete ? (
+                <DeleteMachine machineID={machineData?.id} />
+              ) : null}
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <FaTractor />
+            <span className={classes["title"]}>
+              {machineData?.machineNumber}
+            </span>
           </div>
           <div className={classes["info-title-container"]}>
             <div className={classes["grid-one"]}>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Machine ID</div>
-                <div className={classes["info-content"]}>{machineData?.id}</div>
-              </div>
               <div className={classes["info-title-wrapper"]}>
                 <div>Machine Number</div>
                 <div className={classes["info-content"]}>
@@ -194,12 +202,6 @@ const ViewMachine = () => {
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Location</div>
-                <div className={classes["info-content"]}>
-                  {machineData?.location}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
                 <div>Assign</div>
                 <div className={classes["info-content"]}>
                   {self.assignedPermission.hasMachineAssignmentToUser ? (
@@ -214,19 +216,19 @@ const ViewMachine = () => {
             </div>
             <div className={classes["grid-two"]}>
               <div className={classes["info-title-wrapper"]}>
-                <div>Current running value</div>
+                <div>Current running {machineData?.measurement}</div>
                 <div className={classes["info-content"]}>
                   {machineData?.currentRunning}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Last service value</div>
+                <div>Last service {machineData?.measurement}</div>
                 <div className={classes["info-content"]}>
                   {machineData?.lastService}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Inter service value</div>
+                <div>Inter service {machineData?.measurement}</div>
                 <div className={classes["info-content"]}>
                   {machineData?.interService}
                 </div>
