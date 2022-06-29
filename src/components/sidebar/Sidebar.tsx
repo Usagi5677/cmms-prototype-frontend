@@ -36,7 +36,6 @@ interface SidebarItem {
 const Sidebar = ({ onClick }: { onClick: () => void }) => {
   const { user: self } = useContext(UserContext);
   const { pathname } = useLocation();
-
   const [breakdownMachineCount, { data: machineData }] = useLazyQuery(
     GET_BREAKDOWN_MACHINE_COUNT,
     {
