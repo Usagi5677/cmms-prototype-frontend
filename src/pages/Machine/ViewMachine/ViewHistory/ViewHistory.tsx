@@ -20,7 +20,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
       machineId: number;
     }
   >({
-    first: 3,
+    first: 20,
     last: null,
     before: null,
     after: null,
@@ -119,7 +119,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={20}
       />
     </div>
   );

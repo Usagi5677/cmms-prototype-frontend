@@ -8,4 +8,5 @@ export default interface MachineHistory {
   createdAt: Date;
   completedById: number;
   completedBy?: User;
+  location: string;
 }

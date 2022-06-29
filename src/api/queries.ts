@@ -325,6 +325,7 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
           type
           description
           createdAt
+          location
           completedBy {
             ...UserFieldsAPS
           }
@@ -701,6 +702,7 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
           type
           description
           createdAt
+          location
           completedBy {
             ...UserFieldsAPS
           }
