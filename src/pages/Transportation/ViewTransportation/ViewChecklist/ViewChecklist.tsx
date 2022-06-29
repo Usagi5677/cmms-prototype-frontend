@@ -46,6 +46,7 @@ const ViewChecklist = ({
       refetchQueries: [
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
+        "singleTransportationUsageHistory"
       ],
     });
 
@@ -159,7 +160,7 @@ const ViewChecklist = ({
           <div className={classes["content-title"]}>Daily</div>
           {transportationData?.checklistItems.map((item) =>
             item.type === "Daily" ? (
-              <div className={classes["checkbox-container"]}>
+              <div className={classes["checkbox-container"]} key={item.id}>
                 {self.assignedPermission.hasTransportationChecklistEdit ? (
                   <Checkbox
                     defaultChecked={item.completedAt !== null}
@@ -228,7 +229,7 @@ const ViewChecklist = ({
           <div className={classes["content-title"]}>Weekly</div>
           {transportationData?.checklistItems.map((item) =>
             item.type === "Weekly" ? (
-              <div className={classes["checkbox-container"]}>
+              <div className={classes["checkbox-container"]} key={item.id}>
                 {self.assignedPermission.hasTransportationChecklistEdit ? (
                   <Checkbox
                     defaultChecked={item.completedAt !== null}

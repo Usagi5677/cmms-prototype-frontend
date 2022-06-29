@@ -15,7 +15,15 @@ import PeriodicMaintenance from "../../../../models/Machine/MachinePeriodicMaint
 import classes from "./ViewPeriodicMaintenance.module.css";
 import UserContext from "../../../../contexts/UserContext";
 
-const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
+const ViewPeriodicMaintenance = ({
+  machineID,
+  value,
+  measurement,
+}: {
+  machineID: number;
+  value?: number;
+  measurement?: string;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -111,7 +119,11 @@ const ViewPeriodicMaintenance = ({ machineID }: { machineID: number }) => {
     <div className={classes["container"]}>
       <div className={classes["options"]}>
         {self.assignedPermission.hasMachinePeriodicMaintenanceAdd ? (
-          <AddMachinePeriodicMaintenance machineID={machineID} />
+          <AddMachinePeriodicMaintenance
+            machineID={machineID}
+            value={value}
+            measurement={measurement}
+          />
         ) : null}
       </div>
       {loading && (

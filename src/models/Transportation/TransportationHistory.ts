@@ -8,4 +8,5 @@ export default interface TransportationHistory {
   createdAt: Date;
   completedById: number;
   completedBy?: User;
+  location: string;
 }

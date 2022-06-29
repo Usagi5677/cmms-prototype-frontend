@@ -7,9 +7,10 @@ export const CREATE_MACHINE = gql`
     $type: String!
     $zone: String!
     $location: String!
-    $currentRunningHrs: Int!
-    $lastServiceHrs: Int!
+    $currentRunning: Int!
+    $lastService: Int!
     $registeredDate: Date!
+    $measurement: String!
   ) {
     createMachine(
       machineNumber: $machineNumber
@@ -17,9 +18,10 @@ export const CREATE_MACHINE = gql`
       type: $type
       zone: $zone
       location: $location
-      currentRunningHrs: $currentRunningHrs
-      lastServiceHrs: $lastServiceHrs
+      currentRunning: $currentRunning
+      lastService: $lastService
       registeredDate: $registeredDate
+      measurement: $measurement
     )
   }
 `;
@@ -32,9 +34,10 @@ export const EDIT_MACHINE = gql`
     $type: String!
     $zone: String!
     $location: String!
-    $currentRunningHrs: Int!
-    $lastServiceHrs: Int!
+    $currentRunning: Int!
+    $lastService: Int!
     $registeredDate: Date!
+    $measurement: String!
   ) {
     editMachine(
       id: $id
@@ -43,9 +46,10 @@ export const EDIT_MACHINE = gql`
       type: $type
       zone: $zone
       location: $location
-      currentRunningHrs: $currentRunningHrs
-      lastServiceHrs: $lastServiceHrs
+      currentRunning: $currentRunning
+      lastService: $lastService
       registeredDate: $registeredDate
+      measurement: $measurement
     )
   }
 `;
@@ -93,18 +97,18 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
     $machineId: Int!
     $title: String!
     $description: String!
-    $period: Int!
-    $notificationReminder: Int!
-    $fixedDate: Date!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
     $tasks: [String!]
   ) {
     addMachinePeriodicMaintenance(
       machineId: $machineId
       title: $title
       description: $description
-      period: $period
-      notificationReminder: $notificationReminder
-      fixedDate: $fixedDate
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
       tasks: $tasks
     )
   }
@@ -115,15 +119,19 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
     $id: Int!
     $title: String!
     $description: String!
-    $period: Int!
-    $notificationReminder: Int!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
+    $tasks: [String!]
   ) {
     editMachinePeriodicMaintenance(
       id: $id
       title: $title
       description: $description
-      period: $period
-      notificationReminder: $notificationReminder
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
+      tasks: $tasks
     )
   }
 `;
@@ -223,8 +231,18 @@ export const ADD_MACHINE_BREAKDOWN = gql`
 `;
 
 export const EDIT_MACHINE_BREAKDOWN = gql`
-  mutation ($id: Int!, $title: String!, $description: String!) {
-    editMachineBreakdown(id: $id, title: $title, description: $description)
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $estimatedDateOfRepair: Date!
+  ) {
+    editMachineBreakdown(
+      id: $id
+      title: $title
+      description: $description
+      estimatedDateOfRepair: $estimatedDateOfRepair
+    )
   }
 `;
 
@@ -500,11 +518,17 @@ export const ADD_TRANSPORTATION_BREAKDOWN = gql`
 `;
 
 export const EDIT_TRANSPORTATION_BREAKDOWN = gql`
-  mutation ($id: Int!, $title: String!, $description: String!) {
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $estimatedDateOfRepair: Date!
+  ) {
     editTransportationBreakdown(
       id: $id
       title: $title
       description: $description
+      estimatedDateOfRepair: $estimatedDateOfRepair
     )
   }
 `;
@@ -618,11 +642,11 @@ export const READ_ALL_NOTIFICATIONS = gql`
 `;
 
 export const EDIT_MACHINE_USAGE = gql`
-  mutation ($id: Int!, $currentRunningHrs: Int!, $lastServiceHrs: Int!) {
+  mutation ($id: Int!, $currentRunning: Int!, $lastService: Int!) {
     editMachineUsage(
       id: $id
-      currentRunningHrs: $currentRunningHrs
-      lastServiceHrs: $lastServiceHrs
+      currentRunning: $currentRunning
+      lastService: $lastService
     )
   }
 `;

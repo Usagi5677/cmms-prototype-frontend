@@ -15,10 +15,10 @@ import { Tooltip } from "antd";
 const MachineCard = ({ machine }: { machine: Machine }) => {
   let borderLeft: string;
   let border: string;
-  if (machine?.interServiceHrs! >= 500) {
+  if (machine?.interService! >= 500) {
     borderLeft = "8px solid red";
     border = "2px solid red";
-  } else if (machine?.interServiceHrs! >= 400) {
+  } else if (machine?.interService! >= 400) {
     borderLeft = "8px solid orange";
     border = "2px solid orange";
   } else {
@@ -72,18 +72,18 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
       <div className={classes["second-wrapper"]}>
         <div className={classes["third-block"]}>
           <div>
-            <span>Current running (hr):</span>
+            <span>Current running ({machine?.measurement}):</span>
             <span className={classes["title"]}>
-              {machine?.currentRunningHrs}
+              {machine?.currentRunning}
             </span>
           </div>
           <div>
-            <span>Last service (hr):</span>
-            <span className={classes["title"]}>{machine?.lastServiceHrs}</span>
+            <span>Last service ({machine?.measurement}):</span>
+            <span className={classes["title"]}>{machine?.lastService}</span>
           </div>
           <div>
-            <span>Inter service (hr):</span>
-            <span className={classes["title"]}>{machine?.interServiceHrs}</span>
+            <span>Inter service ({machine?.measurement}):</span>
+            <span className={classes["title"]}>{machine?.interService}</span>
           </div>
         </div>
         <div className={classes["fourth-block"]}>

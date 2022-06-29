@@ -117,8 +117,9 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           machineId
           title
           description
-          period
-          notificationReminder
+          measurement
+          value
+          startDate
           status
           completedAt
           createdAt
@@ -285,6 +286,7 @@ export const GET_ALL_BREAKDOWN_OF_MACHINE = gql`
           completedBy {
             ...UserFieldsAPS
           }
+          estimatedDateOfRepair
         }
       }
     }
@@ -323,6 +325,7 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
           type
           description
           createdAt
+          location
           completedBy {
             ...UserFieldsAPS
           }
@@ -660,6 +663,7 @@ export const GET_ALL_BREAKDOWN_OF_TRANSPORTATION = gql`
           completedBy {
             ...UserFieldsAPS
           }
+          estimatedDateOfRepair
         }
       }
     }
@@ -698,6 +702,7 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
           type
           description
           createdAt
+          location
           completedBy {
             ...UserFieldsAPS
           }
@@ -922,9 +927,9 @@ export const GET_USAGE_HISTORY_OF_MACHINE = gql`
   query singleMachineUsageHistory($machineId: Int!, $from: Date!, $to: Date!) {
     singleMachineUsageHistory(machineId: $machineId, from: $from, to: $to) {
       date
-      currentRunningHrs
-      lastServiceHrs
-      interServiceHrs
+      workingHour
+      idleHour
+      breakdownHour
     }
   }
 `;
@@ -941,9 +946,22 @@ export const GET_USAGE_HISTORY_OF_TRANSPORTATION = gql`
       to: $to
     ) {
       date
-      currentMileage
-      lastServiceMileage
-      interServiceMileage
+      workingHour
+      idleHour
+      breakdownHour
+    }
+  }
+`;
+
+export const GET_MACHINE_LATEST_ATTACHMENT = gql`
+  query getMachineLatestAttachment($machineId: Int!) {
+    getMachineLatestAttachment(machineId: $machineId) {
+      id
+      createdAt
+      mimeType
+      originalName
+      description
+      mode
     }
   }
 `;

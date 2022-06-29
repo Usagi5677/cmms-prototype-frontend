@@ -39,9 +39,9 @@ const TransportationUsageHistory = () => {
   }, [dates, singleTransportationUsageHistory]);
 
   const labelData = [
-    "Current mileage",
-    "Last service mileage",
-    "Inter service mileage",
+    "Working hour",
+    "Idle hour",
+    "Breakdown hour",
   ];
 
   let data = () => {
@@ -56,12 +56,12 @@ const TransportationUsageHistory = () => {
         borderColor: color,
         borderWidth: 1,
         data: history?.singleTransportationUsageHistory.map((rec: any) => {
-          if ("Current mileage" === label) {
-            return rec.currentMileage;
-          } else if ("Last service mileage" === label) {
-            return rec.lastServiceMileage;
-          } else if ("Inter service mileage" === label) {
-            return rec.interServiceMileage;
+          if ("Working hour" === label) {
+            return rec.workingHour;
+          } else if ("Idle hour" === label) {
+            return rec.idleHour;
+          } else if ("Breakdown hour" === label) {
+            return rec.breakdownHour;
           }
         }),
       };

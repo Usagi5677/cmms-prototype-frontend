@@ -19,8 +19,8 @@ const TransportationBreakdownCard = ({
   const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
-      <div className={classes["wrapper"]}>
-        <div className={classes["first-block"]}>
+      <div className={classes["first-block"]}>
+        <div>
           <div>{breakdown?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Created At">
@@ -32,25 +32,68 @@ const TransportationBreakdownCard = ({
               )}
             </div>
           </div>
-          <div>{breakdown?.title}</div>
-          <div>{breakdown?.description}</div>
+        </div>
+        <div className={classes["col-wrapper"]}>
           {breakdown?.completedBy?.fullName && (
-            <div className={classes["completedBy"]}>
-              Completed by {breakdown?.completedBy?.fullName}
+            <div className={classes["col"]}>
+              <div className={classes["col-title"]}>Completed by:</div>
+              <div className={classes["completedBy"]}>
+                {breakdown?.completedBy?.fullName}
+              </div>
             </div>
           )}
+
+          <div className={classes["col"]}>
+            <div className={classes["col-title"]}>Title:</div>
+            <div>{breakdown?.title}</div>
+          </div>
+          <div className={classes["col"]}>
+            <div className={classes["col-title"]}>Description:</div>
+            <div>{breakdown?.description}</div>
+          </div>
+        </div>
+      </div>
+      <div className={classes["second-block"]}>
+        <div>
+          {breakdown?.estimatedDateOfRepair && (
+            <div className={classes["time-wrapper"]}>
+              <Tooltip title="Estimated date of repair">
+                <FaRegClock />
+              </Tooltip>
+              <div className={classes["time"]}>
+                {moment(breakdown?.estimatedDateOfRepair).format(
+                  DATETIME_FORMATS.DAY_MONTH_YEAR
+                )}
+              </div>
+            </div>
+          )}
+          <div className={classes["time-wrapper"]}>
+            <Tooltip title="Duration">
+              <FaRegClock />
+            </Tooltip>
+            {breakdown?.completedAt ? (
+              <div className={classes["time"]}>
+                {moment(breakdown?.completedAt).format(DATETIME_FORMATS.FULL)}
+              </div>
+            ) : (
+              <div className={classes["time"]}>
+                {moment(breakdown?.createdAt).fromNow()}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className={classes["status"]}>
+          {self.assignedPermission.hasMachineBreakdownEdit ? (
+            <TransportationBreakdownStatus breakdown={breakdown} />
+          ) : null}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasTransportationBreakdownEdit ? (
+          {self.assignedPermission.hasMachineBreakdownEdit ? (
             <EditTransportationBreakdown breakdown={breakdown} />
           ) : null}
-          {self.assignedPermission.hasTransportationBreakdownDelete ? (
+          {self.assignedPermission.hasMachineBreakdownDelete ? (
             <DeleteTransportationBreakdown id={breakdown?.id} />
-          ) : null}
-        </div>
-        <div className={classes["status"]}>
-          {self.assignedPermission.hasTransportationBreakdownEdit ? (
-            <TransportationBreakdownStatus breakdown={breakdown} />
           ) : null}
         </div>
       </div>

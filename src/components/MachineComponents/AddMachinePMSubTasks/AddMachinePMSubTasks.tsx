@@ -49,7 +49,7 @@ const AddMachinePMSubTasks = (periodicMaintenanceTasks: any) => {
     setVisible(false);
   };
 
-  console.log(periodicMaintenanceTasks);
+ 
   const onFinish = async (values: any) => {
     const { parentTaskID, name } = values;
 
