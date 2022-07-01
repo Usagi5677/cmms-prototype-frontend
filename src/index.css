@@ -425,3 +425,15 @@ em {
 .ant-collapse-ghost > .ant-collapse-item:last-child {
   border-bottom: none !important;
 }
+
+.ant-select:not(.ant-select-disabled) .ant-select-selector {
+  border-radius: 20px !important;
+}
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: var(--primary) !important;
+}
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  box-shadow: 0 0 0 2px rgba(24, 255, 139, 0.2) !important;
+  border-color: var(--primary) !important;
+}

@@ -10,11 +10,13 @@ import {
   Modal,
   Radio,
   Row,
+  Select,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import { CREATE_MACHINE } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
+import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./AddMachine.module.css";
 
@@ -102,6 +104,15 @@ const AddMachine = () => {
       },
     });
   };
+
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
   return (
     <>
       <Button
@@ -223,7 +234,13 @@ const AddMachine = () => {
                   },
                 ]}
               >
-                <Input placeholder="Location" />
+                <Select
+                  showArrow
+                  style={{ width: "100%" }}
+                  showSearch
+                  options={options}
+                  placeholder={"Location"}
+                />
               </Form.Item>
             </div>
           </div>

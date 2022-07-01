@@ -16,7 +16,7 @@ Chart.register(...registerables);
 const TransportationUsageHistory = () => {
   const { id }: any = useParams();
   const [dates, setDates] = useState<any>([
-    moment().subtract(1, "week"),
+    moment().subtract(1, "day"),
     moment(),
   ]);
   const [singleTransportationUsageHistory, { data: history, loading }] = useLazyQuery(

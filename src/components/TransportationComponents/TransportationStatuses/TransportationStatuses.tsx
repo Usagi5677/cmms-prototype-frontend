@@ -33,7 +33,7 @@ const TransportationStatuses = ({
         "getAllRepairOfTransportation",
         "getAllHistoryOfTransportation",
         "breakdownVesselCount",
-        "breakdownVehicleCount"
+        "breakdownVehicleCount",
       ],
     }
   );
@@ -53,7 +53,7 @@ const TransportationStatuses = ({
         "getAllBreakdownOfTransportation",
         "getSingleTransportation",
         "breakdownVesselCount",
-        "breakdownVehicleCount"
+        "breakdownVehicleCount",
       ],
     });
 
@@ -163,36 +163,24 @@ const TransportationStatuses = ({
           </Row>
         </Form>
       </Modal>
-      <div
-        style={{
-          display: "flex",
-          border: "1px solid #ccc",
-          borderRadius: 20,
-          padding: "1px 5px 1px 5px",
-          alignItems: "center",
-          width: 150,
-        }}
+      <Select
+        showArrow
+        loading={settingStatus}
+        style={{ width: "100%" }}
+        placeholder="Select status"
+        value={transportationStatus}
+        onChange={(status) => onChangeClick(status)}
       >
-        <Select
-          showArrow
-          loading={settingStatus}
-          style={{ width: "100%" }}
-          bordered={false}
-          placeholder="Select status"
-          value={transportationStatus}
-          onChange={(status) => onChangeClick(status)}
-        >
-          {(
-            Object.keys(TransportationStatus) as Array<
-              keyof typeof TransportationStatus
-            >
-          ).map((status: any) => (
-            <Select.Option key={status} value={status}>
-              <TransportationStatusTag status={status} />
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
+        {(
+          Object.keys(TransportationStatus) as Array<
+            keyof typeof TransportationStatus
+          >
+        ).map((status: any) => (
+          <Select.Option key={status} value={status}>
+            <TransportationStatusTag status={status} />
+          </Select.Option>
+        ))}
+      </Select>
     </>
   );
 };

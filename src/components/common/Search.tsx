@@ -19,6 +19,7 @@ const Search = ({
         border: "1px solid #ccc",
         borderRadius: 20,
         padding: 5,
+        height: 32,
         paddingLeft: 10,
         width: 191,
         margin,

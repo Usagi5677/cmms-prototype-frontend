@@ -19,8 +19,12 @@ import classes from "./AddTransportationPeriodicMaintenance.module.css";
 
 const AddTransportationPeriodicMaintenance = ({
   transportationID,
+  value,
+  measurement,
 }: {
   transportationID: number;
+  value?: number;
+  measurement?: string;
 }) => {
   const { user } = useContext(UserContext);
 
@@ -103,7 +107,16 @@ const AddTransportationPeriodicMaintenance = ({
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Periodic Maintenance"}
+        title={
+          <>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>Add Periodic Maintenance</div>
+              <div style={{ paddingRight: 50 }}>
+                {value} {"Current mileage"} {measurement}
+              </div>
+            </div>
+          </>
+        }
         width="90vw"
         style={{ maxWidth: 700 }}
       >

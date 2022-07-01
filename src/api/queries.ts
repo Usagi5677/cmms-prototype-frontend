@@ -302,6 +302,9 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
     $last: Int
     $search: String
     $machineId: Int!
+    $location: String
+    $from: Date
+    $to: Date
   ) {
     getAllHistoryOfMachine(
       after: $after
@@ -310,6 +313,9 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
       last: $last
       search: $search
       machineId: $machineId
+      location: $location
+      from: $from
+      to: $to
     ) {
       pageInfo {
         endCursor
@@ -678,6 +684,9 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
     $first: Int
     $last: Int
     $search: String
+    $location: String
+    $from: Date
+    $to: Date
     $transportationId: Int!
   ) {
     getAllHistoryOfTransportation(
@@ -686,6 +695,9 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
       first: $first
       last: $last
       search: $search
+      location: $location
+      from: $from
+      to: $to
       transportationId: $transportationId
     ) {
       pageInfo {
@@ -956,6 +968,19 @@ export const GET_USAGE_HISTORY_OF_TRANSPORTATION = gql`
 export const GET_MACHINE_LATEST_ATTACHMENT = gql`
   query getMachineLatestAttachment($machineId: Int!) {
     getMachineLatestAttachment(machineId: $machineId) {
+      id
+      createdAt
+      mimeType
+      originalName
+      description
+      mode
+    }
+  }
+`;
+
+export const GET_TRANSPORTATION_LATEST_ATTACHMENT = gql`
+  query getTransportationLatestAttachment($transportationId: Int!) {
+    getTransportationLatestAttachment(transportationId: $transportationId) {
       id
       createdAt
       mimeType

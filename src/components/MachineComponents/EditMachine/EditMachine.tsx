@@ -10,6 +10,7 @@ import {
   Modal,
   Radio,
   Row,
+  Select,
   Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -18,7 +19,7 @@ import moment from "moment";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_MACHINE } from "../../../api/mutations";
-import { DATETIME_FORMATS } from "../../../helpers/constants";
+import { DATETIME_FORMATS, ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import Machine from "../../../models/Machine";
 import classes from "./EditMachine.module.css";
@@ -108,6 +109,14 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
     });
   };
 
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+  
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
@@ -234,7 +243,13 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
                   },
                 ]}
               >
-                <Input placeholder="Location" />
+                <Select
+                  showArrow
+                  style={{ width: "100%" }}
+                  showSearch
+                  placeholder={"Location"}
+                  options={options}
+                />
               </Form.Item>
             </div>
           </div>

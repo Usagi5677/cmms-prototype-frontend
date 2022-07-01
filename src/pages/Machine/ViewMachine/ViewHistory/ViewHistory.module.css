@@ -5,9 +5,35 @@
 
 .options {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 .content {
   padding: 0 10px;
+}
+
+.location {
+  margin-top: 10px !important;
+  width: 190px;
+}
+.datepicker {
+  margin-top: 10px !important;
+  width: 240px !important;
+}
+
+@media only screen and (min-width: 600px) {
+  .options {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .location {
+    margin-left: 10px !important;
+  }
+  .datepicker {
+    margin-left: 10px !important;
+    width: 320px !important;
+  }
 }

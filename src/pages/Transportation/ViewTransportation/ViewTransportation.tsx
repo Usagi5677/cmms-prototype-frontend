@@ -3,7 +3,7 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { GET_SINGLE_TRANSPORTATION } from "../../../api/queries";
+import { GET_SINGLE_TRANSPORTATION, GET_TRANSPORTATION_LATEST_ATTACHMENT } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewTransportation.module.css";
 import moment from "moment";
@@ -25,6 +25,8 @@ import { UNASSIGN_USER_FROM_TRANSPORTATION } from "../../../api/mutations";
 import TransportationAssignment from "../../../components/TransportationComponents/TransportationAssignment/TransportationAssignment";
 import TransportationUsageHistory from "../../../components/TransportationComponents/TransportationUsageHistory/TransportationUsageHistory";
 import EditTransportationUsage from "../../../components/TransportationComponents/EditTransportationUsage/EditTransportationUsage";
+import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
+import GetLatestTransportationImage from "../../../components/TransportationComponents/GetLatestTransportationImage/GetLatestTransportationImage";
 
 const ViewTransportation = () => {
   const { id }: any = useParams();
@@ -130,9 +132,210 @@ const ViewTransportation = () => {
     );
   };
 
+  const [
+    getTransportationLatestAttachment,
+    { data: attachmentData, loading: loadingImage, error },
+  ] = useLazyQuery(GET_TRANSPORTATION_LATEST_ATTACHMENT, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
+
+  // Fetch attachment when component mounts or when the filter object changes
+  useEffect(() => {
+    getTransportationLatestAttachment({
+      variables: {
+        transportationId: parseInt(id),
+      },
+    });
+  }, [id, getTransportationLatestAttachment]);
+
   return (
     <>
       <div className={classes["container"]}>
+        <div className={classes["info-container"]}>
+          <div className={classes["info-wrapper"]}>
+            <div className={classes["location-wrapper"]}>
+              <FaMapMarkerAlt />
+              <span className={classes["title"]}>{transportationData?.location}</span>
+            </div>
+            <div className={classes["info-btn-wrapper"]}>
+              {self.assignedPermission.hasEditTransportationUsage ? (
+                <EditTransportationUsage transportation={transportationData} />
+              ) : null}
+              {self.assignedPermission.hasTransportationEdit ? (
+                <EditTransportation transportation={transportationData} />
+              ) : null}
+              {self.assignedPermission.hasTransportationDelete ? (
+                <DeleteTransportation
+                  transportationID={transportationData?.id}
+                />
+              ) : null}
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <FaTractor />
+            <span className={classes["title"]}>
+              {transportationData?.machineNumber}
+            </span>
+          </div>
+          <div className={classes["info-title-container"]}>
+            <div className={classes["grid-one"]}>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Machine Number</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.machineNumber}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Model</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.model}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Type</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.type}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Engine</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.engine}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Assign</div>
+                <div className={classes["info-content"]}>
+                  {self.assignedPermission.hasTransportationAssignmentToUser ? (
+                    <TransportationAssignment
+                      transportationID={transportationData?.id}
+                    />
+                  ) : (
+                    <>{renderUsers()}</>
+                  )}
+                </div>
+              </div>
+              {self.assignedPermission.hasTransportationAssignmentToUser &&
+                renderUsers()}
+            </div>
+            <div className={classes["grid-two"]}>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Current mileage ({transportationData?.measurement})</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.currentMileage}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Last service mileage ({transportationData?.measurement})</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.lastServiceMileage}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Inter service mileage ({transportationData?.measurement})</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.interServiceMileage}
+                </div>
+              </div>
+              
+              <div className={classes["info-title-wrapper"]}>
+                <div>Measurement</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.measurement}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Registered date</div>
+                <div className={classes["info-content"]}>
+                  {moment(transportationData?.registeredDate).format(
+                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                  )}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Status</div>
+                <div className={classes["info-content"]}>
+                  <TransportationStatuses
+                    transportationStatus={transportationData?.status}
+                    transportationID={transportationData?.id}
+                  />
+                </div>
+              </div>
+            </div>
+            <GetLatestTransportationImage
+              attachmentData={attachmentData?.getTransportationLatestAttachment}
+            />
+          </div>
+        </div>
+        <div className={classes["first-wrapper"]}>
+          <div className={classes["tab-container"]}>
+            <div className={classes["view-ticket-wrapper__header"]}>
+              <Button
+                className={classes["custom-btn-secondary"]}
+                onClick={() => navigate(-1)}
+                icon={<LeftOutlined />}
+              >
+                Back
+              </Button>
+              <div className={classes["tab-header-wrapper"]}>
+                <div className={classes["tab-header"]}>
+                  {transportationData?.machineNumber}
+                </div>
+              </div>
+              <div style={{ width: 28 }}>
+                {loadingTransportation || (unassigning && <Spin />)}
+              </div>
+            </div>
+            <Tabs
+              defaultActiveKey="checklist"
+              style={{
+                flex: 1,
+              }}
+            >
+              <Tabs.TabPane tab="Checklist" key="checklist">
+                <ViewChecklist transportationData={transportationData} />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab="Periodic Maintenance"
+                key="periodicMaintenance"
+              >
+                <ViewPeriodicMaintenance
+                  transportationID={transportationData?.id}
+                  value={transportationData?.currentMileage}
+                  measurement={transportationData?.measurement}
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Spare PR" key="sparePR">
+                <ViewSparePR transportationID={transportationData?.id} />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Repair" key="repair">
+                <ViewRepair transportationID={transportationData?.id} />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Breakdown" key="breakdown">
+                <ViewBreakdown transportationID={transportationData?.id} />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="History" key="history">
+                <ViewHistory transportationID={transportationData?.id} />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Gallery" key="gallery">
+                <ViewGallery transportationID={transportationData?.id} />
+              </Tabs.TabPane>
+            </Tabs>
+          </div>
+        </div>
+        <div className={classes["usage-container"]}>
+          <TransportationUsageHistory />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ViewTransportation;
+
+/*
+<div className={classes["container"]}>
         <div className={classes["first-wrapper"]}>
           <div className={classes["tab-container"]}>
             <div className={classes["view-ticket-wrapper__header"]}>
@@ -310,8 +513,5 @@ const ViewTransportation = () => {
           <TransportationUsageHistory />
         </div>
       </div>
-    </>
-  );
-};
 
-export default ViewTransportation;
+*/

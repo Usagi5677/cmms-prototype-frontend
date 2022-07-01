@@ -13,8 +13,12 @@ import classes from "./ViewPeriodicMaintenance.module.css";
 
 const ViewPeriodicMaintenance = ({
   transportationID,
+  value,
+  measurement,
 }: {
   transportationID: number;
+  value?: number;
+  measurement?: string;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -112,6 +116,8 @@ const ViewPeriodicMaintenance = ({
         {self.assignedPermission.hasTransportationPeriodicMaintenanceAdd ? (
           <AddTransportationPeriodicMaintenance
             transportationID={transportationID}
+            value={value}
+            measurement={measurement}
           />
         ) : null}
       </div>
