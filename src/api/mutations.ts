@@ -96,7 +96,6 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
   mutation (
     $machineId: Int!
     $title: String!
-    $description: String!
     $measurement: String!
     $value: Int!
     $startDate: Date!
@@ -105,7 +104,6 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
     addMachinePeriodicMaintenance(
       machineId: $machineId
       title: $title
-      description: $description
       measurement: $measurement
       value: $value
       startDate: $startDate
@@ -387,18 +385,18 @@ export const ADD_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
   mutation (
     $transportationId: Int!
     $title: String!
-    $description: String!
-    $period: Int!
-    $notificationReminder: Int!
-    $fixedDate: Date!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
+    $tasks: [String!]
   ) {
     addTransportationPeriodicMaintenance(
       transportationId: $transportationId
       title: $title
-      description: $description
-      period: $period
-      notificationReminder: $notificationReminder
-      fixedDate: $fixedDate
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
+      tasks: $tasks
     )
   }
 `;
@@ -669,14 +667,36 @@ export const ADD_MACHINE_PERIODIC_MAINTENANCE_TASK = gql`
   }
 `;
 
-export const TOGGLE_TASK = gql`
+export const TOGGLE_MACHINE_PM_TASK = gql`
   mutation ($id: Int!, $complete: Boolean!) {
-    toggleTask(id: $id, complete: $complete)
+    toggleMachinePMTask(id: $id, complete: $complete)
   }
 `;
 
-export const DELETE_TASK = gql`
+export const DELETE_MACHINE_PM_TASK = gql`
   mutation ($id: Int!) {
-    deleteTask(id: $id)
+    deleteMachinePMTask(id: $id)
+  }
+`;
+
+export const ADD_TRANSPORTATION_PERIODIC_MAINTENANCE_TASK = gql`
+  mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
+    createTransportationPeriodicMaintenanceTask(
+      parentTaskId: $parentTaskId
+      periodicMaintenanceId: $periodicMaintenanceId
+      name: $name
+    )
+  }
+`;
+
+export const TOGGLE_TRANSPORTATION_PM_TASK = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleTransportationPMTask(id: $id, complete: $complete)
+  }
+`;
+
+export const DELETE_TRANSPORTATION_PM_TASK = gql`
+  mutation ($id: Int!) {
+    deleteTransportationPMTask(id: $id)
   }
 `;

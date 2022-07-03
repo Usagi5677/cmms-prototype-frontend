@@ -53,6 +53,7 @@ const MachineStatuses = ({
       },
       refetchQueries: [
         "getAllBreakdownOfMachine",
+        "getAllHistoryOfMachine",
         "getSingleMachine",
         "breakdownMachineCount",
       ],

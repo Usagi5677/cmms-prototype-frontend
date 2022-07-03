@@ -8,8 +8,10 @@ import classes from "./DeleteTransportation.module.css";
 
 const DeleteTransportation = ({
   transportationID,
+  isDeleted,
 }: {
   transportationID: number;
+  isDeleted: boolean | undefined;
 }) => {
   const navigate = useNavigate();
 
@@ -40,18 +42,38 @@ const DeleteTransportation = ({
   return (
     <Popconfirm
       key="delete"
-      disabled={deleting}
+      disabled={deleting || isDeleted}
       title={`Are you sure to remove this information?`}
       onConfirm={() => remove()}
       okText="Confirm"
       cancelText="No"
       placement="topRight"
+      style={{
+        pointerEvents: isDeleted ? "none" : "auto",
+        color: isDeleted ? "grey" : "inherit",
+      }}
     >
-      <Tooltip title={"Delete"} placement="top">
+      {isDeleted ? (
         <div className={classes["btn-delete"]}>
-          <FaTrash />
+          <FaTrash
+            style={{
+              pointerEvents: isDeleted ? "none" : "auto",
+              color: isDeleted ? "grey" : "inherit",
+            }}
+          />
         </div>
-      </Tooltip>
+      ) : (
+        <Tooltip title={"Delete"} placement="top">
+          <div className={classes["btn-delete"]}>
+            <FaTrash
+              style={{
+                pointerEvents: isDeleted ? "none" : "auto",
+                color: isDeleted ? "grey" : "inherit",
+              }}
+            />
+          </div>
+        </Tooltip>
+      )}
     </Popconfirm>
   );
 };

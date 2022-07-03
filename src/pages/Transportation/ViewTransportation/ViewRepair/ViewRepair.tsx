@@ -11,7 +11,13 @@ import PaginationArgs from "../../../../models/PaginationArgs";
 import Repair from "../../../../models/Transportation/TransportationRepair";
 import classes from "./ViewRepair.module.css";
 
-const ViewRepair = ({ transportationID }: { transportationID: number }) => {
+const ViewRepair = ({
+  transportationID,
+  isDeleted,
+}: {
+  transportationID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -106,7 +112,7 @@ const ViewRepair = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasTransportationRepairAdd ? (
+        {self.assignedPermission.hasTransportationRepairAdd && !isDeleted ? (
           <AddTransportationRepair transportationID={transportationID} />
         ) : null}
       </div>
@@ -119,7 +125,13 @@ const ViewRepair = ({ transportationID }: { transportationID: number }) => {
         {data?.getAllRepairOfTransportation.edges.map(
           (rec: { node: Repair }) => {
             const repair = rec.node;
-            return <TransportationRepairCard key={repair.id} repair={repair} />;
+            return (
+              <TransportationRepairCard
+                key={repair.id}
+                repair={repair}
+                isDeleted={isDeleted}
+              />
+            );
           }
         )}
       </div>

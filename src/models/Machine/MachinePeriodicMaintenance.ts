@@ -6,7 +6,6 @@ export default interface MachinePeriodicMaintenance {
   id: number;
   machineId: number;
   title: string;
-  description: string;
   measurement?: string;
   value?: number;
   status: PeriodicMaintenanceStatus;
@@ -14,5 +13,5 @@ export default interface MachinePeriodicMaintenance {
   completedAt?: Date;
   createdAt?: Date;
   startDate?: Date;
-  MachinePeriodicMaintenanceTask?: MachinePMTask[];
+  machinePeriodicMaintenanceTask?: MachinePMTask[];
 }

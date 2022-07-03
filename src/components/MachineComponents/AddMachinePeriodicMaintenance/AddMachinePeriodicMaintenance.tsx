@@ -72,14 +72,10 @@ const AddMachinePeriodicMaintenance = ({
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, measurement, value, startDate } = values;
+    const { title, measurement, value, startDate } = values;
 
     if (!title) {
       message.error("Please enter the title.");
-      return;
-    }
-    if (!description) {
-      message.error("Please enter the description.");
       return;
     }
     if (!measurement) {
@@ -98,7 +94,6 @@ const AddMachinePeriodicMaintenance = ({
       variables: {
         machineId: machineID,
         title,
-        description,
         measurement,
         value,
         startDate,
@@ -169,19 +164,6 @@ const AddMachinePeriodicMaintenance = ({
             ]}
           >
             <Input placeholder="Title" />
-          </Form.Item>
-          <Form.Item
-            label="Description"
-            name="description"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the description.",
-              },
-            ]}
-          >
-            <Input placeholder="Description" />
           </Form.Item>
           <Form.Item label="Measurement" name="measurement">
             <Radio.Group buttonStyle="solid" optionType="button">

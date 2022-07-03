@@ -24,6 +24,8 @@ export default interface Transportation {
   interServiceMileage?: number;
   measurement: string;
   transportType: string;
+  isDeleted?: boolean;
+  deletedAt?: Date;
   status: TransportationStatus;
   statusChangedAt: Date;
   assignees: User[];

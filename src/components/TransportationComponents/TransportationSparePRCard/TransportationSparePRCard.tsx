@@ -11,42 +11,62 @@ import TransportationSparePRStatus from "../TransportationSparePRStatus/Transpor
 
 import classes from "./TransportationSparePRCard.module.css";
 
-const TransportationSparePRCard = ({ sparePR }: { sparePR: SparePR }) => {
+const TransportationSparePRCard = ({
+  sparePR,
+  isDeleted,
+}: {
+  sparePR: SparePR;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
-      <div className={classes["wrapper"]}>
-        <div className={classes["first-block"]}>
+      <div className={classes["first-block"]}>
+        <div>
           <div>{sparePR?.id}</div>
           <div className={classes["time-wrapper"]}>
-            <Tooltip title="Requested Date">
+            <Tooltip title="Created At">
               <FaRegClock />
             </Tooltip>
             <div className={classes["time"]}>
-              {moment(sparePR?.requestedDate).format(
+              {moment(sparePR?.createdAt).format(
                 DATETIME_FORMATS.DAY_MONTH_YEAR
               )}
             </div>
           </div>
-          <div>{sparePR?.title}</div>
-          <div>{sparePR?.description}</div>
+        </div>
+        <div className={classes["col-wrapper"]}>
           {sparePR?.completedBy?.fullName && (
-            <div className={classes["completedBy"]}>
-              Completed by {sparePR?.completedBy?.fullName}
+            <div className={classes["col"]}>
+              <div className={classes["col-title"]}>Completed by:</div>
+              <div className={classes["completedBy"]}>
+                {sparePR?.completedBy?.fullName}
+              </div>
             </div>
           )}
+
+          <div className={classes["col"]}>
+            <div className={classes["col-title"]}>Title:</div>
+            <div>{sparePR?.title}</div>
+          </div>
+          <div className={classes["col"]}>
+            <div className={classes["col-title"]}>Description:</div>
+            <div>{sparePR?.description}</div>
+          </div>
         </div>
-        <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasTransportationSparePREdit ? (
-            <EditTransportationSparePR sparePR={sparePR} />
-          ) : null}
-          {self.assignedPermission.hasTransportationSparePRDelete ? (
-            <DeleteTransportationSparePR id={sparePR?.id} />
-          ) : null}
-        </div>
+      </div>
+      <div className={classes["second-block"]}>
         <div className={classes["status"]}>
           {self.assignedPermission.hasTransportationSparePREdit ? (
-            <TransportationSparePRStatus sparePR={sparePR} />
+            <TransportationSparePRStatus sparePR={sparePR} isDeleted={isDeleted} />
+          ) : null}
+        </div>
+        <div className={classes["icon-wrapper"]}>
+          {self.assignedPermission.hasTransportationSparePREdit && !isDeleted ? (
+            <EditTransportationSparePR sparePR={sparePR} />
+          ) : null}
+          {self.assignedPermission.hasTransportationSparePRDelete && !isDeleted ? (
+            <DeleteTransportationSparePR id={sparePR?.id} />
           ) : null}
         </div>
       </div>

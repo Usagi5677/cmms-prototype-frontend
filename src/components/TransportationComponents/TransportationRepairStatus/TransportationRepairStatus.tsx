@@ -6,26 +6,31 @@ import { RepairStatus } from "../../../models/Enums";
 import Repair from "../../../models/Transportation/TransportationRepair";
 import RepairStatusTag from "../../common/RepairStatusTag";
 
-const TransportationRepairStatus = ({ repair }: { repair: Repair }) => {
-  const [setTransportationRepairStatus, { loading: settingStatus }] = useMutation(
-    SET_TRANSPORTATION_REPAIR_STATUS,
-    {
+const TransportationRepairStatus = ({
+  repair,
+  isDeleted,
+}: {
+  repair: Repair;
+  isDeleted: boolean | undefined;
+}) => {
+  const [setTransportationRepairStatus, { loading: settingStatus }] =
+    useMutation(SET_TRANSPORTATION_REPAIR_STATUS, {
       onCompleted: () => {
         message.success("Successfully updated repair status.");
       },
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllRepairOfTransportation", "getAllHistoryOfTransportation"],
-    }
-  );
+      refetchQueries: [
+        "getAllRepairOfTransportation",
+        "getAllHistoryOfTransportation",
+      ],
+    });
 
   return (
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         alignItems: "center",
         width: 150,
@@ -35,7 +40,6 @@ const TransportationRepairStatus = ({ repair }: { repair: Repair }) => {
         showArrow
         loading={settingStatus}
         style={{ width: "100%" }}
-        bordered={false}
         placeholder="Select status"
         value={repair?.status}
         onChange={(status) =>
@@ -43,6 +47,7 @@ const TransportationRepairStatus = ({ repair }: { repair: Repair }) => {
             variables: { id: repair?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(Object.keys(RepairStatus) as Array<keyof typeof RepairStatus>).map(
           (status: any) => (

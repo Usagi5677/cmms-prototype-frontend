@@ -55,14 +55,10 @@ const EditMachinePeriodicMaintenance = ({
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, measurement, value, startDate } = values;
+    const { title, measurement, value, startDate } = values;
 
     if (!title) {
       message.error("Please enter the title.");
-      return;
-    }
-    if (!description) {
-      message.error("Please enter the description.");
       return;
     }
     if (!measurement) {
@@ -81,7 +77,6 @@ const EditMachinePeriodicMaintenance = ({
       variables: {
         id: periodicMaintenance.id,
         title,
-        description,
         measurement,
         value,
         startDate,
@@ -125,20 +120,6 @@ const EditMachinePeriodicMaintenance = ({
               ]}
             >
               <Input placeholder="Title" />
-            </Form.Item>
-            <Form.Item
-              label="Description"
-              name="description"
-              required={false}
-              initialValue={periodicMaintenance?.description}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the description.",
-                },
-              ]}
-            >
-              <Input placeholder="Description" />
             </Form.Item>
 
             <Form.Item

@@ -22,15 +22,16 @@ const MachinePeriodicMaintenanceStatus = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error occured.");
       },
-      refetchQueries: ["getAllPeriodicMaintenanceOfMachine", "getAllHistoryOfMachine"],
+      refetchQueries: [
+        "getAllPeriodicMaintenanceOfMachine",
+        "getAllHistoryOfMachine",
+      ],
     });
 
   return (
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         alignItems: "center",
         width: 150,
@@ -40,7 +41,6 @@ const MachinePeriodicMaintenanceStatus = ({
         showArrow
         loading={settingStatus}
         style={{ width: "100%" }}
-        bordered={false}
         placeholder="Select status"
         value={periodicMaintenance?.status}
         onChange={(status) =>

@@ -24,29 +24,32 @@ import classes from "./EditTransportationUsage.module.css";
 
 const EditTransportationUsage = ({
   transportation,
+  isDeleted,
 }: {
   transportation: Transportation;
+  isDeleted: boolean | undefined;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editTransportationUsage, { loading: loadingTransportation }] = useMutation(
-    EDIT_TRANSPORTATION_USAGE,
-    {
+  const [editTransportationUsage, { loading: loadingTransportation }] =
+    useMutation(EDIT_TRANSPORTATION_USAGE, {
       onCompleted: () => {
         message.success("Successfully updated transportation usage.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while updating transportation usage.");
+        errorMessage(
+          error,
+          "Unexpected error while updating transportation usage."
+        );
       },
       refetchQueries: [
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
         "singleTransportationUsageHistory",
       ],
-    }
-  );
+    });
 
   const handleCancel = () => {
     form.resetFields();
@@ -77,7 +80,13 @@ const EditTransportationUsage = ({
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit Usage">
-        <FaRegEdit onClick={() => setVisible(true)} />
+        <FaRegEdit
+          onClick={() => setVisible(true)}
+          style={{
+            pointerEvents: isDeleted ? "none" : "auto",
+            color: isDeleted ? "grey" : "inherit",
+          }}
+        />
       </Tooltip>
       <Modal
         visible={visible}

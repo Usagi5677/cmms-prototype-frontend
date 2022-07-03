@@ -30,8 +30,6 @@ const MachineRepairStatus = ({
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         alignItems: "center",
         width: 150,
@@ -41,7 +39,6 @@ const MachineRepairStatus = ({
         showArrow
         loading={settingStatus}
         style={{ width: "100%" }}
-        bordered={false}
         placeholder="Select status"
         value={repair?.status}
         onChange={(status) =>

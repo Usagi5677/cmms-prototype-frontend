@@ -175,6 +175,24 @@
 .dash {
   padding: 0 5px;
 }
+
+.deleted {
+  color: red;
+  font-weight: 700;
+}
+
+@media only screen and (min-width: 600px) {
+  .location-wrapper {
+    font-size: 22px;
+  }
+
+  .title-wrapper {
+    font-size: 16px;
+  }
+  .deleted {
+    font-size: 22px;
+  }
+}
 @media only screen and (min-width: 800px) {
   .container {
     flex-direction: column;
@@ -198,6 +216,5 @@
   }
   .info-container {
     height: fit-content;
-  
   }
 }

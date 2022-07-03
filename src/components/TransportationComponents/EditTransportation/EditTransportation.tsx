@@ -10,6 +10,7 @@ import {
   Modal,
   Radio,
   Row,
+  Select,
   Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -18,14 +19,17 @@ import moment from "moment";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_TRANSPORTATION } from "../../../api/mutations";
+import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import Transportation from "../../../models/Transportation";
 import classes from "./EditTransportation.module.css";
 
 const EditTransportation = ({
   transportation,
+  isDeleted,
 }: {
   transportation: Transportation;
+  isDeleted: boolean | undefined;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -126,10 +130,24 @@ const EditTransportation = ({
     });
   };
 
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit onClick={() => setVisible(true)} />
+        <FaEdit
+          onClick={() => setVisible(true)}
+          style={{
+            pointerEvents: isDeleted ? "none" : "auto",
+            color: isDeleted ? "grey" : "inherit",
+          }}
+        />
       </Tooltip>
       <Modal
         visible={visible}
@@ -249,7 +267,13 @@ const EditTransportation = ({
                   },
                 ]}
               >
-                <Input placeholder="Location" />
+                <Select
+                  showArrow
+                  style={{ width: "100%" }}
+                  showSearch
+                  placeholder={"Location"}
+                  options={options}
+                />
               </Form.Item>
             </div>
           </div>

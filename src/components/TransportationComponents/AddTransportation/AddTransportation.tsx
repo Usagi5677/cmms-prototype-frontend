@@ -10,11 +10,13 @@ import {
   Modal,
   Radio,
   Row,
+  Select,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import { CREATE_TRANSPORTATION } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
+import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./AddTransportation.module.css";
 
@@ -115,6 +117,14 @@ const AddTransportation = () => {
       },
     });
   };
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+  
   return (
     <>
       <Button
@@ -225,7 +235,7 @@ const AddTransportation = () => {
               </Form.Item>
             </div>
             <div className={classes["col"]}>
-              <Form.Item
+            <Form.Item
                 label="Location"
                 name="location"
                 required={false}
@@ -236,7 +246,13 @@ const AddTransportation = () => {
                   },
                 ]}
               >
-                <Input placeholder="Location" />
+                <Select
+                  showArrow
+                  style={{ width: "100%" }}
+                  showSearch
+                  options={options}
+                  placeholder={"Location"}
+                />
               </Form.Item>
             </div>
           </div>

@@ -9,8 +9,10 @@ import PeriodicMaintenanceStatusTag from "../../common/PeriodicMaintenanceStatus
 
 const TransportationPeriodicMaintenanceStatus = ({
   periodicMaintenance,
+  isDeleted
 }: {
   periodicMaintenance: PeriodicMaintenance;
+  isDeleted: boolean | undefined
 }) => {
   const [setTransportationPeriodicMaintenanceStatus, { loading: settingStatus }] =
     useMutation(SET_TRANSPORTATION_PERIODIC_MAINTENANCE_STATUS, {
@@ -27,8 +29,6 @@ const TransportationPeriodicMaintenanceStatus = ({
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         alignItems: "center",
         width: 150,
@@ -38,7 +38,6 @@ const TransportationPeriodicMaintenanceStatus = ({
         showArrow
         loading={settingStatus}
         style={{ width: "100%" }}
-        bordered={false}
         placeholder="Select status"
         value={periodicMaintenance?.status}
         onChange={(status) =>
@@ -46,6 +45,7 @@ const TransportationPeriodicMaintenanceStatus = ({
             variables: { id: periodicMaintenance?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(
           Object.keys(PeriodicMaintenanceStatus) as Array<

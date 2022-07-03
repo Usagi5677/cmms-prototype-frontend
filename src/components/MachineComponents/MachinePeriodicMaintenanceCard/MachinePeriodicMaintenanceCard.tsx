@@ -21,7 +21,7 @@ const MachinePeriodicMaintenanceCard = ({
 }) => {
   const { user: self } = useContext(UserContext);
 
-  const taskData = periodicMaintenance?.MachinePeriodicMaintenanceTask!;
+  const taskData = periodicMaintenance?.machinePeriodicMaintenanceTask!;
 
   const progressPercentage = Math.round(
     (taskData?.filter((task) => task.completedAt !== null).length /
@@ -56,7 +56,6 @@ const MachinePeriodicMaintenanceCard = ({
             </div>
 
             <div>Title: {periodicMaintenance?.title}</div>
-            {/* <div>Description: {periodicMaintenance?.description}</div> */}
             {periodicMaintenance?.completedBy?.fullName && (
               <div className={classes["completedBy"]}>
                 Completed by {periodicMaintenance?.completedBy?.fullName}
@@ -95,7 +94,7 @@ const MachinePeriodicMaintenanceCard = ({
         
       </div>
       <div className={classes["task-progress"]}>Task Progress</div>
-      {periodicMaintenance.MachinePeriodicMaintenanceTask!.length > 0 && (
+      {periodicMaintenance.machinePeriodicMaintenanceTask!.length > 0 && (
         <Progress
           percent={progressPercentage}
           strokeWidth={5}

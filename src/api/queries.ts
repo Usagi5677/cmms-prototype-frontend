@@ -116,7 +116,6 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           id
           machineId
           title
-          description
           measurement
           value
           startDate
@@ -126,7 +125,7 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           completedBy {
             ...UserFieldsAPS
           }
-          MachinePeriodicMaintenanceTask {
+          machinePeriodicMaintenanceTask {
             id
             periodicMaintenanceId
             parentTaskId
@@ -530,14 +529,44 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
           id
           transportationId
           title
-          description
-          period
-          notificationReminder
+          measurement
+          value
+          startDate
           status
           completedAt
           createdAt
           completedBy {
             ...UserFieldsAPS
+          }
+          transportationPeriodicMaintenanceTask {
+            id
+            periodicMaintenanceId
+            parentTaskId
+            name
+            completedBy {
+              ...UserFieldsAPS
+            }
+            completedAt
+            subTasks {
+              id
+              periodicMaintenanceId
+              parentTaskId
+              name
+              completedBy {
+                ...UserFieldsAPS
+              }
+              completedAt
+              subTasks {
+                id
+                periodicMaintenanceId
+                parentTaskId
+                name
+                completedBy {
+                  ...UserFieldsAPS
+                }
+                completedAt
+              }
+            }
           }
         }
       }

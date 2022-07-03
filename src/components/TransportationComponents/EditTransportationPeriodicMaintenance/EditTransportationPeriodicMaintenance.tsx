@@ -8,6 +8,7 @@ import {
   InputNumber,
   message,
   Modal,
+  Radio,
   Row,
   Tooltip,
 } from "antd";
@@ -19,6 +20,7 @@ import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
 import PeriodicMaintenance from "../../../models/Transportation/TransportationPeriodicMaintenance";
 import classes from "./EditTransportationPeriodicMaintenance.module.css";
+import moment from "moment";
 
 const EditTransportationPeriodicMaintenance = ({
   periodicMaintenance,
@@ -56,32 +58,31 @@ const EditTransportationPeriodicMaintenance = ({
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, period, notificationReminder } = values;
+    const { title, measurement, value, startDate } = values;
 
     if (!title) {
       message.error("Please enter the title.");
       return;
     }
-    if (!description) {
-      message.error("Please enter the description.");
+    if (!measurement) {
+      message.error("Please select the measurement.");
       return;
     }
-    if (!period) {
+    if (!value) {
       message.error("Please enter the period.");
       return;
     }
-    if (!notificationReminder) {
-      message.error("Please enter the notification reminder.");
+    if (!startDate) {
+      message.error("Please enter select the fixed date.");
       return;
     }
-
     editTransportationPeriodicMaintenance({
       variables: {
         id: periodicMaintenance.id,
         title,
-        description,
-        period,
-        notificationReminder,
+        measurement,
+        value,
+        startDate,
       },
     });
   };
@@ -122,50 +123,45 @@ const EditTransportationPeriodicMaintenance = ({
             >
               <Input placeholder="Title" />
             </Form.Item>
-            <Form.Item
-              label="Description"
-              name="description"
-              required={false}
-              initialValue={periodicMaintenance?.description}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the description.",
-                },
-              ]}
-            >
-              <Input placeholder="Description" />
-            </Form.Item>
 
             <Form.Item
-              label="Period"
-              name="period"
-              required={false}
-              initialValue={periodicMaintenance?.period}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the period.",
-                },
-              ]}
+              label="Measurement"
+              name="measurement"
+              initialValue={periodicMaintenance?.measurement}
             >
-              <InputNumber placeholder="Period" style={{ width: "100%" }} />
+              <Radio.Group buttonStyle="solid" optionType="button">
+                <Radio.Button value="km">Km</Radio.Button>
+                <Radio.Button value="hour">Hr</Radio.Button>
+                <Radio.Button value="day">Day</Radio.Button>
+              </Radio.Group>
             </Form.Item>
             <Form.Item
-              label="Notification Reminder"
-              name="notificationReminder"
+              label="Value"
+              name="value"
               required={false}
-              initialValue={periodicMaintenance?.notificationReminder}
+              initialValue={periodicMaintenance?.value}
               rules={[
                 {
                   required: true,
-                  message: "Please enter the notification reminder.",
+                  message: "Please enter the value.",
                 },
               ]}
             >
-              <InputNumber
-                placeholder="Notification Reminder"
-                style={{ width: "100%" }}
+              <InputNumber placeholder="Value" style={{ width: "100%" }} />
+            </Form.Item>
+            <Form.Item
+              label="Start Date"
+              name="startDate"
+              required={false}
+              initialValue={moment(periodicMaintenance?.startDate)}
+            >
+              <DatePicker
+                placeholder="Select start date"
+                style={{
+                  width: 200,
+                  marginRight: "1rem",
+                }}
+                allowClear={false}
               />
             </Form.Item>
             <Row justify="end" gutter={16}>

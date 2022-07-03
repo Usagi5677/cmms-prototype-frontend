@@ -112,7 +112,7 @@ const ViewSparePR = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachineSparePRAdd && !isDeleted ?  (
+        {self.assignedPermission.hasMachineSparePRAdd && !isDeleted ? (
           <AddMachineSparePR machineID={machineID} />
         ) : null}
       </div>
@@ -124,7 +124,13 @@ const ViewSparePR = ({
       <div className={classes["content"]}>
         {data?.getAllSparePROfMachine.edges.map((rec: { node: SparePR }) => {
           const sparePR = rec.node;
-          return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} isDeleted={isDeleted} />;
+          return (
+            <MachineSparePRCard
+              key={sparePR.id}
+              sparePR={sparePR}
+              isDeleted={isDeleted}
+            />
+          );
         })}
       </div>
 

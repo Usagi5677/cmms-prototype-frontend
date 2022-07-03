@@ -13,8 +13,10 @@ import classes from "./TransportationBreakdownCard.module.css";
 
 const TransportationBreakdownCard = ({
   breakdown,
+  isDeleted,
 }: {
   breakdown: Breakdown;
+  isDeleted: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   return (
@@ -85,14 +87,17 @@ const TransportationBreakdownCard = ({
 
         <div className={classes["status"]}>
           {self.assignedPermission.hasMachineBreakdownEdit ? (
-            <TransportationBreakdownStatus breakdown={breakdown} />
+            <TransportationBreakdownStatus
+              breakdown={breakdown}
+              isDeleted={isDeleted}
+            />
           ) : null}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasMachineBreakdownEdit ? (
+          {self.assignedPermission.hasMachineBreakdownEdit && !isDeleted ? (
             <EditTransportationBreakdown breakdown={breakdown} />
           ) : null}
-          {self.assignedPermission.hasMachineBreakdownDelete ? (
+          {self.assignedPermission.hasMachineBreakdownDelete && !isDeleted ? (
             <DeleteTransportationBreakdown id={breakdown?.id} />
           ) : null}
         </div>

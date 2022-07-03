@@ -8,12 +8,13 @@ import BreakdownStatusTag from "../../common/BreakdownStatusTag";
 
 const TransportationBreakdownStatus = ({
   breakdown,
+  isDeleted,
 }: {
   breakdown: Breakdown;
+  isDeleted: boolean | undefined;
 }) => {
-  const [setTransportationBreakdownStatus, { loading: settingStatus }] = useMutation(
-    SET_TRANSPORTATION_BREAKDOWN_STATUS,
-    {
+  const [setTransportationBreakdownStatus, { loading: settingStatus }] =
+    useMutation(SET_TRANSPORTATION_BREAKDOWN_STATUS, {
       onCompleted: () => {
         message.success("Successfully updated breakdown status.");
       },
@@ -25,15 +26,12 @@ const TransportationBreakdownStatus = ({
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
       ],
-    }
-  );
+    });
 
   return (
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         alignItems: "center",
         width: 150,
@@ -43,7 +41,6 @@ const TransportationBreakdownStatus = ({
         showArrow
         loading={settingStatus}
         style={{ width: "100%" }}
-        bordered={false}
         placeholder="Select status"
         value={breakdown?.status}
         onChange={(status) =>
@@ -51,6 +48,7 @@ const TransportationBreakdownStatus = ({
             variables: { id: breakdown?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(
           Object.keys(BreakdownStatus) as Array<keyof typeof BreakdownStatus>

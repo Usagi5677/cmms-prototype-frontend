@@ -1,24 +1,25 @@
 import { Badge, Checkbox, Collapse, Spin } from "antd";
 import React, { useContext } from "react";
-import MachinePeriodicMaintenance from "../models/Machine/MachinePeriodicMaintenance";
-import MachinePMTask from "../models/Machine/MachinePMTask";
 import moment from "moment";
-import { DATETIME_FORMATS } from "../helpers/constants";
-import UserContext from "../contexts/UserContext";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { DELETE_MACHINE_PM_TASK, TOGGLE_MACHINE_PM_TASK } from "../api/mutations";
-import { errorMessage } from "../helpers/gql";
-import { AddPeriodicMaintenanceTask } from "./MachineComponents/AddPeriodicMaintenanceTask";
+import TransportationPeriodicMaintenance from "../../models/Transportation/TransportationPeriodicMaintenance";
+import TransportationPMTask from "../../models/Machine/TransportationPMTask";
+import { DELETE_TRANSPORTATION_PM_TASK, TOGGLE_TRANSPORTATION_PM_TASK } from "../../api/mutations";
+import { errorMessage } from "../../helpers/gql";
+import UserContext from "../../contexts/UserContext";
+import { DATETIME_FORMATS } from "../../helpers/constants";
+import { AddTransportationPeriodicMaintenanceTask } from "./AddTransportationPeriodicMaintenanceTask";
+
 
 export interface TaskListProps {
-  periodicMaintenance: MachinePeriodicMaintenance;
-  tasks: MachinePMTask[];
+  periodicMaintenance: TransportationPeriodicMaintenance;
+  tasks: TransportationPMTask[];
   level: number;
   isDeleted: boolean | undefined;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({
+export const TransportationPMTaskList: React.FC<TaskListProps> = ({
   periodicMaintenance,
   tasks,
   level,
@@ -26,30 +27,28 @@ export const TaskList: React.FC<TaskListProps> = ({
 }) => {
   const { user: self } = useContext(UserContext);
 
-  const [toggleTask, { loading: toggling }] = useMutation(TOGGLE_MACHINE_PM_TASK, {
+  const [toggleTask, { loading: toggling }] = useMutation(TOGGLE_TRANSPORTATION_PM_TASK, {
     onError: (error) => {
       errorMessage(error, "Unexpected error while updating checklist item.");
     },
     refetchQueries: [
-      "getAllPeriodicMaintenanceOfMachine",
-      "getAllHistoryOfMachine",
+      "getAllPeriodicMaintenanceOfTransportation",
+      "getAllHistoryOfTransportation",
     ],
   });
 
   const [deleteMachineChecklistItem, { loading: deleting }] = useMutation(
-    DELETE_MACHINE_PM_TASK,
+    DELETE_TRANSPORTATION_PM_TASK,
     {
       onError: (error) => {
         errorMessage(error, "Unexpected error while deleting checklist item.");
       },
       refetchQueries: [
-        "getAllPeriodicMaintenanceOfMachine",
-        "getAllHistoryOfMachine",
+        "getAllPeriodicMaintenanceOfTransportation",
+        "getAllHistoryOfTransportation",
       ],
     }
   );
-
-  console.log(tasks);
 
   return (
     <div>
@@ -145,7 +144,7 @@ export const TaskList: React.FC<TaskListProps> = ({
               }
               key={task.id}
             >
-              <TaskList
+              <TransportationPMTaskList
                 periodicMaintenance={periodicMaintenance}
                 tasks={task.subTasks}
                 level={level + 1}
@@ -153,7 +152,7 @@ export const TaskList: React.FC<TaskListProps> = ({
               />
               {level < 2 && !isDeleted && (
                 <div>
-                  <AddPeriodicMaintenanceTask
+                  <AddTransportationPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}
                     parentTaskId={task.id}
                     text="Add new sub task"

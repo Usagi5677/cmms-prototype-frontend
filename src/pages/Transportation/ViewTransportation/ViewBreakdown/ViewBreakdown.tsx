@@ -11,7 +11,13 @@ import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
 import UserContext from "../../../../contexts/UserContext";
 
-const ViewBreakdown = ({ transportationID }: { transportationID: number }) => {
+const ViewBreakdown = ({
+  transportationID,
+  isDeleted,
+}: {
+  transportationID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -106,7 +112,7 @@ const ViewBreakdown = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasTransportationBreakdownAdd ? (
+        {self.assignedPermission.hasTransportationBreakdownAdd && !isDeleted ? (
           <AddTransportationBreakdown transportationID={transportationID} />
         ) : null}
       </div>
@@ -123,6 +129,7 @@ const ViewBreakdown = ({ transportationID }: { transportationID: number }) => {
               <TransportationBreakdownCard
                 key={breakdown.id}
                 breakdown={breakdown}
+                isDeleted={isDeleted}
               />
             );
           }

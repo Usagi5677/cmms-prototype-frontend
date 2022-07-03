@@ -17,8 +17,10 @@ import { DATETIME_FORMATS } from "../../../helpers/constants";
 
 const ParsedTransportationAttachment = ({
   attachmentData,
+  isDeleted,
 }: {
   attachmentData: TransportationAttachment;
+  isDeleted: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;
@@ -84,14 +86,14 @@ const ParsedTransportationAttachment = ({
       <div className={classes["option-wrapper"]}>
         <div>{attachmentData?.id}</div>
         <div className={classes["options"]}>
-          {fileLoading && (
+          {fileLoading &&  (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
           )}
-          {file && self.assignedPermission.hasTransportationAttachmentEdit && (
+          {file && self.assignedPermission.hasTransportationAttachmentEdit && !isDeleted && (
             <EditTransportationAttachment attachment={attachmentData} />
           )}
           {file &&
-            self.assignedPermission.hasTransportationAttachmentDelete && (
+            self.assignedPermission.hasTransportationAttachmentDelete && !isDeleted && (
               <DeleteTransportationAttachment id={attachmentData?.id} />
             )}
           {file && (

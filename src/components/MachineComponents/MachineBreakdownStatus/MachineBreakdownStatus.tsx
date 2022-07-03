@@ -34,8 +34,6 @@ const MachineBreakdownStatus = ({
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         alignItems: "center",
         width: 150,
@@ -45,7 +43,6 @@ const MachineBreakdownStatus = ({
         showArrow
         loading={settingStatus}
         style={{ width: "100%" }}
-        bordered={false}
         placeholder="Select status"
         value={breakdown?.status}
         onChange={(status) =>

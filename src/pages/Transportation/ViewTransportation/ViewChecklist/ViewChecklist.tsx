@@ -18,8 +18,10 @@ import classes from "./ViewChecklist.module.css";
 
 const ViewChecklist = ({
   transportationData,
+  isDeleted
 }: {
   transportationData: Transportation;
+  isDeleted: boolean | undefined
 }) => {
   const { user: self } = useContext(UserContext);
   const [checkboxState, setCheckboxState] = useState<any>([]);
@@ -117,6 +119,7 @@ const ViewChecklist = ({
                 <InputNumber
                   placeholder="Current running hrs"
                   style={{ width: "100%" }}
+                  disabled={isDeleted}
                 />
               </Form.Item>
             </div>
@@ -134,6 +137,7 @@ const ViewChecklist = ({
                 <InputNumber
                   placeholder="Working Hour"
                   style={{ width: "100%" }}
+                  disabled={isDeleted}
                 />
               </Form.Item>
             </div>
@@ -143,13 +147,14 @@ const ViewChecklist = ({
                 htmlType="submit"
                 loading={toggling}
                 className={classes["custom-btn-primary"]}
+                disabled={isDeleted}
               >
                 Done
               </Button>
             </Form.Item>
           </div>
         </Form>
-        {self.assignedPermission.hasMachineChecklistAdd ? (
+        {self.assignedPermission.hasMachineChecklistAdd && !isDeleted ? (
           <AddTransportationChecklist
             transportationID={transportationData?.id}
           />
@@ -166,6 +171,7 @@ const ViewChecklist = ({
                     defaultChecked={item.completedAt !== null}
                     onChange={(e) => onClickCheckbox(e, item.id)}
                     className={classes["checkbox"]}
+                    disabled={isDeleted}
                   >
                     {item.description}{" "}
                     {item.completedAt && (
@@ -206,7 +212,7 @@ const ViewChecklist = ({
                   {!deleting && (
                     <div>
                       {self.assignedPermission
-                        .hasTransportationChecklistDelete ? (
+                        .hasTransportationChecklistDelete && !isDeleted ? (
                         <CloseCircleOutlined
                           className={classes["delete"]}
                           onClick={() => {
@@ -235,6 +241,7 @@ const ViewChecklist = ({
                     defaultChecked={item.completedAt !== null}
                     onChange={(e) => onClickCheckbox(e, item.id)}
                     className={classes["checkbox"]}
+                    disabled={isDeleted}
                   >
                     {item.description}{" "}
                     {item.completedAt && (
@@ -275,7 +282,7 @@ const ViewChecklist = ({
                   {!deleting && (
                     <div>
                       {self.assignedPermission
-                        .hasTransportationChecklistDelete ? (
+                        .hasTransportationChecklistDelete && !isDeleted ? (
                         <CloseCircleOutlined
                           className={classes["delete"]}
                           onClick={() => {

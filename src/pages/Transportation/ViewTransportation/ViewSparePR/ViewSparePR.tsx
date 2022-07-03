@@ -12,7 +12,13 @@ import SparePR from "../../../../models/Transportation/TransportationSparePR";
 
 import classes from "./ViewSparePR.module.css";
 
-const ViewSparePR = ({ transportationID }: { transportationID: number }) => {
+const ViewSparePR = ({
+  transportationID,
+  isDeleted,
+}: {
+  transportationID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -107,7 +113,7 @@ const ViewSparePR = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasTransportationSparePRAdd ? (
+        {self.assignedPermission.hasTransportationSparePRAdd && !isDeleted ? (
           <AddTransportationSparePR transportationID={transportationID} />
         ) : null}
       </div>
@@ -121,7 +127,11 @@ const ViewSparePR = ({ transportationID }: { transportationID: number }) => {
           (rec: { node: SparePR }) => {
             const sparePR = rec.node;
             return (
-              <TransportationSparePRCard key={sparePR.id} sparePR={sparePR} />
+              <TransportationSparePRCard
+                key={sparePR.id}
+                sparePR={sparePR}
+                isDeleted={isDeleted}
+              />
             );
           }
         )}

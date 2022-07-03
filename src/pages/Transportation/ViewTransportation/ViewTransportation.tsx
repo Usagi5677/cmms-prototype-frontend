@@ -3,7 +3,10 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { GET_SINGLE_TRANSPORTATION, GET_TRANSPORTATION_LATEST_ATTACHMENT } from "../../../api/queries";
+import {
+  GET_SINGLE_TRANSPORTATION,
+  GET_TRANSPORTATION_LATEST_ATTACHMENT,
+} from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewTransportation.module.css";
 import moment from "moment";
@@ -153,23 +156,35 @@ const ViewTransportation = () => {
     <>
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
+          <div className={classes["info-btn-wrapper"]}>
+            {self.assignedPermission.hasEditTransportationUsage ? (
+              <EditTransportationUsage
+                transportation={transportationData}
+                isDeleted={transportationData?.isDeleted}
+              />
+            ) : null}
+            {self.assignedPermission.hasTransportationEdit ? (
+              <EditTransportation
+                transportation={transportationData}
+                isDeleted={transportationData?.isDeleted}
+              />
+            ) : null}
+            {self.assignedPermission.hasTransportationDelete ? (
+              <DeleteTransportation
+                transportationID={transportationData?.id}
+                isDeleted={transportationData?.isDeleted}
+              />
+            ) : null}
+          </div>
+          {transportationData?.isDeleted ? (
+            <div className={classes["deleted"]}>DELETED</div>
+          ) : null}
           <div className={classes["info-wrapper"]}>
             <div className={classes["location-wrapper"]}>
               <FaMapMarkerAlt />
-              <span className={classes["title"]}>{transportationData?.location}</span>
-            </div>
-            <div className={classes["info-btn-wrapper"]}>
-              {self.assignedPermission.hasEditTransportationUsage ? (
-                <EditTransportationUsage transportation={transportationData} />
-              ) : null}
-              {self.assignedPermission.hasTransportationEdit ? (
-                <EditTransportation transportation={transportationData} />
-              ) : null}
-              {self.assignedPermission.hasTransportationDelete ? (
-                <DeleteTransportation
-                  transportationID={transportationData?.id}
-                />
-              ) : null}
+              <span className={classes["title"]}>
+                {transportationData?.location}
+              </span>
             </div>
           </div>
           <div className={classes["title-wrapper"]}>
@@ -207,7 +222,8 @@ const ViewTransportation = () => {
               <div className={classes["info-title-wrapper"]}>
                 <div>Assign</div>
                 <div className={classes["info-content"]}>
-                  {self.assignedPermission.hasTransportationAssignmentToUser ? (
+                  {self.assignedPermission.hasTransportationAssignmentToUser &&
+                  !transportationData?.isDeleted ? (
                     <TransportationAssignment
                       transportationID={transportationData?.id}
                     />
@@ -227,18 +243,22 @@ const ViewTransportation = () => {
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Last service mileage ({transportationData?.measurement})</div>
+                <div>
+                  Last service mileage ({transportationData?.measurement})
+                </div>
                 <div className={classes["info-content"]}>
                   {transportationData?.lastServiceMileage}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Inter service mileage ({transportationData?.measurement})</div>
+                <div>
+                  Inter service mileage ({transportationData?.measurement})
+                </div>
                 <div className={classes["info-content"]}>
                   {transportationData?.interServiceMileage}
                 </div>
               </div>
-              
+
               <div className={classes["info-title-wrapper"]}>
                 <div>Measurement</div>
                 <div className={classes["info-content"]}>
@@ -259,6 +279,7 @@ const ViewTransportation = () => {
                   <TransportationStatuses
                     transportationStatus={transportationData?.status}
                     transportationID={transportationData?.id}
+                    isDeleted={transportationData?.isDeleted}
                   />
                 </div>
               </div>
@@ -294,7 +315,10 @@ const ViewTransportation = () => {
               }}
             >
               <Tabs.TabPane tab="Checklist" key="checklist">
-                <ViewChecklist transportationData={transportationData} />
+                <ViewChecklist
+                  transportationData={transportationData}
+                  isDeleted={transportationData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab="Periodic Maintenance"
@@ -304,22 +328,35 @@ const ViewTransportation = () => {
                   transportationID={transportationData?.id}
                   value={transportationData?.currentMileage}
                   measurement={transportationData?.measurement}
+                  isDeleted={transportationData?.isDeleted}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
-                <ViewSparePR transportationID={transportationData?.id} />
+                <ViewSparePR
+                  transportationID={transportationData?.id}
+                  isDeleted={transportationData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair transportationID={transportationData?.id} />
+                <ViewRepair
+                  transportationID={transportationData?.id}
+                  isDeleted={transportationData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
-                <ViewBreakdown transportationID={transportationData?.id} />
+                <ViewBreakdown
+                  transportationID={transportationData?.id}
+                  isDeleted={transportationData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
                 <ViewHistory transportationID={transportationData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <ViewGallery transportationID={transportationData?.id} />
+                <ViewGallery
+                  transportationID={transportationData?.id}
+                  isDeleted={transportationData?.isDeleted}
+                />
               </Tabs.TabPane>
             </Tabs>
           </div>

@@ -15,10 +15,12 @@ const ViewPeriodicMaintenance = ({
   transportationID,
   value,
   measurement,
+  isDeleted
 }: {
   transportationID: number;
   value?: number;
   measurement?: string;
+  isDeleted: boolean | undefined
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -134,6 +136,7 @@ const ViewPeriodicMaintenance = ({
               <TransportationPeriodicMaintenanceCard
                 key={periodicMaintenance.id}
                 periodicMaintenance={periodicMaintenance}
+                isDeleted={isDeleted}
               />
             );
           }

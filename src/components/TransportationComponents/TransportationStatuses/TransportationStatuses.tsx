@@ -14,9 +14,11 @@ import classes from "./TransportationStatuses.module.css";
 const TransportationStatuses = ({
   transportationID,
   transportationStatus,
+  isDeleted,
 }: {
   transportationID: number;
   transportationStatus: TransportationStatus;
+  isDeleted: boolean | undefined;
 }) => {
   const [setTransportationStatus, { loading: settingStatus }] = useMutation(
     SET_TRANSPORTATION_STATUS,
@@ -30,7 +32,6 @@ const TransportationStatuses = ({
       refetchQueries: [
         "getSingleTransportation",
         "getAllBreakdownOfTransportation",
-        "getAllRepairOfTransportation",
         "getAllHistoryOfTransportation",
         "breakdownVesselCount",
         "breakdownVehicleCount",
@@ -170,6 +171,7 @@ const TransportationStatuses = ({
         placeholder="Select status"
         value={transportationStatus}
         onChange={(status) => onChangeClick(status)}
+        disabled={isDeleted}
       >
         {(
           Object.keys(TransportationStatus) as Array<

@@ -11,7 +11,13 @@ import PaginationArgs from "../../../../models/PaginationArgs";
 import TransportationAttachment from "../../../../models/Transportation/TransportationAttachment";
 import classes from "./ViewGallery.module.css";
 
-const ViewGallery = ({ transportationID }: { transportationID: number }) => {
+const ViewGallery = ({
+  transportationID,
+  isDeleted,
+}: {
+  transportationID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -106,7 +112,7 @@ const ViewGallery = ({ transportationID }: { transportationID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasTransportationAttachmentAdd ? (
+        {self.assignedPermission.hasTransportationAttachmentAdd && !isDeleted ? (
           <AddTransportationAttachment transportationID={transportationID} />
         ) : null}
 
@@ -124,6 +130,7 @@ const ViewGallery = ({ transportationID }: { transportationID: number }) => {
               <ParsedTransportationAttachment
                 key={attachment.id}
                 attachmentData={attachment}
+                isDeleted={isDeleted}
               />
             );
           }
