@@ -7,11 +7,12 @@ import MachinePeriodicMaintenance from "../../models/Machine/MachinePeriodicMain
 export interface AddPeriodicMaintenanceTaskProps {
   periodicMaintenance: MachinePeriodicMaintenance;
   parentTaskId?: number;
+  text?: string;
 }
 
 export const AddPeriodicMaintenanceTask: React.FC<
   AddPeriodicMaintenanceTaskProps
-> = ({ periodicMaintenance, parentTaskId }) => {
+> = ({ periodicMaintenance, parentTaskId, text = "Add new task" }) => {
   const [details, setDetails] = useState("");
 
   const [addPeriodicMaintenanceTask, { loading }] = useMutation(
@@ -49,7 +50,7 @@ export const AddPeriodicMaintenanceTask: React.FC<
     <div>
       <input
         type="text"
-        placeholder={loading ? "Adding..." : "Add new task"}
+        placeholder={loading ? "Adding..." : text}
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         onKeyDown={submit}
