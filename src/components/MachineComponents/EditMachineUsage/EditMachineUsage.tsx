@@ -21,24 +21,33 @@ import { errorMessage } from "../../../helpers/gql";
 import Machine from "../../../models/Machine";
 import classes from "./EditMachineUsage.module.css";
 
-const EditMachineUsage = ({ machine }: { machine: Machine }) => {
+const EditMachineUsage = ({
+  machine,
+  isDeleted,
+}: {
+  machine: Machine;
+  isDeleted: boolean | undefined;
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editMachineUsage, { loading: loadingMachine }] = useMutation(EDIT_MACHINE_USAGE, {
-    onCompleted: () => {
-      message.success("Successfully updated machine usage.");
-      handleCancel();
-    },
-    onError: (error) => {
-      errorMessage(error, "Unexpected error while updating machine usage.");
-    },
-    refetchQueries: [
-      "getSingleMachine",
-      "getAllHistoryOfMachine",
-      "singleMachineUsageHistory",
-    ],
-  });
+  const [editMachineUsage, { loading: loadingMachine }] = useMutation(
+    EDIT_MACHINE_USAGE,
+    {
+      onCompleted: () => {
+        message.success("Successfully updated machine usage.");
+        handleCancel();
+      },
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating machine usage.");
+      },
+      refetchQueries: [
+        "getSingleMachine",
+        "getAllHistoryOfMachine",
+        "singleMachineUsageHistory",
+      ],
+    }
+  );
 
   const handleCancel = () => {
     form.resetFields();
@@ -68,7 +77,13 @@ const EditMachineUsage = ({ machine }: { machine: Machine }) => {
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit Usage">
-        <FaRegEdit onClick={() => setVisible(true)} />
+        <FaRegEdit
+          onClick={() => setVisible(true)}
+          style={{
+            pointerEvents: isDeleted ? "none" : "auto",
+            color: isDeleted ? "grey" : "inherit"
+          }}
+        />
       </Tooltip>
       <Modal
         visible={visible}

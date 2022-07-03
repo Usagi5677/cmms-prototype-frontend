@@ -32,8 +32,10 @@ import classes from "./MachinePeriodicMaintenanceCard.module.css";
 
 const MachinePeriodicMaintenanceCard = ({
   periodicMaintenance,
+  isDeleted,
 }: {
   periodicMaintenance: PeriodicMaintenance;
+  isDeleted: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -129,11 +131,12 @@ const MachinePeriodicMaintenanceCard = ({
             {self.assignedPermission.hasMachinePeriodicMaintenanceEdit ? (
               <MachinePeriodicMaintenanceStatus
                 periodicMaintenance={periodicMaintenance}
+                isDeleted={isDeleted}
               />
             ) : null}
           </div>
         </div>
-        <div className={classes["fourth-block"]}>
+        {!isDeleted && <div className={classes["fourth-block"]}>
           <AddMachinePMSubTasks
             tasks={periodicMaintenance?.MachinePeriodicMaintenanceTask}
           />
@@ -145,7 +148,8 @@ const MachinePeriodicMaintenanceCard = ({
           {self.assignedPermission.hasMachinePeriodicMaintenanceDelete ? (
             <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id} />
           ) : null}
-        </div>
+        </div>}
+        
       </div>
       <div className={classes["task-progress"]}>Task Progress</div>
 
@@ -214,6 +218,7 @@ const MachinePeriodicMaintenanceCard = ({
                               })
                             }
                             className={classes["checkbox"]}
+                            disabled={isDeleted}
                           >
                             {task.completedAt && (
                               <div>
@@ -266,6 +271,11 @@ const MachinePeriodicMaintenanceCard = ({
                                       },
                                     });
                                   }}
+                                  style={{
+                                    pointerEvents: isDeleted ? "none" : "auto",
+                                    color: isDeleted ? "grey" : "inherit"
+                                  }}
+                                  disabled={isDeleted}
                                 />
                               ) : null}
                             </div>
@@ -330,6 +340,7 @@ const MachinePeriodicMaintenanceCard = ({
                                         })
                                       }
                                       className={classes["checkbox"]}
+                                      disabled={isDeleted}
                                     >
                                       {subtask.completedAt && (
                                         <span
@@ -381,6 +392,11 @@ const MachinePeriodicMaintenanceCard = ({
                                                 },
                                               });
                                             }}
+                                            style={{
+                                              pointerEvents: isDeleted ? "none" : "auto",
+                                              color: isDeleted ? "grey" : "inherit"
+                                            }}
+                                            disabled={isDeleted}
                                           />
                                         ) : null}
                                       </div>
@@ -444,6 +460,7 @@ const MachinePeriodicMaintenanceCard = ({
                                                 })
                                               }
                                               className={classes["checkbox"]}
+                                              disabled={isDeleted}
                                             >
                                               {subtaskTwo.completedAt && (
                                                 <span
@@ -513,6 +530,11 @@ const MachinePeriodicMaintenanceCard = ({
                                                         }
                                                       );
                                                     }}
+                                                    style={{
+                                                      pointerEvents: isDeleted ? "none" : "auto",
+                                                      color: isDeleted ? "grey" : "inherit"
+                                                    }}
+                                                    disabled={isDeleted}
                                                   />
                                                 ) : null}
                                               </div>
@@ -572,6 +594,7 @@ const MachinePeriodicMaintenanceCard = ({
                                   })
                                 }
                                 className={classes["checkbox"]}
+                                disabled={isDeleted}
                               >
                                 {subtask.completedAt && (
                                   <span
@@ -620,6 +643,11 @@ const MachinePeriodicMaintenanceCard = ({
                                           },
                                         });
                                       }}
+                                      style={{
+                                        pointerEvents: isDeleted ? "none" : "auto",
+                                        color: isDeleted ? "grey" : "inherit"
+                                      }}
+                                      disabled={isDeleted}
                                     />
                                   ) : null}
                                 </div>

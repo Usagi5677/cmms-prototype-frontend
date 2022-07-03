@@ -10,7 +10,13 @@ import EditMachineBreakdown from "../EditMachineBreakdown/EditMachineBreakdown";
 import MachineBreakdownStatus from "../MachineBreakdownStatus/MachineBreakdownStatus";
 import classes from "./MachineBreakdownCard.module.css";
 
-const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
+const MachineBreakdownCard = ({
+  breakdown,
+  isDeleted,
+}: {
+  breakdown: Breakdown;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
@@ -81,14 +87,14 @@ const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
 
         <div className={classes["status"]}>
           {self.assignedPermission.hasMachineBreakdownEdit ? (
-            <MachineBreakdownStatus breakdown={breakdown} />
+            <MachineBreakdownStatus breakdown={breakdown} isDeleted={isDeleted} />
           ) : null}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasMachineBreakdownEdit ? (
+          {self.assignedPermission.hasMachineBreakdownEdit && !isDeleted ? (
             <EditMachineBreakdown breakdown={breakdown} />
           ) : null}
-          {self.assignedPermission.hasMachineBreakdownDelete ? (
+          {self.assignedPermission.hasMachineBreakdownDelete && !isDeleted ? (
             <DeleteMachineBreakdown id={breakdown?.id} />
           ) : null}
         </div>
@@ -98,4 +104,3 @@ const MachineBreakdownCard = ({ breakdown }: { breakdown: Breakdown }) => {
 };
 
 export default MachineBreakdownCard;
-

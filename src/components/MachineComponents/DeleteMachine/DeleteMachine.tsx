@@ -6,8 +6,13 @@ import { DELETE_MACHINE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteMachine.module.css";
 
-
-const DeleteMachine = ({ machineID }: { machineID: number }) => {
+const DeleteMachine = ({
+  machineID,
+  isDeleted,
+}: {
+  machineID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const navigate = useNavigate();
 
   const [removeMachine, { loading: deleting }] = useMutation(DELETE_MACHINE, {
@@ -31,18 +36,38 @@ const DeleteMachine = ({ machineID }: { machineID: number }) => {
   return (
     <Popconfirm
       key="delete"
-      disabled={deleting}
+      disabled={deleting || isDeleted}
       title={`Are you sure to remove this information?`}
       onConfirm={() => remove()}
       okText="Confirm"
       cancelText="No"
       placement="topRight"
+      style={{
+        pointerEvents: isDeleted ? "none" : "auto",
+        color: isDeleted ? "grey" : "inherit",
+      }}
     >
-      <Tooltip title={"Delete"} placement="top">
+      {isDeleted ? (
         <div className={classes["btn-delete"]}>
-          <FaTrash />
+          <FaTrash
+            style={{
+              pointerEvents: isDeleted ? "none" : "auto",
+              color: isDeleted ? "grey" : "inherit",
+            }}
+          />
         </div>
-      </Tooltip>
+      ) : (
+        <Tooltip title={"Delete"} placement="top">
+          <div className={classes["btn-delete"]}>
+            <FaTrash
+              style={{
+                pointerEvents: isDeleted ? "none" : "auto",
+                color: isDeleted ? "grey" : "inherit",
+              }}
+            />
+          </div>
+        </Tooltip>
+      )}
     </Popconfirm>
   );
 };

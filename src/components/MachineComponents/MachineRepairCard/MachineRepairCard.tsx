@@ -10,12 +10,18 @@ import EditMachineRepair from "../EditMachineRepair/EditMachineRepair";
 import MachineRepairStatus from "../MachineRepairStatus/MachineRepairStatus";
 import classes from "./MachineRepairCard.module.css";
 
-const MachineRepairCard = ({ repair }: { repair: Repair }) => {
+const MachineRepairCard = ({
+  repair,
+  isDeleted,
+}: {
+  repair: Repair;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   return (
     <div className={classes["container"]}>
-      <div className={classes["wrapper"]}>
-        <div className={classes["first-block"]}>
+      <div className={classes["first-block"]}>
+        <div>
           <div>{repair?.id}</div>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Created At">
@@ -27,25 +33,39 @@ const MachineRepairCard = ({ repair }: { repair: Repair }) => {
               )}
             </div>
           </div>
-          <div>{repair?.title}</div>
-          <div>{repair?.description}</div>
+        </div>
+        <div className={classes["col-wrapper"]}>
           {repair?.completedBy?.fullName && (
-            <div className={classes["completedBy"]}>
-              Completed by {repair?.completedBy?.fullName}
+            <div className={classes["col"]}>
+              <div className={classes["col-title"]}>Completed by:</div>
+              <div className={classes["completedBy"]}>
+                {repair?.completedBy?.fullName}
+              </div>
             </div>
           )}
+
+          <div className={classes["col"]}>
+            <div className={classes["col-title"]}>Title:</div>
+            <div>{repair?.title}</div>
+          </div>
+          <div className={classes["col"]}>
+            <div className={classes["col-title"]}>Description:</div>
+            <div>{repair?.description}</div>
+          </div>
         </div>
-        <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasMachineRepairEdit ? (
-            <EditMachineRepair repair={repair} />
-          ) : null}
-          {self.assignedPermission.hasMachineRepairDelete ? (
-            <DeleteMachineRepair id={repair?.id} />
-          ) : null}
-        </div>
+      </div>
+      <div className={classes["second-block"]}>
         <div className={classes["status"]}>
           {self.assignedPermission.hasMachineRepairEdit ? (
-            <MachineRepairStatus repair={repair} />
+            <MachineRepairStatus repair={repair} isDeleted={isDeleted}/>
+          ) : null}
+        </div>
+        <div className={classes["icon-wrapper"]}>
+          {self.assignedPermission.hasMachineRepairEdit && !isDeleted ? (
+            <EditMachineRepair repair={repair} />
+          ) : null}
+          {self.assignedPermission.hasMachineRepairDelete && !isDeleted ? (
+            <DeleteMachineRepair id={repair?.id} />
           ) : null}
         </div>
       </div>

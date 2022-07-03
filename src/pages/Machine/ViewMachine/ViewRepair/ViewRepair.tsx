@@ -11,7 +11,13 @@ import Repair from "../../../../models/Machine/MachineRepair";
 import classes from "./ViewRepair.module.css";
 import UserContext from "../../../../contexts/UserContext";
 
-const ViewRepair = ({ machineID }: { machineID: number }) => {
+const ViewRepair = ({
+  machineID,
+  isDeleted,
+}: {
+  machineID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -106,7 +112,7 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachineRepairAdd ? (
+        {self.assignedPermission.hasMachineRepairAdd && !isDeleted ? (
           <AddMachineRepair machineID={machineID} />
         ) : null}
       </div>
@@ -118,7 +124,13 @@ const ViewRepair = ({ machineID }: { machineID: number }) => {
       <div className={classes["content"]}>
         {data?.getAllRepairOfMachine.edges.map((rec: { node: Repair }) => {
           const repair = rec.node;
-          return <MachineRepairCard key={repair.id} repair={repair} />;
+          return (
+            <MachineRepairCard
+              key={repair.id}
+              repair={repair}
+              isDeleted={isDeleted}
+            />
+          );
         })}
       </div>
 

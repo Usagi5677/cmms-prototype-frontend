@@ -19,10 +19,12 @@ const ViewPeriodicMaintenance = ({
   machineID,
   value,
   measurement,
+  isDeleted,
 }: {
   machineID: number;
   value?: number;
   measurement?: string;
+  isDeleted: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -118,7 +120,7 @@ const ViewPeriodicMaintenance = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd ? (
+        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd && !isDeleted ? (
           <AddMachinePeriodicMaintenance
             machineID={machineID}
             value={value}
@@ -139,6 +141,7 @@ const ViewPeriodicMaintenance = ({
               <MachinePeriodicMaintenanceCard
                 key={periodicMaintenance.id}
                 periodicMaintenance={periodicMaintenance}
+                isDeleted={isDeleted}
               />
             );
           }

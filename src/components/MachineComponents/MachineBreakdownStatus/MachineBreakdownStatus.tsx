@@ -6,7 +6,13 @@ import Breakdown from "../../../models/Machine/MachineBreakdown";
 import { BreakdownStatus } from "../../../models/Enums";
 import BreakdownStatusTag from "../../common/BreakdownStatusTag";
 
-const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
+const MachineBreakdownStatus = ({
+  breakdown,
+  isDeleted,
+}: {
+  breakdown: Breakdown;
+  isDeleted: boolean | undefined;
+}) => {
   const [setMachineBreakdownStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_BREAKDOWN_STATUS,
     {
@@ -47,6 +53,7 @@ const MachineBreakdownStatus = ({ breakdown }: { breakdown: Breakdown }) => {
             variables: { id: breakdown?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(
           Object.keys(BreakdownStatus) as Array<keyof typeof BreakdownStatus>

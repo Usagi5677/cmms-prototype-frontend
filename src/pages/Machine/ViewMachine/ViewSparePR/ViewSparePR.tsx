@@ -11,7 +11,13 @@ import SparePR from "../../../../models/Machine/MachineSparePR";
 import classes from "./ViewSparePR.module.css";
 import UserContext from "../../../../contexts/UserContext";
 
-const ViewSparePR = ({ machineID }: { machineID: number }) => {
+const ViewSparePR = ({
+  machineID,
+  isDeleted,
+}: {
+  machineID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -106,7 +112,7 @@ const ViewSparePR = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachineSparePRAdd ? (
+        {self.assignedPermission.hasMachineSparePRAdd && !isDeleted ?  (
           <AddMachineSparePR machineID={machineID} />
         ) : null}
       </div>
@@ -118,7 +124,7 @@ const ViewSparePR = ({ machineID }: { machineID: number }) => {
       <div className={classes["content"]}>
         {data?.getAllSparePROfMachine.edges.map((rec: { node: SparePR }) => {
           const sparePR = rec.node;
-          return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} />;
+          return <MachineSparePRCard key={sparePR.id} sparePR={sparePR} isDeleted={isDeleted} />;
         })}
       </div>
 

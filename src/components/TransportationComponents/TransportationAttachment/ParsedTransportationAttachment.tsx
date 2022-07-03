@@ -11,6 +11,9 @@ import TransportationAttachment from "../../../models/Transportation/Transportat
 import EditTransportationAttachment from "../EditTransportationAttachment/EditTransportationAttachment";
 import DeleteTransportationAttachment from "../DeleteTransportationAttachment/DeleteTransportationAttachment";
 import UserContext from "../../../contexts/UserContext";
+import { FaRegClock } from "react-icons/fa";
+import moment from "moment";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
 
 const ParsedTransportationAttachment = ({
   attachmentData,
@@ -119,6 +122,17 @@ const ParsedTransportationAttachment = ({
           {attachmentData && (
             <span>{shortFileName(attachmentData?.originalName)}</span>
           )}
+        </div>
+        <div className={classes["title-wrapper"]}>
+          <Tooltip title="Created At" className={classes["flex"]}>
+            <FaRegClock />
+          </Tooltip>
+
+          <span className={classes["title"]}>
+            {moment(attachmentData?.createdAt).format(
+              DATETIME_FORMATS.DAY_MONTH_YEAR
+            )}
+          </span>
         </div>
         <div>{attachmentData?.description}</div>
       </div>

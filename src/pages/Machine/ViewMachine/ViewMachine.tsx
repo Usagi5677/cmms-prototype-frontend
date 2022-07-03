@@ -150,23 +150,35 @@ const ViewMachine = () => {
     <>
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
+          <div className={classes["info-btn-wrapper"]}>
+            {self.assignedPermission.hasEditMachineUsage ? (
+              <EditMachineUsage
+                machine={machineData}
+                isDeleted={machineData?.isDeleted}
+              />
+            ) : null}
+            {self.assignedPermission.hasMachineEdit ? (
+              <EditMachine
+                machine={machineData}
+                isDeleted={machineData?.isDeleted}
+              />
+            ) : null}
+            {self.assignedPermission.hasMachineDelete ? (
+              <DeleteMachine
+                machineID={machineData?.id}
+                isDeleted={machineData?.isDeleted}
+              />
+            ) : null}
+          </div>
+          {machineData?.isDeleted ? (
+            <div className={classes["deleted"]}>DELETED</div>
+          ) : null}
           <div className={classes["info-wrapper"]}>
             <div className={classes["location-wrapper"]}>
               <FaMapMarkerAlt />
               <span className={classes["title"]}>{machineData?.zone}</span>
               <span className={classes["dash"]}>-</span>
               <span>{machineData?.location}</span>
-            </div>
-            <div className={classes["info-btn-wrapper"]}>
-              {self.assignedPermission.hasEditMachineUsage ? (
-                <EditMachineUsage machine={machineData} />
-              ) : null}
-              {self.assignedPermission.hasMachineEdit ? (
-                <EditMachine machine={machineData} />
-              ) : null}
-              {self.assignedPermission.hasMachineDelete ? (
-                <DeleteMachine machineID={machineData?.id} />
-              ) : null}
             </div>
           </div>
           <div className={classes["title-wrapper"]}>
@@ -204,7 +216,8 @@ const ViewMachine = () => {
               <div className={classes["info-title-wrapper"]}>
                 <div>Assign</div>
                 <div className={classes["info-content"]}>
-                  {self.assignedPermission.hasMachineAssignmentToUser ? (
+                  {self.assignedPermission.hasMachineAssignmentToUser &&
+                  !machineData?.isDeleted ? (
                     <MachineAssignment machineID={machineData?.id} />
                   ) : (
                     <>{renderUsers()}</>
@@ -253,6 +266,7 @@ const ViewMachine = () => {
                   <MachineStatuses
                     machineStatus={machineData?.status}
                     machineID={machineData?.id}
+                    isDeleted={machineData?.isDeleted}
                   />
                 </div>
               </div>
@@ -288,7 +302,10 @@ const ViewMachine = () => {
               }}
             >
               <Tabs.TabPane tab="Checklist" key="checklist">
-                <ViewChecklist machineData={machineData} />
+                <ViewChecklist
+                  machineData={machineData}
+                  isDeleted={machineData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab="Periodic Maintenance"
@@ -298,22 +315,35 @@ const ViewMachine = () => {
                   machineID={machineData?.id}
                   value={machineData?.currentRunning}
                   measurement={machineData?.measurement}
+                  isDeleted={machineData?.isDeleted}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
-                <ViewSparePR machineID={machineData?.id} />
+                <ViewSparePR
+                  machineID={machineData?.id}
+                  isDeleted={machineData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair machineID={machineData?.id} />
+                <ViewRepair
+                  machineID={machineData?.id}
+                  isDeleted={machineData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
-                <ViewBreakdown machineID={machineData?.id} />
+                <ViewBreakdown
+                  machineID={machineData?.id}
+                  isDeleted={machineData?.isDeleted}
+                />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
                 <ViewHistory machineID={machineData?.id} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <ViewGallery machineID={machineData?.id} />
+                <ViewGallery
+                  machineID={machineData?.id}
+                  isDeleted={machineData?.isDeleted}
+                />
               </Tabs.TabPane>
             </Tabs>
           </div>

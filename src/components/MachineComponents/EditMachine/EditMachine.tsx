@@ -24,7 +24,13 @@ import { errorMessage } from "../../../helpers/gql";
 import Machine from "../../../models/Machine";
 import classes from "./EditMachine.module.css";
 
-const EditMachine = ({ machine }: { machine: Machine }) => {
+const EditMachine = ({
+  machine,
+  isDeleted,
+}: {
+  machine: Machine;
+  isDeleted: boolean | undefined;
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
@@ -116,11 +122,17 @@ const EditMachine = ({ machine }: { machine: Machine }) => {
       label: island,
     });
   });
-  
+
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit onClick={() => setVisible(true)} />
+        <FaEdit
+          onClick={() => setVisible(true)}
+          style={{
+            pointerEvents: isDeleted ? "none" : "auto",
+            color: isDeleted ? "grey" : "inherit",
+          }}
+        />
       </Tooltip>
       <Modal
         visible={visible}

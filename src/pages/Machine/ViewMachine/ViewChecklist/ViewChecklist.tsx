@@ -26,7 +26,13 @@ import { errorMessage } from "../../../../helpers/gql";
 import Machine from "../../../../models/Machine";
 import classes from "./ViewChecklist.module.css";
 
-const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
+const ViewChecklist = ({
+  machineData,
+  isDeleted,
+}: {
+  machineData: Machine;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [checkboxState, setCheckboxState] = useState<any>([]);
   const [uncheckboxState, setUncheckboxState] = useState<any>([]);
@@ -126,6 +132,7 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                 <InputNumber
                   placeholder="Current running hrs"
                   style={{ width: "100%" }}
+                  disabled={isDeleted}
                 />
               </Form.Item>
             </div>
@@ -143,6 +150,7 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                 <InputNumber
                   placeholder="Working Hour"
                   style={{ width: "100%" }}
+                  disabled={isDeleted}
                 />
               </Form.Item>
             </div>
@@ -152,13 +160,14 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                 htmlType="submit"
                 loading={toggling}
                 className={classes["custom-btn-primary"]}
+                disabled={isDeleted}
               >
                 Done
               </Button>
             </Form.Item>
           </div>
         </Form>
-        {self.assignedPermission.hasMachineChecklistAdd ? (
+        {self.assignedPermission.hasMachineChecklistAdd && !isDeleted ? (
           <AddMachineChecklist machineID={machineData?.id} />
         ) : null}
       </div>
@@ -174,6 +183,7 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                     defaultChecked={item.completedAt !== null}
                     onChange={(e) => onClickCheckbox(e, item.id)}
                     className={classes["checkbox"]}
+                    disabled={isDeleted}
                   >
                     {item.description}{" "}
                     {item.completedAt && (
@@ -223,6 +233,11 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                               },
                             });
                           }}
+                          style={{
+                            pointerEvents: isDeleted ? "none" : "auto",
+                            color: isDeleted ? "grey" : "inherit"
+                          }}
+                          disabled={isDeleted}
                         />
                       ) : null}
                     </div>
@@ -242,6 +257,7 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                     defaultChecked={item.completedAt !== null}
                     onChange={(e) => onClickCheckbox(e, item.id)}
                     className={classes["checkbox"]}
+                    disabled={isDeleted}
                   >
                     {item.description}{" "}
                     {item.completedAt && (
@@ -291,6 +307,11 @@ const ViewChecklist = ({ machineData }: { machineData: Machine }) => {
                               },
                             });
                           }}
+                          style={{
+                            pointerEvents: isDeleted ? "none" : "auto",
+                            color: isDeleted ? "grey" : "inherit"
+                          }}
+                          disabled={isDeleted}
                         />
                       ) : null}
                     </div>

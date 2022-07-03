@@ -6,7 +6,13 @@ import { RepairStatus } from "../../../models/Enums";
 import Repair from "../../../models/Machine/MachineRepair";
 import RepairStatusTag from "../../common/RepairStatusTag";
 
-const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
+const MachineRepairStatus = ({
+  repair,
+  isDeleted,
+}: {
+  repair: Repair;
+  isDeleted: boolean | undefined;
+}) => {
   const [setMachineRepairStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_REPAIR_STATUS,
     {
@@ -43,6 +49,7 @@ const MachineRepairStatus = ({ repair }: { repair: Repair }) => {
             variables: { id: repair?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(Object.keys(RepairStatus) as Array<keyof typeof RepairStatus>).map(
           (status: any) => (

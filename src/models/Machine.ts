@@ -22,6 +22,8 @@ export default interface Machine {
   lastService?: number;
   interService?: number;
   measurement?: string;
+  isDeleted?: boolean;
+  deletedAt?: Date;
   status: MachineStatus;
   statusChangedAt: Date;
   assignees: User[];

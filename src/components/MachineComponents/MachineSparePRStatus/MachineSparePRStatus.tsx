@@ -6,7 +6,13 @@ import { SparePRStatus } from "../../../models/Enums";
 import SparePR from "../../../models/Machine/MachineSparePR";
 import SparePRStatusTag from "../../common/SparePRStatusTag";
 
-const MachineSparePRStatus = ({ sparePR }: { sparePR: SparePR }) => {
+const MachineSparePRStatus = ({
+  sparePR,
+  isDeleted,
+}: {
+  sparePR: SparePR;
+  isDeleted: boolean | undefined;
+}) => {
   const [setMachineSparePRStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_SPARE_PR_STATUS,
     {
@@ -43,6 +49,7 @@ const MachineSparePRStatus = ({ sparePR }: { sparePR: SparePR }) => {
             variables: { id: sparePR?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(Object.keys(SparePRStatus) as Array<keyof typeof SparePRStatus>).map(
           (status: any) => (

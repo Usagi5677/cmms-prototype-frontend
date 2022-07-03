@@ -14,9 +14,11 @@ import classes from "./MachineStatuses.module.css";
 const MachineStatuses = ({
   machineID,
   machineStatus,
+  isDeleted,
 }: {
   machineID: number;
   machineStatus: MachineStatus;
+  isDeleted: boolean | undefined;
 }) => {
   const [setMachineStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_STATUS,
@@ -171,6 +173,7 @@ const MachineStatuses = ({
           placeholder="Select status"
           value={machineStatus}
           onChange={(status) => onChangeClick(status)}
+          disabled={isDeleted}
         >
           {(
             Object.keys(MachineStatus) as Array<keyof typeof MachineStatus>

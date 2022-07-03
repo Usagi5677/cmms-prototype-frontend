@@ -16,11 +16,16 @@ import classes from "./MachineAttachment.module.css";
 import DeleteMachineAttachment from "../DeleteMachineAttachment/DeleteMachineAttachment";
 import EditMachineAttachment from "../EditMachineAttachment/EditMachineAttachment";
 import UserContext from "../../../contexts/UserContext";
+import { FaRegClock } from "react-icons/fa";
+import moment from "moment";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
 
 const ParsedMachineAttachment = ({
   attachmentData,
+  isDeleted,
 }: {
   attachmentData: MachineAttachment;
+  isDeleted: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;
@@ -89,8 +94,12 @@ const ParsedMachineAttachment = ({
           {fileLoading && (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
           )}
-          {file && self.assignedPermission.hasMachineAttachmentEdit && <EditMachineAttachment attachment={attachmentData} />}
-          {file && self.assignedPermission.hasMachineAttachmentDelete && <DeleteMachineAttachment id={attachmentData?.id} />}
+          {file && self.assignedPermission.hasMachineAttachmentEdit && !isDeleted && (
+            <EditMachineAttachment attachment={attachmentData} />
+          )}
+          {file && self.assignedPermission.hasMachineAttachmentDelete && !isDeleted && (
+            <DeleteMachineAttachment id={attachmentData?.id} />
+          )}
           {file && (
             <Tooltip title={"Download"}>
               <DownloadOutlined
@@ -119,6 +128,17 @@ const ParsedMachineAttachment = ({
           {attachmentData && (
             <span>{shortFileName(attachmentData?.originalName)}</span>
           )}
+        </div>
+        <div className={classes["title-wrapper"]}>
+          <Tooltip title="Created At" className={classes["flex"]}>
+            <FaRegClock />
+          </Tooltip>
+
+          <span className={classes["title"]}>
+            {moment(attachmentData?.createdAt).format(
+              DATETIME_FORMATS.DAY_MONTH_YEAR
+            )}
+          </span>
         </div>
         <div>{attachmentData?.description}</div>
       </div>

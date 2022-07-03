@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import moment from "moment";
 import { GET_USAGE_HISTORY_OF_TRANSPORTATION } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
@@ -97,7 +97,7 @@ const TransportationUsageHistory = () => {
         </div>
       ) : (
         <div>
-          <Bar
+          <Line
             data={data()}
             height={400}
             options={{

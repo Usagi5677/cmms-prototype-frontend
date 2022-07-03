@@ -9,8 +9,10 @@ import PeriodicMaintenanceStatusTag from "../../common/PeriodicMaintenanceStatus
 
 const MachinePeriodicMaintenanceStatus = ({
   periodicMaintenance,
+  isDeleted,
 }: {
   periodicMaintenance: PeriodicMaintenance;
+  isDeleted: boolean | undefined;
 }) => {
   const [setMachinePeriodicMaintenanceStatus, { loading: settingStatus }] =
     useMutation(SET_MACHINE_PERIODIC_MAINTENANCE_STATUS, {
@@ -46,6 +48,7 @@ const MachinePeriodicMaintenanceStatus = ({
             variables: { id: periodicMaintenance?.id, status },
           })
         }
+        disabled={isDeleted}
       >
         {(
           Object.keys(PeriodicMaintenanceStatus) as Array<

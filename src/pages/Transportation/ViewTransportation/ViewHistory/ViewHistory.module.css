@@ -31,9 +31,11 @@
   }
   .location {
     margin-left: 10px !important;
+    margin-top: 0 !important;
   }
   .datepicker {
     margin-left: 10px !important;
     width: 320px !important;
+    margin-top: 0 !important;
   }
 }

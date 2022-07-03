@@ -35,7 +35,6 @@
   font-size: 18px;
   color: var(--primary);
   cursor: pointer;
-  margin-bottom: 20px;
   transition: color 0.3s ease;
 
 }

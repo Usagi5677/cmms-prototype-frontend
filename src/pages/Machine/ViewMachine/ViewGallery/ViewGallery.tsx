@@ -14,7 +14,13 @@ import MachineAttachment from "../../../../models/Machine/MachineAttachment";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewGallery.module.css";
 
-const ViewGallery = ({ machineID }: { machineID: number }) => {
+const ViewGallery = ({
+  machineID,
+  isDeleted,
+}: {
+  machineID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -109,7 +115,7 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachineAttachmentAdd ? (
+        {self.assignedPermission.hasMachineAttachmentAdd && !isDeleted ? (
           <AddMachineAttachment machineID={machineID} />
         ) : null}
 
@@ -127,6 +133,7 @@ const ViewGallery = ({ machineID }: { machineID: number }) => {
               <ParsedMachineAttachment
                 key={attachment.id}
                 attachmentData={attachment}
+                isDeleted={isDeleted}
               />
             );
           }

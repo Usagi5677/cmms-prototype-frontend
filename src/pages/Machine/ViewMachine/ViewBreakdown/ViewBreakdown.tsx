@@ -11,7 +11,13 @@ import Breakdown from "../../../../models/Machine/MachineBreakdown";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
 
-const ViewBreakdown = ({ machineID }: { machineID: number }) => {
+const ViewBreakdown = ({
+  machineID,
+  isDeleted,
+}: {
+  machineID: number;
+  isDeleted: boolean | undefined;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -106,7 +112,7 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachineBreakdownAdd ? (
+        {self.assignedPermission.hasMachineBreakdownAdd && !isDeleted ? (
           <AddMachineBreakdown machineID={machineID} />
         ) : null}
       </div>
@@ -120,7 +126,11 @@ const ViewBreakdown = ({ machineID }: { machineID: number }) => {
           (rec: { node: Breakdown }) => {
             const breakdown = rec.node;
             return (
-              <MachineBreakdownCard key={breakdown.id} breakdown={breakdown} />
+              <MachineBreakdownCard
+                key={breakdown.id}
+                breakdown={breakdown}
+                isDeleted={isDeleted}
+              />
             );
           }
         )}

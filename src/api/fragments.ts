@@ -48,6 +48,8 @@ export const MACHINE_FRAGMENT = gql`
     interService
     status
     measurement
+    isDeleted
+    deletedAt
     assignees {
       ...UserFieldsAPS
     }

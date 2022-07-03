@@ -51,3 +51,18 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  padding-left: 5px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
