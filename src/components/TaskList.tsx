@@ -15,12 +15,14 @@ export interface TaskListProps {
   periodicMaintenance: MachinePeriodicMaintenance;
   tasks: MachinePMTask[];
   level: number;
+  isDeleted: boolean | undefined;
 }
 
 export const TaskList: React.FC<TaskListProps> = ({
   periodicMaintenance,
   tasks,
   level,
+  isDeleted
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -106,7 +108,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                         </span>
                       </div>
                     )}
-                    {self.assignedPermission.hasMachineChecklistEdit && (
+                    {self.assignedPermission.hasMachineChecklistEdit && !isDeleted && (
                       <Checkbox
                         checked={task.completedAt !== null}
                         style={{ marginRight: ".5rem" }}
@@ -125,7 +127,7 @@ export const TaskList: React.FC<TaskListProps> = ({
                     )}
                     {!deleting && (
                       <div>
-                        {self.assignedPermission.hasMachineChecklistDelete ? (
+                        {self.assignedPermission.hasMachineChecklistDelete && !isDeleted ? (
                           <CloseCircleOutlined
                             onClick={() => {
                               deleteMachineChecklistItem({
@@ -147,8 +149,9 @@ export const TaskList: React.FC<TaskListProps> = ({
                 periodicMaintenance={periodicMaintenance}
                 tasks={task.subTasks}
                 level={level + 1}
+                isDeleted={isDeleted}
               />
-              {level < 2 && (
+              {level < 2 && !isDeleted && (
                 <div>
                   <AddPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}

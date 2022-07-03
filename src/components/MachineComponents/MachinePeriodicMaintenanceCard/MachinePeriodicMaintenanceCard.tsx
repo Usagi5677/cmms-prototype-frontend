@@ -83,12 +83,12 @@ const MachinePeriodicMaintenanceCard = ({
           </div>
         </div>
         <div className={classes["fourth-block"]}>
-          {self.assignedPermission.hasMachinePeriodicMaintenanceEdit ? (
+          {self.assignedPermission.hasMachinePeriodicMaintenanceEdit && !isDeleted ? (
             <EditMachinePeriodicMaintenance
               periodicMaintenance={periodicMaintenance}
             />
           ) : null}
-          {self.assignedPermission.hasMachinePeriodicMaintenanceDelete ? (
+          {self.assignedPermission.hasMachinePeriodicMaintenanceDelete && !isDeleted ? (
             <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id} />
           ) : null}
         </div>
@@ -106,6 +106,7 @@ const MachinePeriodicMaintenanceCard = ({
         periodicMaintenance={periodicMaintenance}
         tasks={taskData}
         level={0}
+        isDeleted={isDeleted}
       />
       <div style={{ marginTop: ".5rem", fontSize: 14 }}>
         <AddPeriodicMaintenanceTask periodicMaintenance={periodicMaintenance} />
