@@ -55,9 +55,9 @@ function App() {
     },
     onError: (error) => {
       localStorage.removeItem("cmms_token");
+      localStorage.setItem("logOutClicked", "true");
       setLoggedOut(true);
       setAppLoading(false);
-
       if (error.message === "Unauthorized") {
         message.error("Not authorized to access this app.");
       } else {
@@ -69,6 +69,7 @@ function App() {
   });
 
   const redirect = () => {
+    localStorage.setItem("logOutClicked", "false");
     window.location.href = `https://id.mtcc.com.mv/?returnUrl=${process.env.REACT_APP_RETURN_URL}&type=employee&appId=${process.env.REACT_APP_APP_ID}`;
   };
 
@@ -133,6 +134,7 @@ function App() {
 
   const logout = () => {
     localStorage.removeItem("cmms_token");
+    localStorage.setItem("logOutClicked", "true");
     logoutRedirect();
   };
 
@@ -145,7 +147,10 @@ function App() {
   }
 
   if (!appLoading && loggedOut) {
-    return <Login login={redirect} />;
+    if (localStorage.getItem("logOutClicked") === "true") {
+      return <Login login={redirect} />;
+    }
+    redirect();
   }
 
   return (
