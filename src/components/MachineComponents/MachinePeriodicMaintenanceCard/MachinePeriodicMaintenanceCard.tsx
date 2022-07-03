@@ -12,19 +12,14 @@ import {
 import moment from "moment";
 import { useContext } from "react";
 import { FaRegBell, FaRegClock } from "react-icons/fa";
-import {
-  DELETE_MACHINE_CHECKLIST_ITEM,
-  DELETE_TASK,
-  TOGGLE_MACHINE_CHECKLIST_ITEM,
-  TOGGLE_TASK,
-} from "../../../api/mutations";
+import { DELETE_TASK, TOGGLE_TASK } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { getEqualValuesUnder140 } from "../../../helpers/style";
 import PeriodicMaintenance from "../../../models/Machine/MachinePeriodicMaintenance";
-import MachinePMTask from "../../../models/Machine/MachinePMTask";
 import AddMachinePMSubTasks from "../AddMachinePMSubTasks/AddMachinePMSubTasks";
+import { AddPeriodicMaintenanceTask } from "../AddPeriodicMaintenanceTask";
 import DeleteMachinePeriodicMaintenance from "../DeleteMachinePeriodicMaintenance/DeleteMachinePeriodicMaintenance";
 import EditMachinePeriodicMaintenance from "../EditMachinePeriodicMaintenance/EditMachinePeriodicMaintenance";
 import MachinePeriodicMaintenanceStatus from "../MachinePeriodicMaintenanceStatus/MachinePeriodicMaintenanceStatus";
@@ -106,7 +101,7 @@ const MachinePeriodicMaintenanceCard = ({
                 )}
               </div>
             </div>
-            
+
             <div>Title: {periodicMaintenance?.title}</div>
             {/* <div>Description: {periodicMaintenance?.description}</div> */}
             {periodicMaintenance?.completedBy?.fullName && (
@@ -638,6 +633,9 @@ const MachinePeriodicMaintenanceCard = ({
       ) : (
         "No tasks."
       )}
+      <div style={{ marginTop: "1rem" }}>
+        <AddPeriodicMaintenanceTask periodicMaintenance={periodicMaintenance} />
+      </div>
     </div>
   );
 };

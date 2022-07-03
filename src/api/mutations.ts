@@ -122,7 +122,6 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
     $measurement: String!
     $value: Int!
     $startDate: Date!
-    $tasks: [String!]
   ) {
     editMachinePeriodicMaintenance(
       id: $id
@@ -131,7 +130,6 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
       measurement: $measurement
       value: $value
       startDate: $startDate
-      tasks: $tasks
     )
   }
 `;
@@ -661,9 +659,9 @@ export const EDIT_TRANSPORTATION_USAGE = gql`
   }
 `;
 
-export const ADD_MACHINE_PERIODIC_MAINTENANCE_SUB_TASK = gql`
-  mutation ($parentTaskId: Int!, $periodicMaintenanceId: Int!, $name: String!) {
-    addMachinePeriodicMaintenanceSubTask(
+export const ADD_MACHINE_PERIODIC_MAINTENANCE_TASK = gql`
+  mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
+    createMachinePeriodicMaintenanceTask(
       parentTaskId: $parentTaskId
       periodicMaintenanceId: $periodicMaintenanceId
       name: $name

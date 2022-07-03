@@ -19,7 +19,7 @@ import { errorMessage } from "../../../helpers/gql";
 import { useForm } from "antd/lib/form/Form";
 import {
   ADD_MACHINE_BREAKDOWN,
-  ADD_MACHINE_PERIODIC_MAINTENANCE_SUB_TASK,
+  ADD_MACHINE_PERIODIC_MAINTENANCE_TASK,
 } from "../../../api/mutations";
 import classes from "./AddMachinePMSubTasks.module.css";
 import { getEqualValuesUnder140 } from "../../../helpers/style";
@@ -29,7 +29,7 @@ const AddMachinePMSubTasks = (periodicMaintenanceTasks: any) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const [addPeriodicMaintenanceSubTask, { loading }] = useMutation(
-    ADD_MACHINE_PERIODIC_MAINTENANCE_SUB_TASK,
+    ADD_MACHINE_PERIODIC_MAINTENANCE_TASK,
     {
       onCompleted: () => {
         setDetails("");
@@ -49,7 +49,6 @@ const AddMachinePMSubTasks = (periodicMaintenanceTasks: any) => {
     setVisible(false);
   };
 
- 
   const onFinish = async (values: any) => {
     const { parentTaskID, name } = values;
 
@@ -83,7 +82,6 @@ const AddMachinePMSubTasks = (periodicMaintenanceTasks: any) => {
 
   const colors = getEqualValuesUnder140(highestCount());
 
-  
   return (
     <>
       <div className={classes["info-edit"]}>
