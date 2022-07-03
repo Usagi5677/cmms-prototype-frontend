@@ -171,7 +171,7 @@ const ViewMachine = () => {
             ) : null}
           </div>
           {machineData?.isDeleted ? (
-            <div className={classes["deleted"]}>DELETED</div>
+            <div className={classes["deleted"]}>DISPOSED</div>
           ) : null}
           <div className={classes["info-wrapper"]}>
             <div className={classes["location-wrapper"]}>
