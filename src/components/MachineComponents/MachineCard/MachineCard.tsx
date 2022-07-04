@@ -76,10 +76,11 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
                     <MachineStatusTag status={machine?.status} />
                   </div>
                 </div>
-                <Link
-                  to={"/machine/" + machine.id}
-                >
-                  <FaArrowAltCircleRight className={classes["button"]} />
+                <Link to={"/machine/" + machine.id}>
+                  <Tooltip title="Open">
+                    <FaArrowAltCircleRight className={classes["button"]} />
+                  </Tooltip>
+                  
                 </Link>
               </div>
             </>

@@ -51,7 +51,9 @@ const TransportationCard = ({
                   </div>
                   <div className={classes["location-wrapper"]}>
                     <FaMapMarkerAlt />
-                    <span className={classes["title"]}>{transportation?.location}</span>
+                    <span className={classes["title"]}>
+                      {transportation?.location}
+                    </span>
                   </div>
                 </div>
 
@@ -78,10 +80,10 @@ const TransportationCard = ({
                     <TransportationStatusTag status={transportation?.status} />
                   </div>
                 </div>
-                <Link
-                  to={"/transportation/" + transportation.id}
-                >
-                  <FaArrowAltCircleRight className={classes["button"]} />
+                <Link to={"/transportation/" + transportation.id}>
+                  <Tooltip title="Open">
+                    <FaArrowAltCircleRight className={classes["button"]} />
+                  </Tooltip>
                 </Link>
               </div>
             </>
@@ -123,9 +125,9 @@ const TransportationCard = ({
                     <>
                       {"Requested Date: "}
                       {transportation?.sparePRs[0]?.requestedDate
-                        ? moment(transportation?.sparePRs[0]?.requestedDate).format(
-                            DATETIME_FORMATS.DAY_MONTH_YEAR
-                          )
+                        ? moment(
+                            transportation?.sparePRs[0]?.requestedDate
+                          ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
                         : null}
                       <br />
                       {"Title: "}
