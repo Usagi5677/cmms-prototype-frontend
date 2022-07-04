@@ -1,31 +1,36 @@
-import { Spin } from "antd";
+import { message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { ALL_MACHINES } from "../../../api/queries";
-import { PAGE_LIMIT } from "../../../helpers/constants";
+import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
 import MachineCard from "../../../components/MachineComponents/MachineCard/MachineCard";
 import Machine from "../../../models/Machine";
 import classes from "./ViewAssignedMachinery.module.css";
 import UserContext from "../../../contexts/UserContext";
+import MachineStatusFilter from "../../../components/common/MachineStatusFilter";
 
 const ViewAssignedMachinery = () => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const { user: self } = useContext(UserContext);
+  const [params, setParams] = useSearchParams();
+  const [location, setLocation] = useState("");
+  const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
-
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       assignedToId: number;
+      status: any;
+      location: string;
     }
   >({
     first: 20,
@@ -34,7 +39,16 @@ const ViewAssignedMachinery = () => {
     after: null,
     search: "",
     assignedToId: self.id,
+    location: "",
+    status: params.get("status"),
   });
+
+  // Update url search param on filter change
+  useEffect(() => {
+    let newParams: any = {};
+    if (filter.status) newParams.status = filter.status;
+    setParams(newParams);
+  }, [filter, setParams, params]);
 
   const [getAllMachine, { data, loading }] = useLazyQuery(ALL_MACHINES, {
     onError: (err) => {
@@ -46,6 +60,10 @@ const ViewAssignedMachinery = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
+    if (!self.assignedPermission.hasViewAllAssignedMachines) {
+      navigate("/");
+      message.error("No permission to view assigned machines.");
+    }
     getAllMachine({ variables: filter });
   }, [filter, getAllMachine]);
 
@@ -53,7 +71,7 @@ const ViewAssignedMachinery = () => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string) => {
+  const searchDebounced = (value: string, locationValue: string) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -61,6 +79,7 @@ const ViewAssignedMachinery = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
+          location: locationValue,
           first: 20,
           last: null,
           before: null,
@@ -76,9 +95,9 @@ const ViewAssignedMachinery = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search);
+    searchDebounced(search, location);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, location]);
 
   // Pagination functions
   const next = () => {
@@ -105,6 +124,14 @@ const ViewAssignedMachinery = () => {
 
   const pageInfo = data?.getAllMachine.pageInfo ?? {};
 
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
@@ -112,6 +139,21 @@ const ViewAssignedMachinery = () => {
           searchValue={search}
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
+        />
+        <Select
+          showArrow
+          className={classes["location"]}
+          onChange={(value) => setLocation(value)}
+          showSearch
+          options={options}
+          placeholder={"Location"}
+        />
+        <MachineStatusFilter
+          onChange={(status) => {
+            setFilter({ ...filter, status, ...DefaultPaginationArgs });
+            setPage(1);
+          }}
+          value={filter.status}
         />
         <div className={classes["add-machine-wrapper"]}>
           <AddMachine />

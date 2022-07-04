@@ -16,20 +16,21 @@
   justify-content: space-between;
   align-items: center;
 }
-
 .add-machine-wrapper {
-  padding-top: 10px
+  padding-top: 10px;
 }
 
-@media only screen and (min-width: 600px) {
-  .container .options-wrapper {
-    font-size: 0.875rem;
-  }
+.location {
+  width: 190px;
+  margin: 10px 0 !important;
+}
+
+@media only screen and (min-width: 800px) {
   .options-wrapper {
     flex-direction: row;
-    margin-bottom: 0
+    margin-bottom: 0;
   }
   .add-machine-wrapper {
-    padding-top: 0
+    padding-top: 0;
   }
 }
