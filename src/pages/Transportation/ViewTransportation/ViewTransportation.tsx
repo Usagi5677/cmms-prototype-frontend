@@ -1,7 +1,7 @@
 import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
   GET_SINGLE_TRANSPORTATION,
@@ -186,6 +186,19 @@ const ViewTransportation = () => {
                 {transportationData?.location}
               </span>
             </div>
+            <div className={classes["info-btn-wrapper"]}>
+              {self.assignedPermission.hasEditTransportationUsage ? (
+                <EditTransportationUsage transportation={transportationData} />
+              ) : null}
+              {self.assignedPermission.hasTransportationEdit ? (
+                <EditTransportation transportation={transportationData} />
+              ) : null}
+              {self.assignedPermission.hasTransportationDelete ? (
+                <DeleteTransportation
+                  transportationID={transportationData?.id}
+                />
+              ) : null}
+            </div>
           </div>
           <div className={classes["title-wrapper"]}>
             <FaTractor />
@@ -220,7 +233,7 @@ const ViewTransportation = () => {
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Assign</div>
+                <div>Assignments</div>
                 <div className={classes["info-content"]}>
                   {self.assignedPermission.hasTransportationAssignmentToUser &&
                   !transportationData?.isDeleted ? (
@@ -256,13 +269,6 @@ const ViewTransportation = () => {
                 </div>
                 <div className={classes["info-content"]}>
                   {transportationData?.interServiceMileage}
-                </div>
-              </div>
-
-              <div className={classes["info-title-wrapper"]}>
-                <div>Measurement</div>
-                <div className={classes["info-content"]}>
-                  {transportationData?.measurement}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>

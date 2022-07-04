@@ -214,7 +214,7 @@ const ViewMachine = () => {
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
-                <div>Assign</div>
+                <div>Assignments</div>
                 <div className={classes["info-content"]}>
                   {self.assignedPermission.hasMachineAssignmentToUser &&
                   !machineData?.isDeleted ? (
@@ -244,12 +244,6 @@ const ViewMachine = () => {
                 <div>Inter service {machineData?.measurement}</div>
                 <div className={classes["info-content"]}>
                   {machineData?.interService}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Measurement</div>
-                <div className={classes["info-content"]}>
-                  {machineData?.measurement}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>

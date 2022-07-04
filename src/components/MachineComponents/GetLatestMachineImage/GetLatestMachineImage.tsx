@@ -54,7 +54,7 @@ const GetLatestMachineImage = ({
     }
   }, [attachmentId]);
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "end" }}>
       {file && isImage ? (
         <div className={classes["image"]}>
           <Image height={"90%"} width={"90%"} src={file} />

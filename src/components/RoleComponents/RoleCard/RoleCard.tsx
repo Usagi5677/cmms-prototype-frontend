@@ -17,9 +17,8 @@ const RoleCard = ({ role }: { role: Role }) => {
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
         <div className={classes["first-block"]}>
-          <div>{role?.id}</div>
           <div className={classes["time-wrapper"]}>
-            <Tooltip title="Created At">
+            <Tooltip title="Created on">
               <FaRegClock />
             </Tooltip>
             <div className={classes["time"]}>
