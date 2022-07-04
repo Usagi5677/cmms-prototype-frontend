@@ -31,7 +31,10 @@ const Machinery = () => {
       status: any;
     }
   >({
-    ...DefaultPaginationArgs,
+    first: 20,
+    last: null,
+    before: null,
+    after: null,
     search: "",
     status: params.get("status"),
   });
@@ -72,7 +75,10 @@ const Machinery = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          ...DefaultPaginationArgs,
+          first: 20,
+          last: null,
+          before: null,
+          after: null,
         }));
         setPage(1);
       }, 500)
@@ -92,7 +98,7 @@ const Machinery = () => {
   const next = () => {
     setFilter({
       ...filter,
-      first: PAGE_LIMIT,
+      first: 20,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -103,7 +109,7 @@ const Machinery = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: PAGE_LIMIT,
+      last: 20,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -143,9 +149,7 @@ const Machinery = () => {
       {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
         const machine = rec.node;
         return (
-          <Link to={"/machine/" + machine.id} key={machine.id}>
-            <MachineCard machine={machine} />
-          </Link>
+          <MachineCard machine={machine} key={machine.id}/>
         );
       })}
       <PaginationButtons
@@ -153,6 +157,7 @@ const Machinery = () => {
         page={page}
         next={next}
         back={back}
+        pageLimit={20}
       />
     </div>
   );

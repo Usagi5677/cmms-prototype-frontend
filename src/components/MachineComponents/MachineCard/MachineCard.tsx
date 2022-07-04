@@ -1,4 +1,5 @@
 import {
+  FaArrowAltCircleRight,
   FaGlobe,
   FaMapMarkerAlt,
   FaQuestionCircle,
@@ -10,7 +11,8 @@ import classes from "./MachineCard.module.css";
 import Machine from "../../../models/Machine";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { Tooltip } from "antd";
+import { Collapse, Tooltip } from "antd";
+import { Link } from "react-router-dom";
 
 const MachineCard = ({ machine }: { machine: Machine }) => {
   let borderLeft: string;
@@ -27,7 +29,147 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
   }
 
   return (
-    <div
+    <div id="collapse">
+      <Collapse ghost style={{ marginBottom: ".5rem" }}>
+        <Collapse.Panel
+          header={
+            <>
+              <div
+                className={classes["header-container"]}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className={classes["first-block"]}>
+                  <div className={classes["title-wrapper"]}>
+                    <FaTractor />
+                    <span className={classes["title"]}>
+                      {machine?.machineNumber}
+                    </span>
+                  </div>
+                  <div className={classes["location-wrapper"]}>
+                    <FaMapMarkerAlt />
+                    <span className={classes["title"]}>{machine?.zone}</span>
+                    <span className={classes["dash"]}>-</span>
+                    <span>{machine?.location}</span>
+                  </div>
+                </div>
+
+                <div className={classes["service-reading-wrapper"]}>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Current running ({machine?.measurement}):
+                    </span>
+                    <span>{machine?.currentRunning}</span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Last service ({machine?.measurement}):
+                    </span>
+                    <span>{machine?.lastService}</span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Inter service ({machine?.measurement}):
+                    </span>
+                    <span>{machine?.interService}</span>
+                  </div>
+                  <div className={classes["status"]}>
+                    <MachineStatusTag status={machine?.status} />
+                  </div>
+                </div>
+                <Link
+                  to={"/machine/" + machine.id}
+                >
+                  <FaArrowAltCircleRight className={classes["button"]} />
+                </Link>
+              </div>
+            </>
+          }
+          key={machine.id}
+        >
+          <div className={classes["container"]}>
+            <div className={classes["title-wrapper"]}>
+              <Tooltip title="Registered Date">
+                <FaRegClock />
+              </Tooltip>
+
+              <span className={classes["title"]}>
+                {moment(machine?.registeredDate).format(
+                  DATETIME_FORMATS.DAY_MONTH_YEAR
+                )}
+              </span>
+            </div>
+            <div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Model:</span>
+                <span>{machine?.model}</span>
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Type:</span>
+                <span>{machine?.type}</span>
+              </div>
+            </div>
+
+            <div>
+              <div className={classes["title-wrapper"]}>
+                <span>Spare PR details:</span>
+                <Tooltip
+                  title={
+                    <>
+                      {"Requested Date: "}
+                      {machine?.sparePRs[0]?.requestedDate
+                        ? moment(machine?.sparePRs[0]?.requestedDate).format(
+                            DATETIME_FORMATS.DAY_MONTH_YEAR
+                          )
+                        : null}
+                      <br />
+                      {"Title: "}
+                      {machine?.sparePRs[0]?.title}
+                      <br />
+                      {"Description: "}
+                      {machine?.sparePRs[0]?.description}
+                      <br />
+                      {"Status: "}
+                      {machine?.sparePRs[0]?.status}
+                    </>
+                  }
+                >
+                  <FaQuestionCircle style={{ marginLeft: 5 }} />
+                </Tooltip>
+              </div>
+              {machine?.breakdowns[0] && (
+                <div className={classes["title-wrapper"]}>
+                  <span>Breakdown details:</span>
+                  <Tooltip
+                    title={
+                      <>
+                        {"Title: "}
+                        {machine?.breakdowns[0]?.title}
+                        <br />
+                        {"Description: "}
+                        {machine?.breakdowns[0]?.description}
+                        <br />
+                        {"Status: "}
+                        {machine?.breakdowns[0]?.status}
+                      </>
+                    }
+                  >
+                    <FaQuestionCircle style={{ marginLeft: 5 }} />
+                  </Tooltip>
+                </div>
+              )}
+            </div>
+          </div>
+        </Collapse.Panel>
+      </Collapse>
+    </div>
+  );
+};
+
+export default MachineCard;
+
+/*
+
+ <div
       className={classes["container"]}
       style={{
         borderTop: border,
@@ -141,289 +283,116 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
         <MachineStatusTag status={machine?.status} />
       </div>
     </div>
-  );
-};
 
-export default MachineCard;
+
+*/
 
 /*
-<div className={classes["machinaries-wrapper"]}>
-      <div className={classes["machinaries-wrapper__user-details-container"]}>
-        <div className={classes["machinaries-wrapper__user-details-wrapper"]}>
-          <div
-            className={
-              classes["machinaries-wrapper__machinaries-details__info-wrapper"]
-            }
-          >
-            <div
-              className={
-                classes[
-                  "machinaries-wrapper__machinaries-details__priority-wrapper"
-                ]
-              }
-            >
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__priority-title"
-                  ]
-                }
-              >
-                {props.machine.id}
-              </div>
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__category-title"
-                  ]
-                }
-              >
-                Ex-31
-              </div>
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__category-title"
-                  ]
-                }
-              >
-                {props.machine.zone} - {props.machine.location}
-              </div>
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__category-title"
-                  ]
-                }
-              >
-                <FaGlobe /> Registered at <span>{props.machine.registeredDate}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={classes["machinaries-wrapper__divider"]}></div>
-        <div
-          className={
-            classes["machinaries-wrapper__machinaries-details-wrapper"]
-          }
-        >
-          <div
-            className={
-              classes["machinaries-wrapper__machinaries-details__title"]
-            }
-          ></div>
-          <div
-            className={
-              classes[
-                "machinaries-wrapper__machinaries-details__info-container"
-              ]
-            }
-          >
-            <div
-              className={
-                classes[
-                  "machinaries-wrapper__machinaries-details__info-wrapper"
-                ]
-              }
-            >
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__category-wrapper"
-                  ]
-                }
-              >
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  Model:{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    {props.machine.model}
-                  </span>
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  Type:{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    {props.machine.type}
-                  </span>
-                </div>
-              </div>
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__priority-wrapper"
-                  ]
-                }
-              >
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__priority-title"
-                    ]
-                  }
-                >
-                  Current running (hr):{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    {props.machine.currentRunningHrs}
-                  </span>
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  Last service (hr):{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    3133
-                  </span>
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__category-title"
-                    ]
-                  }
-                >
-                  Inter service (hr):{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    13
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                classes[
-                  "machinaries-wrapper__machinaries-details__info-wrapper"
-                ]
-              }
-            >
-              <div
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-details__agent-wrapper"
-                  ]
-                }
-              >
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__agent-title"
-                    ]
-                  }
-                >
-                  Spare pr date:{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    12/2/2022
-                  </span>
-                </div>
-                <div
-                  className={
-                    classes[
-                      "machinaries-wrapper__machinaries-details__agent-title"
-                    ]
-                  }
-                >
-                  Spare pr status:{" "}
-                  <span
-                    className={
-                      classes[
-                        "machinaries-wrapper__machinaries-details__group-name"
-                      ]
-                    }
-                  >
-                    Status
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className={
-            classes["machinaries-wrapper__machinaries-activity-wrapper"]
-          }
-        >
-          <div
-            className={
-              classes[
-                "machinaries-wrapper__machinaries-activity__started-wrapper"
-              ]
-            }
-          >
-            <div
-              className={
-                classes["machinaries-wrapper__machinaries-activity__started"]
-              }
-            >
-              Estimated Completion:
-              <span
-                className={
-                  classes[
-                    "machinaries-wrapper__machinaries-activity__started-date"
-                  ]
-                }
-              >
-                11/11/2021
-              </span>
-            </div>
-            <div
-              className={
-                classes["machinaries-wrapper__machinaries-activity__status"]
-              }
-            >
-              Working
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+css
+
+
+.container {
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 5px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  transition: all 0.3s ease;
+}
+.container:hover {
+  background-color: #dcdcdc;
+  transform: translateX(6px);
+}
+.title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  padding-left: 5px;
+}
+
+.first-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 10px;
+}
+
+.second-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.third-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+.fourth-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fifth-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.first-wrapper,
+.second-wrapper {
+  display: flex;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.dash {
+  padding: 0 5px;
+}
+@media only screen and (min-width: 800px) {
+  .container {
+    flex-direction: row;
+    flex-grow: 1;
+    padding: 10px;
+  }
+  .first-wrapper {
+    justify-content: space-between;
+    padding-right: 20px;
+  }
+  .second-wrapper {
+    justify-content: space-between;
+  }
+  .first-block {
+    flex-grow: 1;
+  }
+  .second-block {
+    flex-grow: 1;
+  }
+  .third-block {
+    flex-grow: 1;
+    padding-top: 0;
+  }
+  .fourth-block {
+    flex-grow: 1;
+  }
+  .fifth-block {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: flex-end;
+  }
+}
+
 */

@@ -437,3 +437,34 @@ em {
   box-shadow: 0 0 0 2px rgba(24, 255, 139, 0.2) !important;
   border-color: var(--primary) !important;
 }
+
+#collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 0 !important;
+  padding-left: 5px !important;
+  border-bottom: 1px solid #ccc;
+}
+#collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+  display: inline-block;
+  margin-right: 0 !important;
+  font-size: 12px;
+  vertical-align: -1px;
+}
+
+#collapse .ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+  padding: 5px !important;
+}
+
+@media only screen and (min-width: 600px) {
+  #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding: 5px !important;
+  }
+  #collapse .ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+    padding: 10px !important;
+  }
+  #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+    display: inline-block;
+    margin-right: 12px !important;
+    font-size: 12px;
+    vertical-align: -1px;
+  }
+}

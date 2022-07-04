@@ -32,7 +32,10 @@ const Vessels = () => {
       status: any;
     }
   >({
-    ...DefaultPaginationArgs,
+    first: 20,
+    last: null,
+    before: null,
+    after: null,
     search: "",
     transportType: "Vessel",
     status: params.get("status"),
@@ -59,7 +62,7 @@ const Vessels = () => {
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
     if (!self.assignedPermission.hasViewAllVessels) {
-      navigate('/');
+      navigate("/");
       message.error("No permission to view all vessels.");
     }
     getAllTransportationVessels({ variables: filter });
@@ -77,7 +80,10 @@ const Vessels = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          ...DefaultPaginationArgs,
+          first: 20,
+          last: null,
+          before: null,
+          after: null,
         }));
         setPage(1);
       }, 500)
@@ -97,7 +103,7 @@ const Vessels = () => {
   const next = () => {
     setFilter({
       ...filter,
-      first: PAGE_LIMIT,
+      first: 20,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -108,7 +114,7 @@ const Vessels = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: PAGE_LIMIT,
+      last: 20,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -129,13 +135,13 @@ const Vessels = () => {
           onClick={() => setSearch("")}
         />
         <TransportationStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
-            }}
-            value={filter.status}
-            margin={filterMargin}
-          />
+          onChange={(status) => {
+            setFilter({ ...filter, status, ...DefaultPaginationArgs });
+            setPage(1);
+          }}
+          value={filter.status}
+          margin={filterMargin}
+        />
         <div className={classes["add-wrapper"]}>
           <AddTransportation />
         </div>
@@ -145,19 +151,23 @@ const Vessels = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportationVessels.edges.map((rec: { node: Transportation }) => {
-        const transportation = rec.node;
-        return (
-          <Link to={"/transportation/" + transportation.id} key={transportation.id}>
-            <TransportationCard transportation={transportation} />
-          </Link>
-        );
-      })}
+      {data?.getAllTransportationVessels.edges.map(
+        (rec: { node: Transportation }) => {
+          const transportation = rec.node;
+          return (
+            <TransportationCard
+              transportation={transportation}
+              key={transportation.id}
+            />
+          );
+        }
+      )}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}
         next={next}
         back={back}
+        pageLimit={20}
       />
     </div>
   );

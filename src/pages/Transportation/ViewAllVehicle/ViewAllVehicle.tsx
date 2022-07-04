@@ -32,7 +32,10 @@ const Vehicles = () => {
       status: any;
     }
   >({
-    ...DefaultPaginationArgs,
+    first: 20,
+    last: null,
+    before: null,
+    after: null,
     search: "",
     transportType: "Vehicle",
     status: params.get("status"),
@@ -77,7 +80,10 @@ const Vehicles = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          ...DefaultPaginationArgs,
+          first: 20,
+          last: null,
+          before: null,
+          after: null,
         }));
         setPage(1);
       }, 500)
@@ -97,7 +103,7 @@ const Vehicles = () => {
   const next = () => {
     setFilter({
       ...filter,
-      first: PAGE_LIMIT,
+      first: 20,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -108,7 +114,7 @@ const Vehicles = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: PAGE_LIMIT,
+      last: 20,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -149,12 +155,10 @@ const Vehicles = () => {
         (rec: { node: Transportation }) => {
           const transportation = rec.node;
           return (
-            <Link
-              to={"/transportation/" + transportation.id}
+            <TransportationCard
+              transportation={transportation}
               key={transportation.id}
-            >
-              <TransportationCard transportation={transportation} />
-            </Link>
+            />
           );
         }
       )}
@@ -163,6 +167,7 @@ const Vehicles = () => {
         page={page}
         next={next}
         back={back}
+        pageLimit={20}
       />
     </div>
   );
