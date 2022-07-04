@@ -31,7 +31,7 @@ const ViewChecklist = ({
   isDeleted,
 }: {
   machineData: Machine;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const [checkboxState, setCheckboxState] = useState<any>([]);

@@ -28,7 +28,6 @@ import MachineAssignment from "../../../components/MachineComponents/MachineAssi
 import { UNASSIGN_USER_FROM_MACHINE } from "../../../api/mutations";
 import MachineUsageHistory from "../../../components/MachineComponents/MachineUsageHistory/MachineUsageHistory";
 import EditMachineUsage from "../../../components/MachineComponents/EditMachineUsage/EditMachineUsage";
-import axios from "axios";
 import GetLatestMachineImage from "../../../components/MachineComponents/GetLatestMachineImage/GetLatestMachineImage";
 import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
 

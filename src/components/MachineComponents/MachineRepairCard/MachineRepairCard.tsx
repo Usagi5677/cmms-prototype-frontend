@@ -15,7 +15,7 @@ const MachineRepairCard = ({
   isDeleted,
 }: {
   repair: Repair;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   return (

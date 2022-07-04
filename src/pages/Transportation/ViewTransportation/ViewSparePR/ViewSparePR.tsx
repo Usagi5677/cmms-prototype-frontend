@@ -30,7 +30,7 @@ const ViewSparePR = ({
       transportationId: number;
     }
   >({
-    first: 3,
+    first: 5,
     last: null,
     before: null,
     after: null,
@@ -66,7 +66,7 @@ const ViewSparePR = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
-          first: 3,
+          first: 5,
           last: null,
           before: null,
           after: null,
@@ -89,7 +89,7 @@ const ViewSparePR = ({
   const next = () => {
     setFilter({
       ...filter,
-      first: 3,
+      first: 5,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -100,7 +100,7 @@ const ViewSparePR = ({
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 5,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -142,7 +142,7 @@ const ViewSparePR = ({
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={5}
       />
     </div>
   );

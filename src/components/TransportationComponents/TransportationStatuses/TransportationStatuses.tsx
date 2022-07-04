@@ -18,7 +18,7 @@ const TransportationStatuses = ({
 }: {
   transportationID: number;
   transportationStatus: TransportationStatus;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setTransportationStatus, { loading: settingStatus }] = useMutation(
     SET_TRANSPORTATION_STATUS,

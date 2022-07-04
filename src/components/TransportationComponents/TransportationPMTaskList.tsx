@@ -16,7 +16,7 @@ export interface TaskListProps {
   periodicMaintenance: TransportationPeriodicMaintenance;
   tasks: TransportationPMTask[];
   level: number;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }
 
 export const TransportationPMTaskList: React.FC<TaskListProps> = ({

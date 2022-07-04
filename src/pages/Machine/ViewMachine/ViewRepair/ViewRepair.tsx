@@ -16,7 +16,7 @@ const ViewRepair = ({
   isDeleted,
 }: {
   machineID: number;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -29,7 +29,7 @@ const ViewRepair = ({
       machineId: number;
     }
   >({
-    first: 3,
+    first: 5,
     last: null,
     before: null,
     after: null,
@@ -65,7 +65,7 @@ const ViewRepair = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
-          first: 3,
+          first: 5,
           last: null,
           before: null,
           after: null,
@@ -88,7 +88,7 @@ const ViewRepair = ({
   const next = () => {
     setFilter({
       ...filter,
-      first: 3,
+      first: 5,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -99,7 +99,7 @@ const ViewRepair = ({
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 5,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -139,7 +139,7 @@ const ViewRepair = ({
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={5}
       />
     </div>
   );

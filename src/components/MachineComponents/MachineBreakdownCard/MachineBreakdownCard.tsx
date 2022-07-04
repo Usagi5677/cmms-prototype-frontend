@@ -15,7 +15,7 @@ const MachineBreakdownCard = ({
   isDeleted,
 }: {
   breakdown: Breakdown;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   return (

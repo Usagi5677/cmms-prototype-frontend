@@ -11,7 +11,7 @@ const MachineSparePRStatus = ({
   isDeleted,
 }: {
   sparePR: SparePR;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setMachineSparePRStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_SPARE_PR_STATUS,

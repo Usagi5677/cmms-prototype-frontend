@@ -11,7 +11,7 @@ const TransportationBreakdownStatus = ({
   isDeleted,
 }: {
   breakdown: Breakdown;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setTransportationBreakdownStatus, { loading: settingStatus }] =
     useMutation(SET_TRANSPORTATION_BREAKDOWN_STATUS, {

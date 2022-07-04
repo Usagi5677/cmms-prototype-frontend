@@ -16,7 +16,7 @@ const ViewGallery = ({
   isDeleted,
 }: {
   transportationID: number;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);

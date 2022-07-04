@@ -18,7 +18,7 @@ const MachineStatuses = ({
 }: {
   machineID: number;
   machineStatus: MachineStatus;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setMachineStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_STATUS,

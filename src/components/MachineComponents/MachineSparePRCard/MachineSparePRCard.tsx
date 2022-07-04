@@ -15,7 +15,7 @@ const MachineSparePRCard = ({
   isDeleted,
 }: {
   sparePR: SparePR;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   return (

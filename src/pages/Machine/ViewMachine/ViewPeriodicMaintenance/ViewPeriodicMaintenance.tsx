@@ -24,7 +24,7 @@ const ViewPeriodicMaintenance = ({
   machineID: number;
   value?: number;
   measurement?: string;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -37,7 +37,7 @@ const ViewPeriodicMaintenance = ({
       machineId: number;
     }
   >({
-    first: 3,
+    first: 5,
     last: null,
     before: null,
     after: null,
@@ -73,7 +73,7 @@ const ViewPeriodicMaintenance = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
-          first: 3,
+          first: 5,
           last: null,
           before: null,
           after: null,
@@ -96,7 +96,7 @@ const ViewPeriodicMaintenance = ({
   const next = () => {
     setFilter({
       ...filter,
-      first: 3,
+      first: 5,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -107,7 +107,7 @@ const ViewPeriodicMaintenance = ({
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 5,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -120,7 +120,7 @@ const ViewPeriodicMaintenance = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd && !isDeleted ? (
+        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd && isDeleted ? (
           <AddMachinePeriodicMaintenance
             machineID={machineID}
             value={value}
@@ -153,7 +153,7 @@ const ViewPeriodicMaintenance = ({
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={5}
       />
     </div>
   );

@@ -18,7 +18,7 @@ const TransportationPeriodicMaintenanceCard = ({
   isDeleted,
 }: {
   periodicMaintenance: PeriodicMaintenance;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const taskData = periodicMaintenance?.transportationPeriodicMaintenanceTask!;
@@ -96,7 +96,8 @@ const TransportationPeriodicMaintenanceCard = ({
         </div>
       </div>
       <div className={classes["task-progress"]}>Task Progress</div>
-      {periodicMaintenance.transportationPeriodicMaintenanceTask!.length > 0 && (
+      {periodicMaintenance.transportationPeriodicMaintenanceTask!.length >
+        0 && (
         <Progress
           percent={progressPercentage}
           strokeWidth={5}
@@ -109,11 +110,13 @@ const TransportationPeriodicMaintenanceCard = ({
         level={0}
         isDeleted={isDeleted}
       />
-      <div style={{ marginTop: ".5rem", fontSize: 14 }}>
-        <AddTransportationPeriodicMaintenanceTask
-          periodicMaintenance={periodicMaintenance}
-        />
-      </div>
+      {!isDeleted && (
+        <div style={{ marginTop: ".5rem", fontSize: 14 }}>
+          <AddTransportationPeriodicMaintenanceTask
+            periodicMaintenance={periodicMaintenance}
+          />
+        </div>
+      )}
     </div>
   );
 };

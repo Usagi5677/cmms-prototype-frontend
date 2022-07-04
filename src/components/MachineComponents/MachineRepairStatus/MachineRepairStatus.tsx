@@ -11,7 +11,7 @@ const MachineRepairStatus = ({
   isDeleted,
 }: {
   repair: Repair;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setMachineRepairStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_REPAIR_STATUS,

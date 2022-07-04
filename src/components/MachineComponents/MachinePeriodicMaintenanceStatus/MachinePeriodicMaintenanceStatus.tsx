@@ -12,7 +12,7 @@ const MachinePeriodicMaintenanceStatus = ({
   isDeleted,
 }: {
   periodicMaintenance: PeriodicMaintenance;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setMachinePeriodicMaintenanceStatus, { loading: settingStatus }] =
     useMutation(SET_MACHINE_PERIODIC_MAINTENANCE_STATUS, {

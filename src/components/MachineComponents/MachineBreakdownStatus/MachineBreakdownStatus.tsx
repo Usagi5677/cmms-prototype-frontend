@@ -11,7 +11,7 @@ const MachineBreakdownStatus = ({
   isDeleted,
 }: {
   breakdown: Breakdown;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setMachineBreakdownStatus, { loading: settingStatus }] = useMutation(
     SET_MACHINE_BREAKDOWN_STATUS,

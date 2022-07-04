@@ -186,19 +186,6 @@ const ViewTransportation = () => {
                 {transportationData?.location}
               </span>
             </div>
-            <div className={classes["info-btn-wrapper"]}>
-              {self.assignedPermission.hasEditTransportationUsage ? (
-                <EditTransportationUsage transportation={transportationData} />
-              ) : null}
-              {self.assignedPermission.hasTransportationEdit ? (
-                <EditTransportation transportation={transportationData} />
-              ) : null}
-              {self.assignedPermission.hasTransportationDelete ? (
-                <DeleteTransportation
-                  transportationID={transportationData?.id}
-                />
-              ) : null}
-            </div>
           </div>
           <div className={classes["title-wrapper"]}>
             <FaTractor />

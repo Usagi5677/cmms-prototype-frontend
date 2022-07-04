@@ -20,7 +20,7 @@ const ParsedTransportationAttachment = ({
   isDeleted,
 }: {
   attachmentData: TransportationAttachment;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;

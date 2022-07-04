@@ -11,7 +11,7 @@ const TransportationRepairStatus = ({
   isDeleted,
 }: {
   repair: Repair;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [setTransportationRepairStatus, { loading: settingStatus }] =
     useMutation(SET_TRANSPORTATION_REPAIR_STATUS, {

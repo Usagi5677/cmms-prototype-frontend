@@ -17,7 +17,7 @@ const MachinePeriodicMaintenanceCard = ({
   isDeleted,
 }: {
   periodicMaintenance: PeriodicMaintenance;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -82,16 +82,17 @@ const MachinePeriodicMaintenanceCard = ({
           </div>
         </div>
         <div className={classes["fourth-block"]}>
-          {self.assignedPermission.hasMachinePeriodicMaintenanceEdit && !isDeleted ? (
+          {self.assignedPermission.hasMachinePeriodicMaintenanceEdit &&
+          !isDeleted ? (
             <EditMachinePeriodicMaintenance
               periodicMaintenance={periodicMaintenance}
             />
           ) : null}
-          {self.assignedPermission.hasMachinePeriodicMaintenanceDelete && !isDeleted ? (
+          {self.assignedPermission.hasMachinePeriodicMaintenanceDelete &&
+          !isDeleted ? (
             <DeleteMachinePeriodicMaintenance id={periodicMaintenance?.id} />
           ) : null}
         </div>
-        
       </div>
       <div className={classes["task-progress"]}>Task Progress</div>
       {periodicMaintenance.machinePeriodicMaintenanceTask!.length > 0 && (
@@ -107,9 +108,13 @@ const MachinePeriodicMaintenanceCard = ({
         level={0}
         isDeleted={isDeleted}
       />
-      <div style={{ marginTop: ".5rem", fontSize: 14 }}>
-        <AddPeriodicMaintenanceTask periodicMaintenance={periodicMaintenance} />
-      </div>
+      {!isDeleted && (
+        <div style={{ marginTop: ".5rem", fontSize: 14 }}>
+          <AddPeriodicMaintenanceTask
+            periodicMaintenance={periodicMaintenance}
+          />
+        </div>
+      )}
     </div>
   );
 };
