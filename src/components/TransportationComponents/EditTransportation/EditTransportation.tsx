@@ -29,7 +29,7 @@ const EditTransportation = ({
   isDeleted,
 }: {
   transportation: Transportation;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();

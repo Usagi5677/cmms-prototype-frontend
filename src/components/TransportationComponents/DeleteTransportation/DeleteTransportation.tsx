@@ -11,7 +11,7 @@ const DeleteTransportation = ({
   isDeleted,
 }: {
   transportationID: number;
-  isDeleted: boolean | undefined;
+  isDeleted?: boolean | undefined;
 }) => {
   const navigate = useNavigate();
 
