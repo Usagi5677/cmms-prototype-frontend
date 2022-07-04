@@ -38,6 +38,7 @@ export const ALL_MACHINES = gql`
     $search: String
     $assignedToId: Int
     $status: MachineStatus
+    $location: String
   ) {
     getAllMachine(
       after: $after
@@ -47,6 +48,7 @@ export const ALL_MACHINES = gql`
       search: $search
       assignedToId: $assignedToId
       status: $status
+      location: $location
     ) {
       pageInfo {
         endCursor
@@ -409,6 +411,7 @@ export const ALL_TRANSPORTATION_VESSELS = gql`
     $transportType: String
     $assignedToId: Int
     $status: TransportationStatus
+    $location: String
   ) {
     getAllTransportationVessels(
       after: $after
@@ -420,6 +423,7 @@ export const ALL_TRANSPORTATION_VESSELS = gql`
       transportType: $transportType
       assignedToId: $assignedToId
       status: $status
+      location: $location
     ) {
       pageInfo {
         endCursor
@@ -449,6 +453,7 @@ export const ALL_TRANSPORTATION_VEHICLES = gql`
     $transportType: String
     $assignedToId: Int
     $status: TransportationStatus
+    $location: String
   ) {
     getAllTransportationVehicles(
       after: $after
@@ -460,6 +465,7 @@ export const ALL_TRANSPORTATION_VEHICLES = gql`
       transportType: $transportType
       assignedToId: $assignedToId
       status: $status
+      location: $location
     ) {
       pageInfo {
         endCursor

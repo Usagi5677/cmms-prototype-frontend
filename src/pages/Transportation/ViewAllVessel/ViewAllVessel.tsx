@@ -1,4 +1,4 @@
-import { message, Spin } from "antd";
+import { message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -7,7 +7,7 @@ import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { ALL_TRANSPORTATION_VESSELS } from "../../../api/queries";
-import { PAGE_LIMIT } from "../../../helpers/constants";
+import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
 import Transportation from "../../../models/Transportation";
@@ -23,6 +23,7 @@ const Vessels = () => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
+  const [location, setLocation] = useState("");
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -30,6 +31,7 @@ const Vessels = () => {
       search: string;
       transportType: string;
       status: any;
+      location: string;
     }
   >({
     first: 20,
@@ -37,6 +39,7 @@ const Vessels = () => {
     before: null,
     after: null,
     search: "",
+    location: "",
     transportType: "Vessel",
     status: params.get("status"),
   });
@@ -72,7 +75,7 @@ const Vessels = () => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string) => {
+  const searchDebounced = (value: string, locationValue: string) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -80,6 +83,7 @@ const Vessels = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
+          location: locationValue,
           first: 20,
           last: null,
           before: null,
@@ -95,9 +99,9 @@ const Vessels = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search);
+    searchDebounced(search, location);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, location]);
 
   // Pagination functions
   const next = () => {
@@ -126,6 +130,14 @@ const Vessels = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
@@ -134,13 +146,20 @@ const Vessels = () => {
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
         />
+        <Select
+          showArrow
+          className={classes["location"]}
+          onChange={(value) => setLocation(value)}
+          showSearch
+          options={options}
+          placeholder={"Location"}
+        />
         <TransportationStatusFilter
           onChange={(status) => {
             setFilter({ ...filter, status, ...DefaultPaginationArgs });
             setPage(1);
           }}
           value={filter.status}
-          margin={filterMargin}
         />
         <div className={classes["add-wrapper"]}>
           <AddTransportation />

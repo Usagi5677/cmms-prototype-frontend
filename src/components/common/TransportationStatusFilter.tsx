@@ -15,8 +15,6 @@ const TransportationStatusFilter = ({
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
-        borderRadius: 20,
         padding: "1px 5px 1px 5px",
         margin,
         alignItems: "center",
@@ -25,7 +23,6 @@ const TransportationStatusFilter = ({
       <Select
         showArrow
         style={{ minWidth: 179 }}
-        bordered={false}
         placeholder="Filter status"
         onChange={onChange}
         allowClear={true}
