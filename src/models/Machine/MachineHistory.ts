@@ -1,12 +1,18 @@
+import { MachineStatus } from "../Enums";
 import User from "../User";
 
 export default interface MachineHistory {
   id: number;
-  machineId: number;
+  createdAt: Date;
   type: string;
   description: string;
-  createdAt: Date;
-  completedById: number;
+  machineId?: number;
   completedBy?: User;
+  completedById?: number;
+  machineStatus: MachineStatus;
+  machineType: string;
+  breakdownHour: number;
+  idleHour: number;
+  workingHour: number;
   location: string;
 }

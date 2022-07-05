@@ -1019,3 +1019,60 @@ export const GET_TRANSPORTATION_LATEST_ATTACHMENT = gql`
     }
   }
 `;
+
+export const ALL_MACHINE_UTILIZATION = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllMachineUtilization(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $location: String
+  ) {
+    getAllMachineUtilization(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      location: $location
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineNumber
+          model
+          type
+          zone
+          location
+          isDeleted
+          deletedAt
+          histories {
+            id
+            createdAt
+            machineId
+            type
+            description
+            completedBy {
+              ...UserFieldsAPS
+            }
+            machineStatus
+            machineType
+            breakdownHour
+            idleHour
+            workingHour
+            location
+          }
+        }
+      }
+    }
+  }
+`;

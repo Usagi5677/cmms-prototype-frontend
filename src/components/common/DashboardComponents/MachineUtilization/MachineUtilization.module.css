@@ -1,0 +1,130 @@
+.container {
+  width: 100%;
+  min-height: 500px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px;
+}
+
+.options-wrapper {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-machine-wrapper {
+  padding-top: 10px;
+}
+
+.location {
+  width: 190px;
+  margin: 10px 0 !important;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  font-size: 12px;
+  position: relative;
+  padding: 0 5px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 2px 4px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background-color: #dcdcdc;
+  transform: translateX(6px);
+}
+
+.dash {
+  padding: 0 5px;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.location-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.service-reading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex: 2;
+  padding: 5px 0;
+}
+
+.reading {
+  margin-right: 10px;
+}
+
+.reading-title {
+  opacity: 0.5;
+  display: inline-block;
+  padding-right: 5px;
+}
+.title {
+  padding-left: 5px;
+}
+
+.first-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.button {
+  line-height: 12px;
+  width: 18px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.button:hover {
+  color: var(--primary);
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+@media only screen and (min-width: 600px) {
+  .service-reading-wrapper {
+    flex-direction: row;
+    padding: 0;
+  }
+  .first-block {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+  .add-machine-wrapper {
+    padding-top: 0;
+  }
+}

@@ -25,7 +25,7 @@ const Search = ({
         margin,
       }}
     >
-      <FaSearch style={{ color: "#ccc", paddingRight: 5, fontSize: 25 }} />
+      <FaSearch style={{ color: "#ccc", paddingRight: 5, fontSize: 20 }} />
       <input
         type="text"
         name=""

@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
-import { ME_QUERY } from "../../api/queries";
 import classes from "./Dashboard.module.css";
 import { permissionExist } from "../../helpers/assignPermission";
+import MachineUtilization from "../../components/common/DashboardComponents/MachineUtilization/MachineUtilization";
 
 const assignedPermission = permissionExist;
 const Dashboard = () => {
@@ -17,10 +17,20 @@ const Dashboard = () => {
   // console.log(hasManyPermissions)
 
   const { user } = useContext(UserContext);
-  return <div className={classes["ticket-dashboard-container"]}>
-    {user?.assignedPermission?.hasMachineAssignmentToUser ? <div>Supervisor</div> : <div>Engineer</div>}
-  </div>;
-  
+  return (
+    <>
+      <div className={classes["ticket-dashboard-container"]}>
+        {user?.assignedPermission?.hasMachineAssignmentToUser ? (
+          <div>Supervisor</div>
+        ) : (
+          <div>Engineer</div>
+        )}
+      </div>
+      <div className={classes["utilization"]}>
+          <MachineUtilization/>
+      </div>
+    </>
+  );
 };
 
 export default Dashboard;
