@@ -120,7 +120,7 @@ const ViewPeriodicMaintenance = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd && isDeleted ? (
+        {self.assignedPermission.hasMachinePeriodicMaintenanceAdd && !isDeleted ? (
           <AddMachinePeriodicMaintenance
             machineID={machineID}
             value={value}
