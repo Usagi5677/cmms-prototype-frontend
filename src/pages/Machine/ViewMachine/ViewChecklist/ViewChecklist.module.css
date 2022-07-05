@@ -40,8 +40,20 @@
   overflow-y: auto;
 }
 
+.border {
+  border: 1px solid #ccc;
+  padding: 0 5px;
+}
 
-
+.content-title + .border {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-top: 5px;
+}
+.border:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
 .checkbox-container {
   display: flex;
   justify-content: space-between;
@@ -52,7 +64,7 @@
 }
 
 .completedAt {
-  font-size: 10;
+  font-size: 10px;
   opacity: 0.5;
   display: inline-block;
 }
@@ -72,7 +84,6 @@
 .delete:hover {
   color: #ff4d4f;
 }
-
 
 .custom-btn-primary {
   width: 100% !important;
@@ -98,9 +109,19 @@
   margin-right: 10px;
 }
 
+.description {
+  font-size: 10px;
+}
+
 @media only screen and (min-width: 600px) {
   .options {
     flex-direction: row;
+  }
+  .description {
+    font-size: 12px;
+  }
+  .completedAt {
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 800px) {
@@ -121,6 +142,7 @@
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 0;
   }
-
-  
+  .description {
+    font-size: 14px;
+  }
 }

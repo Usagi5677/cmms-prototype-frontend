@@ -18,10 +18,10 @@ import classes from "./ViewChecklist.module.css";
 
 const ViewChecklist = ({
   transportationData,
-  isDeleted
+  isDeleted,
 }: {
   transportationData: Transportation;
-  isDeleted?: boolean | undefined
+  isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
   const [checkboxState, setCheckboxState] = useState<any>([]);
@@ -48,7 +48,7 @@ const ViewChecklist = ({
       refetchQueries: [
         "getSingleTransportation",
         "getAllHistoryOfTransportation",
-        "singleTransportationUsageHistory"
+        "singleTransportationUsageHistory",
       ],
     });
 
@@ -56,7 +56,7 @@ const ViewChecklist = ({
     const { currentMeterReading, workingHour } = values;
 
     if (!currentMeterReading) {
-      message.error("Please enter the Current Meter Reading.");
+      message.error("Please enter the Current Running hour.");
       return;
     }
     if (!workingHour) {
@@ -78,6 +78,7 @@ const ViewChecklist = ({
     });
     setCheckboxState([]);
     setUncheckboxState([]);
+    form.resetFields();
   };
 
   const onClickCheckbox = (checkbox: any, valueOfCheckbox: any) => {
@@ -112,7 +113,7 @@ const ViewChecklist = ({
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the current meter reading.",
+                    message: "Please enter the current running hour.",
                   },
                 ]}
               >
@@ -165,68 +166,65 @@ const ViewChecklist = ({
           <div className={classes["content-title"]}>Daily</div>
           {transportationData?.checklistItems.map((item) =>
             item.type === "Daily" ? (
-              <div className={classes["checkbox-container"]} key={item.id}>
-                {self.assignedPermission.hasTransportationChecklistEdit ? (
-                  <Checkbox
-                    defaultChecked={item.completedAt !== null}
-                    onChange={(e) => onClickCheckbox(e, item.id)}
-                    className={classes["checkbox"]}
-                    disabled={isDeleted}
-                  >
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </Checkbox>
-                ) : (
-                  <div>
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                <div className={classes["deleteWrapper"]}>
-                  {(deleting || toggling) && (
-                    <Spin style={{ marginRight: 5 }} size="small" />
-                  )}
-                  {!deleting && (
-                    <div>
-                      {self.assignedPermission
-                        .hasTransportationChecklistDelete && !isDeleted ? (
-                        <CloseCircleOutlined
-                          className={classes["delete"]}
-                          onClick={() => {
-                            deleteTransportationChecklistItem({
-                              variables: {
-                                id: item.id,
-                              },
-                            });
-                          }}
-                        />
-                      ) : null}
+              <div className={classes["border"]} key={item.id}>
+                <div className={classes["checkbox-container"]}>
+                  {self.assignedPermission?.hasTransportationChecklistEdit ? (
+                    <Checkbox
+                      defaultChecked={item.completedAt !== null}
+                      onChange={(e) => onClickCheckbox(e, item.id)}
+                      className={classes["checkbox"]}
+                      disabled={isDeleted}
+                    >
+                      <div className={classes["description"]}>
+                        {item.description}
+                      </div>
+                    </Checkbox>
+                  ) : (
+                    <div className={classes["description"]}>
+                      {item.description}
                     </div>
                   )}
+
+                  <div className={classes["deleteWrapper"]}>
+                    {(deleting || toggling) && (
+                      <Spin style={{ marginRight: 5 }} size="small" />
+                    )}
+                    {!deleting && (
+                      <div>
+                        {self.assignedPermission
+                          ?.hasTransportationChecklistDelete && !isDeleted ? (
+                          <CloseCircleOutlined
+                            className={classes["delete"]}
+                            onClick={() => {
+                              deleteTransportationChecklistItem({
+                                variables: {
+                                  id: item.id,
+                                },
+                              });
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {item.completedAt && (
+                  <span className={classes["completedAt"]}>
+                    {item.completedAt && (
+                      <span
+                        title={moment(item.completedAt).format(
+                          DATETIME_FORMATS.FULL
+                        )}
+                      >
+                        {moment(item.completedAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    )}{" "}
+                    • Completed by {item.completedBy?.fullName} (
+                    {item.completedBy?.rcno})
+                  </span>
+                )}
               </div>
             ) : null
           )}
@@ -235,68 +233,65 @@ const ViewChecklist = ({
           <div className={classes["content-title"]}>Weekly</div>
           {transportationData?.checklistItems.map((item) =>
             item.type === "Weekly" ? (
-              <div className={classes["checkbox-container"]} key={item.id}>
-                {self.assignedPermission.hasTransportationChecklistEdit ? (
-                  <Checkbox
-                    defaultChecked={item.completedAt !== null}
-                    onChange={(e) => onClickCheckbox(e, item.id)}
-                    className={classes["checkbox"]}
-                    disabled={isDeleted}
-                  >
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </Checkbox>
-                ) : (
-                  <div>
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                <div className={classes["deleteWrapper"]}>
-                  {(deleting || toggling) && (
-                    <Spin style={{ marginRight: 5 }} size="small" />
-                  )}
-                  {!deleting && (
-                    <div>
-                      {self.assignedPermission
-                        .hasTransportationChecklistDelete && !isDeleted ? (
-                        <CloseCircleOutlined
-                          className={classes["delete"]}
-                          onClick={() => {
-                            deleteTransportationChecklistItem({
-                              variables: {
-                                id: item.id,
-                              },
-                            });
-                          }}
-                        />
-                      ) : null}
+              <div className={classes["border"]} key={item.id}>
+                <div className={classes["checkbox-container"]}>
+                  {self.assignedPermission?.hasTransportationChecklistEdit ? (
+                    <Checkbox
+                      defaultChecked={item.completedAt !== null}
+                      onChange={(e) => onClickCheckbox(e, item.id)}
+                      className={classes["checkbox"]}
+                      disabled={isDeleted}
+                    >
+                      <div className={classes["description"]}>
+                        {item.description}
+                      </div>
+                    </Checkbox>
+                  ) : (
+                    <div className={classes["description"]}>
+                      {item.description}
                     </div>
                   )}
+
+                  <div className={classes["deleteWrapper"]}>
+                    {(deleting || toggling) && (
+                      <Spin style={{ marginRight: 5 }} size="small" />
+                    )}
+                    {!deleting && (
+                      <div>
+                        {self.assignedPermission
+                          ?.hasTransportationChecklistDelete && !isDeleted ? (
+                          <CloseCircleOutlined
+                            className={classes["delete"]}
+                            onClick={() => {
+                              deleteTransportationChecklistItem({
+                                variables: {
+                                  id: item.id,
+                                },
+                              });
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {item.completedAt && (
+                  <span className={classes["completedAt"]}>
+                    {item.completedAt && (
+                      <span
+                        title={moment(item.completedAt).format(
+                          DATETIME_FORMATS.FULL
+                        )}
+                      >
+                        {moment(item.completedAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    )}{" "}
+                    • Completed by {item.completedBy?.fullName} (
+                    {item.completedBy?.rcno})
+                  </span>
+                )}
               </div>
             ) : null
           )}

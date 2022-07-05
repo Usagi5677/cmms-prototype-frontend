@@ -67,7 +67,7 @@ const ViewChecklist = ({
     const { currentMeterReading, workingHour } = values;
 
     if (!currentMeterReading) {
-      message.error("Please enter the Current Meter Reading.");
+      message.error("Please enter the Current Running Hour.");
       return;
     }
     if (!workingHour) {
@@ -89,6 +89,7 @@ const ViewChecklist = ({
     });
     setCheckboxState([]);
     setUncheckboxState([]);
+    form.resetFields();
   };
 
   const onClickCheckbox = (checkbox: any, valueOfCheckbox: any) => {
@@ -125,7 +126,7 @@ const ViewChecklist = ({
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the current meter reading.",
+                    message: "Please enter the current running hour.",
                   },
                 ]}
               >
@@ -177,72 +178,65 @@ const ViewChecklist = ({
 
           {machineData?.checklistItems.map((item) =>
             item.type === "Daily" ? (
-              <div className={classes["checkbox-container"]} key={item.id}>
-                {self.assignedPermission.hasMachineChecklistEdit ? (
-                  <Checkbox
-                    defaultChecked={item.completedAt !== null}
-                    onChange={(e) => onClickCheckbox(e, item.id)}
-                    className={classes["checkbox"]}
-                    disabled={isDeleted}
-                  >
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </Checkbox>
-                ) : (
-                  <div>
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                <div className={classes["deleteWrapper"]}>
-                  {(deleting || toggling) && (
-                    <Spin style={{ marginRight: 5 }} size="small" />
-                  )}
-                  {!deleting && (
-                    <div>
-                      {self.assignedPermission.hasMachineChecklistDelete ? (
-                        <CloseCircleOutlined
-                          className={classes["delete"]}
-                          onClick={() => {
-                            deleteMachineChecklistItem({
-                              variables: {
-                                id: item.id,
-                              },
-                            });
-                          }}
-                          style={{
-                            pointerEvents: isDeleted ? "none" : "auto",
-                            color: isDeleted ? "grey" : "inherit"
-                          }}
-                          disabled={isDeleted}
-                        />
-                      ) : null}
+              <div className={classes["border"]} key={item.id}>
+                <div className={classes["checkbox-container"]}>
+                  {self.assignedPermission?.hasMachineChecklistEdit ? (
+                    <Checkbox
+                      defaultChecked={item.completedAt !== null}
+                      onChange={(e) => onClickCheckbox(e, item.id)}
+                      className={classes["checkbox"]}
+                      disabled={isDeleted}
+                    >
+                      <div className={classes["description"]}>
+                        {item.description}
+                      </div>
+                    </Checkbox>
+                  ) : (
+                    <div className={classes["description"]}>
+                      {item.description}
                     </div>
                   )}
+
+                  <div className={classes["deleteWrapper"]}>
+                    {(deleting || toggling) && (
+                      <Spin style={{ marginRight: 5 }} size="small" />
+                    )}
+                    {!deleting && (
+                      <div>
+                        {self.assignedPermission?.hasMachineChecklistDelete &&
+                        !isDeleted ? (
+                          <CloseCircleOutlined
+                            className={classes["delete"]}
+                            onClick={() => {
+                              deleteMachineChecklistItem({
+                                variables: {
+                                  id: item.id,
+                                },
+                              });
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {item.completedAt && (
+                  <span className={classes["completedAt"]}>
+                    {item.completedAt && (
+                      <span
+                        title={moment(item.completedAt).format(
+                          DATETIME_FORMATS.FULL
+                        )}
+                      >
+                        {moment(item.completedAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    )}{" "}
+                    • Completed by {item.completedBy?.fullName} (
+                    {item.completedBy?.rcno})
+                  </span>
+                )}
               </div>
             ) : null
           )}
@@ -251,72 +245,65 @@ const ViewChecklist = ({
           <div className={classes["content-title"]}>Weekly</div>
           {machineData?.checklistItems.map((item) =>
             item.type === "Weekly" ? (
-              <div className={classes["checkbox-container"]} key={item.id}>
-                {self.assignedPermission.hasMachineChecklistEdit ? (
-                  <Checkbox
-                    defaultChecked={item.completedAt !== null}
-                    onChange={(e) => onClickCheckbox(e, item.id)}
-                    className={classes["checkbox"]}
-                    disabled={isDeleted}
-                  >
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </Checkbox>
-                ) : (
-                  <div>
-                    {item.description}{" "}
-                    {item.completedAt && (
-                      <span
-                        className={classes["completedAt"]}
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                <div className={classes["deleteWrapper"]}>
-                  {(deleting || toggling) && (
-                    <Spin style={{ marginRight: 5 }} size="small" />
-                  )}
-                  {!deleting && (
-                    <div>
-                      {self.assignedPermission.hasMachineChecklistDelete ? (
-                        <CloseCircleOutlined
-                          className={classes["delete"]}
-                          onClick={() => {
-                            deleteMachineChecklistItem({
-                              variables: {
-                                id: item.id,
-                              },
-                            });
-                          }}
-                          style={{
-                            pointerEvents: isDeleted ? "none" : "auto",
-                            color: isDeleted ? "grey" : "inherit"
-                          }}
-                          disabled={isDeleted}
-                        />
-                      ) : null}
+              <div className={classes["border"]} key={item.id}>
+                <div className={classes["checkbox-container"]}>
+                  {self.assignedPermission?.hasMachineChecklistEdit ? (
+                    <Checkbox
+                      defaultChecked={item.completedAt !== null}
+                      onChange={(e) => onClickCheckbox(e, item.id)}
+                      className={classes["checkbox"]}
+                      disabled={isDeleted}
+                    >
+                      <div className={classes["description"]}>
+                        {item.description}
+                      </div>
+                    </Checkbox>
+                  ) : (
+                    <div className={classes["description"]}>
+                      {item.description}
                     </div>
                   )}
+
+                  <div className={classes["deleteWrapper"]}>
+                    {(deleting || toggling) && (
+                      <Spin style={{ marginRight: 5 }} size="small" />
+                    )}
+                    {!deleting && (
+                      <div>
+                        {self.assignedPermission?.hasMachineChecklistDelete &&
+                        !isDeleted ? (
+                          <CloseCircleOutlined
+                            className={classes["delete"]}
+                            onClick={() => {
+                              deleteMachineChecklistItem({
+                                variables: {
+                                  id: item.id,
+                                },
+                              });
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {item.completedAt && (
+                  <span className={classes["completedAt"]}>
+                    {item.completedAt && (
+                      <span
+                        title={moment(item.completedAt).format(
+                          DATETIME_FORMATS.FULL
+                        )}
+                      >
+                        {moment(item.completedAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    )}{" "}
+                    • Completed by {item.completedBy?.fullName} (
+                    {item.completedBy?.rcno})
+                  </span>
+                )}
               </div>
             ) : null
           )}

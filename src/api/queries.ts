@@ -81,9 +81,6 @@ export const GET_SINGLE_MACHINE = gql`
           ...UserFieldsAPS
         }
       }
-      assignees {
-        ...UserFieldsAPS
-      }
     }
   }
 `;
@@ -497,9 +494,6 @@ export const GET_SINGLE_TRANSPORTATION = gql`
         completedBy {
           ...UserFieldsAPS
         }
-      }
-      assignees {
-        ...UserFieldsAPS
       }
     }
   }
