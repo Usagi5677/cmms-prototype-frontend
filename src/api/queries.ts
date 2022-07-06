@@ -1170,3 +1170,52 @@ export const GET_ALL_TRANSPORTATION_USAGE_HISTORY = gql`
     }
   }
 `;
+
+export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
+  query getAllMachinePeriodicMaintenance(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $status: PeriodicMaintenanceStatus
+  ) {
+    getAllMachinePeriodicMaintenance(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      status: $status
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineId
+          title
+          measurement
+          value
+          startDate
+          status
+          completedAt
+          createdAt
+          machine {
+            id
+            machineNumber
+            model
+            type
+            zone
+            location
+          }
+        }
+      }
+    }
+  }
+`;

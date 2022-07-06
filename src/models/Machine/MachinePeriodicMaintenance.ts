@@ -1,4 +1,5 @@
 import { PeriodicMaintenanceStatus } from "../Enums";
+import Machine from "../Machine";
 import User from "../User";
 import MachinePMTask from "./MachinePMTask";
 
@@ -16,4 +17,5 @@ export default interface MachinePeriodicMaintenance {
   machinePeriodicMaintenanceTask?: MachinePMTask[];
   verifiedBy?: User;
   verifiedAt?: Date;
+  machine?: Machine;
 }

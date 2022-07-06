@@ -4,7 +4,7 @@ import classes from "./Dashboard.module.css";
 import { permissionExist } from "../../helpers/assignPermission";
 import MachineryUtilization from "../../components/common/DashboardComponents/Machine/MachineryUtilization/MachineryUtilization";
 import AllTransportationUtilization from "../../components/common/DashboardComponents/Transportation/TransportationUtilization/TransportationUtilization";
-
+import MachineMaintenance from "../../components/common/DashboardComponents/Machine/MachineMaintenance/MachineMaintenance";
 
 const assignedPermission = permissionExist;
 const Dashboard = () => {
@@ -21,16 +21,12 @@ const Dashboard = () => {
   const { user } = useContext(UserContext);
   return (
     <>
-      <div className={classes["ticket-dashboard-container"]}>
-        {user?.assignedPermission?.hasMachineAssignmentToUser ? (
-          <div>Supervisor</div>
-        ) : (
-          <div>Engineer</div>
-        )}
+      <div>
+        <MachineMaintenance />
       </div>
       <div className={classes["utilization"]}>
-          <MachineryUtilization />
-          <AllTransportationUtilization/>
+        <MachineryUtilization />
+        <AllTransportationUtilization />
       </div>
     </>
   );

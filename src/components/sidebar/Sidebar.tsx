@@ -147,21 +147,22 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       icon: <FaLock />,
     });
   }
-  if (self?.assignedPermission?.hasViewMachineryReport) {
-    SidebarData.splice(13, 0, {
-      name: "Machinery Report",
-      path: "/machinery-report",
-      icon: <FaRegChartBar />,
-    });
-  }
-  if (self?.assignedPermission?.hasViewTransportationReport) {
-    SidebarData.splice(14, 0, {
-      name: "Transportation Report",
-      path: "/transportation-report",
-      icon: <FaRegChartBar />,
-    });
-  }
-
+  /*
+    if (self?.assignedPermission?.hasViewMachineryReport) {
+      SidebarData.splice(13, 0, {
+        name: "Machinery Report",
+        path: "/machinery-report",
+        icon: <FaRegChartBar />,
+      });
+    }
+    if (self?.assignedPermission?.hasViewTransportationReport) {
+      SidebarData.splice(14, 0, {
+        name: "Transportation Report",
+        path: "/transportation-report",
+        icon: <FaRegChartBar />,
+      });
+    }
+  */
   return (
     <>
       <Menu
