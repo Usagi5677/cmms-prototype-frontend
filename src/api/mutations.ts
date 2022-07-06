@@ -700,3 +700,15 @@ export const DELETE_TRANSPORTATION_PM_TASK = gql`
     deleteTransportationPMTask(id: $id)
   }
 `;
+
+export const TOGGLE_VERIFY_MACHINE_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!, $verify: Boolean!) {
+    toggleVerifyMachinePeriodicMaintenance(id: $id, verify: $verify)
+  }
+`;
+
+export const TOGGLE_VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!, $verify: Boolean!) {
+    toggleVerifyTransportationPeriodicMaintenance(id: $id, verify: $verify)
+  }
+`;

@@ -15,4 +15,6 @@ export default interface TransportationPeriodicMaintenance {
   createdAt?: Date;
   startDate?: Date;
   transportationPeriodicMaintenanceTask?: TransportationPMTask[];
+  verifiedBy?: User;
+  verifiedAt?: Date;
 }

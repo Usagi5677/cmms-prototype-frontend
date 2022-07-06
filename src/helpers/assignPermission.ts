@@ -68,6 +68,8 @@ export function permissionExist(data: User) {
   let hasViewRoles = false;
   let hasViewMachineryReport = false;
   let hasViewTransportationReport = false;
+  let hasVerifyMachinePeriodicMaintenance = false;
+  let hasVerifyTransportationPeriodicMaintenance = false;
 
   data?.roles?.forEach((roleData) => {
     roleData?.role.permissionRoles.forEach((permissionData) => {
@@ -273,6 +275,12 @@ export function permissionExist(data: User) {
         case "VIEW_TRANSPORTATION_REPORT":
           hasViewTransportationReport = true;
           break;
+        case "VERIFY_MACHINE_PERIODIC_MAINTENANCE":
+          hasVerifyMachinePeriodicMaintenance = true;
+          break;
+        case "VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE":
+          hasVerifyTransportationPeriodicMaintenance = true;
+          break;
       }
     });
   });
@@ -345,6 +353,8 @@ export function permissionExist(data: User) {
     hasViewRoles,
     hasViewMachineryReport,
     hasViewTransportationReport,
+    hasVerifyMachinePeriodicMaintenance,
+    hasVerifyTransportationPeriodicMaintenance
   };
 
   return permissions;

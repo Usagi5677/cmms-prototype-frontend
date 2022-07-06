@@ -82,9 +82,9 @@
 }
 
 .completedAt {
-  font-size: 10;
+  font-size: 12px;
   opacity: 0.5;
-  display: inline-block;
+  display: flex;
 }
 
 .deleteWrapper {

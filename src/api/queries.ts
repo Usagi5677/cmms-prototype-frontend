@@ -124,6 +124,10 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_MACHINE = gql`
           completedBy {
             ...UserFieldsAPS
           }
+          verifiedAt
+          verifiedBy {
+            ...UserFieldsAPS
+          }
           machinePeriodicMaintenanceTask {
             id
             periodicMaintenanceId
@@ -536,6 +540,10 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_TRANSPORTATION = gql`
           completedAt
           createdAt
           completedBy {
+            ...UserFieldsAPS
+          }
+          verifiedAt
+          verifiedBy {
             ...UserFieldsAPS
           }
           transportationPeriodicMaintenanceTask {

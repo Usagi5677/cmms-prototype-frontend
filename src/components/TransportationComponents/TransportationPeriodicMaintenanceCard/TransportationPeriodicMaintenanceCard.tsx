@@ -1,4 +1,4 @@
-import { Progress, Tooltip } from "antd";
+import { Checkbox, Progress, Spin, Tooltip } from "antd";
 import moment from "moment";
 import { useContext } from "react";
 import { FaRegBell, FaRegClock } from "react-icons/fa";
@@ -13,6 +13,9 @@ import TransportationPeriodicMaintenanceStatus from "../TransportationPeriodicMa
 import classes from "./TransportationPeriodicMaintenanceCard.module.css";
 import { AddTransportationPeriodicMaintenanceTask } from "../AddTransportationPeriodicMaintenanceTask";
 import { TransportationPMTaskList } from "../TransportationPMTaskList";
+import { useMutation } from "@apollo/client";
+import { errorMessage } from "../../../helpers/gql";
+import { TOGGLE_VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 const TransportationPeriodicMaintenanceCard = ({
   periodicMaintenance,
   isDeleted,
@@ -21,6 +24,21 @@ const TransportationPeriodicMaintenanceCard = ({
   isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
+
+  const [toggleVerify, { loading: toggling }] = useMutation(
+    TOGGLE_VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating verify.");
+      },
+      refetchQueries: [
+        "getSingleTransportation",
+        "getAllHistoryOfTransportation",
+        "getAllPeriodicMaintenanceOfTransportation",
+      ],
+    }
+  );
+  
   const taskData = periodicMaintenance?.transportationPeriodicMaintenanceTask!;
 
   const progressPercentage = Math.round(
@@ -77,6 +95,44 @@ const TransportationPeriodicMaintenanceCard = ({
                 periodicMaintenance={periodicMaintenance}
                 isDeleted={isDeleted}
               />
+            ) : null}
+            {self.assignedPermission.hasTransportationPeriodicMaintenanceEdit &&
+            periodicMaintenance.status === "Done" ? (
+              <Checkbox
+                checked={periodicMaintenance.verifiedAt !== null}
+                disabled={isDeleted}
+                onChange={(e) =>
+                  toggleVerify({
+                    variables: {
+                      id: periodicMaintenance.id,
+                      verify: e.target.checked,
+                    },
+                  })
+                }
+                style={{ wordBreak: "break-all" }}
+              >
+                Verify{" "}
+                {toggling && <Spin style={{ marginRight: 5 }} size="small" />}
+                <span className={classes["completedAt"]}>
+                  {periodicMaintenance.verifiedAt && (
+                    <div>
+                      <span
+                        title={moment(periodicMaintenance.verifiedAt).format(
+                          DATETIME_FORMATS.FULL
+                        )}
+                      >
+                        {moment(periodicMaintenance.verifiedAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>{" "}
+                      <span>
+                        • Verified by {periodicMaintenance.verifiedBy?.fullName}{" "}
+                        ({periodicMaintenance.verifiedBy?.rcno})
+                      </span>
+                    </div>
+                  )}
+                </span>
+              </Checkbox>
             ) : null}
           </div>
         </div>
