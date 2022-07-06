@@ -1,0 +1,12 @@
+.utilization {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 600px) {
+  .utilization {
+    flex-direction: row;
+  }
+}

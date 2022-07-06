@@ -1,3 +1,4 @@
+import { GraphQLFloat } from "graphql";
 import { MachineStatus } from "../Enums";
 import User from "../User";
 
@@ -11,8 +12,8 @@ export default interface MachineHistory {
   completedById?: number;
   machineStatus: MachineStatus;
   machineType: string;
-  breakdownHour: number;
-  idleHour: number;
-  workingHour: number;
+  breakdownHour: typeof GraphQLFloat;
+  idleHour: typeof GraphQLFloat;
+  workingHour: typeof GraphQLFloat;
   location: string;
 }

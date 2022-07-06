@@ -2,7 +2,9 @@ import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
 import classes from "./Dashboard.module.css";
 import { permissionExist } from "../../helpers/assignPermission";
-import MachineUtilization from "../../components/common/DashboardComponents/MachineUtilization/MachineUtilization";
+import MachineryUtilization from "../../components/common/DashboardComponents/Machine/MachineryUtilization/MachineryUtilization";
+import AllTransportationUtilization from "../../components/common/DashboardComponents/Transportation/TransportationUtilization/TransportationUtilization";
+
 
 const assignedPermission = permissionExist;
 const Dashboard = () => {
@@ -27,7 +29,8 @@ const Dashboard = () => {
         )}
       </div>
       <div className={classes["utilization"]}>
-          <MachineUtilization/>
+          <MachineryUtilization />
+          <AllTransportationUtilization/>
       </div>
     </>
   );

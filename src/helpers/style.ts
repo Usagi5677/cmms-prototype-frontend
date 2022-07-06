@@ -56,6 +56,18 @@ export const usageColors = (label: string) => {
   } else if (label === "Breakdown hour") {
     bgColor = "#fad4d4";
     color = "#ff0000";
+  }else if (label === "Total hour") {
+    bgColor = "#adaa95";
+    color = "#252000";
+  }else if (label === "Working percentage") {
+    bgColor = "#a3d9b9";
+    color = "#008e3c";
+  }else if (label === "Idle percentage") {
+    bgColor = "#f5c89a";
+    color = "#ff8000";
+  }else if (label === "Breakdown percentage") {
+    bgColor = "#f0b1a3";
+    color = "#e02900";
   }
   return [color, bgColor];
 };

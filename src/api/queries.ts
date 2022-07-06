@@ -1076,3 +1076,89 @@ export const ALL_MACHINE_UTILIZATION = gql`
     }
   }
 `;
+
+export const GET_ALL_MACHINE_USAGE_HISTORY = gql`
+  query allMachineUsageHistory($from: Date!, $to: Date!) {
+    allMachineUsageHistory(from: $from, to: $to) {
+      date
+      workingHour
+      idleHour
+      breakdownHour
+      totalHour
+      workingPercentage
+      idlePercentage
+      breakdownPercentage
+    }
+  }
+`;
+
+export const ALL_TRANSPORTATION_UTILIZATION = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllTransportationUtilization(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $location: String
+  ) {
+    getAllTransportationUtilization(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      location: $location
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineNumber
+          model
+          type
+          location
+          isDeleted
+          deletedAt
+          histories {
+            id
+            createdAt
+            transportationId
+            type
+            description
+            completedBy {
+              ...UserFieldsAPS
+            }
+            transportationStatus
+            transportationType
+            breakdownHour
+            idleHour
+            workingHour
+            location
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_TRANSPORTATION_USAGE_HISTORY = gql`
+  query allTransportationUsageHistory($from: Date!, $to: Date!) {
+    allTransportationUsageHistory(from: $from, to: $to) {
+      date
+      workingHour
+      idleHour
+      breakdownHour
+      totalHour
+      workingPercentage
+      idlePercentage
+      breakdownPercentage
+    }
+  }
+`;
