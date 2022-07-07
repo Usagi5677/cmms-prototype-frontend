@@ -16,7 +16,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useContext, useState } from "react";
 import { CREATE_TRANSPORTATION } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
-import { ISLANDS } from "../../../helpers/constants";
+import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./AddTransportation.module.css";
 
@@ -122,6 +122,14 @@ const AddTransportation = () => {
     options.push({
       value: island,
       label: island,
+    });
+  });
+
+  let departmentOptions: any = [];
+  DEPARTMENTS?.map((department: string) => {
+    departmentOptions.push({
+      value: department,
+      label: department,
     });
   });
   
@@ -231,7 +239,13 @@ const AddTransportation = () => {
                   },
                 ]}
               >
-                <Input placeholder="Department" />
+                <Select
+                  showArrow
+                  style={{ width: "100%" }}
+                  showSearch
+                  options={departmentOptions}
+                  placeholder={"Department"}
+                />
               </Form.Item>
             </div>
             <div className={classes["col"]}>

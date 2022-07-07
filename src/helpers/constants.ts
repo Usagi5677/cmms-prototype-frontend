@@ -7,6 +7,16 @@ export const DATETIME_FORMATS = {
   DAY_MONTH_YEAR: "DD MMM YYYY",
 };
 
+export const DEPARTMENTS = [
+  "LTD",
+  "MTD",
+  "TRD",
+  "LOD",
+  "MBD",
+  "CDD",
+  "CEO"
+]
+
 export const PERMISSIONS = [
   "ADD_ROLE",
   "EDIT_ROLE",
