@@ -191,12 +191,10 @@ const TransportationMaintenance = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportationPeriodicMaintenance.edges.map(
-        (rec: { node: TransportationPeriodicMaintenance }) => {
-          const periodicMaintenance = rec.node;
-          if (data?.getAllTransportationPeriodicMaintenance.length === 0) {
-            return <div>No information available.</div>;
-          } else {
+      {data?.getAllTransportationPeriodicMaintenance.edges.length > 0 ? (
+        data?.getAllTransportationPeriodicMaintenance.edges.map(
+          (rec: { node: TransportationPeriodicMaintenance }) => {
+            const periodicMaintenance = rec.node;
             return (
               <div id="collapse" key={periodicMaintenance.id}>
                 <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -288,8 +286,11 @@ const TransportationMaintenance = () => {
               </div>
             );
           }
-        }
+        )
+      ) : (
+        <div className={classes["no-info"]}>No information available.</div>
       )}
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}
