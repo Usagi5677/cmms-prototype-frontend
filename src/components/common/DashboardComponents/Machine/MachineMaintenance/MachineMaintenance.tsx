@@ -193,92 +193,95 @@ const MachineMaintenance = () => {
       {data?.getAllMachinePeriodicMaintenance.edges.map(
         (rec: { node: MachinePeriodicMaintenance }) => {
           const periodicMaintenance = rec.node;
-
-          return (
-            <div id="collapse" key={periodicMaintenance.id}>
-              <Collapse ghost style={{ marginBottom: ".5rem" }}>
-                <Collapse.Panel
-                  header={
-                    <>
-                      <div
-                        className={classes["header-container"]}
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        <div className={classes["first-block"]}>
-                          <div>
-                            <div className={classes["title-wrapper"]}>
-                              <FaTractor />
-                              <span className={classes["title"]}>
-                                {periodicMaintenance?.machine?.machineNumber}
-                              </span>
-                            </div>
-                            <div className={classes["location-wrapper"]}>
-                              <FaMapMarkerAlt />
-                              <span className={classes["title"]}>
-                                {periodicMaintenance?.machine?.zone}
-                              </span>
-                              <span className={classes["dash"]}>-</span>
-                              <span>
-                                {periodicMaintenance?.machine?.location}
-                              </span>
+          if (data?.getAllMachinePeriodicMaintenance.length === 0) {
+            return <div>No information available.</div>;
+          } else {
+            return (
+              <div id="collapse" key={periodicMaintenance.id}>
+                <Collapse ghost style={{ marginBottom: ".5rem" }}>
+                  <Collapse.Panel
+                    header={
+                      <>
+                        <div
+                          className={classes["header-container"]}
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          <div className={classes["first-block"]}>
+                            <div>
+                              <div className={classes["title-wrapper"]}>
+                                <FaTractor />
+                                <span className={classes["title"]}>
+                                  {periodicMaintenance?.machine?.machineNumber}
+                                </span>
+                              </div>
+                              <div className={classes["location-wrapper"]}>
+                                <FaMapMarkerAlt />
+                                <span className={classes["title"]}>
+                                  {periodicMaintenance?.machine?.zone}
+                                </span>
+                                <span className={classes["dash"]}>-</span>
+                                <span>
+                                  {periodicMaintenance?.machine?.location}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className={classes["service-reading-wrapper"]}>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title"]}>
-                              Title:
-                            </span>
-                            <span>{periodicMaintenance?.title}</span>
-                          </div>
-                          <div className={classes["status"]}>
-                            <PeriodicMaintenanceStatusTag
-                              status={periodicMaintenance?.status}
-                            />
-                          </div>
-                          <div>
-                            <div className={classes["title-wrapper"]}>
-                              <Tooltip title="Start Date">
-                                <FaRegClock />
-                              </Tooltip>
-
-                              <span className={classes["title"]}>
-                                {moment(periodicMaintenance?.startDate).format(
-                                  DATETIME_FORMATS.DAY_MONTH_YEAR
-                                )}
-                              </span>
-                            </div>
+                          <div className={classes["service-reading-wrapper"]}>
                             <div className={classes["reading"]}>
                               <span className={classes["reading-title"]}>
-                                In:
+                                Title:
                               </span>
-                              <span>
-                                {periodicMaintenance?.value}{" "}
-                                {periodicMaintenance?.measurement}
-                              </span>
+                              <span>{periodicMaintenance?.title}</span>
+                            </div>
+                            <div className={classes["status"]}>
+                              <PeriodicMaintenanceStatusTag
+                                status={periodicMaintenance?.status}
+                              />
+                            </div>
+                            <div>
+                              <div className={classes["title-wrapper"]}>
+                                <Tooltip title="Start Date">
+                                  <FaRegClock />
+                                </Tooltip>
+
+                                <span className={classes["title"]}>
+                                  {moment(
+                                    periodicMaintenance?.startDate
+                                  ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                                </span>
+                              </div>
+                              <div className={classes["reading"]}>
+                                <span className={classes["reading-title"]}>
+                                  In:
+                                </span>
+                                <span>
+                                  {periodicMaintenance?.value}{" "}
+                                  {periodicMaintenance?.measurement}
+                                </span>
+                              </div>
                             </div>
                           </div>
+                          <Link
+                            to={"/machine/" + periodicMaintenance?.machine?.id}
+                          >
+                            <Tooltip title="Open">
+                              <FaArrowAltCircleRight
+                                className={classes["button"]}
+                              />
+                            </Tooltip>
+                          </Link>
                         </div>
-                        <Link
-                          to={"/machine/" + periodicMaintenance?.machine?.id}
-                        >
-                          <Tooltip title="Open">
-                            <FaArrowAltCircleRight
-                              className={classes["button"]}
-                            />
-                          </Tooltip>
-                        </Link>
-                      </div>
-                    </>
-                  }
-                  key={periodicMaintenance?.id}
-                >
-                  <div className={classes["container"]}></div>
-                </Collapse.Panel>
-              </Collapse>
-            </div>
-          );
+                      </>
+                    }
+                    key={periodicMaintenance?.id}
+                  >
+                    <div className={classes["container"]}></div>
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+            );
+          }
         }
       )}
       <PaginationButtons
