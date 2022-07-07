@@ -21,7 +21,9 @@
   margin-top: 10px !important;
   width: 240px !important;
 }
-
+.collapse-container {
+  margin-top: 20px;
+}
 @media only screen and (min-width: 600px) {
   .options {
     display: flex;

@@ -153,7 +153,7 @@ const MachineMaintenance = () => {
 
   return (
     <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Machine Maintenance</div>
+      <div className={classes["heading"]}>Machinery Maintenance</div>
       <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}

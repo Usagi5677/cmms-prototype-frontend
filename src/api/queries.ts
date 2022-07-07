@@ -1220,7 +1220,6 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
-
 export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
   query getAllTransportationPeriodicMaintenance(
     $after: String
@@ -1262,6 +1261,47 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
             model
             type
             location
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_MACHINE_PM_TASK = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllMachinePeriodicMaintenanceTask(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $complete: Boolean
+  ) {
+    getAllMachinePeriodicMaintenanceTask(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      complete: $complete
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          periodicMaintenanceId
+          name
+          parentTaskId
+          completedAt
+          completedBy {
+            ...UserFieldsAPS
           }
         }
       }

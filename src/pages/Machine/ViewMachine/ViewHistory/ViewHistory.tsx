@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { DatePicker, Select, Spin } from "antd";
+import { Badge, Collapse, DatePicker, Divider, Select, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { GET_ALL_HISTORY_OF_MACHINE } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
@@ -31,7 +31,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
       to: any;
     }
   >({
-    first: 20,
+    first: 500,
     last: null,
     before: null,
     after: null,
@@ -73,7 +73,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
           location: locationValue,
           from: dates[0].toISOString(),
           to: dates[1].toISOString(),
-          first: 20,
+          first: 500,
           last: null,
           before: null,
           after: null,
@@ -96,7 +96,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
   const next = () => {
     setFilter({
       ...filter,
-      first: 20,
+      first: 500,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -107,7 +107,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 20,
+      last: 500,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -125,6 +125,16 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     });
   });
 
+  const date = new Date(dates[0]);
+  const endDate = new Date(dates[1]);
+  const dateArray = [];
+
+  while (date <= endDate) {
+    dateArray.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+
+  
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
@@ -164,19 +174,62 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllHistoryOfMachine.edges.map((rec: { node: History }) => {
-          const history = rec.node;
-          return <MachineHistoryCard key={history.id} history={history} />;
+        {dateArray?.map((dateVal, index) => {
+          return (
+            <div className={classes["collapse-container"]} key={index+"div"}>
+              <Collapse ghost style={{ marginBottom: ".5rem" }}>
+                <Collapse.Panel
+                  header={
+                    <div>
+                      {moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                      <Badge
+                        count={`${
+                          data?.getAllHistoryOfMachine.edges?.filter(
+                            (rec: { node: History }) =>
+                              moment(rec.node.createdAt).format(
+                                DATETIME_FORMATS.DAY_MONTH_YEAR
+                              ) ===
+                              moment(dateVal).format(
+                                DATETIME_FORMATS.DAY_MONTH_YEAR
+                              )
+                          ).length
+                        } item`}
+                        style={{
+                          color: "black",
+                          backgroundColor: "#e5e5e5",
+                          marginLeft: ".5rem",
+                          marginBottom: ".3rem",
+                        }}
+                      />
+                    </div>
+                  }
+                  key={index+"col"}
+                
+                >
+                  {data?.getAllHistoryOfMachine.edges.map(
+                    (rec: { node: History }) => {
+                      const history = rec.node;
+                      if (
+                        moment(history.createdAt).format(
+                          DATETIME_FORMATS.DAY_MONTH_YEAR
+                        ) ===
+                        moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+                      ) {
+                        return (
+                          <MachineHistoryCard
+                            key={history.id}
+                            history={history}
+                          />
+                        );
+                      }
+                    }
+                  )}
+                </Collapse.Panel>
+              </Collapse>
+            </div>
+          );
         })}
       </div>
-
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-        pageLimit={20}
-      />
     </div>
   );
 };
