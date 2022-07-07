@@ -1219,3 +1219,52 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
     }
   }
 `;
+
+
+export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
+  query getAllTransportationPeriodicMaintenance(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $status: PeriodicMaintenanceStatus
+  ) {
+    getAllTransportationPeriodicMaintenance(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      status: $status
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          transportationId
+          title
+          measurement
+          value
+          startDate
+          status
+          completedAt
+          createdAt
+          transportation {
+            id
+            machineNumber
+            model
+            type
+            location
+          }
+        }
+      }
+    }
+  }
+`;

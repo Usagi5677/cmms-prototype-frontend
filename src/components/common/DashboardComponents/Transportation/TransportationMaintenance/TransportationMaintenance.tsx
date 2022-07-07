@@ -1,23 +1,23 @@
 import { Collapse, message, Select, Spin, Tooltip } from "antd";
-import Search from "../../../../../components/common/Search";
+import Search from "../../../Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { GET_ALL_MACHINE_PERIODIC_MAINTENANCE } from "../../../../../api/queries";
+import { GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE } from "../../../../../api/queries";
 import {
   DATETIME_FORMATS,
   ISLANDS,
   PAGE_LIMIT,
 } from "../../../../../helpers/constants";
-import PaginationButtons from "../../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachine from "../../../../../components/MachineComponents/AddMachine/AddMachine";
-import MachineCard from "../../../../../components/MachineComponents/MachineCard/MachineCard";
+import PaginationButtons from "../../../PaginationButtons/PaginationButtons";
+import AddMachine from "../../../../MachineComponents/AddMachine/AddMachine";
+import MachineCard from "../../../../MachineComponents/MachineCard/MachineCard";
 import Machine from "../../../../../models/Machine";
-import classes from "./MachineMaintenance.module.css";
-import MachineStatusFilter from "../../../../../components/common/MachineStatusFilter";
+import classes from "./TransportationMaintenance.module.css";
+import MachineStatusFilter from "../../../MachineStatusFilter";
 import { useIsSmallDevice } from "../../../../../helpers/useIsSmallDevice";
 import UserContext from "../../../../../contexts/UserContext";
 import MachinePMStatusFilter from "../../../MachinePMStatusFilter";
@@ -30,11 +30,11 @@ import {
   FaTractor,
 } from "react-icons/fa";
 import moment from "moment";
-import MachineStatusTag from "../../../MachineStatusTag";
 import PeriodicMaintenanceStatusTag from "../../../PeriodicMaintenanceStatusTag";
 import { PeriodicMaintenanceStatus } from "../../../../../models/Enums";
+import TransportationPeriodicMaintenance from "../../../../../models/Transportation/TransportationPeriodicMaintenance";
 
-const MachineMaintenance = () => {
+const TransportationMaintenance = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -55,11 +55,11 @@ const MachineMaintenance = () => {
     status: null,
   });
 
-  const [getAllMachinePeriodicMaintenance, { data, loading }] = useLazyQuery(
-    GET_ALL_MACHINE_PERIODIC_MAINTENANCE,
+  const [getAllTransportationPeriodicMaintenance, { data, loading }] = useLazyQuery(
+    GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading all machine periodic maintenance.");
+        errorMessage(err, "Error loading all transportation periodic maintenance.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -68,8 +68,8 @@ const MachineMaintenance = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    getAllMachinePeriodicMaintenance({ variables: filter });
-  }, [filter, getAllMachinePeriodicMaintenance]);
+    getAllTransportationPeriodicMaintenance({ variables: filter });
+  }, [filter, getAllTransportationPeriodicMaintenance]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -130,7 +130,7 @@ const MachineMaintenance = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllMachinePeriodicMaintenance.pageInfo ?? {};
+  const pageInfo = data?.getAllTransportationPeriodicMaintenance.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
@@ -138,7 +138,7 @@ const MachineMaintenance = () => {
   let pending = 0;
   let missed = 0;
 
-  data?.getAllMachinePeriodicMaintenance.edges.map(
+  data?.getAllTransportationPeriodicMaintenance.edges.map(
     (rec: { node: MachinePeriodicMaintenance }) => {
       const periodicMaintenance = rec.node;
       if (periodicMaintenance?.status === "Done") {
@@ -153,7 +153,7 @@ const MachineMaintenance = () => {
 
   return (
     <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Machine Maintenance</div>
+      <div className={classes["heading"]}>Transports Maintenance</div>
       <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}
@@ -190,8 +190,8 @@ const MachineMaintenance = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllMachinePeriodicMaintenance.edges.map(
-        (rec: { node: MachinePeriodicMaintenance }) => {
+      {data?.getAllTransportationPeriodicMaintenance.edges.map(
+        (rec: { node: TransportationPeriodicMaintenance }) => {
           const periodicMaintenance = rec.node;
 
           return (
@@ -209,17 +209,13 @@ const MachineMaintenance = () => {
                             <div className={classes["title-wrapper"]}>
                               <FaTractor />
                               <span className={classes["title"]}>
-                                {periodicMaintenance?.machine?.machineNumber}
+                                {periodicMaintenance?.transportation?.machineNumber}
                               </span>
                             </div>
                             <div className={classes["location-wrapper"]}>
                               <FaMapMarkerAlt />
                               <span className={classes["title"]}>
-                                {periodicMaintenance?.machine?.zone}
-                              </span>
-                              <span className={classes["dash"]}>-</span>
-                              <span>
-                                {periodicMaintenance?.machine?.location}
+                                {periodicMaintenance?.transportation?.location}
                               </span>
                             </div>
                           </div>
@@ -261,7 +257,7 @@ const MachineMaintenance = () => {
                           </div>
                         </div>
                         <Link
-                          to={"/machine/" + periodicMaintenance?.machine?.id}
+                          to={"/transportation/" + periodicMaintenance?.transportation?.id}
                         >
                           <Tooltip title="Open">
                             <FaArrowAltCircleRight
@@ -292,4 +288,4 @@ const MachineMaintenance = () => {
   );
 };
 
-export default MachineMaintenance;
+export default TransportationMaintenance;

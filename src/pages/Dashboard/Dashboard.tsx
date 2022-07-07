@@ -5,24 +5,17 @@ import { permissionExist } from "../../helpers/assignPermission";
 import MachineryUtilization from "../../components/common/DashboardComponents/Machine/MachineryUtilization/MachineryUtilization";
 import AllTransportationUtilization from "../../components/common/DashboardComponents/Transportation/TransportationUtilization/TransportationUtilization";
 import MachineMaintenance from "../../components/common/DashboardComponents/Machine/MachineMaintenance/MachineMaintenance";
+import TransportationMaintenance from "../../components/common/DashboardComponents/Transportation/TransportationMaintenance/TransportationMaintenance";
 
-const assignedPermission = permissionExist;
+
 const Dashboard = () => {
-  // const { assignedPermission } = useContext(UserContext);
-  // console.log(assignedPermission)
-  // // if engineer
-  // const hasManyPermissions = ["VIEW_ROLES", "ASSIGN_PERMISSION"].every(
-  //   (permission: string) => {
-  //     return assignedPermission.includes(permission);
-  //   }
-  // );
-  // console.log(hasManyPermissions)
-
+  
   const { user } = useContext(UserContext);
   return (
     <>
-      <div>
+      <div className={classes["utilization"]}>
         <MachineMaintenance />
+        <TransportationMaintenance />
       </div>
       <div className={classes["utilization"]}>
         <MachineryUtilization />

@@ -1,5 +1,6 @@
 import { PeriodicMaintenanceStatus } from "../Enums";
 import TransportationPMTask from "../Machine/TransportationPMTask";
+import Transportation from "../Transportation";
 import User from "../User";
 
 
@@ -17,4 +18,5 @@ export default interface TransportationPeriodicMaintenance {
   transportationPeriodicMaintenanceTask?: TransportationPMTask[];
   verifiedBy?: User;
   verifiedAt?: Date;
+  transportation?: Transportation;
 }
