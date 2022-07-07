@@ -43,7 +43,7 @@ const AllTransportationUtilization = () => {
       location: string;
     }
   >({
-    first: 20,
+    first: 3,
     last: null,
     before: null,
     after: null,
@@ -80,7 +80,7 @@ const AllTransportationUtilization = () => {
           ...filter,
           search: value,
           location: locationValue,
-          first: 20,
+          first: 3,
           last: null,
           before: null,
           after: null,
@@ -103,7 +103,7 @@ const AllTransportationUtilization = () => {
   const next = () => {
     setFilter({
       ...filter,
-      first: 20,
+      first: 3,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -114,7 +114,7 @@ const AllTransportationUtilization = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 20,
+      last: 3,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -411,7 +411,7 @@ const AllTransportationUtilization = () => {
         page={page}
         next={next}
         back={back}
-        pageLimit={20}
+        pageLimit={3}
       />
     </div>
   );

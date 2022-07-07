@@ -47,7 +47,7 @@ const TransportationMaintenance = () => {
       status: any;
     }
   >({
-    first: 20,
+    first: 3,
     last: null,
     before: null,
     after: null,
@@ -88,7 +88,7 @@ const TransportationMaintenance = () => {
           ...filter,
           search: value,
           status: statusValue,
-          first: 20,
+          first: 3,
           last: null,
           before: null,
           after: null,
@@ -112,7 +112,7 @@ const TransportationMaintenance = () => {
   const next = () => {
     setFilter({
       ...filter,
-      first: 20,
+      first: 3,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -123,7 +123,7 @@ const TransportationMaintenance = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 20,
+      last: 3,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -296,7 +296,7 @@ const TransportationMaintenance = () => {
         page={page}
         next={next}
         back={back}
-        pageLimit={20}
+        pageLimit={3}
       />
     </div>
   );

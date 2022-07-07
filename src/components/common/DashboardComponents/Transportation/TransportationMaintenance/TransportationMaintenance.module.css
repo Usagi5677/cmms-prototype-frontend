@@ -1,6 +1,6 @@
 .pm-container {
-  width: 48%;
-  min-height: 500px;
+  width: 100%;
+  min-height: 400px;
   background-color: white;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -157,7 +157,9 @@
   .container {
     font-size: 12px;
   }
-
+  .pm-container {
+    width: 48%;
+  }
   .header-container {
     font-size: 10px;
   }
@@ -173,7 +175,7 @@
     
   }
   .counter-value {
-    margin: 10px 20px;
+    margin: 10px 10px;
   }
   
 }
@@ -188,5 +190,8 @@
   }
   .status-wrapper {
     margin-top: 10px;
+  }
+  .counter-value {
+    margin: 10px 20px;
   }
 }
