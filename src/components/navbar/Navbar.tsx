@@ -12,13 +12,12 @@ const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
           <FaBars onClick={openSidebar} className={classes["navbar__icon"]} />
           <NavLink to={"/"}>
             <div className={classes["navbar__title"]}>
-              CMMS
+              Computerized Maintenance Management
             </div>
           </NavLink>
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ marginRight: 20 }}>
-          </div>
+          <div style={{ marginRight: 20 }}></div>
           <Notification />
           <NavUser />
         </div>
