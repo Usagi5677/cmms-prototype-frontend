@@ -153,6 +153,12 @@
   text-align: center;
 }
 
+.location {
+  width: 190px;
+  margin: 10px 0 !important;
+}
+
+
 @media only screen and (min-width: 600px) {
   .container {
     font-size: 12px;

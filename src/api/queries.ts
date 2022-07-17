@@ -38,7 +38,7 @@ export const ALL_MACHINES = gql`
     $search: String
     $assignedToId: Int
     $status: MachineStatus
-    $location: String
+    $location: [String!]
   ) {
     getAllMachine(
       after: $after
@@ -412,7 +412,7 @@ export const ALL_TRANSPORTATION_VESSELS = gql`
     $transportType: String
     $assignedToId: Int
     $status: TransportationStatus
-    $location: String
+    $location: [String!]
   ) {
     getAllTransportationVessels(
       after: $after
@@ -454,7 +454,7 @@ export const ALL_TRANSPORTATION_VEHICLES = gql`
     $transportType: String
     $assignedToId: Int
     $status: TransportationStatus
-    $location: String
+    $location: [String!]
   ) {
     getAllTransportationVehicles(
       after: $after
@@ -1036,7 +1036,7 @@ export const ALL_MACHINE_UTILIZATION = gql`
     $first: Int
     $last: Int
     $search: String
-    $location: String
+    $location: [String!]
   ) {
     getAllMachineUtilization(
       after: $after
@@ -1108,7 +1108,7 @@ export const ALL_TRANSPORTATION_UTILIZATION = gql`
     $first: Int
     $last: Int
     $search: String
-    $location: String
+    $location: [String!]
   ) {
     getAllTransportationUtilization(
       after: $after
@@ -1179,6 +1179,7 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
     $last: Int
     $search: String
     $status: PeriodicMaintenanceStatus
+    $location: [String!]
   ) {
     getAllMachinePeriodicMaintenance(
       after: $after
@@ -1187,6 +1188,7 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
       last: $last
       search: $search
       status: $status
+      location: $location
     ) {
       pageInfo {
         endCursor
@@ -1228,6 +1230,7 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
     $last: Int
     $search: String
     $status: PeriodicMaintenanceStatus
+    $location: [String!]
   ) {
     getAllTransportationPeriodicMaintenance(
       after: $after
@@ -1236,6 +1239,7 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
       last: $last
       search: $search
       status: $status
+      location: $location
     ) {
       pageInfo {
         endCursor

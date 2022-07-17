@@ -172,7 +172,9 @@
     width: 48%;
     margin-bottom: 0;
   }
-  
+  .collapse-container {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (min-width: 800px) {

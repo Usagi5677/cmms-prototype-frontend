@@ -171,6 +171,9 @@
   .container {
     width: 48%;
   }
+  .collapse-container {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (min-width: 800px) {

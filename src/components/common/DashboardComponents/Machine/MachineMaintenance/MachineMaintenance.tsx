@@ -40,11 +40,13 @@ const MachineMaintenance = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
+  const [location, setLocation] = useState([]);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       status: any;
+      location: string[];
     }
   >({
     first: 3,
@@ -53,6 +55,7 @@ const MachineMaintenance = () => {
     after: null,
     search: "",
     status: null,
+    location: [],
   });
 
   const [getAllMachinePeriodicMaintenance, { data, loading }] = useLazyQuery(
@@ -66,7 +69,7 @@ const MachineMaintenance = () => {
     }
   );
 
-  // Fetch tickets when component mounts or when the filter object changes
+  // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllMachinePeriodicMaintenance({ variables: filter });
   }, [filter, getAllMachinePeriodicMaintenance]);
@@ -77,7 +80,8 @@ const MachineMaintenance = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    statusValue: PeriodicMaintenanceStatus
+    statusValue: PeriodicMaintenanceStatus,
+    locationValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -87,6 +91,7 @@ const MachineMaintenance = () => {
           ...filter,
           search: value,
           status: statusValue,
+          location: locationValue,
           first: 3,
           last: null,
           before: null,
@@ -103,9 +108,9 @@ const MachineMaintenance = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status);
+    searchDebounced(search, status, location);
     // eslint-disable-next-line
-  }, [search, status]);
+  }, [search, status, location]);
 
   // Pagination functions
   const next = () => {
@@ -151,6 +156,14 @@ const MachineMaintenance = () => {
     }
   );
 
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
   return (
     <div className={classes["pm-container"]}>
       <div className={classes["heading"]}>Machinery Maintenance</div>
@@ -168,6 +181,15 @@ const MachineMaintenance = () => {
               setStatus(status);
             }}
             value={filter.status}
+          />
+          <Select
+            showArrow
+            className={classes["location"]}
+            onChange={(value) => setLocation(value)}
+            showSearch
+            options={options}
+            placeholder={"Location"}
+            mode="multiple"
           />
         </div>
       </div>
@@ -285,7 +307,7 @@ const MachineMaintenance = () => {
       ) : (
         <div className={classes["no-info"]}>No information available.</div>
       )}
-      
+
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

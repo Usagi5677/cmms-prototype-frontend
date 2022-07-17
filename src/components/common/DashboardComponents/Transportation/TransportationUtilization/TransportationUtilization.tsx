@@ -34,13 +34,13 @@ const AllTransportationUtilization = () => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState([]);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      location: string;
+      location: string[];
     }
   >({
     first: 3,
@@ -48,7 +48,7 @@ const AllTransportationUtilization = () => {
     before: null,
     after: null,
     search: "",
-    location: "",
+    location: [],
   });
 
   const [getAllTransportationUtilization, { data, loading }] = useLazyQuery(
@@ -71,7 +71,7 @@ const AllTransportationUtilization = () => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string, locationValue: string) => {
+  const searchDebounced = (value: string, locationValue: string[]) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -151,6 +151,7 @@ const AllTransportationUtilization = () => {
           showSearch
           options={options}
           placeholder={"Location"}
+          mode="multiple"
         />
       </div>
       {loading && (

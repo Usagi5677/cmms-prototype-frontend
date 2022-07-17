@@ -40,11 +40,13 @@ const TransportationMaintenance = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
+  const [location, setLocation] = useState([]);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       status: any;
+      location: string[];
     }
   >({
     first: 3,
@@ -53,6 +55,7 @@ const TransportationMaintenance = () => {
     after: null,
     search: "",
     status: null,
+    location: [],
   });
 
   const [getAllTransportationPeriodicMaintenance, { data, loading }] =
@@ -67,7 +70,7 @@ const TransportationMaintenance = () => {
       nextFetchPolicy: "cache-first",
     });
 
-  // Fetch tickets when component mounts or when the filter object changes
+  // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllTransportationPeriodicMaintenance({ variables: filter });
   }, [filter, getAllTransportationPeriodicMaintenance]);
@@ -78,7 +81,8 @@ const TransportationMaintenance = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    statusValue: PeriodicMaintenanceStatus
+    statusValue: PeriodicMaintenanceStatus,
+    locationValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -88,6 +92,7 @@ const TransportationMaintenance = () => {
           ...filter,
           search: value,
           status: statusValue,
+          location: locationValue,
           first: 3,
           last: null,
           before: null,
@@ -104,9 +109,9 @@ const TransportationMaintenance = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status);
+    searchDebounced(search, status, location);
     // eslint-disable-next-line
-  }, [search, status]);
+  }, [search, status, location]);
 
   // Pagination functions
   const next = () => {
@@ -152,6 +157,14 @@ const TransportationMaintenance = () => {
     }
   );
 
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
   return (
     <div className={classes["pm-container"]}>
       <div className={classes["heading"]}>Transports Maintenance</div>
@@ -169,6 +182,15 @@ const TransportationMaintenance = () => {
               setStatus(status);
             }}
             value={filter.status}
+          />
+          <Select
+            showArrow
+            className={classes["location"]}
+            onChange={(value) => setLocation(value)}
+            showSearch
+            options={options}
+            placeholder={"Location"}
+            mode="multiple"
           />
         </div>
       </div>
