@@ -12,6 +12,14 @@ const Search = ({
   onClick: () => void;
   margin?: string;
 }) => {
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Escape") {
+      onClick();
+    }
+  };
+
   return (
     <div
       style={{
@@ -23,6 +31,7 @@ const Search = ({
         paddingLeft: 10,
         width: 191,
         margin,
+        alignItems: "center",
       }}
     >
       <FaSearch style={{ color: "#ccc", paddingRight: 5, fontSize: 20 }} />
@@ -33,6 +42,7 @@ const Search = ({
         placeholder="Search"
         value={searchValue}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
       />
       {searchValue !== "" && (
         <FaTimes
