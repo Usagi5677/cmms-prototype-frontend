@@ -72,7 +72,7 @@ const ViewMachine = () => {
 
   const renderUsers = () => {
     return (
-      machineData?.assignees?.length > 0 && (
+      machineData?.assignees!.length > 0 && (
         <Avatar.Group
           maxCount={5}
           maxStyle={{
@@ -80,13 +80,13 @@ const ViewMachine = () => {
             backgroundColor: "#fde3cf",
           }}
         >
-          {machineData?.assignees?.map((user) => {
+          {machineData?.assignees?.map((assign) => {
             return (
               <Tooltip
                 title={
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      {user.fullName} ({user.rcno})
+                      {assign?.user?.fullName} ({assign?.user?.rcno})
                       {self.assignedPermission.hasMachineUnassignmentToUser && (
                         <CloseCircleOutlined
                           style={{
@@ -97,7 +97,7 @@ const ViewMachine = () => {
                             unassignUserFromMachine({
                               variables: {
                                 machineId: machineData?.id,
-                                userId: user.id,
+                                userId: assign?.user?.id,
                               },
                             })
                           }
@@ -107,14 +107,14 @@ const ViewMachine = () => {
                   </>
                 }
                 placement="bottom"
-                key={user.id}
+                key={assign?.user?.id}
               >
                 <Avatar
                   style={{
-                    backgroundColor: stringToColor(user.fullName),
+                    backgroundColor: stringToColor(assign?.user?.fullName!),
                   }}
                 >
-                  {user.fullName
+                  {assign?.user?.fullName
                     .match(/^\w|\b\w(?=\S+$)/g)
                     ?.join()
                     .replace(",", "")

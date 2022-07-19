@@ -51,7 +51,9 @@ export const MACHINE_FRAGMENT = gql`
     isDeleted
     deletedAt
     assignees {
-      ...UserFieldsAPS
+      user {
+        ...UserFieldsAPS
+      }
     }
     sparePRs {
       requestedDate

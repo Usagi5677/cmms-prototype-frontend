@@ -1281,6 +1281,8 @@ export const GET_ALL_MACHINE_PM_TASK = gql`
     $last: Int
     $search: String
     $complete: Boolean
+    $location: [String!]
+    $status: PeriodicMaintenanceStatus
   ) {
     getAllMachinePeriodicMaintenanceTask(
       after: $after
@@ -1289,6 +1291,8 @@ export const GET_ALL_MACHINE_PM_TASK = gql`
       last: $last
       search: $search
       complete: $complete
+      location: $location
+      status: $status
     ) {
       pageInfo {
         endCursor
@@ -1304,8 +1308,75 @@ export const GET_ALL_MACHINE_PM_TASK = gql`
           name
           parentTaskId
           completedAt
-          completedBy {
-            ...UserFieldsAPS
+          periodicMaintenance {
+            status
+            machine {
+              id
+              location
+              zone
+              machineNumber
+              assignees {
+                user {
+                  ...UserFieldsAPS
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+
+export const GET_ALL_TRANSPORTATION_PM_TASK = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllTransportationPeriodicMaintenanceTask(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $complete: Boolean
+    $location: [String!]
+    $status: PeriodicMaintenanceStatus
+  ) {
+    getAllTransportationPeriodicMaintenanceTask(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      complete: $complete
+      location: $location
+      status: $status
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          periodicMaintenanceId
+          name
+          parentTaskId
+          completedAt
+          periodicMaintenance {
+            status
+            transportation {
+              id
+              location
+              machineNumber
+              assignees {
+                user {
+                  ...UserFieldsAPS
+                }
+              }
+            }
           }
         }
       }

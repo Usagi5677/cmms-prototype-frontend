@@ -17,5 +17,5 @@ export default interface MachinePeriodicMaintenance {
   machinePeriodicMaintenanceTask?: MachinePMTask[];
   verifiedBy?: User;
   verifiedAt?: Date;
-  machine?: Machine;
+  machine: Machine;
 }

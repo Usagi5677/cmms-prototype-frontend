@@ -1,4 +1,6 @@
+import Machine from "../Machine";
 import User from "../User";
+import MachinePeriodicMaintenance from "./MachinePeriodicMaintenance";
 
 export default interface MachinePMTask {
   id?: number;
@@ -10,4 +12,5 @@ export default interface MachinePMTask {
   completedAt?: Date;
   parentTask?: MachinePMTask;
   subTasks?: MachinePMTask;
+  periodicMaintenance: MachinePeriodicMaintenance;
 }

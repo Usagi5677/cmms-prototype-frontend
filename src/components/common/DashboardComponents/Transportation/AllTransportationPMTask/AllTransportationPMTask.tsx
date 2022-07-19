@@ -1,27 +1,21 @@
-import { Collapse, message, Select, Spin, Tooltip } from "antd";
-import Search from "../../../../../components/common/Search";
+import { Avatar, Collapse, message, Select, Spin, Tooltip } from "antd";
+import Search from "../../../Search";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DefaultPaginationArgs from "../../../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { GET_ALL_MACHINE_PERIODIC_MAINTENANCE } from "../../../../../api/queries";
+import { GET_ALL_TRANSPORTATION_PM_TASK } from "../../../../../api/queries";
 import {
   DATETIME_FORMATS,
   ISLANDS,
   PAGE_LIMIT,
 } from "../../../../../helpers/constants";
-import PaginationButtons from "../../../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachine from "../../../../../components/MachineComponents/AddMachine/AddMachine";
-import MachineCard from "../../../../../components/MachineComponents/MachineCard/MachineCard";
-import Machine from "../../../../../models/Machine";
-import classes from "./MachineMaintenance.module.css";
-import MachineStatusFilter from "../../../../../components/common/MachineStatusFilter";
+import PaginationButtons from "../../../PaginationButtons/PaginationButtons";
+import classes from "./AllTransportationPMTask.module.css";
 import { useIsSmallDevice } from "../../../../../helpers/useIsSmallDevice";
 import UserContext from "../../../../../contexts/UserContext";
-import MachinePMStatusFilter from "../../../MachinePMStatusFilter";
-import MachinePeriodicMaintenance from "../../../../../models/Machine/MachinePeriodicMaintenance";
 import {
   FaArrowAltCircleRight,
   FaMapMarkerAlt,
@@ -30,11 +24,15 @@ import {
   FaTractor,
 } from "react-icons/fa";
 import moment from "moment";
-import MachineStatusTag from "../../../MachineStatusTag";
 import PeriodicMaintenanceStatusTag from "../../../PeriodicMaintenanceStatusTag";
 import { PeriodicMaintenanceStatus } from "../../../../../models/Enums";
+import { stringToColor } from "../../../../../helpers/style";
+import TransportationPMStatusFilter from "../../../TransportationPMStatusFilter";
+import TransportationPeriodicMaintenance from "../../../../../models/Transportation/TransportationPeriodicMaintenance";
+import TransportationPMTask from "../../../../../models/Transportation/TransportationPMTask";
 
-const MachineMaintenance = () => {
+
+const AllTransportationPMTask = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -58,21 +56,22 @@ const MachineMaintenance = () => {
     location: [],
   });
 
-  const [getAllMachinePeriodicMaintenance, { data, loading }] = useLazyQuery(
-    GET_ALL_MACHINE_PERIODIC_MAINTENANCE,
-    {
+  const [getAllTransportationPeriodicMaintenanceTask, { data, loading }] =
+    useLazyQuery(GET_ALL_TRANSPORTATION_PM_TASK, {
       onError: (err) => {
-        errorMessage(err, "Error loading all machine periodic maintenance.");
+        errorMessage(
+          err,
+          "Error loading all transportation periodic maintenance tasks."
+        );
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
-    }
-  );
+    });
 
   // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
-    getAllMachinePeriodicMaintenance({ variables: filter });
-  }, [filter, getAllMachinePeriodicMaintenance]);
+    getAllTransportationPeriodicMaintenanceTask({ variables: filter });
+  }, [filter, getAllTransportationPeriodicMaintenanceTask]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -135,7 +134,8 @@ const MachineMaintenance = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllMachinePeriodicMaintenance.pageInfo ?? {};
+  const pageInfo =
+    data?.getAllTransportationPeriodicMaintenanceTask.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
@@ -143,14 +143,14 @@ const MachineMaintenance = () => {
   let pending = 0;
   let missed = 0;
 
-  data?.getAllMachinePeriodicMaintenance.edges.map(
-    (rec: { node: MachinePeriodicMaintenance }) => {
-      const periodicMaintenance = rec.node;
-      if (periodicMaintenance?.status === "Done") {
+  data?.getAllTransportationPeriodicMaintenanceTask.edges.map(
+    (rec: { node: TransportationPMTask }) => {
+      const periodicMaintenanceTask = rec.node;
+      if (periodicMaintenanceTask?.periodicMaintenance?.status === "Done") {
         done = done + 1;
-      } else if (periodicMaintenance?.status === "Pending") {
+      } else if (periodicMaintenanceTask?.periodicMaintenance?.status === "Pending") {
         pending = pending + 1;
-      } else if (periodicMaintenance?.status === "Missed") {
+      } else if (periodicMaintenanceTask?.periodicMaintenance?.status === "Missed") {
         missed = missed + 1;
       }
     }
@@ -166,7 +166,9 @@ const MachineMaintenance = () => {
 
   return (
     <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Machinery Maintenance</div>
+      <div className={classes["heading"]}>
+        Transports Periodic Maintenance Task
+      </div>
       <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}
@@ -174,7 +176,7 @@ const MachineMaintenance = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["status-wrapper"]}>
-          <MachinePMStatusFilter
+          <TransportationPMStatusFilter
             onChange={(status) => {
               setFilter({ ...filter, status, ...DefaultPaginationArgs });
               setPage(1);
@@ -212,12 +214,13 @@ const MachineMaintenance = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllMachinePeriodicMaintenance.edges.length > 0 ? (
-        data?.getAllMachinePeriodicMaintenance.edges.map(
-          (rec: { node: MachinePeriodicMaintenance }) => {
-            const periodicMaintenance = rec.node;
+      {data?.getAllTransportationPeriodicMaintenanceTask.edges.length > 0 ? (
+        data?.getAllTransportationPeriodicMaintenanceTask.edges.map(
+          (rec: { node: TransportationPMTask }) => {
+            const periodicMaintenanceTask = rec.node;
+            //console.log(periodicMaintenanceTask);
             return (
-              <div id="collapse" key={periodicMaintenance.id}>
+              <div id="collapse" key={periodicMaintenanceTask.id}>
                 <Collapse ghost style={{ marginBottom: ".5rem" }}>
                   <Collapse.Panel
                     header={
@@ -231,18 +234,23 @@ const MachineMaintenance = () => {
                               <div className={classes["title-wrapper"]}>
                                 <FaTractor />
                                 <span className={classes["title"]}>
-                                  {periodicMaintenance?.machine?.machineNumber}
+                                  {
+                                    periodicMaintenanceTask?.periodicMaintenance
+                                      ?.transportation?.machineNumber
+                                  }
                                 </span>
                               </div>
                               <div className={classes["location-wrapper"]}>
-                                <FaMapMarkerAlt />
-                                <span className={classes["title"]}>
-                                  {periodicMaintenance?.machine?.zone}
-                                </span>
-                                <span className={classes["dash"]}>-</span>
-                                <span>
-                                  {periodicMaintenance?.machine?.location}
-                                </span>
+                                <FaMapMarkerAlt style={{ marginRight: 5 }} />
+                                <div>
+                                  <div className={classes["location-width"]}>
+                                    {
+                                      periodicMaintenanceTask
+                                        ?.periodicMaintenance?.transportation
+                                        ?.location
+                                    }
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -250,40 +258,87 @@ const MachineMaintenance = () => {
                           <div className={classes["service-reading-wrapper"]}>
                             <div className={classes["reading"]}>
                               <span className={classes["reading-title"]}>
-                                Title:
+                                Task:
                               </span>
-                              <span>{periodicMaintenance?.title}</span>
+                              <span>{periodicMaintenanceTask?.name}</span>
+                            </div>
+                            <div className={classes["reading"]}>
+                              <div>
+                                <span className={classes["reading-title"]}>
+                                  Assigned to:
+                                </span>
+                                <span className={classes["center"]}>
+                                  {periodicMaintenanceTask.periodicMaintenance
+                                    .transportation?.assignees!.length > 0 ? (
+                                    <Avatar.Group
+                                      maxCount={5}
+                                      maxStyle={{
+                                        color: "#f56a00",
+                                        backgroundColor: "#fde3cf",
+                                      }}
+                                    >
+                                      {periodicMaintenanceTask.periodicMaintenance.transportation?.assignees?.map(
+                                        (assign) => {
+                                          console.log(assign?.user?.fullName);
+                                          return (
+                                            <Tooltip
+                                              title={
+                                                <>
+                                                  <div
+                                                    style={{
+                                                      display: "flex",
+                                                      alignItems: "center",
+                                                    }}
+                                                  >
+                                                    {assign?.user?.fullName} (
+                                                    {assign?.user?.rcno})
+                                                  </div>
+                                                </>
+                                              }
+                                              placement="bottom"
+                                              key={assign?.user?.id}
+                                            >
+                                              <Avatar
+                                                style={{
+                                                  backgroundColor:
+                                                    stringToColor(
+                                                      assign?.user?.fullName!
+                                                    ),
+                                                }}
+                                                size={22}
+                                              >
+                                                {assign?.user?.fullName
+                                                  .match(/^\w|\b\w(?=\S+$)/g)
+                                                  ?.join()
+                                                  .replace(",", "")
+                                                  .toUpperCase()}
+                                              </Avatar>
+                                            </Tooltip>
+                                          );
+                                        }
+                                      )}
+                                    </Avatar.Group>
+                                  ) : (
+                                    <span>None</span>
+                                  )}
+                                </span>
+                              </div>
                             </div>
                             <div className={classes["status"]}>
                               <PeriodicMaintenanceStatusTag
-                                status={periodicMaintenance?.status}
+                                status={
+                                  periodicMaintenanceTask?.periodicMaintenance
+                                    ?.status
+                                }
                               />
-                            </div>
-                            <div>
-                              <div className={classes["title-wrapper"]}>
-                                <Tooltip title="Start Date">
-                                  <FaRegClock />
-                                </Tooltip>
-
-                                <span className={classes["title"]}>
-                                  {moment(
-                                    periodicMaintenance?.startDate
-                                  ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                                </span>
-                              </div>
-                              <div className={classes["reading"]}>
-                                <span className={classes["reading-title"]}>
-                                  In:
-                                </span>
-                                <span>
-                                  {periodicMaintenance?.value}{" "}
-                                  {periodicMaintenance?.measurement}
-                                </span>
-                              </div>
                             </div>
                           </div>
                           <Link
-                            to={"/machine/" + periodicMaintenance?.machine?.id}
+                            to={
+                              "/transportation/" +
+                              periodicMaintenanceTask?.periodicMaintenance
+                                ?.transportation?.id
+                            }
                           >
                             <Tooltip title="Open">
                               <FaArrowAltCircleRight
@@ -294,7 +349,7 @@ const MachineMaintenance = () => {
                         </div>
                       </>
                     }
-                    key={periodicMaintenance?.id}
+                    key={periodicMaintenanceTask?.id!}
                   >
                     <div className={classes["container"]}></div>
                   </Collapse.Panel>
@@ -318,4 +373,4 @@ const MachineMaintenance = () => {
   );
 };
 
-export default MachineMaintenance;
+export default AllTransportationPMTask;

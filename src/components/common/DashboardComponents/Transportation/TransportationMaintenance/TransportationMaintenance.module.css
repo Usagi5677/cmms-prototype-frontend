@@ -159,7 +159,7 @@
 }
 
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 700px) {
   .container {
     font-size: 12px;
   }
@@ -181,23 +181,16 @@
     
   }
   .counter-value {
-    margin: 10px 10px;
+    margin: 10px 0;
+    margin-right: 5px;
+    margin-left: 20px;
   }
   
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 900px) {
   .options-wrapper {
     flex-direction: row;
     margin-bottom: 0;
-  }
-  .add-machine-wrapper {
-    padding-top: 0;
-  }
-  .status-wrapper {
-    margin-top: 10px;
-  }
-  .counter-value {
-    margin: 10px 20px;
   }
 }

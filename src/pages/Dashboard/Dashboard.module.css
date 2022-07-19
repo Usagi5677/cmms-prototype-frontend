@@ -10,11 +10,23 @@
   flex-direction: column;
 }
 
+.pm-task {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
 @media only screen and (min-width: 600px) {
   .utilization {
     flex-direction: row;
   }
+  
+  
+}
+@media only screen and (min-width: 700px) { 
   .maintenance {
+    flex-direction: row;
+  }
+  .pm-task {
     flex-direction: row;
   }
 }

@@ -26,7 +26,7 @@ export default interface Machine {
   deletedAt?: Date;
   status: MachineStatus;
   statusChangedAt: Date;
-  assignees: User[];
+  assignees?: MachineAssign[];
   checklistItems: ChecklistItem[];
   periodicMaintenancePlans: MachinePeriodicMaintenance[];
   repairs: MachineRepair[];

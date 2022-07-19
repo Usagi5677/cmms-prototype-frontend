@@ -28,7 +28,7 @@ export default interface Transportation {
   deletedAt?: Date;
   status: TransportationStatus;
   statusChangedAt: Date;
-  assignees: User[];
+  assignees?: TransportationAssign[];
   checklistItems: ChecklistItem[];
   periodicMaintenancePlans: TransportationPeriodicMaintenance[];
   repairs: TransportationRepair[];

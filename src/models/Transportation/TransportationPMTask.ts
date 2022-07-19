@@ -1,3 +1,4 @@
+import TransportationPeriodicMaintenance from "./TransportationPeriodicMaintenance";
 import User from "../User";
 
 export default interface TransportationPMTask {
@@ -10,4 +11,5 @@ export default interface TransportationPMTask {
   completedAt?: Date;
   parentTask?: TransportationPMTask;
   subTasks?: TransportationPMTask;
+  periodicMaintenance: TransportationPeriodicMaintenance;
 }

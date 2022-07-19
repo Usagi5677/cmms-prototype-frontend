@@ -4,12 +4,12 @@ import moment from "moment";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import TransportationPeriodicMaintenance from "../../models/Transportation/TransportationPeriodicMaintenance";
-import TransportationPMTask from "../../models/Machine/TransportationPMTask";
 import { DELETE_TRANSPORTATION_PM_TASK, TOGGLE_TRANSPORTATION_PM_TASK } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import UserContext from "../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { AddTransportationPeriodicMaintenanceTask } from "./AddTransportationPeriodicMaintenanceTask";
+import TransportationPMTask from "../../models/Transportation/TransportationPMTask";
 
 
 export interface TaskListProps {

@@ -52,6 +52,15 @@
 
 .reading {
   margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .reading-title {
@@ -101,7 +110,7 @@
 .counter-value {
   font-size: 16px;
   font-weight: 700;
-  margin: 5px 20px;
+  margin: 5px 10px;
 }
 .done {
   color: #08979c;
@@ -158,7 +167,9 @@
   margin: 10px 0 !important;
 }
 
-
+.location-width {
+  flex: 1;
+}
 @media only screen and (min-width: 700px) {
   .container {
     font-size: 12px;
@@ -178,28 +189,16 @@
   }
   .counter-container {
     flex-direction: row;
-    
-  }
-  .counter-value {
-    margin: 10px 10px;
-  }
-  
-}
-
-@media only screen and (min-width: 800px) {
-  .options-wrapper {
-    flex-direction: row;
-    margin-bottom: 0;
-  }
-  .add-machine-wrapper {
-    padding-top: 0;
-  }
-  .status-wrapper {
-    margin-top: 10px;
   }
   .counter-value {
     margin: 10px 0;
     margin-right: 5px;
     margin-left: 20px;
+  }
+}
+@media only screen and (min-width: 900px) {
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0;
   }
 }

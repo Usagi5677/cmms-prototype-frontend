@@ -78,7 +78,7 @@ const ViewTransportation = () => {
 
   const renderUsers = () => {
     return (
-      transportationData?.assignees?.length > 0 && (
+      transportationData?.assignees!.length > 0 && (
         <Avatar.Group
           maxCount={5}
           maxStyle={{
@@ -86,13 +86,13 @@ const ViewTransportation = () => {
             backgroundColor: "#fde3cf",
           }}
         >
-          {transportationData?.assignees?.map((user) => {
+          {transportationData?.assignees?.map((assign) => {
             return (
               <Tooltip
                 title={
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      {user.fullName} ({user.rcno})
+                      {assign?.user?.fullName} ({assign?.user?.rcno})
                       {self.assignedPermission
                         .hasTransportationUnassignmentToUser && (
                         <CloseCircleOutlined
@@ -104,7 +104,7 @@ const ViewTransportation = () => {
                             unassignUserFromTransportation({
                               variables: {
                                 transportationId: transportationData?.id,
-                                userId: user.id,
+                                userId: assign?.user?.id,
                               },
                             })
                           }
@@ -114,14 +114,14 @@ const ViewTransportation = () => {
                   </>
                 }
                 placement="bottom"
-                key={user.id}
+                key={assign?.user?.id}
               >
                 <Avatar
                   style={{
-                    backgroundColor: stringToColor(user.fullName),
+                    backgroundColor: stringToColor(assign?.user?.fullName),
                   }}
                 >
-                  {user.fullName
+                  {assign?.user?.fullName
                     .match(/^\w|\b\w(?=\S+$)/g)
                     ?.join()
                     .replace(",", "")
