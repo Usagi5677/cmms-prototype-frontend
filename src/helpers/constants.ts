@@ -1,4 +1,4 @@
-export const PAGE_LIMIT = 5;
+export const PAGE_LIMIT = 10;
 
 export const DATETIME_FORMATS = {
   FULL: "DD MMMM YYYY HH:mm:ss",
@@ -7,15 +7,7 @@ export const DATETIME_FORMATS = {
   DAY_MONTH_YEAR: "DD MMM YYYY",
 };
 
-export const DEPARTMENTS = [
-  "LTD",
-  "MTD",
-  "TRD",
-  "LOD",
-  "MBD",
-  "CDD",
-  "CEO"
-]
+export const DEPARTMENTS = ["LTD", "MTD", "TRD", "LOD", "MBD", "CDD", "CEO"];
 
 export const PERMISSIONS = [
   "ADD_ROLE",
@@ -86,7 +78,7 @@ export const PERMISSIONS = [
   "VIEW_MACHINERY_REPORT",
   "VIEW_TRANSPORTATION_REPORT",
   "VERIFY_MACHINE_PERIODIC_MAINTENANCE",
-  "VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE"
+  "VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE",
 ];
 
 export const ISLANDS = [

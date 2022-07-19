@@ -443,14 +443,22 @@ em {
   padding-left: 5px !important;
   border-bottom: 1px solid #ccc;
 }
-#collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+#collapse
+  .ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header
+  .ant-collapse-arrow {
   display: inline-block;
   margin-right: 0 !important;
   font-size: 12px;
   vertical-align: -1px;
 }
 
-#collapse .ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+#collapse
+  .ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
   padding: 5px !important;
 }
 
@@ -458,13 +466,66 @@ em {
   #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 5px !important;
   }
-  #collapse .ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+  #collapse
+    .ant-collapse-ghost
+    > .ant-collapse-item
+    > .ant-collapse-content
+    > .ant-collapse-content-box {
     padding: 10px !important;
   }
-  #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+  #collapse
+    .ant-collapse
+    > .ant-collapse-item
+    > .ant-collapse-header
+    .ant-collapse-arrow {
     display: inline-block;
     margin-right: 12px !important;
     font-size: 12px;
     vertical-align: -1px;
   }
+}
+
+.secondaryButton {
+  color: var(--primary) !important;
+  background-color: white !important;
+  border-radius: 20px !important;
+  border-color: var(--primary) !important;
+}
+.secondaryButton:hover {
+  color: white !important;
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
+}
+
+.primaryButton {
+  color: white !important;
+  background-color: var(--primary) !important;
+  border-radius: 20px !important;
+  border-color: var(--primary) !important;
+}
+.primaryButton:hover {
+  color: white !important;
+  border-color: #22d197 !important;
+  background-color: #22d197 !important;
+}
+
+.deleteButton {
+  color: var(--error);
+  cursor: pointer;
+}
+.deleteButton:hover .deleteButton:focus {
+  color: rgb(185, 3, 3) !important;
+}
+
+.editButton {
+  color: var(--primary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.editButton:hover {
+  color: #137e5a;
+}
+
+.notRounded.ant-select:not(.ant-select-disabled) .ant-select-selector {
+  border-radius: 0 !important;
 }

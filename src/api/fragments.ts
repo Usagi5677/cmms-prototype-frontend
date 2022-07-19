@@ -109,3 +109,35 @@ export const TRANSPORTATION_FRAGMENT = gql`
     }
   }
 `;
+
+export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
+  fragment ChecklistTemplateFields on ChecklistTemplate {
+    id
+    type
+    name
+    items {
+      id
+      name
+    }
+    machinesDaily {
+      id
+      machineNumber
+      location
+    }
+    machinesWeekly {
+      id
+      machineNumber
+      location
+    }
+    transportationDaily {
+      id
+      machineNumber
+      location
+    }
+    transportationWeekly {
+      id
+      machineNumber
+      location
+    }
+  }
+`;

@@ -16,13 +16,6 @@
   margin-top: 20px;
 }
 
-.content-title {
-  text-align: center;
-  font-weight: 600;
-  padding-bottom: 20px;
-  text-decoration: underline;
-}
-
 .content-wrapper-one {
   flex: 1;
   padding: 10px 20px;

@@ -10,6 +10,8 @@ import {
   FaTruck,
   FaTractor,
   FaLock,
+  FaPage4,
+  FaPager,
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 
@@ -147,6 +149,12 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       icon: <FaLock />,
     });
   }
+
+  SidebarData.push({
+    name: "Templates",
+    path: "/templates",
+    icon: <FaPager />,
+  });
   /*
     if (self?.assignedPermission?.hasViewMachineryReport) {
       SidebarData.splice(13, 0, {

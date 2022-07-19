@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import {
   APS_USER_FRAGMENT,
+  CHECKLIST_TEMPLATE_FRAGMENT,
   MACHINE_FRAGMENT,
   TRANSPORTATION_FRAGMENT,
   USER_FRAGMENT,
@@ -1421,6 +1422,59 @@ export const GET_ALL_TRANSPORTATION_PM_STATUS_COUNT = gql`
       missed
       pending
       done
+    }
+  }
+`;
+
+export const CHECKLIST_TEMPLATES = gql`
+  query checklistTemplates(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $type: String
+  ) {
+    checklistTemplates(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      type: $type
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          type
+        }
+      }
+    }
+  }
+`;
+
+export const CHECKLIST_TEMPLATE_DETAILS = gql`
+  ${CHECKLIST_TEMPLATE_FRAGMENT}
+  query checklistTemplate($id: Int!) {
+    checklistTemplate(id: $id) {
+      ...ChecklistTemplateFields
+    }
+  }
+`;
+
+export const ENTITY_CHECKLIST_TEMPLATE = gql`
+  ${CHECKLIST_TEMPLATE_FRAGMENT}
+  query entityChecklistTemplate($input: EntityChecklistTemplateInput!) {
+    entityChecklistTemplate(input: $input) {
+      ...ChecklistTemplateFields
     }
   }
 `;

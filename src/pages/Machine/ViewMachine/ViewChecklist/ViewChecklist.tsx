@@ -20,6 +20,7 @@ import {
 } from "../../../../api/mutations";
 import AddMachineChecklist from "../../../../components/MachineComponents/AddMachineChecklist/AddMachineChecklist";
 import MachineChecklistItem from "../../../../components/MachineComponents/MachineChecklistItem/MachineChecklistItem";
+import { EditChecklistTemplate } from "../../../../components/Templates/EditChecklistTemplate";
 import UserContext from "../../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../../helpers/constants";
 import { errorMessage } from "../../../../helpers/gql";
@@ -174,10 +175,16 @@ const ViewChecklist = ({
       </div>
       <div className={classes["content"]}>
         <div className={classes["content-wrapper-one"]}>
-          <div className={classes["content-title"]}>Daily</div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ fontWeight: 700, marginRight: ".5rem" }}>Daily</div>
+            <EditChecklistTemplate
+              entity={machineData}
+              entityType="Machine"
+              type="Daily"
+            />
+          </div>
 
-          {machineData?.checklistItems.map((item) =>
-            item.type === "Daily" ? (
+          {/* {machineData?.dailyChecklistTemplate.items.map((item) =>
               <div className={classes["border"]} key={item.id}>
                 <div className={classes["checkbox-container"]}>
                   {self.assignedPermission?.hasMachineChecklistEdit ? (
@@ -238,75 +245,18 @@ const ViewChecklist = ({
                   </span>
                 )}
               </div>
-            ) : null
-          )}
+            
+          )} */}
         </div>
         <div className={classes["content-wrapper-two"]}>
-          <div className={classes["content-title"]}>Weekly</div>
-          {machineData?.checklistItems.map((item) =>
-            item.type === "Weekly" ? (
-              <div className={classes["border"]} key={item.id}>
-                <div className={classes["checkbox-container"]}>
-                  {self.assignedPermission?.hasMachineChecklistEdit ? (
-                    <Checkbox
-                      defaultChecked={item.completedAt !== null}
-                      onChange={(e) => onClickCheckbox(e, item.id)}
-                      className={classes["checkbox"]}
-                      disabled={isDeleted}
-                    >
-                      <div className={classes["description"]}>
-                        {item.description}
-                      </div>
-                    </Checkbox>
-                  ) : (
-                    <div className={classes["description"]}>
-                      {item.description}
-                    </div>
-                  )}
-
-                  <div className={classes["deleteWrapper"]}>
-                    {(deleting || toggling) && (
-                      <Spin style={{ marginRight: 5 }} size="small" />
-                    )}
-                    {!deleting && (
-                      <div>
-                        {self.assignedPermission?.hasMachineChecklistDelete &&
-                        !isDeleted ? (
-                          <CloseCircleOutlined
-                            className={classes["delete"]}
-                            onClick={() => {
-                              deleteMachineChecklistItem({
-                                variables: {
-                                  id: item.id,
-                                },
-                              });
-                            }}
-                          />
-                        ) : null}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                {item.completedAt && (
-                  <span className={classes["completedAt"]}>
-                    {item.completedAt && (
-                      <span
-                        title={moment(item.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(item.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    )}{" "}
-                    • Completed by {item.completedBy?.fullName} (
-                    {item.completedBy?.rcno})
-                  </span>
-                )}
-              </div>
-            ) : null
-          )}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ fontWeight: 700, marginRight: ".5rem" }}>Weekly</div>
+            <EditChecklistTemplate
+              entity={machineData}
+              entityType="Machine"
+              type="Weekly"
+            />
+          </div>
         </div>
       </div>
     </div>

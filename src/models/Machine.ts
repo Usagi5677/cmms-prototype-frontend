@@ -7,6 +7,7 @@ import MachineSparePR from "./Machine/MachineSparePR";
 import MachineRepair from "./Machine/MachineRepair";
 import MachineBreakdown from "./Machine/MachineBreakdown";
 import MachineAssign from "./Machine/MachineAssign";
+import ChecklistTemplate from "./ChecklistTemplate";
 
 export default interface Machine {
   id: number;
@@ -27,7 +28,8 @@ export default interface Machine {
   status: MachineStatus;
   statusChangedAt: Date;
   assignees?: MachineAssign[];
-  checklistItems: ChecklistItem[];
+  dailyChecklistTemplate: ChecklistTemplate;
+  weeklyChecklistTemplate: ChecklistTemplate;
   periodicMaintenancePlans: MachinePeriodicMaintenance[];
   repairs: MachineRepair[];
   breakdowns: MachineBreakdown[];

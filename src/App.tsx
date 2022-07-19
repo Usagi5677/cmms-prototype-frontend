@@ -25,6 +25,7 @@ import ViewAssignedVessels from "./pages/Transportation/ViewAssignedVessels/View
 import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/ViewAssignedVehicles";
 import ViewMachineReport from "./pages/ViewMachineReport/ViewMachineReport";
 import ViewTransportationReport from "./pages/ViewTransportationReport/ViewTransportationReport";
+import { Templates } from "./pages/Templates";
 
 function App() {
   {
@@ -48,7 +49,7 @@ function App() {
       const assignedPermission = permissionExist(data.me);
       setUser({
         ...data.me,
-       assignedPermission,
+        assignedPermission,
       });
       setAppLoading(false);
       setLoggedOut(false);
@@ -181,6 +182,7 @@ function App() {
             />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
+            <Route path="/templates" element={<Templates />} />
             <Route path="/machinery-report" element={<ViewMachineReport />} />
             <Route
               path="/transportation-report"

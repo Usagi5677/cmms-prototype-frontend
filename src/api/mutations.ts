@@ -712,3 +712,59 @@ export const TOGGLE_VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
     toggleVerifyTransportationPeriodicMaintenance(id: $id, verify: $verify)
   }
 `;
+
+export const CREATE_CHECKLIST_TEMPLATE = gql`
+  mutation createChecklistTemplate($input: CreateChecklistTemplateInput!) {
+    createChecklistTemplate(createChecklistTemplateInput: $input)
+  }
+`;
+
+export const DELETE_CHECKLIST_TEMPLATE = gql`
+  mutation removeChecklistTemplate($id: Int!) {
+    removeChecklistTemplate(id: $id)
+  }
+`;
+
+export const EDIT_CHECKLIST_TEMPLATE = gql`
+  mutation updateChecklistTemplate($input: UpdateChecklistTemplateInput!) {
+    updateChecklistTemplate(updateChecklistTemplateInput: $input)
+  }
+`;
+
+export const ADD_CHECKLIST_TEMPLATE_ITEM = gql`
+  mutation addChecklistTemplateItem(
+    $id: Int!
+    $name: String!
+    $entityType: String
+    $entityId: Int
+  ) {
+    addChecklistTemplateItem(
+      id: $id
+      name: $name
+      entityType: $entityType
+      entityId: $entityId
+    )
+  }
+`;
+
+export const REMOVE_CHECKLIST_TEMPLATE_ITEM = gql`
+  mutation removeChecklistTemplateItem(
+    $id: Int!
+    $templateId: Int
+    $entityType: String
+    $entityId: Int
+  ) {
+    removeChecklistTemplateItem(
+      id: $id
+      templateId: $templateId
+      entityType: $entityType
+      entityId: $entityId
+    )
+  }
+`;
+
+export const CHANGE_CHECKLIST_TEMPLATE = gql`
+  mutation changeChecklistTemplate($input: ChangeChecklistTemplateInput!) {
+    changeChecklistTemplate(input: $input)
+  }
+`;
