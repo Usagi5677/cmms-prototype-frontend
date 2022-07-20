@@ -1283,6 +1283,7 @@ export const GET_ALL_MACHINE_PM_TASK = gql`
     $complete: Boolean
     $location: [String!]
     $status: PeriodicMaintenanceStatus
+    $assignedToId: Int
   ) {
     getAllMachinePeriodicMaintenanceTask(
       after: $after
@@ -1293,6 +1294,7 @@ export const GET_ALL_MACHINE_PM_TASK = gql`
       complete: $complete
       location: $location
       status: $status
+      assignedToId: $assignedToId
     ) {
       pageInfo {
         endCursor
@@ -1328,7 +1330,6 @@ export const GET_ALL_MACHINE_PM_TASK = gql`
   }
 `;
 
-
 export const GET_ALL_TRANSPORTATION_PM_TASK = gql`
   ${APS_USER_FRAGMENT}
   query getAllTransportationPeriodicMaintenanceTask(
@@ -1340,6 +1341,7 @@ export const GET_ALL_TRANSPORTATION_PM_TASK = gql`
     $complete: Boolean
     $location: [String!]
     $status: PeriodicMaintenanceStatus
+    $assignedToId: Int
   ) {
     getAllTransportationPeriodicMaintenanceTask(
       after: $after
@@ -1350,6 +1352,7 @@ export const GET_ALL_TRANSPORTATION_PM_TASK = gql`
       complete: $complete
       location: $location
       status: $status
+      assignedToId: $assignedToId
     ) {
       pageInfo {
         endCursor
@@ -1385,8 +1388,8 @@ export const GET_ALL_TRANSPORTATION_PM_TASK = gql`
 `;
 
 export const GET_ALL_MACHINE_PM_TASK_STATUS_COUNT = gql`
-  query allMachinePMTaskStatusCount {
-    allMachinePMTaskStatusCount {
+  query allMachinePMTaskStatusCount($assignedToId: Int) {
+    allMachinePMTaskStatusCount(assignedToId: $assignedToId) {
       pending
       done
     }
@@ -1394,8 +1397,8 @@ export const GET_ALL_MACHINE_PM_TASK_STATUS_COUNT = gql`
 `;
 
 export const GET_ALL_TRANSPORTATION_PM_TASK_STATUS_COUNT = gql`
-  query allTransportationPMTaskStatusCount {
-    allTransportationPMTaskStatusCount {
+  query allTransportationPMTaskStatusCount($assignedToId: Int) {
+    allTransportationPMTaskStatusCount(assignedToId: $assignedToId) {
       pending
       done
     }

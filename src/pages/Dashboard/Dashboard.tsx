@@ -8,11 +8,17 @@ import MachineMaintenance from "../../components/common/DashboardComponents/Mach
 import TransportationMaintenance from "../../components/common/DashboardComponents/Transportation/TransportationMaintenance/TransportationMaintenance";
 import MachineryPMTask from "../../components/common/DashboardComponents/Machine/MachineryPMTask/MachineryPMTask";
 import AllTransportationPMTask from "../../components/common/DashboardComponents/Transportation/AllTransportationPMTask/AllTransportationPMTask";
+import MyMachineryPMTask from "../../components/common/DashboardComponents/Machine/MyMachineryPMTask/MyMachineryPMTask";
+import MyTransportationPMTask from "../../components/common/DashboardComponents/Transportation/MyTransportationPMTask/MyTransportationPMTask";
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
   return (
     <>
+      <div className={classes["my-pm-task"]}>
+        <MyMachineryPMTask />
+        <MyTransportationPMTask />
+      </div>
       <div className={classes["pm-task"]}>
         <MachineryPMTask />
         <AllTransportationPMTask />
