@@ -6,7 +6,7 @@ import DefaultPaginationArgs from "../../../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE } from "../../../../../api/queries";
+import { GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE, GET_ALL_TRANSPORTATION_PM_STATUS_COUNT } from "../../../../../api/queries";
 import {
   DATETIME_FORMATS,
   ISLANDS,
@@ -58,6 +58,20 @@ const TransportationMaintenance = () => {
     location: [],
   });
 
+  const [
+    getAllTransportationPMStatusCount,
+    { data: statusData, loading: statusLoading },
+  ] = useLazyQuery(GET_ALL_TRANSPORTATION_PM_STATUS_COUNT, {
+    onError: (err) => {
+      errorMessage(
+        err,
+        "Error loading all transportation periodic maintenance status count."
+      );
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
+
   const [getAllTransportationPeriodicMaintenance, { data, loading }] =
     useLazyQuery(GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE, {
       onError: (err) => {
@@ -73,7 +87,8 @@ const TransportationMaintenance = () => {
   // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllTransportationPeriodicMaintenance({ variables: filter });
-  }, [filter, getAllTransportationPeriodicMaintenance]);
+    getAllTransportationPMStatusCount();
+  }, [filter, getAllTransportationPeriodicMaintenance, getAllTransportationPMStatusCount]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -140,22 +155,9 @@ const TransportationMaintenance = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let done = 0;
-  let pending = 0;
-  let missed = 0;
-
-  data?.getAllTransportationPeriodicMaintenance.edges.map(
-    (rec: { node: MachinePeriodicMaintenance }) => {
-      const periodicMaintenance = rec.node;
-      if (periodicMaintenance?.status === "Done") {
-        done = done + 1;
-      } else if (periodicMaintenance?.status === "Pending") {
-        pending = pending + 1;
-      } else if (periodicMaintenance?.status === "Missed") {
-        missed = missed + 1;
-      }
-    }
-  );
+  let missed = statusData?.allTransportationPMStatusCount?.missed;
+  let done = statusData?.allTransportationPMStatusCount?.done;
+  let pending = statusData?.allTransportationPMStatusCount?.pending;
 
   let options: any = [];
   ISLANDS?.map((island: string) => {

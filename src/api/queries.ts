@@ -1383,3 +1383,41 @@ export const GET_ALL_TRANSPORTATION_PM_TASK = gql`
     }
   }
 `;
+
+export const GET_ALL_MACHINE_PM_TASK_STATUS_COUNT = gql`
+  query allMachinePMTaskStatusCount {
+    allMachinePMTaskStatusCount {
+      pending
+      done
+    }
+  }
+`;
+
+export const GET_ALL_TRANSPORTATION_PM_TASK_STATUS_COUNT = gql`
+  query allTransportationPMTaskStatusCount {
+    allTransportationPMTaskStatusCount {
+      pending
+      done
+    }
+  }
+`;
+
+export const GET_ALL_MACHINE_PM_STATUS_COUNT = gql`
+  query allMachinePMStatusCount {
+    allMachinePMStatusCount {
+      missed
+      pending
+      done
+    }
+  }
+`;
+
+export const GET_ALL_TRANSPORTATION_PM_STATUS_COUNT = gql`
+  query allTransportationPMStatusCount {
+    allTransportationPMStatusCount {
+      missed
+      pending
+      done
+    }
+  }
+`;

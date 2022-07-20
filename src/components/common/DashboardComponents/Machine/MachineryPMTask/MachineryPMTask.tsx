@@ -1,4 +1,12 @@
-import { Avatar, Collapse, message, Select, Spin, Tooltip } from "antd";
+import {
+  Avatar,
+  Checkbox,
+  Collapse,
+  message,
+  Select,
+  Spin,
+  Tooltip,
+} from "antd";
 import Search from "../../../Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +14,10 @@ import DefaultPaginationArgs from "../../../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { GET_ALL_MACHINE_PM_TASK } from "../../../../../api/queries";
+import {
+  GET_ALL_MACHINE_PM_TASK_STATUS_COUNT,
+  GET_ALL_MACHINE_PM_TASK,
+} from "../../../../../api/queries";
 import {
   DATETIME_FORMATS,
   ISLANDS,
@@ -38,12 +49,14 @@ const MachineryPMTask = () => {
   const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
   const [location, setLocation] = useState([]);
+  const [complete, setComplete] = useState(false);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       status: any;
       location: string[];
+      complete: boolean;
     }
   >({
     first: 3,
@@ -53,6 +66,21 @@ const MachineryPMTask = () => {
     search: "",
     status: null,
     location: [],
+    complete: false,
+  });
+
+  const [
+    getAllMachinePMTaskStatusCount,
+    { data: statusData, loading: statusLoading },
+  ] = useLazyQuery(GET_ALL_MACHINE_PM_TASK_STATUS_COUNT, {
+    onError: (err) => {
+      errorMessage(
+        err,
+        "Error loading all machine periodic maintenance task status count."
+      );
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
   });
 
   const [getAllMachinePeriodicMaintenanceTask, { data, loading }] =
@@ -70,7 +98,12 @@ const MachineryPMTask = () => {
   // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllMachinePeriodicMaintenanceTask({ variables: filter });
-  }, [filter, getAllMachinePeriodicMaintenanceTask]);
+    getAllMachinePMTaskStatusCount();
+  }, [
+    filter,
+    getAllMachinePeriodicMaintenanceTask,
+    getAllMachinePMTaskStatusCount,
+  ]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -79,7 +112,8 @@ const MachineryPMTask = () => {
   const searchDebounced = (
     value: string,
     statusValue: PeriodicMaintenanceStatus,
-    locationValue: string[]
+    locationValue: string[],
+    completeValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -90,6 +124,7 @@ const MachineryPMTask = () => {
           search: value,
           status: statusValue,
           location: locationValue,
+          complete: completeValue,
           first: 3,
           last: null,
           before: null,
@@ -106,9 +141,9 @@ const MachineryPMTask = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status, location);
+    searchDebounced(search, status, location, complete);
     // eslint-disable-next-line
-  }, [search, status, location]);
+  }, [search, status, location, complete]);
 
   // Pagination functions
   const next = () => {
@@ -137,22 +172,9 @@ const MachineryPMTask = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let done = 0;
-  let pending = 0;
-  let missed = 0;
-
-  data?.getAllMachinePeriodicMaintenanceTask.edges.map(
-    (rec: { node: MachinePMTask }) => {
-      const periodicMaintenanceTask = rec.node;
-      if (periodicMaintenanceTask?.periodicMaintenance?.status === "Done") {
-        done = done + 1;
-      } else if (periodicMaintenanceTask?.periodicMaintenance?.status === "Pending") {
-        pending = pending + 1;
-      } else if (periodicMaintenanceTask?.periodicMaintenance?.status === "Missed") {
-        missed = missed + 1;
-      }
-    }
-  );
+  let done = statusData?.allMachinePMTaskStatusCount?.done;
+  let pending = statusData?.allMachinePMTaskStatusCount?.pending;
+ 
 
   let options: any = [];
   ISLANDS?.map((island: string) => {
@@ -191,16 +213,15 @@ const MachineryPMTask = () => {
             placeholder={"Location"}
             mode="multiple"
           />
+          <Checkbox onChange={(e) => setComplete(e.target.checked)}>
+            Complete
+          </Checkbox>
         </div>
       </div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{missed}</div>
-          <div className={classes["missed"]}>Missed</div>
-        </div>
-        <div className={classes["counter-wrapper"]}>
           <div className={classes["counter-value"]}>{pending}</div>
-          <div className={classes["pending"]}>Upcoming</div>
+          <div className={classes["pending"]}>Pending</div>
         </div>
         <div className={classes["counter-wrapper"]}>
           <div className={classes["counter-value"]}>{done}</div>
@@ -216,7 +237,6 @@ const MachineryPMTask = () => {
         data?.getAllMachinePeriodicMaintenanceTask.edges.map(
           (rec: { node: MachinePMTask }) => {
             const periodicMaintenanceTask = rec.node;
-            //console.log(periodicMaintenanceTask);
             return (
               <div id="collapse" key={periodicMaintenanceTask.id}>
                 <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -282,7 +302,6 @@ const MachineryPMTask = () => {
                                     >
                                       {periodicMaintenanceTask.periodicMaintenance.machine?.assignees?.map(
                                         (assign) => {
-                                          console.log(assign?.user?.fullName);
                                           return (
                                             <Tooltip
                                               title={

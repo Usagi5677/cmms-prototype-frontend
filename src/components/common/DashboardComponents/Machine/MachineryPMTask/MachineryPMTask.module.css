@@ -148,6 +148,10 @@
 
 .status-wrapper {
   margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
 }
 
 .heading {
