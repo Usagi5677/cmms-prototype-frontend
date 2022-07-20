@@ -129,12 +129,12 @@ export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
       machineNumber
       location
     }
-    transportationDaily {
+    transportationsDaily {
       id
       machineNumber
       location
     }
-    transportationWeekly {
+    transportationsWeekly {
       id
       machineNumber
       location

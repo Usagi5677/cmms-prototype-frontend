@@ -48,7 +48,7 @@ export const SelectChecklistTemplate: React.FC<
       onError: (err) => {
         errorMessage(err, "Error updating checklist.");
       },
-      refetchQueries: ["entityChecklistTemplate"],
+      refetchQueries: ["entityChecklistTemplate", "checklist"],
     }
   );
 

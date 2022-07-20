@@ -60,38 +60,6 @@ export const DELETE_MACHINE = gql`
   }
 `;
 
-export const ADD_MACHINE_CHECKLIST_ITEM = gql`
-  mutation ($machineId: Int!, $description: String!, $type: String!) {
-    addMachineChecklistItem(
-      machineId: $machineId
-      description: $description
-      type: $type
-    )
-  }
-`;
-
-export const TOGGLE_MACHINE_CHECKLIST_ITEM = gql`
-  mutation (
-    $id: [Int!]!
-    $currentMeterReading: Int!
-    $workingHour: Int!
-    $uncheckId: [Int!]!
-  ) {
-    toggleMachineChecklistItem(
-      id: $id
-      currentMeterReading: $currentMeterReading
-      workingHour: $workingHour
-      uncheckId: $uncheckId
-    )
-  }
-`;
-
-export const DELETE_MACHINE_CHECKLIST_ITEM = gql`
-  mutation ($id: Int!) {
-    deleteMachineChecklistItem(id: $id)
-  }
-`;
-
 export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
   mutation (
     $machineId: Int!
@@ -345,38 +313,6 @@ export const SET_TRANSPORTATION_STATUS = gql`
     setTransportationStatus(
       transportationId: $transportationId
       status: $status
-    )
-  }
-`;
-
-export const ADD_TRANSPORTATION_CHECKLIST_ITEM = gql`
-  mutation ($transportationId: Int!, $description: String!, $type: String!) {
-    addTransportationChecklistItem(
-      transportationId: $transportationId
-      description: $description
-      type: $type
-    )
-  }
-`;
-
-export const DELETE_TRANSPORTATION_CHECKLIST_ITEM = gql`
-  mutation ($id: Int!) {
-    deleteTransportationChecklistItem(id: $id)
-  }
-`;
-
-export const TOGGLE_TRANSPORTATION_CHECKLIST_ITEM = gql`
-  mutation (
-    $id: [Int!]!
-    $currentMeterReading: Int!
-    $workingHour: Int!
-    $uncheckId: [Int!]!
-  ) {
-    toggleTransportationChecklistItem(
-      id: $id
-      currentMeterReading: $currentMeterReading
-      workingHour: $workingHour
-      uncheckId: $uncheckId
     )
   }
 `;
@@ -766,5 +702,23 @@ export const REMOVE_CHECKLIST_TEMPLATE_ITEM = gql`
 export const CHANGE_CHECKLIST_TEMPLATE = gql`
   mutation changeChecklistTemplate($input: ChangeChecklistTemplateInput!) {
     changeChecklistTemplate(input: $input)
+  }
+`;
+
+export const TOGGLE_CHECKLIST_ITEM = gql`
+  mutation toggleChecklistItem($id: Int!, $complete: Boolean!) {
+    toggleChecklistItem(id: $id, complete: $complete)
+  }
+`;
+
+export const UPDATE_WORKING_HOURS = gql`
+  mutation updateWorkingHours($id: Int!, $newHrs: Int!) {
+    updateWorkingHours(id: $id, newHrs: $newHrs)
+  }
+`;
+
+export const UPDATE_READING = gql`
+  mutation updateReading($id: Int!, $reading: Int!) {
+    updateReading(id: $id, reading: $reading)
   }
 `;

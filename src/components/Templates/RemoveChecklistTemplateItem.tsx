@@ -24,7 +24,11 @@ export const RemoveChecklistTemplateItem: React.FC<
       onError: (error) => {
         errorMessage(error, "Unexpected error while removing item.");
       },
-      refetchQueries: ["checklistTemplate", "entityChecklistTemplate"],
+      refetchQueries: [
+        "checklistTemplate",
+        "entityChecklistTemplate",
+        "checklist",
+      ],
     }
   );
 

@@ -529,3 +529,7 @@ em {
 .notRounded.ant-select:not(.ant-select-disabled) .ant-select-selector {
   border-radius: 0 !important;
 }
+
+.underlineOnHover:hover {
+  text-decoration: underline;
+}

@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaList } from "react-icons/fa";
+import { FaList, FaRegArrowAltCircleRight } from "react-icons/fa";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
 import {
   ADD_CHECKLIST_TEMPLATE_ITEM,
@@ -25,6 +25,7 @@ import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
 import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 export interface ChecklistTemplateDetailsProps {
   checklistTemplate: ChecklistTemplate;
@@ -122,20 +123,23 @@ export const ChecklistTemplateDetails: React.FC<
     });
   };
 
-  const getUsedBy = (): (Machine | Transportation)[] => {
-    const used = [];
+  const getUsedBy = (): [Machine[], Transportation[]] => {
+    const usedMachines = [];
+    const usedTransports = [];
     if (details) {
       const template = details.checklistTemplate;
-      if (template.machinesDaily) used.push(...template.machinesDaily);
-      if (template.machinesWeekly) used.push(...template.machinesWeekly);
-      if (template.transportationDaily)
-        used.push(...template.transportationDaily);
-      if (template.transportationWeekly)
-        used.push(...template.transportationWeekly);
+      if (template.machinesDaily) usedMachines.push(...template.machinesDaily);
+      if (template.machinesWeekly)
+        usedMachines.push(...template.machinesWeekly);
+      if (template.transportationsDaily)
+        usedTransports.push(...template.transportationsDaily);
+      if (template.transportationsWeekly)
+        usedTransports.push(...template.transportationsWeekly);
     }
-    return used;
+    return [usedMachines, usedTransports];
   };
   const usedBy = getUsedBy();
+  console.log(usedBy);
 
   return (
     <>
@@ -253,14 +257,28 @@ export const ChecklistTemplateDetails: React.FC<
               }}
             />
             <Divider orientation="left">Used By</Divider>
-            {usedBy.length === 0 ? (
+            {[...usedBy[0], ...usedBy[1]].length === 0 ? (
               "No machines or transportation are using this template."
             ) : (
-              <>
-                {usedBy.map((u) => (
-                  <div key={u.id}>{u.machineNumber}</div>
+              <div>
+                {usedBy[0].map((u) => (
+                  <div key={u.id} className="underlineOnHover">
+                    <a target="_blank" href={`/machine/${u.id}`}>
+                      {" "}
+                      {u.machineNumber} ({u.zone} - {u.location}){" "}
+                      <ArrowRightOutlined />
+                    </a>
+                  </div>
                 ))}
-              </>
+                {usedBy[1].map((u) => (
+                  <div key={u.id} className="underlineOnHover">
+                    <a target="_blank" href={`/transportation/${u.id}`}>
+                      {" "}
+                      {u.machineNumber} ({u.location}) <ArrowRightOutlined />
+                    </a>
+                  </div>
+                ))}
+              </div>
             )}
           </>
         )}

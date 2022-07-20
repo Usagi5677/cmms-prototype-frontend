@@ -66,7 +66,7 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while adding item.");
       },
-      refetchQueries: ["entityChecklistTemplate"],
+      refetchQueries: ["entityChecklistTemplate", "checklist"],
     }
   );
 

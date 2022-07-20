@@ -73,15 +73,6 @@ export const GET_SINGLE_MACHINE = gql`
   query getSingleMachine($machineId: Int!) {
     getSingleMachine(machineId: $machineId) {
       ...MachineFields
-      checklistItems {
-        id
-        description
-        type
-        completedAt
-        completedBy {
-          ...UserFieldsAPS
-        }
-      }
     }
   }
 `;
@@ -487,19 +478,9 @@ export const ALL_TRANSPORTATION_VEHICLES = gql`
 
 export const GET_SINGLE_TRANSPORTATION = gql`
   ${TRANSPORTATION_FRAGMENT}
-  ${APS_USER_FRAGMENT}
   query getSingleTransportation($transportationId: Int!) {
     getSingleTransportation(transportationId: $transportationId) {
       ...TransportationFields
-      checklistItems {
-        id
-        description
-        type
-        completedAt
-        completedBy {
-          ...UserFieldsAPS
-        }
-      }
     }
   }
 `;
@@ -1475,6 +1456,26 @@ export const ENTITY_CHECKLIST_TEMPLATE = gql`
   query entityChecklistTemplate($input: EntityChecklistTemplateInput!) {
     entityChecklistTemplate(input: $input) {
       ...ChecklistTemplateFields
+    }
+  }
+`;
+
+export const GET_CHECKLIST = gql`
+  query checklist($input: ChecklistInput!) {
+    checklist(input: $input) {
+      id
+      workingHour
+      currentMeterReading
+      items {
+        id
+        description
+        completedBy {
+          id
+          rcno
+          fullName
+        }
+        completedAt
+      }
     }
   }
 `;
