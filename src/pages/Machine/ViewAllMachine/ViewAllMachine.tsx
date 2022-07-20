@@ -6,7 +6,10 @@ import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_MACHINES } from "../../../api/queries";
+import {
+  ALL_MACHINES,
+  GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
+} from "../../../api/queries";
 import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
@@ -16,6 +19,8 @@ import classes from "./ViewAllMachine.module.css";
 import MachineStatusFilter from "../../../components/common/MachineStatusFilter";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
+import StatusCard from "../../../components/common/StatusCard/StatusCard";
+import { FaCarCrash, FaSpinner, FaTractor } from "react-icons/fa";
 
 const Machinery = () => {
   const { user: self } = useContext(UserContext);
@@ -42,6 +47,18 @@ const Machinery = () => {
     status: params.get("status"),
   });
 
+  const [getAllMachineAndTransportStatusCount, { data: statusData }] =
+    useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
+      onError: (err) => {
+        errorMessage(
+          err,
+          "Error loading status count of machine & transports."
+        );
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
   // Update url search param on filter change
   useEffect(() => {
     let newParams: any = {};
@@ -65,6 +82,11 @@ const Machinery = () => {
     }
     getAllMachine({ variables: filter });
   }, [filter, getAllMachine]);
+
+  //Fetch all machine status count
+  useEffect(() => {
+    getAllMachineAndTransportStatusCount();
+  }, [getAllMachineAndTransportStatusCount]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -132,54 +154,94 @@ const Machinery = () => {
       label: island,
     });
   });
-  
+
+  let machineIdle = 0;
+  let machineWorking = 0;
+  let machineBreakdown = 0;
+  let total = 0;
+
+  const statusCountData = statusData?.allMachineAndTransportStatusCount;
+  if (statusCountData) {
+    machineIdle = statusCountData?.machineIdle;
+    machineWorking = statusCountData?.machineWorking;
+    machineBreakdown = statusCountData?.machineBreakdown;
+    total = machineIdle + machineWorking + machineBreakdown;
+  }
+
   return (
-    <div className={classes["container"]}>
-      <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
-        <Select
-          showArrow
-          className={classes["location"]}
-          onChange={(value) => setLocation(value)}
-          showSearch
-          options={options}
-          placeholder={"Location"}
-          mode="multiple"
-        />
-        <MachineStatusFilter
-          onChange={(status) => {
-            setFilter({ ...filter, status, ...DefaultPaginationArgs });
-            setPage(1);
-          }}
-          value={filter.status}
-        />
-        <div className={classes["add-machine-wrapper"]}>
-          {self.assignedPermission.hasMachineAdd ? <AddMachine /> : null}
+    <>
+      <div className={classes["status-card"]}>
+        <div className={classes["total-card"]}>
+          <div className={classes["total-title"]}>Machinery</div>
+          <div className={classes["total-amount"]}>{total}</div>
         </div>
+        <StatusCard
+          amountOne={machineWorking}
+          icon={<FaTractor />}
+          iconBackgroundColor={"rgb(224,255,255)"}
+          iconColor={"rgb(0,139,139)"}
+          name={"Working"}
+        />
+        <StatusCard
+          amountOne={machineIdle}
+          icon={<FaSpinner />}
+          iconBackgroundColor={"rgba(255,165,0,0.2)"}
+          iconColor={"rgb(219,142,0)"}
+          name={"Idle"}
+        />
+        <StatusCard
+          amountOne={machineBreakdown}
+          icon={<FaCarCrash />}
+          iconBackgroundColor={"rgba(255,0,0,0.2)"}
+          iconColor={"rgb(139,0,0)"}
+          name={"Breakdown"}
+        />
       </div>
-      {loading && (
-        <div>
-          <Spin style={{ width: "100%", margin: "2rem auto" }} />
+      <div className={classes["container"]}>
+        <div className={classes["options-wrapper"]}>
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+          <Select
+            showArrow
+            className={classes["location"]}
+            onChange={(value) => setLocation(value)}
+            showSearch
+            options={options}
+            placeholder={"Location"}
+            mode="multiple"
+          />
+          <MachineStatusFilter
+            onChange={(status) => {
+              setFilter({ ...filter, status, ...DefaultPaginationArgs });
+              setPage(1);
+            }}
+            value={filter.status}
+          />
+          <div className={classes["add-machine-wrapper"]}>
+            {self.assignedPermission.hasMachineAdd ? <AddMachine /> : null}
+          </div>
         </div>
-      )}
-      {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
-        const machine = rec.node;
-        return (
-          <MachineCard machine={machine} key={machine.id}/>
-        );
-      })}
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-        pageLimit={20}
-      />
-    </div>
+        {loading && (
+          <div>
+            <Spin style={{ width: "100%", margin: "2rem auto" }} />
+          </div>
+        )}
+        {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
+          const machine = rec.node;
+          return <MachineCard machine={machine} key={machine.id} />;
+        })}
+        <PaginationButtons
+          pageInfo={pageInfo}
+          page={page}
+          next={next}
+          back={back}
+          pageLimit={20}
+        />
+      </div>
+    </>
   );
 };
 

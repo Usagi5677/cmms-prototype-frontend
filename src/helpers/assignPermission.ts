@@ -55,6 +55,8 @@ export function permissionExist(data: User) {
   let hasAssignPermission = false;
   let hasAddUserWithRole = false;
   let hasEditUserRole = false;
+  let hasVerifyMachinePeriodicMaintenance = false;
+  let hasVerifyTransportationPeriodicMaintenance = false;
   let hasViewAllMachines = false;
   let hasViewAllVessels = false;
   let hasViewAllVehicles = false;
@@ -66,10 +68,15 @@ export function permissionExist(data: User) {
   let hasViewAllAssignedVehicles = false;
   let hasViewUsers = false;
   let hasViewRoles = false;
-  let hasViewMachineryReport = false;
-  let hasViewTransportationReport = false;
-  let hasVerifyMachinePeriodicMaintenance = false;
-  let hasVerifyTransportationPeriodicMaintenance = false;
+  let hasViewDashboardMachineryUtilization = false;
+  let hasViewDashboardTransportsUtilization = false;
+  let hasViewDashboardMachineryMaintenance = false;
+  let hasViewDashboardTransportsMaintenance = false;
+  let hasViewDashboardMachineryPMTask = false;
+  let hasViewDashboardTransportsPMTask = false;
+  let hasViewDashboardMyMachineryPMTask = false;
+  let hasViewDashboardMyTransportsPMTask = false;
+  let hasViewDashboardStatusCount = false;
 
   data?.roles?.forEach((roleData) => {
     roleData?.role.permissionRoles.forEach((permissionData) => {
@@ -236,6 +243,12 @@ export function permissionExist(data: User) {
         case "EDIT_USER_ROLE":
           hasEditUserRole = true;
           break;
+        case "VERIFY_MACHINE_PERIODIC_MAINTENANCE":
+          hasVerifyMachinePeriodicMaintenance = true;
+          break;
+        case "VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE":
+          hasVerifyTransportationPeriodicMaintenance = true;
+          break;
         case "VIEW_ALL_MACHINES":
           hasViewAllMachines = true;
           break;
@@ -269,17 +282,32 @@ export function permissionExist(data: User) {
         case "VIEW_ROLES":
           hasViewRoles = true;
           break;
-        case "VIEW_MACHINERY_REPORT":
-          hasViewMachineryReport = true;
+        case "VIEW_DASHBOARD_MACHINERY_UTILIZATION":
+          hasViewDashboardMachineryUtilization = true;
           break;
-        case "VIEW_TRANSPORTATION_REPORT":
-          hasViewTransportationReport = true;
+        case "VIEW_DASHBOARD_TRANSPORTS_UTILIZATION":
+          hasViewDashboardTransportsUtilization = true;
           break;
-        case "VERIFY_MACHINE_PERIODIC_MAINTENANCE":
-          hasVerifyMachinePeriodicMaintenance = true;
+        case "VIEW_DASHBOARD_MACHINERY_MAINTENANCE":
+          hasViewDashboardMachineryMaintenance = true;
           break;
-        case "VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE":
-          hasVerifyTransportationPeriodicMaintenance = true;
+        case "VIEW_DASHBOARD_TRANSPORTS_MAINTENANCE":
+          hasViewDashboardTransportsMaintenance = true;
+          break;
+        case "VIEW_DASHBOARD_MACHINERY_PERIODIC_MAINTENANCE_TASK":
+          hasViewDashboardMachineryPMTask = true;
+          break;
+        case "VIEW_DASHBOARD_TRANSPORTS_PERIODIC_MAINTENANCE_TASK":
+          hasViewDashboardTransportsPMTask = true;
+          break;
+        case "VIEW_DASHBOARD_MY_MACHINERY_PERIODIC_MAINTENANCE_TASK":
+          hasViewDashboardMyMachineryPMTask = true;
+          break;
+        case "VIEW_DASHBOARD_MY_TRANSPORTS_PERIODIC_MAINTENANCE_TASK":
+          hasViewDashboardMyTransportsPMTask = true;
+          break;
+        case "VIEW_DASHBOARD_STATUS_COUNT":
+          hasViewDashboardStatusCount = true;
           break;
       }
     });
@@ -340,6 +368,8 @@ export function permissionExist(data: User) {
     hasAssignPermission,
     hasAddUserWithRole,
     hasEditUserRole,
+    hasVerifyMachinePeriodicMaintenance,
+    hasVerifyTransportationPeriodicMaintenance,
     hasViewAllMachines,
     hasViewAllVessels,
     hasViewAllVehicles,
@@ -351,10 +381,15 @@ export function permissionExist(data: User) {
     hasViewAllAssignedVehicles,
     hasViewUsers,
     hasViewRoles,
-    hasViewMachineryReport,
-    hasViewTransportationReport,
-    hasVerifyMachinePeriodicMaintenance,
-    hasVerifyTransportationPeriodicMaintenance
+    hasViewDashboardMachineryUtilization,
+    hasViewDashboardTransportsUtilization,
+    hasViewDashboardMachineryMaintenance,
+    hasViewDashboardTransportsMaintenance,
+    hasViewDashboardMachineryPMTask,
+    hasViewDashboardTransportsPMTask,
+    hasViewDashboardMyMachineryPMTask,
+    hasViewDashboardMyTransportsPMTask,
+    hasViewDashboardStatusCount,
   };
 
   return permissions;

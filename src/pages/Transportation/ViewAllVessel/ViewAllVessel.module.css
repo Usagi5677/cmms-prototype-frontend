@@ -18,7 +18,7 @@
 }
 
 .add-wrapper {
-  padding-top: 10px
+  padding-top: 10px;
 }
 
 .location {
@@ -26,13 +26,43 @@
   margin: 10px 0 !important;
 }
 
-
+.status-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex: 1;
+  margin-bottom: 40px;
+}
+.total-card {
+  width: 150px;
+  min-height: 80px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 0px 15px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px 5px;
+  transition: transform 0.3s ease;
+  border: 1px black solid;
+}
+.total-card:hover {
+  transform: translateY(-5px);
+}
+.total-title {
+  color: #727272;
+}
+.total-amount {
+  font-size: 32px;
+  font-weight: 700;
+}
 @media only screen and (min-width: 800px) {
   .options-wrapper {
     flex-direction: row;
-    margin-bottom: 0
+    margin-bottom: 0;
   }
   .add-wrapper {
-    padding-top: 0
+    padding-top: 0;
   }
 }

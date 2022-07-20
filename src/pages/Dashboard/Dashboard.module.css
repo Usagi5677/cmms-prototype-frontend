@@ -21,14 +21,26 @@
   justify-content: space-between;
   flex-direction: column;
 }
+
+.status-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.content{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex: 1;
+}
 @media only screen and (min-width: 600px) {
   .utilization {
     flex-direction: row;
   }
-  
-  
 }
-@media only screen and (min-width: 700px) { 
+@media only screen and (min-width: 700px) {
   .maintenance {
     flex-direction: row;
   }

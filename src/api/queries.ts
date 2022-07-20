@@ -1479,3 +1479,16 @@ export const GET_CHECKLIST = gql`
     }
   }
 `;
+
+export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
+  query allMachineAndTransportStatusCount {
+    allMachineAndTransportStatusCount {
+      machineWorking
+      machineIdle
+      machineBreakdown
+      transportationWorking
+      transportationIdle
+      transportationBreakdown
+    }
+  }
+`;

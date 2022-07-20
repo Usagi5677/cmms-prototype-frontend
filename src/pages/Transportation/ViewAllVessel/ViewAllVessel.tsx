@@ -6,7 +6,10 @@ import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_TRANSPORTATION_VESSELS } from "../../../api/queries";
+import {
+  ALL_TRANSPORTATION_VESSELS,
+  GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
+} from "../../../api/queries";
 import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
@@ -16,6 +19,8 @@ import AddTransportation from "../../../components/TransportationComponents/AddT
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import TransportationStatusFilter from "../../../components/common/TransportationStatusFilter";
 import UserContext from "../../../contexts/UserContext";
+import StatusCard from "../../../components/common/StatusCard/StatusCard";
+import { FaCarCrash, FaSpinner, FaTruck } from "react-icons/fa";
 
 const Vessels = () => {
   const { user: self } = useContext(UserContext);
@@ -103,6 +108,22 @@ const Vessels = () => {
     // eslint-disable-next-line
   }, [search, location]);
 
+  const [getAllMachineAndTransportStatusCount, { data: statusData }] =
+    useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
+      onError: (err) => {
+        errorMessage(
+          err,
+          "Error loading status count of machine & transports."
+        );
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
+  useEffect(() => {
+    getAllMachineAndTransportStatusCount();
+  }, [getAllMachineAndTransportStatusCount]);
+
   // Pagination functions
   const next = () => {
     setFilter({
@@ -138,58 +159,101 @@ const Vessels = () => {
     });
   });
 
+  let transportationIdle = 0;
+  let transportationWorking = 0;
+  let transportationBreakdown = 0;
+  let total = 0;
+
+  const statusCountData = statusData?.allMachineAndTransportStatusCount;
+  if (statusCountData) {
+    transportationIdle = statusCountData?.transportationIdle;
+    transportationWorking = statusCountData?.transportationWorking;
+    transportationBreakdown = statusCountData?.transportationBreakdown;
+    total =
+      transportationIdle + transportationWorking + transportationBreakdown;
+  }
+
   return (
-    <div className={classes["container"]}>
-      <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
-        <Select
-          showArrow
-          className={classes["location"]}
-          onChange={(value) => setLocation(value)}
-          showSearch
-          options={options}
-          placeholder={"Location"}
-          mode="multiple"
-        />
-        <TransportationStatusFilter
-          onChange={(status) => {
-            setFilter({ ...filter, status, ...DefaultPaginationArgs });
-            setPage(1);
-          }}
-          value={filter.status}
-        />
-        <div className={classes["add-wrapper"]}>
-          <AddTransportation />
+    <>
+      <div className={classes["status-card"]}>
+        <div className={classes["total-card"]}>
+          <div className={classes["total-title"]}>Transports</div>
+          <div className={classes["total-amount"]}>{total}</div>
         </div>
+        <StatusCard
+          amountOne={transportationWorking}
+          icon={<FaTruck />}
+          iconBackgroundColor={"rgb(224,255,255)"}
+          iconColor={"rgb(0,139,139)"}
+          name={"Working"}
+        />
+        <StatusCard
+          amountOne={transportationIdle}
+          icon={<FaSpinner />}
+          iconBackgroundColor={"rgba(255,165,0,0.2)"}
+          iconColor={"rgb(219,142,0)"}
+          name={"Idle"}
+        />
+        <StatusCard
+          amountOne={transportationBreakdown}
+          icon={<FaCarCrash />}
+          iconBackgroundColor={"rgba(255,0,0,0.2)"}
+          iconColor={"rgb(139,0,0)"}
+          name={"Breakdown"}
+        />
       </div>
-      {loading && (
-        <div>
-          <Spin style={{ width: "100%", margin: "2rem auto" }} />
+      <div className={classes["container"]}>
+        <div className={classes["options-wrapper"]}>
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+          <Select
+            showArrow
+            className={classes["location"]}
+            onChange={(value) => setLocation(value)}
+            showSearch
+            options={options}
+            placeholder={"Location"}
+            mode="multiple"
+          />
+          <TransportationStatusFilter
+            onChange={(status) => {
+              setFilter({ ...filter, status, ...DefaultPaginationArgs });
+              setPage(1);
+            }}
+            value={filter.status}
+          />
+          <div className={classes["add-wrapper"]}>
+            <AddTransportation />
+          </div>
         </div>
-      )}
-      {data?.getAllTransportationVessels.edges.map(
-        (rec: { node: Transportation }) => {
-          const transportation = rec.node;
-          return (
-            <TransportationCard
-              transportation={transportation}
-              key={transportation.id}
-            />
-          );
-        }
-      )}
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-        pageLimit={20}
-      />
-    </div>
+        {loading && (
+          <div>
+            <Spin style={{ width: "100%", margin: "2rem auto" }} />
+          </div>
+        )}
+        {data?.getAllTransportationVessels.edges.map(
+          (rec: { node: Transportation }) => {
+            const transportation = rec.node;
+            return (
+              <TransportationCard
+                transportation={transportation}
+                key={transportation.id}
+              />
+            );
+          }
+        )}
+        <PaginationButtons
+          pageInfo={pageInfo}
+          page={page}
+          next={next}
+          back={back}
+          pageLimit={20}
+        />
+      </div>
+    </>
   );
 };
 

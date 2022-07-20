@@ -202,7 +202,7 @@ const MachineMaintenance = () => {
         </div>
         <div className={classes["counter-wrapper"]}>
           <div className={classes["counter-value"]}>{pending}</div>
-          <div className={classes["pending"]}>Upcoming</div>
+          <div className={classes["pending"]}>Pending</div>
         </div>
         <div className={classes["counter-wrapper"]}>
           <div className={classes["counter-value"]}>{done}</div>
