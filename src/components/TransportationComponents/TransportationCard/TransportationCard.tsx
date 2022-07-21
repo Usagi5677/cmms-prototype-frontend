@@ -21,10 +21,13 @@ const TransportationCard = ({
 }) => {
   let borderLeft: string;
   let border: string;
-  if (transportation?.interServiceMileage! >= 500) {
+  const interService =
+    (transportation.currentMileage ?? 0) -
+    (transportation.lastServiceMileage ?? 0);
+  if (interService! >= 500) {
     borderLeft = "8px solid red";
     border = "2px solid red";
-  } else if (transportation?.interServiceMileage! >= 400) {
+  } else if (interService! >= 400) {
     borderLeft = "8px solid orange";
     border = "2px solid orange";
   } else {
@@ -74,7 +77,7 @@ const TransportationCard = ({
                     <span className={classes["reading-title"]}>
                       Inter service mileage ({transportation?.measurement}):
                     </span>
-                    <span>{transportation?.interServiceMileage}</span>
+                    <span>{interService}</span>
                   </div>
                   <div className={classes["status"]}>
                     <TransportationStatusTag status={transportation?.status} />

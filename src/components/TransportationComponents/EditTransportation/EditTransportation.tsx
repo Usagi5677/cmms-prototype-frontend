@@ -64,7 +64,7 @@ const EditTransportation = ({
       type,
       department,
       location,
-      currentMileage,
+      // currentMileage,
       lastServiceMileage,
       measurement,
       transportType,
@@ -92,10 +92,10 @@ const EditTransportation = ({
       message.error("Please enter the location.");
       return;
     }
-    if (!currentMileage) {
-      message.error("Please enter the current mileage.");
-      return;
-    }
+    // if (!currentMileage) {
+    //   message.error("Please enter the current mileage.");
+    //   return;
+    // }
     if (!lastServiceMileage) {
       message.error("Please enter the last service mileage.");
       return;
@@ -120,7 +120,7 @@ const EditTransportation = ({
         type,
         department,
         location,
-        currentMileage,
+        // currentMileage,
         lastServiceMileage,
         registeredDate,
         measurement,
@@ -279,7 +279,7 @@ const EditTransportation = ({
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
+            {/* <div className={classes["col"]}>
               <Form.Item
                 label="Current mileage"
                 name="currentMileage"
@@ -297,7 +297,7 @@ const EditTransportation = ({
                   style={{ width: "100%" }}
                 />
               </Form.Item>
-            </div>
+            </div> */}
             <div className={classes["col"]}>
               <Form.Item
                 label="Last service mileage"

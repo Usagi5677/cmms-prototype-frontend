@@ -21,7 +21,6 @@ export default interface Transportation {
   location: string;
   currentMileage?: number;
   lastServiceMileage?: number;
-  interServiceMileage?: number;
   measurement: string;
   transportType: string;
   isDeleted?: boolean;

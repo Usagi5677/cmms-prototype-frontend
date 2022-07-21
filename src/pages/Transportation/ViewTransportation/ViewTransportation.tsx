@@ -157,12 +157,12 @@ const ViewTransportation = () => {
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
           <div className={classes["info-btn-wrapper"]}>
-            {self.assignedPermission.hasEditTransportationUsage ? (
+            {/* {self.assignedPermission.hasEditTransportationUsage ? (
               <EditTransportationUsage
                 transportation={transportationData}
                 isDeleted={transportationData?.isDeleted}
               />
-            ) : null}
+            ) : null} */}
             {self.assignedPermission.hasTransportationEdit ? (
               <EditTransportation
                 transportation={transportationData}
@@ -255,7 +255,8 @@ const ViewTransportation = () => {
                   Inter service mileage ({transportationData?.measurement})
                 </div>
                 <div className={classes["info-content"]}>
-                  {transportationData?.interServiceMileage}
+                  {(transportationData?.currentMileage ?? 0) -
+                    (transportationData?.lastServiceMileage ?? 0)}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>

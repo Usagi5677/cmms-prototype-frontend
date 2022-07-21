@@ -48,7 +48,13 @@ export const Checklists: React.FC<ChecklistsProps> = ({
 
   const [updateReading, { loading: updatingReading }] = useMutation(
     UPDATE_READING,
-    { refetchQueries: ["checklist"] }
+    {
+      refetchQueries: [
+        "checklist",
+        "getSingleMachine",
+        "getSingleTransportation",
+      ],
+    }
   );
 
   const [updateWorkingHours, { loading: updatingHour }] = useMutation(
@@ -122,7 +128,8 @@ export const Checklists: React.FC<ChecklistsProps> = ({
                   <div style={{ flex: 1 }}>
                     <InputNumber
                       addonBefore="Current Reading"
-                      placeholder="Current running hrs"
+                      addonAfter={`${entity.measurement}`}
+                      placeholder={`Enter ${entity.measurement}`}
                       style={{ width: "100%", marginBottom: ".5rem" }}
                       //@ts-ignore
                       value={reading}
@@ -153,7 +160,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({
                   <div style={{ flex: 1 }}>
                     <InputNumber
                       addonBefore="Working Hours&nbsp;&nbsp;"
-                      placeholder="Working hour"
+                      placeholder="Enter hours"
                       style={{ width: "100%", marginBottom: ".5rem" }}
                       //@ts-ignore
                       value={hours}

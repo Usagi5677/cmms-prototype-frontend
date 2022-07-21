@@ -150,12 +150,12 @@ const ViewMachine = () => {
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
           <div className={classes["info-btn-wrapper"]}>
-            {self.assignedPermission.hasEditMachineUsage ? (
+            {/* {self.assignedPermission.hasEditMachineUsage ? (
               <EditMachineUsage
                 machine={machineData}
                 isDeleted={machineData?.isDeleted}
               />
-            ) : null}
+            ) : null} */}
             {self.assignedPermission.hasMachineEdit ? (
               <EditMachine
                 machine={machineData}
@@ -242,7 +242,8 @@ const ViewMachine = () => {
               <div className={classes["info-title-wrapper"]}>
                 <div>Inter service {machineData?.measurement}</div>
                 <div className={classes["info-content"]}>
-                  {machineData?.interService}
+                  {(machineData?.currentRunning ?? 0) -
+                    (machineData?.lastService ?? 0)}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
