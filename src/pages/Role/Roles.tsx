@@ -1,4 +1,4 @@
-import { message, Spin } from "antd";
+import { Empty, message, Spin } from "antd";
 
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -119,10 +119,22 @@ const Roles = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllRoles.edges.map((rec: { node: Role }) => {
-        const roles = rec.node;
-        return <RoleCard key={roles.id} role={roles} />;
-      })}
+      {data?.getAllRoles.edges.length > 0 ? (
+        <div>
+          {data?.getAllRoles.edges.map((rec: { node: Role }) => {
+            const roles = rec.node;
+            return <RoleCard key={roles.id} role={roles} />;
+          })}
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: 50,
+          }}
+        >
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div>
+      )}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

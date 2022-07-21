@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useContext, useEffect, useRef, useState } from "react";
-import { message, Spin } from "antd";
+import { Empty, message, Spin } from "antd";
 import { errorMessage } from "../../helpers/gql";
 import Search from "../../components/common/Search";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -116,10 +116,23 @@ const Users = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllUsers.edges.map((rec: { node: User }) => {
-        const userData = rec.node;
-        return <UserCard userData={userData} key={userData.id} />;
-      })}
+      {data?.getAllUsers.edges.length > 0 ? (
+        <div>
+          {data?.getAllUsers.edges.map((rec: { node: User }) => {
+            const userData = rec.node;
+            return <UserCard userData={userData} key={userData.id} />;
+          })}
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: 50,
+          }}
+        >
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div>
+      )}
+      
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

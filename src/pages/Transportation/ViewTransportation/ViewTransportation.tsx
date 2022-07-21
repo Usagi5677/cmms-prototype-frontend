@@ -78,7 +78,7 @@ const ViewTransportation = () => {
 
   const renderUsers = () => {
     return (
-      transportationData?.assignees!.length > 0 && (
+      transportationData?.assignees?.length! > 0 && (
         <Avatar.Group
           maxCount={5}
           maxStyle={{

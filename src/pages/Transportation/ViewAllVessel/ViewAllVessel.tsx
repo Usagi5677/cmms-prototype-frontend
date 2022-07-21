@@ -1,4 +1,4 @@
-import { message, Select, Spin } from "antd";
+import { Empty, message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -234,17 +234,30 @@ const Vessels = () => {
             <Spin style={{ width: "100%", margin: "2rem auto" }} />
           </div>
         )}
-        {data?.getAllTransportationVessels.edges.map(
-          (rec: { node: Transportation }) => {
-            const transportation = rec.node;
-            return (
-              <TransportationCard
-                transportation={transportation}
-                key={transportation.id}
-              />
-            );
-          }
+        {data?.getAllTransportationVessels.edges.length > 0 ? (
+          <div>
+            {data?.getAllTransportationVessels.edges.map(
+              (rec: { node: Transportation }) => {
+                const transportation = rec.node;
+                return (
+                  <TransportationCard
+                    transportation={transportation}
+                    key={transportation.id}
+                  />
+                );
+              }
+            )}
+          </div>
+        ) : (
+          <div
+            style={{
+              marginTop: 50,
+            }}
+          >
+           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
         )}
+
         <PaginationButtons
           pageInfo={pageInfo}
           page={page}

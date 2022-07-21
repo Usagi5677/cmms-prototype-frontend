@@ -72,7 +72,7 @@ const ViewMachine = () => {
 
   const renderUsers = () => {
     return (
-      machineData?.assignees!.length > 0 && (
+      machineData?.assignees?.length! > 0 && (
         <Avatar.Group
           maxCount={5}
           maxStyle={{

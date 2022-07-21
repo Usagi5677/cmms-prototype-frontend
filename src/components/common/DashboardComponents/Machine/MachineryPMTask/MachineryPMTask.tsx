@@ -2,6 +2,7 @@ import {
   Avatar,
   Checkbox,
   Collapse,
+  Empty,
   message,
   Select,
   Spin,
@@ -381,7 +382,7 @@ const MachineryPMTask = () => {
           }
         )
       ) : (
-        <div className={classes["no-info"]}>No information available.</div>
+        <Empty/>
       )}
 
       <PaginationButtons

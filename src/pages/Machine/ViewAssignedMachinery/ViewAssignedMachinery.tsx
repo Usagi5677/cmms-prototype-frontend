@@ -1,4 +1,4 @@
-import { message, Select, Spin } from "antd";
+import { Empty, message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -165,10 +165,22 @@ const ViewAssignedMachinery = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
-        const machine = rec.node;
-        return <MachineCard machine={machine} key={machine.id} />;
-      })}
+      {data?.getAllMachine.edges.length > 0 ? (
+        <div>
+          {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
+            const machine = rec.node;
+            return <MachineCard machine={machine} key={machine.id} />;
+          })}
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: 50,
+          }}
+        >
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div>
+      )}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

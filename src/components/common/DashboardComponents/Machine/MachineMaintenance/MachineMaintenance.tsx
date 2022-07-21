@@ -1,4 +1,4 @@
-import { Collapse, message, Select, Spin, Tooltip } from "antd";
+import { Collapse, Empty, message, Select, Spin, Tooltip } from "antd";
 import Search from "../../../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -306,7 +306,7 @@ const MachineMaintenance = () => {
           }
         )
       ) : (
-        <div className={classes["no-info"]}>No information available.</div>
+        <Empty />
       )}
 
       <PaginationButtons

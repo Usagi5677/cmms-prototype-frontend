@@ -1,4 +1,4 @@
-import { Collapse, message, Select, Spin, Tooltip } from "antd";
+import { Collapse, Empty, message, Select, Spin, Tooltip } from "antd";
 import Search from "../../../Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -163,11 +163,15 @@ const AllTransportationUtilization = () => {
         data?.getAllTransportationUtilization?.edges.map(
           (rec: { node: Machine }) => {
             const machine = rec.node;
-            let workingHour = machine?.histories[0]
-              ?.workingHour as unknown as number;
-            let idleHour = machine?.histories[0]?.idleHour as unknown as number;
+            let workingHour = machine?.histories[0]?.workingHour
+              ? (machine?.histories[0]?.workingHour as unknown as number)
+              : 0;
+            let idleHour = machine?.histories[0]?.idleHour
+              ? (machine?.histories[0]?.idleHour as unknown as number)
+              : 0;
             let breakdownHour = machine?.histories[0]
-              ?.breakdownHour as unknown as number;
+              ? (machine?.histories[0]?.breakdownHour as unknown as number)
+              : 0;
             let totalHour = workingHour + idleHour + breakdownHour;
             let workingPercentage = (workingHour / totalHour) * 100;
             let idlePercentage = (idleHour / totalHour) * 100;
@@ -404,7 +408,7 @@ const AllTransportationUtilization = () => {
           }
         )
       ) : (
-        <div className={classes["no-info"]}>No information available.</div>
+        <Empty/>
       )}
 
       <PaginationButtons
