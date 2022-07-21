@@ -149,6 +149,7 @@ const ViewHistory = ({ transportationID }: { transportationID: number }) => {
           showSearch
           options={options}
           placeholder={"Location"}
+          mode="multiple"
         />
         <DatePicker.RangePicker
           className={classes["datepicker"]}

@@ -134,7 +134,6 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     date.setDate(date.getDate() + 1);
   }
 
-  
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
@@ -150,7 +149,9 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
           showSearch
           options={options}
           placeholder={"Location"}
+          mode="multiple"
         />
+
         <DatePicker.RangePicker
           className={classes["datepicker"]}
           defaultValue={dates}
@@ -176,7 +177,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
       <div className={classes["content"]}>
         {dateArray?.map((dateVal, index) => {
           return (
-            <div className={classes["collapse-container"]} key={index+"div"}>
+            <div className={classes["collapse-container"]} key={index + "div"}>
               <Collapse ghost style={{ marginBottom: ".5rem" }}>
                 <Collapse.Panel
                   header={
@@ -203,8 +204,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
                       />
                     </div>
                   }
-                  key={index+"col"}
-                
+                  key={index + "col"}
                 >
                   {data?.getAllHistoryOfMachine.edges.map(
                     (rec: { node: History }) => {

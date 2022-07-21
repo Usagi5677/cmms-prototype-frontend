@@ -296,7 +296,7 @@ export const GET_ALL_HISTORY_OF_MACHINE = gql`
     $last: Int
     $search: String
     $machineId: Int!
-    $location: String
+    $location: [String!]
     $from: Date
     $to: Date
   ) {
@@ -703,7 +703,7 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
     $first: Int
     $last: Int
     $search: String
-    $location: String
+    $location: [String!]
     $from: Date
     $to: Date
     $transportationId: Int!
