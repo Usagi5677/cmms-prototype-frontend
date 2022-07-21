@@ -17,10 +17,12 @@ import { Link } from "react-router-dom";
 const MachineCard = ({ machine }: { machine: Machine }) => {
   let borderLeft: string;
   let border: string;
-  if (machine?.interService! >= 500) {
+  const interService =
+    (machine.currentRunning ?? 0) - (machine.lastService ?? 0);
+  if (interService! >= 500) {
     borderLeft = "8px solid red";
     border = "2px solid red";
-  } else if (machine?.interService! >= 400) {
+  } else if (interService! >= 400) {
     borderLeft = "8px solid orange";
     border = "2px solid orange";
   } else {
@@ -70,7 +72,7 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
                     <span className={classes["reading-title"]}>
                       Inter service ({machine?.measurement}):
                     </span>
-                    <span>{machine?.interService}</span>
+                    <span>{interService}</span>
                   </div>
                   <div className={classes["status"]}>
                     <MachineStatusTag status={machine?.status} />
@@ -80,7 +82,6 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
                   <Tooltip title="Open">
                     <FaArrowAltCircleRight className={classes["button"]} />
                   </Tooltip>
-                  
                 </Link>
               </div>
             </>
@@ -226,7 +227,7 @@ export default MachineCard;
           </div>
           <div>
             <span>Inter service ({machine?.measurement}):</span>
-            <span className={classes["title"]}>{machine?.interService}</span>
+            <span className={classes["title"]}>{interService}</span>
           </div>
         </div>
         <div className={classes["fourth-block"]}>

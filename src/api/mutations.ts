@@ -34,7 +34,7 @@ export const EDIT_MACHINE = gql`
     $type: String!
     $zone: String!
     $location: String!
-    $currentRunning: Int!
+    $currentRunning: Int
     $lastService: Int!
     $registeredDate: Date!
     $measurement: String!
@@ -281,7 +281,7 @@ export const EDIT_TRANSPORTATION = gql`
     $engine: String!
     $measurement: String!
     $transportType: String!
-    $currentMileage: Int!
+    $currentMileage: Int
     $lastServiceMileage: Int!
     $registeredDate: Date!
   ) {

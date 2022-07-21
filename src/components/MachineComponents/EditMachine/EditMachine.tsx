@@ -61,7 +61,7 @@ const EditMachine = ({
       type,
       zone,
       location,
-      currentRunning,
+      // currentRunning,
       lastService,
       registeredDate,
       measurement,
@@ -87,10 +87,10 @@ const EditMachine = ({
       message.error("Please enter the location.");
       return;
     }
-    if (!currentRunning) {
-      message.error("Please enter the current running value.");
-      return;
-    }
+    // if (!currentRunning) {
+    //   message.error("Please enter the current running value.");
+    //   return;
+    // }
     if (!lastService) {
       message.error("Please enter the last service value.");
       return;
@@ -107,7 +107,7 @@ const EditMachine = ({
         type,
         zone,
         location,
-        currentRunning,
+        // currentRunning,
         lastService,
         registeredDate,
         measurement,
@@ -267,7 +267,7 @@ const EditMachine = ({
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
+            {/* <div className={classes["col"]}>
               <Form.Item
                 label="Current running value"
                 name="currentRunning"
@@ -286,7 +286,7 @@ const EditMachine = ({
                   style={{ width: "100%" }}
                 />
               </Form.Item>
-            </div>
+            </div> */}
             <div className={classes["col"]}>
               <Form.Item
                 label="Last service value"

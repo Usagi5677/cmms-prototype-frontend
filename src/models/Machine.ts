@@ -21,7 +21,6 @@ export default interface Machine {
   location: string;
   currentRunning?: number;
   lastService?: number;
-  interService?: number;
   measurement?: string;
   isDeleted?: boolean;
   deletedAt?: Date;

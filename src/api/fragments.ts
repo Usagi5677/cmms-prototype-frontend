@@ -45,8 +45,6 @@ export const MACHINE_FRAGMENT = gql`
     location
     currentRunning
     lastService
-    interService
-    status
     measurement
     isDeleted
     deletedAt
@@ -87,7 +85,6 @@ export const TRANSPORTATION_FRAGMENT = gql`
     location
     currentMileage
     lastServiceMileage
-    interServiceMileage
     status
     measurement
     transportType
