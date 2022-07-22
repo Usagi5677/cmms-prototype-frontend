@@ -722,3 +722,15 @@ export const UPDATE_READING = gql`
     updateReading(id: $id, reading: $reading)
   }
 `;
+
+export const ADD_CHECKLIST_COMMENT = gql`
+  mutation addChecklistComment($checklistId: Int!, $comment: String!) {
+    addChecklistComment(checklistId: $checklistId, comment: $comment)
+  }
+`;
+
+export const REMOVE_CHECKLIST_COMMENT = gql`
+  mutation removeChecklistComment($id: Int!) {
+    removeChecklistComment(id: $id)
+  }
+`;

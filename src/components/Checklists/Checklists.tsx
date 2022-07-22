@@ -1,4 +1,4 @@
-import { Button, DatePicker, Empty, InputNumber, Spin } from "antd";
+import { Button, DatePicker, Divider, Empty, InputNumber, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
@@ -9,14 +9,9 @@ import { GET_CHECKLIST } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import { ChecklistItem } from "./ChecklistItem";
 import ChecklistItemModel from "../../models/ChecklistItem";
-import { CenteredSpin } from "../common/CenteredSpin";
-import { LoadingOutlined } from "@ant-design/icons";
-import {
-  TOGGLE_CHECKLIST_ITEM,
-  UPDATE_READING,
-  UPDATE_WORKING_HOURS,
-} from "../../api/mutations";
+import { UPDATE_READING, UPDATE_WORKING_HOURS } from "../../api/mutations";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
+import { ChecklistComments } from "./ChecklistComments";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation;
@@ -195,6 +190,9 @@ export const Checklists: React.FC<ChecklistsProps> = ({
           </div>
         </>
       )}
+
+      <Divider />
+      <ChecklistComments checklist={data?.checklist} />
     </div>
   );
 };
