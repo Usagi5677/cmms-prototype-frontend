@@ -1476,6 +1476,16 @@ export const GET_CHECKLIST = gql`
         }
         completedAt
       }
+      comments {
+        id
+        description
+        createdAt
+        user {
+          id
+          rcno
+          fullName
+        }
+      }
     }
   }
 `;
