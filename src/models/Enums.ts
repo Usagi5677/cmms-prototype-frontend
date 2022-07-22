@@ -2,12 +2,14 @@ export enum MachineStatus {
   Working = "Working",
   Idle = "Idle",
   Breakdown = "Breakdown",
+  Dispose = "Dispose",
 }
 
 export enum TransportationStatus {
   Working = "Working",
   Idle = "Idle",
   Breakdown = "Breakdown",
+  Dispose = "Dispose",
 }
 
 

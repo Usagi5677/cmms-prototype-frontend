@@ -279,4 +279,5 @@ export const ISLANDS = [
   "S. Meedhoo",
   "S. Maradhoofeydhoo",
   "K. Malé",
+  "Hulhumalé",
 ];

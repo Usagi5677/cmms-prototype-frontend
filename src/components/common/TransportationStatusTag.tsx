@@ -10,6 +10,7 @@ const TransportationStatusTag = ({
   if (status === "Working") color = "cyan";
   else if (status === "Idle") color = "orange";
   else if (status === "Breakdown") color = "red";
+  else if (status === "Dispose") color = "red";
   return (
     <Tag
       color={color}

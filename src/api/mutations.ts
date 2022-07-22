@@ -2,15 +2,15 @@ import { gql } from "@apollo/client";
 
 export const CREATE_MACHINE = gql`
   mutation (
-    $machineNumber: String!
-    $model: String!
-    $type: String!
-    $zone: String!
-    $location: String!
-    $currentRunning: Int!
-    $lastService: Int!
-    $registeredDate: Date!
-    $measurement: String!
+    $machineNumber: String
+    $model: String
+    $type: String
+    $zone: String
+    $location: String
+    $currentRunning: Int
+    $lastService: Int
+    $registeredDate: Date
+    $measurement: String
   ) {
     createMachine(
       machineNumber: $machineNumber
@@ -29,15 +29,15 @@ export const CREATE_MACHINE = gql`
 export const EDIT_MACHINE = gql`
   mutation (
     $id: Int!
-    $machineNumber: String!
-    $model: String!
-    $type: String!
-    $zone: String!
-    $location: String!
+    $machineNumber: String
+    $model: String
+    $type: String
+    $zone: String
+    $location: String
     $currentRunning: Int
-    $lastService: Int!
-    $registeredDate: Date!
-    $measurement: String!
+    $lastService: Int
+    $registeredDate: Date
+    $measurement: String
   ) {
     editMachine(
       id: $id
@@ -242,17 +242,17 @@ export const EDIT_MACHINE_ATTACHMENT = gql`
 
 export const CREATE_TRANSPORTATION = gql`
   mutation (
-    $machineNumber: String!
-    $model: String!
-    $type: String!
-    $department: String!
-    $location: String!
-    $engine: String!
-    $measurement: String!
-    $transportType: String!
-    $currentMileage: Int!
-    $lastServiceMileage: Int!
-    $registeredDate: Date!
+    $machineNumber: String
+    $model: String
+    $type: String
+    $department: String
+    $location: String
+    $engine: String
+    $measurement: String
+    $transportType: String
+    $currentMileage: Int
+    $lastServiceMileage: Int
+    $registeredDate: Date
   ) {
     createTransportation(
       machineNumber: $machineNumber
@@ -273,17 +273,17 @@ export const CREATE_TRANSPORTATION = gql`
 export const EDIT_TRANSPORTATION = gql`
   mutation (
     $id: Int!
-    $machineNumber: String!
-    $model: String!
-    $type: String!
-    $department: String!
-    $location: String!
-    $engine: String!
-    $measurement: String!
-    $transportType: String!
+    $machineNumber: String
+    $model: String
+    $type: String
+    $department: String
+    $location: String
+    $engine: String
+    $measurement: String
+    $transportType: String
     $currentMileage: Int
-    $lastServiceMileage: Int!
-    $registeredDate: Date!
+    $lastServiceMileage: Int
+    $registeredDate: Date
   ) {
     editTransportation(
       id: $id

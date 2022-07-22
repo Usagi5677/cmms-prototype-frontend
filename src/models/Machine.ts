@@ -13,12 +13,12 @@ export default interface Machine {
   id: number;
   createdAt: Date;
   createdBy: User;
-  machineNumber: string;
+  machineNumber?: string;
   registeredDate?: Date;
-  model: string;
-  type: string;
-  zone: string;
-  location: string;
+  model?: string;
+  type?: string;
+  zone?: string;
+  location?: string;
   currentRunning?: number;
   lastService?: number;
   measurement?: string;

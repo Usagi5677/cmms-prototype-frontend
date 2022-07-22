@@ -43,6 +43,7 @@ export const MACHINE_FRAGMENT = gql`
     type
     zone
     location
+    status
     currentRunning
     lastService
     measurement
