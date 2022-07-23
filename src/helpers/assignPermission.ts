@@ -55,6 +55,7 @@ export function permissionExist(data: User) {
   let hasAssignPermission = false;
   let hasAddUserWithRole = false;
   let hasEditUserRole = false;
+  let hasEditUserLocation = false;
   let hasVerifyMachinePeriodicMaintenance = false;
   let hasVerifyTransportationPeriodicMaintenance = false;
   let hasViewAllMachines = false;
@@ -243,6 +244,9 @@ export function permissionExist(data: User) {
         case "EDIT_USER_ROLE":
           hasEditUserRole = true;
           break;
+        case "EDIT_USER_LOCATION":
+          hasEditUserLocation = true;
+          break;
         case "VERIFY_MACHINE_PERIODIC_MAINTENANCE":
           hasVerifyMachinePeriodicMaintenance = true;
           break;
@@ -368,6 +372,7 @@ export function permissionExist(data: User) {
     hasAssignPermission,
     hasAddUserWithRole,
     hasEditUserRole,
+    hasEditUserLocation,
     hasVerifyMachinePeriodicMaintenance,
     hasVerifyTransportationPeriodicMaintenance,
     hasViewAllMachines,

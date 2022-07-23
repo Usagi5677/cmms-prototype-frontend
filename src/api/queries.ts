@@ -15,6 +15,7 @@ export const ME_QUERY = gql`
       fullName
       email
       userId
+      location
       roles {
         roleId
         role {
@@ -865,6 +866,7 @@ export const GET_ALL_USERS = gql`
       edges {
         node {
           ...UserFieldsAPS
+          location
           roles {
             roleId
             userId

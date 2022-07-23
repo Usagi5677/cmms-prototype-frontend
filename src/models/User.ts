@@ -6,6 +6,7 @@ export default interface User {
   fullName: string;
   userId: string;
   email: string;
+  location?: string;
   roles: UserRole[];
   isAdmin?: boolean;
   isAgent?: boolean;

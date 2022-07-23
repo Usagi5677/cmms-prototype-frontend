@@ -11,6 +11,7 @@ import { v1 } from "uuid";
 import EditUserRoles from "../EditUserRoles/EditUserRoles";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
+import EditUserLocation from "../EditUserLocation/EditUserLocation";
 
 const UserCard = ({ userData }: { userData: User }) => {
   const { user: self } = useContext(UserContext);
@@ -36,10 +37,11 @@ const UserCard = ({ userData }: { userData: User }) => {
     });
   };
 
+  console.log(userData);
   return (
     <div className={classes["container"]}>
       <div className={classes["user"]}>
-        <UserAvatar user={userData} size={24} />
+        <UserAvatar user={userData} size={30} />
         <div className={classes["user-fullname"]}>
           {userData.fullName} ({userData.rcno})
         </div>
@@ -80,6 +82,11 @@ const UserCard = ({ userData }: { userData: User }) => {
         <div className={classes["icon-wrapper"]}>
           {self.assignedPermission.hasEditUserRole ? (
             <EditUserRoles userData={userData} />
+          ) : null}
+        </div>
+        <div className={classes["icon-wrapper"]}>
+          {self.assignedPermission.hasEditUserLocation ? (
+            <EditUserLocation userData={userData} />
           ) : null}
         </div>
       </div>

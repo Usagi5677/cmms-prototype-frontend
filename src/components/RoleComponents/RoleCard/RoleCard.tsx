@@ -44,7 +44,7 @@ const RoleCard = ({ role }: { role: Role }) => {
           </div>
           {role?.createdBy?.fullName && (
             <div className={classes["completedBy"]}>
-              {role?.createdBy?.fullName}
+              {role?.createdBy?.fullName} ({role?.createdBy?.rcno})
             </div>
           )}
         </div>
