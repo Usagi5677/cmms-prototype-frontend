@@ -15,7 +15,7 @@ import moment from "moment";
 const ViewHistory = ({ machineID }: { machineID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState([]);
   const [dates, setDates] = useState<any>([
     moment().subtract(1, "months"),
     moment(),
@@ -25,7 +25,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      location: string;
+      location: string[];
       machineId: number;
       from: any;
       to: any;
@@ -36,7 +36,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     before: null,
     after: null,
     search: "",
-    location: "",
+    location: [],
     machineId: machineID,
     from: dates[0].toISOString(),
     to: dates[1].toISOString(),
@@ -62,7 +62,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string, locationValue: string) => {
+  const searchDebounced = (value: string, locationValue: string[]) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
