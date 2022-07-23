@@ -75,7 +75,6 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
                     <span>{interService}</span>
                   </div>
                   <div className={classes["status"]}>
-                    {console.log(machine?.status)}
                     <MachineStatusTag status={machine?.status} />
                   </div>
                 </div>
