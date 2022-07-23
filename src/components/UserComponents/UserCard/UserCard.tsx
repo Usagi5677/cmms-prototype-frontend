@@ -38,21 +38,14 @@ const UserCard = ({ userData }: { userData: User }) => {
 
   return (
     <div className={classes["container"]}>
-      <div className={classes["wrapper"]}>
-        <div className={classes["first-block"]}>
-          <div className={classes["user"]}>
-            <UserAvatar user={userData} />
-            <div className={classes["user-fullname"]}>
-              {userData.fullName} ({userData.rcno})
-            </div>
-          </div>
+      <div className={classes["user"]}>
+        <UserAvatar user={userData} size={24} />
+        <div className={classes["user-fullname"]}>
+          {userData.fullName} ({userData.rcno})
         </div>
-        <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasEditUserRole ? (
-            <EditUserRoles userData={userData} />
-          ) : null}
-        </div>
-        <div className={classes["status"]}>
+      </div>
+      <div className={classes["secondary"]}>
+        <div className={classes["tag"]}>
           {userData.roles?.map((role) => (
             <Popconfirm
               disabled={
@@ -83,6 +76,11 @@ const UserCard = ({ userData }: { userData: User }) => {
               </Tag>
             </Popconfirm>
           ))}
+        </div>
+        <div className={classes["icon-wrapper"]}>
+          {self.assignedPermission.hasEditUserRole ? (
+            <EditUserRoles userData={userData} />
+          ) : null}
         </div>
       </div>
     </div>
