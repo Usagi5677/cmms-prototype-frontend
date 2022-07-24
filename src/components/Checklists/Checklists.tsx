@@ -190,9 +190,12 @@ export const Checklists: React.FC<ChecklistsProps> = ({
           </div>
         </>
       )}
-
-      <Divider />
-      <ChecklistComments checklist={data?.checklist} />
+      {data?.checklist && (
+        <>
+          <Divider />
+          <ChecklistComments checklist={data?.checklist} />
+        </>
+      )}
     </div>
   );
 };
