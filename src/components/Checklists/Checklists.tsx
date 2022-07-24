@@ -5,15 +5,15 @@ import Transportation from "../../models/Transportation";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { GET_CHECKLIST } from "../../api/queries";
+import { CHECKLIST_SUMMARIES, GET_CHECKLIST } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import { ChecklistItem } from "./ChecklistItem";
 import ChecklistItemModel from "../../models/ChecklistItem";
 import { UPDATE_READING, UPDATE_WORKING_HOURS } from "../../api/mutations";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation;
@@ -27,6 +27,10 @@ export const Checklists: React.FC<ChecklistsProps> = ({
   type,
 }) => {
   const [date, setDate] = useState(moment());
+  const [month, setMonth] = useState([
+    date.clone().startOf("month"),
+    date.clone().endOf("month"),
+  ]);
   const [hours, setHours] = useState<null | number>(null);
   const [reading, setReading] = useState<null | number>(null);
 
@@ -43,6 +47,8 @@ export const Checklists: React.FC<ChecklistsProps> = ({
     notifyOnNetworkStatusChange: true,
   });
 
+  const [getSummary, { data: summary }] = useLazyQuery(CHECKLIST_SUMMARIES);
+
   const [updateReading, { loading: updatingReading }] = useMutation(
     UPDATE_READING,
     {
@@ -50,13 +56,14 @@ export const Checklists: React.FC<ChecklistsProps> = ({
         "checklist",
         "getSingleMachine",
         "getSingleTransportation",
+        "checklistSummary",
       ],
     }
   );
 
   const [updateWorkingHours, { loading: updatingHour }] = useMutation(
     UPDATE_WORKING_HOURS,
-    { refetchQueries: ["checklist"] }
+    { refetchQueries: ["checklist", "checklistSummary"] }
   );
 
   useEffect(() => {
@@ -72,7 +79,26 @@ export const Checklists: React.FC<ChecklistsProps> = ({
         },
       });
     }
+    if (!month[0].isSame(date, "month")) {
+      setMonth([date.clone().startOf("month"), date.clone().endOf("month")]);
+    }
   }, [date, entity]);
+
+  useEffect(() => {
+    if (entity) {
+      getSummary({
+        variables: {
+          input: {
+            entityType,
+            entityId: entity.id,
+            type,
+            from: month[0],
+            to: month[1],
+          },
+        },
+      });
+    }
+  }, [month, entity]);
 
   const changeDate = (direction: "forward" | "back") => {
     console.log(direction);
@@ -99,6 +125,32 @@ export const Checklists: React.FC<ChecklistsProps> = ({
     </Button>
   );
 
+  const summaryMatchCurrent = () => {
+    if (!summary || !data?.checklist) return null;
+    const match = summary.checklistSummary.find(
+      (cs: ChecklistSummary) => cs.id === data?.checklist.id
+    );
+    if (!match) return null;
+    return (
+      <div style={{ marginLeft: "1rem" }}>
+        <ChecklistStatus summary={match} />
+      </div>
+    );
+  };
+
+  const summaryMatch = (current: moment.Moment) => {
+    if (!summary) return null;
+    const match = summary.checklistSummary.find((cs: ChecklistSummary) => {
+      if (type === "Daily") {
+        return current.clone().startOf("day").toISOString() === cs.from;
+      } else {
+        return current.clone().startOf("week").toISOString() === cs.from;
+      }
+    });
+    if (!match) return null;
+    return <ChecklistStatus summary={match} size="small" />;
+  };
+
   return (
     <div>
       <div
@@ -115,6 +167,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({
           type={type}
         />
         {loading && <Spin style={{ marginLeft: ".5rem" }} />}
+        {summaryMatchCurrent()}
         <div style={{ flex: 1 }}></div>
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -137,6 +190,12 @@ export const Checklists: React.FC<ChecklistsProps> = ({
           }
           allowClear={false}
           picker={type === "Weekly" ? "week" : undefined}
+          dateRender={(current) => (
+            <div>
+              <div className="ant-picker-cell-inner">{current.date()}</div>
+              {summaryMatch(current)}
+            </div>
+          )}
         />
         {changeDateButton("forward")}
       </div>

@@ -1506,3 +1506,18 @@ export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
     }
   }
 `;
+
+export const CHECKLIST_SUMMARIES = gql`
+  query checklistSummary($input: ChecklistSummaryInput!) {
+    checklistSummary(input: $input) {
+      id
+      from
+      to
+      type
+      hasComments
+      workingHour
+      currentMeterReading
+      itemCompletion
+    }
+  }
+`;

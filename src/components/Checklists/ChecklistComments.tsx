@@ -20,7 +20,7 @@ export const ChecklistComments: React.FC<ChecklistCommentsProps> = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while adding item.");
       },
-      refetchQueries: ["checklist"],
+      refetchQueries: ["checklist", "checklistSummary"],
     }
   );
 

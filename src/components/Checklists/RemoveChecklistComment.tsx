@@ -17,7 +17,7 @@ export const RemoveChecklistComment: React.FC<RemoveChecklistCommentProps> = ({
     onError: (error) => {
       errorMessage(error, "Unexpected error while removing comment.");
     },
-    refetchQueries: ["checklist"],
+    refetchQueries: ["checklist", "checklistSummary"],
   });
 
   return loading ? (
