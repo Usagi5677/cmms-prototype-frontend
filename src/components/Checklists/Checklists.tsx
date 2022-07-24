@@ -5,13 +5,15 @@ import Transportation from "../../models/Transportation";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { GET_CHECKLIST } from "../../api/queries";
+import { CHECKLIST_SUMMARIES, GET_CHECKLIST } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import { ChecklistItem } from "./ChecklistItem";
 import ChecklistItemModel from "../../models/ChecklistItem";
 import { UPDATE_READING, UPDATE_WORKING_HOURS } from "../../api/mutations";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation;
@@ -25,6 +27,10 @@ export const Checklists: React.FC<ChecklistsProps> = ({
   type,
 }) => {
   const [date, setDate] = useState(moment());
+  const [month, setMonth] = useState([
+    date.clone().startOf("month"),
+    date.clone().endOf("month"),
+  ]);
   const [hours, setHours] = useState<null | number>(null);
   const [reading, setReading] = useState<null | number>(null);
 
@@ -41,6 +47,8 @@ export const Checklists: React.FC<ChecklistsProps> = ({
     notifyOnNetworkStatusChange: true,
   });
 
+  const [getSummary, { data: summary }] = useLazyQuery(CHECKLIST_SUMMARIES);
+
   const [updateReading, { loading: updatingReading }] = useMutation(
     UPDATE_READING,
     {
@@ -48,13 +56,14 @@ export const Checklists: React.FC<ChecklistsProps> = ({
         "checklist",
         "getSingleMachine",
         "getSingleTransportation",
+        "checklistSummary",
       ],
     }
   );
 
   const [updateWorkingHours, { loading: updatingHour }] = useMutation(
     UPDATE_WORKING_HOURS,
-    { refetchQueries: ["checklist"] }
+    { refetchQueries: ["checklist", "checklistSummary"] }
   );
 
   useEffect(() => {
@@ -70,7 +79,77 @@ export const Checklists: React.FC<ChecklistsProps> = ({
         },
       });
     }
+    if (!month[0].isSame(date, "month")) {
+      setMonth([date.clone().startOf("month"), date.clone().endOf("month")]);
+    }
   }, [date, entity]);
+
+  useEffect(() => {
+    if (entity) {
+      getSummary({
+        variables: {
+          input: {
+            entityType,
+            entityId: entity.id,
+            type,
+            from: month[0],
+            to: month[1],
+          },
+        },
+      });
+    }
+  }, [month, entity]);
+
+  const changeDate = (direction: "forward" | "back") => {
+    console.log(direction);
+    if (direction === "forward") {
+      if (type === "Daily") setDate(date.clone().add(1, "day"));
+      else setDate(date.clone().add(1, "week"));
+    } else {
+      if (type === "Daily") setDate(date.clone().subtract(1, "day"));
+      else setDate(date.clone().subtract(1, "week"));
+    }
+  };
+
+  const changeDateButton = (direction: "forward" | "back") => (
+    <Button
+      onClick={() => changeDate(direction)}
+      disabled={loading}
+      style={
+        direction === "forward"
+          ? { marginLeft: ".5rem" }
+          : { marginRight: ".5rem" }
+      }
+    >
+      {direction === "forward" ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
+    </Button>
+  );
+
+  const summaryMatchCurrent = () => {
+    if (!summary || !data?.checklist) return null;
+    const match = summary.checklistSummary.find(
+      (cs: ChecklistSummary) => cs.id === data?.checklist.id
+    );
+    if (!match) return null;
+    return (
+      <div style={{ marginLeft: "1rem" }}>
+        <ChecklistStatus summary={match} />
+      </div>
+    );
+  };
+
+  const summaryMatch = (current: moment.Moment) => {
+    if (!summary) return null;
+    const match = summary.checklistSummary.find((cs: ChecklistSummary) => {
+      if (type === "Daily") {
+        return current.clone().startOf("day").toISOString() === cs.from;
+      } else {
+        return current.clone().startOf("week").toISOString() === cs.from;
+      }
+    });
+    if (!match) return null;
+    return <ChecklistStatus summary={match} size="small" />;
+  };
 
   return (
     <div>
@@ -88,27 +167,38 @@ export const Checklists: React.FC<ChecklistsProps> = ({
           type={type}
         />
         {loading && <Spin style={{ marginLeft: ".5rem" }} />}
+        {summaryMatchCurrent()}
         <div style={{ flex: 1 }}></div>
       </div>
-      <DatePicker
-        style={{ width: "100%" }}
-        value={date}
-        onChange={(val) => {
-          if (val) setDate(val);
-        }}
-        format={
-          type === "Weekly"
-            ? (value) =>
-                `${moment(value)
-                  .startOf("week")
-                  .format(DATETIME_FORMATS.DAY_MONTH_YEAR)} - ${moment(value)
-                  .endOf("week")
-                  .format(DATETIME_FORMATS.DAY_MONTH_YEAR)}`
-            : DATETIME_FORMATS.DAY_MONTH_YEAR
-        }
-        allowClear={false}
-        picker={type === "Weekly" ? "week" : undefined}
-      />
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {changeDateButton("back")}
+        <DatePicker
+          style={{ width: "100%" }}
+          value={date}
+          onChange={(val) => {
+            if (val) setDate(val);
+          }}
+          format={
+            type === "Weekly"
+              ? (value) =>
+                  `${moment(value)
+                    .startOf("week")
+                    .format(DATETIME_FORMATS.DAY_MONTH_YEAR)} - ${moment(value)
+                    .endOf("week")
+                    .format(DATETIME_FORMATS.DAY_MONTH_YEAR)}`
+              : DATETIME_FORMATS.DAY_MONTH_YEAR
+          }
+          allowClear={false}
+          picker={type === "Weekly" ? "week" : undefined}
+          dateRender={(current) => (
+            <div>
+              <div className="ant-picker-cell-inner">{current.date()}</div>
+              {summaryMatch(current)}
+            </div>
+          )}
+        />
+        {changeDateButton("forward")}
+      </div>
       {/* {loading && <CenteredSpin />} */}
       {(data?.checklist === null ||
         (type === "Weekly" && data?.checklist.items.length === 0)) && (

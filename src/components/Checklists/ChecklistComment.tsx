@@ -17,7 +17,7 @@ export const ChecklistComment: React.FC<ChecklistCommentProps> = ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "flex-start",
-        backgroundColor: "#efefef",
+        backgroundColor: "#efefefa3",
         borderRadius: 10,
         padding: 3,
         paddingLeft: 10,

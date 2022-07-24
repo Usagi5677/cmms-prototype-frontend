@@ -12,7 +12,7 @@ export interface ChecklistItemProps {
 
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({ item }) => {
   const [toggle, { loading }] = useMutation(TOGGLE_CHECKLIST_ITEM, {
-    refetchQueries: ["checklist"],
+    refetchQueries: ["checklist", "checklistSummary"],
   });
 
   return (

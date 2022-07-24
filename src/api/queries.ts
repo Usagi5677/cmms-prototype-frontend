@@ -1524,3 +1524,17 @@ export const GET_ROLE_WITH_PERMISSION = gql`
     }
   }
 `;
+export const CHECKLIST_SUMMARIES = gql`
+  query checklistSummary($input: ChecklistSummaryInput!) {
+    checklistSummary(input: $input) {
+      id
+      from
+      to
+      type
+      hasComments
+      workingHour
+      currentMeterReading
+      itemCompletion
+    }
+  }
+`;
