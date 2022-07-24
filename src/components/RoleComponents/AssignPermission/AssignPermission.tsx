@@ -14,6 +14,7 @@ import { useForm } from "antd/lib/form/Form";
 
 import { useEffect, useState } from "react";
 import { FaEdit, FaLock } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { ASSIGN_PERMISSION } from "../../../api/mutations";
 import { ME_QUERY } from "../../../api/queries";
 import { PERMISSIONS } from "../../../helpers/constants";
@@ -47,7 +48,6 @@ const AssignPermission = ({ role }: { role: Role }) => {
   }, []);
 
   const handleCancel = () => {
-    
     setVisible(false);
   };
 
@@ -71,6 +71,20 @@ const AssignPermission = ({ role }: { role: Role }) => {
   return (
     <>
       <div className={classes["info-edit"]}>
+        <Link to={"/role/" + role.id + "/permission"}>
+          <Tooltip title="Assign permission">
+            <FaLock />
+          </Tooltip>
+        </Link>
+      </div>
+    </>
+  );
+};
+
+export default AssignPermission;
+
+/*
+<div className={classes["info-edit"]}>
         <Tooltip title="Assign permission">
           <FaLock onClick={() => setVisible(true)} />
         </Tooltip>
@@ -143,8 +157,5 @@ const AssignPermission = ({ role }: { role: Role }) => {
           </Form>
         </Modal>
       </div>
-    </>
-  );
-};
 
-export default AssignPermission;
+*/

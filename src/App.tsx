@@ -26,6 +26,7 @@ import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/Vi
 import ViewMachineReport from "./pages/ViewMachineReport/ViewMachineReport";
 import ViewTransportationReport from "./pages/ViewTransportationReport/ViewTransportationReport";
 import { Templates } from "./pages/Templates";
+import ViewPermission from "./pages/ViewPermission/ViewPermission";
 
 function App() {
   {
@@ -183,6 +184,10 @@ function App() {
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/templates" element={<Templates />} />
+            <Route
+              path="/role/:id/permission"
+              element={<ViewPermission />}
+            />
             <Route path="/machinery-report" element={<ViewMachineReport />} />
             <Route
               path="/transportation-report"

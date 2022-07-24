@@ -740,3 +740,13 @@ export const EDIT_USER_LOCATION = gql`
     editUserLocation(id: $id, location: $location)
   }
 `;
+
+export const TOGGLE_PERMISSION = gql`
+  mutation ($roleId: Int!, $permission: String!, $complete: Boolean!) {
+    togglePermission(
+      roleId: $roleId
+      permission: $permission
+      complete: $complete
+    )
+  }
+`;

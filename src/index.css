@@ -534,3 +534,11 @@ em {
 .underlineOnHover:hover {
   text-decoration: underline;
 }
+
+.ant-switch-checked {
+  background-color: var(--primary) !important;
+}
+
+.ant-switch-checked:focus {
+  box-shadow: 0 0 0 2px #22d197 !important;
+}

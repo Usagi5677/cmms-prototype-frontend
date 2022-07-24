@@ -1506,3 +1506,21 @@ export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
     }
   }
 `;
+
+export const GET_ROLE_WITH_PERMISSION = gql`
+  ${APS_USER_FRAGMENT}
+  query getRoleWithPermission($roleId: Int!) {
+    getRoleWithPermission(roleId: $roleId) {
+      id
+      name
+      createdAt
+      permissionRoles {
+        roleId
+        permission
+      }
+      createdBy {
+        ...UserFieldsAPS
+      }
+    }
+  }
+`;
