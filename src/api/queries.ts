@@ -1498,9 +1498,11 @@ export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
       machineWorking
       machineIdle
       machineBreakdown
+      machineDispose
       transportationWorking
       transportationIdle
       transportationBreakdown
+      transportationDispose
     }
   }
 `;

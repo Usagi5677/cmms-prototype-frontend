@@ -20,7 +20,7 @@ import TransportationStatusFilter from "../../../components/common/Transportatio
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaSpinner, FaTruck } from "react-icons/fa";
+import { FaCarCrash, FaRecycle, FaSpinner, FaTruck } from "react-icons/fa";
 
 const Vehicles = () => {
   const { user: self } = useContext(UserContext);
@@ -162,6 +162,7 @@ const Vehicles = () => {
   let transportationIdle = 0;
   let transportationWorking = 0;
   let transportationBreakdown = 0;
+  let transportationDispose = 0;
   let total = 0;
 
   const statusCountData = statusData?.allMachineAndTransportStatusCount;
@@ -169,8 +170,12 @@ const Vehicles = () => {
     transportationIdle = statusCountData?.transportationIdle;
     transportationWorking = statusCountData?.transportationWorking;
     transportationBreakdown = statusCountData?.transportationBreakdown;
+    transportationDispose = statusCountData?.transportationDispose;
     total =
-      transportationIdle + transportationWorking + transportationBreakdown;
+      transportationIdle +
+      transportationWorking +
+      transportationBreakdown +
+      transportationDispose;
   }
   return (
     <>
@@ -199,6 +204,13 @@ const Vehicles = () => {
           iconBackgroundColor={"rgba(255,0,0,0.2)"}
           iconColor={"rgb(139,0,0)"}
           name={"Breakdown"}
+        />
+        <StatusCard
+          amountOne={transportationDispose}
+          icon={<FaRecycle />}
+          iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
+          iconColor={"rgb(102, 0, 0)"}
+          name={"Dispose"}
         />
       </div>
       <div className={classes["container"]}>

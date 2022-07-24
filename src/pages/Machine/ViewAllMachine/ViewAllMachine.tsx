@@ -20,7 +20,7 @@ import MachineStatusFilter from "../../../components/common/MachineStatusFilter"
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaSpinner, FaTractor } from "react-icons/fa";
+import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
 
 const Machinery = () => {
   const { user: self } = useContext(UserContext);
@@ -158,6 +158,7 @@ const Machinery = () => {
   let machineIdle = 0;
   let machineWorking = 0;
   let machineBreakdown = 0;
+  let machineDispose = 0;
   let total = 0;
 
   const statusCountData = statusData?.allMachineAndTransportStatusCount;
@@ -165,7 +166,8 @@ const Machinery = () => {
     machineIdle = statusCountData?.machineIdle;
     machineWorking = statusCountData?.machineWorking;
     machineBreakdown = statusCountData?.machineBreakdown;
-    total = machineIdle + machineWorking + machineBreakdown;
+    machineDispose = statusCountData?.machineDispose;
+    total = machineIdle + machineWorking + machineBreakdown + machineDispose;
   }
 
   return (
@@ -195,6 +197,13 @@ const Machinery = () => {
           iconBackgroundColor={"rgba(255,0,0,0.2)"}
           iconColor={"rgb(139,0,0)"}
           name={"Breakdown"}
+        />
+        <StatusCard
+          amountOne={machineDispose}
+          icon={<FaRecycle />}
+          iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
+          iconColor={"rgb(102, 0, 0)"}
+          name={"Dispose"}
         />
       </div>
       <div className={classes["container"]}>
