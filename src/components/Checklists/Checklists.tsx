@@ -12,6 +12,8 @@ import ChecklistItemModel from "../../models/ChecklistItem";
 import { UPDATE_READING, UPDATE_WORKING_HOURS } from "../../api/mutations";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation;
@@ -72,6 +74,31 @@ export const Checklists: React.FC<ChecklistsProps> = ({
     }
   }, [date, entity]);
 
+  const changeDate = (direction: "forward" | "back") => {
+    console.log(direction);
+    if (direction === "forward") {
+      if (type === "Daily") setDate(date.clone().add(1, "day"));
+      else setDate(date.clone().add(1, "week"));
+    } else {
+      if (type === "Daily") setDate(date.clone().subtract(1, "day"));
+      else setDate(date.clone().subtract(1, "week"));
+    }
+  };
+
+  const changeDateButton = (direction: "forward" | "back") => (
+    <Button
+      onClick={() => changeDate(direction)}
+      disabled={loading}
+      style={
+        direction === "forward"
+          ? { marginLeft: ".5rem" }
+          : { marginRight: ".5rem" }
+      }
+    >
+      {direction === "forward" ? <ArrowRightOutlined /> : <ArrowLeftOutlined />}
+    </Button>
+  );
+
   return (
     <div>
       <div
@@ -90,25 +117,29 @@ export const Checklists: React.FC<ChecklistsProps> = ({
         {loading && <Spin style={{ marginLeft: ".5rem" }} />}
         <div style={{ flex: 1 }}></div>
       </div>
-      <DatePicker
-        style={{ width: "100%" }}
-        value={date}
-        onChange={(val) => {
-          if (val) setDate(val);
-        }}
-        format={
-          type === "Weekly"
-            ? (value) =>
-                `${moment(value)
-                  .startOf("week")
-                  .format(DATETIME_FORMATS.DAY_MONTH_YEAR)} - ${moment(value)
-                  .endOf("week")
-                  .format(DATETIME_FORMATS.DAY_MONTH_YEAR)}`
-            : DATETIME_FORMATS.DAY_MONTH_YEAR
-        }
-        allowClear={false}
-        picker={type === "Weekly" ? "week" : undefined}
-      />
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {changeDateButton("back")}
+        <DatePicker
+          style={{ width: "100%" }}
+          value={date}
+          onChange={(val) => {
+            if (val) setDate(val);
+          }}
+          format={
+            type === "Weekly"
+              ? (value) =>
+                  `${moment(value)
+                    .startOf("week")
+                    .format(DATETIME_FORMATS.DAY_MONTH_YEAR)} - ${moment(value)
+                    .endOf("week")
+                    .format(DATETIME_FORMATS.DAY_MONTH_YEAR)}`
+              : DATETIME_FORMATS.DAY_MONTH_YEAR
+          }
+          allowClear={false}
+          picker={type === "Weekly" ? "week" : undefined}
+        />
+        {changeDateButton("forward")}
+      </div>
       {/* {loading && <CenteredSpin />} */}
       {(data?.checklist === null ||
         (type === "Weekly" && data?.checklist.items.length === 0)) && (

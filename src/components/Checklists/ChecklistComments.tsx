@@ -61,7 +61,7 @@ export const ChecklistComments: React.FC<ChecklistCommentsProps> = ({
       />
       <div>
         {checklist?.comments.map((comment) => (
-          <ChecklistComment comment={comment} />
+          <ChecklistComment key={comment.id} comment={comment} />
         ))}
       </div>
     </div>
