@@ -4,7 +4,7 @@ import React from "react";
 import Checklist from "../../models/Checklist";
 
 export interface ChecklistSummary extends Checklist {
-  itemCompletion: "all" | "some" | "none";
+  itemCompletion: "all" | "some" | "none" | "empty";
   hasComments: boolean;
 }
 
@@ -71,13 +71,15 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                     />
                   </div>
                 )}
-                <div>
-                  <Badge
-                    color={itemColor}
-                    text={itemText}
-                    style={{ marginRight: ".5rem" }}
-                  />
-                </div>
+                {summary.itemCompletion !== "empty" && (
+                  <div>
+                    <Badge
+                      color={itemColor}
+                      text={itemText}
+                      style={{ marginRight: ".5rem" }}
+                    />
+                  </div>
+                )}
                 {summary.hasComments && (
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <Badge
@@ -94,7 +96,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
             }
           >
             {summary.type === "Daily" && <Badge color={readingsColor} />}
-            <Badge color={itemColor} />
+            {summary.itemCompletion !== "empty" && <Badge color={itemColor} />}
             {summary.hasComments && (
               <Badge count={<CommentOutlined style={{ color: "gray" }} />} />
             )}
@@ -110,12 +112,14 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
               }}
             ></div>
           )}
-          <div
-            style={{
-              ...smallStyle,
-              backgroundColor: itemColor,
-            }}
-          ></div>
+          {summary.itemCompletion !== "empty" && (
+            <div
+              style={{
+                ...smallStyle,
+                backgroundColor: itemColor,
+              }}
+            ></div>
+          )}
           {summary.hasComments && (
             <div
               style={{
