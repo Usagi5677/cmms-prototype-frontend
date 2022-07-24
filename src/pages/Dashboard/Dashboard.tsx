@@ -41,6 +41,8 @@ const Dashboard = () => {
   let transportationWorking = 0;
   let machineBreakdown = 0;
   let transportationBreakdown = 0;
+  let machineDispose = 0;
+  let transportationDispose = 0;
 
   const statusCountData = statusData?.allMachineAndTransportStatusCount;
   if (statusCountData) {
@@ -50,6 +52,8 @@ const Dashboard = () => {
     transportationWorking = statusCountData?.transportationWorking;
     machineBreakdown = statusCountData?.machineBreakdown;
     transportationBreakdown = statusCountData?.transportationBreakdown;
+    machineDispose = statusCountData?.machineDispose;
+    transportationDispose = statusCountData?.transportationDispose;
   }
 
   return (
@@ -85,6 +89,16 @@ const Dashboard = () => {
             iconBackgroundColor={"rgba(255,0,0,0.2)"}
             iconColor={"rgb(139,0,0)"}
             name={"Breakdown"}
+          />
+          <StatusCard
+            amountOne={machineDispose}
+            amountTwo={transportationDispose}
+            icon={<FaCarCrash />}
+            subIconOne={<FaTractor />}
+            subIconTwo={<FaTruck />}
+            iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
+            iconColor={"rgb(102, 0, 0)"}
+            name={"Dispose"}
           />
         </div>
       )}
