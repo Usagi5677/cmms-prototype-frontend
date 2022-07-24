@@ -133,7 +133,6 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
     dateArray.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
-
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
@@ -175,7 +174,7 @@ const ViewHistory = ({ machineID }: { machineID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {dateArray?.map((dateVal, index) => {
+        {dateArray.reverse()?.map((dateVal, index) => {
           return (
             <div className={classes["collapse-container"]} key={index + "div"}>
               <Collapse ghost style={{ marginBottom: ".5rem" }}>

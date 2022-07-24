@@ -174,7 +174,7 @@ const ViewHistory = ({ transportationID }: { transportationID: number }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {dateArray?.map((dateVal, index) => {
+        {dateArray.reverse()?.map((dateVal, index) => {
           return (
             <div className={classes["collapse-container"]} key={index+"div"}>
               <Collapse ghost style={{ marginBottom: ".5rem" }}>

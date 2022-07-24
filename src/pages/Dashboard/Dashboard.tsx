@@ -13,7 +13,7 @@ import MyTransportationPMTask from "../../components/common/DashboardComponents/
 import { useLazyQuery } from "@apollo/client";
 import { GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
-import { FaCarCrash, FaSpinner, FaTractor, FaTruck } from "react-icons/fa";
+import { FaCarCrash, FaRecycle, FaSpinner, FaTractor, FaTruck } from "react-icons/fa";
 import StatusCard from "../../components/common/StatusCard/StatusCard";
 
 const Dashboard = () => {
@@ -93,7 +93,7 @@ const Dashboard = () => {
           <StatusCard
             amountOne={machineDispose}
             amountTwo={transportationDispose}
-            icon={<FaCarCrash />}
+            icon={<FaRecycle />}
             subIconOne={<FaTractor />}
             subIconTwo={<FaTruck />}
             iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
