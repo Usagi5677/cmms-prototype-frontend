@@ -1,42 +1,36 @@
 import AntLayout from "antd/lib/layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { LeftOutlined } from "@ant-design/icons";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 
 const Layout = ({ children }: any) => {
-  const [siderStyle, setSiderStyle] = useState<any>({ flex: 1 });
-  const [width, setWidth] = useState("230");
+  const isSmallDevice = useIsSmallDevice();
   const [collapsed, setCollapsed] = useState(false);
-  const [isSmallDevice, setIsSmallDevice] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
+
+  useEffect(() => {
+    if (firstRender && isSmallDevice) {
+      setCollapsed(true);
+      setFirstRender(false);
+    }
+  }, [firstRender, isSmallDevice]);
 
   const { Sider, Content } = AntLayout;
-
-  const onBreakpoint = (broken: boolean) => {
-    if (broken) {
-      setSiderStyle({
-        ...siderStyle,
-        position: "absolute",
-        zIndex: 5,
-      });
-      setWidth("100%");
-      setIsSmallDevice(true);
-    } else {
-      setWidth("230");
-      setIsSmallDevice(false);
-    }
-  };
 
   return (
     <AntLayout style={{ overflow: "hidden", height: "100%" }}>
       <Sider
-        style={siderStyle}
-        width={width}
+        style={{
+          position: isSmallDevice ? "absolute" : undefined,
+          zIndex: isSmallDevice ? 5 : undefined,
+        }}
+        width={isSmallDevice ? "100%" : "230"}
         trigger={null}
         breakpoint="md"
         collapsedWidth="0"
         collapsed={collapsed}
-        onBreakpoint={onBreakpoint}
         theme="light"
       >
         <div
@@ -45,7 +39,7 @@ const Layout = ({ children }: any) => {
             flexDirection: "column",
             justifyContent: "space-between",
             overflow: "auto",
-            height: "100%",
+            height: isSmallDevice ? "100vh" : "100%",
           }}
         >
           <div>
