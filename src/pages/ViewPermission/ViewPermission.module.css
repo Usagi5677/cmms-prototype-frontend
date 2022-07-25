@@ -93,7 +93,10 @@
   margin: 20px;
  
 }
-
+.bold {
+  font-weight: 700;
+  margin-right: 4px;
+}
 @media only screen and (min-width: 600px) {
   .inner-container {
     font-size: 10px;

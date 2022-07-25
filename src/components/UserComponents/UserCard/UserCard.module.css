@@ -28,11 +28,16 @@
 .edit-icon:hover {
   color: var(--primary);
 }
+
 .icon-wrapper {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  grid-area: icon-wrapper;
+}
+.icon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 
 .tag {

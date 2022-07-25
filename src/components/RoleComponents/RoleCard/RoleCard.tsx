@@ -1,7 +1,7 @@
 import { Tag, Tooltip } from "antd";
 import moment from "moment";
 import { useContext } from "react";
-import { FaRegClock } from "react-icons/fa";
+import { FaRegClock, FaRegUser, FaUserAlt } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { RoleTagStringToColor } from "../../../helpers/style";
@@ -16,6 +16,7 @@ const RoleCard = ({ role }: { role: Role }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["wrapper"]}>
+        {" "}
         <div className={classes["first-block"]}>
           <div className={classes["time-wrapper"]}>
             <Tooltip title="Created on">
@@ -43,8 +44,13 @@ const RoleCard = ({ role }: { role: Role }) => {
             </Tag>
           </div>
           {role?.createdBy?.fullName && (
-            <div className={classes["completedBy"]}>
-              {role?.createdBy?.fullName} ({role?.createdBy?.rcno})
+            <div className={classes["createdBy-wrapper"]}>
+              <Tooltip title="Created by">
+                <FaRegUser />
+              </Tooltip>
+              <div className={classes["createdBy"]}>
+                {role?.createdBy?.fullName} ({role?.createdBy?.rcno})
+              </div>
             </div>
           )}
         </div>
@@ -59,7 +65,6 @@ const RoleCard = ({ role }: { role: Role }) => {
             <DeleteRole id={role?.id} />
           ) : null}
         </div>
-        <div className={classes["status"]}></div>
       </div>
     </div>
   );

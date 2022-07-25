@@ -1,6 +1,6 @@
 import { Tooltip } from "antd";
 import moment from "moment";
-import { FaRegClock, FaUserAlt } from "react-icons/fa";
+import { FaRegClock, FaRegUser, FaUserAlt } from "react-icons/fa";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import History from "../../../models/Transportation/TransportationHistory";
 import classes from "./TransportationHistoryCard.module.css";
@@ -19,13 +19,15 @@ const TransportationHistoryCard = ({ history }: { history: History }) => {
         </div>
 
         {history?.completedBy?.fullName && (
-          <div className={classes["completedBy"]}>
-            <Tooltip title="Done by">
-              <FaUserAlt style={{fontSize: 12, marginRight:10}} />
-            </Tooltip>
-            {history?.completedBy?.fullName}{" "}
+          <div className={classes["doneBy-wrapper"]}>
+          <Tooltip title="Done by">
+            <FaRegUser />
+          </Tooltip>
+          <div className={classes["doneBy"]}>
+          {history?.completedBy?.fullName}{" "}
             {"(" + history?.completedBy?.rcno + ")"}
           </div>
+        </div>
         )}
       </div>
       <div className={classes["second-block"]}>

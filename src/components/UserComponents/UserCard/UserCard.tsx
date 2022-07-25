@@ -80,14 +80,16 @@ const UserCard = ({ userData }: { userData: User }) => {
           ))}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasEditUserRole ? (
-            <EditUserRoles userData={userData} />
-          ) : null}
-        </div>
-        <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasEditUserLocation ? (
-            <EditUserLocation userData={userData} />
-          ) : null}
+          <div className={classes["icon"]}>
+            {self.assignedPermission.hasEditUserRole ? (
+              <EditUserRoles userData={userData} />
+            ) : null}
+          </div>
+          <div className={classes["icon"]}>
+            {self.assignedPermission.hasEditUserLocation ? (
+              <EditUserLocation userData={userData} />
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

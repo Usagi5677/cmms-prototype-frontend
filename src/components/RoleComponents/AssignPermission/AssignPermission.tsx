@@ -1,82 +1,17 @@
-import { useMutation } from "@apollo/client";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  message,
-  Modal,
-  Row,
-  Tooltip,
-} from "antd";
-import { useForm } from "antd/lib/form/Form";
-
-import { useEffect, useState } from "react";
-import { FaEdit, FaLock } from "react-icons/fa";
+import { Tooltip } from "antd";
+import { FaLock } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { ASSIGN_PERMISSION } from "../../../api/mutations";
-import { ME_QUERY } from "../../../api/queries";
-import { PERMISSIONS } from "../../../helpers/constants";
-import { errorMessage } from "../../../helpers/gql";
-import { PermissionEnum } from "../../../models/Enums";
 import Role from "../../../models/Role";
 import classes from "./AssignPermission.module.css";
 
 const AssignPermission = ({ role }: { role: Role }) => {
-  const [visible, setVisible] = useState(false);
-  const [form] = useForm();
-  const [checkboxPermissions, setCheckboxPermissions] = useState<any>([]);
-
-  const [assignPermission, { loading: loadingPermission }] = useMutation(
-    ASSIGN_PERMISSION,
-    {
-      onCompleted: () => {
-        message.success("Successfully assigned permission.");
-        handleCancel();
-      },
-      onError: (error) => {
-        errorMessage(error, "Unexpected error while assigning permission.");
-      },
-      refetchQueries: ["getAllRoles", { query: ME_QUERY }],
-    }
-  );
-
-  // Set permissions when component mounts
-  useEffect(() => {
-    setCheckboxPermissions(role.permissionRoles.map((data) => data.permission));
-  }, []);
-
-  const handleCancel = () => {
-    setVisible(false);
-  };
-
-  const onFinish = (value: any) => {
-    assignPermission({
-      variables: {
-        roleId: role.id,
-        permissions: checkboxPermissions,
-      },
-    });
-  };
-  const onClickCheckbox = (checkbox: any, valueOfCheckbox: any) => {
-    const { checked } = checkbox.target;
-    setCheckboxPermissions((prev: any) =>
-      checked
-        ? [...prev, valueOfCheckbox]
-        : prev.filter((val: any) => val !== valueOfCheckbox)
-    );
-  };
-
   return (
     <>
-      <div className={classes["info-edit"]}>
-        <Link to={"/role/" + role.id + "/permission"}>
-          <Tooltip title="Assign permission">
-            <FaLock />
-          </Tooltip>
-        </Link>
-      </div>
+      <Link to={"/role/" + role.id + "/permission"}>
+        <Tooltip title="Assign permission">
+          <FaLock className={classes["info-edit"]} />
+        </Tooltip>
+      </Link>
     </>
   );
 };

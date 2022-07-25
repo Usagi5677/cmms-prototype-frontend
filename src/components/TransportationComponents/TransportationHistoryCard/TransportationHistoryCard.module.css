@@ -24,25 +24,25 @@
   display: inline-block;
 }
 
-.completedBy {
+.doneBy-wrapper {
   display: flex;
   align-items: center;
 }
-
-
-
+.doneBy {
+  font-size: 10;
+  opacity: 0.5;
+  display: inline-block;
+  padding-left: 5px;
+}
 
 .time-wrapper {
   display: flex;
   align-items: center;
- 
 }
 
 .time {
   padding-left: 5px;
 }
-
-
 
 @media only screen and (min-width: 600px) {
   .container {
@@ -53,7 +53,6 @@
     justify-content: space-between;
     align-items: center;
     width: 35%;
-    
   }
   .second-block {
     display: flex;
