@@ -37,7 +37,6 @@ const UserCard = ({ userData }: { userData: User }) => {
     });
   };
 
-  console.log(userData);
   return (
     <div className={classes["container"]}>
       <div className={classes["user"]}>

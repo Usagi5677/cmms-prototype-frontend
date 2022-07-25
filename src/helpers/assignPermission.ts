@@ -51,7 +51,8 @@ export function permissionExist(data: User) {
   let hasTransportationAssignmentToUser = false;
   let hasTransportationUnassignmentToUser = false;
   let hasEditTransportationUsage = false;
-  let hasEditMachineUsage = false;
+  let hasEditMachineLocation = false;
+  let hasEditTransportationLocation = false;
   let hasAssignPermission = false;
   let hasAddUserWithRole = false;
   let hasEditUserRole = false;
@@ -229,11 +230,11 @@ export function permissionExist(data: User) {
         case "UNASSIGN_USER_TO_TRANSPORTATION":
           hasTransportationUnassignmentToUser = true;
           break;
-        case "EDIT_MACHINE_USAGE":
-          hasEditMachineUsage = true;
+        case "EDIT_MACHINE_LOCATION":
+          hasEditMachineLocation = true;
           break;
-        case "EDIT_TRANSPORTATION_USAGE":
-          hasEditTransportationUsage = true;
+        case "EDIT_TRANSPORTATION_LOCATION":
+          hasEditTransportationLocation = true;
           break;
         case "ASSIGN_PERMISSION":
           hasAssignPermission = true;
@@ -367,8 +368,8 @@ export function permissionExist(data: User) {
     hasTransportationAttachmentDelete,
     hasTransportationAssignmentToUser,
     hasTransportationUnassignmentToUser,
-    hasEditMachineUsage,
-    hasEditTransportationUsage,
+    hasEditMachineLocation,
+    hasEditTransportationLocation,
     hasAssignPermission,
     hasAddUserWithRole,
     hasEditUserRole,

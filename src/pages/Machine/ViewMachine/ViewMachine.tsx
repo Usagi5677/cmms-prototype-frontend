@@ -30,6 +30,7 @@ import MachineUsageHistory from "../../../components/MachineComponents/MachineUs
 import EditMachineUsage from "../../../components/MachineComponents/EditMachineUsage/EditMachineUsage";
 import GetLatestMachineImage from "../../../components/MachineComponents/GetLatestMachineImage/GetLatestMachineImage";
 import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
+import EditMachineLocation from "../../../components/MachineComponents/EditMachineLocation/EditMachineLocation";
 
 const ViewMachine = () => {
   const { id }: any = useParams();
@@ -156,6 +157,12 @@ const ViewMachine = () => {
                 isDeleted={machineData?.isDeleted}
               />
             ) : null} */}
+            {self.assignedPermission.hasEditMachineLocation ? (
+              <EditMachineLocation
+                machine={machineData}
+                isDeleted={machineData?.isDeleted}
+              />
+            ) : null}
             {self.assignedPermission.hasMachineEdit ? (
               <EditMachine
                 machine={machineData}

@@ -30,6 +30,7 @@ import TransportationUsageHistory from "../../../components/TransportationCompon
 import EditTransportationUsage from "../../../components/TransportationComponents/EditTransportationUsage/EditTransportationUsage";
 import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
 import GetLatestTransportationImage from "../../../components/TransportationComponents/GetLatestTransportationImage/GetLatestTransportationImage";
+import EditTransportationLocation from "../../../components/TransportationComponents/EditTransportationLocation/EditTransportationLocation";
 
 const ViewTransportation = () => {
   const { id }: any = useParams();
@@ -163,6 +164,12 @@ const ViewTransportation = () => {
                 isDeleted={transportationData?.isDeleted}
               />
             ) : null} */}
+            {self.assignedPermission.hasEditTransportationLocation ? (
+              <EditTransportationLocation
+                transportation={transportationData}
+                isDeleted={transportationData?.isDeleted}
+              />
+            ) : null}
             {self.assignedPermission.hasTransportationEdit ? (
               <EditTransportation
                 transportation={transportationData}

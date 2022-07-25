@@ -750,3 +750,22 @@ export const TOGGLE_PERMISSION = gql`
     )
   }
 `;
+
+
+export const EDIT_MACHINE_LOCATION = gql`
+  mutation ($id: Int!, $location: String!) {
+    editMachineLocation(
+      id: $id
+      location: $location
+    )
+  }
+`;
+
+export const EDIT_TRANSPORTATION_LOCATION = gql`
+  mutation ($id: Int!, $location: String!) {
+    editTransportationLocation(
+      id: $id
+      location: $location
+    )
+  }
+`;
