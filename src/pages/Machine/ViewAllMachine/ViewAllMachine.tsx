@@ -148,7 +148,7 @@ const Machinery = () => {
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   let options: any = [];
-  ISLANDS?.map((island: string) => {
+  ISLANDS?.sort((a, b) => a.localeCompare(b))?.map((island: string) => {
     options.push({
       value: island,
       label: island,

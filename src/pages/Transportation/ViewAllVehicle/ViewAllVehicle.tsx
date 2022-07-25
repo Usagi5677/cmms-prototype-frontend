@@ -10,7 +10,7 @@ import {
   ALL_TRANSPORTATION_VEHICLES,
   GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
 } from "../../../api/queries";
-import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
+import { DEPARTMENTS, ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVehicle.module.css";
 import Transportation from "../../../models/Transportation";
@@ -29,6 +29,7 @@ const Vehicles = () => {
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
   const [location, setLocation] = useState([]);
+  const [department, setDepartment] = useState([]);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -37,6 +38,7 @@ const Vehicles = () => {
       transportType: string;
       status: any;
       location: string[];
+      department: string[];
     }
   >({
     first: 20,
@@ -45,6 +47,7 @@ const Vehicles = () => {
     after: null,
     search: "",
     location: [],
+    department: [],
     transportType: "Vehicle",
     status: params.get("status"),
   });
@@ -80,7 +83,11 @@ const Vehicles = () => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string, locationValue: string[]) => {
+  const searchDebounced = (
+    value: string,
+    locationValue: string[],
+    departmentValue: string[]
+  ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -89,6 +96,7 @@ const Vehicles = () => {
           ...filter,
           search: value,
           location: locationValue,
+          department: departmentValue,
           first: 20,
           last: null,
           before: null,
@@ -104,9 +112,9 @@ const Vehicles = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location);
+    searchDebounced(search, location, department);
     // eslint-disable-next-line
-  }, [search, location]);
+  }, [search, location, department]);
 
   const [getAllMachineAndTransportStatusCount, { data: statusData }] =
     useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
@@ -152,10 +160,18 @@ const Vehicles = () => {
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   let options: any = [];
-  ISLANDS?.map((island: string) => {
+  ISLANDS?.sort((a, b) => a.localeCompare(b))?.map((island: string) => {
     options.push({
       value: island,
       label: island,
+    });
+  });
+
+  let departmentOptions: any = [];
+  DEPARTMENTS?.sort((a, b) => a.localeCompare(b))?.map((dp: string) => {
+    departmentOptions.push({
+      value: dp,
+      label: dp,
     });
   });
 
@@ -227,6 +243,15 @@ const Vehicles = () => {
             showSearch
             options={options}
             placeholder={"Location"}
+            mode="multiple"
+          />
+          <Select
+            showArrow
+            className={classes["department"]}
+            onChange={(value) => setDepartment(value)}
+            showSearch
+            options={departmentOptions}
+            placeholder={"Department"}
             mode="multiple"
           />
           <TransportationStatusFilter

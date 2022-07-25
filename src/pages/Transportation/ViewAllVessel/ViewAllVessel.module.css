@@ -21,7 +21,8 @@
   padding-top: 10px;
 }
 
-.location {
+.location,
+.department {
   width: 190px;
   margin: 10px 0 !important;
 }

@@ -89,6 +89,7 @@ export const TRANSPORTATION_FRAGMENT = gql`
     status
     measurement
     transportType
+    brand
     isDeleted
     deletedAt
     assignees {

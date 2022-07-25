@@ -406,6 +406,7 @@ export const ALL_TRANSPORTATION_VESSELS = gql`
     $assignedToId: Int
     $status: TransportationStatus
     $location: [String!]
+    $department: [String!]
   ) {
     getAllTransportationVessels(
       after: $after
@@ -418,6 +419,7 @@ export const ALL_TRANSPORTATION_VESSELS = gql`
       assignedToId: $assignedToId
       status: $status
       location: $location
+      department: $department
     ) {
       pageInfo {
         endCursor
@@ -448,6 +450,7 @@ export const ALL_TRANSPORTATION_VEHICLES = gql`
     $assignedToId: Int
     $status: TransportationStatus
     $location: [String!]
+    $department: [String!]
   ) {
     getAllTransportationVehicles(
       after: $after
@@ -460,6 +463,7 @@ export const ALL_TRANSPORTATION_VEHICLES = gql`
       assignedToId: $assignedToId
       status: $status
       location: $location
+      department: $department
     ) {
       pageInfo {
         endCursor

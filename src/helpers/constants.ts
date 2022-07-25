@@ -7,7 +7,19 @@ export const DATETIME_FORMATS = {
   DAY_MONTH_YEAR: "DD MMM YYYY",
 };
 
-export const DEPARTMENTS = ["LTD", "MTD", "TRD", "LOD", "MBD", "CDD", "CEO"];
+export const DEPARTMENTS = [
+  "LTD",
+  "MTD",
+  "TRD",
+  "LOD",
+  "MBD",
+  "CDD",
+  "CEO",
+  "MTND",
+  "RMD",
+  "BDAD",
+  "Corporate",
+];
 
 export const PERMISSIONS = [
   "ADD_ROLE",
@@ -131,7 +143,6 @@ export const MACHINE_MISC_PERMISSIONS = [
   "VERIFY_MACHINE_PERIODIC_MAINTENANCE",
 ];
 
-
 export const TRANSPORTATION_ADD_PERMISSIONS = [
   "ADD_TRANSPORTATION",
   "ADD_TRANSPORTATION_CHECKLIST",
@@ -179,7 +190,6 @@ export const TRANSPORTATION_MISC_PERMISSIONS = [
   "VERIFY_TRANSPORTATION_PERIODIC_MAINTENANCE",
 ];
 
-
 export const DASHBOARD_PERMISSIONS = [
   "VIEW_DASHBOARD_MACHINERY_UTILIZATION",
   "VIEW_DASHBOARD_TRANSPORTS_UTILIZATION",
@@ -206,7 +216,6 @@ export const USER_PERMISSIONS = [
   "EDIT_USER_LOCATION",
   "VIEW_USERS",
 ];
-
 
 export const ISLANDS = [
   "HA. Thuraakunu",
@@ -244,7 +253,7 @@ export const ISLANDS = [
   "Sh. Goidhoo",
   "Sh. Feydhoo",
   "Sh. Feevah",
-  "Sh. Bilehffahi",
+  "Sh. Bileffahi",
   "Sh. Foakaidhoo",
   "Sh. Narudhoo",
   "Sh. Milandhoo",
@@ -271,7 +280,7 @@ export const ISLANDS = [
   "R. Rasgetheemu",
   "R. Angolhitheemu",
   "R. Hulhudhuffaaru",
-  "R. Ugoofaaru",
+  "R. Ungoofaaru",
   "R. Dhuvaafaru",
   "R. Maakurathu",
   "R. Rasmaadhoo",
@@ -400,4 +409,23 @@ export const ISLANDS = [
   "S. Maradhoofeydhoo",
   "K. Malé",
   "Hulhumalé",
+  "Thilafushi Repair Yard",
+  "GMTL",
+  "S. Hulhumeedhoo",
+  "K. Thilafushi",
+  "K. Bandos",
+  "Precast/Thilafushi",
+  "K. Kuda Giri Picnic Island",
+  "Lh. Felivaru",
+  "Barge (Atha)",
+  "Kurimagu 12 (Dh. Hulhudheli)",
+  "K. Kuda Giri",
+  "K. Girifushi",
+  "Hulhumalé Bus Depot",
+  "Thilafushi Carriageway",
+  "Barge (Kurimagu 4)",
+  "Warehouse",
+  "Gulf Lagoon (J2)",
+  "Jarrafa2",
+  "Jarraafa-IV (J-4)",
 ];

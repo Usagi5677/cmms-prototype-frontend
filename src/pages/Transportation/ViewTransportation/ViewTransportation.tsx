@@ -227,6 +227,18 @@ const ViewTransportation = () => {
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>
+                <div>Department</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.department}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
+                <div>Brand</div>
+                <div className={classes["info-content"]}>
+                  {transportationData?.brand}
+                </div>
+              </div>
+              <div className={classes["info-title-wrapper"]}>
                 <div>Assignments</div>
                 <div className={classes["info-content"]}>
                   {self.assignedPermission.hasTransportationAssignmentToUser &&

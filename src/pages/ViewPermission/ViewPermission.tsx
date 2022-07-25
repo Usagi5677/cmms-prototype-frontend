@@ -17,8 +17,8 @@ import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 
 import { useEffect } from "react";
-import { FaRegClock, FaUserAlt } from "react-icons/fa";
-import { useParams } from "react-router";
+import { FaArrowLeft, FaRegClock, FaUserAlt } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router";
 import { TOGGLE_PERMISSION } from "../../api/mutations";
 import { GET_ROLE_WITH_PERMISSION, ME_QUERY } from "../../api/queries";
 import {
@@ -47,7 +47,7 @@ import classes from "./ViewPermission.module.css";
 
 const ViewPermission = ({ role }: { role?: Role }) => {
   const { id }: any = useParams();
-
+  const navigate = useNavigate();
   const [togglePermission, { loading }] = useMutation(TOGGLE_PERMISSION, {
     refetchQueries: [{ query: ME_QUERY }],
     onError: (error) => {
@@ -555,7 +555,13 @@ const ViewPermission = ({ role }: { role?: Role }) => {
   return (
     <>
       <div className={classes["container"]}>
-        <div className={classes["title"]}>Role Information</div>
+        <div className={classes["title"]}>
+          <FaArrowLeft
+            className={classes["back-btn"]}
+            onClick={() => navigate(-1)}
+          />
+          Role Information
+        </div>
         {loadingRoleWithPermission ? (
           <Spin />
         ) : (

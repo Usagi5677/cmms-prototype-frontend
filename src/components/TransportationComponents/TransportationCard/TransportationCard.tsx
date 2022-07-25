@@ -118,6 +118,14 @@ const TransportationCard = ({
                 <span className={classes["reading-title"]}>Engine:</span>
                 <span>{transportation?.engine}</span>
               </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Department:</span>
+                <span>{transportation?.department}</span>
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Brand:</span>
+                <span>{transportation?.brand}</span>
+              </div>
             </div>
 
             <div>

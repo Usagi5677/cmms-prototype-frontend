@@ -23,6 +23,7 @@ export default interface Transportation {
   lastServiceMileage?: number;
   measurement?: string;
   transportType?: string;
+  brand?: string;
   isDeleted?: boolean;
   deletedAt?: Date;
   status: TransportationStatus;
