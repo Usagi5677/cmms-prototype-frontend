@@ -16,7 +16,7 @@ import {
 import { RiSailboatFill } from "react-icons/ri";
 
 import classes from "./Sidebar.module.css";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
 import { Badge, Menu } from "antd";
@@ -33,11 +33,14 @@ interface SidebarItem {
   name: string;
   path: string;
   icon?: any;
+  count?: number;
 }
 
 const Sidebar = ({ onClick }: { onClick: () => void }) => {
   const { user: self } = useContext(UserContext);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const [breakdownMachineCount, { data: machineData }] = useLazyQuery(
     GET_BREAKDOWN_MACHINE_COUNT,
     {
@@ -94,6 +97,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Machinery",
       path: "/machinery",
       icon: <FaTractor />,
+      count: machineData?.breakdownMachineCount.count,
     });
   }
 
@@ -102,6 +106,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Vessels",
       path: "/transportation/vessels",
       icon: <RiSailboatFill />,
+      count: vesselData?.breakdownVesselCount.count,
     });
   }
 
@@ -110,6 +115,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Vehicles",
       path: "/transportation/vehicles",
       icon: <FaTruck />,
+      count: vehicleData?.breakdownVehicleCount.count,
     });
   }
   if (self?.assignedPermission?.hasViewAllAssignedMachines) {
@@ -175,74 +181,27 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     <>
       <Menu
         mode="inline"
-        defaultOpenKeys={pathname === "my-tickets" ? ["my-tickets"] : []}
         selectedKeys={[pathname]}
         style={{ overflowX: "hidden", flex: 1 }}
       >
         {SidebarData.map((item: SidebarItem) => {
           if (item.name === "Divider") return <Divider key={item.path} />;
-          if (item.name === "Machinery") {
-            return (
-              <Menu.Item
-                key={item.path}
-                icon={item.icon}
-                className={classes["newMenuItem"]}
-                onClick={onClick}
-              >
-                <NavLink to={item.path}>
-                  {item.name}{" "}
-                  <Badge
-                    count={machineData?.breakdownMachineCount.count}
-                    style={{ marginLeft: 10 }}
-                  />
-                </NavLink>
-              </Menu.Item>
-            );
-          }
-          if (item.name === "Vessels") {
-            return (
-              <Menu.Item
-                key={item.path}
-                icon={item.icon}
-                className={classes["newMenuItem"]}
-                onClick={onClick}
-              >
-                <NavLink to={item.path}>
-                  {item.name}{" "}
-                  <Badge
-                    count={vesselData?.breakdownVesselCount.count}
-                    style={{ marginLeft: 10 }}
-                  />
-                </NavLink>
-              </Menu.Item>
-            );
-          }
-          if (item.name === "Vehicles") {
-            return (
-              <Menu.Item
-                key={item.path}
-                icon={item.icon}
-                className={classes["newMenuItem"]}
-                onClick={onClick}
-              >
-                <NavLink to={item.path}>
-                  {item.name}{" "}
-                  <Badge
-                    count={vehicleData?.breakdownVehicleCount.count}
-                    style={{ marginLeft: 10 }}
-                  />
-                </NavLink>
-              </Menu.Item>
-            );
-          }
           return (
             <Menu.Item
               key={item.path}
               icon={item.icon}
               className={classes["newMenuItem"]}
-              onClick={onClick}
+              onClick={() => {
+                navigate(item.path);
+                onClick();
+              }}
             >
-              <NavLink to={item.path}>{item.name}</NavLink>
+              {item.name}{" "}
+              <Badge
+                showZero={false}
+                count={item.count ?? 0}
+                style={{ marginLeft: 10 }}
+              />
             </Menu.Item>
           );
         })}
