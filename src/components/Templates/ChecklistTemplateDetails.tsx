@@ -139,7 +139,6 @@ export const ChecklistTemplateDetails: React.FC<
     return [usedMachines, usedTransports];
   };
   const usedBy = getUsedBy();
-  console.log(usedBy);
 
   return (
     <>
