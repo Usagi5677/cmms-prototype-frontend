@@ -1497,8 +1497,8 @@ export const GET_CHECKLIST = gql`
 `;
 
 export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
-  query allMachineAndTransportStatusCount {
-    allMachineAndTransportStatusCount {
+  query allMachineAndTransportStatusCount($isAssigned: Boolean) {
+    allMachineAndTransportStatusCount(isAssigned: $isAssigned) {
       machineWorking
       machineIdle
       machineBreakdown
@@ -1539,6 +1539,87 @@ export const CHECKLIST_SUMMARIES = gql`
       workingHour
       currentMeterReading
       itemCompletion
+    }
+  }
+`;
+
+export const GET_ALL_ASSIGNED_MACHINES = gql`
+  ${MACHINE_FRAGMENT}
+  query getAllAssignedMachine(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $assignedToId: Int
+    $status: MachineStatus
+    $location: [String!]
+    $isAssigned: Boolean
+  ) {
+    getAllAssignedMachine(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      assignedToId: $assignedToId
+      status: $status
+      location: $location
+      isAssigned: $isAssigned
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...MachineFields
+        }
+      }
+    }
+  }
+`;
+
+
+export const GET_ALL_ASSIGNED_TRANSPORTATION = gql`
+  ${TRANSPORTATION_FRAGMENT}
+  query getAllAssignedTransportation(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $assignedToId: Int
+    $status: TransportationStatus
+    $location: [String!]
+    $isAssigned: Boolean
+  ) {
+    getAllAssignedTransportation(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      assignedToId: $assignedToId
+      status: $status
+      location: $location
+      isAssigned: $isAssigned
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...TransportationFields
+        }
+      }
     }
   }
 `;

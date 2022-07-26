@@ -293,7 +293,7 @@ const MyTransportationPMTask = () => {
                                 </span>
                                 <span className={classes["center"]}>
                                   {periodicMaintenanceTask.periodicMaintenance
-                                    .transportation?.assignees!.length > 0 ? (
+                                    .transportation?.assignees?.length > 0 ? (
                                     <Avatar.Group
                                       maxCount={5}
                                       maxStyle={{

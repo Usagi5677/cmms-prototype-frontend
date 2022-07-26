@@ -13,8 +13,16 @@ import MyTransportationPMTask from "../../components/common/DashboardComponents/
 import { useLazyQuery } from "@apollo/client";
 import { GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
-import { FaCarCrash, FaRecycle, FaSpinner, FaTractor, FaTruck } from "react-icons/fa";
+import {
+  FaCarCrash,
+  FaRecycle,
+  FaSpinner,
+  FaTractor,
+  FaTruck,
+} from "react-icons/fa";
 import StatusCard from "../../components/common/StatusCard/StatusCard";
+import AllAssignedMachinery from "../../components/common/DashboardComponents/Machine/AllAssignedMachinery/AllAssignedMachinery";
+import AllAssignedTransportation from "../../components/common/DashboardComponents/Transportation/AllAssignedTransportation/AllAssignedTransportation";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -109,24 +117,31 @@ const Dashboard = () => {
         {self?.assignedPermission?.hasViewDashboardMyTransportsPMTask && (
           <MyTransportationPMTask />
         )}
-       {self?.assignedPermission?.hasViewDashboardMachineryPMTask && (
-            <MachineryPMTask />
-          )}
-          {self?.assignedPermission?.hasViewDashboardTransportsPMTask && (
-            <AllTransportationPMTask />
-          )}
+
+        {self?.assignedPermission?.hasViewDashboardAssignedMachinery && (
+          <AllAssignedMachinery />
+        )}
+        {self?.assignedPermission?.hasViewDashboardAssignedTransports && (
+          <AllAssignedTransportation />
+        )}
+        {self?.assignedPermission?.hasViewDashboardMachineryPMTask && (
+          <MachineryPMTask />
+        )}
+        {self?.assignedPermission?.hasViewDashboardTransportsPMTask && (
+          <AllTransportationPMTask />
+        )}
         {self?.assignedPermission?.hasViewDashboardMachineryMaintenance && (
-            <MachineMaintenance />
-          )}
-          {self?.assignedPermission?.hasViewDashboardTransportsMaintenance && (
-            <TransportationMaintenance />
-          )}
-         {self?.assignedPermission?.hasViewDashboardMachineryUtilization && (
-            <MachineryUtilization />
-          )}
-          {self?.assignedPermission?.hasViewDashboardTransportsUtilization && (
-            <AllTransportationUtilization />
-          )}
+          <MachineMaintenance />
+        )}
+        {self?.assignedPermission?.hasViewDashboardTransportsMaintenance && (
+          <TransportationMaintenance />
+        )}
+        {self?.assignedPermission?.hasViewDashboardMachineryUtilization && (
+          <MachineryUtilization />
+        )}
+        {self?.assignedPermission?.hasViewDashboardTransportsUtilization && (
+          <AllTransportationUtilization />
+        )}
       </div>
     </>
   );

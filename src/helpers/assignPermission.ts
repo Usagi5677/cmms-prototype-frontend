@@ -50,7 +50,6 @@ export function permissionExist(data: User) {
   let hasTransportationAttachmentDelete = false;
   let hasTransportationAssignmentToUser = false;
   let hasTransportationUnassignmentToUser = false;
-  let hasEditTransportationUsage = false;
   let hasEditMachineLocation = false;
   let hasEditTransportationLocation = false;
   let hasAssignPermission = false;
@@ -79,6 +78,8 @@ export function permissionExist(data: User) {
   let hasViewDashboardMyMachineryPMTask = false;
   let hasViewDashboardMyTransportsPMTask = false;
   let hasViewDashboardStatusCount = false;
+  let hasViewDashboardAssignedMachinery = false;
+  let hasViewDashboardAssignedTransports = false;
 
   data?.roles?.forEach((roleData) => {
     roleData?.role.permissionRoles.forEach((permissionData) => {
@@ -314,6 +315,12 @@ export function permissionExist(data: User) {
         case "VIEW_DASHBOARD_STATUS_COUNT":
           hasViewDashboardStatusCount = true;
           break;
+        case "VIEW_DASHBOARD_ASSIGNED_MACHINERY":
+          hasViewDashboardAssignedMachinery = true;
+          break;
+        case "VIEW_DASHBOARD_ASSIGNED_TRANSPORTS":
+          hasViewDashboardAssignedTransports = true;
+          break;
       }
     });
   });
@@ -396,6 +403,8 @@ export function permissionExist(data: User) {
     hasViewDashboardMyMachineryPMTask,
     hasViewDashboardMyTransportsPMTask,
     hasViewDashboardStatusCount,
+    hasViewDashboardAssignedMachinery,
+    hasViewDashboardAssignedTransports,
   };
 
   return permissions;

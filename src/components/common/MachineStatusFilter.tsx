@@ -22,7 +22,7 @@ const MachineStatusFilter = ({
     >
       <Select
         showArrow
-        style={{ minWidth: 179 }}
+        style={{ minWidth: 130 }}
      
         placeholder="Filter status"
         onChange={onChange}
