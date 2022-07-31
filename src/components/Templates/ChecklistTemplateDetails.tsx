@@ -13,10 +13,11 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaList, FaRegArrowAltCircleRight } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
 import {
   ADD_CHECKLIST_TEMPLATE_ITEM,
+  CHANGE_CHECKLIST_TEMPLATE,
   EDIT_CHECKLIST_TEMPLATE,
 } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
@@ -26,6 +27,9 @@ import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { SearchEntities } from "../common/SearchEntitities";
+import Entity from "../../models/Entity";
+import { EntityIcon } from "../common/EntityIcon";
 
 export interface ChecklistTemplateDetailsProps {
   checklistTemplate: ChecklistTemplate;
@@ -103,6 +107,19 @@ export const ChecklistTemplateDetails: React.FC<
       });
     }
   };
+
+  const [changeTemplate, { loading: changing }] = useMutation(
+    CHANGE_CHECKLIST_TEMPLATE,
+    {
+      onCompleted: () => {
+        message.success("Checklist template updated.");
+      },
+      onError: (err) => {
+        errorMessage(err, "Error updating checklist.");
+      },
+      refetchQueries: ["checklistTemplate"],
+    }
+  );
 
   const handleCancel = () => {
     form.resetFields();
@@ -261,8 +278,17 @@ export const ChecklistTemplateDetails: React.FC<
             ) : (
               <div>
                 {usedBy[0].map((u) => (
-                  <div key={u.id} className="underlineOnHover">
-                    <a target="_blank" href={`/machine/${u.id}`}>
+                  <div
+                    key={u.id}
+                    className="underlineOnHover"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <EntityIcon entityType="Machine" />
+                    <a
+                      target="_blank"
+                      href={`/machine/${u.id}`}
+                      style={{ marginLeft: ".5rem" }}
+                    >
                       {" "}
                       {u.machineNumber} ({u.zone} - {u.location}){" "}
                       <ArrowRightOutlined />
@@ -270,8 +296,20 @@ export const ChecklistTemplateDetails: React.FC<
                   </div>
                 ))}
                 {usedBy[1].map((u) => (
-                  <div key={u.id} className="underlineOnHover">
-                    <a target="_blank" href={`/transportation/${u.id}`}>
+                  <div
+                    key={u.id}
+                    className="underlineOnHover"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <EntityIcon
+                      entityType="Transportation"
+                      transportationType={u.transportType}
+                    />
+                    <a
+                      target="_blank"
+                      href={`/transportation/${u.id}`}
+                      style={{ marginLeft: ".5rem" }}
+                    >
                       {" "}
                       {u.machineNumber} ({u.location}) <ArrowRightOutlined />
                     </a>
@@ -279,6 +317,44 @@ export const ChecklistTemplateDetails: React.FC<
                 ))}
               </div>
             )}
+            <div style={{ marginTop: "1rem" }}>
+              <SearchEntities
+                changing={changing}
+                onChange={(entity) => {
+                  changeTemplate({
+                    variables: {
+                      input: {
+                        entityId: entity.entityId,
+                        entityType: entity.entityType,
+                        newChecklistId: checklistTemplate.id,
+                      },
+                    },
+                  });
+                }}
+                current={(() => {
+                  const [machines, transports] = usedBy;
+                  const entities: Entity[] = [];
+                  for (const machine of machines) {
+                    entities.push({
+                      entityId: machine.id,
+                      entityType: "Machine",
+                      entityNo: machine.machineNumber,
+                      machine: machine,
+                    });
+                  }
+                  for (const transport of transports) {
+                    entities.push({
+                      entityId: transport.id,
+                      entityType: "Transportation",
+                      entityNo: transport.machineNumber,
+                      transportation: transport,
+                      transportationType: transport.transportType,
+                    });
+                  }
+                  return entities;
+                })()}
+              />
+            </div>
           </>
         )}
         <Row justify="end" gutter={16} style={{ marginTop: "1rem" }}>

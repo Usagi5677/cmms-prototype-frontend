@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Col, message, Modal, Row, Select, Spin } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CHANGE_CHECKLIST_TEMPLATE } from "../../api/mutations";
 import { CHECKLIST_TEMPLATES } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";

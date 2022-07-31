@@ -134,11 +134,13 @@ export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
       id
       machineNumber
       location
+      transportType
     }
     transportationsWeekly {
       id
       machineNumber
       location
+      transportType
     }
   }
 `;

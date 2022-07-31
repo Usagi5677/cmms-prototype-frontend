@@ -1583,7 +1583,6 @@ export const GET_ALL_ASSIGNED_MACHINES = gql`
   }
 `;
 
-
 export const GET_ALL_ASSIGNED_TRANSPORTATION = gql`
   ${TRANSPORTATION_FRAGMENT}
   query getAllAssignedTransportation(
@@ -1620,6 +1619,17 @@ export const GET_ALL_ASSIGNED_TRANSPORTATION = gql`
           ...TransportationFields
         }
       }
+    }
+  }
+`;
+
+export const SEARCH_ENTITY = gql`
+  query searchEntity($query: String!, $limit: Int) {
+    searchEntity(query: $query, limit: $limit) {
+      entityId
+      entityType
+      entityNo
+      transportationType
     }
   }
 `;
