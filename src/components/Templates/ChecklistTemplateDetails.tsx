@@ -250,13 +250,15 @@ export const ChecklistTemplateDetails: React.FC<
         ) : (
           <>
             <Divider orientation="left">Items</Divider>
-            {details?.checklistTemplate.items.map(
-              (item: ChecklistTemplateItem) => (
-                <div key={item.id} style={{ marginBottom: ".25rem" }}>
-                  <RemoveChecklistTemplateItem item={item} /> {item.name}
-                </div>
-              )
-            )}
+            <div style={{ maxHeight: 200, overflowY: "auto" }}>
+              {details?.checklistTemplate.items.map(
+                (item: ChecklistTemplateItem) => (
+                  <div key={item.id} style={{ marginBottom: ".25rem" }}>
+                    <RemoveChecklistTemplateItem item={item} /> {item.name}
+                  </div>
+                )
+              )}
+            </div>
             <input
               ref={newItemInput}
               type="text"
@@ -276,7 +278,7 @@ export const ChecklistTemplateDetails: React.FC<
             {[...usedBy[0], ...usedBy[1]].length === 0 ? (
               "No machines or transportation are using this template."
             ) : (
-              <div>
+              <div style={{ maxHeight: 200, overflowY: "auto" }}>
                 {usedBy[0].map((u) => (
                   <div
                     key={u.id}
