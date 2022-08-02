@@ -430,3 +430,5 @@ export const ISLANDS = [
   "Jarrafa2",
   "Jarraafa-IV (J-4)",
 ];
+
+export const ENTITY_TYPES = ["Machine", "Vessel", "Vehicle"];

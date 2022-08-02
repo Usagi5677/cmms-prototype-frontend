@@ -8,6 +8,7 @@ export default interface User {
   email: string;
   location?: string;
   roles: UserRole[];
+  permissions: string[];
   isAdmin?: boolean;
   isAgent?: boolean;
   isSuperAdmin: boolean;

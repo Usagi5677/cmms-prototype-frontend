@@ -27,6 +27,7 @@ import ViewMachineReport from "./pages/ViewMachineReport/ViewMachineReport";
 import ViewTransportationReport from "./pages/ViewTransportationReport/ViewTransportationReport";
 import { Templates } from "./pages/Templates";
 import ViewPermission from "./pages/ViewPermission/ViewPermission";
+import { Config } from "./pages/Config";
 
 function App() {
   {
@@ -48,9 +49,23 @@ function App() {
     client: apolloClient,
     onCompleted: (data) => {
       const assignedPermission = permissionExist(data.me);
+      const roles = data.me.roles;
+      let permissions = [];
+      // Get all permissions from all roles of user
+      for (const role of roles) {
+        if (role.role?.permissionRoles) {
+          const rolePermissions = role.role.permissionRoles.map(
+            (pr: any) => pr.permission
+          );
+          permissions.push(...rolePermissions);
+        }
+      }
+      // Remove duplicates
+      permissions = [...new Set(permissions)];
       setUser({
         ...data.me,
         assignedPermission,
+        permissions,
       });
       setAppLoading(false);
       setLoggedOut(false);
@@ -184,10 +199,8 @@ function App() {
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/templates" element={<Templates />} />
-            <Route
-              path="/role/:id/permission"
-              element={<ViewPermission />}
-            />
+            <Route path="/config" element={<Config />} />
+            <Route path="/role/:id/permission" element={<ViewPermission />} />
             <Route path="/machinery-report" element={<ViewMachineReport />} />
             <Route
               path="/transportation-report"

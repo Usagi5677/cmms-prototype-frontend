@@ -12,6 +12,7 @@ import {
   FaLock,
   FaPage4,
   FaPager,
+  FaCog,
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 
@@ -27,6 +28,7 @@ import {
   GET_BREAKDOWN_VEHICLE_COUNT,
   GET_BREAKDOWN_VESSEL_COUNT,
 } from "../../api/queries";
+import { hasPermissions } from "../../helpers/permissions";
 
 const { Divider } = Menu;
 interface SidebarItem {
@@ -161,6 +163,14 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     path: "/templates",
     icon: <FaPager />,
   });
+
+  if (hasPermissions(self, ["MODIFY_TYPES"], "any")) {
+    SidebarData.push({
+      name: "Config",
+      path: "/config",
+      icon: <FaCog />,
+    });
+  }
   /*
     if (self?.assignedPermission?.hasViewMachineryReport) {
       SidebarData.splice(13, 0, {

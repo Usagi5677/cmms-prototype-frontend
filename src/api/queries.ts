@@ -1633,3 +1633,38 @@ export const SEARCH_ENTITY = gql`
     }
   }
 `;
+
+export const TYPES = gql`
+  query types(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+    $entityType: String
+  ) {
+    types(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+      entityType: $entityType
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          entityType
+        }
+      }
+    }
+  }
+`;

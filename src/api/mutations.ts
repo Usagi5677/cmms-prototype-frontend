@@ -751,21 +751,32 @@ export const TOGGLE_PERMISSION = gql`
   }
 `;
 
-
 export const EDIT_MACHINE_LOCATION = gql`
   mutation ($id: Int!, $location: String!) {
-    editMachineLocation(
-      id: $id
-      location: $location
-    )
+    editMachineLocation(id: $id, location: $location)
   }
 `;
 
 export const EDIT_TRANSPORTATION_LOCATION = gql`
   mutation ($id: Int!, $location: String!) {
-    editTransportationLocation(
-      id: $id
-      location: $location
-    )
+    editTransportationLocation(id: $id, location: $location)
+  }
+`;
+
+export const CREATE_TYPE = gql`
+  mutation createType($input: CreateTypeInput!) {
+    createType(createTypeInput: $input)
+  }
+`;
+
+export const DELETE_TYPE = gql`
+  mutation removeType($id: Int!) {
+    removeType(id: $id)
+  }
+`;
+
+export const EDIT_TYPE = gql`
+  mutation updateType($input: UpdateTypeInput!) {
+    updateType(updateTypeInput: $input)
   }
 `;
