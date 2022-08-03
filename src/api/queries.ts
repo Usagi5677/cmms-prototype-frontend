@@ -735,7 +735,10 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
         node {
           id
           transportationId
-          type
+          type {
+            id
+            name
+          }
           description
           createdAt
           location
@@ -1046,7 +1049,10 @@ export const ALL_MACHINE_UTILIZATION = gql`
           id
           machineNumber
           model
-          type
+          type {
+            id
+            name
+          }
           zone
           location
           isDeleted
@@ -1118,7 +1124,10 @@ export const ALL_TRANSPORTATION_UTILIZATION = gql`
           id
           machineNumber
           model
-          type
+          type {
+            id
+            name
+          }
           location
           isDeleted
           deletedAt
@@ -1200,7 +1209,10 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
-            type
+            type {
+              id
+              name
+            }
             zone
             location
           }
@@ -1251,7 +1263,10 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
-            type
+            type {
+              id
+              name
+            }
             location
           }
         }
