@@ -16,7 +16,7 @@ import {
 import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_TRANSPORTATION } from "../../../api/mutations";
 import { ISLANDS } from "../../../helpers/constants";
@@ -38,6 +38,12 @@ const EditTransportation = ({
   const [entityType, setEntityType] = useState(
     transportation?.transportType ?? "Vessel"
   );
+
+  useEffect(() => {
+    if (transportation && transportation.transportType) {
+      setEntityType(transportation.transportType);
+    }
+  }, [transportation]);
 
   const [editTransportation, { loading: loadingTransportation }] = useMutation(
     EDIT_TRANSPORTATION,
