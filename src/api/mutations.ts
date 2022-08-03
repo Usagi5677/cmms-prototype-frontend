@@ -780,3 +780,311 @@ export const EDIT_TYPE = gql`
     updateType(updateTypeInput: $input)
   }
 `;
+
+export const CREATE_ENTITY = gql`
+  mutation (
+    $typeId: Int
+    $machineNumber: String
+    $model: String
+    $department: String
+    $zone: String
+    $location: String
+    $engine: String
+    $measurement: String
+    $currentRunning: Int
+    $lastService: Int
+    $currentMileage: Int
+    $lastServiceMileage: Int
+    $registeredDate: Date
+  ) {
+    createEntity(
+      typeId: $typeId
+      machineNumber: $machineNumber
+      model: $model
+      type: $type
+      department: $department
+      zone: $zone
+      location: $location
+      engine: $engine
+      measurement: $measurement
+      currentRunning: $currentRunning
+      lastService: $lastService
+      currentMileage: $currentMileage
+      lastServiceMileage: $lastServiceMileage
+      registeredDate: $registeredDate
+    )
+  }
+`;
+
+export const EDIT_ENTITY = gql`
+  mutation (
+    $id: Int!
+    $typeId: Int
+    $machineNumber: String
+    $model: String
+    $department: String
+    $zone: String
+    $location: String
+    $engine: String
+    $measurement: String
+    $currentRunning: Int
+    $lastService: Int
+    $currentMileage: Int
+    $lastServiceMileage: Int
+    $registeredDate: Date
+  ) {
+    editEntity(
+      id: $id
+      typeId: $typeId
+      machineNumber: $machineNumber
+      model: $model
+      type: $type
+      department: $department
+      zone: $zone
+      location: $location
+      engine: $engine
+      measurement: $measurement
+      currentRunning: $currentRunning
+      lastService: $lastService
+      currentMileage: $currentMileage
+      lastServiceMileage: $lastServiceMileage
+      registeredDate: $registeredDate
+    )
+  }
+`;
+
+export const DELETE_ENTITY = gql`
+  mutation ($entityId: Int!) {
+    removeEntity(entityId: $entityId)
+  }
+`;
+
+export const SET_ENTITY_STATUS = gql`
+  mutation ($entityId: Int!, $status: EntityStatus!) {
+    setEntityStatus(entityId: $entityId, status: $status)
+  }
+`;
+
+export const ADD_ENTITY_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $entityId: Int!
+    $title: String!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
+    $tasks: [String!]
+  ) {
+    addEntityPeriodicMaintenance(
+      entityId: $entityId
+      title: $title
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
+      tasks: $tasks
+    )
+  }
+`;
+
+export const SET_ENTITY_PERIODIC_MAINTENANCE_STATUS = gql`
+  mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
+    setEntityPeriodicMaintenanceStatus(id: $id, status: $status)
+  }
+`;
+
+export const EDIT_ENTITY_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $period: Int!
+    $notificationReminder: Int!
+  ) {
+    editEntityPeriodicMaintenance(
+      id: $id
+      title: $title
+      description: $description
+      period: $period
+      notificationReminder: $notificationReminder
+    )
+  }
+`;
+
+export const DELETE_ENTITY_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!) {
+    deleteEntityPeriodicMaintenance(id: $id)
+  }
+`;
+
+export const ADD_ENTITY_SPARE_PR = gql`
+  mutation (
+    $entityId: Int!
+    $title: String!
+    $description: String!
+    $requestedDate: Date!
+  ) {
+    addEntitySparePR(
+      entityId: $entityId
+      title: $title
+      description: $description
+      requestedDate: $requestedDate
+    )
+  }
+`;
+
+export const EDIT_ENTITY_SPARE_PR = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $requestedDate: Date!
+  ) {
+    editEntitySparePR(
+      id: $id
+      title: $title
+      description: $description
+      requestedDate: $requestedDate
+    )
+  }
+`;
+
+export const DELETE_ENTITY_SPARE_PR = gql`
+  mutation ($id: Int!) {
+    deleteEntitySparePR(id: $id)
+  }
+`;
+
+export const SET_ENTITY_SPARE_PR_STATUS = gql`
+  mutation ($id: Int!, $status: SparePRStatus!) {
+    setEntitySparePRStatus(id: $id, status: $status)
+  }
+`;
+
+export const ADD_ENTITY_REPAIR = gql`
+  mutation ($entityId: Int!, $title: String!, $description: String!) {
+    addEntityRepair(
+      entityId: $entityId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const EDIT_ENTITY_REPAIR = gql`
+  mutation ($id: Int!, $title: String!, $description: String!) {
+    editEntityRepair(id: $id, title: $title, description: $description)
+  }
+`;
+
+export const DELETE_ENTITY_REPAIR = gql`
+  mutation ($id: Int!) {
+    deleteEntityRepair(id: $id)
+  }
+`;
+
+export const SET_ENTITY_REPAIR_STATUS = gql`
+  mutation ($id: Int!, $status: RepairStatus!) {
+    setEntityRepairStatus(id: $id, status: $status)
+  }
+`;
+
+export const ADD_ENTITY_BREAKDOWN = gql`
+  mutation ($entityId: Int!, $title: String!, $description: String!) {
+    addEntityBreakdown(
+      entityId: $entityId
+      title: $title
+      description: $description
+    )
+  }
+`;
+
+export const EDIT_ENTITY_BREAKDOWN = gql`
+  mutation (
+    $id: Int!
+    $title: String!
+    $description: String!
+    $estimatedDateOfRepair: Date!
+  ) {
+    editEntityBreakdown(
+      id: $id
+      title: $title
+      description: $description
+      estimatedDateOfRepair: $estimatedDateOfRepair
+    )
+  }
+`;
+
+export const DELETE_ENTITY_BREAKDOWN = gql`
+  mutation ($id: Int!) {
+    deleteEntityBreakdown(id: $id)
+  }
+`;
+
+export const SET_ENTITY_BREAKDOWN_STATUS = gql`
+  mutation ($id: Int!, $status: BreakdownStatus!) {
+    setEntityBreakdownStatus(id: $id, status: $status)
+  }
+`;
+
+export const EDIT_ENTITY_ATTACHMENT = gql`
+  mutation ($id: Int!, $description: String!) {
+    editEntityAttachment(id: $id, description: $description)
+  }
+`;
+
+export const DELETE_ENTITY_ATTACHMENT = gql`
+  mutation ($id: Int!) {
+    removeEntityAttachment(id: $id)
+  }
+`;
+
+export const ASSIGN_USER_TO_ENTITY = gql`
+  mutation ($entityId: Int!, $userIds: [Int!]!) {
+    assignUserToEntity(entityId: $entityId, userIds: $userIds)
+  }
+`;
+
+export const UNASSIGN_USER_FROM_ENTITY = gql`
+  mutation ($entityId: Int!, $userId: Int!) {
+    unassignUserFromEntity(entityId: $entityId, userId: $userId)
+  }
+`;
+export const EDIT_ENTITY_USAGE = gql`
+  mutation ($id: Int!, $currentMileage: Int!, $lastServiceMileage: Int!) {
+    editEntityUsage(
+      id: $id
+      currentMileage: $currentMileage
+      lastServiceMileage: $lastServiceMileage
+    )
+  }
+`;
+export const ADD_ENTITY_PERIODIC_MAINTENANCE_TASK = gql`
+  mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
+    createEntityPeriodicMaintenanceTask(
+      parentTaskId: $parentTaskId
+      periodicMaintenanceId: $periodicMaintenanceId
+      name: $name
+    )
+  }
+`;
+
+export const TOGGLE_ENTITY_PM_TASK = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleEntityPMTask(id: $id, complete: $complete)
+  }
+`;
+
+export const DELETE_ENTITY_PM_TASK = gql`
+  mutation ($id: Int!) {
+    deleteEntityPMTask(id: $id)
+  }
+`;
+export const TOGGLE_VERIFY_ENTITY_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!, $verify: Boolean!) {
+    toggleVerifyEntityPeriodicMaintenance(id: $id, verify: $verify)
+  }
+`;
+export const EDIT_ENTITY_LOCATION = gql`
+  mutation ($id: Int!, $location: String!) {
+    editEntityLocation(id: $id, location: $location)
+  }
+`;

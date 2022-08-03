@@ -4,6 +4,7 @@ import {
   CHECKLIST_TEMPLATE_FRAGMENT,
   MACHINE_FRAGMENT,
   TRANSPORTATION_FRAGMENT,
+  ENTITY_FRAGMENT,
   USER_FRAGMENT,
 } from "./fragments";
 
@@ -735,7 +736,10 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
         node {
           id
           transportationId
-          type
+          type {
+            id
+            name
+          }
           description
           createdAt
           location
@@ -899,26 +903,6 @@ export const GET_USERS_WITH_PERMISSION = gql`
   query getUsersWithPermission($permissions: [String!]!) {
     getUsersWithPermission(permissions: $permissions) {
       ...UserFieldsAPS
-    }
-  }
-`;
-
-export const GET_MACHINE_REPORT = gql`
-  query getMachineReport($from: Date!, $to: Date!) {
-    getMachineReport(from: $from, to: $to) {
-      type
-      working
-      breakdown
-    }
-  }
-`;
-
-export const GET_TRANSPORTATION_REPORT = gql`
-  query getTransportationReport($from: Date!, $to: Date!) {
-    getTransportationReport(from: $from, to: $to) {
-      type
-      working
-      breakdown
     }
   }
 `;
@@ -1663,6 +1647,610 @@ export const TYPES = gql`
           id
           name
           entityType
+        }
+      }
+    }
+  }
+`;
+
+export const ALL_ENTITY = gql`
+  ${ENTITY_FRAGMENT}
+  query getAllEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $createdByUserId: String
+    $entityType: String
+    $assignedToId: Int
+    $status: EntityStatus
+    $location: [String!]
+    $department: [String!]
+  ) {
+    getAllEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      createdByUserId: $createdByUserId
+      entityType: $entityType
+      assignedToId: $assignedToId
+      status: $status
+      location: $location
+      department: $department
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...EntityFields
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SINGLE_ENTITY = gql`
+  ${ENTITY_FRAGMENT}
+  query getSingleEntity($entityId: Int!) {
+    getSingleEntity(entityId: $entityId) {
+      ...EntityFields
+    }
+  }
+`;
+
+export const GET_ALL_PERIODIC_MAINTENANCE_OF_ENTITY = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllPeriodicMaintenanceOfEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $entityId: Int!
+  ) {
+    getAllPeriodicMaintenanceOfEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          title
+          measurement
+          value
+          startDate
+          status
+          completedAt
+          createdAt
+          completedBy {
+            ...UserFieldsAPS
+          }
+          verifiedAt
+          verifiedBy {
+            ...UserFieldsAPS
+          }
+          entityPeriodicMaintenanceTask {
+            id
+            periodicMaintenanceId
+            parentTaskId
+            name
+            completedBy {
+              ...UserFieldsAPS
+            }
+            completedAt
+            subTasks {
+              id
+              periodicMaintenanceId
+              parentTaskId
+              name
+              completedBy {
+                ...UserFieldsAPS
+              }
+              completedAt
+              subTasks {
+                id
+                periodicMaintenanceId
+                parentTaskId
+                name
+                completedBy {
+                  ...UserFieldsAPS
+                }
+                completedAt
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_SPARE_PR_OF_ENTITY = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllSparePROfEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $entityId: Int!
+  ) {
+    getAllSparePROfEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          title
+          description
+          requestedDate
+          status
+          completedAt
+          createdAt
+          completedBy {
+            ...UserFieldsAPS
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_REPAIR_OF_ENTITY = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllRepairOfEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $entityId: Int!
+  ) {
+    getAllRepairOfEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          title
+          description
+          createdAt
+          status
+          completedAt
+          completedBy {
+            ...UserFieldsAPS
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_BREAKDOWN_OF_ENTITY = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllBreakdownOfEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $entityId: Int!
+  ) {
+    getAllBreakdownOfEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          title
+          description
+          createdAt
+          status
+          completedAt
+          completedBy {
+            ...UserFieldsAPS
+          }
+          estimatedDateOfRepair
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_HISTORY_OF_ENTITY = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllHistoryOfEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $location: [String!]
+    $from: Date
+    $to: Date
+    $entityId: Int!
+  ) {
+    getAllHistoryOfEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      location: $location
+      from: $from
+      to: $to
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          type
+          description
+          createdAt
+          location
+          completedBy {
+            ...UserFieldsAPS
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
+  ${APS_USER_FRAGMENT}
+  query entityAttachments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $entityId: Int!
+  ) {
+    entityAttachments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          createdAt
+          mimeType
+          originalName
+          description
+          mode
+          createdAt
+          completedBy {
+            ...UserFieldsAPS
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_BREAKDOWN_ENTITY_COUNT = gql`
+  query breakdownCount {
+    breakdownCount {
+      count
+    }
+  }
+`;
+
+export const GET_USAGE_HISTORY_OF_ENTITY = gql`
+  query singleEntityUsageHistory($entityId: Int!, $from: Date!, $to: Date!) {
+    singleEntityUsageHistory(entityId: $entityId, from: $from, to: $to) {
+      date
+      workingHour
+      idleHour
+      breakdownHour
+    }
+  }
+`;
+
+export const GET_ENTITY_LATEST_ATTACHMENT = gql`
+  query getEntityLatestAttachment($entityId: Int!) {
+    getEntityLatestAttachment(entityId: $entityId) {
+      id
+      createdAt
+      mimeType
+      originalName
+      description
+      mode
+    }
+  }
+`;
+
+export const ALL_ENTITY_UTILIZATION = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllEntityUtilization(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $location: [String!]
+  ) {
+    getAllEntityUtilization(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      location: $location
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          machineNumber
+          model
+          type
+          location
+          isDeleted
+          deletedAt
+          histories {
+            id
+            createdAt
+            entityId
+            type
+            description
+            completedBy {
+              ...UserFieldsAPS
+            }
+            entityStatus
+            entityType
+            breakdownHour
+            idleHour
+            workingHour
+            location
+          }
+        }
+      }
+    }
+  }
+`;
+export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
+  query getAllEntityPeriodicMaintenance(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $status: PeriodicMaintenanceStatus
+    $location: [String!]
+  ) {
+    getAllEntityPeriodicMaintenance(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      status: $status
+      location: $location
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          entityId
+          title
+          measurement
+          value
+          startDate
+          status
+          completedAt
+          createdAt
+          entity {
+            id
+            machineNumber
+            model
+            type
+            location
+          }
+        }
+      }
+    }
+  }
+`;
+export const GET_ALL_ENTITY_PM_TASK = gql`
+  ${APS_USER_FRAGMENT}
+  query getAllEntityPeriodicMaintenanceTask(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $complete: Boolean
+    $location: [String!]
+    $status: PeriodicMaintenanceStatus
+    $assignedToId: Int
+  ) {
+    getAllEntityPeriodicMaintenanceTask(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      complete: $complete
+      location: $location
+      status: $status
+      assignedToId: $assignedToId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          periodicMaintenanceId
+          name
+          parentTaskId
+          completedAt
+          periodicMaintenance {
+            status
+            entity {
+              id
+              location
+              machineNumber
+              assignees {
+                user {
+                  ...UserFieldsAPS
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export const GET_ALL_ENTITY_PM_TASK_STATUS_COUNT = gql`
+  query allEntityPMTaskStatusCount($assignedToId: Int) {
+    allEntityPMTaskStatusCount(assignedToId: $assignedToId) {
+      pending
+      done
+    }
+  }
+`;
+export const GET_ALL_ENTITY_PM_STATUS_COUNT = gql`
+  query allEntityPMStatusCount {
+    allEntityPMStatusCount {
+      missed
+      pending
+      done
+    }
+  }
+`;
+export const GET_ALL_ASSIGNED_ENTITY = gql`
+  ${ENTITY_FRAGMENT}
+  query getAllAssignedEntity(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $assignedToId: Int
+    $status: EntityStatus
+    $location: [String!]
+    $isAssigned: Boolean
+  ) {
+    getAllAssignedEntity(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      assignedToId: $assignedToId
+      status: $status
+      location: $location
+      isAssigned: $isAssigned
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          ...EntityFields
         }
       }
     }

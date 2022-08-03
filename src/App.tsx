@@ -4,7 +4,6 @@ import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
 import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
 import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
 import ViewAllVehicle from "./pages/Transportation/ViewAllVehicle/ViewAllVehicle";
-
 import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { Route, Routes } from "react-router-dom";
@@ -23,8 +22,6 @@ import { permissionExist } from "./helpers/assignPermission";
 import ViewAssignedMachinery from "./pages/Machine/ViewAssignedMachinery/ViewAssignedMachinery";
 import ViewAssignedVessels from "./pages/Transportation/ViewAssignedVessels/ViewAssignedVessels";
 import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/ViewAssignedVehicles";
-import ViewMachineReport from "./pages/ViewMachineReport/ViewMachineReport";
-import ViewTransportationReport from "./pages/ViewTransportationReport/ViewTransportationReport";
 import { Templates } from "./pages/Templates";
 import ViewPermission from "./pages/ViewPermission/ViewPermission";
 import { Config } from "./pages/Config";
@@ -201,11 +198,6 @@ function App() {
             <Route path="/templates" element={<Templates />} />
             <Route path="/config" element={<Config />} />
             <Route path="/role/:id/permission" element={<ViewPermission />} />
-            <Route path="/machinery-report" element={<ViewMachineReport />} />
-            <Route
-              path="/transportation-report"
-              element={<ViewTransportationReport />}
-            />
           </Routes>
         </Layout>
       </ApolloProvider>

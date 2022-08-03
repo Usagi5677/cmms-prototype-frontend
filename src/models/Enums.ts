@@ -12,6 +12,12 @@ export enum TransportationStatus {
   Dispose = "Dispose",
 }
 
+export enum EntityStatus {
+  Working = "Working",
+  Idle = "Idle",
+  Breakdown = "Breakdown",
+  Dispose = "Dispose",
+}
 
 export enum RepairStatus {
   Done = "Done",

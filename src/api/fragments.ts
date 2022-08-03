@@ -111,6 +111,51 @@ export const TRANSPORTATION_FRAGMENT = gql`
   }
 `;
 
+export const ENTITY_FRAGMENT = gql`
+  ${APS_USER_FRAGMENT}
+  fragment EntityFields on Entity {
+    id
+    createdAt
+    createdBy {
+      ...UserFieldsAPS
+      email
+    }
+    machineNumber
+    registeredDate
+    model
+    typeId
+    department
+    engine
+    zone
+    location
+    currentRunning
+    lastService
+    currentMileage
+    lastServiceMileage
+    status
+    measurement
+    brand
+    isDeleted
+    deletedAt
+    assignees {
+      user {
+        ...UserFieldsAPS
+      }
+    }
+    sparePRs {
+      requestedDate
+      title
+      description
+      status
+    }
+    breakdowns {
+      title
+      description
+      status
+    }
+  }
+`;
+
 export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
   fragment ChecklistTemplateFields on ChecklistTemplate {
     id
