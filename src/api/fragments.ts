@@ -79,10 +79,6 @@ export const TRANSPORTATION_FRAGMENT = gql`
     machineNumber
     registeredDate
     model
-    type {
-      id
-      name
-    }
     department
     engine
     location
