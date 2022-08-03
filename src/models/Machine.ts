@@ -1,4 +1,3 @@
-import ChecklistItem from "./ChecklistItem";
 import { MachineStatus } from "./Enums";
 import MachineHistory from "./Machine/MachineHistory";
 import MachinePeriodicMaintenance from "./Machine/MachinePeriodicMaintenance";
@@ -8,6 +7,7 @@ import MachineRepair from "./Machine/MachineRepair";
 import MachineBreakdown from "./Machine/MachineBreakdown";
 import MachineAssign from "./Machine/MachineAssign";
 import ChecklistTemplate from "./ChecklistTemplate";
+import Type from "./Type";
 
 export default interface Machine {
   id: number;
@@ -16,7 +16,7 @@ export default interface Machine {
   machineNumber?: string;
   registeredDate?: Date;
   model?: string;
-  type?: string;
+  type?: Type;
   zone?: string;
   location?: string;
   currentRunning?: number;

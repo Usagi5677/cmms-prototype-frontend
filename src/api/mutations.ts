@@ -4,7 +4,7 @@ export const CREATE_MACHINE = gql`
   mutation (
     $machineNumber: String
     $model: String
-    $type: String
+    $typeId: Int
     $zone: String
     $location: String
     $currentRunning: Int
@@ -15,7 +15,7 @@ export const CREATE_MACHINE = gql`
     createMachine(
       machineNumber: $machineNumber
       model: $model
-      type: $type
+      typeId: $typeId
       zone: $zone
       location: $location
       currentRunning: $currentRunning
@@ -31,7 +31,7 @@ export const EDIT_MACHINE = gql`
     $id: Int!
     $machineNumber: String
     $model: String
-    $type: String
+    $typeId: Int
     $zone: String
     $location: String
     $currentRunning: Int
@@ -43,7 +43,7 @@ export const EDIT_MACHINE = gql`
       id: $id
       machineNumber: $machineNumber
       model: $model
-      type: $type
+      typeId: $typeId
       zone: $zone
       location: $location
       currentRunning: $currentRunning
@@ -244,7 +244,7 @@ export const CREATE_TRANSPORTATION = gql`
   mutation (
     $machineNumber: String
     $model: String
-    $type: String
+    $typeId: Int
     $department: String
     $location: String
     $engine: String
@@ -257,7 +257,7 @@ export const CREATE_TRANSPORTATION = gql`
     createTransportation(
       machineNumber: $machineNumber
       model: $model
-      type: $type
+      typeId: $typeId
       department: $department
       location: $location
       engine: $engine
@@ -275,7 +275,7 @@ export const EDIT_TRANSPORTATION = gql`
     $id: Int!
     $machineNumber: String
     $model: String
-    $type: String
+    $typeId: Int
     $department: String
     $location: String
     $engine: String
@@ -289,7 +289,7 @@ export const EDIT_TRANSPORTATION = gql`
       id: $id
       machineNumber: $machineNumber
       model: $model
-      type: $type
+      typeId: $typeId
       department: $department
       location: $location
       engine: $engine

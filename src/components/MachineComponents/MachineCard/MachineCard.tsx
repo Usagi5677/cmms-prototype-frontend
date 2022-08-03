@@ -107,7 +107,7 @@ const MachineCard = ({ machine }: { machine: Machine }) => {
               </div>
               <div className={classes["reading"]}>
                 <span className={classes["reading-title"]}>Type:</span>
-                <span>{machine?.type}</span>
+                <span>{machine?.type?.name}</span>
               </div>
             </div>
 

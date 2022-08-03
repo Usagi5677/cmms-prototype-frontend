@@ -18,13 +18,22 @@ import { CREATE_TRANSPORTATION } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
+import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./AddTransportation.module.css";
 
-const AddTransportation = () => {
+export interface AddTransportationProps {
+  transportationType: "Vessel" | "Vehicle";
+}
+
+export const AddTransportation: React.FC<AddTransportationProps> = ({
+  transportationType,
+}) => {
   const { user } = useContext(UserContext);
 
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [typeId, setTypeId] = useState<number | null>(null);
+  const [entityType, setEntityType] = useState(transportationType);
 
   const [createTransportation, { loading: loadingTransportation }] =
     useMutation(CREATE_TRANSPORTATION, {
@@ -50,7 +59,6 @@ const AddTransportation = () => {
     const {
       machineNumber,
       model,
-      type,
       department,
       location,
       currentMileage,
@@ -67,10 +75,6 @@ const AddTransportation = () => {
     }
     if (!model) {
       message.error("Please enter the model.");
-      return;
-    }
-    if (!type) {
-      message.error("Please enter the type.");
       return;
     }
     if (!department) {
@@ -105,7 +109,7 @@ const AddTransportation = () => {
       variables: {
         machineNumber,
         model,
-        type,
+        typeId,
         department,
         location,
         currentMileage,
@@ -132,7 +136,7 @@ const AddTransportation = () => {
       label: department,
     });
   });
-  
+
   return (
     <>
       <Button
@@ -195,17 +199,23 @@ const AddTransportation = () => {
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
-                label="Type"
-                name="type"
-                required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the type.",
-                  },
-                ]}
+                label="Transportation Type"
+                name="transportType"
+                initialValue={transportationType}
               >
-                <Input placeholder="Type" />
+                <Radio.Group
+                  buttonStyle="solid"
+                  optionType="button"
+                  onChange={(e) => setEntityType(e.target.value)}
+                >
+                  <Radio.Button value={"Vessel"}>Vessel</Radio.Button>
+                  <Radio.Button value={"Vehicle"}>Vehicle</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+            </div>
+            <div className={classes["col"]}>
+              <Form.Item label="Type" required={false}>
+                <TypeSelector entityType={entityType} setTypeId={setTypeId} />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -249,7 +259,7 @@ const AddTransportation = () => {
               </Form.Item>
             </div>
             <div className={classes["col"]}>
-            <Form.Item
+              <Form.Item
                 label="Location"
                 name="location"
                 required={false}
@@ -331,14 +341,6 @@ const AddTransportation = () => {
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
                   <Radio.Button value="h">H</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item label="Transportation Type" name="transportType">
-                <Radio.Group buttonStyle="solid" optionType="button">
-                  <Radio.Button value={"Vessel"}>Vessel</Radio.Button>
-                  <Radio.Button value={"Vehicle"}>Vehicle</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>

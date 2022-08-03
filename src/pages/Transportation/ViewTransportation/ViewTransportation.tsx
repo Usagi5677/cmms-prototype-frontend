@@ -217,7 +217,7 @@ const ViewTransportation = () => {
               <div className={classes["info-title-wrapper"]}>
                 <div>Type</div>
                 <div className={classes["info-content"]}>
-                  {transportationData?.type}
+                  {transportationData?.type?.name}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>

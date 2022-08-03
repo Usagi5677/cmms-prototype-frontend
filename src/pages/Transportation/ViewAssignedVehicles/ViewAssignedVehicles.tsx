@@ -24,7 +24,7 @@ const ViewAssignedVehicles = () => {
   const [params, setParams] = useSearchParams();
   const [location, setLocation] = useState([]);
   const navigate = useNavigate();
-  
+
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -136,7 +136,7 @@ const ViewAssignedVehicles = () => {
       label: island,
     });
   });
-  
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options-wrapper"]}>
@@ -163,7 +163,7 @@ const ViewAssignedVehicles = () => {
         />
         <div className={classes["add-wrapper"]}>
           {self.assignedPermission.hasTransportationAdd ? (
-            <AddTransportation />
+            <AddTransportation transportationType="Vehicle" />
           ) : null}
         </div>
       </div>
@@ -173,28 +173,28 @@ const ViewAssignedVehicles = () => {
         </div>
       )}
       {data?.getAllTransportationVehicles.edges.length > 0 ? (
-          <div>
-            {data?.getAllTransportationVehicles.edges.map(
-              (rec: { node: Transportation }) => {
-                const transportation = rec.node;
-                return (
-                  <TransportationCard
-                    transportation={transportation}
-                    key={transportation.id}
-                  />
-                );
-              }
-            )}
-          </div>
-        ) : (
-          <div
-            style={{
-              marginTop: 50,
-            }}
-          >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          </div>
-        )}
+        <div>
+          {data?.getAllTransportationVehicles.edges.map(
+            (rec: { node: Transportation }) => {
+              const transportation = rec.node;
+              return (
+                <TransportationCard
+                  transportation={transportation}
+                  key={transportation.id}
+                />
+              );
+            }
+          )}
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: 50,
+          }}
+        >
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        </div>
+      )}
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

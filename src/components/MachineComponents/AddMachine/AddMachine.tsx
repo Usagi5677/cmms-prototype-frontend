@@ -18,6 +18,7 @@ import { CREATE_MACHINE } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
+import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./AddMachine.module.css";
 
 const AddMachine = () => {
@@ -25,6 +26,7 @@ const AddMachine = () => {
 
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [typeId, setTypeId] = useState<number | null>(null);
 
   const [createMachine, { loading: loadingMachine }] = useMutation(
     CREATE_MACHINE,
@@ -49,7 +51,6 @@ const AddMachine = () => {
     const {
       machineNumber,
       model,
-      type,
       zone,
       location,
       currentRunning,
@@ -64,10 +65,6 @@ const AddMachine = () => {
     }
     if (!model) {
       message.error("Please enter the model.");
-      return;
-    }
-    if (!type) {
-      message.error("Please enter the type.");
       return;
     }
     if (!zone) {
@@ -94,7 +91,7 @@ const AddMachine = () => {
       variables: {
         machineNumber,
         model,
-        type,
+        typeId,
         zone,
         location,
         currentRunning,
@@ -174,18 +171,8 @@ const AddMachine = () => {
 
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Type"
-                name="type"
-                required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the type.",
-                  },
-                ]}
-              >
-                <Input placeholder="Type" />
+              <Form.Item label="Type" required={false}>
+                <TypeSelector entityType="Machine" setTypeId={setTypeId} />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
