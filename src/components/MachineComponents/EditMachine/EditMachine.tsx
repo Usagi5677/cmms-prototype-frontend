@@ -19,9 +19,10 @@ import moment from "moment";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_MACHINE } from "../../../api/mutations";
-import { DATETIME_FORMATS, ISLANDS } from "../../../helpers/constants";
+import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import Machine from "../../../models/Machine";
+import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./EditMachine.module.css";
 
 const EditMachine = ({
@@ -33,6 +34,7 @@ const EditMachine = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [typeId, setTypeId] = useState<number | null>(null);
 
   const [editMachine, { loading: loadingMachine }] = useMutation(EDIT_MACHINE, {
     onCompleted: () => {
@@ -58,10 +60,8 @@ const EditMachine = ({
     const {
       machineNumber,
       model,
-      type,
       zone,
       location,
-      // currentRunning,
       lastService,
       registeredDate,
       measurement,
@@ -75,10 +75,6 @@ const EditMachine = ({
       message.error("Please enter the model.");
       return;
     }
-    if (!type) {
-      message.error("Please enter the type.");
-      return;
-    }
     if (!zone) {
       message.error("Please enter the zone.");
       return;
@@ -87,10 +83,6 @@ const EditMachine = ({
       message.error("Please enter the location.");
       return;
     }
-    // if (!currentRunning) {
-    //   message.error("Please enter the current running value.");
-    //   return;
-    // }
     if (!lastService) {
       message.error("Please enter the last service value.");
       return;
@@ -104,7 +96,7 @@ const EditMachine = ({
         id: machine?.id,
         machineNumber,
         model,
-        type,
+        typeId,
         zone,
         location,
         // currentRunning,
@@ -189,20 +181,12 @@ const EditMachine = ({
 
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Type"
-                name="type"
-                required={false}
-                initialValue={machine?.type}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the type.",
-                  },
-                ]}
-                style={{ paddingRight: 40 }}
-              >
-                <Input placeholder="Type" />
+              <Form.Item label="Type" required={false}>
+                <TypeSelector
+                  entityType="Machine"
+                  setTypeId={setTypeId}
+                  currentId={machine?.type?.id}
+                />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -267,26 +251,6 @@ const EditMachine = ({
           </div>
 
           <div className={classes["row"]}>
-            {/* <div className={classes["col"]}>
-              <Form.Item
-                label="Current running value"
-                name="currentRunning"
-                required={false}
-                initialValue={machine?.currentRunning}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the current running value.",
-                  },
-                ]}
-                style={{ paddingRight: 40 }}
-              >
-                <InputNumber
-                  placeholder="Current running value"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div> */}
             <div className={classes["col"]}>
               <Form.Item
                 label="Last service value"

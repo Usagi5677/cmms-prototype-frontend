@@ -263,7 +263,7 @@ const Vessels = () => {
             value={filter.status}
           />
           <div className={classes["add-wrapper"]}>
-            <AddTransportation />
+            <AddTransportation transportationType="Vessel" />
           </div>
         </div>
         {loading && (

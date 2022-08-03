@@ -22,6 +22,7 @@ import { EDIT_TRANSPORTATION } from "../../../api/mutations";
 import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import Transportation from "../../../models/Transportation";
+import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./EditTransportation.module.css";
 
 const EditTransportation = ({
@@ -33,6 +34,10 @@ const EditTransportation = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [typeId, setTypeId] = useState<number | null>(null);
+  const [entityType, setEntityType] = useState(
+    transportation?.transportType ?? "Vessel"
+  );
 
   const [editTransportation, { loading: loadingTransportation }] = useMutation(
     EDIT_TRANSPORTATION,
@@ -61,7 +66,6 @@ const EditTransportation = ({
     const {
       machineNumber,
       model,
-      type,
       department,
       location,
       // currentMileage,
@@ -80,10 +84,6 @@ const EditTransportation = ({
       message.error("Please enter the model.");
       return;
     }
-    if (!type) {
-      message.error("Please enter the type.");
-      return;
-    }
     if (!department) {
       message.error("Please enter the department.");
       return;
@@ -92,10 +92,6 @@ const EditTransportation = ({
       message.error("Please enter the location.");
       return;
     }
-    // if (!currentMileage) {
-    //   message.error("Please enter the current mileage.");
-    //   return;
-    // }
     if (!lastServiceMileage) {
       message.error("Please enter the last service mileage.");
       return;
@@ -117,10 +113,9 @@ const EditTransportation = ({
         id: transportation?.id,
         machineNumber,
         model,
-        type,
+        typeId,
         department,
         location,
-        // currentMileage,
         lastServiceMileage,
         registeredDate,
         measurement,
@@ -200,22 +195,30 @@ const EditTransportation = ({
               </Form.Item>
             </div>
           </div>
-
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
-                label="Type"
-                name="type"
-                required={false}
-                initialValue={transportation?.type}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the type.",
-                  },
-                ]}
+                label="Transportation Type"
+                name="transportType"
+                initialValue={transportation?.transportType}
               >
-                <Input placeholder="Type" />
+                <Radio.Group
+                  buttonStyle="solid"
+                  optionType="button"
+                  onChange={(e) => setEntityType(e.target.value)}
+                >
+                  <Radio.Button value={"Vessel"}>Vessel</Radio.Button>
+                  <Radio.Button value={"Vehicle"}>Vehicle</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+            </div>
+            <div className={classes["col"]}>
+              <Form.Item label="Type" required={false}>
+                <TypeSelector
+                  entityType={entityType}
+                  setTypeId={setTypeId}
+                  currentId={transportation?.type?.id}
+                />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -279,25 +282,6 @@ const EditTransportation = ({
           </div>
 
           <div className={classes["row"]}>
-            {/* <div className={classes["col"]}>
-              <Form.Item
-                label="Current mileage"
-                name="currentMileage"
-                required={false}
-                initialValue={transportation?.currentMileage}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the current mileage.",
-                  },
-                ]}
-              >
-                <InputNumber
-                  placeholder="Current mileage"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div> */}
             <div className={classes["col"]}>
               <Form.Item
                 label="Last service mileage"
@@ -345,18 +329,6 @@ const EditTransportation = ({
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
                   <Radio.Button value="h">H</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Transportation Type"
-                name="transportType"
-                initialValue={transportation?.transportType}
-              >
-                <Radio.Group buttonStyle="solid" optionType="button">
-                  <Radio.Button value={"Vessel"}>Vessel</Radio.Button>
-                  <Radio.Button value={"Vehicle"}>Vehicle</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>

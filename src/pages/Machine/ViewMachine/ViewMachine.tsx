@@ -210,7 +210,7 @@ const ViewMachine = () => {
               <div className={classes["info-title-wrapper"]}>
                 <div>Type</div>
                 <div className={classes["info-content"]}>
-                  {machineData?.type}
+                  {machineData?.type?.name}
                 </div>
               </div>
               <div className={classes["info-title-wrapper"]}>

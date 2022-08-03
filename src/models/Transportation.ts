@@ -7,6 +7,7 @@ import TransportationSparePR from "./Transportation/TransportationSparePR";
 import TransportationRepair from "./Transportation/TransportationRepair";
 import TransportationBreakdown from "./Transportation/TransportationBreakdown";
 import TransportationAssign from "./Transportation/TransportationAssign";
+import Type from "./Type";
 
 export default interface Transportation {
   id: number;
@@ -15,7 +16,7 @@ export default interface Transportation {
   machineNumber?: string;
   registeredDate?: Date;
   model?: string;
-  type?: string;
+  type?: Type;
   department?: string;
   engine?: string;
   location?: string;
