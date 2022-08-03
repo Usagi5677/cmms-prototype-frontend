@@ -27,8 +27,6 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
     entityType,
   });
 
-  console.log({ entityType });
-
   const [getTypes, { data, loading }] = useLazyQuery(TYPES, {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
