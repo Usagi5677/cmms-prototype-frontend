@@ -18,11 +18,12 @@ import { CREATE_ENTITY } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
+import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./AddEntity.module.css";
 
 const AddEntity = () => {
   const { user } = useContext(UserContext);
-
+  const [typeId, setTypeId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
@@ -47,7 +48,6 @@ const AddEntity = () => {
 
   const onFinish = async (values: any) => {
     const {
-      typeId,
       machineNumber,
       model,
       department,
@@ -62,7 +62,6 @@ const AddEntity = () => {
       registeredDate,
     } = values;
 
-    
     createEntity({
       variables: {
         typeId,
@@ -159,17 +158,28 @@ const AddEntity = () => {
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
-                label="Type"
-                name="type"
+                label="Department"
+                name="department"
                 required={false}
                 rules={[
                   {
                     required: true,
-                    message: "Please enter the type.",
+                    message: "Please enter the department.",
                   },
                 ]}
               >
-                <Input placeholder="Type" />
+                <Select
+                  showArrow
+                  style={{ width: "100%" }}
+                  showSearch
+                  options={departmentOptions}
+                  placeholder={"Department"}
+                />
+              </Form.Item>
+            </div>
+            <div className={classes["col"]}>
+              <Form.Item label="Type" required={false}>
+                <TypeSelector entityType={""} setTypeId={setTypeId} />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -192,24 +202,8 @@ const AddEntity = () => {
 
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Department"
-                name="department"
-                required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the department.",
-                  },
-                ]}
-              >
-                <Select
-                  showArrow
-                  style={{ width: "100%" }}
-                  showSearch
-                  options={departmentOptions}
-                  placeholder={"Department"}
-                />
+              <Form.Item label="Zone" name="zone" required={false}>
+                <Input placeholder="Zone" />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -234,7 +228,32 @@ const AddEntity = () => {
               </Form.Item>
             </div>
           </div>
-
+          <div className={classes["row"]}>
+            <div className={classes["col"]}>
+              <Form.Item
+                label="Current running"
+                name="currentRunning"
+                required={false}
+              >
+                <InputNumber
+                  placeholder="Current running"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </div>
+            <div className={classes["col"]}>
+              <Form.Item
+                label="Last service"
+                name="lastService"
+                required={false}
+              >
+                <InputNumber
+                  placeholder="Last service"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </div>
+          </div>
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
@@ -295,14 +314,6 @@ const AddEntity = () => {
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
                   <Radio.Button value="h">H</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item label="Transportation Type" name="transportType">
-                <Radio.Group buttonStyle="solid" optionType="button">
-                  <Radio.Button value={"Vessel"}>Vessel</Radio.Button>
-                  <Radio.Button value={"Vehicle"}>Vehicle</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>

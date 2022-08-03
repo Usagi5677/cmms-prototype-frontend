@@ -40,10 +40,6 @@ export const MACHINE_FRAGMENT = gql`
     machineNumber
     registeredDate
     model
-    type {
-      id
-      name
-    }
     zone
     location
     status
