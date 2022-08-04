@@ -128,12 +128,6 @@ const AddEntity = () => {
                 label="Machine Number"
                 name="machineNumber"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the machine number.",
-                  },
-                ]}
               >
                 <Input placeholder="Machine Number" />
               </Form.Item>
@@ -143,12 +137,6 @@ const AddEntity = () => {
                 label="Model"
                 name="model"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the model.",
-                  },
-                ]}
               >
                 <Input placeholder="Model" />
               </Form.Item>
@@ -161,12 +149,6 @@ const AddEntity = () => {
                 label="Department"
                 name="department"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the department.",
-                  },
-                ]}
               >
                 <Select
                   showArrow
@@ -211,12 +193,6 @@ const AddEntity = () => {
                 label="Location"
                 name="location"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the location.",
-                  },
-                ]}
               >
                 <Select
                   showArrow
@@ -260,12 +236,6 @@ const AddEntity = () => {
                 label="Current mileage"
                 name="currentMileage"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the current mileage.",
-                  },
-                ]}
               >
                 <InputNumber
                   placeholder="Current mileage"
@@ -278,12 +248,6 @@ const AddEntity = () => {
                 label="Last service mileage"
                 name="lastServiceMileage"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the last service mileage.",
-                  },
-                ]}
               >
                 <InputNumber
                   placeholder="Last service mileage"
@@ -299,12 +263,6 @@ const AddEntity = () => {
                 label="Engine"
                 name="engine"
                 required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the engine.",
-                  },
-                ]}
               >
                 <Input placeholder="Engine" />
               </Form.Item>

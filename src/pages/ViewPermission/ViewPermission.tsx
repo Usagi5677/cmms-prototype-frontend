@@ -24,6 +24,11 @@ import { GET_ROLE_WITH_PERMISSION, ME_QUERY } from "../../api/queries";
 import {
   DASHBOARD_PERMISSIONS,
   DATETIME_FORMATS,
+  ENTITY_ADD_PERMISSIONS,
+  ENTITY_DELETE_PERMISSIONS,
+  ENTITY_EDIT_PERMISSIONS,
+  ENTITY_MISC_PERMISSIONS,
+  ENTITY_VIEW_PERMISSIONS,
   MACHINE_ADD_PERMISSIONS,
   MACHINE_DELETE_PERMISSIONS,
   MACHINE_EDIT_PERMISSIONS,
@@ -85,6 +90,11 @@ const ViewPermission = ({ role }: { role?: Role }) => {
   let transportationDeletePermissions;
   let transportationViewPermissions;
   let transportationMiscPermissions;
+  let entityAddPermissions;
+  let entityEditPermissions;
+  let entityDeletePermissions;
+  let entityViewPermissions;
+  let entityMiscPermissions;
   let dashboardPermissions;
   let rolePermissions;
   let userPermissions;
@@ -449,6 +459,183 @@ const ViewPermission = ({ role }: { role?: Role }) => {
       }
     );
 
+    entityAddPermissions = ENTITY_ADD_PERMISSIONS?.map((permission, index) => {
+      let exist = false;
+      roleData?.getRoleWithPermission?.permissionRoles.forEach(
+        (data: PermissionRole) => {
+          if (data.permission === permission) {
+            exist = true;
+          }
+        }
+      );
+      return (
+        <div key={index} className={classes["switch-wrapper"]}>
+          <div className={classes["switch-title"]}>
+            <span className={classes["bold"]}>{index + 1})</span>
+            {permission}
+          </div>
+          <Switch
+            defaultChecked={exist}
+            className={classes["checkbox"]}
+            size={"small"}
+            onChange={(e) =>
+              togglePermission({
+                variables: {
+                  roleId: parseInt(id),
+                  permission: permission,
+                  complete: e,
+                },
+              })
+            }
+            loading={loading}
+          />
+        </div>
+      );
+    });
+
+    entityEditPermissions = ENTITY_EDIT_PERMISSIONS?.map(
+      (permission, index) => {
+        let exist = false;
+        roleData?.getRoleWithPermission?.permissionRoles.forEach(
+          (data: PermissionRole) => {
+            if (data.permission === permission) {
+              exist = true;
+            }
+          }
+        );
+        return (
+          <div key={index} className={classes["switch-wrapper"]}>
+            <div className={classes["switch-title"]}>
+              <span className={classes["bold"]}>{index + 1})</span>
+              {permission}
+            </div>
+            <Switch
+              defaultChecked={exist}
+              className={classes["checkbox"]}
+              size={"small"}
+              onChange={(e) =>
+                togglePermission({
+                  variables: {
+                    roleId: parseInt(id),
+                    permission: permission,
+                    complete: e,
+                  },
+                })
+              }
+              loading={loading}
+            />
+          </div>
+        );
+      }
+    );
+
+    entityDeletePermissions = ENTITY_DELETE_PERMISSIONS?.map(
+      (permission, index) => {
+        let exist = false;
+        roleData?.getRoleWithPermission?.permissionRoles.forEach(
+          (data: PermissionRole) => {
+            if (data.permission === permission) {
+              exist = true;
+            }
+          }
+        );
+        return (
+          <div key={index} className={classes["switch-wrapper"]}>
+            <div className={classes["switch-title"]}>
+              <span className={classes["bold"]}>{index + 1})</span>
+              {permission}
+            </div>
+            <Switch
+              defaultChecked={exist}
+              className={classes["checkbox"]}
+              size={"small"}
+              onChange={(e) =>
+                togglePermission({
+                  variables: {
+                    roleId: parseInt(id),
+                    permission: permission,
+                    complete: e,
+                  },
+                })
+              }
+              loading={loading}
+            />
+          </div>
+        );
+      }
+    );
+
+    entityViewPermissions = ENTITY_VIEW_PERMISSIONS?.map(
+      (permission, index) => {
+        let exist = false;
+        roleData?.getRoleWithPermission?.permissionRoles.forEach(
+          (data: PermissionRole) => {
+            if (data.permission === permission) {
+              exist = true;
+            }
+          }
+        );
+        return (
+          <div key={index} className={classes["switch-wrapper"]}>
+            <div className={classes["switch-title"]}>
+              <span className={classes["bold"]}>{index + 1})</span>
+              {permission}
+            </div>
+            <Switch
+              defaultChecked={exist}
+              className={classes["checkbox"]}
+              size={"small"}
+              onChange={(e) =>
+                togglePermission({
+                  variables: {
+                    roleId: parseInt(id),
+                    permission: permission,
+                    complete: e,
+                  },
+                })
+              }
+              loading={loading}
+            />
+          </div>
+        );
+      }
+    );
+
+    entityMiscPermissions = ENTITY_MISC_PERMISSIONS?.map(
+      (permission, index) => {
+        let exist = false;
+        roleData?.getRoleWithPermission?.permissionRoles.forEach(
+          (data: PermissionRole) => {
+            if (data.permission === permission) {
+              exist = true;
+            }
+          }
+        );
+        return (
+          <div key={index} className={classes["switch-wrapper"]}>
+            <div className={classes["switch-title"]}>
+              <span className={classes["bold"]}>{index + 1})</span>
+              {permission}
+            </div>
+            <Switch
+              defaultChecked={exist}
+              className={classes["checkbox"]}
+              size={"small"}
+              onChange={(e) =>
+                togglePermission({
+                  variables: {
+                    roleId: parseInt(id),
+                    permission: permission,
+                    complete: e,
+                  },
+                })
+              }
+              loading={loading}
+            />
+          </div>
+        );
+      }
+    );
     dashboardPermissions = DASHBOARD_PERMISSIONS?.map((permission, index) => {
       let exist = false;
       roleData?.getRoleWithPermission?.permissionRoles.forEach(
@@ -674,6 +861,32 @@ const ViewPermission = ({ role }: { role?: Role }) => {
             ) : (
               transportationMiscPermissions
             )}
+          </div>
+        </div>
+      </div>
+
+      <div className={classes["perm-container"]}>
+        <div className={classes["heading"]}>Entity</div>
+        <div className={classes["stretch"]}>
+          <div className={classes["inner-container"]}>
+            <div className={classes["heading-two"]}>Add</div>
+            {loadingRoleWithPermission ? <Spin /> : entityAddPermissions}
+          </div>
+          <div className={classes["inner-container"]}>
+            <div className={classes["heading-two"]}>Edit</div>
+            {loadingRoleWithPermission ? <Spin /> : entityEditPermissions}
+          </div>
+          <div className={classes["inner-container"]}>
+            <div className={classes["heading-two"]}>Delete</div>
+            {loadingRoleWithPermission ? <Spin /> : entityDeletePermissions}
+          </div>
+          <div className={classes["inner-container"]}>
+            <div className={classes["heading-two"]}>View</div>
+            {loadingRoleWithPermission ? <Spin /> : entityViewPermissions}
+          </div>
+          <div className={classes["inner-container"]}>
+            <div className={classes["heading-two"]}>Misc</div>
+            {loadingRoleWithPermission ? <Spin /> : entityMiscPermissions}
           </div>
         </div>
       </div>

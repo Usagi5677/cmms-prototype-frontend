@@ -6,6 +6,7 @@ import { ADD_CHECKLIST_TEMPLATE_ITEM } from "../../api/mutations";
 import { ENTITY_CHECKLIST_TEMPLATE } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
+import EntityModel from "../../models/Entity/EntityModel";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
 import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
@@ -13,7 +14,7 @@ import { SaveAsTemplate } from "./SaveAsTemplate";
 import { SelectChecklistTemplate } from "./SelectChecklistTemplate";
 
 export interface EditChecklistTemplateProps {
-  entity: Machine | Transportation;
+  entity: Machine | Transportation | EntityModel;
   entityType: "Machine" | "Transportation";
   type: "Daily" | "Weekly";
 }

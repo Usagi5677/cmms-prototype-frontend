@@ -1,0 +1,340 @@
+import { Avatar, Collapse, Empty, Select, Spin, Tooltip } from "antd";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
+import PaginationArgs from "../../../../models/PaginationArgs";
+import { errorMessage } from "../../../../helpers/gql";
+import { useLazyQuery } from "@apollo/client";
+import {
+  GET_ALL_ASSIGNED_MACHINES,
+  GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
+} from "../../../../api/queries";
+import { ISLANDS } from "../../../../helpers/constants";
+import classes from "./AllAssignedMachinery.module.css";
+import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
+import UserContext from "../../../../contexts/UserContext";
+import {
+  FaArrowAltCircleRight,
+  FaMapMarkerAlt,
+  FaTractor,
+} from "react-icons/fa";
+import { MachineStatus } from "../../../../models/Enums";
+import { stringToColor } from "../../../../helpers/style";
+import Machine from "../../../../models/Machine";
+import Search from "../../../common/Search";
+import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
+import MachineStatusFilter from "../../../common/MachineStatusFilter";
+import MachineStatusTag from "../../../common/MachineStatusTag";
+
+const AllAssignedMachinery = () => {
+  const { user: self } = useContext(UserContext);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<any>();
+  const [timerId, setTimerId] = useState(null);
+  const [location, setLocation] = useState([]);
+
+  // Filter has an intersection type as it has PaginationArgs + other args
+  const [filter, setFilter] = useState<
+    PaginationArgs & {
+      search: string;
+      status: any;
+      location: string[];
+      isAssigned: boolean;
+    }
+  >({
+    first: 3,
+    last: null,
+    before: null,
+    after: null,
+    search: "",
+    status: null,
+    location: [],
+    isAssigned: true,
+  });
+
+  const [getAllMachineAndTransportStatusCount, { data: statusData }] =
+    useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
+      onError: (err) => {
+        errorMessage(err, "Error loading status count of machine");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
+  const [getAllAssignedMachine, { data, loading }] = useLazyQuery(
+    GET_ALL_ASSIGNED_MACHINES,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading all assigned machines.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+
+  // Fetch pm when component mounts or when the filter object changes
+  useEffect(() => {
+    getAllAssignedMachine({ variables: filter });
+    getAllMachineAndTransportStatusCount({
+      variables: {
+        isAssigned: true,
+      },
+    });
+  }, [filter, getAllAssignedMachine, getAllMachineAndTransportStatusCount]);
+
+  // Debounce the search, meaning the search will only execute 500ms after the
+  // last input. This prevents unnecessary API calls. useRef is used to prevent
+  // this useEffect from running on the initial render (which would waste an API
+  // call as well).
+  const searchDebounced = (
+    value: string,
+    statusValue: MachineStatus,
+    locationValue: string[]
+  ) => {
+    if (timerId) clearTimeout(timerId);
+    setTimerId(
+      //@ts-ignore
+      setTimeout(() => {
+        setFilter((filter) => ({
+          ...filter,
+          search: value,
+          status: statusValue,
+          location: locationValue,
+          first: 3,
+          last: null,
+          before: null,
+          after: null,
+        }));
+        setPage(1);
+      }, 500)
+    );
+  };
+  const initialRender = useRef<boolean>(true);
+  useEffect(() => {
+    if (initialRender.current === true) {
+      initialRender.current = false;
+      return;
+    }
+    // eslint-disable-next-line no-restricted-globals
+    searchDebounced(search, status, location);
+    // eslint-disable-next-line
+  }, [search, status, location]);
+
+  // Pagination functions
+  const next = () => {
+    setFilter({
+      ...filter,
+      first: 3,
+      after: pageInfo.endCursor,
+      last: null,
+      before: null,
+    });
+    setPage(page + 1);
+  };
+
+  const back = () => {
+    setFilter({
+      ...filter,
+      last: 3,
+      before: pageInfo.startCursor,
+      first: null,
+      after: null,
+    });
+    setPage(page - 1);
+  };
+
+  const pageInfo = data?.getAllAssignedMachine.pageInfo ?? {};
+  const isSmallDevice = useIsSmallDevice();
+  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+
+  let working = statusData?.allMachineAndTransportStatusCount?.machineWorking;
+  let breakdown =
+    statusData?.allMachineAndTransportStatusCount?.machineBreakdown;
+  let idle = statusData?.allMachineAndTransportStatusCount?.machineIdle;
+
+  let options: any = [];
+  ISLANDS?.map((island: string) => {
+    options.push({
+      value: island,
+      label: island,
+    });
+  });
+
+  return (
+    <div className={classes["pm-container"]}>
+      <div className={classes["heading"]}>Assigned Machinery</div>
+      <div className={classes["options-wrapper"]}>
+        <Search
+          searchValue={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onClick={() => setSearch("")}
+        />
+        <div className={classes["status-wrapper"]}>
+          <MachineStatusFilter
+            onChange={(status) => {
+              setFilter({ ...filter, status, ...DefaultPaginationArgs });
+              setPage(1);
+              setStatus(status);
+            }}
+            value={filter.status}
+          />
+          <Select
+            showArrow
+            className={classes["location"]}
+            onChange={(value) => setLocation(value)}
+            showSearch
+            options={options}
+            placeholder={"Location"}
+            mode="multiple"
+          />
+        </div>
+      </div>
+      <div className={classes["counter-container"]}>
+        <div className={classes["counter-wrapper"]}>
+          <div className={classes["counter-value"]}>{breakdown}</div>
+          <div className={classes["breakdown"]}>Breakdown</div>
+        </div>
+        <div className={classes["counter-wrapper"]}>
+          <div className={classes["counter-value"]}>{idle}</div>
+          <div className={classes["idle"]}>Idle</div>
+        </div>
+        <div className={classes["counter-wrapper"]}>
+          <div className={classes["counter-value"]}>{working}</div>
+          <div className={classes["working"]}>Working</div>
+        </div>
+      </div>
+      {loading && (
+        <div>
+          <Spin style={{ width: "100%", margin: "2rem auto" }} />
+        </div>
+      )}
+      {data?.getAllAssignedMachine.edges.length > 0 ? (
+        data?.getAllAssignedMachine.edges.map((rec: { node: Machine }) => {
+          const machine = rec.node;
+          return (
+            <div id="collapse" key={machine.id}>
+              <Collapse ghost style={{ marginBottom: ".5rem" }}>
+                <Collapse.Panel
+                  header={
+                    <>
+                      <div
+                        className={classes["header-container"]}
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <div className={classes["first-block"]}>
+                          <div>
+                            <div className={classes["title-wrapper"]}>
+                              <FaTractor />
+                              <span className={classes["title"]}>
+                                {machine?.machineNumber}
+                              </span>
+                            </div>
+                            <div className={classes["location-wrapper"]}>
+                              <FaMapMarkerAlt style={{ marginRight: 5 }} />
+                              <div>
+                                <div>{machine?.zone}</div>
+                                <div className={classes["location-width"]}>
+                                  {machine?.location}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className={classes["service-reading-wrapper"]}>
+                          <div className={classes["reading"]}>
+                            <div>
+                              <span className={classes["reading-title"]}>
+                                Assigned to:
+                              </span>
+                              <span className={classes["center"]}>
+                                {machine?.assignees?.length! > 0 ? (
+                                  <Avatar.Group
+                                    maxCount={5}
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                    }}
+                                  >
+                                    {machine?.assignees?.map((assign) => {
+                                      return (
+                                        <Tooltip
+                                          title={
+                                            <>
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                }}
+                                              >
+                                                {assign?.user?.fullName} (
+                                                {assign?.user?.rcno})
+                                              </div>
+                                            </>
+                                          }
+                                          placement="bottom"
+                                          key={assign?.user?.id}
+                                        >
+                                          <Avatar
+                                            style={{
+                                              backgroundColor: stringToColor(
+                                                assign?.user?.fullName!
+                                              ),
+                                            }}
+                                            size={22}
+                                          >
+                                            {assign?.user?.fullName
+                                              .match(/^\w|\b\w(?=\S+$)/g)
+                                              ?.join()
+                                              .replace(",", "")
+                                              .toUpperCase()}
+                                          </Avatar>
+                                        </Tooltip>
+                                      );
+                                    })}
+                                  </Avatar.Group>
+                                ) : (
+                                  <span>None</span>
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                          <div className={classes["status"]}>
+                            <MachineStatusTag status={machine?.status} />
+                          </div>
+                        </div>
+                        <Link to={"/machine/" + machine?.id}>
+                          <Tooltip title="Open">
+                            <FaArrowAltCircleRight
+                              className={classes["button"]}
+                            />
+                          </Tooltip>
+                        </Link>
+                      </div>
+                    </>
+                  }
+                  key={machine?.id!}
+                >
+                  <div className={classes["container"]}></div>
+                </Collapse.Panel>
+              </Collapse>
+            </div>
+          );
+        })
+      ) : (
+        <Empty />
+      )}
+
+      <PaginationButtons
+        pageInfo={pageInfo}
+        page={page}
+        next={next}
+        back={back}
+        pageLimit={3}
+      />
+    </div>
+  );
+};
+
+export default AllAssignedMachinery;

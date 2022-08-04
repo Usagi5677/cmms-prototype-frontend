@@ -25,6 +25,7 @@ import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/Vi
 import { Templates } from "./pages/Templates";
 import ViewPermission from "./pages/ViewPermission/ViewPermission";
 import { Config } from "./pages/Config";
+import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
 
 function App() {
   {
@@ -174,15 +175,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/machinery" element={<ViewAllMachine />} />
-            <Route path="/machine/:id" element={<ViewMachine />} />
+            <Route path="/entity/:id" element={<ViewEntity />} />
             <Route path="/transportation/vessels" element={<ViewAllVessel />} />
             <Route
               path="/transportation/vehicles"
               element={<ViewAllVehicle />}
-            />
-            <Route
-              path="/transportation/:id"
-              element={<ViewTransportation />}
             />
             <Route
               path="/assigned-machinery"

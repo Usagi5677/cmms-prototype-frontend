@@ -7,8 +7,8 @@ import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import {
-  ALL_MACHINES,
-  GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
+  ALL_ENTITY,
+  GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../api/queries";
 import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
@@ -21,6 +21,10 @@ import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
 import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
+import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
+import EntityModel from "../../../models/Entity/EntityModel";
+import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
+import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 
 const Machinery = () => {
   const { user: self } = useContext(UserContext);
@@ -36,6 +40,7 @@ const Machinery = () => {
       search: string;
       status: any;
       location: string[];
+      entityType: string;
     }
   >({
     first: 20,
@@ -45,19 +50,19 @@ const Machinery = () => {
     search: "",
     location: [],
     status: params.get("status"),
+    entityType: "Machine"
   });
 
-  const [getAllMachineAndTransportStatusCount, { data: statusData }] =
-    useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
+  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
+    GET_ALL_ENTITY_STATUS_COUNT,
+    {
       onError: (err) => {
-        errorMessage(
-          err,
-          "Error loading status count of machine & transports."
-        );
+        errorMessage(err, "Error loading status count of entities.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
-    });
+    }
+  );
 
   // Update url search param on filter change
   useEffect(() => {
@@ -66,7 +71,7 @@ const Machinery = () => {
     setParams(newParams);
   }, [filter, setParams, params]);
 
-  const [getAllMachine, { data, loading }] = useLazyQuery(ALL_MACHINES, {
+  const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
     onError: (err) => {
       errorMessage(err, "Error loading machines.");
     },
@@ -76,17 +81,21 @@ const Machinery = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    if (!self.assignedPermission.hasViewAllMachines) {
+    if (!self.assignedPermission.hasViewAllEntity) {
       navigate("/");
-      message.error("No permission to view all machines.");
+      message.error("No permission to view all entity.");
     }
-    getAllMachine({ variables: filter });
-  }, [filter, getAllMachine]);
+    getAllEntity({ variables: filter });
+  }, [filter, getAllEntity]);
 
   //Fetch all machine status count
   useEffect(() => {
-    getAllMachineAndTransportStatusCount();
-  }, [getAllMachineAndTransportStatusCount]);
+    getAllEntityStatusCount({
+      variables: {
+        entityType: "Machine",
+      },
+    });
+  }, [getAllEntityStatusCount]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -143,7 +152,7 @@ const Machinery = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllEntity.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
@@ -155,19 +164,19 @@ const Machinery = () => {
     });
   });
 
-  let machineIdle = 0;
-  let machineWorking = 0;
-  let machineBreakdown = 0;
-  let machineDispose = 0;
+  let idle = 0;
+  let working = 0;
+  let breakdown = 0;
+  let dispose = 0;
   let total = 0;
 
-  const statusCountData = statusData?.allMachineAndTransportStatusCount;
+  const statusCountData = statusData?.allEntityStatusCount;
   if (statusCountData) {
-    machineIdle = statusCountData?.machineIdle;
-    machineWorking = statusCountData?.machineWorking;
-    machineBreakdown = statusCountData?.machineBreakdown;
-    machineDispose = statusCountData?.machineDispose;
-    total = machineIdle + machineWorking + machineBreakdown + machineDispose;
+    idle = statusCountData?.idle;
+    working = statusCountData?.working;
+    breakdown = statusCountData?.breakdown;
+    dispose = statusCountData?.dispose;
+    total = idle + working + breakdown + dispose;
   }
 
   return (
@@ -178,28 +187,28 @@ const Machinery = () => {
           <div className={classes["total-amount"]}>{total}</div>
         </div>
         <StatusCard
-          amountOne={machineWorking}
+          amountOne={working}
           icon={<FaTractor />}
           iconBackgroundColor={"rgb(224,255,255)"}
           iconColor={"rgb(0,139,139)"}
           name={"Working"}
         />
         <StatusCard
-          amountOne={machineIdle}
+          amountOne={idle}
           icon={<FaSpinner />}
           iconBackgroundColor={"rgba(255,165,0,0.2)"}
           iconColor={"rgb(219,142,0)"}
           name={"Idle"}
         />
         <StatusCard
-          amountOne={machineBreakdown}
+          amountOne={breakdown}
           icon={<FaCarCrash />}
           iconBackgroundColor={"rgba(255,0,0,0.2)"}
           iconColor={"rgb(139,0,0)"}
           name={"Breakdown"}
         />
         <StatusCard
-          amountOne={machineDispose}
+          amountOne={dispose}
           icon={<FaRecycle />}
           iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
           iconColor={"rgb(102, 0, 0)"}
@@ -222,7 +231,7 @@ const Machinery = () => {
             placeholder={"Location"}
             mode="multiple"
           />
-          <MachineStatusFilter
+          <EntityStatusFilter
             onChange={(status) => {
               setFilter({ ...filter, status, ...DefaultPaginationArgs });
               setPage(1);
@@ -230,7 +239,7 @@ const Machinery = () => {
             value={filter.status}
           />
           <div className={classes["add-machine-wrapper"]}>
-            {self.assignedPermission.hasMachineAdd ? <AddMachine /> : null}
+            {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
           </div>
         </div>
         {loading && (
@@ -238,11 +247,11 @@ const Machinery = () => {
             <Spin style={{ width: "100%", margin: "2rem auto" }} />
           </div>
         )}
-        {data?.getAllMachine.edges.length > 0 ? (
+        {data?.getAllEntity.edges.length > 0 ? (
           <div>
-            {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
-              const machine = rec.node;
-              return <MachineCard machine={machine} key={machine.id} />;
+            {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+              const entity = rec.node;
+              return <EntityCard entity={entity} key={entity.id} />;
             })}
           </div>
         ) : (

@@ -29,13 +29,13 @@ export default interface EntityModel {
   brand?: string;
   isDeleted?: boolean;
   deletedAt?: Date;
-  status?: EntityStatus;
-  statusChangedAt?: Date;
-  assignees?: EntityAssign[];
-  checklistItems?: ChecklistItem[];
-  periodicMaintenancePlans?: EntityPeriodicMaintenance[];
-  repairs?: EntityRepair[];
-  breakdowns?: EntityBreakdown[];
-  sparePRs?: EntitySparePR[];
-  histories?: EntityHistory[];
+  status: EntityStatus;
+  statusChangedAt: Date;
+  assignees: EntityAssign[];
+  checklistItems: ChecklistItem[];
+  periodicMaintenancePlans: EntityPeriodicMaintenance[];
+  repairs: EntityRepair[];
+  breakdowns: EntityBreakdown[];
+  sparePRs: EntitySparePR[];
+  histories: EntityHistory[];
 }

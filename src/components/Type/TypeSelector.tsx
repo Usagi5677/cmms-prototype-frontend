@@ -24,7 +24,7 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
   }>({
     first: 10,
     name: "",
-    entityType,
+    entityType: "",
   });
 
   const [getTypes, { data, loading }] = useLazyQuery(TYPES, {

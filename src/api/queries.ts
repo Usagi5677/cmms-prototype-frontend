@@ -736,10 +736,6 @@ export const GET_ALL_HISTORY_OF_TRANSPORTATION = gql`
         node {
           id
           transportationId
-          type {
-            id
-            name
-          }
           description
           createdAt
           location
@@ -1030,10 +1026,6 @@ export const ALL_MACHINE_UTILIZATION = gql`
           id
           machineNumber
           model
-          type {
-            id
-            name
-          }
           zone
           location
           isDeleted
@@ -1105,10 +1097,6 @@ export const ALL_TRANSPORTATION_UTILIZATION = gql`
           id
           machineNumber
           model
-          type {
-            id
-            name
-          }
           location
           isDeleted
           deletedAt
@@ -1190,10 +1178,6 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
-            type {
-              id
-              name
-            }
             zone
             location
           }
@@ -1244,10 +1228,6 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
-            type {
-              id
-              name
-            }
             location
           }
         }
@@ -1503,6 +1483,17 @@ export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
       transportationIdle
       transportationBreakdown
       transportationDispose
+    }
+  }
+`;
+
+export const GET_ALL_ENTITY_STATUS_COUNT = gql`
+  query allEntityStatusCount($isAssigned: Boolean, $entityType: String) {
+    allEntityStatusCount(isAssigned: $isAssigned, entityType: $entityType) {
+      working
+      idle
+      breakdown
+      dispose
     }
   }
 `;
@@ -2082,7 +2073,7 @@ export const ALL_ENTITY_UTILIZATION = gql`
           id
           machineNumber
           model
-          type
+          zone
           location
           isDeleted
           deletedAt
@@ -2148,7 +2139,7 @@ export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
-            type
+            zone
             location
           }
         }
@@ -2265,6 +2256,21 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
           ...EntityFields
         }
       }
+    }
+  }
+`;
+
+export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
+  query allEntityUsageHistory($from: Date!, $to: Date!) {
+    allEntityUsageHistory(from: $from, to: $to) {
+      date
+      workingHour
+      idleHour
+      breakdownHour
+      totalHour
+      workingPercentage
+      idlePercentage
+      breakdownPercentage
     }
   }
 `;

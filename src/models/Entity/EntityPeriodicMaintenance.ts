@@ -1,8 +1,7 @@
 import { PeriodicMaintenanceStatus } from "../Enums";
-import Transportation from "../Transportation";
 import User from "../User";
-import TransportationPMTask from "./EntityPMTask";
-
+import EntityModel from "./EntityModel";
+import EntityPMTask from "./EntityPMTask";
 
 export default interface EntityPeriodicMaintenance {
   id: number;
@@ -15,8 +14,8 @@ export default interface EntityPeriodicMaintenance {
   completedAt?: Date;
   createdAt?: Date;
   startDate?: Date;
-  transportationPeriodicMaintenanceTask?: TransportationPMTask[];
+  entityPeriodicMaintenanceTask?: EntityPMTask[];
   verifiedBy?: User;
   verifiedAt?: Date;
-  transportation: Transportation;
+  entity: EntityModel;
 }

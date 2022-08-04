@@ -1,20 +1,20 @@
 import { Empty, message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_TRANSPORTATION_VESSELS } from "../../../api/queries";
-import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
+import { ALL_ENTITY } from "../../../api/queries";
+import { ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAssignedVessels.module.css";
-import Transportation from "../../../models/Transportation";
-import TransportationCard from "../../../components/TransportationComponents/TransportationCard/TransportationCard";
-import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
 import UserContext from "../../../contexts/UserContext";
 import TransportationStatusFilter from "../../../components/common/TransportationStatusFilter";
+import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
+import EntityModel from "../../../models/Entity/EntityModel";
+import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 
 const ViewAssignedVessels = () => {
   const { user: self } = useContext(UserContext);
@@ -29,7 +29,7 @@ const ViewAssignedVessels = () => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      transportType: string;
+      entityType: string;
       assignedToId: number;
       status: any;
       location: string[];
@@ -40,7 +40,7 @@ const ViewAssignedVessels = () => {
     before: null,
     after: null,
     search: "",
-    transportType: "Vessel",
+    entityType: "Vessel",
     assignedToId: self.id,
     location: [],
     status: params.get("status"),
@@ -53,16 +53,13 @@ const ViewAssignedVessels = () => {
     setParams(newParams);
   }, [filter, setParams, params]);
 
-  const [getAllTransportationVessels, { data, loading }] = useLazyQuery(
-    ALL_TRANSPORTATION_VESSELS,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading vessels.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
+  const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
+    onError: (err) => {
+      errorMessage(err, "Error loading vehicles.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
@@ -70,8 +67,8 @@ const ViewAssignedVessels = () => {
       navigate("/");
       message.error("No permission to view assigned vessels.");
     }
-    getAllTransportationVessels({ variables: filter });
-  }, [filter, getAllTransportationVessels]);
+    getAllEntity({ variables: filter });
+  }, [filter, getAllEntity]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -128,7 +125,7 @@ const ViewAssignedVessels = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllTransportationVessels.pageInfo ?? {};
+  const pageInfo = data?.getAllEntity.pageInfo ?? {};
   let options: any = [];
   ISLANDS?.map((island: string) => {
     options.push({
@@ -162,9 +159,7 @@ const ViewAssignedVessels = () => {
           value={filter.status}
         />
         <div className={classes["add-wrapper"]}>
-          {self.assignedPermission.hasTransportationAdd ? (
-            <AddTransportation transportationType="Vessel" />
-          ) : null}
+          {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
         </div>
       </div>
       {loading && (
@@ -172,19 +167,12 @@ const ViewAssignedVessels = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllTransportationVessels.edges.length > 0 ? (
+      {data?.getAllEntity.edges.length > 0 ? (
         <div>
-          {data?.getAllTransportationVessels.edges.map(
-            (rec: { node: Transportation }) => {
-              const transportation = rec.node;
-              return (
-                <TransportationCard
-                  transportation={transportation}
-                  key={transportation.id}
-                />
-              );
-            }
-          )}
+          {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+            const entity = rec.node;
+            return <EntityCard entity={entity} key={entity.id} />;
+          })}
         </div>
       ) : (
         <div

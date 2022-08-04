@@ -14,9 +14,10 @@ import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
+import EntityModel from "../../models/Entity/EntityModel";
 
 export interface ChecklistsProps {
-  entity: Machine | Transportation;
+  entity: Machine | Transportation | EntityModel;
   entityType: "Machine" | "Transportation";
   type: "Daily" | "Weekly";
 }

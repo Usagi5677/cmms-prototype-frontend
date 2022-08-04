@@ -5,13 +5,14 @@ import React from "react";
 import { REMOVE_CHECKLIST_TEMPLATE_ITEM } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
+import EntityModel from "../../models/Entity/EntityModel";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
 
 export interface RemoveChecklistTemplateItemProps {
   item: ChecklistTemplateItem;
   templateId?: number;
-  entity?: Machine | Transportation;
+  entity?: Machine | Transportation | EntityModel;
   entityType?: "Machine" | "Transportation";
 }
 

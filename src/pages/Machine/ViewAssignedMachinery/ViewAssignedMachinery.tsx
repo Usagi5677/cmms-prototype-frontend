@@ -1,20 +1,20 @@
 import { Empty, message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_MACHINES } from "../../../api/queries";
-import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
+import { ALL_ENTITY } from "../../../api/queries";
+import { ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
-import MachineCard from "../../../components/MachineComponents/MachineCard/MachineCard";
-import Machine from "../../../models/Machine";
 import classes from "./ViewAssignedMachinery.module.css";
 import UserContext from "../../../contexts/UserContext";
-import MachineStatusFilter from "../../../components/common/MachineStatusFilter";
+import EntityModel from "../../../models/Entity/EntityModel";
+import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
+import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
+import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 
 const ViewAssignedMachinery = () => {
   const { user: self } = useContext(UserContext);
@@ -31,6 +31,7 @@ const ViewAssignedMachinery = () => {
       assignedToId: number;
       status: any;
       location: string[];
+      entityType: string;
     }
   >({
     first: 20,
@@ -41,6 +42,7 @@ const ViewAssignedMachinery = () => {
     assignedToId: self.id,
     location: [],
     status: params.get("status"),
+    entityType: "Machine",
   });
 
   // Update url search param on filter change
@@ -50,9 +52,9 @@ const ViewAssignedMachinery = () => {
     setParams(newParams);
   }, [filter, setParams, params]);
 
-  const [getAllMachine, { data, loading }] = useLazyQuery(ALL_MACHINES, {
+  const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
     onError: (err) => {
-      errorMessage(err, "Error loading machines.");
+      errorMessage(err, "Error loading machinery.");
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
@@ -60,12 +62,12 @@ const ViewAssignedMachinery = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    if (!self.assignedPermission.hasViewAllAssignedMachines) {
+    if (!self.assignedPermission.hasViewAllAssignedEntity) {
       navigate("/");
-      message.error("No permission to view assigned machines.");
+      message.error("No permission to view assigned entities.");
     }
-    getAllMachine({ variables: filter });
-  }, [filter, getAllMachine]);
+    getAllEntity({ variables: filter });
+  }, [filter, getAllEntity]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -122,7 +124,7 @@ const ViewAssignedMachinery = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllMachine.pageInfo ?? {};
+  const pageInfo = data?.getAllEntity.pageInfo ?? {};
 
   let options: any = [];
   ISLANDS?.map((island: string) => {
@@ -149,7 +151,7 @@ const ViewAssignedMachinery = () => {
           placeholder={"Location"}
           mode="multiple"
         />
-        <MachineStatusFilter
+        <EntityStatusFilter
           onChange={(status) => {
             setFilter({ ...filter, status, ...DefaultPaginationArgs });
             setPage(1);
@@ -157,7 +159,7 @@ const ViewAssignedMachinery = () => {
           value={filter.status}
         />
         <div className={classes["add-machine-wrapper"]}>
-          <AddMachine />
+          {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
         </div>
       </div>
       {loading && (
@@ -165,11 +167,11 @@ const ViewAssignedMachinery = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      {data?.getAllMachine.edges.length > 0 ? (
+      {data?.getAllEntity.edges.length > 0 ? (
         <div>
-          {data?.getAllMachine.edges.map((rec: { node: Machine }) => {
-            const machine = rec.node;
-            return <MachineCard machine={machine} key={machine.id} />;
+          {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+            const entity = rec.node;
+            return <EntityCard entity={entity} key={entity.id} />;
           })}
         </div>
       ) : (

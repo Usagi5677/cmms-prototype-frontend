@@ -1,26 +1,23 @@
 import { Empty, message, Select, Spin } from "antd";
 import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import {
-  ALL_TRANSPORTATION_VEHICLES,
-  GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
-} from "../../../api/queries";
-import { DEPARTMENTS, ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
+import { ALL_ENTITY, GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
+import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVehicle.module.css";
-import Transportation from "../../../models/Transportation";
-import TransportationCard from "../../../components/TransportationComponents/TransportationCard/TransportationCard";
-import AddTransportation from "../../../components/TransportationComponents/AddTransportation/AddTransportation";
-import TransportationStatusFilter from "../../../components/common/TransportationStatusFilter";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
 import { FaCarCrash, FaRecycle, FaSpinner, FaTruck } from "react-icons/fa";
+import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
+import EntityModel from "../../../models/Entity/EntityModel";
+import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
+import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 
 const Vehicles = () => {
   const { user: self } = useContext(UserContext);
@@ -35,7 +32,7 @@ const Vehicles = () => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      transportType: string;
+      entityType: string;
       status: any;
       location: string[];
       department: string[];
@@ -48,20 +45,17 @@ const Vehicles = () => {
     search: "",
     location: [],
     department: [],
-    transportType: "Vehicle",
+    entityType: "Vehicle",
     status: params.get("status"),
   });
 
-  const [getAllTransportationVehicles, { data, loading }] = useLazyQuery(
-    ALL_TRANSPORTATION_VEHICLES,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading vessels.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
+  const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
+    onError: (err) => {
+      errorMessage(err, "Error loading vehicles.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
   // Update url search param on filter change
   useEffect(() => {
@@ -76,8 +70,8 @@ const Vehicles = () => {
       navigate("/");
       message.error("No permission to view all vehicles.");
     }
-    getAllTransportationVehicles({ variables: filter });
-  }, [filter, getAllTransportationVehicles]);
+    getAllEntity({ variables: filter });
+  }, [filter, getAllEntity]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -116,21 +110,24 @@ const Vehicles = () => {
     // eslint-disable-next-line
   }, [search, location, department]);
 
-  const [getAllMachineAndTransportStatusCount, { data: statusData }] =
-    useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
+  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
+    GET_ALL_ENTITY_STATUS_COUNT,
+    {
       onError: (err) => {
-        errorMessage(
-          err,
-          "Error loading status count of machine & transports."
-        );
+        errorMessage(err, "Error loading status count of entities.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
-    });
+    }
+  );
 
   useEffect(() => {
-    getAllMachineAndTransportStatusCount();
-  }, [getAllMachineAndTransportStatusCount]);
+    getAllEntityStatusCount({
+      variables: {
+        entityType: "Vehicle",
+      },
+    });
+  }, [getAllEntityStatusCount]);
 
   // Pagination functions
   const next = () => {
@@ -155,7 +152,7 @@ const Vehicles = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllTransportationVehicles.pageInfo ?? {};
+  const pageInfo = data?.getAllEntity.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
@@ -175,23 +172,19 @@ const Vehicles = () => {
     });
   });
 
-  let transportationIdle = 0;
-  let transportationWorking = 0;
-  let transportationBreakdown = 0;
-  let transportationDispose = 0;
+  let idle = 0;
+  let working = 0;
+  let breakdown = 0;
+  let dispose = 0;
   let total = 0;
 
-  const statusCountData = statusData?.allMachineAndTransportStatusCount;
+  const statusCountData = statusData?.allEntityStatusCount;
   if (statusCountData) {
-    transportationIdle = statusCountData?.transportationIdle;
-    transportationWorking = statusCountData?.transportationWorking;
-    transportationBreakdown = statusCountData?.transportationBreakdown;
-    transportationDispose = statusCountData?.transportationDispose;
-    total =
-      transportationIdle +
-      transportationWorking +
-      transportationBreakdown +
-      transportationDispose;
+    idle = statusCountData?.idle;
+    working = statusCountData?.working;
+    breakdown = statusCountData?.breakdown;
+    dispose = statusCountData?.dispose;
+    total = idle + working + breakdown + dispose;
   }
   return (
     <>
@@ -201,28 +194,28 @@ const Vehicles = () => {
           <div className={classes["total-amount"]}>{total}</div>
         </div>
         <StatusCard
-          amountOne={transportationWorking}
+          amountOne={working}
           icon={<FaTruck />}
           iconBackgroundColor={"rgb(224,255,255)"}
           iconColor={"rgb(0,139,139)"}
           name={"Working"}
         />
         <StatusCard
-          amountOne={transportationIdle}
+          amountOne={idle}
           icon={<FaSpinner />}
           iconBackgroundColor={"rgba(255,165,0,0.2)"}
           iconColor={"rgb(219,142,0)"}
           name={"Idle"}
         />
         <StatusCard
-          amountOne={transportationBreakdown}
+          amountOne={breakdown}
           icon={<FaCarCrash />}
           iconBackgroundColor={"rgba(255,0,0,0.2)"}
           iconColor={"rgb(139,0,0)"}
           name={"Breakdown"}
         />
         <StatusCard
-          amountOne={transportationDispose}
+          amountOne={dispose}
           icon={<FaRecycle />}
           iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
           iconColor={"rgb(102, 0, 0)"}
@@ -254,7 +247,7 @@ const Vehicles = () => {
             placeholder={"Department"}
             mode="multiple"
           />
-          <TransportationStatusFilter
+          <EntityStatusFilter
             onChange={(status) => {
               setFilter({ ...filter, status, ...DefaultPaginationArgs });
               setPage(1);
@@ -262,7 +255,7 @@ const Vehicles = () => {
             value={filter.status}
           />
           <div className={classes["add-wrapper"]}>
-            <AddTransportation transportationType="Vehicle" />
+            {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
           </div>
         </div>
         {loading && (
@@ -270,19 +263,12 @@ const Vehicles = () => {
             <Spin style={{ width: "100%", margin: "2rem auto" }} />
           </div>
         )}
-        {data?.getAllTransportationVehicles.edges.length > 0 ? (
+        {data?.getAllEntity.edges.length > 0 ? (
           <div>
-            {data?.getAllTransportationVehicles.edges.map(
-              (rec: { node: Transportation }) => {
-                const transportation = rec.node;
-                return (
-                  <TransportationCard
-                    transportation={transportation}
-                    key={transportation.id}
-                  />
-                );
-              }
-            )}
+            {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+              const entity = rec.node;
+              return <EntityCard entity={entity} key={entity.id} />;
+            })}
           </div>
         ) : (
           <div

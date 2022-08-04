@@ -84,7 +84,6 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
   mutation (
     $id: Int!
     $title: String!
-    $description: String!
     $measurement: String!
     $value: Int!
     $startDate: Date!
@@ -92,7 +91,6 @@ export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
     editMachinePeriodicMaintenance(
       id: $id
       title: $title
-      description: $description
       measurement: $measurement
       value: $value
       startDate: $startDate
@@ -347,16 +345,16 @@ export const EDIT_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
   mutation (
     $id: Int!
     $title: String!
-    $description: String!
-    $period: Int!
-    $notificationReminder: Int!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
   ) {
     editTransportationPeriodicMaintenance(
       id: $id
       title: $title
-      description: $description
-      period: $period
-      notificationReminder: $notificationReminder
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
     )
   }
 `;
@@ -801,7 +799,6 @@ export const CREATE_ENTITY = gql`
       typeId: $typeId
       machineNumber: $machineNumber
       model: $model
-      type: $type
       department: $department
       zone: $zone
       location: $location
@@ -838,7 +835,6 @@ export const EDIT_ENTITY = gql`
       typeId: $typeId
       machineNumber: $machineNumber
       model: $model
-      type: $type
       department: $department
       zone: $zone
       location: $location
@@ -895,16 +891,16 @@ export const EDIT_ENTITY_PERIODIC_MAINTENANCE = gql`
   mutation (
     $id: Int!
     $title: String!
-    $description: String!
-    $period: Int!
-    $notificationReminder: Int!
+    $measurement: String!
+    $value: Int!
+    $startDate: Date!
   ) {
     editEntityPeriodicMaintenance(
       id: $id
       title: $title
-      description: $description
-      period: $period
-      notificationReminder: $notificationReminder
+      measurement: $measurement
+      value: $value
+      startDate: $startDate
     )
   }
 `;

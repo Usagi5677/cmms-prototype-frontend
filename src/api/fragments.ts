@@ -111,7 +111,7 @@ export const TRANSPORTATION_FRAGMENT = gql`
 
 export const ENTITY_FRAGMENT = gql`
   ${APS_USER_FRAGMENT}
-  fragment EntityFields on Entity {
+  fragment EntityFields on EntityModel {
     id
     createdAt
     createdBy {
@@ -121,7 +121,11 @@ export const ENTITY_FRAGMENT = gql`
     machineNumber
     registeredDate
     model
-    typeId
+    type {
+      id
+      name
+      entityType
+    }
     department
     engine
     zone
