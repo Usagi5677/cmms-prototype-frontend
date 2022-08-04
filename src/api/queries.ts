@@ -1026,6 +1026,10 @@ export const ALL_MACHINE_UTILIZATION = gql`
           id
           machineNumber
           model
+          type {
+            id
+            name
+          }
           zone
           location
           isDeleted
@@ -1097,6 +1101,10 @@ export const ALL_TRANSPORTATION_UTILIZATION = gql`
           id
           machineNumber
           model
+          type {
+            id
+            name
+          }
           location
           isDeleted
           deletedAt
@@ -1178,6 +1186,10 @@ export const GET_ALL_MACHINE_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
+            type {
+              id
+              name
+            }
             zone
             location
           }
@@ -1228,6 +1240,10 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
             id
             machineNumber
             model
+            type {
+              id
+              name
+            }
             location
           }
         }
@@ -1235,6 +1251,7 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
     }
   }
 `;
+
 
 export const GET_ALL_MACHINE_PM_TASK = gql`
   ${APS_USER_FRAGMENT}
@@ -1448,6 +1465,7 @@ export const GET_CHECKLIST = gql`
       id
       workingHour
       currentMeterReading
+      to
       items {
         id
         description
