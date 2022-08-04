@@ -1,4 +1,12 @@
-import { Button, DatePicker, Divider, Empty, InputNumber, Spin } from "antd";
+import {
+  Button,
+  DatePicker,
+  Divider,
+  Empty,
+  InputNumber,
+  message,
+  Spin,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
@@ -151,6 +159,12 @@ export const Checklists: React.FC<ChecklistsProps> = ({
     return <ChecklistStatus summary={match} size="small" />;
   };
 
+  const isOlderChecklist =
+    data &&
+    data.checklist &&
+    moment(data.checklist.to).isBefore(moment(), "second");
+  console.log({ isOlderChecklist });
+
   return (
     <div>
       <div
@@ -212,9 +226,14 @@ export const Checklists: React.FC<ChecklistsProps> = ({
                 <div style={{ display: "flex" }}>
                   <div style={{ flex: 1 }}>
                     <InputNumber
+                      disabled={isOlderChecklist}
                       addonBefore="Current Reading"
                       addonAfter={`${entity.measurement}`}
-                      placeholder={`Enter ${entity.measurement}`}
+                      placeholder={
+                        isOlderChecklist
+                          ? undefined
+                          : `Enter ${entity.measurement}`
+                      }
                       style={{ width: "100%", marginBottom: ".5rem" }}
                       //@ts-ignore
                       value={reading}
@@ -223,27 +242,32 @@ export const Checklists: React.FC<ChecklistsProps> = ({
                       }}
                     />
                   </div>
-                  <div>
-                    <Button
-                      style={{ marginLeft: ".5rem" }}
-                      loading={updatingReading}
-                      disabled={reading === data?.checklist.currentMeterReading}
-                      onClick={() => {
-                        updateReading({
-                          variables: {
-                            id: data?.checklist.id,
-                            reading: reading,
-                          },
-                        });
-                      }}
-                    >
-                      Save
-                    </Button>
-                  </div>
+                  {!isOlderChecklist && (
+                    <div>
+                      <Button
+                        style={{ marginLeft: ".5rem" }}
+                        loading={updatingReading}
+                        disabled={
+                          reading === data?.checklist.currentMeterReading
+                        }
+                        onClick={() => {
+                          updateReading({
+                            variables: {
+                              id: data?.checklist.id,
+                              reading: reading,
+                            },
+                          });
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <div style={{ display: "flex" }}>
                   <div style={{ flex: 1 }}>
                     <InputNumber
+                      disabled={isOlderChecklist}
                       addonBefore="Working Hours&nbsp;&nbsp;"
                       placeholder="Enter hours"
                       style={{ width: "100%", marginBottom: ".5rem" }}
@@ -252,30 +276,42 @@ export const Checklists: React.FC<ChecklistsProps> = ({
                       onChange={(val: number) => {
                         setHours(val);
                       }}
+                      max={24}
+                      min={0}
                     />
                   </div>
-                  <div>
-                    <Button
-                      style={{ marginLeft: ".5rem" }}
-                      loading={updatingHour}
-                      disabled={hours === data?.checklist.workingHour}
-                      onClick={() => {
-                        updateWorkingHours({
-                          variables: {
-                            id: data?.checklist.id,
-                            newHrs: hours,
-                          },
-                        });
-                      }}
-                    >
-                      Save
-                    </Button>
-                  </div>
+                  {!isOlderChecklist && (
+                    <div>
+                      <Button
+                        style={{ marginLeft: ".5rem" }}
+                        loading={updatingHour}
+                        disabled={hours === data?.checklist.workingHour}
+                        onClick={() => {
+                          if (!hours || hours > 24) {
+                            message.error("Hours should be between 0 and 24.");
+                            return;
+                          }
+                          updateWorkingHours({
+                            variables: {
+                              id: data?.checklist.id,
+                              newHrs: hours,
+                            },
+                          });
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </>
             )}
             {data?.checklist.items.map((item: ChecklistItemModel) => (
-              <ChecklistItem item={item} key={item.id} />
+              <ChecklistItem
+                item={item}
+                key={item.id}
+                disabled={isOlderChecklist}
+              />
             ))}
           </div>
         </>

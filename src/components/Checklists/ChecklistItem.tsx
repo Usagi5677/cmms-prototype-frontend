@@ -8,9 +8,13 @@ import { DATETIME_FORMATS } from "../../helpers/constants";
 
 export interface ChecklistItemProps {
   item: ChecklistItemModel;
+  disabled: boolean;
 }
 
-export const ChecklistItem: React.FC<ChecklistItemProps> = ({ item }) => {
+export const ChecklistItem: React.FC<ChecklistItemProps> = ({
+  item,
+  disabled,
+}) => {
   const [toggle, { loading }] = useMutation(TOGGLE_CHECKLIST_ITEM, {
     refetchQueries: ["checklist", "checklistSummary"],
   });
@@ -28,6 +32,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({ item }) => {
             })
           }
           checked={item.completedAt ? true : false}
+          disabled={disabled}
         />
       )}
       <div>

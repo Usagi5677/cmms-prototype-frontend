@@ -1468,6 +1468,7 @@ export const GET_CHECKLIST = gql`
       id
       workingHour
       currentMeterReading
+      to
       items {
         id
         description
