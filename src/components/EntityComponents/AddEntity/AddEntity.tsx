@@ -105,6 +105,7 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={() => setVisible(true)}
         loading={loadingEntity}
         className={classes["custom-btn-primary"]}

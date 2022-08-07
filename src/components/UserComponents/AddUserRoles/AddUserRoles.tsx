@@ -102,6 +102,7 @@ const AddUserRoles = () => {
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={() => setVisible(true)}
         className={classes["custom-btn-primary"]}
       >

@@ -1,5 +1,4 @@
 import Layout from "./hoc/Layout/Layout";
-import "./index.css";
 import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
 import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
 import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
@@ -26,6 +25,7 @@ import { Templates } from "./pages/Templates";
 import ViewPermission from "./pages/ViewPermission/ViewPermission";
 import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
+import 'antd/dist/antd.variable.min.css';
 
 function App() {
   {

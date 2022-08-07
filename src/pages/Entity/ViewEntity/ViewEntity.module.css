@@ -31,18 +31,7 @@
 }
 
 .custom-btn-secondary {
-  width: 100% !important;
-  color: var(--primary) !important;
-  background-color: white !important;
   border-radius: 20px !important;
-  border-color: var(--primary) !important;
-  max-width: 100px !important;
-}
-
-.custom-btn-secondary:hover {
-  color: white !important;
-  border-color: var(--primary) !important;
-  background-color: var(--primary) !important;
 }
 
 .tab-header-wrapper {

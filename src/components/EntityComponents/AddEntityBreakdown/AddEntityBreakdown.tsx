@@ -60,6 +60,7 @@ const AddEntityBreakdown = ({
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={() => setVisible(true)}
         loading={loadingBreakdown}
         className={classes["custom-btn-primary"]}

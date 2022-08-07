@@ -121,6 +121,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={() => setVisible(true)}
         loading={uploading}
         className={classes["custom-btn-primary"]}

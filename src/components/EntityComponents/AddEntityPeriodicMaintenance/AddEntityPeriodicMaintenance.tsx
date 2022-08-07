@@ -118,6 +118,7 @@ const AddEntityPeriodicMaintenance = ({
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={onClickSetVisible}
         loading={loadingPeriodicMaintenace}
         className={classes["custom-btn-primary"]}

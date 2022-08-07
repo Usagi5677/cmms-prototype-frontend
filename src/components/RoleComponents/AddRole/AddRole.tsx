@@ -48,6 +48,7 @@ const AddRole = () => {
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={() => setVisible(true)}
         loading={loadingRole}
         className={classes["custom-btn-primary"]}

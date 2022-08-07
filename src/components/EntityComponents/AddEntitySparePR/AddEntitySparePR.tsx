@@ -68,6 +68,7 @@ const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
       <Button
         htmlType="button"
         size="middle"
+        type="primary"
         onClick={() => setVisible(true)}
         loading={loadingSparePR}
         className={classes["custom-btn-primary"]}

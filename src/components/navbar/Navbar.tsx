@@ -1,4 +1,4 @@
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaCog } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import classes from "./Navbar.module.css";
 import Notification from "../Notification/Notification";
@@ -6,6 +6,7 @@ import NavUser from "./NavUser";
 import { Tag } from "antd";
 import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
+import ThemeChange from "../ThemeChange/ThemeChange";
 
 const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
   const { user: self } = useContext(UserContext);
@@ -21,11 +22,8 @@ const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
           </NavLink>
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          {self?.location && (
-            <div className={classes["location"]}>
-              {self?.location}
-            </div>
-          )}
+          <ThemeChange />
+          {self?.location && <Tag>{self?.location}</Tag>}
 
           <Notification />
           <NavUser />

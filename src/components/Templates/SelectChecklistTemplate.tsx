@@ -93,6 +93,7 @@ export const SelectChecklistTemplate: React.FC<
     <>
       <Button
         className="primaryButton"
+        type="primary"
         shape="round"
         onClick={() => setVisible(true)}
       >

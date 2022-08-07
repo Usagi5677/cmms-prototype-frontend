@@ -139,7 +139,7 @@ const EditUserLocation = ({ userData }: { userData?: User }) => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  style={{ color: "var(--primary)", borderRadius: 20 }}
+                  className={classes["custom-btn-secondary"]}
                 >
                   Cancel
                 </Button>

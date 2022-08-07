@@ -1,46 +1,25 @@
 .custom-btn-secondary {
-  width: 100% !important;
-  color: var(--primary) !important;
-  background-color: white !important;
   border-radius: 20px !important;
-  border-color: var(--primary) !important;
-  max-width: 140px !important;
-}
-
-.custom-btn-secondary:hover {
-  color: white !important;
-  border-color: var(--primary) !important;
-  background-color: var(--primary) !important;
 }
 
 .custom-btn-primary {
-  width: 100% !important;
-  color: white !important;
-  background-color: var(--primary) !important;
+  background-color: var(--ant-primary-color);
   border-radius: 20px !important;
-  border-color: var(--primary) !important;
-  max-width: 140px !important;
+  border-color: var(--ant-primary-color);
 }
-
-.custom-btn-primary:hover {
-  color: white !important;
-  border-color: #22d197 !important;
-  background-color: #22d197 !important;
-}
-
 .info-edit {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   font-size: 18px;
-  color: var(--primary);
+  color: var(--ant-primary-color);
   cursor: pointer;
   transition: color 0.3s ease;
-
 }
 .info-edit:hover {
-  color: #137e5a;
+  color: var(--ant-primary-color-hover);
 }
+
 
 .row {
   display: flex;
