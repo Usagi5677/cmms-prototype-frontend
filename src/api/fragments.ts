@@ -111,7 +111,7 @@ export const TRANSPORTATION_FRAGMENT = gql`
 
 export const ENTITY_FRAGMENT = gql`
   ${APS_USER_FRAGMENT}
-  fragment EntityFields on EntityModel {
+  fragment EntityFields on Entity {
     id
     createdAt
     createdBy {
