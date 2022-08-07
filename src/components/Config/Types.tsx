@@ -54,7 +54,7 @@ export const Types: React.FC<TypesProps> = ({}) => {
       setTimeout(() => {
         setFilter((filter) => ({
           ...filter,
-          search: value,
+          name: value,
           ...DefaultPaginationArgs,
         }));
         setPage(1);
