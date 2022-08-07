@@ -374,10 +374,10 @@ em {
   color: var(--ant-primary-color-hover);
 }
 
-#colorcircle .ant-badge-dot {
+#colorcircle .ant-badge-status-dot {
   background: var(--ant-primary-color) !important;
   width: 16px !important;
   min-width: 16px !important;
   height: 16px !important;
-  margin-top: 16px;
+  margin-left: 10px;
 }

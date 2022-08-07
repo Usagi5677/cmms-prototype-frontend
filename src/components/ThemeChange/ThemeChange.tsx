@@ -41,7 +41,7 @@ const ThemeChange = () => {
           <div className={classes["flex"]}>
             <div className={classes["title"]}>Change theme</div>
             <div id={"colorcircle"}>
-              <Badge dot color={color.hex} size={"small"} />
+              <Badge dot color={color.hex}  />
             </div>
           </div>
 
