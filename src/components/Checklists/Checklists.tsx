@@ -1,4 +1,12 @@
-import { Button, DatePicker, Divider, Empty, InputNumber, message, Spin } from "antd";
+import {
+  Button,
+  DatePicker,
+  Divider,
+  Empty,
+  InputNumber,
+  message,
+  Spin,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
@@ -18,15 +26,10 @@ import EntityModel from "../../models/Entity/EntityModel";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation | EntityModel;
-  entityType: "Machine" | "Transportation";
   type: "Daily" | "Weekly";
 }
 
-export const Checklists: React.FC<ChecklistsProps> = ({
-  entity,
-  entityType,
-  type,
-}) => {
+export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
   const [date, setDate] = useState(moment());
   const [month, setMonth] = useState([
     date.clone().startOf("month"),
@@ -72,7 +75,6 @@ export const Checklists: React.FC<ChecklistsProps> = ({
       getChecklist({
         variables: {
           input: {
-            entityType,
             entityId: entity.id,
             type,
             date,
@@ -90,7 +92,6 @@ export const Checklists: React.FC<ChecklistsProps> = ({
       getSummary({
         variables: {
           input: {
-            entityType,
             entityId: entity.id,
             type,
             from: month[0],
@@ -168,11 +169,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({
         }}
       >
         <div style={{ fontWeight: 700, marginRight: ".5rem" }}>{type}</div>
-        <EditChecklistTemplate
-          entity={entity}
-          entityType={entityType}
-          type={type}
-        />
+        <EditChecklistTemplate entity={entity} type={type} />
         {loading && <Spin style={{ marginLeft: ".5rem" }} />}
         {summaryMatchCurrent()}
         <div style={{ flex: 1 }}></div>

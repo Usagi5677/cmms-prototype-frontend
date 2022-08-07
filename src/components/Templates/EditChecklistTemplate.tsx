@@ -15,13 +15,11 @@ import { SelectChecklistTemplate } from "./SelectChecklistTemplate";
 
 export interface EditChecklistTemplateProps {
   entity: Machine | Transportation | EntityModel;
-  entityType: "Machine" | "Transportation";
   type: "Daily" | "Weekly";
 }
 
 export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
   entity,
-  entityType,
   type,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -35,7 +33,6 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
         variables: {
           input: {
             entityId: entity.id,
-            entityType,
             type,
           },
         },
@@ -84,7 +81,6 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
         variables: {
           id: details.entityChecklistTemplate.id,
           name: newItem,
-          entityType,
           entityId: entity.id,
         },
       });
@@ -122,11 +118,7 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
                 {details?.entityChecklistTemplate.name &&
                   `Using template: ${details?.entityChecklistTemplate.name}`}
               </div>
-              <SelectChecklistTemplate
-                type={type}
-                entity={entity}
-                entityType={entityType}
-              />
+              <SelectChecklistTemplate type={type} entity={entity} />
             </div>
             {details?.entityChecklistTemplate.items.length === 0 && <Empty />}
             {details?.entityChecklistTemplate.items.map(
@@ -136,7 +128,6 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
                     item={item}
                     templateId={details?.entityChecklistTemplate.id}
                     entity={entity}
-                    entityType={entityType}
                   />{" "}
                   {item.name}
                 </div>

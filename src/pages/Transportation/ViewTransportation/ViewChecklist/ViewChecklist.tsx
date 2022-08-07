@@ -18,18 +18,10 @@ const ViewChecklist = ({
       <div className={classes["options"]}></div>
       <div className={classes["content"]}>
         <div className={classes["content-wrapper-one"]}>
-          <Checklists
-            entity={transportationData}
-            entityType="Transportation"
-            type="Daily"
-          />
+          <Checklists entity={transportationData} type="Daily" />
         </div>
         <div className={classes["content-wrapper-two"]}>
-          <Checklists
-            entity={transportationData}
-            entityType="Transportation"
-            type="Weekly"
-          />
+          <Checklists entity={transportationData} type="Weekly" />
         </div>
       </div>
     </div>

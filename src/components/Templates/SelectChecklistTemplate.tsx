@@ -11,14 +11,13 @@ import Transportation from "../../models/Transportation";
 
 export interface SelectChecklistTemplateProps {
   entity: Machine | Transportation | EntityModel;
-  entityType: "Machine" | "Transportation";
   type: "Daily" | "Weekly";
   value?: string;
 }
 
 export const SelectChecklistTemplate: React.FC<
   SelectChecklistTemplateProps
-> = ({ entity, entityType, type, value = "" }) => {
+> = ({ entity, type, value = "" }) => {
   const [templates, setTemplates] = useState([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
@@ -150,7 +149,6 @@ export const SelectChecklistTemplate: React.FC<
                   variables: {
                     input: {
                       entityId: entity.id,
-                      entityType,
                       newChecklistId: selected,
                     },
                   },
