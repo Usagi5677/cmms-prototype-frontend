@@ -9,8 +9,7 @@ import EntityPeriodicMaintenance from "./EntityPeriodicMaintenance";
 import EntityRepair from "./EntityRepair";
 import EntitySparePR from "./EntitySparePR";
 
-
-export default interface EntityModel {
+export interface Entity {
   id: number;
   createdBy?: User;
   type?: Type;

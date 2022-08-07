@@ -22,7 +22,7 @@ import { EntityStatus } from "../../../../models/Enums";
 import { stringToColor } from "../../../../helpers/style";
 import Search from "../../../common/Search";
 import EntityStatusFilter from "../../../common/EntityStatusFilter";
-import EntityModel from "../../../../models/Entity/EntityModel";
+import { Entity } from "../../../../models/Entity/Entity";
 import EntityStatusTag from "../../../common/EntityStatusTag";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 
@@ -211,7 +211,7 @@ const AllAssignedEntity = () => {
         </div>
       )}
       {data?.getAllAssignedEntity.edges.length > 0 ? (
-        data?.getAllAssignedEntity.edges.map((rec: { node: EntityModel }) => {
+        data?.getAllAssignedEntity.edges.map((rec: { node: Entity }) => {
           const entity = rec.node;
           return (
             <div id="collapse" key={entity.id}>

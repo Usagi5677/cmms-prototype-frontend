@@ -6,14 +6,14 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { EDIT_ENTITY_LOCATION } from "../../../api/mutations";
 import { ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import classes from "./EditEntityLocation.module.css";
 
 const EditEntityLocation = ({
   entity,
   isDeleted,
 }: {
-  entity: EntityModel;
+  entity: Entity;
   isDeleted: boolean | undefined;
 }) => {
   const [visible, setVisible] = useState(false);

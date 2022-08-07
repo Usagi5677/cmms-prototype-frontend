@@ -35,7 +35,7 @@ const EditTransportation = ({
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const [typeId, setTypeId] = useState<number | null>(null);
-  const [entityType, setEntityType] = useState(
+  const [entityType, setEntityType] = useState<any>(
     transportation?.transportType ?? "Vessel"
   );
 

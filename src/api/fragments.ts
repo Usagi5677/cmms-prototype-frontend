@@ -167,27 +167,21 @@ export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
       id
       name
     }
-    machinesDaily {
+    entitiesDaily {
       id
       machineNumber
       location
+      type {
+        entityType
+      }
     }
-    machinesWeekly {
+    entitiesWeekly {
       id
       machineNumber
       location
-    }
-    transportationsDaily {
-      id
-      machineNumber
-      location
-      transportType
-    }
-    transportationsWeekly {
-      id
-      machineNumber
-      location
-      transportType
+      type {
+        entityType
+      }
     }
   }
 `;

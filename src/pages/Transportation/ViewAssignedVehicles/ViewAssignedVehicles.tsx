@@ -13,7 +13,7 @@ import classes from "./ViewAssignedVehicles.module.css";
 import UserContext from "../../../contexts/UserContext";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 
 const ViewAssignedVehicles = () => {
@@ -159,7 +159,9 @@ const ViewAssignedVehicles = () => {
           value={filter.status}
         />
         <div className={classes["add-wrapper"]}>
-          {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
+          {self.assignedPermission.hasEntityAdd ? (
+            <AddEntity entityType="Vehicle" />
+          ) : null}
         </div>
       </div>
       {loading && (
@@ -169,7 +171,7 @@ const ViewAssignedVehicles = () => {
       )}
       {data?.getAllEntity.edges.length > 0 ? (
         <div>
-          {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+          {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
             const entity = rec.node;
             return <EntityCard entity={entity} key={entity.id} />;
           })}

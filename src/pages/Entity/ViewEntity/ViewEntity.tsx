@@ -21,7 +21,7 @@ import ViewChecklist from "./ViewChecklist/ViewChecklist";
 import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
 import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import EditEntityLocation from "../../../components/EntityComponents/EditEntityLocation/EditEntityLocation";
 import EditEntity from "../../../components/EntityComponents/EditEntity/EditEntity";
 import DeleteEntity from "../../../components/EntityComponents/DeleteEntity/DeleteEntity";
@@ -67,7 +67,7 @@ const ViewEntity = () => {
     }
   );
 
-  const entityData: EntityModel = entity?.getSingleEntity;
+  const entityData: Entity = entity?.getSingleEntity;
 
   const renderUsers = () => {
     return (

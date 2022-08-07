@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import { Checklists } from "../../../../components/Checklists/Checklists";
 import UserContext from "../../../../contexts/UserContext";
-import EntityModel from "../../../../models/Entity/EntityModel";
+import { Entity } from "../../../../models/Entity/Entity";
 import classes from "./ViewChecklist.module.css";
 
 const ViewChecklist = ({
   entityData,
   isDeleted,
 }: {
-  entityData: EntityModel;
+  entityData: Entity;
   isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);

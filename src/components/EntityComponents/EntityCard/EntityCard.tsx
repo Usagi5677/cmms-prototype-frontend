@@ -12,10 +12,10 @@ import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { Collapse, Tooltip } from "antd";
 import { Link } from "react-router-dom";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusTag from "../../common/EntityStatusTag";
 
-const EntityCard = ({ entity }: { entity: EntityModel }) => {
+const EntityCard = ({ entity }: { entity: Entity }) => {
   const interServiceMileage =
     (entity.currentMileage ?? 0) - (entity.lastServiceMileage ?? 0);
   const interService = (entity.currentRunning ?? 0) - (entity.lastService ?? 0);

@@ -1,6 +1,6 @@
 import { PeriodicMaintenanceStatus } from "../Enums";
 import User from "../User";
-import EntityModel from "./EntityModel";
+import { Entity } from "./Entity";
 import EntityPMTask from "./EntityPMTask";
 
 export default interface EntityPeriodicMaintenance {
@@ -17,5 +17,5 @@ export default interface EntityPeriodicMaintenance {
   entityPeriodicMaintenanceTask?: EntityPMTask[];
   verifiedBy?: User;
   verifiedAt?: Date;
-  entity: EntityModel;
+  entity: Entity;
 }

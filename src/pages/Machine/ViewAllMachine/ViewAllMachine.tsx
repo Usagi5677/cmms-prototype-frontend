@@ -6,10 +6,7 @@ import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import {
-  ALL_ENTITY,
-  GET_ALL_ENTITY_STATUS_COUNT,
-} from "../../../api/queries";
+import { ALL_ENTITY, GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
 import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
@@ -22,7 +19,7 @@ import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
 import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 
@@ -50,7 +47,7 @@ const Machinery = () => {
     search: "",
     location: [],
     status: params.get("status"),
-    entityType: "Machine"
+    entityType: "Machine",
   });
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -239,7 +236,9 @@ const Machinery = () => {
             value={filter.status}
           />
           <div className={classes["add-machine-wrapper"]}>
-            {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
+            {self.assignedPermission.hasEntityAdd ? (
+              <AddEntity entityType="Machine" />
+            ) : null}
           </div>
         </div>
         {loading && (
@@ -249,7 +248,7 @@ const Machinery = () => {
         )}
         {data?.getAllEntity.edges.length > 0 ? (
           <div>
-            {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+            {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
               const entity = rec.node;
               return <EntityCard entity={entity} key={entity.id} />;
             })}

@@ -21,7 +21,7 @@ import { FaEdit } from "react-icons/fa";
 import { EDIT_ENTITY } from "../../../api/mutations";
 import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./EditEntity.module.css";
 
@@ -29,7 +29,7 @@ const EditEntity = ({
   entity,
   isDeleted,
 }: {
-  entity: EntityModel;
+  entity: Entity;
   isDeleted?: boolean | undefined;
 }) => {
   const [visible, setVisible] = useState(false);
@@ -174,12 +174,12 @@ const EditEntity = ({
               </Form.Item>
             </div>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Type"
-                required={false}
-                initialValue={entity?.type?.id}
-              >
-                <TypeSelector entityType={""} setTypeId={setTypeId} />
+              <Form.Item label="Type" required={false}>
+                <TypeSelector
+                  entityType={entity?.type?.entityType}
+                  setTypeId={setTypeId}
+                  currentId={entity?.type?.id}
+                />
               </Form.Item>
             </div>
             <div className={classes["col"]}>

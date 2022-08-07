@@ -18,7 +18,7 @@ import { RiSailboatFill } from "react-icons/ri";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 
 const Vessels = () => {
   const { user: self } = useContext(UserContext);
@@ -256,7 +256,9 @@ const Vessels = () => {
             }}
             value={filter.status}
           />
-          {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
+          {self.assignedPermission.hasEntityAdd ? (
+            <AddEntity entityType="Vessel" />
+          ) : null}
         </div>
         {loading && (
           <div>
@@ -265,7 +267,7 @@ const Vessels = () => {
         )}
         {data?.getAllEntity.edges.length > 0 ? (
           <div>
-            {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+            {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
               const entity = rec.node;
               return <EntityCard entity={entity} key={entity.id} />;
             })}

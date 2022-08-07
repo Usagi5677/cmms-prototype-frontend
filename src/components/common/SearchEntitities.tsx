@@ -2,7 +2,7 @@ import { useLazyQuery } from "@apollo/client";
 import { Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { SEARCH_ENTITY } from "../../api/queries";
-import Entity from "../../models/Entity";
+import { Entity } from "../../models/Entity/Entity";
 import { EntityIcon } from "./EntityIcon";
 
 export interface SearchEntitiesProps {
@@ -20,17 +20,13 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
   current,
   changing,
 }) => {
-  const [selected, setSelected] = useState<null | string>(null);
+  const [selected, setSelected] = useState<null | number>(null);
   const [searchEntity, { data: data, loading: searchLoading }] =
     useLazyQuery(SEARCH_ENTITY);
 
   useEffect(() => {
     if (selected) {
-      const entityId = parseInt(selected.split("_")[1]);
-      const entityType = selected.split("_")[0];
-      const entity = data.searchEntity.find(
-        (x: Entity) => x.entityType === entityType && x.entityId === entityId
-      );
+      const entity = data.searchEntity.find((x: Entity) => x.id === selected);
       if (entity) {
         onChange(entity);
         setSelected(null);
@@ -59,7 +55,7 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
   const filtered = data?.searchEntity.filter((entity: Entity) => {
     if (current) {
       for (const e of current) {
-        if (e.entityId === entity.entityId && e.entityType === e.entityType) {
+        if (e.id === entity.id) {
           return false;
         }
       }
@@ -84,16 +80,12 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
     >
       {data
         ? filtered.map((entity: Entity) => (
-            <Select.Option
-              key={`${entity.entityType}_${entity.entityId}`}
-              value={`${entity.entityType}_${entity.entityId}`}
-            >
+            <Select.Option key={entity.id} value={entity.id}>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <EntityIcon
-                  entityType={entity.entityType}
-                  transportationType={entity.transportationType}
-                />
-                <div style={{ marginLeft: ".5rem" }}>{entity.entityNo}</div>
+                <EntityIcon entityType={entity.type?.entityType} />
+                <div style={{ marginLeft: ".5rem" }}>
+                  {entity.machineNumber}
+                </div>
               </div>
             </Select.Option>
           ))

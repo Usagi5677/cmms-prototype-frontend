@@ -11,7 +11,7 @@ import { ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAssignedMachinery.module.css";
 import UserContext from "../../../contexts/UserContext";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
@@ -159,7 +159,9 @@ const ViewAssignedMachinery = () => {
           value={filter.status}
         />
         <div className={classes["add-machine-wrapper"]}>
-          {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
+          {self.assignedPermission.hasEntityAdd ? (
+            <AddEntity entityType="Machine" />
+          ) : null}
         </div>
       </div>
       {loading && (
@@ -169,7 +171,7 @@ const ViewAssignedMachinery = () => {
       )}
       {data?.getAllEntity.edges.length > 0 ? (
         <div>
-          {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+          {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
             const entity = rec.node;
             return <EntityCard entity={entity} key={entity.id} />;
           })}

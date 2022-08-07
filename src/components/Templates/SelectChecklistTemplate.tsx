@@ -5,12 +5,12 @@ import { CHANGE_CHECKLIST_TEMPLATE } from "../../api/mutations";
 import { CHECKLIST_TEMPLATES } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
-import EntityModel from "../../models/Entity/EntityModel";
+import { Entity } from "../../models/Entity/Entity";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
 
 export interface SelectChecklistTemplateProps {
-  entity: Machine | Transportation | EntityModel;
+  entity: Machine | Transportation | Entity;
   type: "Daily" | "Weekly";
   value?: string;
 }

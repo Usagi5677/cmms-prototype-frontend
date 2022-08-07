@@ -28,8 +28,8 @@ import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { SearchEntities } from "../common/SearchEntitities";
-import Entity from "../../models/Entity";
 import { EntityIcon } from "../common/EntityIcon";
+import { Entity } from "../../models/Entity/Entity";
 
 export interface ChecklistTemplateDetailsProps {
   checklistTemplate: ChecklistTemplate;
@@ -140,20 +140,14 @@ export const ChecklistTemplateDetails: React.FC<
     });
   };
 
-  const getUsedBy = (): [Machine[], Transportation[]] => {
-    const usedMachines = [];
-    const usedTransports = [];
+  const getUsedBy = (): Entity[] => {
+    const used = [];
     if (details) {
       const template = details.checklistTemplate;
-      if (template.machinesDaily) usedMachines.push(...template.machinesDaily);
-      if (template.machinesWeekly)
-        usedMachines.push(...template.machinesWeekly);
-      if (template.transportationsDaily)
-        usedTransports.push(...template.transportationsDaily);
-      if (template.transportationsWeekly)
-        usedTransports.push(...template.transportationsWeekly);
+      if (template.entitiesDaily) used.push(...template.entitiesDaily);
+      if (template.entitiesWeekly) used.push(...template.entitiesWeekly);
     }
-    return [usedMachines, usedTransports];
+    return used;
   };
   const usedBy = getUsedBy();
 
@@ -275,45 +269,25 @@ export const ChecklistTemplateDetails: React.FC<
               }}
             />
             <Divider orientation="left">Used By</Divider>
-            {[...usedBy[0], ...usedBy[1]].length === 0 ? (
+            {usedBy.length === 0 ? (
               "No machines or transportation are using this template."
             ) : (
               <div style={{ maxHeight: 200, overflowY: "auto" }}>
-                {usedBy[0].map((u) => (
+                {usedBy.map((u: Entity) => (
                   <div
                     key={u.id}
                     className="underlineOnHover"
                     style={{ display: "flex", alignItems: "center" }}
                   >
-                    <EntityIcon entityType="Machine" />
+                    <EntityIcon entityType={u.type?.entityType} />
                     <a
                       target="_blank"
-                      href={`/machine/${u.id}`}
+                      href={`/entity/${u.id}`}
                       style={{ marginLeft: ".5rem" }}
                     >
                       {" "}
                       {u.machineNumber} ({u.zone} - {u.location}){" "}
                       <ArrowRightOutlined />
-                    </a>
-                  </div>
-                ))}
-                {usedBy[1].map((u) => (
-                  <div
-                    key={u.id}
-                    className="underlineOnHover"
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <EntityIcon
-                      entityType="Transportation"
-                      transportationType={u.transportType}
-                    />
-                    <a
-                      target="_blank"
-                      href={`/transportation/${u.id}`}
-                      style={{ marginLeft: ".5rem" }}
-                    >
-                      {" "}
-                      {u.machineNumber} ({u.location}) <ArrowRightOutlined />
                     </a>
                   </div>
                 ))}
@@ -326,35 +300,13 @@ export const ChecklistTemplateDetails: React.FC<
                   changeTemplate({
                     variables: {
                       input: {
-                        entityId: entity.entityId,
-                        entityType: entity.entityType,
+                        entityId: entity.id,
                         newChecklistId: checklistTemplate.id,
                       },
                     },
                   });
                 }}
-                current={(() => {
-                  const [machines, transports] = usedBy;
-                  const entities: Entity[] = [];
-                  for (const machine of machines) {
-                    entities.push({
-                      entityId: machine.id,
-                      entityType: "Machine",
-                      entityNo: machine.machineNumber,
-                      machine: machine,
-                    });
-                  }
-                  for (const transport of transports) {
-                    entities.push({
-                      entityId: transport.id,
-                      entityType: "Transportation",
-                      entityNo: transport.machineNumber,
-                      transportation: transport,
-                      transportationType: transport.transportType,
-                    });
-                  }
-                  return entities;
-                })()}
+                current={usedBy}
               />
             </div>
           </>

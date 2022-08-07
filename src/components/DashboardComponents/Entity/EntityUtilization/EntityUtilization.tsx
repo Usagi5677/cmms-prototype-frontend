@@ -18,7 +18,7 @@ import PaginationArgs from "../../../../models/PaginationArgs";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import Search from "../../../common/Search";
 import EntityUtilizationGraph from "../EntityUtilizationGraph/EntityUtilizationGraph";
-import EntityModel from "../../../../models/Entity/EntityModel";
+import { Entity } from "../../../../models/Entity/Entity";
 
 const EntityUtilization = () => {
   const { user: self } = useContext(UserContext);
@@ -149,251 +149,242 @@ const EntityUtilization = () => {
         </div>
       )}
       {data?.getAllEntityUtilization.edges.length > 0 ? (
-        data?.getAllEntityUtilization?.edges.map(
-          (rec: { node: EntityModel }) => {
-            const entity = rec.node;
-            let workingHour = entity?.histories[0]?.workingHour
-              ? (entity?.histories[0]?.workingHour as unknown as number)
-              : 0;
-            let idleHour = entity?.histories[0]?.idleHour
-              ? (entity?.histories[0]?.idleHour as unknown as number)
-              : 0;
-            let breakdownHour = entity?.histories[0]
-              ? (entity?.histories[0]?.breakdownHour as unknown as number)
-              : 0;
-            let totalHour = workingHour + idleHour + breakdownHour;
-            let workingPercentage = (workingHour / totalHour) * 100;
-            let idlePercentage = (idleHour / totalHour) * 100;
-            let breakdownPercentage = (breakdownHour / totalHour) * 100;
-            if (isSmallDevice) {
-              return (
-                <div id="collapse" key={entity.id}>
-                  <Collapse ghost style={{ marginBottom: ".5rem" }}>
-                    <Collapse.Panel
-                      header={
-                        <>
-                          <div
-                            className={classes["header-container"]}
-                            onClick={(event) => event.stopPropagation()}
-                          >
-                            <Tooltip
-                              title={
-                                <>
-                                  <span className={classes["title"]}>
-                                    Registered Date:{" "}
-                                    {moment(entity?.registeredDate).format(
-                                      DATETIME_FORMATS.DAY_MONTH_YEAR
-                                    )}
-                                  </span>
-                                </>
-                              }
-                            >
-                              <div className={classes["first-block"]}>
-                                <div className={classes["title-wrapper"]}>
-                                  <FaTractor />
-                                  <span className={classes["title"]}>
-                                    {entity?.machineNumber}
-                                  </span>
-                                </div>
-                                <div className={classes["location-wrapper"]}>
-                                  <FaMapMarkerAlt />
-                                  <span className={classes["title"]}>
-                                    {entity?.location}
-                                  </span>
-                                </div>
-                              </div>
-                            </Tooltip>
-
-                            <div
-                              className={classes["service-reading-wrapper-two"]}
-                            >
-                              <div className={classes["reading"]}>
-                                <span className={classes["reading-title-two"]}>
-                                  Total hour:
+        data?.getAllEntityUtilization?.edges.map((rec: { node: Entity }) => {
+          const entity = rec.node;
+          let workingHour = entity?.histories[0]?.workingHour
+            ? (entity?.histories[0]?.workingHour as unknown as number)
+            : 0;
+          let idleHour = entity?.histories[0]?.idleHour
+            ? (entity?.histories[0]?.idleHour as unknown as number)
+            : 0;
+          let breakdownHour = entity?.histories[0]
+            ? (entity?.histories[0]?.breakdownHour as unknown as number)
+            : 0;
+          let totalHour = workingHour + idleHour + breakdownHour;
+          let workingPercentage = (workingHour / totalHour) * 100;
+          let idlePercentage = (idleHour / totalHour) * 100;
+          let breakdownPercentage = (breakdownHour / totalHour) * 100;
+          if (isSmallDevice) {
+            return (
+              <div id="collapse" key={entity.id}>
+                <Collapse ghost style={{ marginBottom: ".5rem" }}>
+                  <Collapse.Panel
+                    header={
+                      <>
+                        <div
+                          className={classes["header-container"]}
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          <Tooltip
+                            title={
+                              <>
+                                <span className={classes["title"]}>
+                                  Registered Date:{" "}
+                                  {moment(entity?.registeredDate).format(
+                                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                                  )}
                                 </span>
-                                <span className={classes["bold"]}>
-                                  {totalHour}
+                              </>
+                            }
+                          >
+                            <div className={classes["first-block"]}>
+                              <div className={classes["title-wrapper"]}>
+                                <FaTractor />
+                                <span className={classes["title"]}>
+                                  {entity?.machineNumber}
+                                </span>
+                              </div>
+                              <div className={classes["location-wrapper"]}>
+                                <FaMapMarkerAlt />
+                                <span className={classes["title"]}>
+                                  {entity?.location}
                                 </span>
                               </div>
                             </div>
-                            <Link to={"/entity/" + entity.id}>
-                              <Tooltip title="Open">
-                                <FaArrowAltCircleRight
-                                  className={classes["button"]}
-                                />
-                              </Tooltip>
-                            </Link>
+                          </Tooltip>
+
+                          <div
+                            className={classes["service-reading-wrapper-two"]}
+                          >
+                            <div className={classes["reading"]}>
+                              <span className={classes["reading-title-two"]}>
+                                Total hour:
+                              </span>
+                              <span className={classes["bold"]}>
+                                {totalHour}
+                              </span>
+                            </div>
                           </div>
-                        </>
-                      }
-                      key={entity.id}
-                    >
-                      <div className={classes["collapse-container"]}>
-                        <div className={classes["title-wrapper"]}></div>
-                        <div>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title-two"]}>
-                              Working hour:
-                            </span>
-                            <span className={classes["bold"]}>
-                              {workingHour === 0 ? 0 : workingHour.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title-two"]}>
-                              Idle hour:
-                            </span>
-                            <span className={classes["bold"]}>
-                              {idleHour === 0 ? 0 : idleHour.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title-two"]}>
-                              Breakdown hour:
-                            </span>
-                            <span className={classes["bold"]}>
-                              {breakdownHour === 0
-                                ? 0
-                                : breakdownHour.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title-two"]}>
-                              Working %:
-                            </span>
-                            <span className={classes["bold"]}>
-                              {workingPercentage === 0 ||
-                              isNaN(workingPercentage)
-                                ? 0
-                                : workingPercentage.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title-two"]}>
-                              Idle %:
-                            </span>
-                            <span className={classes["bold"]}>
-                              {idlePercentage === 0 || isNaN(idlePercentage)
-                                ? 0
-                                : idlePercentage.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className={classes["reading"]}>
-                            <span className={classes["reading-title-two"]}>
-                              Breakdown %:
-                            </span>
-                            <span className={classes["bold"]}>
-                              {breakdownPercentage === 0 ||
-                              isNaN(breakdownPercentage)
-                                ? 0
-                                : breakdownPercentage.toFixed(2)}
-                            </span>
-                          </div>
+                          <Link to={"/entity/" + entity.id}>
+                            <Tooltip title="Open">
+                              <FaArrowAltCircleRight
+                                className={classes["button"]}
+                              />
+                            </Tooltip>
+                          </Link>
                         </div>
-                      </div>
-                    </Collapse.Panel>
-                  </Collapse>
-                </div>
-              );
-            } else {
-              return (
-                <div className={classes["card"]} key={entity.id}>
-                  <Tooltip
-                    title={
-                      <>
-                        <span className={classes["title"]}>
-                          Registered Date:{" "}
-                          {moment(entity?.registeredDate).format(
-                            DATETIME_FORMATS.DAY_MONTH_YEAR
-                          )}
-                        </span>
                       </>
                     }
+                    key={entity.id}
                   >
-                    <div className={classes["first-block"]}>
-                      <div className={classes["title-wrapper"]}>
-                        <FaTractor />
-                        <span className={classes["title"]}>
-                          {entity?.machineNumber}
-                        </span>
+                    <div className={classes["collapse-container"]}>
+                      <div className={classes["title-wrapper"]}></div>
+                      <div>
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title-two"]}>
+                            Working hour:
+                          </span>
+                          <span className={classes["bold"]}>
+                            {workingHour === 0 ? 0 : workingHour.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title-two"]}>
+                            Idle hour:
+                          </span>
+                          <span className={classes["bold"]}>
+                            {idleHour === 0 ? 0 : idleHour.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title-two"]}>
+                            Breakdown hour:
+                          </span>
+                          <span className={classes["bold"]}>
+                            {breakdownHour === 0 ? 0 : breakdownHour.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title-two"]}>
+                            Working %:
+                          </span>
+                          <span className={classes["bold"]}>
+                            {workingPercentage === 0 || isNaN(workingPercentage)
+                              ? 0
+                              : workingPercentage.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title-two"]}>
+                            Idle %:
+                          </span>
+                          <span className={classes["bold"]}>
+                            {idlePercentage === 0 || isNaN(idlePercentage)
+                              ? 0
+                              : idlePercentage.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title-two"]}>
+                            Breakdown %:
+                          </span>
+                          <span className={classes["bold"]}>
+                            {breakdownPercentage === 0 ||
+                            isNaN(breakdownPercentage)
+                              ? 0
+                              : breakdownPercentage.toFixed(2)}
+                          </span>
+                        </div>
                       </div>
-                      <div className={classes["location-wrapper"]}>
-                        <FaMapMarkerAlt />
-                        <span className={classes["title"]}>{entity?.zone}</span>
-                        <span className={classes["dash"]}>-</span>
-                        <span>{entity?.location}</span>
-                      </div>
                     </div>
-                  </Tooltip>
-
-                  <div className={classes["service-reading-wrapper"]}>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Working hour:
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+            );
+          } else {
+            return (
+              <div className={classes["card"]} key={entity.id}>
+                <Tooltip
+                  title={
+                    <>
+                      <span className={classes["title"]}>
+                        Registered Date:{" "}
+                        {moment(entity?.registeredDate).format(
+                          DATETIME_FORMATS.DAY_MONTH_YEAR
+                        )}
                       </span>
-                      <span>
-                        {workingHour === 0 ? 0 : workingHour.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Idle hour:
-                      </span>
-                      <span>{idleHour === 0 ? 0 : idleHour.toFixed(2)}</span>
-                    </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Breakdown hour:
-                      </span>
-                      <span>
-                        {breakdownHour === 0 ? 0 : breakdownHour.toFixed(2)}
+                    </>
+                  }
+                >
+                  <div className={classes["first-block"]}>
+                    <div className={classes["title-wrapper"]}>
+                      <FaTractor />
+                      <span className={classes["title"]}>
+                        {entity?.machineNumber}
                       </span>
                     </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Total hours:
-                      </span>
-                      <span>{totalHour === 0 ? 0 : totalHour.toFixed(2)}</span>
+                    <div className={classes["location-wrapper"]}>
+                      <FaMapMarkerAlt />
+                      <span className={classes["title"]}>{entity?.zone}</span>
+                      <span className={classes["dash"]}>-</span>
+                      <span>{entity?.location}</span>
                     </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Working %:
-                      </span>
-                      <span>
-                        {workingPercentage === 0 || isNaN(workingPercentage)
-                          ? 0
-                          : workingPercentage.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Idle %:</span>
-                      <span>
-                        {idlePercentage === 0 || isNaN(idlePercentage)
-                          ? 0
-                          : idlePercentage.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Breakdown %:
-                      </span>
-                      <span>
-                        {breakdownPercentage === 0 || isNaN(breakdownPercentage)
-                          ? 0
-                          : breakdownPercentage.toFixed(2)}
-                      </span>
-                    </div>
-                    <Link to={"/entity/" + entity.id}>
-                      <Tooltip title="Open">
-                        <FaArrowAltCircleRight className={classes["button"]} />
-                      </Tooltip>
-                    </Link>
                   </div>
+                </Tooltip>
+
+                <div className={classes["service-reading-wrapper"]}>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Working hour:
+                    </span>
+                    <span>
+                      {workingHour === 0 ? 0 : workingHour.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>Idle hour:</span>
+                    <span>{idleHour === 0 ? 0 : idleHour.toFixed(2)}</span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Breakdown hour:
+                    </span>
+                    <span>
+                      {breakdownHour === 0 ? 0 : breakdownHour.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Total hours:
+                    </span>
+                    <span>{totalHour === 0 ? 0 : totalHour.toFixed(2)}</span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>Working %:</span>
+                    <span>
+                      {workingPercentage === 0 || isNaN(workingPercentage)
+                        ? 0
+                        : workingPercentage.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>Idle %:</span>
+                    <span>
+                      {idlePercentage === 0 || isNaN(idlePercentage)
+                        ? 0
+                        : idlePercentage.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Breakdown %:
+                    </span>
+                    <span>
+                      {breakdownPercentage === 0 || isNaN(breakdownPercentage)
+                        ? 0
+                        : breakdownPercentage.toFixed(2)}
+                    </span>
+                  </div>
+                  <Link to={"/entity/" + entity.id}>
+                    <Tooltip title="Open">
+                      <FaArrowAltCircleRight className={classes["button"]} />
+                    </Tooltip>
+                  </Link>
                 </div>
-              );
-            }
+              </div>
+            );
           }
-        )
+        })
       ) : (
         <Empty />
       )}

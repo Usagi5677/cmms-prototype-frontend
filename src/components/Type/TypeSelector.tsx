@@ -5,7 +5,7 @@ import { TYPES } from "../../api/queries";
 import Type from "../../models/Type";
 
 export interface TypeSelectorProps {
-  entityType: string;
+  entityType?: "Machine" | "Vehicle" | "Vessel";
   setTypeId: React.Dispatch<React.SetStateAction<number | null>>;
   currentId?: number;
 }
@@ -37,11 +37,13 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
   }, [filter, getTypes]);
 
   useEffect(() => {
-    setFilter((filter) => ({
-      ...filter,
-      entityType: entityType,
-      name: search,
-    }));
+    if (entityType) {
+      setFilter((filter) => ({
+        ...filter,
+        entityType: entityType,
+        name: search,
+      }));
+    }
   }, [search, entityType]);
 
   return (

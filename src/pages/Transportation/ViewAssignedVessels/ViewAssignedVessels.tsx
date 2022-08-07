@@ -13,7 +13,7 @@ import classes from "./ViewAssignedVessels.module.css";
 import UserContext from "../../../contexts/UserContext";
 import TransportationStatusFilter from "../../../components/common/TransportationStatusFilter";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
-import EntityModel from "../../../models/Entity/EntityModel";
+import { Entity } from "../../../models/Entity/Entity";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 
 const ViewAssignedVessels = () => {
@@ -159,7 +159,9 @@ const ViewAssignedVessels = () => {
           value={filter.status}
         />
         <div className={classes["add-wrapper"]}>
-          {self.assignedPermission.hasEntityAdd ? <AddEntity /> : null}
+          {self.assignedPermission.hasEntityAdd ? (
+            <AddEntity entityType="Vessel" />
+          ) : null}
         </div>
       </div>
       {loading && (
@@ -169,7 +171,7 @@ const ViewAssignedVessels = () => {
       )}
       {data?.getAllEntity.edges.length > 0 ? (
         <div>
-          {data?.getAllEntity.edges.map((rec: { node: EntityModel }) => {
+          {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
             const entity = rec.node;
             return <EntityCard entity={entity} key={entity.id} />;
           })}

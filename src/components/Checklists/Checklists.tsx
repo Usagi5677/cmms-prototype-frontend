@@ -22,10 +22,10 @@ import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
-import EntityModel from "../../models/Entity/EntityModel";
+import { Entity } from "../../models/Entity/Entity";
 
 export interface ChecklistsProps {
-  entity: Machine | Transportation | EntityModel;
+  entity: Machine | Transportation | Entity;
   type: "Daily" | "Weekly";
 }
 
@@ -157,7 +157,6 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
     data &&
     data.checklist &&
     moment(data.checklist.to).isBefore(moment(), "second");
-  console.log({ isOlderChecklist });
 
   return (
     <div>

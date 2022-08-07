@@ -21,7 +21,11 @@ import { errorMessage } from "../../../helpers/gql";
 import { TypeSelector } from "../../Type/TypeSelector";
 import classes from "./AddEntity.module.css";
 
-const AddEntity = () => {
+export interface AddEntityProps {
+  entityType: "Machine" | "Vehicle" | "Vessel";
+}
+
+const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
   const { user } = useContext(UserContext);
   const [typeId, setTypeId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
@@ -105,13 +109,13 @@ const AddEntity = () => {
         loading={loadingEntity}
         className={classes["custom-btn-primary"]}
       >
-        Add Entity
+        Add {entityType}
       </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Entity"}
+        title={`Add ${entityType}`}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -133,11 +137,7 @@ const AddEntity = () => {
               </Form.Item>
             </div>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Model"
-                name="model"
-                required={false}
-              >
+              <Form.Item label="Model" name="model" required={false}>
                 <Input placeholder="Model" />
               </Form.Item>
             </div>
@@ -145,11 +145,7 @@ const AddEntity = () => {
 
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Department"
-                name="department"
-                required={false}
-              >
+              <Form.Item label="Department" name="department" required={false}>
                 <Select
                   showArrow
                   style={{ width: "100%" }}
@@ -161,7 +157,7 @@ const AddEntity = () => {
             </div>
             <div className={classes["col"]}>
               <Form.Item label="Type" required={false}>
-                <TypeSelector entityType={""} setTypeId={setTypeId} />
+                <TypeSelector entityType={entityType} setTypeId={setTypeId} />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -189,11 +185,7 @@ const AddEntity = () => {
               </Form.Item>
             </div>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Location"
-                name="location"
-                required={false}
-              >
+              <Form.Item label="Location" name="location" required={false}>
                 <Select
                   showArrow
                   style={{ width: "100%" }}
@@ -259,11 +251,7 @@ const AddEntity = () => {
 
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Engine"
-                name="engine"
-                required={false}
-              >
+              <Form.Item label="Engine" name="engine" required={false}>
                 <Input placeholder="Engine" />
               </Form.Item>
             </div>
