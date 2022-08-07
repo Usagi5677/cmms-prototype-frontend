@@ -297,6 +297,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
             )}
             {data?.checklist.items.map((item: ChecklistItemModel) => (
               <ChecklistItem
+                checklist={data?.checklist}
                 item={item}
                 key={item.id}
                 disabled={isOlderChecklist}

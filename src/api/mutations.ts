@@ -1072,3 +1072,17 @@ export const EDIT_ENTITY_LOCATION = gql`
     editEntityLocation(id: $id, location: $location)
   }
 `;
+
+export const ADD_CHECKLIST_ITEM_ISSUE = gql`
+  mutation addChecklistIssue(
+    $checklistId: Int!
+    $itemId: Int!
+    $comment: String!
+  ) {
+    addChecklistIssue(
+      checklistId: $checklistId
+      itemId: $itemId
+      comment: $comment
+    )
+  }
+`;

@@ -1,3 +1,4 @@
+import ChecklistComment from "./ChecklistComment";
 import User from "./User";
 
 export default interface ChecklistItem {
@@ -5,4 +6,5 @@ export default interface ChecklistItem {
   description: string;
   completedBy?: User;
   completedAt?: Date;
+  issues: ChecklistComment[];
 }

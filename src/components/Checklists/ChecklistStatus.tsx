@@ -1,4 +1,4 @@
-import { CommentOutlined } from "@ant-design/icons";
+import { CommentOutlined, WarningOutlined } from "@ant-design/icons";
 import { Badge, Tooltip } from "antd";
 import React from "react";
 import Checklist from "../../models/Checklist";
@@ -6,6 +6,7 @@ import Checklist from "../../models/Checklist";
 export interface ChecklistSummary extends Checklist {
   itemCompletion: "all" | "some" | "none" | "empty";
   hasComments: boolean;
+  hasIssues: boolean;
 }
 
 export interface ChecklistStatusProps {
@@ -92,13 +93,30 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                     <div style={{ color: "black" }}>Checklist has comments</div>
                   </div>
                 )}
+                {summary.hasIssues && (
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Badge
+                      count={
+                        <WarningOutlined
+                          style={{ color: "red", marginRight: ".25rem" }}
+                        />
+                      }
+                    />
+                    <div style={{ color: "black" }}>Checklist has issues</div>
+                  </div>
+                )}
               </div>
             }
           >
             {summary.type === "Daily" && <Badge color={readingsColor} />}
             {summary.itemCompletion !== "empty" && <Badge color={itemColor} />}
             {summary.hasComments && (
-              <Badge count={<CommentOutlined style={{ color: "gray" }} />} />
+              <span style={{ marginRight: 5 }}>
+                <Badge count={<CommentOutlined style={{ color: "gray" }} />} />
+              </span>
+            )}
+            {summary.hasIssues && (
+              <Badge count={<WarningOutlined style={{ color: "red" }} />} />
             )}
           </Tooltip>
         </div>
@@ -125,6 +143,14 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
               style={{
                 ...smallStyle,
                 backgroundColor: "grey",
+              }}
+            ></div>
+          )}
+          {summary.hasIssues && (
+            <div
+              style={{
+                ...smallStyle,
+                backgroundColor: "red",
               }}
             ></div>
           )}

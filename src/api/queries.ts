@@ -1252,7 +1252,6 @@ export const GET_ALL_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
-
 export const GET_ALL_MACHINE_PM_TASK = gql`
   ${APS_USER_FRAGMENT}
   query getAllMachinePeriodicMaintenanceTask(
@@ -1475,6 +1474,16 @@ export const GET_CHECKLIST = gql`
           fullName
         }
         completedAt
+        issues {
+          id
+          description
+          createdAt
+          user {
+            id
+            rcno
+            fullName
+          }
+        }
       }
       comments {
         id
@@ -1544,6 +1553,7 @@ export const CHECKLIST_SUMMARIES = gql`
       workingHour
       currentMeterReading
       itemCompletion
+      hasIssues
     }
   }
 `;
@@ -1629,12 +1639,10 @@ export const GET_ALL_ASSIGNED_TRANSPORTATION = gql`
 `;
 
 export const SEARCH_ENTITY = gql`
+  ${ENTITY_FRAGMENT}
   query searchEntity($query: String!, $limit: Int) {
     searchEntity(query: $query, limit: $limit) {
-      entityId
-      entityType
-      entityNo
-      transportationType
+      ...EntityFields
     }
   }
 `;
