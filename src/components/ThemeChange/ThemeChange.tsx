@@ -8,14 +8,15 @@ import {
 } from "antd-colorpicker";
 import { useState } from "react";
 import { generate, presetDarkPalettes } from "@ant-design/colors";
+import useLocalStorage from "use-local-storage";
 
 const ThemeChange = () => {
+  const [theme, setTheme] = useLocalStorage("theme", "#1aaa7a");
   const [color, setColor] = useState<AnyColorFormat>({
-    hex: "#1aaa7a",
+    hex: theme ? theme : "#1aaa7a",
   });
 
   let colors: string[];
-  
 
   ConfigProvider.config({
     theme: {
@@ -25,6 +26,7 @@ const ThemeChange = () => {
 
   const onChange = (newColor: AnyColorFormat) => {
     setColor({ hex: newColor?.hex });
+    setTheme(newColor?.hex);
     colors = generate(newColor?.hex, {
       theme: "dark",
       backgroundColor: "#141414",
@@ -45,7 +47,7 @@ const ThemeChange = () => {
             </div>
           </div>
 
-          <div className={classes["colorpicker"]}>
+          <div className={classes["colorpicker-container"]}>
             <Colorpicker value={color} onChange={onChange} />
           </div>
         </div>

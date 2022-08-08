@@ -381,3 +381,8 @@ em {
   height: 16px !important;
   margin-left: 10px;
 }
+
+.sketch-picker {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+}

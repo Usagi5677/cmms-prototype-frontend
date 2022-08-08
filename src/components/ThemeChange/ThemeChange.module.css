@@ -53,11 +53,16 @@
     font-weight: 700;
   }
 
-  .colorpicker {
+  .colorpicker-container {
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column-reverse;
+  }
+  .sketch-picker {
+    display: flex !important;
+    flex-direction: column-reverse !important;
   }
   .flex {
     display: flex;
