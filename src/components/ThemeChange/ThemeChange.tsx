@@ -8,7 +8,7 @@ import {
 } from "antd-colorpicker";
 import { useState } from "react";
 import { generate, presetDarkPalettes } from "@ant-design/colors";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 const ThemeChange = () => {
   const [theme, setTheme] = useLocalStorage("theme", "#1aaa7a");
