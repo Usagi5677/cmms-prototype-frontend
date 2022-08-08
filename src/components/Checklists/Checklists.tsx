@@ -193,17 +193,22 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                 )}
                 {data?.checklist.workingHour &&
                   !data?.checklist.currentMeterReading && (
-                    <div style={{ display: "flex" }}>
-                      <div style={{ flex: 1 }}>
-                        <InputNumber
-                          disabled
-                          addonBefore="Daily Reading"
-                          addonAfter={`${entity.measurement}`}
-                          style={{ width: "100%", marginBottom: ".5rem" }}
-                          value={data?.checklist.workingHour}
-                        />
+                    <>
+                      <span style={{ opacity: 0.7 }}>
+                        Meter not available or broken
+                      </span>
+                      <div style={{ display: "flex" }}>
+                        <div style={{ flex: 1 }}>
+                          <InputNumber
+                            disabled
+                            addonBefore="Daily Reading"
+                            addonAfter={`${entity.measurement}`}
+                            style={{ width: "100%", marginBottom: ".5rem" }}
+                            value={data?.checklist.workingHour}
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 {!isOlderChecklist && (
                   <AddReading entity={entity} checklist={data?.checklist} />
