@@ -1,28 +1,20 @@
-import {
-  Button,
-  DatePicker,
-  Divider,
-  Empty,
-  InputNumber,
-  message,
-  Spin,
-} from "antd";
+import { Button, DatePicker, Divider, Empty, InputNumber, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import Machine from "../../models/Machine";
 import Transportation from "../../models/Transportation";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { CHECKLIST_SUMMARIES, GET_CHECKLIST } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import { ChecklistItem } from "./ChecklistItem";
 import ChecklistItemModel from "../../models/ChecklistItem";
-import { UPDATE_READING, UPDATE_WORKING_HOURS } from "../../api/mutations";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
 import { Entity } from "../../models/Entity/Entity";
+import { AddReading } from "./AddReading";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation | Entity;
@@ -35,16 +27,8 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
     date.clone().startOf("month"),
     date.clone().endOf("month"),
   ]);
-  const [hours, setHours] = useState<null | number>(null);
-  const [reading, setReading] = useState<null | number>(null);
 
   const [getChecklist, { data, loading }] = useLazyQuery(GET_CHECKLIST, {
-    onCompleted: (data) => {
-      if (data.checklist) {
-        setHours(data.checklist.workingHour);
-        setReading(data.checklist.currentMeterReading);
-      }
-    },
     onError: (err) => {
       errorMessage(err, "Error loading checklist.");
     },
@@ -52,23 +36,6 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
   });
 
   const [getSummary, { data: summary }] = useLazyQuery(CHECKLIST_SUMMARIES);
-
-  const [updateReading, { loading: updatingReading }] = useMutation(
-    UPDATE_READING,
-    {
-      refetchQueries: [
-        "checklist",
-        "getSingleMachine",
-        "getSingleTransportation",
-        "checklistSummary",
-      ],
-    }
-  );
-
-  const [updateWorkingHours, { loading: updatingHour }] = useMutation(
-    UPDATE_WORKING_HOURS,
-    { refetchQueries: ["checklist", "checklistSummary"] }
-  );
 
   useEffect(() => {
     if (entity) {
@@ -103,7 +70,6 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
   }, [month, entity]);
 
   const changeDate = (direction: "forward" | "back") => {
-    console.log(direction);
     if (direction === "forward") {
       if (type === "Daily") setDate(date.clone().add(1, "day"));
       else setDate(date.clone().add(1, "week"));
@@ -212,87 +178,36 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
           <div style={{ marginTop: ".5rem" }}>
             {type === "Daily" && (
               <>
-                <div style={{ display: "flex" }}>
-                  <div style={{ flex: 1 }}>
-                    <InputNumber
-                      disabled={isOlderChecklist}
-                      addonBefore="Current Reading"
-                      addonAfter={`${entity.measurement}`}
-                      placeholder={
-                        isOlderChecklist
-                          ? undefined
-                          : `Enter ${entity.measurement}`
-                      }
-                      style={{ width: "100%", marginBottom: ".5rem" }}
-                      //@ts-ignore
-                      value={reading}
-                      onChange={(val: number) => {
-                        setReading(val);
-                      }}
-                    />
+                {data?.checklist.currentMeterReading && (
+                  <div style={{ display: "flex" }}>
+                    <div style={{ flex: 1 }}>
+                      <InputNumber
+                        disabled
+                        addonBefore="Meter Reading"
+                        addonAfter={`${entity.measurement}`}
+                        style={{ width: "100%", marginBottom: ".5rem" }}
+                        value={data?.checklist.currentMeterReading}
+                      />
+                    </div>
                   </div>
-                  {!isOlderChecklist && (
-                    <div>
-                      <Button
-                        style={{ marginLeft: ".5rem" }}
-                        loading={updatingReading}
-                        disabled={
-                          reading === data?.checklist.currentMeterReading
-                        }
-                        onClick={() => {
-                          updateReading({
-                            variables: {
-                              id: data?.checklist.id,
-                              reading: reading,
-                            },
-                          });
-                        }}
-                      >
-                        Save
-                      </Button>
+                )}
+                {data?.checklist.workingHour &&
+                  !data?.checklist.currentMeterReading && (
+                    <div style={{ display: "flex" }}>
+                      <div style={{ flex: 1 }}>
+                        <InputNumber
+                          disabled
+                          addonBefore="Daily Reading"
+                          addonAfter={`${entity.measurement}`}
+                          style={{ width: "100%", marginBottom: ".5rem" }}
+                          value={data?.checklist.workingHour}
+                        />
+                      </div>
                     </div>
                   )}
-                </div>
-                <div style={{ display: "flex" }}>
-                  <div style={{ flex: 1 }}>
-                    <InputNumber
-                      disabled={isOlderChecklist}
-                      addonBefore="Working Hours&nbsp;&nbsp;"
-                      placeholder="Enter hours"
-                      style={{ width: "100%", marginBottom: ".5rem" }}
-                      //@ts-ignore
-                      value={hours}
-                      onChange={(val: number) => {
-                        setHours(val);
-                      }}
-                      max={24}
-                      min={0}
-                    />
-                  </div>
-                  {!isOlderChecklist && (
-                    <div>
-                      <Button
-                        style={{ marginLeft: ".5rem" }}
-                        loading={updatingHour}
-                        disabled={hours === data?.checklist.workingHour}
-                        onClick={() => {
-                          if (!hours || hours > 24) {
-                            message.error("Hours should be between 0 and 24.");
-                            return;
-                          }
-                          updateWorkingHours({
-                            variables: {
-                              id: data?.checklist.id,
-                              newHrs: hours,
-                            },
-                          });
-                        }}
-                      >
-                        Save
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                {!isOlderChecklist && (
+                  <AddReading entity={entity} checklist={data?.checklist} />
+                )}
               </>
             )}
             {data?.checklist.items.map((item: ChecklistItemModel) => (

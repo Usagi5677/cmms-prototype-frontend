@@ -33,19 +33,12 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
 
   let readingsText = "";
   let readingsColor = "none";
-  if (summary.currentMeterReading && summary.workingHour) {
+  if (summary.currentMeterReading || summary.workingHour) {
     readingsColor = "#52c41a";
-    readingsText = "Reading and working hours updated";
-  } else if (!summary.currentMeterReading != !summary.workingHour) {
-    readingsColor = "#faad13";
-    if (!summary.currentMeterReading) {
-      readingsText = "Reading not updated";
-    } else {
-      readingsText = "Working hours not updated";
-    }
+    readingsText = "Reading updated";
   } else {
     readingsColor = "#fa541c";
-    readingsText = "Reading and working hours not updated";
+    readingsText = "Reading not updated";
   }
 
   const smallStyle = {
