@@ -41,7 +41,7 @@ const ThemeChange = () => {
       overlay={
         <div className={classes["notification-menu"]}>
           <div className={classes["flex"]}>
-            <div className={classes["title"]}>Change theme</div>
+            <div className={classes["title"]}>Change Theme</div>
             <div id={"colorcircle"}>
               <Badge dot color={color.hex} status={"processing"} />
             </div>

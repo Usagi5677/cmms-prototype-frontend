@@ -230,7 +230,6 @@ em {
   transform: translateX(10px) !important;
 }
 
-
 .ant-menu-item-divider {
   border-color: #ccc !important;
 }
@@ -283,21 +282,18 @@ em {
   border-radius: 20px !important;
 }
 
-
 #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 !important;
   padding-left: 5px !important;
   border-bottom: 1px solid #ccc;
+  cursor: default !important;
 }
-#collapse
-  .ant-collapse
-  > .ant-collapse-item
-  > .ant-collapse-header
-  .ant-collapse-arrow {
-  display: inline-block;
-  margin-right: 0 !important;
-  font-size: 12px;
-  vertical-align: -1px;
+#collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
+  min-height: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 #collapse
@@ -306,11 +302,35 @@ em {
   > .ant-collapse-content
   > .ant-collapse-content-box {
   padding: 5px !important;
+  cursor: default !important;
 }
 
+#collapseTwo .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 0 !important;
+  padding-left: 5px !important;
+  border-bottom: 1px solid #ccc;
+  cursor: default !important;
+}
+#collapseTwo .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
+  min-height: 40px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#collapseTwo
+  .ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding: 5px !important;
+  cursor: default !important;
+}
 @media only screen and (min-width: 600px) {
   #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 5px !important;
+    cursor: default !important;
   }
   #collapse
     .ant-collapse-ghost
@@ -318,6 +338,7 @@ em {
     > .ant-collapse-content
     > .ant-collapse-content-box {
     padding: 10px !important;
+    cursor: default !important;
   }
   #collapse
     .ant-collapse
@@ -328,6 +349,11 @@ em {
     margin-right: 12px !important;
     font-size: 12px;
     vertical-align: -1px;
+    cursor: pointer !important;
+  }
+  #collapseTwo .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding: 0 5px !important;
+    cursor: default !important;
   }
 }
 
@@ -339,13 +365,9 @@ em {
   text-decoration: underline;
 }
 
-
 .secondaryButton {
-
   border-radius: 20px !important;
-
 }
-
 
 .primaryButton {
   background-color: var(--ant-primary-color);
@@ -354,7 +376,7 @@ em {
 }
 .primaryButton:hover {
   border-color: var(--ant-primary-color-hover);
-  background-color: var(--ant-primary-color-hover)
+  background-color: var(--ant-primary-color-hover);
 }
 
 .deleteButton {
@@ -385,4 +407,27 @@ em {
 .sketch-picker {
   display: flex !important;
   flex-direction: column-reverse !important;
+}
+
+.ant-typography a:focus,
+.ant-typography a:hover,
+a.ant-typography:focus,
+a.ant-typography:hover {
+  color: var(--ant-primary-color-hover) !important;
+}
+.ant-typography-copy:focus,
+.ant-typography-copy:hover,
+.ant-typography-edit:focus,
+.ant-typography-edit:hover,
+.ant-typography-expand:focus,
+.ant-typography-expand:hover {
+  color: var(--ant-primary-color-hover) !important;
+}
+.ant-typography a,
+a.ant-typography {
+  color: var(--ant-primary-color) !important;
+}
+.ant-typography p,
+div.ant-typography {
+  margin-bottom: 0 !important;
 }

@@ -1,9 +1,0 @@
-.custom-btn-secondary {
-  border-radius: 20px !important;
-}
-
-.custom-btn-primary {
-  background-color: var(--ant-primary-color);
-  border-radius: 20px !important;
-  border-color: var(--ant-primary-color);
-}

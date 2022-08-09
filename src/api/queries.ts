@@ -1860,7 +1860,7 @@ export const GET_ALL_SPARE_PR_OF_ENTITY = gql`
 
 export const GET_ALL_REPAIR_OF_ENTITY = gql`
   ${APS_USER_FRAGMENT}
-  query getAllRepairOfEntity(
+  query getAllRepairRequestOfEntity(
     $after: String
     $before: String
     $first: Int
@@ -1868,7 +1868,7 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
     $search: String
     $entityId: Int!
   ) {
-    getAllRepairOfEntity(
+    getAllRepairRequestOfEntity(
       after: $after
       before: $before
       first: $first
@@ -1887,12 +1887,29 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
         node {
           id
           entityId
-          title
-          description
-          createdAt
-          status
-          completedAt
-          completedBy {
+          internal
+          projectName
+          location
+          reason
+          additionalInfo
+          attendInfo
+          operatorId
+          supervisorId
+          projectManagerId
+          approvedAt
+          requestedBy {
+            ...UserFieldsAPS
+          }
+          operator {
+            ...UserFieldsAPS
+          }
+          supervisor {
+            ...UserFieldsAPS
+          }
+          projectManager {
+            ...UserFieldsAPS
+          }
+          approvedBy {
             ...UserFieldsAPS
           }
         }

@@ -1,75 +1,240 @@
-import { Tooltip } from "antd";
+import { ToolOutlined } from "@ant-design/icons";
+import { useMutation } from "@apollo/client";
+import { Checkbox, Collapse, Spin, Tag, Tooltip, Typography } from "antd";
+
 import moment from "moment";
 import { useContext } from "react";
-import { FaRegClock } from "react-icons/fa";
+import { FaRegClock, FaRegUser } from "react-icons/fa";
+import { TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import EntityRepair from "../../../models/Entity/EntityRepair";
-import DeleteEntityRepair from "../DeleteEntityRepair/DeleteEntityRepair";
-import EditEntityRepair from "../EditEntityRepair/EditEntityRepair";
-import EntityRepairStatus from "../EntityRepairStatus/EntityRepairStatus";
+import { errorMessage } from "../../../helpers/gql";
+import EntityRepairRequest from "../../../models/Entity/EntityRepairRequest";
+import User from "../../../models/User";
+import DeleteEntityRepairRequest from "../DeleteEntityRepairRequest/DeleteEntityRepairRequest";
+import EditEntityRepairRequest from "../EditEntityRepairRequest/EditEntityRepairRequest";
 import classes from "./EntityRepairCard.module.css";
 
 const EntityRepairCard = ({
   repair,
   isDeleted,
+  userData,
 }: {
-  repair: EntityRepair;
+  repair: EntityRepairRequest;
   isDeleted?: boolean | undefined;
+  userData?: User[];
 }) => {
   const { user: self } = useContext(UserContext);
+  const { Paragraph } = Typography;
+
+  const [toggleApproval, { loading: toggling }] = useMutation(
+    TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating approval.");
+      },
+      refetchQueries: [
+        "getSingleEntity",
+        "getAllHistoryOfEntity",
+        "getAllRepairRequestOfEntity",
+      ],
+    }
+  );
+
   return (
-    <div className={classes["container"]}>
-    <div className={classes["first-block"]}>
-      <div>
-        <div>{repair?.id}</div>
-        <div className={classes["time-wrapper"]}>
-          <Tooltip title="Created At">
-            <FaRegClock />
-          </Tooltip>
-          <div className={classes["time"]}>
-            {moment(repair?.createdAt).format(
-              DATETIME_FORMATS.DAY_MONTH_YEAR
-            )}
-          </div>
-        </div>
-      </div>
-      <div className={classes["col-wrapper"]}>
-        {repair?.completedBy?.fullName && (
-          <div className={classes["col"]}>
-            <div className={classes["col-title"]}>Completed by:</div>
-            <div className={classes["completedBy"]}>
-              {repair?.completedBy?.fullName}
+    <div id="collapseTwo">
+      <Collapse ghost style={{ marginBottom: ".5rem" }}>
+        <Collapse.Panel
+          header={
+            <>
+              <div
+                className={classes["header-container"]}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className={classes["first-block"]}>
+                  <div className={classes["id-wrapper"]}>
+                    <ToolOutlined className={classes["icon"]} />
+                    <span className={classes["title"]}>{repair?.id}</span>
+                  </div>
+                  <div className={classes["title-wrapper"]}>
+                    <Tooltip title="Requested Date">
+                      <FaRegClock className={classes["icon"]} />
+                    </Tooltip>
+
+                    <span
+                      className={classes["title"]}
+                      title={moment(repair?.createdAt).format(
+                        DATETIME_FORMATS.FULL
+                      )}
+                    >
+                      {moment(repair?.createdAt).format(DATETIME_FORMATS.SHORT)}
+                    </span>
+                  </div>
+                </div>
+                <div className={classes["second-block"]}>
+                  <div className={classes["requestedBy-wrapper"]}>
+                    <Tooltip title="Requested by">
+                      <FaRegUser />
+                    </Tooltip>
+                    <div className={classes["requestedBy"]}>
+                      {repair?.requestedBy?.fullName}{" "}
+                      {"(" + repair?.requestedBy?.rcno + ")"}
+                    </div>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Project Name:
+                    </span>
+                    <span>
+                      {repair?.projectName ? repair?.projectName : "None"}
+                    </span>
+                  </div>
+                </div>
+                <div className={classes["third-block"]}>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>Reason:</span>
+                    <Paragraph ellipsis={{ rows: 1, expandable: true }}>
+                      {repair?.reason ? repair?.reason : "None"}
+                    </Paragraph>
+                  </div>
+                </div>
+                <div className={classes["block-wrapper"]}>
+                  <div className={classes["fourth-block"]}>
+                    {self.assignedPermission.hasEntityRepairRequestEdit && (
+                      <Checkbox
+                        checked={repair?.approvedAt !== null}
+                        disabled={isDeleted}
+                        onChange={(e) =>
+                          toggleApproval({
+                            variables: {
+                              id: repair.id,
+                              approve: e.target.checked,
+                            },
+                          })
+                        }
+                        className={classes["checkbox"]}
+                      >
+                        Approve{" "}
+                        {toggling && (
+                          <Spin style={{ marginRight: 5 }} size="small" />
+                        )}
+                      </Checkbox>
+                    )}
+                    {repair?.approvedAt ? (
+                      <Tag color={"success"}>Approved</Tag>
+                    ) : (
+                      <Tag color={"processing"}>Pending</Tag>
+                    )}
+                  </div>
+                  <div className={classes["fifth-block"]}>
+                    <EditEntityRepairRequest
+                      repair={repair}
+                      userData={userData}
+                    />
+                    <DeleteEntityRepairRequest id={repair.id} />
+                  </div>
+                </div>
+              </div>
+            </>
+          }
+          key={repair.id}
+        >
+          <div className={classes["collapse-container"]}>
+            <div className={classes["inner-info"]}>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Operator:</span>
+                {repair?.operator ? (
+                  <span>
+                    {repair?.operator?.fullName}{" "}
+                    {"(" + repair?.operator?.rcno + ")"}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Supervisor:</span>
+                {repair?.supervisor ? (
+                  <span>
+                    {repair?.supervisor?.fullName}{" "}
+                    {"(" + repair?.supervisor?.rcno + ")"}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>
+                  Project Manager:
+                </span>
+                {repair?.projectManager ? (
+                  <span>
+                    {repair?.projectManager?.fullName}{" "}
+                    {"(" + repair?.projectManager?.rcno + ")"}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Location:</span>
+                {repair?.location ? <span>{repair?.location}</span> : "None"}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Approver:</span>
+                {repair?.approvedBy ? (
+                  <span>
+                    {repair?.approvedBy?.fullName}{" "}
+                    {"(" + repair?.approvedBy?.rcno + ")"}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Approved Date:</span>
+                {repair?.approvedAt ? (
+                  <span
+                    className={classes["title"]}
+                    title={moment(repair?.createdAt).format(
+                      DATETIME_FORMATS.FULL
+                    )}
+                  >
+                    {moment(repair?.createdAt).format(DATETIME_FORMATS.SHORT)}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+            </div>
+            <div className={classes["flex"]}>
+              <div className={classes["inner-block"]}>
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>
+                    Additional Information:
+                  </span>
+                  <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                    {repair?.additionalInfo ? repair?.additionalInfo : "None"}
+                  </Paragraph>
+                </div>
+              </div>
+              <div className={classes["inner-block"]}>
+                <div className={classes["title-wrapper"]}>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Attend Information:
+                    </span>
+                    <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                      {repair?.attendInfo ? repair?.additionalInfo : "None"}
+                    </Paragraph>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        )}
-
-        <div className={classes["col"]}>
-          <div className={classes["col-title"]}>Title:</div>
-          <div>{repair?.title}</div>
-        </div>
-        <div className={classes["col"]}>
-          <div className={classes["col-title"]}>Description:</div>
-          <div>{repair?.description}</div>
-        </div>
-      </div>
+        </Collapse.Panel>
+      </Collapse>
     </div>
-    <div className={classes["second-block"]}>
-      <div className={classes["status"]}>
-        {self.assignedPermission.hasEntityRepairEdit ? (
-          <EntityRepairStatus repair={repair} isDeleted={isDeleted}/>
-        ) : null}
-      </div>
-      <div className={classes["icon-wrapper"]}>
-        {self.assignedPermission.hasEntityRepairEdit && !isDeleted ? (
-          <EditEntityRepair repair={repair} />
-        ) : null}
-        {self.assignedPermission.hasEntityRepairDelete && !isDeleted ? (
-          <DeleteEntityRepair id={repair?.id} />
-        ) : null}
-      </div>
-    </div>
-  </div>
   );
 };
 

@@ -1,109 +1,170 @@
-.container {
+.header-container {
+  display: flex;
+  cursor: default !important;
+  justify-content: space-between !important;
+  width: 100%;
   font-size: 9px;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-  background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
-  transition: all 0.3s ease;
-}
-.container:hover {
-  background-color: #f0f0f0;
-  transform: translateX(6px);
-}
-.completedBy {
-  font-size: 10;
-  opacity: 0.5;
-  display: inline-block;
-}
-.edit-icon {
-  font-size: 16px;
-  transition: color 0.3s ease;
-}
-.delete-icon {
-  font-size: 16px;
-  transition: color 0.3s ease;
-  padding-left: 5px;
-}
-.edit-icon:hover {
-  color: var(--primary);
-}
-.delete-icon:hover {
-  color: red;
-}
-.icon-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  position: relative;
+  flex-direction: column;
+  align-items: initial !important;
 }
 
-.status {
-  grid-area: status;
-  align-self: center;
+.bold {
+  font-weight: 700;
 }
-
-.time-wrapper {
+.id-wrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.title-wrapper {
   display: flex;
   align-items: center;
 }
 
-.time {
+.first-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 10px;
+}
+.second-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  padding: 5px 0;
+}
+.third-block {
+  width: clamp(100px, 100%, 120px);
+}
+.fourth-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 5px 0;
+}
+.fifth-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.reading {
+  margin-right: 10px;
+}
+
+.reading-title {
+  opacity: 0.5;
+  display: inline-block;
+  padding-right: 5px;
+}
+.title {
   padding-left: 5px;
 }
 
-.col {
+.collapse-container {
+  font-size: 9px;
   display: flex;
-}
-
-.col-title {
-  margin-right: 6px;
-}
-
-.second-block {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
   flex-direction: column;
+  justify-content: space-between;
 }
+
+.inner-block {
+  width: 50%;
+}
+.icon {
+  font-size: 10px;
+}
+.requestedBy-wrapper {
+  display: flex;
+  align-items: center;
+}
+.requestedBy {
+  font-size: 10;
+  opacity: 0.5;
+  display: inline-block;
+  padding-left: 5px;
+}
+.flex {
+  display: flex;
+}
+.inner-info {
+  padding-bottom: 10px;
+}
+
+.approvedAt {
+  font-size: 12px;
+  opacity: 0.5;
+  display: flex;
+}
+.checkbox {
+  word-break: break-all;
+  font-size: 12px;
+}
+
 @media only screen and (min-width: 600px) {
-  .container {
-    font-size: 9px;
+  .header-container {
+    flex-direction: row;
+    align-items: center !important;
   }
   .first-block {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-grow: 1;
+    padding-top: 0;
   }
-
   .second-block {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-grow: 1;
-    flex-direction: row;
-  }
-  .col-wrapper {
-    display: flex;
     justify-content: space-around;
-    flex-grow: 1;
   }
-  .col {
-    display: flex;
+  .third-block {
+    width: clamp(100px, 100%, 150px);
+  }
+  .fourth-block {
     flex-direction: column;
   }
-  .col-title {
-    margin: 0;
+  .fifth-block {
+    flex-direction: row;
+    padding-right: 5px;
   }
+  
 }
 
 @media only screen and (min-width: 800px) {
-  .container {
+  
+  .block-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+  .collapse-container {
     font-size: 12px;
+  }
+
+  .header-container {
+    font-size: 12px;
+  }
+  .icon {
+    font-size: 12px;
+  }
+  .third-block {
+    width: clamp(100px, 100%, 200px);
+  }
+  .fifth-block {
+    padding-bottom: 0;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .second-block {
+    flex: 2;
+  }
+  .third-block {
+    width: clamp(100px, 100%, 300px);
+  }
+  .icon {
+    font-size: 14px;
   }
 }

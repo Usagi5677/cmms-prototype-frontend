@@ -62,9 +62,9 @@ export function permissionExist(data: User) {
   let hasEntitySparePRAdd = false;
   let hasEntitySparePREdit = false;
   let hasEntitySparePRDelete = false;
-  let hasEntityRepairAdd = false;
-  let hasEntityRepairEdit = false;
-  let hasEntityRepairDelete = false;
+  let hasEntityRepairRequestAdd = false;
+  let hasEntityRepairRequestEdit = false;
+  let hasEntityRepairRequestDelete = false;
   let hasEntityBreakdownAdd = false;
   let hasEntityBreakdownEdit = false;
   let hasEntityBreakdownDelete = false;
@@ -306,14 +306,14 @@ export function permissionExist(data: User) {
         case "DELETE_ENTITY_SPARE_PR":
           hasEntitySparePRDelete = true;
           break;
-        case "ADD_ENTITY_REPAIR":
-          hasEntityRepairAdd = true;
+        case "ADD_ENTITY_REPAIR_REQUEST":
+          hasEntityRepairRequestAdd = true;
           break;
-        case "EDIT_ENTITY_REPAIR":
-          hasEntityRepairEdit = true;
+        case "EDIT_ENTITY_REPAIR_REQUEST":
+          hasEntityRepairRequestEdit = true;
           break;
-        case "DELETE_ENTITY_REPAIR":
-          hasEntityRepairDelete = true;
+        case "DELETE_ENTITY_REPAIR_REQUEST":
+          hasEntityRepairRequestDelete = true;
           break;
         case "ADD_ENTITY_BREAKDOWN":
           hasEntityBreakdownAdd = true;
@@ -519,9 +519,9 @@ export function permissionExist(data: User) {
     hasEntitySparePRAdd,
     hasEntitySparePREdit,
     hasEntitySparePRDelete,
-    hasEntityRepairAdd,
-    hasEntityRepairEdit,
-    hasEntityRepairDelete,
+    hasEntityRepairRequestAdd,
+    hasEntityRepairRequestEdit,
+    hasEntityRepairRequestDelete,
     hasEntityBreakdownAdd,
     hasEntityBreakdownEdit,
     hasEntityBreakdownDelete,

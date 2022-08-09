@@ -39,3 +39,21 @@
 .info-edit:hover {
   color: #137e5a;
 }
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+.col {
+  flex: 1;
+}
+
+@media only screen and (min-width: 700px) {
+  .row {
+    flex-direction: row;
+  }
+  .col {
+    flex: 1;
+    padding: 0 20px;
+  }
+}

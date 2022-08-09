@@ -6,7 +6,7 @@ import EntityAssign from "./EntityAssign";
 import EntityBreakdown from "./EntityBreakdown";
 import EntityHistory from "./EntityHistory";
 import EntityPeriodicMaintenance from "./EntityPeriodicMaintenance";
-import EntityRepair from "./EntityRepair";
+import EntityRepairRequest from "./EntityRepairRequest";
 import EntitySparePR from "./EntitySparePR";
 
 export interface Entity {
@@ -33,7 +33,7 @@ export interface Entity {
   assignees: EntityAssign[];
   checklistItems: ChecklistItem[];
   periodicMaintenancePlans: EntityPeriodicMaintenance[];
-  repairs: EntityRepair[];
+  repairs: EntityRepairRequest[];
   breakdowns: EntityBreakdown[];
   sparePRs: EntitySparePR[];
   histories: EntityHistory[];

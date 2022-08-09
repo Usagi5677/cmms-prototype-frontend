@@ -1,15 +1,13 @@
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between !important;
   width: 100%;
   font-size: 9px;
   position: relative;
+  cursor: default !important;
 }
 
-.dash {
-  padding: 0 5px;
-}
 
 .title-wrapper {
   display: flex;

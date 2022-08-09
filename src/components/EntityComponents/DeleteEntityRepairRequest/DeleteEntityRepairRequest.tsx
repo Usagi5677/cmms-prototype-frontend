@@ -1,33 +1,26 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
-import { DELETE_ENTITY_REPAIR } from "../../../api/mutations";
+import { DELETE_ENTITY_REPAIR_REQUEST } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./DeleteEntityRepair.module.css";
+import classes from "./DeleteEntityRepairRequest.module.css";
 
-const DeleteEntityRepair = ({
-  id,
-}: {
-  id: number;
-}) => {
-  const [removeEntityRepair, { loading: deleting }] = useMutation(
-    DELETE_ENTITY_REPAIR,
+const DeleteEntityRepairRequest = ({ id }: { id: number }) => {
+  const [removeEntityRepairRequest, { loading: deleting }] = useMutation(
+    DELETE_ENTITY_REPAIR_REQUEST,
     {
       onCompleted: () => {
-        message.success("Successfully removed repair.");
+        message.success("Successfully removed repair request.");
       },
       onError: (error) => {
-        errorMessage(
-          error,
-          "Unexpected error while removing repair."
-        );
+        errorMessage(error, "Unexpected error while removing repair request.");
       },
-      refetchQueries: ["getAllRepairOfEntity", "getAllHistoryOfEntity"],
+      refetchQueries: ["getAllRepairRequestOfEntity", "getAllHistoryOfEntity"],
     }
   );
 
   const remove = () => {
-    removeEntityRepair({
+    removeEntityRepairRequest({
       variables: {
         id,
       },
@@ -52,4 +45,4 @@ const DeleteEntityRepair = ({
   );
 };
 
-export default DeleteEntityRepair;
+export default DeleteEntityRepairRequest;

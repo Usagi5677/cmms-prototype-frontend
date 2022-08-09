@@ -1,15 +1,19 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { GET_ALL_REPAIR_OF_ENTITY } from "../../../../api/queries";
+import {
+  GET_ALL_REPAIR_OF_ENTITY,
+  GET_USERS_WITH_PERMISSION,
+} from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewRepair.module.css";
 import UserContext from "../../../../contexts/UserContext";
-import AddEntityRepair from "../../../../components/EntityComponents/AddEntityRepair/AddEntityRepair";
+import AddEntityRepairRequest from "../../../../components/EntityComponents/AddEntityRepairRequest/AddEntityRepairRequest";
 import EntityRepairCard from "../../../../components/EntityComponents/EntityRepairCard/EntityRepairCard";
-import EntityRepair from "../../../../models/Entity/EntityRepair";
+import EntityRepairRequest from "../../../../models/Entity/EntityRepairRequest";
+import User from "../../../../models/User";
 
 const ViewRepair = ({
   entityID,
@@ -37,7 +41,7 @@ const ViewRepair = ({
     entityId: entityID,
   });
 
-  const [getAllRepairOfEntity, { data, loading }] = useLazyQuery(
+  const [getAllRepairRequestOfEntity, { data, loading }] = useLazyQuery(
     GET_ALL_REPAIR_OF_ENTITY,
     {
       onError: (err) => {
@@ -48,10 +52,27 @@ const ViewRepair = ({
     }
   );
 
+  const [getUsersWithPermission, { data: userData, loading: loadingUsers }] =
+    useLazyQuery(GET_USERS_WITH_PERMISSION, {
+      onError: (err) => {
+        errorMessage(err, "Error loading request.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+      notifyOnNetworkStatusChange: true,
+    });
+
   // Fetch repairs when component mounts or when the filter object changes
   useEffect(() => {
-    getAllRepairOfEntity({ variables: filter });
-  }, [filter, getAllRepairOfEntity]);
+    getAllRepairRequestOfEntity({ variables: filter });
+  }, [filter, getAllRepairRequestOfEntity]);
+
+  // Fetch users when component mount
+  useEffect(() => {
+    getUsersWithPermission({
+      variables: { permissions: ["ADD_ENTITY_REPAIR_REQUEST"] },
+    });
+  }, [getUsersWithPermission]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -107,13 +128,16 @@ const ViewRepair = ({
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllRepairOfEntity.pageInfo ?? {};
+  const pageInfo = data?.getAllRepairRequestOfEntity.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasEntityRepairAdd && !isDeleted ? (
-          <AddEntityRepair entityID={entityID} />
+        {self.assignedPermission.hasEntityRepairRequestAdd && !isDeleted ? (
+          <AddEntityRepairRequest
+            entityID={entityID}
+            userData={userData?.getUsersWithPermission}
+          />
         ) : null}
       </div>
       {loading && (
@@ -122,16 +146,19 @@ const ViewRepair = ({
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllRepairOfEntity.edges.map((rec: { node: EntityRepair }) => {
-          const repair = rec.node;
-          return (
-            <EntityRepairCard
-              key={repair.id}
-              repair={repair}
-              isDeleted={isDeleted}
-            />
-          );
-        })}
+        {data?.getAllRepairRequestOfEntity.edges.map(
+          (rec: { node: EntityRepairRequest }) => {
+            const repair = rec.node;
+            return (
+              <EntityRepairCard
+                key={repair.id}
+                repair={repair}
+                isDeleted={isDeleted}
+                userData={userData?.getUsersWithPermission}
+              />
+            );
+          }
+        )}
       </div>
 
       <PaginationButtons

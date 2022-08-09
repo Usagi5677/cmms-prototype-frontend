@@ -943,31 +943,65 @@ export const SET_ENTITY_SPARE_PR_STATUS = gql`
   }
 `;
 
-export const ADD_ENTITY_REPAIR = gql`
-  mutation ($entityId: Int!, $title: String!, $description: String!) {
-    addEntityRepair(
+export const ADD_ENTITY_REPAIR_REQUEST = gql`
+  mutation (
+    $entityId: Int!
+    $internal: Boolean
+    $projectName: String
+    $location: String
+    $reason: String
+    $additionalInfo: String
+    $attendInfo: String
+    $operatorId: Int
+    $supervisorId: Int
+    $projectManagerId: Int
+  ) {
+    addEntityRepairRequest(
       entityId: $entityId
-      title: $title
-      description: $description
+      internal: $internal
+      projectName: $projectName
+      location: $location
+      reason: $reason
+      additionalInfo: $additionalInfo
+      attendInfo: $attendInfo
+      operatorId: $operatorId
+      supervisorId: $supervisorId
+      projectManagerId: $projectManagerId
     )
   }
 `;
 
-export const EDIT_ENTITY_REPAIR = gql`
-  mutation ($id: Int!, $title: String!, $description: String!) {
-    editEntityRepair(id: $id, title: $title, description: $description)
+export const EDIT_ENTITY_REPAIR_REQUEST = gql`
+  mutation (
+    $id: Int!
+    $internal: Boolean
+    $projectName: String
+    $location: String
+    $reason: String
+    $additionalInfo: String
+    $attendInfo: String
+    $operatorId: Int
+    $supervisorId: Int
+    $projectManagerId: Int
+  ) {
+    editEntityRepairRequest(
+      id: $id
+      internal: $internal
+      projectName: $projectName
+      location: $location
+      reason: $reason
+      additionalInfo: $additionalInfo
+      attendInfo: $attendInfo
+      operatorId: $operatorId
+      supervisorId: $supervisorId
+      projectManagerId: $projectManagerId
+    )
   }
 `;
 
-export const DELETE_ENTITY_REPAIR = gql`
+export const DELETE_ENTITY_REPAIR_REQUEST = gql`
   mutation ($id: Int!) {
-    deleteEntityRepair(id: $id)
-  }
-`;
-
-export const SET_ENTITY_REPAIR_STATUS = gql`
-  mutation ($id: Int!, $status: RepairStatus!) {
-    setEntityRepairStatus(id: $id, status: $status)
+    deleteEntityRepairRequest(id: $id)
   }
 `;
 
@@ -1084,5 +1118,11 @@ export const ADD_CHECKLIST_ITEM_ISSUE = gql`
       itemId: $itemId
       comment: $comment
     )
+  }
+`;
+
+export const TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST = gql`
+  mutation ($id: Int!, $approve: Boolean!) {
+    toggleApproveEntityRepairRequest(id: $id, approve: $approve)
   }
 `;
