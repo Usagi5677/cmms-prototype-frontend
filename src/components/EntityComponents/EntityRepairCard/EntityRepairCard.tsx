@@ -1,11 +1,18 @@
-import { ToolOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  ToolOutlined,
+} from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Checkbox, Collapse, Spin, Tag, Tooltip, Typography } from "antd";
 
 import moment from "moment";
 import { useContext } from "react";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
-import { TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST } from "../../../api/mutations";
+import {
+  TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST,
+  TOGGLE_COMPLETE_ENTITY_REPAIR_REQUEST,
+} from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
@@ -40,7 +47,19 @@ const EntityRepairCard = ({
       ],
     }
   );
-
+  const [toggleComplete, { loading: togglingTwo }] = useMutation(
+    TOGGLE_COMPLETE_ENTITY_REPAIR_REQUEST,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating complete.");
+      },
+      refetchQueries: [
+        "getSingleEntity",
+        "getAllHistoryOfEntity",
+        "getAllRepairRequestOfEntity",
+      ],
+    }
+  );
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -102,6 +121,26 @@ const EntityRepairCard = ({
                   <div className={classes["fourth-block"]}>
                     {self.assignedPermission.hasEntityRepairRequestEdit && (
                       <Checkbox
+                        checked={repair?.repairedAt !== null}
+                        disabled={isDeleted}
+                        onChange={(e) =>
+                          toggleComplete({
+                            variables: {
+                              id: repair.id,
+                              complete: e.target.checked,
+                            },
+                          })
+                        }
+                        className={classes["checkbox"]}
+                      >
+                        Complete
+                        {togglingTwo && (
+                          <Spin style={{ marginRight: 5 }} size="small" />
+                        )}
+                      </Checkbox>
+                    )}
+                    {self.assignedPermission.hasEntityRepairRequestEdit && (
+                      <Checkbox
                         checked={repair?.approvedAt !== null}
                         disabled={isDeleted}
                         onChange={(e) =>
@@ -120,10 +159,18 @@ const EntityRepairCard = ({
                         )}
                       </Checkbox>
                     )}
-                    {repair?.approvedAt ? (
-                      <Tag color={"success"}>Approved</Tag>
+                    {repair?.approvedAt && repair?.repairedAt ? (
+                      <Tag icon={<CheckCircleOutlined />} color={"success"}>
+                        Approved & Completed
+                      </Tag>
+                    ) : repair?.approvedAt ? (
+                      <Tag icon={<CheckCircleOutlined />} color={"success"}>
+                        Approved
+                      </Tag>
                     ) : (
-                      <Tag color={"processing"}>Pending</Tag>
+                      <Tag icon={<ClockCircleOutlined />} color={"processing"}>
+                        Pending
+                      </Tag>
                     )}
                   </div>
                   <div className={classes["fifth-block"]}>
@@ -196,11 +243,37 @@ const EntityRepairCard = ({
                 {repair?.approvedAt ? (
                   <span
                     className={classes["title"]}
-                    title={moment(repair?.createdAt).format(
+                    title={moment(repair?.approvedAt).format(
                       DATETIME_FORMATS.FULL
                     )}
                   >
-                    {moment(repair?.createdAt).format(DATETIME_FORMATS.SHORT)}
+                    {moment(repair?.approvedAt).format(DATETIME_FORMATS.SHORT)}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Repairer:</span>
+                {repair?.repairedBy ? (
+                  <span>
+                    {repair?.repairedBy?.fullName}{" "}
+                    {"(" + repair?.repairedBy?.rcno + ")"}
+                  </span>
+                ) : (
+                  "None"
+                )}
+              </div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Repaired Date:</span>
+                {repair?.repairedAt ? (
+                  <span
+                    className={classes["title"]}
+                    title={moment(repair?.repairedAt).format(
+                      DATETIME_FORMATS.FULL
+                    )}
+                  >
+                    {moment(repair?.repairedAt).format(DATETIME_FORMATS.SHORT)}
                   </span>
                 ) : (
                   "None"

@@ -1910,7 +1910,9 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
           operatorId
           supervisorId
           projectManagerId
+          repairedById
           approvedAt
+          repairedAt
           requestedBy {
             ...UserFieldsAPS
           }
@@ -1924,6 +1926,9 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
             ...UserFieldsAPS
           }
           approvedBy {
+            ...UserFieldsAPS
+          }
+          repairedBy {
             ...UserFieldsAPS
           }
         }

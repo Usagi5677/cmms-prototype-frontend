@@ -1126,3 +1126,9 @@ export const TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST = gql`
     toggleApproveEntityRepairRequest(id: $id, approve: $approve)
   }
 `;
+
+export const TOGGLE_COMPLETE_ENTITY_REPAIR_REQUEST = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleCompleteEntityRepairRequest(id: $id, complete: $complete)
+  }
+`;
