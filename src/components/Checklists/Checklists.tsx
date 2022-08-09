@@ -30,12 +30,15 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
     date.clone().endOf("month"),
   ]);
 
-  const [getChecklist, { data, loading }] = useLazyQuery(GET_CHECKLIST, {
-    onError: (err) => {
-      errorMessage(err, "Error loading checklist.");
-    },
-    notifyOnNetworkStatusChange: true,
-  });
+  const [getChecklist, { data, loading, refetch }] = useLazyQuery(
+    GET_CHECKLIST,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading checklist.");
+      },
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
   const [getSummary, { data: summary }] = useLazyQuery(CHECKLIST_SUMMARIES);
 
@@ -224,6 +227,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       <AddChecklistAttachment
                         entity={entity}
                         checklist={data?.checklist}
+                        refetchChecklist={refetch}
                       />
                     </div>
                   </div>

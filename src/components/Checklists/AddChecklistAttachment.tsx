@@ -12,11 +12,13 @@ import Transportation from "../../models/Transportation";
 export interface AddChecklistAttachmentProps {
   entity: Entity | Machine | Transportation;
   checklist: Checklist;
+  refetchChecklist: any;
 }
 
 export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
   entity,
   checklist,
+  refetchChecklist,
 }) => {
   const [fileList, setFileList] = useState<RcFile[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -78,6 +80,7 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
       })
       .finally(function () {
         setUploading(false);
+        refetchChecklist();
         handleCancel();
       });
   };
