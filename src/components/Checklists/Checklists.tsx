@@ -245,14 +245,16 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
             {data?.checklist.attachments.length > 0 && (
               <ChecklistAttachments checklist={data?.checklist} />
             )}
-            {data?.checklist.items.map((item: ChecklistItemModel) => (
-              <ChecklistItem
-                checklist={data?.checklist}
-                item={item}
-                key={item.id}
-                disabled={isOlderChecklist}
-              />
-            ))}
+            <div style={{ marginTop: "1rem" }}>
+              {data?.checklist.items.map((item: ChecklistItemModel) => (
+                <ChecklistItem
+                  checklist={data?.checklist}
+                  item={item}
+                  key={item.id}
+                  disabled={isOlderChecklist}
+                />
+              ))}
+            </div>
           </div>
         </>
       )}
