@@ -181,7 +181,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
       {data?.checklist && (
         <>
           <div style={{ marginTop: ".5rem" }}>
-            {type === "Daily" && (
+            {type === "Daily" ? (
               <>
                 {data?.checklist.currentMeterReading && (
                   <div style={{ display: "flex" }}>
@@ -233,6 +233,14 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                   </div>
                 )}
               </>
+            ) : (
+              <div style={{ marginTop: "1rem" }}>
+                <AddChecklistAttachment
+                  entity={entity}
+                  checklist={data?.checklist}
+                  refetchChecklist={refetch}
+                />
+              </div>
             )}
             {data?.checklist.attachments.length > 0 && (
               <ChecklistAttachments checklist={data?.checklist} />
