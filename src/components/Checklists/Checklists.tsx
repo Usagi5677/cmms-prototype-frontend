@@ -15,6 +15,8 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
 import { Entity } from "../../models/Entity/Entity";
 import { AddReading } from "./AddReading";
+import { AddChecklistAttachment } from "./AddChecklistAttachment";
+import { ChecklistAttachments } from "./ChecklistAttachments";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation | Entity;
@@ -28,12 +30,15 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
     date.clone().endOf("month"),
   ]);
 
-  const [getChecklist, { data, loading }] = useLazyQuery(GET_CHECKLIST, {
-    onError: (err) => {
-      errorMessage(err, "Error loading checklist.");
-    },
-    notifyOnNetworkStatusChange: true,
-  });
+  const [getChecklist, { data, loading, refetch }] = useLazyQuery(
+    GET_CHECKLIST,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading checklist.");
+      },
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
   const [getSummary, { data: summary }] = useLazyQuery(CHECKLIST_SUMMARIES);
 
@@ -176,7 +181,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
       {data?.checklist && (
         <>
           <div style={{ marginTop: ".5rem" }}>
-            {type === "Daily" && (
+            {type === "Daily" ? (
               <>
                 {data?.checklist.currentMeterReading && (
                   <div style={{ display: "flex" }}>
@@ -211,18 +216,45 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     </>
                   )}
                 {!isOlderChecklist && (
-                  <AddReading entity={entity} checklist={data?.checklist} />
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    <AddReading entity={entity} checklist={data?.checklist} />
+                    <div style={{ marginLeft: "1rem" }}>
+                      <AddChecklistAttachment
+                        entity={entity}
+                        checklist={data?.checklist}
+                        refetchChecklist={refetch}
+                      />
+                    </div>
+                  </div>
                 )}
               </>
+            ) : (
+              <div style={{ marginTop: "1rem" }}>
+                <AddChecklistAttachment
+                  entity={entity}
+                  checklist={data?.checklist}
+                  refetchChecklist={refetch}
+                />
+              </div>
             )}
-            {data?.checklist.items.map((item: ChecklistItemModel) => (
-              <ChecklistItem
-                checklist={data?.checklist}
-                item={item}
-                key={item.id}
-                disabled={isOlderChecklist}
-              />
-            ))}
+            {data?.checklist.attachments.length > 0 && (
+              <ChecklistAttachments checklist={data?.checklist} />
+            )}
+            <div style={{ marginTop: "1rem" }}>
+              {data?.checklist.items.map((item: ChecklistItemModel) => (
+                <ChecklistItem
+                  checklist={data?.checklist}
+                  item={item}
+                  key={item.id}
+                  disabled={isOlderChecklist}
+                />
+              ))}
+            </div>
           </div>
         </>
       )}

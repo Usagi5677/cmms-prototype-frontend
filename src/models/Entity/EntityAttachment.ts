@@ -8,5 +8,5 @@ export default interface EntityAttachment {
   description: string;
   mode: string;
   createdAt?: Date;
-  createdBy?: User;
+  user: User;
 }

@@ -1,5 +1,6 @@
 import ChecklistComment from "./ChecklistComment";
 import ChecklistItem from "./ChecklistItem";
+import EntityAttachment from "./Entity/EntityAttachment";
 
 export default interface Checklist {
   id: number;
@@ -10,4 +11,5 @@ export default interface Checklist {
   workingHour?: number;
   items: ChecklistItem[];
   comments: ChecklistComment[];
+  attachments: EntityAttachment[];
 }

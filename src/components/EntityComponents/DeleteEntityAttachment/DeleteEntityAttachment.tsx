@@ -1,26 +1,19 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
-import { DELETE_TRANSPORTATION_ATTACHMENT } from "../../../api/mutations";
+import { DELETE_ENTITY_ATTACHMENT } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteEntityAttachment.module.css";
 
-const DeleteEntityAttachment = ({
-  id,
-}: {
-  id: number;
-}) => {
+const DeleteEntityAttachment = ({ id }: { id: number }) => {
   const [removeEntityAttachment, { loading: deleting }] = useMutation(
-    DELETE_TRANSPORTATION_ATTACHMENT,
+    DELETE_ENTITY_ATTACHMENT,
     {
       onCompleted: () => {
         message.success("Successfully removed attachment.");
       },
       onError: (error) => {
-        errorMessage(
-          error,
-          "Unexpected error while removing attachment."
-        );
+        errorMessage(error, "Unexpected error while removing attachment.");
       },
       refetchQueries: ["entityAttachments", "getAllHistoryOfEntity"],
     }
