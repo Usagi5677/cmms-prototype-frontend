@@ -4,8 +4,7 @@
   flex-direction: column;
   flex-grow: 1;
   justify-content: space-between;
-  padding: 10px;
-  margin: 10px 0;
+  align-items: center;
   border-radius: 6px;
   background-color: white;
   border: 1px solid #ccc;
@@ -20,7 +19,6 @@
 }
 
 .image-container {
-  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +46,7 @@
 
 .option-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 }
 

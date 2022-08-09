@@ -15,6 +15,8 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
 import { Entity } from "../../models/Entity/Entity";
 import { AddReading } from "./AddReading";
+import { AddChecklistAttachment } from "./AddChecklistAttachment";
+import { ChecklistAttachments } from "./ChecklistAttachments";
 
 export interface ChecklistsProps {
   entity: Machine | Transportation | Entity;
@@ -211,9 +213,25 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     </>
                   )}
                 {!isOlderChecklist && (
-                  <AddReading entity={entity} checklist={data?.checklist} />
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    <AddReading entity={entity} checklist={data?.checklist} />
+                    <div style={{ marginLeft: "1rem" }}>
+                      <AddChecklistAttachment
+                        entity={entity}
+                        checklist={data?.checklist}
+                      />
+                    </div>
+                  </div>
                 )}
               </>
+            )}
+            {data?.checklist.attachments.length > 0 && (
+              <ChecklistAttachments checklist={data?.checklist} />
             )}
             {data?.checklist.items.map((item: ChecklistItemModel) => (
               <ChecklistItem

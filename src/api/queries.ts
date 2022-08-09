@@ -1459,12 +1459,26 @@ export const ENTITY_CHECKLIST_TEMPLATE = gql`
 `;
 
 export const GET_CHECKLIST = gql`
+  ${APS_USER_FRAGMENT}
   query checklist($input: ChecklistInput!) {
     checklist(input: $input) {
       id
       workingHour
       currentMeterReading
       to
+      attachments {
+        id
+        entityId
+        createdAt
+        mimeType
+        originalName
+        description
+        mode
+        createdAt
+        user {
+          ...UserFieldsAPS
+        }
+      }
       items {
         id
         description
@@ -2028,7 +2042,7 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
           description
           mode
           createdAt
-          completedBy {
+          user {
             ...UserFieldsAPS
           }
         }

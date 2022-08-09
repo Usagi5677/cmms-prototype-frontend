@@ -18,9 +18,11 @@ import DeleteEntityAttachment from "../DeleteEntityAttachment/DeleteEntityAttach
 const ParsedEntityAttachment = ({
   attachmentData,
   isDeleted,
+  checklistView = false,
 }: {
   attachmentData: EntityAttachment;
   isDeleted?: boolean | undefined;
+  checklistView?: boolean;
 }) => {
   const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;
@@ -84,32 +86,47 @@ const ParsedEntityAttachment = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["option-wrapper"]}>
-        <div>{attachmentData?.id}</div>
         <div className={classes["options"]}>
-          {fileLoading &&  (
+          {fileLoading && (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
           )}
-          {file && self.assignedPermission.hasEntityAttachmentEdit && !isDeleted && (
-            <EditEntityAttachment attachment={attachmentData} />
-          )}
-          {file &&
-            self.assignedPermission.hasEntityAttachmentDelete && !isDeleted && (
-              <DeleteEntityAttachment id={attachmentData?.id} />
-            )}
-          {file && (
-            <Tooltip title={"Download"}>
-              <DownloadOutlined
-                className={classes["download-icon"]}
-                onClick={download}
-              />
-            </Tooltip>
+          {!checklistView && (
+            <>
+              {file &&
+                self.assignedPermission.hasEntityAttachmentEdit &&
+                !isDeleted && (
+                  <EditEntityAttachment attachment={attachmentData} />
+                )}
+              {file &&
+                self.assignedPermission.hasEntityAttachmentDelete &&
+                !isDeleted && (
+                  <DeleteEntityAttachment id={attachmentData?.id} />
+                )}
+              {file && (
+                <Tooltip title={"Download"}>
+                  <DownloadOutlined
+                    className={classes["download-icon"]}
+                    onClick={download}
+                  />
+                </Tooltip>
+              )}
+            </>
           )}
         </div>
       </div>
 
       {file && isImage && (
-        <div className={classes["image-container"]}>
-          <Image height={"80%"} width={"80%"} src={file} />
+        <div
+          className={classes["image-container"]}
+          style={{
+            padding: checklistView ? undefined : 10,
+            height: checklistView ? 120 : undefined,
+            width: checklistView ? 120 : undefined,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Image src={file} />
         </div>
       )}
       {isError && (
@@ -119,24 +136,44 @@ const ParsedEntityAttachment = ({
         </div>
       )}
       <div className={classes["file-info-wrapper"]}>
-        <div>
-          <FileOutlined />{" "}
-          {attachmentData && (
-            <span>{shortFileName(attachmentData?.originalName)}</span>
-          )}
-        </div>
-        <div className={classes["title-wrapper"]}>
-          <Tooltip title="Created At" className={classes["flex"]}>
-            <FaRegClock />
-          </Tooltip>
+        {!checklistView && (
+          <>
+            <div>
+              <FileOutlined />{" "}
+              {attachmentData && (
+                <span>{shortFileName(attachmentData?.originalName)}</span>
+              )}
+            </div>
+            <div className={classes["title-wrapper"]}>
+              <Tooltip title="Created At" className={classes["flex"]}>
+                <FaRegClock />
+              </Tooltip>
 
-          <span className={classes["title"]}>
-            {moment(attachmentData?.createdAt).format(
-              DATETIME_FORMATS.DAY_MONTH_YEAR
-            )}
-          </span>
-        </div>
+              <span className={classes["title"]}>
+                {moment(attachmentData?.createdAt).format(
+                  DATETIME_FORMATS.DAY_MONTH_YEAR
+                )}
+              </span>
+            </div>
+          </>
+        )}
         <div>{attachmentData?.description}</div>
+        {checklistView && (
+          <div style={{ opacity: 0.5, fontSize: "80%" }}>
+            <div>
+              {attachmentData.user.fullName} ({attachmentData.user.rcno})
+            </div>
+            <div
+              title={`${moment(attachmentData.createdAt).format(
+                DATETIME_FORMATS.FULL
+              )}`}
+            >
+              {moment(attachmentData.createdAt).format(
+                DATETIME_FORMATS.DAY_MONTH_YEAR
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
