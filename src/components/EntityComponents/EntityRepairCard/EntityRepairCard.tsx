@@ -1,13 +1,14 @@
 import {
   CheckCircleOutlined,
   ClockCircleOutlined,
+  SyncOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Checkbox, Collapse, Spin, Tag, Tooltip, Typography } from "antd";
 
 import moment from "moment";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
 import {
   TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST,
@@ -31,9 +32,10 @@ const EntityRepairCard = ({
   isDeleted?: boolean | undefined;
   userData?: User[];
 }) => {
+  const [isChecked, setIsChecked] = useState(false);
   const { user: self } = useContext(UserContext);
   const { Paragraph } = Typography;
-
+  const { CheckableTag } = Tag;
   const [toggleApproval, { loading: toggling }] = useMutation(
     TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST,
     {
@@ -119,59 +121,66 @@ const EntityRepairCard = ({
                 </div>
                 <div className={classes["block-wrapper"]}>
                   <div className={classes["fourth-block"]}>
-                    {self.assignedPermission.hasEntityRepairRequestEdit && (
-                      <Checkbox
-                        checked={repair?.repairedAt !== null}
-                        disabled={isDeleted}
-                        onChange={(e) =>
+                    <div className={classes["tag-wrapper"]}>
+                      <Tag
+                        icon={
+                          togglingTwo ? (
+                            <SyncOutlined spin />
+                          ) : repair?.repairedAt ? (
+                            <CheckCircleOutlined />
+                          ) : (
+                            <ClockCircleOutlined />
+                          )
+                        }
+                        color={repair?.repairedAt ? "success" : "processing"}
+                        onClick={() => {
+                          setIsChecked((prev) => !prev);
                           toggleComplete({
                             variables: {
                               id: repair.id,
-                              complete: e.target.checked,
+                              complete: isChecked,
                             },
-                          })
-                        }
-                        className={classes["checkbox"]}
+                          });
+                        }}
+                        style={{
+                          pointerEvents: self.assignedPermission
+                            .hasEntityRepairRequestEdit
+                            ? "initial"
+                            : "none",
+                        }}
                       >
-                        Complete
-                        {togglingTwo && (
-                          <Spin style={{ marginRight: 5 }} size="small" />
-                        )}
-                      </Checkbox>
-                    )}
-                    {self.assignedPermission.hasEntityRepairRequestEdit && (
-                      <Checkbox
-                        checked={repair?.approvedAt !== null}
-                        disabled={isDeleted}
-                        onChange={(e) =>
-                          toggleApproval({
-                            variables: {
-                              id: repair.id,
-                              approve: e.target.checked,
-                            },
-                          })
-                        }
-                        className={classes["checkbox"]}
-                      >
-                        Approve{" "}
-                        {toggling && (
-                          <Spin style={{ marginRight: 5 }} size="small" />
-                        )}
-                      </Checkbox>
-                    )}
-                    {repair?.approvedAt && repair?.repairedAt ? (
-                      <Tag icon={<CheckCircleOutlined />} color={"success"}>
-                        Approved & Completed
+                        {repair?.repairedAt ? "Completed" : "Incomplete"}
                       </Tag>
-                    ) : repair?.approvedAt ? (
-                      <Tag icon={<CheckCircleOutlined />} color={"success"}>
-                        Approved
-                      </Tag>
-                    ) : (
-                      <Tag icon={<ClockCircleOutlined />} color={"processing"}>
-                        Pending
-                      </Tag>
-                    )}
+                    </div>
+                    <Tag
+                      icon={
+                        toggling ? (
+                          <SyncOutlined spin />
+                        ) : repair?.approvedAt ? (
+                          <CheckCircleOutlined />
+                        ) : (
+                          <ClockCircleOutlined />
+                        )
+                      }
+                      color={repair?.approvedAt ? "success" : "processing"}
+                      onClick={() => {
+                        setIsChecked((prev) => !prev);
+                        toggleApproval({
+                          variables: {
+                            id: repair.id,
+                            approve: isChecked,
+                          },
+                        });
+                      }}
+                      style={{
+                        pointerEvents: self.assignedPermission
+                          .hasEntityRepairRequestEdit
+                          ? "initial"
+                          : "none",
+                      }}
+                    >
+                      {repair?.approvedAt ? "Approved" : "Approving"}
+                    </Tag>
                   </div>
                   <div className={classes["fifth-block"]}>
                     <EditEntityRepairRequest
