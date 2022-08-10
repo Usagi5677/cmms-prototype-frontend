@@ -7,6 +7,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 .content {
   padding: 0 10px;
@@ -16,8 +18,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 .checkbox {
-  margin: 0 20px;
+  margin: 10px 20px;
+}
+
+.add {
+  margin-top: 10px;
+}
+
+@media only screen and (min-width: 620px) {
+  .options {
+    flex-direction: row;
+  }
+  .first-block {
+    flex-direction: row;
+  }
+  .checkbox {
+    margin: 0 20px;
+  }
+  .add {
+    margin-top: 0;
+  }
 }

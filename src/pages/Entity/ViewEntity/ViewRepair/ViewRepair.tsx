@@ -165,10 +165,12 @@ const ViewRepair = ({
         </div>
 
         {self.assignedPermission.hasEntityRepairRequestAdd && !isDeleted ? (
-          <AddEntityRepairRequest
-            entityID={entityID}
-            userData={userData?.getUsersWithPermission}
-          />
+          <div className={classes["add"]}>
+            <AddEntityRepairRequest
+              entityID={entityID}
+              userData={userData?.getUsersWithPermission}
+            />
+          </div>
         ) : null}
       </div>
       {loading && (
