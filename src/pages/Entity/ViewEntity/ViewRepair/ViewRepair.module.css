@@ -5,9 +5,19 @@
 
 .options {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }
 .content {
   padding: 0 10px;
+}
+
+.first-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkbox {
+  margin: 0 20px;
 }

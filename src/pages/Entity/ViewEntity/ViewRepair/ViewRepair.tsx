@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Spin } from "antd";
+import { Checkbox, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   GET_ALL_REPAIR_OF_ENTITY,
@@ -14,6 +14,7 @@ import AddEntityRepairRequest from "../../../../components/EntityComponents/AddE
 import EntityRepairCard from "../../../../components/EntityComponents/EntityRepairCard/EntityRepairCard";
 import EntityRepairRequest from "../../../../models/Entity/EntityRepairRequest";
 import User from "../../../../models/User";
+import Search from "../../../../components/common/Search";
 
 const ViewRepair = ({
   entityID,
@@ -26,11 +27,15 @@ const ViewRepair = ({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const [complete, setComplete] = useState(false);
+  const [approve, setApprove] = useState(false);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       entityId: number;
+      complete: boolean;
+      approve: boolean;
     }
   >({
     first: 5,
@@ -39,6 +44,8 @@ const ViewRepair = ({
     after: null,
     search: "",
     entityId: entityID,
+    approve: false,
+    complete: false,
   });
 
   const [getAllRepairRequestOfEntity, { data, loading }] = useLazyQuery(
@@ -78,7 +85,11 @@ const ViewRepair = ({
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string) => {
+  const searchDebounced = (
+    value: string,
+    approveValue: boolean,
+    completeValue: boolean
+  ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -86,7 +97,9 @@ const ViewRepair = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
-          first: 5,
+          approve: approveValue,
+          complete: completeValue,
+          first: 3,
           last: null,
           before: null,
           after: null,
@@ -101,9 +114,10 @@ const ViewRepair = ({
       initialRender.current = false;
       return;
     }
-    searchDebounced(search);
+    // eslint-disable-next-line no-restricted-globals
+    searchDebounced(search, approve, complete);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, approve, complete]);
 
   // Pagination functions
   const next = () => {
@@ -133,6 +147,23 @@ const ViewRepair = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
+        <div className={classes["first-block"]}>
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+          <div className={classes["checkbox"]}>
+            <Checkbox onChange={(e) => setComplete(e.target.checked)}>
+              Complete
+            </Checkbox>
+          </div>
+
+          <Checkbox onChange={(e) => setApprove(e.target.checked)}>
+            Approve
+          </Checkbox>
+        </div>
+
         {self.assignedPermission.hasEntityRepairRequestAdd && !isDeleted ? (
           <AddEntityRepairRequest
             entityID={entityID}

@@ -1881,6 +1881,8 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
     $last: Int
     $search: String
     $entityId: Int!
+    $complete: Boolean
+    $approve: Boolean
   ) {
     getAllRepairRequestOfEntity(
       after: $after
@@ -1889,6 +1891,8 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
       last: $last
       search: $search
       entityId: $entityId
+      complete: $complete
+      approve: $approve
     ) {
       pageInfo {
         endCursor

@@ -32,10 +32,8 @@ const EntityRepairCard = ({
   isDeleted?: boolean | undefined;
   userData?: User[];
 }) => {
-  const [isChecked, setIsChecked] = useState(false);
   const { user: self } = useContext(UserContext);
   const { Paragraph } = Typography;
-  const { CheckableTag } = Tag;
   const [toggleApproval, { loading: toggling }] = useMutation(
     TOGGLE_APPROVE_ENTITY_REPAIR_REQUEST,
     {
@@ -132,13 +130,13 @@ const EntityRepairCard = ({
                             <ClockCircleOutlined />
                           )
                         }
-                        color={repair?.repairedAt ? "success" : "processing"}
+                        color={repair?.repairedAt ? "success" : ""}
                         onClick={() => {
-                          setIsChecked((prev) => !prev);
+                          let flag = !repair?.repairedAt;
                           toggleComplete({
                             variables: {
                               id: repair.id,
-                              complete: isChecked,
+                              complete: flag,
                             },
                           });
                         }}
@@ -162,13 +160,13 @@ const EntityRepairCard = ({
                           <ClockCircleOutlined />
                         )
                       }
-                      color={repair?.approvedAt ? "success" : "processing"}
+                      color={repair?.approvedAt ? "success" : ""}
                       onClick={() => {
-                        setIsChecked((prev) => !prev);
+                        let flag = !repair?.approvedAt;
                         toggleApproval({
                           variables: {
                             id: repair.id,
-                            approve: isChecked,
+                            approve: flag,
                           },
                         });
                       }}
