@@ -143,6 +143,7 @@ export const ENTITY_FRAGMENT = gql`
       user {
         ...UserFieldsAPS
       }
+      type
     }
     sparePRs {
       requestedDate

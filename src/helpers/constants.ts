@@ -481,4 +481,6 @@ export const ISLANDS = [
 
 export const ENTITY_TYPES = ["Machine", "Vessel", "Vehicle"];
 
-export const REPAIR_LOCATION = ["Site", "Workshop"]
+export const REPAIR_LOCATION = ["Site", "Workshop"];
+
+export const ENTITY_ASSIGNMENT_TYPES = ["Admin", "Engineer", "User"] as const;

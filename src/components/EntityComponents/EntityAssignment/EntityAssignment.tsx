@@ -20,10 +20,16 @@ import { UserTagStringToColor } from "../../../helpers/style";
 import User from "../../../models/User";
 import classes from "./EntityAssignment.module.css";
 
-const EntityAssignment = ({
-  entityID,
-}: {
-  entityID: number;
+import React from "react";
+
+export interface EntityAssignmentProps {
+  entityId: number;
+  type: "Admin" | "Engineer" | "User";
+}
+
+export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
+  entityId,
+  type,
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -31,16 +37,13 @@ const EntityAssignment = ({
     ASSIGN_USER_TO_ENTITY,
     {
       onCompleted: () => {
-        message.success("Successfully assigned user.");
+        message.success("Successfully assigned.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while assigning user.");
+        errorMessage(error, "Unexpected error while assigning.");
       },
-      refetchQueries: [
-        "getSingleEntity",
-        "getAllHistoryOfEntity",
-      ],
+      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity"],
     }
   );
 
@@ -102,8 +105,9 @@ const EntityAssignment = ({
 
     assignUsersToEntity({
       variables: {
-        entityId: entityID,
+        entityId: entityId,
         userIds: assign,
+        type,
       },
     });
   };
@@ -119,15 +123,14 @@ const EntityAssignment = ({
   return (
     <>
       <div className={classes["info-edit"]}>
-        <Tooltip title="Assign">
+        <Tooltip title={`Assign ${type}`}>
           <FaUserCog onClick={() => setVisible(true)} />
         </Tooltip>
         <Modal
           visible={visible}
           onCancel={handleCancel}
           footer={null}
-          title={"Assign User"}
-          width="90vw"
+          title={`Assign ${type}`}
           style={{ maxWidth: 700 }}
           destroyOnClose={true}
         >
@@ -140,13 +143,13 @@ const EntityAssignment = ({
             preserve={false}
           >
             <Form.Item
-              label="Assign User"
+              label="User"
               name="assign"
               required={false}
               rules={[
                 {
                   required: true,
-                  message: "Please assign the user.",
+                  message: "Please select a user.",
                 },
               ]}
             >
@@ -156,6 +159,7 @@ const EntityAssignment = ({
                 tagRender={tagRender}
                 style={{ width: "100%" }}
                 options={options}
+                placeholder="Select employees"
               />
             </Form.Item>
             <Row justify="end" gutter={16}>
