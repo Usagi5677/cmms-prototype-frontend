@@ -116,7 +116,7 @@ const ViewPeriodicMaintenance = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasEntityPeriodicMaintenanceAdd &&
+        {self.assignedPermission?.hasEntityPeriodicMaintenanceAdd &&
         !isDeleted ? (
           <AddEntityPeriodicMaintenance
             entityID={entityID}

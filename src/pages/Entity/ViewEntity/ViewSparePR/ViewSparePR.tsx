@@ -112,7 +112,7 @@ const ViewSparePR = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasEntitySparePRAdd && !isDeleted ? (
+        {self.assignedPermission?.hasEntitySparePRAdd && !isDeleted ? (
           <AddEntitySparePR entityID={entityID} />
         ) : null}
       </div>

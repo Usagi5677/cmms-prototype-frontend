@@ -112,7 +112,7 @@ const ViewBreakdown = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasEntityBreakdownAdd && !isDeleted ? (
+        {self.assignedPermission?.hasEntityBreakdownAdd && !isDeleted ? (
           <AddEntityBreakdown entityID={entityID} />
         ) : null}
       </div>

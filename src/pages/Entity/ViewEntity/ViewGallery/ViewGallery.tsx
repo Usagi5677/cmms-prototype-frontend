@@ -112,7 +112,7 @@ const ViewGallery = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission.hasEntityAttachmentAdd && !isDeleted ? (
+        {self.assignedPermission?.hasEntityAttachmentAdd && !isDeleted ? (
           <AddEntityAttachment entityID={entityID} />
         ) : null}
 

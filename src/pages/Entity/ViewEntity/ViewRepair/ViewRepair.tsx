@@ -164,7 +164,7 @@ const ViewRepair = ({
           </Checkbox>
         </div>
 
-        {self.assignedPermission.hasEntityRepairRequestAdd && !isDeleted ? (
+        {self.assignedPermission?.hasEntityRepairRequestAdd && !isDeleted ? (
           <div className={classes["add"]}>
             <AddEntityRepairRequest
               entityID={entityID}
