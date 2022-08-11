@@ -1710,6 +1710,7 @@ export const ALL_ENTITY = gql`
     $status: EntityStatus
     $location: [String!]
     $department: [String!]
+    $typeId: Int
   ) {
     getAllEntity(
       after: $after
@@ -1723,6 +1724,7 @@ export const ALL_ENTITY = gql`
       status: $status
       location: $location
       department: $department
+      typeId: $typeId
     ) {
       pageInfo {
         endCursor

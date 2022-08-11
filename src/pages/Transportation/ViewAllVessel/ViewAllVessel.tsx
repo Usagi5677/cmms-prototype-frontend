@@ -19,6 +19,7 @@ import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity"
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
+import { TypeSelector } from "../../../components/Type/TypeSelector";
 
 const Vessels = () => {
   const { user: self } = useContext(UserContext);
@@ -28,6 +29,7 @@ const Vessels = () => {
   const [params, setParams] = useSearchParams();
   const [location, setLocation] = useState([]);
   const [department, setDepartment] = useState([]);
+  const [typeId, setTypeId] = useState<number | null>(null);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -37,6 +39,7 @@ const Vessels = () => {
       status: any;
       location: string[];
       department: string[];
+      typeId: number | null;
     }
   >({
     first: 20,
@@ -48,6 +51,7 @@ const Vessels = () => {
     department: [],
     entityType: "Vessel",
     status: params.get("status"),
+    typeId: null
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -81,7 +85,8 @@ const Vessels = () => {
   const searchDebounced = (
     value: string,
     locationValue: string[],
-    departmentValue: string[]
+    departmentValue: string[],
+    typeIdValue: number
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -92,6 +97,7 @@ const Vessels = () => {
           search: value,
           location: locationValue,
           department: departmentValue,
+          typeId: typeIdValue,
           first: 20,
           last: null,
           before: null,
@@ -107,9 +113,9 @@ const Vessels = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location, department);
+    searchDebounced(search, location, department, typeId!);
     // eslint-disable-next-line
-  }, [search, location, department]);
+  }, [search, location, department, typeId]);
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
@@ -256,8 +262,13 @@ const Vessels = () => {
             }}
             value={filter.status}
           />
+          <div className={classes["item-wrapper"]}>
+            <TypeSelector entityType={"Vessel"} setTypeId={setTypeId} />
+          </div>
           {self.assignedPermission.hasEntityAdd ? (
-            <AddEntity entityType="Vessel" />
+            <div className={classes["item-wrapper"]}>
+              <AddEntity entityType="Vessel" />
+            </div>
           ) : null}
         </div>
         {loading && (

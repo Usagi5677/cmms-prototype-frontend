@@ -107,7 +107,7 @@ const EditEntity = ({
       label: department,
     });
   });
-  console.log(moment(entity?.registeredDate));
+  
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">

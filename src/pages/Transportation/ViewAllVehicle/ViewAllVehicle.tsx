@@ -18,6 +18,7 @@ import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCa
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
+import { TypeSelector } from "../../../components/Type/TypeSelector";
 
 const Vehicles = () => {
   const { user: self } = useContext(UserContext);
@@ -27,6 +28,7 @@ const Vehicles = () => {
   const [params, setParams] = useSearchParams();
   const [location, setLocation] = useState([]);
   const [department, setDepartment] = useState([]);
+  const [typeId, setTypeId] = useState<number | null>(null);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -36,6 +38,7 @@ const Vehicles = () => {
       status: any;
       location: string[];
       department: string[];
+      typeId: number | null;
     }
   >({
     first: 20,
@@ -47,6 +50,7 @@ const Vehicles = () => {
     department: [],
     entityType: "Vehicle",
     status: params.get("status"),
+    typeId: null,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -80,7 +84,8 @@ const Vehicles = () => {
   const searchDebounced = (
     value: string,
     locationValue: string[],
-    departmentValue: string[]
+    departmentValue: string[],
+    typeIdValue: number
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -91,6 +96,7 @@ const Vehicles = () => {
           search: value,
           location: locationValue,
           department: departmentValue,
+          typeId: typeIdValue,
           first: 20,
           last: null,
           before: null,
@@ -106,9 +112,9 @@ const Vehicles = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location, department);
+    searchDebounced(search, location, department, typeId!);
     // eslint-disable-next-line
-  }, [search, location, department]);
+  }, [search, location, department, typeId]);
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
@@ -254,7 +260,10 @@ const Vehicles = () => {
             }}
             value={filter.status}
           />
-          <div className={classes["add-wrapper"]}>
+          <div className={classes["item-wrapper"]}>
+            <TypeSelector entityType={"Vehicle"} setTypeId={setTypeId} />
+          </div>
+          <div className={classes["item-wrapper"]}>
             {self.assignedPermission.hasEntityAdd ? (
               <AddEntity entityType="Vehicle" />
             ) : null}

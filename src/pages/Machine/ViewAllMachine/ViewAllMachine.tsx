@@ -22,6 +22,7 @@ import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity"
 import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
+import { TypeSelector } from "../../../components/Type/TypeSelector";
 
 const Machinery = () => {
   const { user: self } = useContext(UserContext);
@@ -30,6 +31,7 @@ const Machinery = () => {
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
   const [location, setLocation] = useState([]);
+  const [typeId, setTypeId] = useState<number | null>(null);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -38,6 +40,7 @@ const Machinery = () => {
       status: any;
       location: string[];
       entityType: string;
+      typeId: number | null;
     }
   >({
     first: 20,
@@ -48,6 +51,7 @@ const Machinery = () => {
     location: [],
     status: params.get("status"),
     entityType: "Machine",
+    typeId: null,
   });
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -98,7 +102,11 @@ const Machinery = () => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string, locationValue: string[]) => {
+  const searchDebounced = (
+    value: string,
+    locationValue: string[],
+    typeIdValue: number
+  ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -107,6 +115,7 @@ const Machinery = () => {
           ...filter,
           search: value,
           location: locationValue,
+          typeId: typeIdValue,
           first: 20,
           last: null,
           before: null,
@@ -122,9 +131,9 @@ const Machinery = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location);
+    searchDebounced(search, location, typeId!);
     // eslint-disable-next-line
-  }, [search, location]);
+  }, [search, location, typeId]);
 
   // Pagination functions
   const next = () => {
@@ -235,7 +244,11 @@ const Machinery = () => {
             }}
             value={filter.status}
           />
-          <div className={classes["add-machine-wrapper"]}>
+          <div className={classes["item-wrapper"]}>
+            <TypeSelector entityType={"Machine"} setTypeId={setTypeId} />
+          </div>
+
+          <div className={classes["item-wrapper"]}>
             {self.assignedPermission.hasEntityAdd ? (
               <AddEntity entityType="Machine" />
             ) : null}

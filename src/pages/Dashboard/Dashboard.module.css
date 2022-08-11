@@ -1,27 +1,3 @@
-.utilization {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
-.maintenance {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
-.pm-task {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
-.my-pm-task {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
 .status-card {
   display: flex;
   flex-wrap: wrap;

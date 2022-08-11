@@ -15,9 +15,11 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
 }
 
-.add-machine-wrapper {
+.item-wrapper {
   padding-top: 10px
 }
 
@@ -62,7 +64,7 @@
     flex-direction: row;
     margin-bottom: 0
   }
-  .add-machine-wrapper {
+  .item-wrapper {
     padding-top: 0
   }
 }
