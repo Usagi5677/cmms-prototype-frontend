@@ -107,6 +107,7 @@ const EditEntity = ({
       label: department,
     });
   });
+  console.log(moment(entity?.registeredDate));
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
@@ -187,7 +188,11 @@ const EditEntity = ({
                 label="Registered Date"
                 name="registeredDate"
                 required={false}
-                initialValue={moment(entity?.registeredDate)}
+                initialValue={
+                  moment(entity?.registeredDate).isValid()
+                    ? moment(entity?.registeredDate)
+                    : undefined
+                }
               >
                 <DatePicker
                   placeholder="Select registered date"

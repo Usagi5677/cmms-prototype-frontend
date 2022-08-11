@@ -160,7 +160,7 @@
   text-align: center;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 1200px) {
   .service-reading-wrapper {
     flex-direction: row;
     padding: 0;
@@ -168,15 +168,9 @@
   .first-block {
     flex-direction: column;
   }
-  .container {
-    width: 48%;
-  }
   .collapse-container {
     font-size: 12px;
   }
-}
-
-@media only screen and (min-width: 800px) {
   .options-wrapper {
     flex-direction: row;
     margin-bottom: 0;

@@ -159,13 +159,11 @@
 }
 
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 770px) {
   .container {
     font-size: 12px;
   }
-  .pm-container {
-    width: 48%;
-  }
+  
   .header-container {
     font-size: 10px;
   }
@@ -185,12 +183,13 @@
     margin-right: 5px;
     margin-left: 20px;
   }
-  
-}
-
-@media only screen and (min-width: 900px) {
   .options-wrapper {
     flex-direction: row;
     margin-bottom: 0;
   }
 }
+@media only screen and (min-width: 1200px) {
+  .pm-container {
+    width: 48%;
+  }
+ }

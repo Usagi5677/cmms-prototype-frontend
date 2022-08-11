@@ -33,21 +33,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  flex-direction: column;
   flex: 1;
 }
-@media only screen and (min-width: 600px) {
-  .utilization {
+@media only screen and (min-width: 1200px) {
+  .content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
     flex-direction: row;
+    flex: 1;
   }
 }
-@media only screen and (min-width: 700px) {
-  .maintenance {
-    flex-direction: row;
-  }
-  .pm-task {
-    flex-direction: row;
-  }
-  .my-pm-task {
-    flex-direction: row;
-  }
-}
+

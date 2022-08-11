@@ -60,13 +60,15 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
                     <span className={classes["reading-title"]}>
                       Current running ({entity?.measurement}):
                     </span>
-                    <span>{entity?.currentRunning}</span>
+                    <span>
+                      {entity?.currentRunning ? entity?.currentRunning : 0}
+                    </span>
                   </div>
                   <div className={classes["reading"]}>
                     <span className={classes["reading-title"]}>
                       Last service ({entity?.measurement}):
                     </span>
-                    <span>{entity?.lastService}</span>
+                    <span>{entity?.lastService ? entity?.lastService : 0}</span>
                   </div>
                   <div className={classes["reading"]}>
                     <span className={classes["reading-title"]}>
@@ -105,13 +107,17 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
                 <span className={classes["reading-title"]}>
                   Current mileage ({entity?.measurement}):
                 </span>
-                <span>{entity?.currentMileage}</span>
+                <span>
+                  {entity?.currentMileage ? entity?.currentMileage : 0}
+                </span>
               </div>
               <div className={classes["reading"]}>
                 <span className={classes["reading-title"]}>
                   Last service mileage ({entity?.measurement}):
                 </span>
-                <span>{entity?.lastServiceMileage}</span>
+                <span>
+                  {entity?.lastServiceMileage ? entity?.lastServiceMileage : 0}
+                </span>
               </div>
               <div className={classes["reading"]}>
                 <span className={classes["reading-title"]}>
