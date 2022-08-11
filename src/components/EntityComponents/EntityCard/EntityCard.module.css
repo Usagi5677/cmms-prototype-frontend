@@ -12,6 +12,7 @@
 .title-wrapper {
   display: flex;
   align-items: center;
+  
 }
 
 .location-wrapper {
@@ -24,7 +25,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  flex: 2;
+  flex: 3;
   padding: 5px 0;
 }
 
@@ -44,7 +45,8 @@
 .first-block {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
+  margin-right: 10px;
 }
 
 .container {
@@ -68,6 +70,10 @@
   color: var(--ant-primary-color);
 }
 
+.inner-first-block {
+  margin-left: 20px;
+}
+
 @media only screen and (min-width: 600px) {
   .container {
     font-size: 12px;
@@ -83,6 +89,7 @@
   .first-block {
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    flex: 1;
+    margin-right: 20px;
   }
 }

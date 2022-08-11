@@ -20,7 +20,7 @@ import ViewGallery from "./ViewGallery/ViewGallery";
 import ViewChecklist from "./ViewChecklist/ViewChecklist";
 import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
-import { FaMapMarkerAlt, FaTractor } from "react-icons/fa";
+import { FaMapMarkerAlt, FaTractor, FaTruck } from "react-icons/fa";
 import { Entity } from "../../../models/Entity/Entity";
 import EditEntityLocation from "../../../components/EntityComponents/EditEntityLocation/EditEntityLocation";
 import EditEntity from "../../../components/EntityComponents/EditEntity/EditEntity";
@@ -30,6 +30,7 @@ import EntityStatuses from "../../../components/EntityComponents/EntityStatuses/
 import GetLatestEntityImage from "../../../components/EntityComponents/GetLatestEntityImage/GetLatestEntityImage";
 import { UNASSIGN_USER_FROM_ENTITY } from "../../../api/mutations";
 import EntityUsageHistory from "../../../components/EntityComponents/EntityUsageHistory/EntityUsageHistory";
+import { RiSailboatFill } from "react-icons/ri";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -180,7 +181,14 @@ const ViewEntity = () => {
             </div>
           </div>
           <div className={classes["title-wrapper"]}>
-            <FaTractor />
+            {entityData?.type?.entityType === "Machine" ? (
+              <FaTractor />
+            ) : entityData?.type?.entityType === "Vehicle" ? (
+              <FaTruck />
+            ) : entityData?.type?.entityType === "Vessel" ? (
+              <RiSailboatFill />
+            ) : null}
+
             <span className={classes["title"]}>
               {entityData?.machineNumber}
             </span>
@@ -286,6 +294,13 @@ const ViewEntity = () => {
                 Back
               </Button>
               <div className={classes["tab-header-wrapper"]}>
+                {entityData?.type?.entityType === "Machine" ? (
+                  <FaTractor className={classes["icon"]}/>
+                ) : entityData?.type?.entityType === "Vehicle" ? (
+                  <FaTruck className={classes["icon"]}/>
+                ) : entityData?.type?.entityType === "Vessel" ? (
+                  <RiSailboatFill className={classes["icon"]}/>
+                ) : null}
                 <div className={classes["tab-header"]}>
                   {entityData?.machineNumber}
                 </div>

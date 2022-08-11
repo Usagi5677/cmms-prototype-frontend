@@ -10,10 +10,11 @@ import {
 import classes from "./EntityCard.module.css";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { Collapse, Tooltip } from "antd";
+import { Collapse, Tooltip, Image } from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusTag from "../../common/EntityStatusTag";
+import { getListImage } from "../../../helpers/getListImage";
 
 const EntityCard = ({ entity }: { entity: Entity }) => {
   const interServiceMileage =
@@ -31,15 +32,26 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className={classes["first-block"]}>
-                  <div className={classes["title-wrapper"]}>
-                    <FaTractor />
-                    <span className={classes["title"]}>
-                      {entity?.machineNumber}
-                    </span>
-                  </div>
-                  <div className={classes["location-wrapper"]}>
-                    <FaMapMarkerAlt />
-                    <span className={classes["title"]}>{entity?.location}</span>
+                  {getListImage(entity?.type?.name) && (
+                    <Image
+                      src={getListImage(entity?.type?.name)}
+                      height={50}
+                      width={60}
+                    />
+                  )}
+                  <div className={classes["inner-first-block"]}>
+                    <div className={classes["title-wrapper"]}>
+                      <FaTractor />
+                      <span className={classes["title"]}>
+                        {entity?.machineNumber}
+                      </span>
+                    </div>
+                    <div className={classes["location-wrapper"]}>
+                      <FaMapMarkerAlt />
+                      <span className={classes["title"]}>
+                        {entity?.location}
+                      </span>
+                    </div>
                   </div>
                 </div>
 

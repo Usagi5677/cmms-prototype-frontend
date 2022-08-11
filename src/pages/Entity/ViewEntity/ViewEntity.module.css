@@ -43,6 +43,7 @@
   color: rgb(85, 84, 84);
   font-weight: 700;
   font-size: 0.875rem;
+  padding-left: 4px;
 }
 
 .info-edit {
@@ -168,6 +169,10 @@
 .deleted {
   color: red;
   font-weight: 700;
+}
+
+.icon {
+  font-size: 16px;
 }
 @media only screen and (min-width: 600px) {
   .location-wrapper {
