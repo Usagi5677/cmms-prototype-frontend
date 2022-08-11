@@ -1056,16 +1056,17 @@ export const DELETE_ENTITY_ATTACHMENT = gql`
 `;
 
 export const ASSIGN_USER_TO_ENTITY = gql`
-  mutation ($entityId: Int!, $userIds: [Int!]!) {
-    assignUserToEntity(entityId: $entityId, userIds: $userIds)
+  mutation ($entityId: Int!, $type: String!, $userIds: [Int!]!) {
+    assignUserToEntity(entityId: $entityId, type: $type, userIds: $userIds)
   }
 `;
 
 export const UNASSIGN_USER_FROM_ENTITY = gql`
-  mutation ($entityId: Int!, $userId: Int!) {
-    unassignUserFromEntity(entityId: $entityId, userId: $userId)
+  mutation ($entityId: Int!, $type: String!, $userId: Int!) {
+    unassignUserFromEntity(entityId: $entityId, type: $type, userId: $userId)
   }
 `;
+
 export const EDIT_ENTITY_USAGE = gql`
   mutation ($id: Int!, $currentMileage: Int!, $lastServiceMileage: Int!) {
     editEntityUsage(

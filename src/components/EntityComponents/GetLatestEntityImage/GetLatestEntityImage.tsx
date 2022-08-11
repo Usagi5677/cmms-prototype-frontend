@@ -56,7 +56,7 @@ const GetLatestEntityImage = ({
     <div>
       {file && isImage ? (
         <div className={classes["image"]}>
-          <Image height={"90%"} width={"90%"} src={file} />
+          <Image src={file} />
         </div>
       ) : fileLoading ? (
         <div className={classes["image"]}>

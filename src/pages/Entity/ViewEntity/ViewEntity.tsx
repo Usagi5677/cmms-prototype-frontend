@@ -1,6 +1,6 @@
 import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Avatar, Button, message, Spin, Tabs, Tooltip } from "antd";
+import { Avatar, Button, Divider, message, Spin, Tabs, Tooltip } from "antd";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
@@ -10,7 +10,10 @@ import {
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewEntity.module.css";
 import moment from "moment";
-import { DATETIME_FORMATS } from "../../../helpers/constants";
+import {
+  DATETIME_FORMATS,
+  ENTITY_ASSIGNMENT_TYPES,
+} from "../../../helpers/constants";
 import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
 import ViewSparePR from "./ViewSparePR/ViewSparePR";
 import ViewRepair from "./ViewRepair/ViewRepair";
@@ -31,6 +34,7 @@ import GetLatestEntityImage from "../../../components/EntityComponents/GetLatest
 import { UNASSIGN_USER_FROM_ENTITY } from "../../../api/mutations";
 import EntityUsageHistory from "../../../components/EntityComponents/EntityUsageHistory/EntityUsageHistory";
 import { RiSailboatFill } from "react-icons/ri";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -70,7 +74,7 @@ const ViewEntity = () => {
 
   const entityData: Entity = entity?.getSingleEntity;
 
-  const renderUsers = () => {
+  const renderUsers = (type: "Admin" | "Engineer" | "User") => {
     return (
       entityData?.assignees?.length! > 0 && (
         <Avatar.Group
@@ -81,6 +85,8 @@ const ViewEntity = () => {
           }}
         >
           {entityData?.assignees?.map((assign) => {
+            console.log({ assign });
+            if (assign.type !== type) return;
             return (
               <Tooltip
                 title={
@@ -98,6 +104,7 @@ const ViewEntity = () => {
                               variables: {
                                 entityId: entityData?.id,
                                 userId: assign?.user?.id,
+                                type,
                               },
                             })
                           }
@@ -144,6 +151,8 @@ const ViewEntity = () => {
       },
     });
   }, [id, getEntityLatestAttachment]);
+
+  const isSmallDevice = useIsSmallDevice();
 
   return (
     <>
@@ -225,19 +234,6 @@ const ViewEntity = () => {
                   {entityData?.zone}
                 </div>
               </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Assignments</div>
-                <div className={classes["info-content"]}>
-                  {self.assignedPermission.hasEntityAssignmentToUser &&
-                  !entityData?.isDeleted ? (
-                    <EntityAssignment entityID={entityData?.id} />
-                  ) : (
-                    <>{renderUsers()}</>
-                  )}
-                </div>
-              </div>
-              {self.assignedPermission.hasEntityAssignmentToUser &&
-                renderUsers()}
             </div>
             <div className={classes["grid-two"]}>
               <div className={classes["info-title-wrapper"]}>
@@ -281,6 +277,43 @@ const ViewEntity = () => {
             <GetLatestEntityImage
               attachmentData={attachmentData?.getEntityLatestAttachment}
             />
+          </div>
+          <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: isSmallDevice ? "column" : "row",
+              justifyContent: "space-between",
+              marginTop: 10,
+            }}
+          >
+            {ENTITY_ASSIGNMENT_TYPES.map((type) => (
+              <div key={type} style={{ marginTop: 10 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: isSmallDevice ? "space-between" : undefined,
+                  }}
+                >
+                  <div>
+                    {entityData?.type?.entityType} {type}
+                  </div>
+                  <div
+                    className={classes["info-content"]}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    {self.assignedPermission.hasEntityAssignmentToUser &&
+                    !entityData?.isDeleted ? (
+                      <EntityAssignment entityId={entityData?.id} type={type} />
+                    ) : (
+                      <>{renderUsers(type)}</>
+                    )}
+                  </div>
+                </div>
+                {self.assignedPermission.hasEntityAssignmentToUser &&
+                  renderUsers(type)}
+              </div>
+            ))}
           </div>
         </div>
         <div className={classes["first-wrapper"]}>
