@@ -32,7 +32,7 @@ const Permissions = ({ role }: { role?: Role }) => {
   });
 
   const [togglePermission, { loading }] = useMutation(TOGGLE_PERMISSION, {
-    refetchQueries: [{ query: ME_QUERY }],
+    refetchQueries: ["me", "getRoleWithPermission"],
     onError: (error) => {
       errorMessage(error, "Unexpected error while assigning permission.");
     },
