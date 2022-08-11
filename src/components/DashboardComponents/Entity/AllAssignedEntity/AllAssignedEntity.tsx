@@ -164,7 +164,7 @@ const AllAssignedEntity = () => {
 
   return (
     <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Assigned Entities</div>
+      <div className={classes["heading"]}>Assigned to me</div>
       <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}

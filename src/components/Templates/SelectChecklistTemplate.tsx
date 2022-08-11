@@ -6,11 +6,9 @@ import { CHECKLIST_TEMPLATES } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
 import { Entity } from "../../models/Entity/Entity";
-import Machine from "../../models/Machine";
-import Transportation from "../../models/Transportation";
 
 export interface SelectChecklistTemplateProps {
-  entity: Machine | Transportation | Entity;
+  entity: Entity;
   type: "Daily" | "Weekly";
   value?: string;
 }

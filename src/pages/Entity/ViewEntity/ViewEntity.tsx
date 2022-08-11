@@ -35,6 +35,8 @@ import { UNASSIGN_USER_FROM_ENTITY } from "../../../api/mutations";
 import EntityUsageHistory from "../../../components/EntityComponents/EntityUsageHistory/EntityUsageHistory";
 import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
+import EntityAssign from "../../../models/Entity/EntityAssign";
+import { hasPermissions } from "../../../helpers/permissions";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -43,6 +45,7 @@ const ViewEntity = () => {
   const [getSingleEntity, { data: entity, loading: loadingEntity }] =
     useLazyQuery(GET_SINGLE_ENTITY, {
       onError: (err) => {
+        // if (err.)
         errorMessage(err, "Error loading request.");
       },
       fetchPolicy: "network-only",
@@ -52,10 +55,10 @@ const ViewEntity = () => {
 
   // Fetch entity when component mount
   useEffect(() => {
-    if (!self.assignedPermission.hasViewEntity) {
-      navigate("/");
-      message.error("No permission to view entity.");
-    }
+    // if (!self.assignedPermission.hasViewEntity) {
+    //   navigate("/");
+    //   message.error("No permission to view entity.");
+    // }
     getSingleEntity({ variables: { entityId: parseInt(id) } });
   }, [getSingleEntity, id]);
 
@@ -85,7 +88,6 @@ const ViewEntity = () => {
           }}
         >
           {entityData?.assignees?.map((assign) => {
-            console.log({ assign });
             if (assign.type !== type) return;
             return (
               <Tooltip
@@ -93,7 +95,8 @@ const ViewEntity = () => {
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       {assign?.user?.fullName} ({assign?.user?.rcno})
-                      {self.assignedPermission.hasEntityUnassignmentToUser && (
+                      {(isAssignedType("Admin") ||
+                        hasPermissions(self, ["ASSIGN_TO_ENTITY"])) && (
                         <CloseCircleOutlined
                           style={{
                             cursor: "pointer",
@@ -152,6 +155,14 @@ const ViewEntity = () => {
     });
   }, [id, getEntityLatestAttachment]);
 
+  const isAssignedType = (type: "Admin" | "Engineer" | "User") => {
+    if (!entity) return false;
+    const assignments: EntityAssign[] = entity.getSingleEntity.assignees;
+    const ofType = assignments.filter((a) => a.type === type);
+    const ofTypeIds = ofType.map((o) => o.userId);
+    if (ofTypeIds.includes(self.id)) return true;
+  };
+
   const isSmallDevice = useIsSmallDevice();
 
   return (
@@ -159,19 +170,19 @@ const ViewEntity = () => {
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
           <div className={classes["info-btn-wrapper"]}>
-            {self.assignedPermission.hasEditEntityLocation ? (
+            {isAssignedType("Admin") ? (
               <EditEntityLocation
                 entity={entityData}
                 isDeleted={entityData?.isDeleted}
               />
             ) : null}
-            {self.assignedPermission.hasEntityEdit ? (
+            {isAssignedType("Admin") ? (
               <EditEntity
                 entity={entityData}
                 isDeleted={entityData?.isDeleted}
               />
             ) : null}
-            {self.assignedPermission.hasEntityDelete ? (
+            {isAssignedType("Admin") ? (
               <DeleteEntity
                 entityID={entityData?.id}
                 isDeleted={entityData?.isDeleted}
@@ -298,20 +309,21 @@ const ViewEntity = () => {
                   <div>
                     {entityData?.type?.entityType} {type}
                   </div>
-                  <div
-                    className={classes["info-content"]}
-                    style={{ marginLeft: "1rem" }}
-                  >
-                    {self.assignedPermission.hasEntityAssignmentToUser &&
-                    !entityData?.isDeleted ? (
-                      <EntityAssignment entityId={entityData?.id} type={type} />
-                    ) : (
-                      <>{renderUsers(type)}</>
+                  {(isAssignedType("Admin") ||
+                    hasPermissions(self, ["ASSIGN_TO_ENTITY"])) &&
+                    !entityData?.isDeleted && (
+                      <div
+                        className={classes["info-content"]}
+                        style={{ marginLeft: "1rem" }}
+                      >
+                        <EntityAssignment
+                          entityId={entityData?.id}
+                          type={type}
+                        />
+                      </div>
                     )}
-                  </div>
                 </div>
-                {self.assignedPermission.hasEntityAssignmentToUser &&
-                  renderUsers(type)}
+                {renderUsers(type)}
               </div>
             ))}
           </div>
@@ -328,11 +340,11 @@ const ViewEntity = () => {
               </Button>
               <div className={classes["tab-header-wrapper"]}>
                 {entityData?.type?.entityType === "Machine" ? (
-                  <FaTractor className={classes["icon"]}/>
+                  <FaTractor className={classes["icon"]} />
                 ) : entityData?.type?.entityType === "Vehicle" ? (
-                  <FaTruck className={classes["icon"]}/>
+                  <FaTruck className={classes["icon"]} />
                 ) : entityData?.type?.entityType === "Vessel" ? (
-                  <RiSailboatFill className={classes["icon"]}/>
+                  <RiSailboatFill className={classes["icon"]} />
                 ) : null}
                 <div className={classes["tab-header"]}>
                   {entityData?.machineNumber}

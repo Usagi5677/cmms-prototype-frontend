@@ -1,5 +1,5 @@
-
-export default interface PermissionModel {
-  id: number;
+export default interface Permission {
   name: string;
+  type: string;
+  description: string;
 }

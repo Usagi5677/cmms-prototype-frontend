@@ -6,11 +6,9 @@ import { UPDATE_READING, UPDATE_WORKING_HOURS } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
-import Machine from "../../models/Machine";
-import Transportation from "../../models/Transportation";
 
 export interface AddReadingProps {
-  entity: Machine | Transportation | Entity;
+  entity: Entity;
   checklist: Checklist;
 }
 

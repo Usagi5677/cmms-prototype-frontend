@@ -7,13 +7,9 @@ import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import { ALL_ENTITY, GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
-import { ISLANDS, PAGE_LIMIT } from "../../../helpers/constants";
+import { ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import AddMachine from "../../../components/MachineComponents/AddMachine/AddMachine";
-import MachineCard from "../../../components/MachineComponents/MachineCard/MachineCard";
-import Machine from "../../../models/Machine";
 import classes from "./ViewAllMachine.module.css";
-import MachineStatusFilter from "../../../components/common/MachineStatusFilter";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
@@ -22,6 +18,7 @@ import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity"
 import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
+import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Type/TypeSelector";
 
 const Machinery = () => {
@@ -82,7 +79,10 @@ const Machinery = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    if (!self.assignedPermission.hasViewAllEntity) {
+    if (
+      self?.machineAssignments.length === 0 &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    ) {
       navigate("/");
       message.error("No permission to view all entity.");
     }
@@ -245,11 +245,14 @@ const Machinery = () => {
             value={filter.status}
           />
           <div className={classes["item-wrapper"]}>
-            <TypeSelector entityType={"Machine"} setTypeId={setTypeId} />
+            <TypeSelector
+              entityType={"Machine"}
+              setTypeId={setTypeId}
+              rounded={true}
+            />
           </div>
-
-          <div className={classes["item-wrapper"]}>
-            {self.assignedPermission.hasEntityAdd ? (
+          <div className={classes["add-machine-wrapper"]}>
+            {hasPermissions(self, ["ADD_ENTITY"]) ? (
               <AddEntity entityType="Machine" />
             ) : null}
           </div>

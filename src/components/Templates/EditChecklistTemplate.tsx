@@ -7,14 +7,12 @@ import { ENTITY_CHECKLIST_TEMPLATE } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
 import { Entity } from "../../models/Entity/Entity";
-import Machine from "../../models/Machine";
-import Transportation from "../../models/Transportation";
 import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
 import { SaveAsTemplate } from "./SaveAsTemplate";
 import { SelectChecklistTemplate } from "./SelectChecklistTemplate";
 
 export interface EditChecklistTemplateProps {
-  entity: Machine | Transportation | Entity;
+  entity: Entity;
   type: "Daily" | "Weekly";
 }
 

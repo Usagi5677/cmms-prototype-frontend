@@ -1,7 +1,7 @@
 import { Empty, message, Spin } from "antd";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import classes from "./Roles.module.css";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -15,6 +15,7 @@ import RoleCard from "../../components/RoleComponents/RoleCard/RoleCard";
 import { GET_ALL_ROLES } from "../../api/queries";
 import AddRole from "../../components/RoleComponents/AddRole/AddRole";
 import UserContext from "../../contexts/UserContext";
+import { hasPermissions } from "../../helpers/permissions";
 
 const Roles = () => {
   const { user: self } = useContext(UserContext);
@@ -42,7 +43,7 @@ const Roles = () => {
 
   // Fetch roles when component mounts or when the filter object changes
   useEffect(() => {
-    if (!self.assignedPermission.hasViewRoles) {
+    if (!hasPermissions(self, ["VIEW_ROLES"])) {
       navigate("/");
       message.error("No permission to view roles.");
     }
@@ -111,7 +112,7 @@ const Roles = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-wrapper"]}>
-          {self.assignedPermission.hasRoleAdd ? <AddRole /> : null}
+          {hasPermissions(self, ["ADD_ROLE"]) ? <AddRole /> : null}
         </div>
       </div>
       {loading && (

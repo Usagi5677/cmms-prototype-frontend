@@ -24,8 +24,6 @@ import { errorMessage } from "../../helpers/gql";
 import { CHECKLIST_TEMPLATE_DETAILS } from "../../api/queries";
 import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
 import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
-import Machine from "../../models/Machine";
-import Transportation from "../../models/Transportation";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { SearchEntities } from "../common/SearchEntitities";
 import { EntityIcon } from "../common/EntityIcon";

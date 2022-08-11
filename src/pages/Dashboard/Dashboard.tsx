@@ -4,35 +4,21 @@ import classes from "./Dashboard.module.css";
 import { useLazyQuery } from "@apollo/client";
 import { GET_ALL_ENTITY_STATUS_COUNT } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
-import {
-  FaCarCrash,
-  FaRecycle,
-  FaSpinner,
-  FaTractor,
-  FaTruck,
-} from "react-icons/fa";
+import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
 import StatusCard from "../../components/common/StatusCard/StatusCard";
-import MyMachineryPMTask from "../../components/DashboardComponents/Machine/MyMachineryPMTask/MyMachineryPMTask";
-import AllAssignedMachinery from "../../components/DashboardComponents/Machine/AllAssignedMachinery/AllAssignedMachinery";
-import MachineMaintenance from "../../components/DashboardComponents/Machine/MachineMaintenance/MachineMaintenance";
-import MachineryPMTask from "../../components/DashboardComponents/Machine/MachineryPMTask/MachineryPMTask";
-import MachineryUtilization from "../../components/DashboardComponents/Machine/MachineryUtilization/MachineryUtilization";
-import AllAssignedTransportation from "../../components/DashboardComponents/Transportation/AllAssignedTransportation/AllAssignedTransportation";
-import AllTransportationPMTask from "../../components/DashboardComponents/Transportation/AllTransportationPMTask/AllTransportationPMTask";
-import MyTransportationPMTask from "../../components/DashboardComponents/Transportation/MyTransportationPMTask/MyTransportationPMTask";
-import TransportationMaintenance from "../../components/DashboardComponents/Transportation/TransportationMaintenance/TransportationMaintenance";
-import AllTransportationUtilization from "../../components/DashboardComponents/Transportation/TransportationUtilization/TransportationUtilization";
 import MyEntityPMTask from "../../components/DashboardComponents/Entity/MyEntityPMTask/MyEntityPMTask";
 import AllAssignedEntity from "../../components/DashboardComponents/Entity/AllAssignedEntity/AllAssignedEntity";
 import AllEntityPMTask from "../../components/DashboardComponents/Entity/AllEntityPMTask/AllEntityPMTask";
 import EntityMaintenance from "../../components/DashboardComponents/Entity/EntityMaintenance/EntityMaintenance";
 import EntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/EntityUtilization";
+import { hasPermissions } from "../../helpers/permissions";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
 
-  const [getAllEntityStatusCount, { data: statusData }] =
-    useLazyQuery(GET_ALL_ENTITY_STATUS_COUNT, {
+  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
+    GET_ALL_ENTITY_STATUS_COUNT,
+    {
       onError: (err) => {
         errorMessage(
           err,
@@ -41,7 +27,8 @@ const Dashboard = () => {
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
-    });
+    }
+  );
 
   useEffect(() => {
     getAllEntityStatusCount();
@@ -58,12 +45,11 @@ const Dashboard = () => {
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
     dispose = statusCountData?.dispose;
-    
   }
 
   return (
     <>
-      {self?.assignedPermission?.hasViewDashboardStatusCount && (
+      {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["status-card"]}>
           <StatusCard
             amountOne={working}
@@ -95,23 +81,15 @@ const Dashboard = () => {
           />
         </div>
       )}
-      <div className={classes["content"]}>
-        {self?.assignedPermission?.hasViewDashboardMyEntityPMTask && (
+      {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
+        <div className={classes["content"]}>
           <MyEntityPMTask />
-        )}
-        {self?.assignedPermission?.hasViewDashboardAssignedEntity && (
           <AllAssignedEntity />
-        )}
-        {self?.assignedPermission?.hasViewDashboardEntityPMTask && (
           <AllEntityPMTask />
-        )}
-        {self?.assignedPermission?.hasViewDashboardEntityMaintenance && (
           <EntityMaintenance />
-        )}
-        {self?.assignedPermission?.hasViewDashboardEntityUtilization && (
           <EntityUtilization />
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };

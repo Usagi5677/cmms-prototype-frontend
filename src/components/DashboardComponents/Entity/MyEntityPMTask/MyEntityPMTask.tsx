@@ -176,9 +176,7 @@ const MyEntityPMTask = () => {
 
   return (
     <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>
-        My Entities Periodic Maintenance Task
-      </div>
+      <div className={classes["heading"]}>My Periodic Maintenance Tasks</div>
       <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}

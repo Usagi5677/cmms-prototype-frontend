@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { FaRegClock, FaRegUser, FaUserAlt } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
+import { hasPermissions } from "../../../helpers/permissions";
 import { RoleTagStringToColor } from "../../../helpers/style";
 import Role from "../../../models/Role";
 import AssignPermission from "../AssignPermission/AssignPermission";
@@ -55,13 +56,13 @@ const RoleCard = ({ role }: { role: Role }) => {
           )}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasAssignPermission ? (
+          {hasPermissions(self, ["ASSIGN_PERMISSION"]) ? (
             <AssignPermission role={role} />
           ) : null}
-          {self.assignedPermission.hasRoleEdit ? (
+          {hasPermissions(self, ["EDIT_ROLE"]) ? (
             <EditRole role={role} />
           ) : null}
-          {self.assignedPermission.hasRoleDelete ? (
+          {hasPermissions(self, ["DELETE_ROLE"]) ? (
             <DeleteRole id={role?.id} />
           ) : null}
         </div>

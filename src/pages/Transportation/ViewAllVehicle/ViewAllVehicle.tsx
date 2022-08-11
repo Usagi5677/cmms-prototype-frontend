@@ -18,6 +18,7 @@ import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCa
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
+import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Type/TypeSelector";
 
 const Vehicles = () => {
@@ -70,7 +71,10 @@ const Vehicles = () => {
 
   // Fetch transportation when component mounts or when the filter object changes
   useEffect(() => {
-    if (!self.assignedPermission.hasViewAllVessels) {
+    if (
+      self?.vehicleAssignments.length === 0 &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    ) {
       navigate("/");
       message.error("No permission to view all vehicles.");
     }
@@ -261,10 +265,14 @@ const Vehicles = () => {
             value={filter.status}
           />
           <div className={classes["item-wrapper"]}>
-            <TypeSelector entityType={"Vehicle"} setTypeId={setTypeId} />
+            <TypeSelector
+              entityType={"Vehicle"}
+              setTypeId={setTypeId}
+              rounded={true}
+            />
           </div>
-          <div className={classes["item-wrapper"]}>
-            {self.assignedPermission.hasEntityAdd ? (
+          <div className={classes["add-wrapper"]}>
+            {hasPermissions(self, ["ADD_ENTITY"]) ? (
               <AddEntity entityType="Vehicle" />
             ) : null}
           </div>

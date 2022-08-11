@@ -21,11 +21,11 @@ import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
 import { PeriodicMaintenanceStatus } from "../../../../models/Enums";
 import PaginationArgs from "../../../../models/PaginationArgs";
-import MachinePMStatusFilter from "../../../common/MachinePMStatusFilter";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceStatusTag";
 import Search from "../../../common/Search";
 import EntityPeriodicMaintenance from "../../../../models/Entity/EntityPeriodicMaintenance";
+import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
 
 const EntityMaintenance = () => {
   const { user: self } = useContext(UserContext);
@@ -161,7 +161,7 @@ const EntityMaintenance = () => {
 
   return (
     <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Entities Maintenance</div>
+      <div className={classes["heading"]}>Maintenance</div>
       <div className={classes["options-wrapper"]}>
         <Search
           searchValue={search}
@@ -169,7 +169,7 @@ const EntityMaintenance = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["status-wrapper"]}>
-          <MachinePMStatusFilter
+          <EntityPMStatusFilter
             onChange={(status) => {
               setFilter({ ...filter, status, ...DefaultPaginationArgs });
               setPage(1);

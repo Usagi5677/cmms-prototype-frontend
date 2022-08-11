@@ -125,7 +125,7 @@ const EntityUtilization = () => {
 
   return (
     <div className={classes["container"]}>
-      <div className={classes["heading"]}>Entities Utilization</div>
+      <div className={classes["heading"]}>Utilization</div>
       <EntityUtilizationGraph />
       <div className={classes["options-wrapper"]}>
         <Search

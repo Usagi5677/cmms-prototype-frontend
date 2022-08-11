@@ -33,6 +33,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+
   const [assignUsersToEntity, { loading: loadingAssign }] = useMutation(
     ASSIGN_USER_TO_ENTITY,
     {
@@ -57,10 +58,14 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
       notifyOnNetworkStatusChange: true,
     });
 
+  let typePermission: string;
+  if (type === "Admin") typePermission = "ENTITY_ADMIN";
+  else if (type === "Engineer") typePermission = "ENTITY_ENGINEER";
+  else if (type === "User") typePermission = "ENTITY_USER";
   // Fetch users when component mount
   useEffect(() => {
     getUsersWithPermission({
-      variables: { permissions: ["ADD_ENTITY_REPAIR"] },
+      variables: { permissions: [typePermission] },
     });
   }, [getUsersWithPermission]);
 

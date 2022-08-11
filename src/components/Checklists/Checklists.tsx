@@ -1,7 +1,5 @@
 import { Button, DatePicker, Divider, Empty, InputNumber, Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import Machine from "../../models/Machine";
-import Transportation from "../../models/Transportation";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { useLazyQuery } from "@apollo/client";
@@ -19,7 +17,7 @@ import { AddChecklistAttachment } from "./AddChecklistAttachment";
 import { ChecklistAttachments } from "./ChecklistAttachments";
 
 export interface ChecklistsProps {
-  entity: Machine | Transportation | Entity;
+  entity: Entity;
   type: "Daily" | "Weekly";
 }
 

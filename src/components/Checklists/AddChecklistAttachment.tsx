@@ -6,11 +6,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
-import Machine from "../../models/Machine";
-import Transportation from "../../models/Transportation";
 
 export interface AddChecklistAttachmentProps {
-  entity: Entity | Machine | Transportation;
+  entity: Entity;
   checklist: Checklist;
   refetchChecklist: any;
 }

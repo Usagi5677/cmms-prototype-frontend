@@ -19,6 +19,7 @@ import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity"
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
+import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Type/TypeSelector";
 
 const Vessels = () => {
@@ -51,7 +52,7 @@ const Vessels = () => {
     department: [],
     entityType: "Vessel",
     status: params.get("status"),
-    typeId: null
+    typeId: null,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -71,7 +72,10 @@ const Vessels = () => {
 
   // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    if (!self.assignedPermission.hasViewAllVessels) {
+    if (
+      self?.machineAssignments.length === 0 &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    ) {
       navigate("/");
       message.error("No permission to view all vessels.");
     }
@@ -263,12 +267,14 @@ const Vessels = () => {
             value={filter.status}
           />
           <div className={classes["item-wrapper"]}>
-            <TypeSelector entityType={"Vessel"} setTypeId={setTypeId} />
+            <TypeSelector
+              entityType={"Vessel"}
+              setTypeId={setTypeId}
+              rounded={true}
+            />
           </div>
-          {self.assignedPermission.hasEntityAdd ? (
-            <div className={classes["item-wrapper"]}>
-              <AddEntity entityType="Vessel" />
-            </div>
+          {hasPermissions(self, ["ADD_ENTITY"]) ? (
+            <AddEntity entityType="Vessel" />
           ) : null}
         </div>
         {loading && (

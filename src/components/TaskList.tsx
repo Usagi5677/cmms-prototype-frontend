@@ -1,19 +1,22 @@
 import { Badge, Checkbox, Collapse, Spin } from "antd";
 import React, { useContext } from "react";
-import MachinePeriodicMaintenance from "../models/Machine/MachinePeriodicMaintenance";
-import MachinePMTask from "../models/Machine/MachinePMTask";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../helpers/constants";
 import UserContext from "../contexts/UserContext";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { DELETE_MACHINE_PM_TASK, TOGGLE_MACHINE_PM_TASK } from "../api/mutations";
+import {
+  DELETE_MACHINE_PM_TASK,
+  TOGGLE_MACHINE_PM_TASK,
+} from "../api/mutations";
 import { errorMessage } from "../helpers/gql";
-import { AddPeriodicMaintenanceTask } from "./MachineComponents/AddPeriodicMaintenanceTask";
+import EntityPeriodicMaintenance from "../models/Entity/EntityPeriodicMaintenance";
+import EntityPMTask from "../models/Entity/EntityPMTask";
+import { AddEntityPeriodicMaintenanceTask } from "./EntityComponents/AddEntityPeriodicMaintenanceTask";
 
 export interface TaskListProps {
-  periodicMaintenance: MachinePeriodicMaintenance;
-  tasks: MachinePMTask[];
+  periodicMaintenance: EntityPeriodicMaintenance;
+  tasks: EntityPMTask[];
   level: number;
   isDeleted: boolean | undefined;
 }
@@ -22,19 +25,22 @@ export const TaskList: React.FC<TaskListProps> = ({
   periodicMaintenance,
   tasks,
   level,
-  isDeleted
+  isDeleted,
 }) => {
   const { user: self } = useContext(UserContext);
 
-  const [toggleTask, { loading: toggling }] = useMutation(TOGGLE_MACHINE_PM_TASK, {
-    onError: (error) => {
-      errorMessage(error, "Unexpected error while updating checklist item.");
-    },
-    refetchQueries: [
-      "getAllPeriodicMaintenanceOfMachine",
-      "getAllHistoryOfMachine",
-    ],
-  });
+  const [toggleTask, { loading: toggling }] = useMutation(
+    TOGGLE_MACHINE_PM_TASK,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating checklist item.");
+      },
+      refetchQueries: [
+        "getAllPeriodicMaintenanceOfMachine",
+        "getAllHistoryOfMachine",
+      ],
+    }
+  );
 
   const [deleteMachineChecklistItem, { loading: deleting }] = useMutation(
     DELETE_MACHINE_PM_TASK,
@@ -108,26 +114,28 @@ export const TaskList: React.FC<TaskListProps> = ({
                         </span>
                       </div>
                     )}
-                    {self.assignedPermission.hasMachineChecklistEdit && !isDeleted && (
-                      <Checkbox
-                        checked={task.completedAt !== null}
-                        style={{ marginRight: ".5rem" }}
-                        onChange={(e) =>
-                          toggleTask({
-                            variables: {
-                              id: task.id,
-                              complete: e.target.checked,
-                            },
-                          })
-                        }
-                      ></Checkbox>
-                    )}
+                    {self.assignedPermission.hasMachineChecklistEdit &&
+                      !isDeleted && (
+                        <Checkbox
+                          checked={task.completedAt !== null}
+                          style={{ marginRight: ".5rem" }}
+                          onChange={(e) =>
+                            toggleTask({
+                              variables: {
+                                id: task.id,
+                                complete: e.target.checked,
+                              },
+                            })
+                          }
+                        ></Checkbox>
+                      )}
                     {(deleting || toggling) && (
                       <Spin style={{ marginRight: 5 }} size="small" />
                     )}
                     {!deleting && (
                       <div>
-                        {self.assignedPermission.hasMachineChecklistDelete && !isDeleted ? (
+                        {self.assignedPermission.hasMachineChecklistDelete &&
+                        !isDeleted ? (
                           <CloseCircleOutlined
                             onClick={() => {
                               deleteMachineChecklistItem({
@@ -153,7 +161,7 @@ export const TaskList: React.FC<TaskListProps> = ({
               />
               {level < 2 && !isDeleted && (
                 <div>
-                  <AddPeriodicMaintenanceTask
+                  <AddEntityPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}
                     parentTaskId={task.id}
                     text="Add new sub task"

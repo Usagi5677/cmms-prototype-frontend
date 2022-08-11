@@ -8,12 +8,14 @@ export interface TypeSelectorProps {
   entityType?: "Machine" | "Vehicle" | "Vessel";
   setTypeId: React.Dispatch<React.SetStateAction<number | null>>;
   currentId?: number;
+  rounded?: boolean;
 }
 
 export const TypeSelector: React.FC<TypeSelectorProps> = ({
   entityType,
   setTypeId,
   currentId,
+  rounded = false,
 }) => {
   const [search, setSearch] = useState("");
   const [value, setValue] = useState(currentId ?? null);
@@ -53,7 +55,7 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
       allowClear={true}
       loading={loading}
       onSearch={setSearch}
-      className="notRounded"
+      className={rounded ? undefined : "notRounded"}
       showSearch
       filterOption={false}
       notFoundContent={loading ? <Spin size="small" /> : null}

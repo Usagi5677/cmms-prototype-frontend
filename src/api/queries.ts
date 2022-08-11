@@ -27,6 +27,13 @@ export const ME_QUERY = gql`
           }
         }
       }
+      entityAssignment {
+        entity {
+          type {
+            entityType
+          }
+        }
+      }
     }
   }
 `;
@@ -1535,6 +1542,16 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
       idle
       breakdown
       dispose
+    }
+  }
+`;
+
+export const GET_ALL_PERMISSIONS = gql`
+  query permissions {
+    permissions {
+      name
+      type
+      description
     }
   }
 `;

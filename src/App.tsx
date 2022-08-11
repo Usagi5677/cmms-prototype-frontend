@@ -1,6 +1,5 @@
 import Layout from "./hoc/Layout/Layout";
 import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
-import ViewMachine from "./pages/Machine/ViewMachine/ViewMachine";
 import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
 import ViewAllVehicle from "./pages/Transportation/ViewAllVehicle/ViewAllVehicle";
 import Login from "./pages/Login/Login";
@@ -14,18 +13,13 @@ import { apolloClient } from "./api/client";
 import { ME_QUERY } from "./api/queries";
 import { message } from "antd";
 import jwtDecode from "jwt-decode";
-import ViewTransportation from "./pages/Transportation/ViewTransportation/ViewTransportation";
 import Roles from "./pages/Role/Roles";
 import Users from "./pages/Users/Users";
-import { permissionExist } from "./helpers/assignPermission";
-import ViewAssignedMachinery from "./pages/Machine/ViewAssignedMachinery/ViewAssignedMachinery";
-import ViewAssignedVessels from "./pages/Transportation/ViewAssignedVessels/ViewAssignedVessels";
-import ViewAssignedVehicles from "./pages/Transportation/ViewAssignedVehicles/ViewAssignedVehicles";
 import { Templates } from "./pages/Templates";
-import ViewPermission from "./pages/ViewPermission/ViewPermission";
+import Permissions from "./pages/Role/Permissions";
 import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
-import 'antd/dist/antd.variable.min.css';
+import "antd/dist/antd.variable.min.css";
 
 function App() {
   {
@@ -46,7 +40,6 @@ function App() {
   const [me] = useLazyQuery(ME_QUERY, {
     client: apolloClient,
     onCompleted: (data) => {
-      const assignedPermission = permissionExist(data.me);
       const roles = data.me.roles;
       let permissions = [];
       // Get all permissions from all roles of user
@@ -60,10 +53,22 @@ function App() {
       }
       // Remove duplicates
       permissions = [...new Set(permissions)];
+      const assignments = data.me.entityAssignment;
+      const machineAssignments = assignments.filter(
+        (a: any) => a.entity.type.entityType === "Machine"
+      );
+      const vesselAssignments = assignments.filter(
+        (a: any) => a.entity.type.entityType === "Vessel"
+      );
+      const vehicleAssignments = assignments.filter(
+        (a: any) => a.entity.type.entityType === "Vehicle"
+      );
       setUser({
         ...data.me,
-        assignedPermission,
         permissions,
+        machineAssignments,
+        vesselAssignments,
+        vehicleAssignments,
       });
       setAppLoading(false);
       setLoggedOut(false);
@@ -176,25 +181,13 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/entity/:id" element={<ViewEntity />} />
-            <Route path="/transportation/vessels" element={<ViewAllVessel />} />
-            <Route
-              path="/transportation/vehicles"
-              element={<ViewAllVehicle />}
-            />
-            <Route
-              path="/assigned-machinery"
-              element={<ViewAssignedMachinery />}
-            />
-            <Route path="/assigned-vessels" element={<ViewAssignedVessels />} />
-            <Route
-              path="/assigned-vehicles"
-              element={<ViewAssignedVehicles />}
-            />
+            <Route path="/vessels" element={<ViewAllVessel />} />
+            <Route path="/vehicles" element={<ViewAllVehicle />} />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/config" element={<Config />} />
-            <Route path="/role/:id/permission" element={<ViewPermission />} />
+            <Route path="/role/:id/permission" element={<Permissions />} />
           </Routes>
         </Layout>
       </ApolloProvider>

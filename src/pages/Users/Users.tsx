@@ -14,6 +14,7 @@ import User from "../../models/User";
 import UserCard from "../../components/UserComponents/UserCard/UserCard";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router";
+import { hasPermissions } from "../../helpers/permissions";
 
 const Users = () => {
   const { user: self } = useContext(UserContext);
@@ -40,7 +41,7 @@ const Users = () => {
 
   // Fetch users when component mounts
   useEffect(() => {
-    if (!self.assignedPermission.hasViewUsers) {
+    if (!hasPermissions(self, ["VIEW_USERS"])) {
       navigate("/");
       message.error("No permission to view users.");
     }
@@ -108,7 +109,9 @@ const Users = () => {
           onClick={() => setSearch("")}
         />
         <div className={classes["add-wrapper"]}>
-          {self.assignedPermission.hasAddUserWithRole ? <AddUserRoles /> : null}
+          {hasPermissions(self, ["ADD_USER_WITH_ROLE"]) ? (
+            <AddUserRoles />
+          ) : null}
         </div>
       </div>
       {loading && (
@@ -132,7 +135,6 @@ const Users = () => {
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         </div>
       )}
-      
       <PaginationButtons
         pageInfo={pageInfo}
         page={page}

@@ -93,9 +93,12 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
   ];
 
-  if (self?.assignedPermission?.hasViewAllMachines) {
+  if (
+    self?.machineAssignments.length > 0 ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
     // Insert at second position
-    SidebarData.splice(2, 0, {
+    SidebarData.push({
       name: "Machinery",
       path: "/machinery",
       icon: <FaTractor />,
@@ -103,54 +106,43 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (self?.assignedPermission?.hasViewAllVessels) {
-    SidebarData.splice(3, 0, {
+  if (
+    self?.vesselAssignments.length > 0 ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    SidebarData.push({
       name: "Vessels",
-      path: "/transportation/vessels",
+      path: "/vessels",
       icon: <RiSailboatFill />,
       count: vesselData?.breakdownVesselCount.count,
     });
   }
 
-  if (self?.assignedPermission?.hasViewAllVehicles) {
-    SidebarData.splice(4, 0, {
+  if (
+    self?.vehicleAssignments.length > 0 ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    SidebarData.push({
       name: "Vehicles",
-      path: "/transportation/vehicles",
+      path: "/vehicles",
       icon: <FaTruck />,
       count: vehicleData?.breakdownVehicleCount.count,
     });
   }
-  if (self?.assignedPermission?.hasViewAllAssignedMachines) {
-    SidebarData.splice(6, 0, {
-      name: "Assigned Machinery",
-      path: "/assigned-machinery",
-      icon: <FaListUl />,
-    });
-  }
-  if (self?.assignedPermission?.hasViewAllAssignedVehicles) {
-    SidebarData.splice(7, 0, {
-      name: "Assigned Vessels",
-      path: "/assigned-vessels",
-      icon: <FaListUl />,
-    });
-  }
 
-  if (self?.assignedPermission?.hasViewAllAssignedVessels) {
-    SidebarData.splice(8, 0, {
-      name: "Assigned Vehicles",
-      path: "/assigned-vehicles",
-      icon: <FaListUl />,
-    });
-  }
+  SidebarData.push({
+    name: "Divider",
+    path: "divider2",
+  });
 
-  if (self?.assignedPermission?.hasViewUsers) {
+  if (hasPermissions(self, ["VIEW_USERS"])) {
     SidebarData.splice(10, 0, {
       name: "Users",
       path: "/users",
       icon: <FaUsers />,
     });
   }
-  if (self?.assignedPermission?.hasViewRoles) {
+  if (hasPermissions(self, ["VIEW_ROLES"])) {
     SidebarData.splice(11, 0, {
       name: "Roles",
       path: "/roles",

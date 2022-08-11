@@ -3,7 +3,7 @@ import User from "../models/User";
 export function hasPermissions(
   user: User,
   permissions: string[],
-  type: "all" | "any",
+  type: "all" | "any" = "all",
   userPermissions?: string[]
 ) {
   if (!userPermissions) {

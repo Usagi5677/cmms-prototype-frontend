@@ -12,6 +12,7 @@ import EditUserRoles from "../EditUserRoles/EditUserRoles";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import EditUserLocation from "../EditUserLocation/EditUserLocation";
+import { hasPermissions } from "../../../helpers/permissions";
 
 const UserCard = ({ userData }: { userData: User }) => {
   const { user: self } = useContext(UserContext);
@@ -50,7 +51,7 @@ const UserCard = ({ userData }: { userData: User }) => {
           {userData.roles?.map((role) => (
             <Popconfirm
               disabled={
-                removingUserRole || !self.assignedPermission.hasEditUserRole
+                removingUserRole || !hasPermissions(self, ["EDIT_USER_ROLE"])
               }
               key={v1()}
               title={`Do you want to remove ${role.role.name} role from ${userData.fullName}?`}
@@ -68,7 +69,7 @@ const UserCard = ({ userData }: { userData: User }) => {
                   backgroundColor: RoleTagStringToColor(role.role.name),
                   borderColor: RoleTagStringToColor(role.role.name),
                   borderWidth: 1,
-                  cursor: self.assignedPermission.hasEditUserRole
+                  cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
                     ? "pointer"
                     : "initial",
                 }}
@@ -80,12 +81,12 @@ const UserCard = ({ userData }: { userData: User }) => {
         </div>
         <div className={classes["icon-wrapper"]}>
           <div className={classes["icon"]}>
-            {self.assignedPermission.hasEditUserRole ? (
+            {hasPermissions(self, ["EDIT_USER_ROLE"]) ? (
               <EditUserRoles userData={userData} />
             ) : null}
           </div>
           <div className={classes["icon"]}>
-            {self.assignedPermission.hasEditUserLocation ? (
+            {hasPermissions(self, ["EDIT_USER_LOCATION"]) ? (
               <EditUserLocation userData={userData} />
             ) : null}
           </div>
