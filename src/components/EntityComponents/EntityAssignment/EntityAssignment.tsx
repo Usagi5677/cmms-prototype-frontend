@@ -62,6 +62,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
   if (type === "Admin") typePermission = "ENTITY_ADMIN";
   else if (type === "Engineer") typePermission = "ENTITY_ENGINEER";
   else if (type === "User") typePermission = "ENTITY_USER";
+
   // Fetch users when component mount
   useEffect(() => {
     getUsersWithPermission({
@@ -165,6 +166,12 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
                 style={{ width: "100%" }}
                 options={options}
                 placeholder="Select employees"
+                showSearch
+                filterOption={(input, option: any) => {
+                  return (
+                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  );
+                }}
               />
             </Form.Item>
             <Row justify="end" gutter={16}>
