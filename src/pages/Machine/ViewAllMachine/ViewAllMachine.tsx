@@ -341,7 +341,7 @@ const Machinery = () => {
                   ...filter,
                   status,
                   first: 20,
-                  after: pageInfo.endCursor,
+                  after: null,
                   last: null,
                   before: null,
                 });

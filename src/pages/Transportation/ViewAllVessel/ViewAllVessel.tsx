@@ -284,7 +284,14 @@ const Vessels = () => {
           >
             <EntityStatusFilter
               onChange={(status) => {
-                setFilter({ ...filter, status, ...DefaultPaginationArgs });
+                setFilter({
+                  ...filter,
+                  status,
+                  first: 20,
+                  after: null,
+                  last: null,
+                  before: null,
+                });
                 setPage(1);
               }}
               value={filter.status}
