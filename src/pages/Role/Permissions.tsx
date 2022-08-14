@@ -1,24 +1,19 @@
-import { ArrowLeftOutlined, LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Divider, Spin, Switch, Tag, Tooltip, Typography } from "antd";
-import moment from "moment";
+import { Button, Divider, Switch, Tag, Typography } from "antd";
 import { useEffect } from "react";
-import { FaArrowLeft, FaRegClock, FaUserAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router";
 import { TOGGLE_PERMISSION } from "../../api/mutations";
 import {
   GET_ALL_PERMISSIONS,
   GET_ROLE_WITH_PERMISSION,
-  ME_QUERY,
 } from "../../api/queries";
 import { CenteredSpin } from "../../components/common/CenteredSpin";
-import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
 import { RoleTagStringToColor } from "../../helpers/style";
 import Permission from "../../models/Permission";
-import Role from "../../models/Role";
 
-const Permissions = ({ role }: { role?: Role }) => {
+const Permissions = () => {
   const { id }: any = useParams();
   const navigate = useNavigate();
 

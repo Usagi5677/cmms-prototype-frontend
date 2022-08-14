@@ -1,5 +1,5 @@
 import { Button, DatePicker, Divider, Empty, InputNumber, Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { useLazyQuery } from "@apollo/client";
@@ -15,6 +15,8 @@ import { Entity } from "../../models/Entity/Entity";
 import { AddReading } from "./AddReading";
 import { AddChecklistAttachment } from "./AddChecklistAttachment";
 import { ChecklistAttachments } from "./ChecklistAttachments";
+import { hasPermissions, isAssignedType } from "../../helpers/permissions";
+import UserContext from "../../contexts/UserContext";
 
 export interface ChecklistsProps {
   entity: Entity;
@@ -22,6 +24,7 @@ export interface ChecklistsProps {
 }
 
 export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
+  const { user } = useContext(UserContext);
   const [date, setDate] = useState(moment());
   const [month, setMonth] = useState([
     date.clone().startOf("month"),
@@ -137,7 +140,10 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
         }}
       >
         <div style={{ fontWeight: 700, marginRight: ".5rem" }}>{type}</div>
-        <EditChecklistTemplate entity={entity} type={type} />
+        {(isAssignedType("Admin", entity, user) ||
+          hasPermissions(user, ["MODIFY_TEMPLATES"])) && (
+          <EditChecklistTemplate entity={entity} type={type} />
+        )}
         {loading && <Spin style={{ marginLeft: ".5rem" }} />}
         {summaryMatchCurrent()}
         <div style={{ flex: 1 }}></div>
@@ -220,14 +226,19 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       marginTop: "1rem",
                     }}
                   >
-                    <AddReading entity={entity} checklist={data?.checklist} />
-                    <div style={{ marginLeft: "1rem" }}>
-                      <AddChecklistAttachment
-                        entity={entity}
-                        checklist={data?.checklist}
-                        refetchChecklist={refetch}
-                      />
-                    </div>
+                    {isAssignedType("any", entity, user) && (
+                      <div style={{ marginRight: "1rem" }}>
+                        <AddReading
+                          entity={entity}
+                          checklist={data?.checklist}
+                        />
+                      </div>
+                    )}
+                    <AddChecklistAttachment
+                      entity={entity}
+                      checklist={data?.checklist}
+                      refetchChecklist={refetch}
+                    />
                   </div>
                 )}
               </>
@@ -250,6 +261,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                   item={item}
                   key={item.id}
                   disabled={isOlderChecklist}
+                  isAssigned={isAssignedType("any", entity, user)}
                 />
               ))}
             </div>

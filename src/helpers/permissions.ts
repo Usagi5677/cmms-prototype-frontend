@@ -1,3 +1,4 @@
+import { Entity } from "../models/Entity/Entity";
 import User from "../models/User";
 
 export function hasPermissions(
@@ -41,4 +42,21 @@ export function hasPermissions(
     }
   }
   return exists;
+}
+
+export function isAssignedType(
+  type: "Admin" | "Engineer" | "User" | "any",
+  entity: Entity,
+  user: any
+) {
+  if (!entity) return false;
+  const assignments = entity.assignees;
+  let ofType;
+  if (type === "any") {
+    ofType = assignments;
+  } else {
+    ofType = assignments.filter((a) => a.type === type);
+  }
+  const ofTypeIds = ofType.map((o) => o.userId);
+  if (ofTypeIds.includes(user.id)) return true;
 }

@@ -13,12 +13,14 @@ export interface ChecklistItemProps {
   checklist: Checklist;
   item: ChecklistItemModel;
   disabled: boolean;
+  isAssigned?: boolean;
 }
 
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({
   checklist,
   item,
   disabled,
+  isAssigned,
 }) => {
   const [hover, setHover] = useState(false);
 
@@ -51,7 +53,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
             })
           }
           checked={item.completedAt ? true : false}
-          disabled={disabled}
+          disabled={disabled || !isAssigned}
         />
       )}
       <div style={{ flex: 1 }}>

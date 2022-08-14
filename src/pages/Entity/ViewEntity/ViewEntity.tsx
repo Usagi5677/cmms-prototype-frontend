@@ -36,7 +36,7 @@ import EntityUsageHistory from "../../../components/EntityComponents/EntityUsage
 import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import EntityAssign from "../../../models/Entity/EntityAssign";
-import { hasPermissions } from "../../../helpers/permissions";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -95,7 +95,11 @@ const ViewEntity = () => {
                   <>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       {assign?.user?.fullName} ({assign?.user?.rcno})
-                      {(isAssignedType("Admin") ||
+                      {(isAssignedType(
+                        "Admin",
+                        entity?.getSingleEntity,
+                        self
+                      ) ||
                         hasPermissions(self, ["ASSIGN_TO_ENTITY"])) && (
                         <CloseCircleOutlined
                           style={{
@@ -155,14 +159,6 @@ const ViewEntity = () => {
     });
   }, [id, getEntityLatestAttachment]);
 
-  const isAssignedType = (type: "Admin" | "Engineer" | "User") => {
-    if (!entity) return false;
-    const assignments: EntityAssign[] = entity.getSingleEntity.assignees;
-    const ofType = assignments.filter((a) => a.type === type);
-    const ofTypeIds = ofType.map((o) => o.userId);
-    if (ofTypeIds.includes(self.id)) return true;
-  };
-
   const isSmallDevice = useIsSmallDevice();
 
   return (
@@ -170,19 +166,19 @@ const ViewEntity = () => {
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
           <div className={classes["info-btn-wrapper"]}>
-            {isAssignedType("Admin") ? (
+            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
               <EditEntityLocation
                 entity={entityData}
                 isDeleted={entityData?.isDeleted}
               />
             ) : null}
-            {isAssignedType("Admin") ? (
+            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
               <EditEntity
                 entity={entityData}
                 isDeleted={entityData?.isDeleted}
               />
             ) : null}
-            {isAssignedType("Admin") ? (
+            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
               <DeleteEntity
                 entityID={entityData?.id}
                 isDeleted={entityData?.isDeleted}
@@ -309,7 +305,7 @@ const ViewEntity = () => {
                   <div>
                     {entityData?.type?.entityType} {type}
                   </div>
-                  {(isAssignedType("Admin") ||
+                  {(isAssignedType("Admin", entity?.getSingleEntity, self) ||
                     hasPermissions(self, ["ASSIGN_TO_ENTITY"])) &&
                     !entityData?.isDeleted && (
                       <div

@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { Table } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CHECKLIST_TEMPLATES } from "../../api/queries";
 import { PAGE_LIMIT } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
@@ -16,10 +16,14 @@ import { CreateChecklistTemplate } from "./CreateChecklistTemplate";
 import { DeleteListing } from "../common/DeleteListing";
 import { DELETE_CHECKLIST_TEMPLATE } from "../../api/mutations";
 import { ChecklistTemplateDetails } from "./ChecklistTemplateDetails";
+import { hasPermissions, isAssignedType } from "../../helpers/permissions";
+import UserContext from "../../contexts/UserContext";
 
 export interface ChecklistTemplatesProps {}
 
 export const ChecklistTemplates: React.FC<ChecklistTemplatesProps> = ({}) => {
+  const { user } = useContext(UserContext);
+
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [page, setPage] = useState(1);
@@ -110,7 +114,10 @@ export const ChecklistTemplates: React.FC<ChecklistTemplatesProps> = ({}) => {
       key: "type",
       width: "50%",
     },
-    {
+  ];
+
+  if (hasPermissions(user, ["MODIFY_TEMPLATES"])) {
+    columns.push({
       title: "",
       dataIndex: "action",
       key: "action",
@@ -127,8 +134,8 @@ export const ChecklistTemplates: React.FC<ChecklistTemplatesProps> = ({}) => {
           />
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   const pageInfo = data?.checklistTemplates.pageInfo ?? {};
 
@@ -160,7 +167,9 @@ export const ChecklistTemplates: React.FC<ChecklistTemplatesProps> = ({}) => {
             margin={filterMargin}
           />
         </div>
-        <CreateChecklistTemplate />
+        {hasPermissions(user, ["MODIFY_TEMPLATES"]) && (
+          <CreateChecklistTemplate />
+        )}
       </div>
       <Table
         rowKey="id"
