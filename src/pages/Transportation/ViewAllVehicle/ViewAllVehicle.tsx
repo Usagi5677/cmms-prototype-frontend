@@ -21,6 +21,7 @@ import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity"
 import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Type/TypeSelector";
 import { motion } from "framer-motion";
+import CountUp from "react-countup";
 
 const Vehicles = () => {
   const { user: self } = useContext(UserContext);
@@ -200,38 +201,102 @@ const Vehicles = () => {
   return (
     <>
       <div className={classes["status-card"]}>
-        <div className={classes["total-card"]}>
-          <div className={classes["total-title"]}>Transports</div>
-          <div className={classes["total-amount"]}>{total}</div>
-        </div>
-        <StatusCard
-          amountOne={working}
-          icon={<FaTruck />}
-          iconBackgroundColor={"rgb(224,255,255)"}
-          iconColor={"rgb(0,139,139)"}
-          name={"Working"}
-        />
-        <StatusCard
-          amountOne={idle}
-          icon={<FaSpinner />}
-          iconBackgroundColor={"rgba(255,165,0,0.2)"}
-          iconColor={"rgb(219,142,0)"}
-          name={"Idle"}
-        />
-        <StatusCard
-          amountOne={breakdown}
-          icon={<FaCarCrash />}
-          iconBackgroundColor={"rgba(255,0,0,0.2)"}
-          iconColor={"rgb(139,0,0)"}
-          name={"Breakdown"}
-        />
-        <StatusCard
-          amountOne={dispose}
-          icon={<FaRecycle />}
-          iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
-          iconColor={"rgb(102, 0, 0)"}
-          name={"Dispose"}
-        />
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.3,
+          }}
+        >
+          <div className={classes["total-card"]}>
+            <motion.div
+              className={classes["total-title"]}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 0.7,
+              }}
+            >
+              Transports
+            </motion.div>
+            <div className={classes["total-amount"]}>
+              <CountUp end={total} duration={1} />
+            </div>
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.4,
+          }}
+        >
+          <StatusCard
+            amountOne={working}
+            icon={<FaTruck />}
+            iconBackgroundColor={"rgb(224,255,255)"}
+            iconColor={"rgb(0,139,139)"}
+            name={"Working"}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.5,
+          }}
+        >
+          <StatusCard
+            amountOne={idle}
+            icon={<FaSpinner />}
+            iconBackgroundColor={"rgba(255,165,0,0.2)"}
+            iconColor={"rgb(219,142,0)"}
+            name={"Idle"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.6,
+          }}
+        >
+          <StatusCard
+            amountOne={breakdown}
+            icon={<FaCarCrash />}
+            iconBackgroundColor={"rgba(255,0,0,0.2)"}
+            iconColor={"rgb(139,0,0)"}
+            name={"Breakdown"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.7,
+          }}
+        >
+          <StatusCard
+            amountOne={dispose}
+            icon={<FaRecycle />}
+            iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
+            iconColor={"rgb(102, 0, 0)"}
+            name={"Dispose"}
+          />
+        </motion.div>
       </div>
       <div className={classes["container"]}>
         <div className={classes["options-wrapper"]}>
