@@ -56,15 +56,15 @@ const EntitySparePRCard = ({
       </div>
       <div className={classes["second-block"]}>
         <div className={classes["status"]}>
-          {self.assignedPermission.hasEntitySparePREdit ? (
+          {self.assignedPermission?.hasEntitySparePREdit ? (
             <EntitySparePRStatus sparePR={sparePR} isDeleted={isDeleted} />
           ) : null}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasEntitySparePREdit && !isDeleted ? (
+          {self.assignedPermission?.hasEntitySparePREdit && !isDeleted ? (
             <EditEntitySparePR sparePR={sparePR} />
           ) : null}
-          {self.assignedPermission.hasEntitySparePRDelete && !isDeleted ? (
+          {self.assignedPermission?.hasEntitySparePRDelete && !isDeleted ? (
             <DeleteEntitySparePR id={sparePR?.id} />
           ) : null}
         </div>

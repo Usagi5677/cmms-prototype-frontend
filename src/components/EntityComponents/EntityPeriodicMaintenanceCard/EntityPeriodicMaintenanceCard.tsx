@@ -88,13 +88,13 @@ const EntityPeriodicMaintenanceCard = ({
             </div>
           </div>
           <div className={classes["third-block"]}>
-            {self.assignedPermission.hasEntityPeriodicMaintenanceEdit ? (
+            {self.assignedPermission?.hasEntityPeriodicMaintenanceEdit ? (
               <EntityPeriodicMaintenanceStatus
                 periodicMaintenance={periodicMaintenance}
                 isDeleted={isDeleted}
               />
             ) : null}
-            {self.assignedPermission.hasEntityPeriodicMaintenanceEdit &&
+            {self.assignedPermission?.hasEntityPeriodicMaintenanceEdit &&
             periodicMaintenance.status === "Done" ? (
               <Checkbox
                 checked={periodicMaintenance.verifiedAt !== null}
@@ -135,13 +135,13 @@ const EntityPeriodicMaintenanceCard = ({
           </div>
         </div>
         <div className={classes["fourth-block"]}>
-          {self.assignedPermission.hasMachinePeriodicMaintenanceEdit &&
+          {self.assignedPermission?.hasMachinePeriodicMaintenanceEdit &&
           !isDeleted ? (
             <EditEntityPeriodicMaintenance
               periodicMaintenance={periodicMaintenance}
             />
           ) : null}
-          {self.assignedPermission.hasMachinePeriodicMaintenanceDelete &&
+          {self.assignedPermission?.hasMachinePeriodicMaintenanceDelete &&
           !isDeleted ? (
             <DeleteEntityPeriodicMaintenance id={periodicMaintenance?.id} />
           ) : null}

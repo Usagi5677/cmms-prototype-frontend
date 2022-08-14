@@ -142,7 +142,7 @@ const EntityRepairCard = ({
                         }}
                         style={{
                           pointerEvents: self.assignedPermission
-                            .hasEntityRepairRequestEdit
+                            ?.hasEntityRepairRequestEdit
                             ? "initial"
                             : "none",
                         }}
@@ -172,7 +172,7 @@ const EntityRepairCard = ({
                       }}
                       style={{
                         pointerEvents: self.assignedPermission
-                          .hasEntityRepairRequestEdit
+                          ?.hasEntityRepairRequestEdit
                           ? "initial"
                           : "none",
                       }}

@@ -112,7 +112,7 @@ export const EntityPMTaskList: React.FC<TaskListProps> = ({
                         </span>
                       </div>
                     )}
-                    {self.assignedPermission.hasEntityChecklistEdit &&
+                    {self.assignedPermission?.hasEntityChecklistEdit &&
                       !isDeleted && (
                         <Checkbox
                           checked={task.completedAt !== null}
@@ -132,7 +132,7 @@ export const EntityPMTaskList: React.FC<TaskListProps> = ({
                     )}
                     {!deleting && (
                       <div>
-                        {self.assignedPermission.hasEntityChecklistDelete &&
+                        {self.assignedPermission?.hasEntityChecklistDelete &&
                         !isDeleted ? (
                           <CloseCircleOutlined
                             onClick={() => {

@@ -87,7 +87,7 @@ const EntityBreakdownCard = ({
         </div>
 
         <div className={classes["status"]}>
-          {self.assignedPermission.hasEntityBreakdownEdit ? (
+          {self.assignedPermission?.hasEntityBreakdownEdit ? (
             <EntityBreakdownStatus
               breakdown={breakdown}
               isDeleted={isDeleted}
@@ -95,10 +95,10 @@ const EntityBreakdownCard = ({
           ) : null}
         </div>
         <div className={classes["icon-wrapper"]}>
-          {self.assignedPermission.hasEntityBreakdownEdit && !isDeleted ? (
+          {self.assignedPermission?.hasEntityBreakdownEdit && !isDeleted ? (
             <EditEntityBreakdown breakdown={breakdown} />
           ) : null}
-          {self.assignedPermission.hasEntityBreakdownDelete && !isDeleted ? (
+          {self.assignedPermission?.hasEntityBreakdownDelete && !isDeleted ? (
             <DeleteEntityBreakdown id={breakdown?.id} />
           ) : null}
         </div>

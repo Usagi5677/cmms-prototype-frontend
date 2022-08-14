@@ -93,12 +93,12 @@ const ParsedEntityAttachment = ({
           {!checklistView && (
             <>
               {file &&
-                self.assignedPermission.hasEntityAttachmentEdit &&
+                self.assignedPermission?.hasEntityAttachmentEdit &&
                 !isDeleted && (
                   <EditEntityAttachment attachment={attachmentData} />
                 )}
               {file &&
-                self.assignedPermission.hasEntityAttachmentDelete &&
+                self.assignedPermission?.hasEntityAttachmentDelete &&
                 !isDeleted && (
                   <DeleteEntityAttachment id={attachmentData?.id} />
                 )}
