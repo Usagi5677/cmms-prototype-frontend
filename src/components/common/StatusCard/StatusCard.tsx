@@ -1,5 +1,7 @@
 import { Tooltip } from "antd";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import CountUp from "react-countup";
 import { IconType } from "react-icons";
 import classes from "./StatusCard.module.css";
 
@@ -22,10 +24,13 @@ const StatusCard = ({
   iconColor?: string;
   iconBackgroundColor?: string;
 }) => {
-  const [showAmountOne, setShowAmountOne] = useState(amountOne! >= 0 ? true : false);
-  const [showAmountTwo, setShowAmountTwo] = useState(amountTwo! >= 0 ? true : false);
+  const [showAmountOne, setShowAmountOne] = useState(
+    amountOne! >= 0 ? true : false
+  );
+  const [showAmountTwo, setShowAmountTwo] = useState(
+    amountTwo! >= 0 ? true : false
+  );
 
- 
   const btnOne = () => {
     setShowAmountOne(!showAmountOne);
   };
@@ -44,13 +49,23 @@ const StatusCard = ({
   }
 
   return (
-    <div className={classes["container"]} style={{border: `1px ${iconColor} solid`}}>
-      <div
+    <div
+      className={classes["container"]}
+      style={{ border: `1px ${iconColor} solid` }}
+    >
+      <motion.div
         className={classes["icon"]}
         style={{ backgroundColor: iconBackgroundColor, color: iconColor }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.8,
+        }}
       >
         {icon}
-      </div>
+      </motion.div>
       <div className={classes["content"]}>
         {subIconOne || subIconTwo ? (
           <div className={classes["sub-icon-wrapper"]}>
@@ -83,8 +98,22 @@ const StatusCard = ({
           </div>
         ) : null}
 
-        <div className={classes["title"]}>{name}</div>
-        <div className={classes["amount"]}>{amount}</div>
+        <motion.div
+          className={classes["title"]}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.7,
+          }}
+          
+        >
+          {name}
+        </motion.div>
+        <div className={classes["amount"]}>
+          <CountUp end={amount} duration={1} />
+        </div>
       </div>
     </div>
   );

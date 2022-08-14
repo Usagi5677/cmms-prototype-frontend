@@ -1,21 +1,13 @@
 import {
   FaHome,
-  FaLayerGroup,
-  FaListAlt,
-  FaListUl,
-  FaRegChartBar,
-  FaTh,
-  FaUserLock,
   FaUsers,
   FaTruck,
   FaTractor,
   FaLock,
-  FaPage4,
   FaPager,
   FaCog,
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
-
 import classes from "./Sidebar.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
@@ -23,12 +15,7 @@ import UserContext from "../../contexts/UserContext";
 import { Badge, Menu } from "antd";
 import { useLazyQuery } from "@apollo/client";
 import { errorMessage } from "../../helpers/gql";
-import {
-  GET_BREAKDOWN_COUNT_OF_ALL,
-  GET_BREAKDOWN_MACHINE_COUNT,
-  GET_BREAKDOWN_VEHICLE_COUNT,
-  GET_BREAKDOWN_VESSEL_COUNT,
-} from "../../api/queries";
+import { GET_BREAKDOWN_COUNT_OF_ALL } from "../../api/queries";
 import { hasPermissions } from "../../helpers/permissions";
 
 const { Divider } = Menu;

@@ -26,6 +26,8 @@ import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceSta
 import Search from "../../../common/Search";
 import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
 import EntityPMTask from "../../../../models/Entity/EntityPMTask";
+import { motion } from "framer-motion";
+import CountUp from "react-countup";
 
 const AllEntityPMTask = () => {
   const { user: self } = useContext(UserContext);
@@ -170,45 +172,191 @@ const AllEntityPMTask = () => {
   });
 
   return (
-    <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Periodic Maintenance Tasks</div>
+    <motion.div
+      className={classes["pm-container"]}
+      initial={{ x: -60, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.3,
+        },
+      }}
+      viewport={{ once: true }}
+    >
+      <motion.div
+        className={classes["heading"]}
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{
+          y: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.8,
+          },
+        }}
+        viewport={{ once: true }}
+      >
+        Periodic Maintenance Tasks
+      </motion.div>
       <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 1,
+            },
+          }}
+          viewport={{ once: true }}
+        >
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+        </motion.div>
+
         <div className={classes["status-wrapper"]}>
-          <EntityPMStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
-              setStatus(status);
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.1,
+              },
             }}
-            value={filter.status}
-          />
-          <Select
-            showArrow
-            className={classes["location"]}
-            onChange={(value) => setLocation(value)}
-            showSearch
-            options={options}
-            placeholder={"Location"}
-            mode="multiple"
-          />
-          <Checkbox onChange={(e) => setComplete(e.target.checked)}>
-            Complete
-          </Checkbox>
+            viewport={{ once: true }}
+          >
+            <EntityPMStatusFilter
+              onChange={(status) => {
+                setFilter({ ...filter, status, ...DefaultPaginationArgs });
+                setPage(1);
+                setStatus(status);
+              }}
+              value={filter.status}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.2,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <Select
+              showArrow
+              className={classes["location"]}
+              onChange={(value) => setLocation(value)}
+              showSearch
+              options={options}
+              placeholder={"Location"}
+              mode="multiple"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.3,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <Checkbox onChange={(e) => setComplete(e.target.checked)}>
+              Complete
+            </Checkbox>
+          </motion.div>
         </div>
       </div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{pending}</div>
-          <div className={classes["pending"]}>Pending</div>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.4,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={pending} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["pending"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.4,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Pending
+          </motion.div>
         </div>
         <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{done}</div>
-          <div className={classes["done"]}>Done</div>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.5,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={done} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["done"]}
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.5,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Done
+          </motion.div>
         </div>
       </div>
       {loading && (
@@ -221,7 +369,21 @@ const AllEntityPMTask = () => {
           (rec: { node: EntityPMTask }) => {
             const periodicMaintenanceTask = rec.node;
             return (
-              <div id="collapse" key={periodicMaintenanceTask.id}>
+              <motion.div
+                id="collapse"
+                key={periodicMaintenanceTask.id}
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    ease: "easeOut",
+                    duration: 0.3,
+                    delay: 1.7,
+                  },
+                }}
+                viewport={{ once: true }}
+              >
                 <Collapse ghost style={{ marginBottom: ".5rem" }}>
                   <Collapse.Panel
                     header={
@@ -353,7 +515,7 @@ const AllEntityPMTask = () => {
                     <div className={classes["container"]}></div>
                   </Collapse.Panel>
                 </Collapse>
-              </div>
+              </motion.div>
             );
           }
         )
@@ -368,8 +530,13 @@ const AllEntityPMTask = () => {
         back={back}
         pageLimit={3}
       />
-    </div>
+    </motion.div>
   );
 };
 
 export default AllEntityPMTask;
+/*
+
+
+
+*/

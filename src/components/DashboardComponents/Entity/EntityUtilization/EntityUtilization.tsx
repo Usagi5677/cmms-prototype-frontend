@@ -19,6 +19,7 @@ import PaginationButtons from "../../../common/PaginationButtons/PaginationButto
 import Search from "../../../common/Search";
 import EntityUtilizationGraph from "../EntityUtilizationGraph/EntityUtilizationGraph";
 import { Entity } from "../../../../models/Entity/Entity";
+import { motion } from "framer-motion";
 
 const EntityUtilization = () => {
   const { user: self } = useContext(UserContext);
@@ -124,24 +125,95 @@ const EntityUtilization = () => {
   });
 
   return (
-    <div className={classes["container"]}>
-      <div className={classes["heading"]}>Utilization</div>
-      <EntityUtilizationGraph />
+    <motion.div
+      className={classes["container"]}
+      initial={{ x: 60, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.3,
+        },
+      }}
+      viewport={{ once: true }}
+    >
+      <motion.div
+        className={classes["heading"]}
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{
+          y: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.8,
+          },
+        }}
+        viewport={{ once: true }}
+      >
+        Utilization
+      </motion.div>
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        whileInView={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.8,
+          },
+        }}
+        viewport={{ once: true }}
+      >
+        <EntityUtilizationGraph />
+      </motion.div>
+
       <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
-        <Select
-          showArrow
-          className={classes["location"]}
-          onChange={(value) => setLocation(value)}
-          showSearch
-          options={options}
-          placeholder={"Location"}
-          mode="multiple"
-        />
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 1,
+            },
+          }}
+          viewport={{ once: true }}
+        >
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 1.2,
+            },
+          }}
+          viewport={{ once: true }}
+        >
+          <Select
+            showArrow
+            className={classes["location"]}
+            onChange={(value) => setLocation(value)}
+            showSearch
+            options={options}
+            placeholder={"Location"}
+            mode="multiple"
+          />
+        </motion.div>
       </div>
       {loading && (
         <div>
@@ -166,7 +238,21 @@ const EntityUtilization = () => {
           let breakdownPercentage = (breakdownHour / totalHour) * 100;
           if (isSmallDevice) {
             return (
-              <div id="collapse" key={entity.id}>
+              <motion.div
+                id="collapse"
+                key={entity.id}
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    ease: "easeOut",
+                    duration: 0.3,
+                    delay: 1.3,
+                  },
+                }}
+                viewport={{ once: true }}
+              >
                 <Collapse ghost style={{ marginBottom: ".5rem" }}>
                   <Collapse.Panel
                     header={
@@ -289,11 +375,25 @@ const EntityUtilization = () => {
                     </div>
                   </Collapse.Panel>
                 </Collapse>
-              </div>
+              </motion.div>
             );
           } else {
             return (
-              <div className={classes["card"]} key={entity.id}>
+              <motion.div
+                className={classes["card"]}
+                key={entity.id}
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    ease: "easeOut",
+                    duration: 0.3,
+                    delay: 1.3,
+                  },
+                }}
+                viewport={{ once: true }}
+              >
                 <Tooltip
                   title={
                     <>
@@ -381,7 +481,7 @@ const EntityUtilization = () => {
                     </Tooltip>
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             );
           }
         })
@@ -396,7 +496,7 @@ const EntityUtilization = () => {
         back={back}
         pageLimit={3}
       />
-    </div>
+    </motion.div>
   );
 };
 

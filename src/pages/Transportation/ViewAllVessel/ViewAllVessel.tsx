@@ -21,6 +21,7 @@ import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCa
 import { Entity } from "../../../models/Entity/Entity";
 import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Type/TypeSelector";
+import { motion } from "framer-motion";
 
 const Vessels = () => {
   const { user: self } = useContext(UserContext);
@@ -236,46 +237,89 @@ const Vessels = () => {
       </div>
       <div className={classes["container"]}>
         <div className={classes["options-wrapper"]}>
-          <Search
-            searchValue={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onClick={() => setSearch("")}
-          />
-          <Select
-            showArrow
-            className={classes["location"]}
-            onChange={(value) => setLocation(value)}
-            showSearch
-            options={options}
-            placeholder={"Location"}
-            mode="multiple"
-          />
-          <Select
-            showArrow
-            className={classes["department"]}
-            onChange={(value) => setDepartment(value)}
-            showSearch
-            options={departmentOptions}
-            placeholder={"Department"}
-            mode="multiple"
-          />
-          <EntityStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.4,
             }}
-            value={filter.status}
-          />
-          <div className={classes["item-wrapper"]}>
+          >
+            <Search
+              searchValue={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onClick={() => setSearch("")}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.5,
+            }}
+          >
+            <Select
+              showArrow
+              className={classes["location"]}
+              onChange={(value) => setLocation(value)}
+              showSearch
+              options={options}
+              placeholder={"Location"}
+              mode="multiple"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.6,
+            }}
+          >
+            <EntityStatusFilter
+              onChange={(status) => {
+                setFilter({ ...filter, status, ...DefaultPaginationArgs });
+                setPage(1);
+              }}
+              value={filter.status}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.7,
+            }}
+          >
             <TypeSelector
               entityType={"Vessel"}
               setTypeId={setTypeId}
               rounded={true}
             />
-          </div>
-          {hasPermissions(self, ["ADD_ENTITY"]) ? (
-            <AddEntity entityType="Vessel" />
-          ) : null}
+          </motion.div>
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.8,
+            }}
+          >
+            <div className={classes["item-wrapper"]}>
+              {hasPermissions(self, ["ADD_ENTITY"]) ? (
+                <AddEntity entityType="Vessel" />
+              ) : null}
+            </div>
+          </motion.div>
         </div>
         {loading && (
           <div>

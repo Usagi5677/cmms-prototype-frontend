@@ -910,30 +910,6 @@ export const GET_USERS_WITH_PERMISSION = gql`
   }
 `;
 
-export const GET_BREAKDOWN_MACHINE_COUNT = gql`
-  query breakdownMachineCount {
-    breakdownMachineCount {
-      count
-    }
-  }
-`;
-
-export const GET_BREAKDOWN_VESSEL_COUNT = gql`
-  query breakdownVesselCount {
-    breakdownVesselCount {
-      count
-    }
-  }
-`;
-
-export const GET_BREAKDOWN_VEHICLE_COUNT = gql`
-  query breakdownVehicleCount {
-    breakdownVehicleCount {
-      count
-    }
-  }
-`;
-
 export const NOTIFICATIONS = gql`
   query notifications {
     notifications {

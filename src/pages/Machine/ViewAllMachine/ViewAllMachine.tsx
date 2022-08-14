@@ -20,6 +20,8 @@ import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCa
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Type/TypeSelector";
+import { motion } from "framer-motion";
+import CountUp from "react-countup";
 
 const Machinery = () => {
   const { user: self } = useContext(UserContext);
@@ -188,74 +190,189 @@ const Machinery = () => {
   return (
     <>
       <div className={classes["status-card"]}>
-        <div className={classes["total-card"]}>
-          <div className={classes["total-title"]}>Machinery</div>
-          <div className={classes["total-amount"]}>{total}</div>
-        </div>
-        <StatusCard
-          amountOne={working}
-          icon={<FaTractor />}
-          iconBackgroundColor={"rgb(224,255,255)"}
-          iconColor={"rgb(0,139,139)"}
-          name={"Working"}
-        />
-        <StatusCard
-          amountOne={idle}
-          icon={<FaSpinner />}
-          iconBackgroundColor={"rgba(255,165,0,0.2)"}
-          iconColor={"rgb(219,142,0)"}
-          name={"Idle"}
-        />
-        <StatusCard
-          amountOne={breakdown}
-          icon={<FaCarCrash />}
-          iconBackgroundColor={"rgba(255,0,0,0.2)"}
-          iconColor={"rgb(139,0,0)"}
-          name={"Breakdown"}
-        />
-        <StatusCard
-          amountOne={dispose}
-          icon={<FaRecycle />}
-          iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
-          iconColor={"rgb(102, 0, 0)"}
-          name={"Dispose"}
-        />
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.3,
+          }}
+        >
+          <div className={classes["total-card"]}>
+            <motion.div
+              className={classes["total-title"]}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 0.7,
+              }}
+            >
+              Machinery
+            </motion.div>
+            <div className={classes["total-amount"]}>
+              <CountUp end={total} duration={1} />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.4,
+          }}
+        >
+          <StatusCard
+            amountOne={working}
+            icon={<FaTractor />}
+            iconBackgroundColor={"rgb(224,255,255)"}
+            iconColor={"rgb(0,139,139)"}
+            name={"Working"}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.5,
+          }}
+        >
+          <StatusCard
+            amountOne={idle}
+            icon={<FaSpinner />}
+            iconBackgroundColor={"rgba(255,165,0,0.2)"}
+            iconColor={"rgb(219,142,0)"}
+            name={"Idle"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.6,
+          }}
+        >
+          <StatusCard
+            amountOne={breakdown}
+            icon={<FaCarCrash />}
+            iconBackgroundColor={"rgba(255,0,0,0.2)"}
+            iconColor={"rgb(139,0,0)"}
+            name={"Breakdown"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.7,
+          }}
+        >
+          <StatusCard
+            amountOne={dispose}
+            icon={<FaRecycle />}
+            iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
+            iconColor={"rgb(102, 0, 0)"}
+            name={"Dispose"}
+          />
+        </motion.div>
       </div>
       <div className={classes["container"]}>
         <div className={classes["options-wrapper"]}>
-          <Search
-            searchValue={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onClick={() => setSearch("")}
-          />
-          <Select
-            showArrow
-            className={classes["location"]}
-            onChange={(value) => setLocation(value)}
-            showSearch
-            options={options}
-            placeholder={"Location"}
-            mode="multiple"
-          />
-          <EntityStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.4,
             }}
-            value={filter.status}
-          />
-          <div className={classes["item-wrapper"]}>
+          >
+            <Search
+              searchValue={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onClick={() => setSearch("")}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.5,
+            }}
+          >
+            <Select
+              showArrow
+              className={classes["location"]}
+              onChange={(value) => setLocation(value)}
+              showSearch
+              options={options}
+              placeholder={"Location"}
+              mode="multiple"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.6,
+            }}
+          >
+            <EntityStatusFilter
+              onChange={(status) => {
+                setFilter({ ...filter, status, ...DefaultPaginationArgs });
+                setPage(1);
+              }}
+              value={filter.status}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.7,
+            }}
+          >
             <TypeSelector
               entityType={"Machine"}
               setTypeId={setTypeId}
               rounded={true}
             />
-          </div>
-          <div className={classes["add-machine-wrapper"]}>
-            {hasPermissions(self, ["ADD_ENTITY"]) ? (
-              <AddEntity entityType="Machine" />
-            ) : null}
-          </div>
+          </motion.div>
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.8,
+            }}
+          >
+            <div className={classes["item-wrapper"]}>
+              {hasPermissions(self, ["ADD_ENTITY"]) ? (
+                <AddEntity entityType="Machine" />
+              ) : null}
+            </div>
+          </motion.div>
         </div>
         {loading && (
           <div>

@@ -12,6 +12,7 @@ import AllEntityPMTask from "../../components/DashboardComponents/Entity/AllEnti
 import EntityMaintenance from "../../components/DashboardComponents/Entity/EntityMaintenance/EntityMaintenance";
 import EntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/EntityUtilization";
 import { hasPermissions } from "../../helpers/permissions";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -51,34 +52,77 @@ const Dashboard = () => {
     <>
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["status-card"]}>
-          <StatusCard
-            amountOne={working}
-            icon={<FaTractor />}
-            iconBackgroundColor={"rgb(224,255,255)"}
-            iconColor={"rgb(0,139,139)"}
-            name={"Working"}
-          />
-          <StatusCard
-            amountOne={idle}
-            icon={<FaSpinner />}
-            iconBackgroundColor={"rgba(255,165,0,0.2)"}
-            iconColor={"rgb(219,142,0)"}
-            name={"Idle"}
-          />
-          <StatusCard
-            amountOne={breakdown}
-            icon={<FaCarCrash />}
-            iconBackgroundColor={"rgba(255,0,0,0.2)"}
-            iconColor={"rgb(139,0,0)"}
-            name={"Breakdown"}
-          />
-          <StatusCard
-            amountOne={dispose}
-            icon={<FaRecycle />}
-            iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
-            iconColor={"rgb(102, 0, 0)"}
-            name={"Dispose"}
-          />
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.3,
+            }}
+          >
+            <StatusCard
+              amountOne={working}
+              icon={<FaTractor />}
+              iconBackgroundColor={"rgb(224,255,255)"}
+              iconColor={"rgb(0,139,139)"}
+              name={"Working"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.4,
+            }}
+          >
+            <StatusCard
+              amountOne={idle}
+              icon={<FaSpinner />}
+              iconBackgroundColor={"rgba(255,165,0,0.2)"}
+              iconColor={"rgb(219,142,0)"}
+              name={"Idle"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.5,
+            }}
+          >
+            <StatusCard
+              amountOne={breakdown}
+              icon={<FaCarCrash />}
+              iconBackgroundColor={"rgba(255,0,0,0.2)"}
+              iconColor={"rgb(139,0,0)"}
+              name={"Breakdown"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.6,
+            }}
+          >
+            <StatusCard
+              amountOne={dispose}
+              icon={<FaRecycle />}
+              iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
+              iconColor={"rgb(102, 0, 0)"}
+              name={"Dispose"}
+            />
+          </motion.div>
         </div>
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (

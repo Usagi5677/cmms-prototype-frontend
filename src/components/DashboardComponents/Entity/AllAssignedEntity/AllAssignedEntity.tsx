@@ -25,6 +25,8 @@ import EntityStatusFilter from "../../../common/EntityStatusFilter";
 import { Entity } from "../../../../models/Entity/Entity";
 import EntityStatusTag from "../../../common/EntityStatusTag";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
+import { motion } from "framer-motion";
+import CountUp from "react-countup";
 
 const AllAssignedEntity = () => {
   const { user: self } = useContext(UserContext);
@@ -163,46 +165,207 @@ const AllAssignedEntity = () => {
   });
 
   return (
-    <div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Assigned to me</div>
+    <motion.div
+      className={classes["pm-container"]}
+      initial={{ x: 60, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.3,
+        },
+      }}
+      viewport={{ once: true }}
+    >
+      <motion.div
+        className={classes["heading"]}
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{
+          y: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.8,
+          },
+        }}
+        viewport={{ once: true }}
+      >
+        Assigned to me
+      </motion.div>
       <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 1,
+            },
+          }}
+          viewport={{ once: true }}
+        >
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+        </motion.div>
+
         <div className={classes["status-wrapper"]}>
-          <EntityStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
-              setStatus(status);
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.1,
+              },
             }}
-            value={filter.status}
-          />
-          <Select
-            showArrow
-            className={classes["location"]}
-            onChange={(value) => setLocation(value)}
-            showSearch
-            options={options}
-            placeholder={"Location"}
-            mode="multiple"
-          />
+            viewport={{ once: true }}
+          >
+            <EntityStatusFilter
+              onChange={(status) => {
+                setFilter({ ...filter, status, ...DefaultPaginationArgs });
+                setPage(1);
+                setStatus(status);
+              }}
+              value={filter.status}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.2,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <Select
+              showArrow
+              className={classes["location"]}
+              onChange={(value) => setLocation(value)}
+              showSearch
+              options={options}
+              placeholder={"Location"}
+              mode="multiple"
+            />
+          </motion.div>
         </div>
       </div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{breakdown}</div>
-          <div className={classes["breakdown"]}>Breakdown</div>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.3,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={breakdown} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["breakdown"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.3,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Breakdown
+          </motion.div>
         </div>
         <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{idle}</div>
-          <div className={classes["idle"]}>Idle</div>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.5,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={idle} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["idle"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.5,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Idle
+          </motion.div>
         </div>
         <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{working}</div>
-          <div className={classes["working"]}>Working</div>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.6,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={working} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["working"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.6,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Working
+          </motion.div>
         </div>
       </div>
       {loading && (
@@ -214,7 +377,21 @@ const AllAssignedEntity = () => {
         data?.getAllAssignedEntity.edges.map((rec: { node: Entity }) => {
           const entity = rec.node;
           return (
-            <div id="collapse" key={entity.id}>
+            <motion.div
+              id="collapse"
+              key={entity.id}
+              initial={{ x: -20, opacity: 0 }}
+              whileInView={{
+                x: 0,
+                opacity: 1,
+                transition: {
+                  ease: "easeOut",
+                  duration: 0.3,
+                  delay: 1.7,
+                },
+              }}
+              viewport={{ once: true }}
+            >
               <Collapse ghost style={{ marginBottom: ".5rem" }}>
                 <Collapse.Panel
                   header={
@@ -319,7 +496,7 @@ const AllAssignedEntity = () => {
                   <div className={classes["container"]}></div>
                 </Collapse.Panel>
               </Collapse>
-            </div>
+            </motion.div>
           );
         })
       ) : (
@@ -333,7 +510,7 @@ const AllAssignedEntity = () => {
         back={back}
         pageLimit={3}
       />
-    </div>
+    </motion.div>
   );
 };
 

@@ -26,6 +26,8 @@ import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceSta
 import Search from "../../../common/Search";
 import EntityPeriodicMaintenance from "../../../../models/Entity/EntityPeriodicMaintenance";
 import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
+import CountUp from "react-countup";
+import { motion } from "framer-motion";
 
 const EntityMaintenance = () => {
   const { user: self } = useContext(UserContext);
@@ -160,7 +162,338 @@ const EntityMaintenance = () => {
   });
 
   return (
-    <div className={classes["pm-container"]}>
+    <motion.div
+      className={classes["pm-container"]}
+      initial={{ x: 60, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.3,
+        },
+      }}
+      viewport={{ once: true }}
+    >
+      <motion.div
+        className={classes["heading"]}
+        initial={{ y: -20, opacity: 0 }}
+        whileInView={{
+          y: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.8,
+          },
+        }}
+        viewport={{ once: true }}
+      >
+        Assigned to me
+      </motion.div>
+      <div className={classes["options-wrapper"]}>
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 1,
+            },
+          }}
+          viewport={{ once: true }}
+        >
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+        </motion.div>
+
+        <div className={classes["status-wrapper"]}>
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.1,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <EntityPMStatusFilter
+              onChange={(status) => {
+                setFilter({ ...filter, status, ...DefaultPaginationArgs });
+                setPage(1);
+                setStatus(status);
+              }}
+              value={filter.status}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.2,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <Select
+              showArrow
+              className={classes["location"]}
+              onChange={(value) => setLocation(value)}
+              showSearch
+              options={options}
+              placeholder={"Location"}
+              mode="multiple"
+            />
+          </motion.div>
+        </div>
+      </div>
+      <div className={classes["counter-container"]}>
+        <div className={classes["counter-wrapper"]}>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.3,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={missed} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["missed"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.3,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Missed
+          </motion.div>
+        </div>
+        <div className={classes["counter-wrapper"]}>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.5,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={pending} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["pending"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.5,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Pending
+          </motion.div>
+        </div>
+        <div className={classes["counter-wrapper"]}>
+          <motion.div
+            className={classes["counter-value"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.6,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            <CountUp end={done} duration={1} />
+          </motion.div>
+          <motion.div
+            className={classes["done"]}
+            initial={{ x: -20, opacity: 0 }}
+            whileInView={{
+              x: 0,
+              opacity: 1,
+              transition: {
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 1.6,
+              },
+            }}
+            viewport={{ once: true }}
+          >
+            Done
+          </motion.div>
+        </div>
+      </div>
+      {loading && (
+        <div>
+          <Spin style={{ width: "100%", margin: "2rem auto" }} />
+        </div>
+      )}
+      {data?.getAllEntityPeriodicMaintenance.edges.length > 0 ? (
+        data?.getAllEntityPeriodicMaintenance.edges.map(
+          (rec: { node: EntityPeriodicMaintenance }) => {
+            const periodicMaintenance = rec.node;
+            return (
+              <motion.div
+                id="collapse"
+                key={periodicMaintenance.id}
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    ease: "easeOut",
+                    duration: 0.3,
+                    delay: 1.7,
+                  },
+                }}
+                viewport={{ once: true }}
+              >
+                <Collapse ghost style={{ marginBottom: ".5rem" }}>
+                  <Collapse.Panel
+                    header={
+                      <>
+                        <div
+                          className={classes["header-container"]}
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          <div className={classes["first-block"]}>
+                            <div>
+                              <div className={classes["title-wrapper"]}>
+                                <FaTractor />
+                                <span className={classes["title"]}>
+                                  {periodicMaintenance?.entity?.machineNumber}
+                                </span>
+                              </div>
+                              <div className={classes["location-wrapper"]}>
+                                <FaMapMarkerAlt />
+                                <span className={classes["title"]}>
+                                  {periodicMaintenance?.entity?.location}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className={classes["service-reading-wrapper"]}>
+                            <div className={classes["reading"]}>
+                              <span className={classes["reading-title"]}>
+                                Title:
+                              </span>
+                              <span>{periodicMaintenance?.title}</span>
+                            </div>
+                            <div className={classes["status"]}>
+                              <PeriodicMaintenanceStatusTag
+                                status={periodicMaintenance?.status}
+                              />
+                            </div>
+                            <div>
+                              <div className={classes["title-wrapper"]}>
+                                <Tooltip title="Start Date">
+                                  <FaRegClock />
+                                </Tooltip>
+
+                                <span className={classes["title"]}>
+                                  {moment(
+                                    periodicMaintenance?.startDate
+                                  ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                                </span>
+                              </div>
+                              <div className={classes["reading"]}>
+                                <span className={classes["reading-title"]}>
+                                  In:
+                                </span>
+                                <span>
+                                  {periodicMaintenance?.value}{" "}
+                                  {periodicMaintenance?.measurement}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <Link
+                            to={
+                              "/transportation/" +
+                              periodicMaintenance?.entity?.id
+                            }
+                          >
+                            <Tooltip title="Open">
+                              <FaArrowAltCircleRight
+                                className={classes["button"]}
+                              />
+                            </Tooltip>
+                          </Link>
+                        </div>
+                      </>
+                    }
+                    key={periodicMaintenance?.id}
+                  >
+                    <div className={classes["container"]}></div>
+                  </Collapse.Panel>
+                </Collapse>
+              </motion.div>
+            );
+          }
+        )
+      ) : (
+        <Empty />
+      )}
+
+      <PaginationButtons
+        pageInfo={pageInfo}
+        page={page}
+        next={next}
+        back={back}
+        pageLimit={3}
+      />
+    </motion.div>
+  );
+};
+
+export default EntityMaintenance;
+
+/*
+
+<div className={classes["pm-container"]}>
       <div className={classes["heading"]}>Maintenance</div>
       <div className={classes["options-wrapper"]}>
         <Search
@@ -309,7 +642,6 @@ const EntityMaintenance = () => {
         pageLimit={3}
       />
     </div>
-  );
-};
 
-export default EntityMaintenance;
+
+*/

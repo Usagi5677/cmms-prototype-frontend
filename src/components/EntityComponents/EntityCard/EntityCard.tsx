@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusTag from "../../common/EntityStatusTag";
 import { getListImage } from "../../../helpers/getListImage";
+import { motion } from "framer-motion";
 
 const EntityCard = ({ entity }: { entity: Entity }) => {
   const interServiceMileage =
@@ -22,7 +23,20 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
   const interService = (entity.currentRunning ?? 0) - (entity.lastService ?? 0);
 
   return (
-    <div id="collapse">
+    <motion.div
+      id="collapse"
+      initial={{ x: -20, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.1,
+        },
+      }}
+      viewport={{ once: true }}
+    >
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
         <Collapse.Panel
           header={
@@ -200,7 +214,7 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
           </div>
         </Collapse.Panel>
       </Collapse>
-    </div>
+    </motion.div>
   );
 };
 
