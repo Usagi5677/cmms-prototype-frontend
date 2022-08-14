@@ -26,7 +26,7 @@ const AddEntityBreakdown = ({
         "getAllBreakdownOfEntity",
         "getSingleEntity",
         "getAllHistoryOfEntity",
-        "breakdownCount",
+        "allEntityBreakdownCount",
       ],
     });
 

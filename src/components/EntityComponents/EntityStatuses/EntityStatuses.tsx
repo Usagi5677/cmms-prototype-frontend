@@ -33,7 +33,7 @@ const EntityStatuses = ({
         "getSingleEntity",
         "getAllBreakdownOfEntity",
         "getAllHistoryOfEntity",
-        "breakdownCount",
+        "allEntityBreakdownCount",
       ],
     }
   );
@@ -53,7 +53,8 @@ const EntityStatuses = ({
       refetchQueries: [
         "getAllBreakdownOfEntity",
         "getSingleEntity",
-        "breakdownCount",
+        "getAllHistoryOfEntity",
+        "allEntityBreakdownCount",
       ],
     }
   );

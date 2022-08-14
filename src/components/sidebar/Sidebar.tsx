@@ -24,6 +24,7 @@ import { Badge, Menu } from "antd";
 import { useLazyQuery } from "@apollo/client";
 import { errorMessage } from "../../helpers/gql";
 import {
+  GET_BREAKDOWN_COUNT_OF_ALL,
   GET_BREAKDOWN_MACHINE_COUNT,
   GET_BREAKDOWN_VEHICLE_COUNT,
   GET_BREAKDOWN_VESSEL_COUNT,
@@ -43,43 +44,19 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const [breakdownMachineCount, { data: machineData }] = useLazyQuery(
-    GET_BREAKDOWN_MACHINE_COUNT,
+  const [allEntityBreakdownCount, { data: breakdownData }] = useLazyQuery(
+    GET_BREAKDOWN_COUNT_OF_ALL,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading request.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
-  const [breakdownVesselCount, { data: vesselData }] = useLazyQuery(
-    GET_BREAKDOWN_VESSEL_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading request.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
-  const [breakdownVehicleCount, { data: vehicleData }] = useLazyQuery(
-    GET_BREAKDOWN_VEHICLE_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading request.");
+        errorMessage(err, "Error loading breakdown count.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
     }
   );
   useEffect(() => {
-    breakdownMachineCount();
-    breakdownVesselCount();
-    breakdownVehicleCount();
-  }, [breakdownMachineCount, breakdownVesselCount, breakdownVehicleCount]);
+    allEntityBreakdownCount();
+  }, [allEntityBreakdownCount]);
 
   let SidebarData: SidebarItem[] = [
     {
@@ -102,7 +79,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Machinery",
       path: "/machinery",
       icon: <FaTractor />,
-      count: machineData?.breakdownMachineCount.count,
+      count: breakdownData?.allEntityBreakdownCount?.machine,
     });
   }
 
@@ -114,7 +91,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Vessels",
       path: "/vessels",
       icon: <RiSailboatFill />,
-      count: vesselData?.breakdownVesselCount.count,
+      count: breakdownData?.allEntityBreakdownCount?.vessel,
     });
   }
 
@@ -126,7 +103,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       name: "Vehicles",
       path: "/vehicles",
       icon: <FaTruck />,
-      count: vehicleData?.breakdownVehicleCount.count,
+      count: breakdownData?.allEntityBreakdownCount?.vehicle,
     });
   }
 
@@ -179,6 +156,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       });
     }
   */
+
   return (
     <>
       <Menu

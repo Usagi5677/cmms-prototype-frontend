@@ -2359,3 +2359,13 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
     }
   }
 `;
+
+export const GET_BREAKDOWN_COUNT_OF_ALL = gql`
+  query allEntityBreakdownCount {
+    allEntityBreakdownCount {
+      machine
+      vehicle
+      vessel
+    }
+  }
+`;
