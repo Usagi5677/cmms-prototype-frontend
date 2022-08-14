@@ -127,11 +127,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  SidebarData.push({
-    name: "Templates",
-    path: "/templates",
-    icon: <FaPager />,
-  });
+  if (hasPermissions(self, ["VIEW_TEMPLATES", "MODIFY_TEMPLATES"], "any")) {
+    SidebarData.push({
+      name: "Templates",
+      path: "/templates",
+      icon: <FaPager />,
+    });
+  }
 
   if (hasPermissions(self, ["MODIFY_TYPES"], "any")) {
     SidebarData.push({

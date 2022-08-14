@@ -1,10 +1,22 @@
-import { Tabs } from "antd";
-import React from "react";
+import { message, Tabs } from "antd";
+import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { ChecklistTemplates } from "../components/Templates/ChecklistTemplates";
+import UserContext from "../contexts/UserContext";
+import { hasPermissions } from "../helpers/permissions";
 
 export interface TemplatesProps {}
 
 export const Templates: React.FC<TemplatesProps> = ({}) => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!hasPermissions(user, ["VIEW_TEMPLATES", "MODIFY_TEMPLATES"], "any")) {
+      navigate("/");
+      message.error("No permission to view templates.");
+    }
+  }, []);
+
   return (
     <div
       style={{

@@ -1,6 +1,7 @@
 import { WarningOutlined } from "@ant-design/icons";
 import moment from "moment";
-import React from "react";
+import React, { useContext } from "react";
+import UserContext from "../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import ChecklistCommentModel from "../../models/ChecklistComment";
 import { RemoveChecklistComment } from "./RemoveChecklistComment";
@@ -14,6 +15,8 @@ export const ChecklistComment: React.FC<ChecklistCommentProps> = ({
   comment,
   isIssue = false,
 }) => {
+  const { user } = useContext(UserContext);
+
   return (
     <div
       style={{
@@ -41,7 +44,9 @@ export const ChecklistComment: React.FC<ChecklistCommentProps> = ({
           {moment(comment.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
         </div>
       </div>
-      <RemoveChecklistComment comment={comment} />
+      {comment.user.id === user.id && (
+        <RemoveChecklistComment comment={comment} />
+      )}
     </div>
   );
 };

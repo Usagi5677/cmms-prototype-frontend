@@ -1,10 +1,22 @@
-import { Tabs } from "antd";
-import React from "react";
+import { message, Tabs } from "antd";
+import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Types } from "../components/Config/Types";
+import UserContext from "../contexts/UserContext";
+import { hasPermissions } from "../helpers/permissions";
 
 export interface ConfigProps {}
 
 export const Config: React.FC<ConfigProps> = ({}) => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!hasPermissions(user, ["MODIFY_TYPES"], "any")) {
+      navigate("/");
+      message.error("No permission to view config.");
+    }
+  }, []);
+
   return (
     <div
       style={{
