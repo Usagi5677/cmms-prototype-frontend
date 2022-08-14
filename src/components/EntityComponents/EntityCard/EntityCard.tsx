@@ -37,6 +37,7 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
                       src={getListImage(entity?.type?.name)}
                       height={50}
                       width={60}
+                      preview={false}
                     />
                   )}
                   <div className={classes["inner-first-block"]}>
