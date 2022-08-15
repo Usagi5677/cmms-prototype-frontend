@@ -57,6 +57,6 @@ export function isAssignedType(
   } else {
     ofType = assignments.filter((a) => a.type === type);
   }
-  const ofTypeIds = ofType.map((o) => o.userId);
+  const ofTypeIds = ofType.map((o) => o.user.id);
   if (ofTypeIds.includes(user.id)) return true;
 }
