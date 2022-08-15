@@ -6,7 +6,11 @@ import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_ENTITY, GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
+import {
+  ALL_ENTITY,
+  GET_ALL_CHECKLIST_AND_PM_SUMMARY,
+  GET_ALL_ENTITY_STATUS_COUNT,
+} from "../../../api/queries";
 import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
@@ -134,13 +138,23 @@ const Vessels = () => {
     }
   );
 
+  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
+    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+      onError: (err) => {
+        errorMessage(err, "Error loading summary data.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
   useEffect(() => {
     getAllEntityStatusCount({
       variables: {
         entityType: "Vessel",
       },
     });
-  }, [getAllEntityStatusCount]);
+    getAllEntityChecklistAndPMSummary();
+  }, [getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -402,7 +416,13 @@ const Vessels = () => {
           <div>
             {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
               const entity = rec.node;
-              return <EntityCard entity={entity} key={entity.id} />;
+              return (
+                <EntityCard
+                  entity={entity}
+                  key={entity.id}
+                  summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
+                />
+              );
             })}
           </div>
         ) : (

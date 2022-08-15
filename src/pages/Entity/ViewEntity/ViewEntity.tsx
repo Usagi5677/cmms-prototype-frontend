@@ -1,9 +1,19 @@
 import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Avatar, Button, Divider, message, Spin, Tabs, Tooltip } from "antd";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Divider,
+  message,
+  Spin,
+  Tabs,
+  Tooltip,
+} from "antd";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
+  GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ENTITY_LATEST_ATTACHMENT,
   GET_SINGLE_ENTITY,
 } from "../../../api/queries";
@@ -53,6 +63,15 @@ const ViewEntity = () => {
       notifyOnNetworkStatusChange: true,
     });
 
+  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
+    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+      onError: (err) => {
+        errorMessage(err, "Error loading summary data.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
   // Fetch entity when component mount
   useEffect(() => {
     // if (!self.assignedPermission.hasViewEntity) {
@@ -60,7 +79,8 @@ const ViewEntity = () => {
     //   message.error("No permission to view entity.");
     // }
     getSingleEntity({ variables: { entityId: parseInt(id) } });
-  }, [getSingleEntity, id]);
+    getAllEntityChecklistAndPMSummary();
+  }, [getSingleEntity, id, getAllEntityChecklistAndPMSummary]);
 
   const [unassignUserFromEntity, { loading: unassigning }] = useMutation(
     UNASSIGN_USER_FROM_ENTITY,
@@ -356,14 +376,67 @@ const ViewEntity = () => {
                 flex: 1,
               }}
             >
-              <Tabs.TabPane tab="Checklist" key="checklist">
+              <Tabs.TabPane
+                tab={
+                  <div style={{ display: "flex" }}>
+                    <div>Checklist</div>
+                    {summaryData?.getAllEntityChecklistAndPMSummary
+                      ?.machineTaskComplete === true && (
+                      <Tooltip
+                        color="#efefef"
+                        title={
+                          <div>
+                            <Badge
+                              color={"red"}
+                              text={"Some checklists not completed"}
+                              status={"processing"}
+                            />
+                          </div>
+                        }
+                      >
+                        <Badge
+                          color={"red"}
+                          status={"processing"}
+                          style={{ marginLeft: 10 }}
+                        />
+                      </Tooltip>
+                    )}
+                  </div>
+                }
+                key="checklist"
+              >
                 <ViewChecklist
                   entityData={entityData}
                   isDeleted={entityData?.isDeleted}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane
-                tab="Periodic Maintenance"
+                tab={
+                  <div style={{ display: "flex" }}>
+                    <div>Periodic Maintenance</div>
+                    {summaryData?.getAllEntityChecklistAndPMSummary
+                      ?.machineTaskComplete === true && (
+                      <Tooltip
+                        color="#efefef"
+                        title={
+                          <div>
+                            <Badge
+                              color={"red"}
+                              text={"Some tasks not completed"}
+                              status={"processing"}
+                            />
+                          </div>
+                        }
+                      >
+                        <Badge
+                          color={"red"}
+                          status={"processing"}
+                          style={{ marginLeft: 10 }}
+                        />
+                      </Tooltip>
+                    )}
+                  </div>
+                }
                 key="periodicMaintenance"
               >
                 <ViewPeriodicMaintenance

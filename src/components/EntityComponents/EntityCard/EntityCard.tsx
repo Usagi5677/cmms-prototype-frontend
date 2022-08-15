@@ -10,17 +10,27 @@ import {
 import classes from "./EntityCard.module.css";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { Collapse, Tooltip, Image } from "antd";
+import { Collapse, Tooltip, Image, Badge } from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusTag from "../../common/EntityStatusTag";
 import { getListImage } from "../../../helpers/getListImage";
 import { motion } from "framer-motion";
+import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistAndPMSummary";
+import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 
-const EntityCard = ({ entity }: { entity: Entity }) => {
+const EntityCard = ({
+  entity,
+  summaryData,
+}: {
+  entity: Entity;
+  summaryData?: EntityChecklistAndPMSummary;
+}) => {
   const interServiceMileage =
     (entity.currentMileage ?? 0) - (entity.lastServiceMileage ?? 0);
   const interService = (entity.currentRunning ?? 0) - (entity.lastService ?? 0);
+
+  let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
 
   return (
     <motion.div
@@ -57,9 +67,41 @@ const EntityCard = ({ entity }: { entity: Entity }) => {
                   <div className={classes["inner-first-block"]}>
                     <div className={classes["title-wrapper"]}>
                       <FaTractor />
-                      <span className={classes["title"]}>
+                      <span className={classes["mn-title"]}>
                         {entity?.machineNumber}
                       </span>
+                      {result[0] && (
+                        <Tooltip
+                          color="#efefef"
+                          title={
+                            <div>
+                              <Badge
+                                color={"red"}
+                                text={"Some tasks not completed"}
+                                status={"processing"}
+                              />
+                            </div>
+                          }
+                        >
+                          <Badge color={"red"} status={"processing"} />
+                        </Tooltip>
+                      )}
+                      {result[1] && (
+                        <Tooltip
+                          color="#efefef"
+                          title={
+                            <div>
+                              <Badge
+                                color={"red"}
+                                text={"Some checklists not completed"}
+                                status={"processing"}
+                              />
+                            </div>
+                          }
+                        >
+                          <Badge color={"red"} status={"processing"} />
+                        </Tooltip>
+                      )}
                     </div>
                     <div className={classes["location-wrapper"]}>
                       <FaMapMarkerAlt />

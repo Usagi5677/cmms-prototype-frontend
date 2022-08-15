@@ -38,6 +38,7 @@ export const EntityPMTaskList: React.FC<TaskListProps> = ({
       refetchQueries: [
         "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
+        "getAllEntityChecklistAndPMSummary"
       ],
     }
   );
@@ -51,6 +52,7 @@ export const EntityPMTaskList: React.FC<TaskListProps> = ({
       refetchQueries: [
         "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
+        "getAllEntityChecklistAndPMSummary"
       ],
     }
   );

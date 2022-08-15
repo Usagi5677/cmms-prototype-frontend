@@ -6,7 +6,11 @@ import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import { ALL_ENTITY, GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
+import {
+  ALL_ENTITY,
+  GET_ALL_CHECKLIST_AND_PM_SUMMARY,
+  GET_ALL_ENTITY_STATUS_COUNT,
+} from "../../../api/queries";
 import { ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllMachine.module.css";
@@ -64,6 +68,14 @@ const Machinery = () => {
     }
   );
 
+  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
+    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+      onError: (err) => {
+        errorMessage(err, "Error loading summary data.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
   // Update url search param on filter change
   useEffect(() => {
     let newParams: any = {};
@@ -98,7 +110,8 @@ const Machinery = () => {
         entityType: "Machine",
       },
     });
-  }, [getAllEntityStatusCount]);
+    getAllEntityChecklistAndPMSummary();
+  }, [getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -390,7 +403,13 @@ const Machinery = () => {
           <div>
             {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
               const entity = rec.node;
-              return <EntityCard entity={entity} key={entity.id} />;
+              return (
+                <EntityCard
+                  entity={entity}
+                  key={entity.id}
+                  summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
+                />
+              );
             })}
           </div>
         ) : (

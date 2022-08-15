@@ -44,7 +44,11 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while assigning.");
       },
-      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity"],
+      refetchQueries: [
+        "getSingleEntity",
+        "getAllHistoryOfEntity",
+        "getAllEntityChecklistAndPMSummary",
+      ],
     }
   );
 

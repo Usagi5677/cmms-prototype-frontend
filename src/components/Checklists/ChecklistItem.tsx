@@ -25,7 +25,11 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
   const [hover, setHover] = useState(false);
 
   const [toggle, { loading }] = useMutation(TOGGLE_CHECKLIST_ITEM, {
-    refetchQueries: ["checklist", "checklistSummary"],
+    refetchQueries: [
+      "checklist",
+      "checklistSummary",
+      "getAllEntityChecklistAndPMSummary",
+    ],
   });
 
   return (
