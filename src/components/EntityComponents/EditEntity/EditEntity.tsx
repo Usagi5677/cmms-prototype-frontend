@@ -63,8 +63,6 @@ const EditEntity = ({
       department,
       zone,
       location,
-      currentRunning,
-      lastService,
       currentMileage,
       lastServiceMileage,
       measurement,
@@ -81,8 +79,6 @@ const EditEntity = ({
         department,
         zone,
         location,
-        currentRunning,
-        lastService,
         currentMileage,
         lastServiceMileage,
         registeredDate,
@@ -107,7 +103,7 @@ const EditEntity = ({
       label: department,
     });
   });
-  
+
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
@@ -234,63 +230,6 @@ const EditEntity = ({
               </Form.Item>
             </div>
           </div>
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Current running"
-                name="currentRunning"
-                required={false}
-                initialValue={entity?.currentRunning}
-              >
-                <InputNumber
-                  placeholder="Current running"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Last service"
-                name="lastService"
-                required={false}
-                initialValue={entity?.lastService}
-              >
-                <InputNumber
-                  placeholder="Last service"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-          </div>
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Current mileage"
-                name="currentMileage"
-                required={false}
-                initialValue={entity?.currentMileage}
-              >
-                <InputNumber
-                  placeholder="Current mileage"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Last service mileage"
-                name="lastServiceMileage"
-                required={false}
-                initialValue={entity?.lastServiceMileage}
-              >
-                <InputNumber
-                  placeholder="Last service mileage"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-          </div>
-
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item

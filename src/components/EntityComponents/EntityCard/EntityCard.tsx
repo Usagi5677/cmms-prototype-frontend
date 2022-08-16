@@ -169,20 +169,6 @@ const EntityCard = ({
                 </span>
               </div>
               <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>
-                  Last service mileage ({entity?.measurement}):
-                </span>
-                <span>
-                  {entity?.lastServiceMileage ? entity?.lastServiceMileage : 0}
-                </span>
-              </div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>
-                  Inter service mileage ({entity?.measurement}):
-                </span>
-                <span>{interServiceMileage}</span>
-              </div>
-              <div className={classes["reading"]}>
                 <span className={classes["reading-title"]}>Model:</span>
                 <span>{entity?.model}</span>
               </div>

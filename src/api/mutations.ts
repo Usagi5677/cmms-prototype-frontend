@@ -779,8 +779,6 @@ export const CREATE_ENTITY = gql`
     $measurement: String
     $currentRunning: Int
     $lastService: Int
-    $currentMileage: Int
-    $lastServiceMileage: Int
     $registeredDate: Date
   ) {
     createEntity(
@@ -794,8 +792,6 @@ export const CREATE_ENTITY = gql`
       measurement: $measurement
       currentRunning: $currentRunning
       lastService: $lastService
-      currentMileage: $currentMileage
-      lastServiceMileage: $lastServiceMileage
       registeredDate: $registeredDate
     )
   }
@@ -812,10 +808,6 @@ export const EDIT_ENTITY = gql`
     $location: String
     $engine: String
     $measurement: String
-    $currentRunning: Int
-    $lastService: Int
-    $currentMileage: Int
-    $lastServiceMileage: Int
     $registeredDate: Date
   ) {
     editEntity(
@@ -828,10 +820,6 @@ export const EDIT_ENTITY = gql`
       location: $location
       engine: $engine
       measurement: $measurement
-      currentRunning: $currentRunning
-      lastService: $lastService
-      currentMileage: $currentMileage
-      lastServiceMileage: $lastServiceMileage
       registeredDate: $registeredDate
     )
   }
@@ -1067,15 +1055,6 @@ export const UNASSIGN_USER_FROM_ENTITY = gql`
   }
 `;
 
-export const EDIT_ENTITY_USAGE = gql`
-  mutation ($id: Int!, $currentMileage: Int!, $lastServiceMileage: Int!) {
-    editEntityUsage(
-      id: $id
-      currentMileage: $currentMileage
-      lastServiceMileage: $lastServiceMileage
-    )
-  }
-`;
 export const ADD_ENTITY_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
     createEntityPeriodicMaintenanceTask(

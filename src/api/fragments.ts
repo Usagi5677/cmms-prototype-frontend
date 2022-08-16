@@ -132,8 +132,6 @@ export const ENTITY_FRAGMENT = gql`
     location
     currentRunning
     lastService
-    currentMileage
-    lastServiceMileage
     status
     measurement
     brand

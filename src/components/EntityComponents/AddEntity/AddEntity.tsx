@@ -225,33 +225,6 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
           </div>
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Current mileage"
-                name="currentMileage"
-                required={false}
-              >
-                <InputNumber
-                  placeholder="Current mileage"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Last service mileage"
-                name="lastServiceMileage"
-                required={false}
-              >
-                <InputNumber
-                  placeholder="Last service mileage"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-          </div>
-
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
               <Form.Item label="Engine" name="engine" required={false}>
                 <Input placeholder="Engine" />
               </Form.Item>
