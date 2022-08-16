@@ -5,18 +5,25 @@ import { LOCATIONS } from "../../../api/queries";
 import Location from "../../../models/Location";
 
 export interface LocationSelectorProps {
-  setLocationId: React.Dispatch<React.SetStateAction<number | null>>;
+  setLocationId: any;
   currentId?: number;
   rounded?: boolean;
+  multiple?: boolean;
+  width?: number;
 }
 
 export const LocationSelector: React.FC<LocationSelectorProps> = ({
   setLocationId,
   currentId,
   rounded = false,
+  multiple = false,
+  width,
 }) => {
   const [search, setSearch] = useState("");
-  const [value, setValue] = useState(currentId ?? null);
+  const [value, setValue] = useState<number[] | number | null>(
+    multiple ? [] : null
+  );
+  const [firstLoad, setFirstLoad] = useState(true);
   const [filter, setFilter] = useState<{
     first: number;
     name: string;
@@ -41,8 +48,16 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
     }));
   }, [search]);
 
+  useEffect(() => {
+    if (currentId && firstLoad) {
+      setValue(currentId);
+      setFirstLoad(false);
+    }
+  }, [currentId, firstLoad]);
+
   return (
     <Select
+      style={{ width: width ?? undefined }}
       showArrow
       placeholder="Select location"
       allowClear={true}
@@ -52,6 +67,7 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
       showSearch
       filterOption={false}
       notFoundContent={loading ? <Spin size="small" /> : null}
+      mode={multiple ? "multiple" : undefined}
       onChange={(val) => {
         setLocationId(val);
         setValue(val);

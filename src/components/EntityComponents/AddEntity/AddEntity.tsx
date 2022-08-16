@@ -145,6 +145,7 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
                   showSearch
                   options={departmentOptions}
                   placeholder={"Department"}
+                  className="notRounded"
                 />
               </Form.Item>
             </div>

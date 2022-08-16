@@ -27,6 +27,7 @@ import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Config/Type/TypeSelector";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
+import { LocationSelector } from "../../../components/Config/Location/LocationSelector";
 
 const Vessels = () => {
   const { user: self } = useContext(UserContext);
@@ -34,7 +35,7 @@ const Vessels = () => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [params, setParams] = useSearchParams();
-  const [location, setLocation] = useState([]);
+  const [locationIds, setLocationIds] = useState<number[]>([]);
   const [department, setDepartment] = useState([]);
   const [typeId, setTypeId] = useState<number | null>(null);
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Vessels = () => {
       search: string;
       entityType: string;
       status: any;
-      location: string[];
+      locationIds: number[];
       department: string[];
       typeId: number | null;
     }
@@ -54,7 +55,7 @@ const Vessels = () => {
     before: null,
     after: null,
     search: "",
-    location: [],
+    locationIds: [],
     department: [],
     entityType: "Vessel",
     status: params.get("status"),
@@ -94,7 +95,7 @@ const Vessels = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    locationValue: string[],
+    locationIds: number[],
     departmentValue: string[],
     typeIdValue: number
   ) => {
@@ -105,7 +106,7 @@ const Vessels = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          location: locationValue,
+          locationIds,
           department: departmentValue,
           typeId: typeIdValue,
           first: 20,
@@ -123,9 +124,9 @@ const Vessels = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location, department, typeId!);
+    searchDebounced(search, locationIds, department, typeId!);
     // eslint-disable-next-line
-  }, [search, location, department, typeId]);
+  }, [search, locationIds, department, typeId]);
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
@@ -341,14 +342,11 @@ const Vessels = () => {
               delay: 0.5,
             }}
           >
-            <Select
-              showArrow
-              className={classes["location"]}
-              onChange={(value) => setLocation(value)}
-              showSearch
-              options={options}
-              placeholder={"Location"}
-              mode="multiple"
+            <LocationSelector
+              setLocationId={setLocationIds}
+              multiple={true}
+              rounded={true}
+              width={190}
             />
           </motion.div>
 

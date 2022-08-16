@@ -425,7 +425,7 @@ export const ALL_ENTITY = gql`
     $entityType: String
     $assignedToId: Int
     $status: EntityStatus
-    $location: [String!]
+    $locationIds: [Int!]
     $department: [String!]
     $typeId: Int
   ) {
@@ -439,7 +439,7 @@ export const ALL_ENTITY = gql`
       entityType: $entityType
       assignedToId: $assignedToId
       status: $status
-      location: $location
+      locationIds: $locationIds
       department: $department
       typeId: $typeId
     ) {
