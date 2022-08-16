@@ -205,7 +205,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
                   key={index + "col"}
                 >
                   {data?.getAllHistoryOfEntity.edges.map(
-                    (rec: { node: EntityHistory }) => {
+                    (rec: { node: EntityHistory }, i: number) => {
                       const history = rec.node;
                       if (
                         moment(history.createdAt).format(
@@ -214,10 +214,10 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
                         moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
                       ) {
                         return (
-                          <EntityHistoryCard
-                            key={history.id}
-                            history={history}
-                          />
+                          <div key={history.id}>
+                            {i !== 0 && <Divider style={{ margin: 0 }} />}
+                            <EntityHistoryCard history={history} />
+                          </div>
                         );
                       }
                     }
