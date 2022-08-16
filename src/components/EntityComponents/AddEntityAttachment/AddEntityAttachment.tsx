@@ -8,7 +8,6 @@ import { useState } from "react";
 import {
   GET_ALL_ATTACHMENT_OF_ENTITY,
   GET_ALL_HISTORY_OF_ENTITY,
-  GET_ALL_HISTORY_OF_TRANSPORTATION,
 } from "../../../api/queries";
 import classes from "./AddEntityAttachment.module.css";
 
