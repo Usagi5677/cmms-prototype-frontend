@@ -712,7 +712,7 @@ export const GET_ALL_HISTORY_OF_ENTITY = gql`
     $first: Int
     $last: Int
     $search: String
-    $location: [String!]
+    $locationIds: [Int!]
     $from: Date
     $to: Date
     $entityId: Int!
@@ -723,7 +723,7 @@ export const GET_ALL_HISTORY_OF_ENTITY = gql`
       first: $first
       last: $last
       search: $search
-      location: $location
+      locationIds: $locationIds
       from: $from
       to: $to
       entityId: $entityId
@@ -742,7 +742,10 @@ export const GET_ALL_HISTORY_OF_ENTITY = gql`
           type
           description
           createdAt
-          location
+          location {
+            id
+            name
+          }
           completedBy {
             ...UserFieldsAPS
           }

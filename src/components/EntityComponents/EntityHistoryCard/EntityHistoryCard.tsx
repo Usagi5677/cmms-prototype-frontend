@@ -63,7 +63,7 @@ const EntityHistoryCard = ({ history }: { history: EntityHistory }) => {
             }}
           >
             <FaMapMarkerAlt style={{ marginRight: 5 }} />
-            <div>{history?.location}</div>
+            <div>{history?.location?.name}</div>
           </div>
         </div>
       </div>
