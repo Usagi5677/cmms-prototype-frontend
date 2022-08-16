@@ -213,7 +213,7 @@ const ViewEntity = () => {
               <FaMapMarkerAlt />
               <span className={classes["title"]}>{entityData?.zone}</span>
               {entityData?.zone && <span className={classes["dash"]}>-</span>}
-              <span>{entityData?.location}</span>
+              <span>{entityData?.location?.name}</span>
             </div>
           </div>
           <div className={classes["title-wrapper"]}>

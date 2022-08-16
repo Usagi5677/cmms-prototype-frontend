@@ -3,10 +3,10 @@ import { Button, Col, Form, message, Modal, Row, Select, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { EDIT_ENTITY_LOCATION } from "../../../api/mutations";
-import { ISLANDS } from "../../../helpers/constants";
+import { EDIT_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
+import { LocationSelector } from "../../Config/Location/LocationSelector";
 import classes from "./EditEntityLocation.module.css";
 
 const EditEntityLocation = ({
@@ -18,9 +18,10 @@ const EditEntityLocation = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [locationId, setLocationId] = useState<number | null>(null);
 
   const [editEntityLocation, { loading: loadingEntity }] = useMutation(
-    EDIT_ENTITY_LOCATION,
+    EDIT_ENTITY,
     {
       onCompleted: () => {
         message.success("Successfully updated location.");
@@ -38,28 +39,18 @@ const EditEntityLocation = ({
     setVisible(false);
   };
 
-  const onFinish = async (values: any) => {
-    const { location } = values;
-
-    if (!location) {
-      message.error("Please enter select the location.");
+  const onFinish = async () => {
+    if (!locationId) {
+      message.error("Please select the location.");
       return;
     }
     editEntityLocation({
       variables: {
         id: entity?.id,
-        location,
+        locationId,
       },
     });
   };
-
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
 
   return (
     <div className={classes["info-edit"]}>
@@ -91,24 +82,10 @@ const EditEntityLocation = ({
         >
           <Row>
             <Col span={12}>
-              <Form.Item
-                label="Location"
-                name="location"
-                required={false}
-                initialValue={entity?.location}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the location.",
-                  },
-                ]}
-              >
-                <Select
-                  showArrow
-                  style={{ width: "100%" }}
-                  showSearch
-                  placeholder={"Location"}
-                  options={options}
+              <Form.Item label="Location" name="location" required={false}>
+                <LocationSelector
+                  currentId={entity?.location?.id}
+                  setLocationId={setLocationId}
                 />
               </Form.Item>
             </Col>

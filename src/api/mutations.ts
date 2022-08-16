@@ -767,6 +767,24 @@ export const EDIT_TYPE = gql`
   }
 `;
 
+export const CREATE_LOCATION = gql`
+  mutation createLocation($input: CreateLocationInput!) {
+    createLocation(createLocationInput: $input)
+  }
+`;
+
+export const DELETE_LOCATION = gql`
+  mutation removeLocation($id: Int!) {
+    removeLocation(id: $id)
+  }
+`;
+
+export const EDIT_LOCATION = gql`
+  mutation updateLocation($input: UpdateLocationInput!) {
+    updateLocation(updateLocationInput: $input)
+  }
+`;
+
 export const CREATE_ENTITY = gql`
   mutation (
     $typeId: Int
@@ -774,7 +792,7 @@ export const CREATE_ENTITY = gql`
     $model: String
     $department: String
     $zone: String
-    $location: String
+    $locationId: Int
     $engine: String
     $measurement: String
     $currentRunning: Int
@@ -787,7 +805,7 @@ export const CREATE_ENTITY = gql`
       model: $model
       department: $department
       zone: $zone
-      location: $location
+      locationId: $locationId
       engine: $engine
       measurement: $measurement
       currentRunning: $currentRunning
@@ -805,7 +823,7 @@ export const EDIT_ENTITY = gql`
     $model: String
     $department: String
     $zone: String
-    $location: String
+    $locationId: Int
     $engine: String
     $measurement: String
     $registeredDate: Date
@@ -817,7 +835,7 @@ export const EDIT_ENTITY = gql`
       model: $model
       department: $department
       zone: $zone
-      location: $location
+      locationId: $locationId
       engine: $engine
       measurement: $measurement
       registeredDate: $registeredDate
@@ -1079,11 +1097,6 @@ export const DELETE_ENTITY_PM_TASK = gql`
 export const TOGGLE_VERIFY_ENTITY_PERIODIC_MAINTENANCE = gql`
   mutation ($id: Int!, $verify: Boolean!) {
     toggleVerifyEntityPeriodicMaintenance(id: $id, verify: $verify)
-  }
-`;
-export const EDIT_ENTITY_LOCATION = gql`
-  mutation ($id: Int!, $location: String!) {
-    editEntityLocation(id: $id, location: $location)
   }
 `;
 

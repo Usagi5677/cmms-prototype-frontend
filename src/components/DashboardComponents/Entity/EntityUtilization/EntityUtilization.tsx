@@ -283,7 +283,7 @@ const EntityUtilization = () => {
                               <div className={classes["location-wrapper"]}>
                                 <FaMapMarkerAlt />
                                 <span className={classes["title"]}>
-                                  {entity?.location}
+                                  {entity?.location?.name}
                                 </span>
                               </div>
                             </div>
@@ -417,7 +417,7 @@ const EntityUtilization = () => {
                       <FaMapMarkerAlt />
                       <span className={classes["title"]}>{entity?.zone}</span>
                       <span className={classes["dash"]}>-</span>
-                      <span>{entity?.location}</span>
+                      <span>{entity?.location?.name}</span>
                     </div>
                   </div>
                 </Tooltip>

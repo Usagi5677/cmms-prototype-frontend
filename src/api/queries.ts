@@ -381,6 +381,38 @@ export const TYPES = gql`
   }
 `;
 
+export const LOCATIONS = gql`
+  query locations(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    locations(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_ENTITY = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntity(

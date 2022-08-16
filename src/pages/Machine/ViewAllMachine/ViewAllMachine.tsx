@@ -23,7 +23,7 @@ import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import { hasPermissions } from "../../../helpers/permissions";
-import { TypeSelector } from "../../../components/Type/TypeSelector";
+import { TypeSelector } from "../../../components/Config/Type/TypeSelector";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 

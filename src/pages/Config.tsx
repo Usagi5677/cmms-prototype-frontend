@@ -1,7 +1,8 @@
 import { message, Tabs } from "antd";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Types } from "../components/Config/Types";
+import { Locations } from "../components/Config/Location/Locations";
+import { Types } from "../components/Config/Type/Types";
 import UserContext from "../contexts/UserContext";
 import { hasPermissions } from "../helpers/permissions";
 
@@ -11,7 +12,7 @@ export const Config: React.FC<ConfigProps> = ({}) => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!hasPermissions(user, ["MODIFY_TYPES"], "any")) {
+    if (!hasPermissions(user, ["MODIFY_TYPES", "MODIFY_LOCATIONS"], "any")) {
       navigate("/");
       message.error("No permission to view config.");
     }
@@ -30,9 +31,16 @@ export const Config: React.FC<ConfigProps> = ({}) => {
       }}
     >
       <Tabs defaultActiveKey="types">
-        <Tabs.TabPane tab="Types" key="types">
-          <Types />
-        </Tabs.TabPane>
+        {hasPermissions(user, ["MODIFY_TYPES"]) && (
+          <Tabs.TabPane tab="Types" key="types">
+            <Types />
+          </Tabs.TabPane>
+        )}
+        {hasPermissions(user, ["MODIFY_LOCATIONS"]) && (
+          <Tabs.TabPane tab="Locations" key="locations">
+            <Locations />
+          </Tabs.TabPane>
+        )}
       </Tabs>
     </div>
   );

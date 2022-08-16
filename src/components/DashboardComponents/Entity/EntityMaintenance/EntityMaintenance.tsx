@@ -409,7 +409,7 @@ const EntityMaintenance = () => {
                               <div className={classes["location-wrapper"]}>
                                 <FaMapMarkerAlt />
                                 <span className={classes["title"]}>
-                                  {periodicMaintenance?.entity?.location}
+                                  {periodicMaintenance?.entity?.location?.name}
                                 </span>
                               </div>
                             </div>
@@ -565,7 +565,7 @@ export default EntityMaintenance;
                               <div className={classes["location-wrapper"]}>
                                 <FaMapMarkerAlt />
                                 <span className={classes["title"]}>
-                                  {periodicMaintenance?.entity?.location}
+                                  {periodicMaintenance?.entity?.location?.name}
                                 </span>
                               </div>
                             </div>

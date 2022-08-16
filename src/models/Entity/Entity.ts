@@ -1,5 +1,6 @@
 import ChecklistItem from "../ChecklistItem";
 import { EntityStatus } from "../Enums";
+import Location from "../Location";
 import Type from "../Type";
 import User from "../User";
 import EntityAssign from "./EntityAssign";
@@ -17,7 +18,7 @@ export interface Entity {
   registeredDate?: Date;
   model?: string;
   zone?: string;
-  location?: string;
+  location?: Location;
   department?: string;
   engine?: string;
   currentRunning?: number;

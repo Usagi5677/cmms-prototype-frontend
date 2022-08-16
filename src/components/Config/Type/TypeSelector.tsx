@@ -1,8 +1,8 @@
 import { useLazyQuery } from "@apollo/client";
 import { Select, Spin } from "antd";
 import React, { useState, useEffect } from "react";
-import { TYPES } from "../../api/queries";
-import Type from "../../models/Type";
+import { TYPES } from "../../../api/queries";
+import Type from "../../../models/Type";
 
 export interface TypeSelectorProps {
   entityType?: "Machine" | "Vehicle" | "Vessel";

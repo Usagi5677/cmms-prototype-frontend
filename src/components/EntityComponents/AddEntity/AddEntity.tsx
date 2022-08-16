@@ -13,12 +13,12 @@ import {
   Select,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { CREATE_ENTITY } from "../../../api/mutations";
-import UserContext from "../../../contexts/UserContext";
-import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
+import { DEPARTMENTS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
-import { TypeSelector } from "../../Type/TypeSelector";
+import { LocationSelector } from "../../Config/Location/LocationSelector";
+import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./AddEntity.module.css";
 
 export interface AddEntityProps {
@@ -26,8 +26,8 @@ export interface AddEntityProps {
 }
 
 const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
-  const { user } = useContext(UserContext);
   const [typeId, setTypeId] = useState<number | null>(null);
+  const [locationId, setLocationId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
@@ -56,7 +56,6 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
       model,
       department,
       zone,
-      location,
       currentRunning,
       lastService,
       currentMileage,
@@ -73,7 +72,7 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
         model,
         department,
         zone,
-        location,
+        locationId,
         currentRunning,
         lastService,
         currentMileage,
@@ -84,13 +83,6 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
       },
     });
   };
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
 
   let departmentOptions: any = [];
   DEPARTMENTS?.map((department: string) => {
@@ -187,13 +179,7 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
             </div>
             <div className={classes["col"]}>
               <Form.Item label="Location" name="location" required={false}>
-                <Select
-                  showArrow
-                  style={{ width: "100%" }}
-                  showSearch
-                  options={options}
-                  placeholder={"Location"}
-                />
+                <LocationSelector setLocationId={setLocationId} />
               </Form.Item>
             </div>
           </div>

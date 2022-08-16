@@ -5,7 +5,6 @@ import {
   DatePicker,
   Form,
   Input,
-  InputNumber,
   message,
   Modal,
   Radio,
@@ -19,10 +18,11 @@ import moment from "moment";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_ENTITY } from "../../../api/mutations";
-import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
+import { DEPARTMENTS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
-import { TypeSelector } from "../../Type/TypeSelector";
+import { LocationSelector } from "../../Config/Location/LocationSelector";
+import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./EditEntity.module.css";
 
 const EditEntity = ({
@@ -35,6 +35,7 @@ const EditEntity = ({
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const [typeId, setTypeId] = useState<number | null>(null);
+  const [locationId, setLocationId] = useState<number | null>(null);
 
   const [editEntity, { loading: loadingEntity }] = useMutation(EDIT_ENTITY, {
     onCompleted: () => {
@@ -62,7 +63,6 @@ const EditEntity = ({
       model,
       department,
       zone,
-      location,
       currentMileage,
       lastServiceMileage,
       measurement,
@@ -78,7 +78,7 @@ const EditEntity = ({
         model,
         department,
         zone,
-        location,
+        locationId,
         currentMileage,
         lastServiceMileage,
         registeredDate,
@@ -88,17 +88,9 @@ const EditEntity = ({
     });
   };
 
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
-
   let departmentOptions: any = [];
   DEPARTMENTS?.map((department: string) => {
-    options.push({
+    departmentOptions.push({
       value: department,
       label: department,
     });
@@ -162,6 +154,7 @@ const EditEntity = ({
                 initialValue={entity?.department}
               >
                 <Select
+                  className="notRounded"
                   showArrow
                   style={{ width: "100%" }}
                   showSearch
@@ -214,18 +207,10 @@ const EditEntity = ({
               </Form.Item>
             </div>
             <div className={classes["col"]}>
-              <Form.Item
-                label="Location"
-                name="location"
-                required={false}
-                initialValue={entity?.location}
-              >
-                <Select
-                  showArrow
-                  style={{ width: "100%" }}
-                  showSearch
-                  options={options}
-                  placeholder={"Location"}
+              <Form.Item label="Location" name="location" required={false}>
+                <LocationSelector
+                  currentId={entity?.location?.id}
+                  setLocationId={setLocationId}
                 />
               </Form.Item>
             </div>
