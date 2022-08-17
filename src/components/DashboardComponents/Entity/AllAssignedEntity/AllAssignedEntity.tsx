@@ -421,7 +421,7 @@ const AllAssignedEntity = () => {
                               <FaMapMarkerAlt style={{ marginRight: 5 }} />
                               <div>
                                 <div className={classes["location-width"]}>
-                                  {entity?.location}
+                                  {entity?.location?.name}
                                 </div>
                               </div>
                             </div>

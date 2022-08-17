@@ -6,17 +6,18 @@ import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewHistory.module.css";
 import Search from "../../../../components/common/Search";
-import { DATETIME_FORMATS, ISLANDS } from "../../../../helpers/constants";
+import { DATETIME_FORMATS } from "../../../../helpers/constants";
 import moment from "moment";
 import EntityHistory from "../../../../models/Entity/EntityHistory";
 import EntityHistoryCard from "../../../../components/EntityComponents/EntityHistoryCard/EntityHistoryCard";
+import { LocationSelector } from "../../../../components/Config/Location/LocationSelector";
 
 const ViewHistory = ({ entityID }: { entityID: number }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState([]);
+  const [locationIds, setLocationIds] = useState<number[]>([]);
   const [dates, setDates] = useState<any>([
-    moment().subtract(1, "months"),
+    moment().subtract(1, "week"),
     moment(),
   ]);
   const [timerId, setTimerId] = useState(null);
@@ -24,7 +25,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      location: string[];
+      locationIds: number[];
       entityId: number;
       from: any;
       to: any;
@@ -35,7 +36,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
     before: null,
     after: null,
     search: "",
-    location: [],
+    locationIds: [],
     entityId: entityID,
     from: dates[0].toISOString(),
     to: dates[1].toISOString(),
@@ -61,7 +62,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string, locationValue: string[]) => {
+  const searchDebounced = (value: string, locationIds: number[]) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -69,7 +70,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          location: locationValue,
+          locationIds,
           from: dates[0].toISOString(),
           to: dates[1].toISOString(),
           first: 500,
@@ -87,9 +88,9 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location);
+    searchDebounced(search, locationIds);
     // eslint-disable-next-line
-  }, [search, location, dates]);
+  }, [search, locationIds, dates]);
 
   // Pagination functions
   const next = () => {
@@ -116,14 +117,6 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
 
   const pageInfo = data?.getAllHistoryOfEntity.pageInfo ?? {};
 
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
-
   const date = new Date(dates[0]);
   const endDate = new Date(dates[1]);
   const dateArray = [];
@@ -132,6 +125,14 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
     dateArray.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
+
+  const dateCount = (date: Date) =>
+    data?.getAllHistoryOfEntity.edges?.filter(
+      (rec: { node: EntityHistory }) =>
+        moment(rec.node.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR) ===
+        moment(date).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+    ).length;
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
@@ -140,14 +141,11 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
           onChange={(e) => setSearch(e.target.value)}
           onClick={() => setSearch("")}
         />
-        <Select
-          showArrow
-          className={classes["location"]}
-          onChange={(value) => setLocation(value)}
-          showSearch
-          options={options}
-          placeholder={"Location"}
-          mode="multiple"
+        <LocationSelector
+          setLocationId={setLocationIds}
+          multiple={true}
+          rounded={true}
+          width={190}
         />
 
         <DatePicker.RangePicker
@@ -181,31 +179,25 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
                   header={
                     <div>
                       {moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                      <Badge
-                        count={`${
-                          data?.getAllHistoryOfEntity.edges?.filter(
-                            (rec: { node: EntityHistory }) =>
-                              moment(rec.node.createdAt).format(
-                                DATETIME_FORMATS.DAY_MONTH_YEAR
-                              ) ===
-                              moment(dateVal).format(
-                                DATETIME_FORMATS.DAY_MONTH_YEAR
-                              )
-                          ).length
-                        } item`}
-                        style={{
-                          color: "black",
-                          backgroundColor: "#e5e5e5",
-                          marginLeft: ".5rem",
-                          marginBottom: ".3rem",
-                        }}
-                      />
+                      {dateCount(dateVal) > 0 && (
+                        <Badge
+                          count={`${dateCount(dateVal)} item${
+                            dateCount(dateVal) === 1 ? "" : "s"
+                          }`}
+                          style={{
+                            color: "black",
+                            backgroundColor: "#e5e5e5",
+                            marginLeft: ".5rem",
+                            marginBottom: ".3rem",
+                          }}
+                        />
+                      )}
                     </div>
                   }
                   key={index + "col"}
                 >
                   {data?.getAllHistoryOfEntity.edges.map(
-                    (rec: { node: EntityHistory }) => {
+                    (rec: { node: EntityHistory }, i: number) => {
                       const history = rec.node;
                       if (
                         moment(history.createdAt).format(
@@ -214,10 +206,10 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
                         moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
                       ) {
                         return (
-                          <EntityHistoryCard
-                            key={history.id}
-                            history={history}
-                          />
+                          <div key={history.id}>
+                            {i !== 0 && <Divider style={{ margin: 0 }} />}
+                            <EntityHistoryCard history={history} />
+                          </div>
                         );
                       }
                     }

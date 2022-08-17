@@ -3,9 +3,9 @@ import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { CREATE_TYPE } from "../../api/mutations";
-import { errorMessage } from "../../helpers/gql";
-import { ENTITY_TYPES } from "../../helpers/constants";
+import { CREATE_TYPE } from "../../../api/mutations";
+import { errorMessage } from "../../../helpers/gql";
+import { ENTITY_TYPES } from "../../../helpers/constants";
 
 export interface CreateTypeProps {}
 

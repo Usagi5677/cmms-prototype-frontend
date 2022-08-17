@@ -425,6 +425,7 @@ const MyEntityPMTask = () => {
                                     {
                                       periodicMaintenanceTask
                                         ?.periodicMaintenance?.entity?.location
+                                        ?.name
                                     }
                                   </div>
                                 </div>

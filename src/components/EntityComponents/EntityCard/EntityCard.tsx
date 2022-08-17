@@ -106,7 +106,7 @@ const EntityCard = ({
                     <div className={classes["location-wrapper"]}>
                       <FaMapMarkerAlt />
                       <span className={classes["title"]}>
-                        {entity?.location}
+                        {entity?.location?.name}
                       </span>
                     </div>
                   </div>

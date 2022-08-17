@@ -86,6 +86,11 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
                 <div style={{ marginLeft: ".5rem" }}>
                   {entity.machineNumber}
                 </div>
+                <div
+                  style={{ marginLeft: ".5rem", fontSize: "80%", opacity: 0.7 }}
+                >
+                  {entity.location?.name}
+                </div>
               </div>
             </Select.Option>
           ))

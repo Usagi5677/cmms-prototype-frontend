@@ -1,10 +1,6 @@
 .container {
-  font-size: 9px;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
   justify-content: space-between;
-  padding: 10px;
+  padding: 5px 10px;
   margin: 10px 0;
   border-radius: 6px;
   background-color: var(--card-bg);
@@ -12,6 +8,7 @@
   color: var(--text-primary);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
   transition: all 0.3s ease;
+  border-radius: 5px;
 }
 .container:hover {
   background-color: var(--row-hover);
@@ -25,20 +22,10 @@
   display: inline-block;
 }
 
-.doneBy-wrapper {
-  display: flex;
-  align-items: center;
-}
 .doneBy {
   font-size: 10;
-  opacity: 0.5;
   display: inline-block;
   padding-left: 5px;
-}
-
-.time-wrapper {
-  display: flex;
-  align-items: center;
 }
 
 .time {

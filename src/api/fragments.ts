@@ -48,7 +48,10 @@ export const ENTITY_FRAGMENT = gql`
     department
     engine
     zone
-    location
+    location {
+      id
+      name
+    }
     currentRunning
     lastService
     status
@@ -88,7 +91,10 @@ export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
     entitiesDaily {
       id
       machineNumber
-      location
+      location {
+        id
+        name
+      }
       type {
         entityType
       }
@@ -96,7 +102,10 @@ export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
     entitiesWeekly {
       id
       machineNumber
-      location
+      location {
+        id
+        name
+      }
       type {
         entityType
       }

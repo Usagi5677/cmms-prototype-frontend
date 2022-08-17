@@ -1,5 +1,5 @@
 import { Select } from "antd";
-import { ENTITY_TYPES } from "../../helpers/constants";
+import { ENTITY_TYPES } from "../../../helpers/constants";
 
 const EntityTypeFilter = ({
   onChange,

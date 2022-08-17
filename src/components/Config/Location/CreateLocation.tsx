@@ -1,30 +1,26 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
+import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { EDIT_TYPE } from "../../api/mutations";
-import { errorMessage } from "../../helpers/gql";
-import { FaEdit } from "react-icons/fa";
-import Type from "../../models/Type";
+import { errorMessage } from "../../../helpers/gql";
+import { CREATE_LOCATION } from "../../../api/mutations";
 
-export interface EditTypeProps {
-  type: Type;
-}
+export interface CreateLocationProps {}
 
-export const EditType: React.FC<EditTypeProps> = ({ type }) => {
+export const CreateLocation: React.FC<CreateLocationProps> = () => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [create, { loading }] = useMutation(EDIT_TYPE, {
+  const [create, { loading }] = useMutation(CREATE_LOCATION, {
     onCompleted: () => {
-      message.success("Successfully updated type.");
+      message.success("Successfully created location.");
       handleCancel();
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while updating type.");
+      errorMessage(error, "Unexpected error while creating location.");
     },
-    refetchQueries: ["types"],
+    refetchQueries: ["locations"],
   });
 
   const handleCancel = () => {
@@ -33,13 +29,11 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { name, entityType } = values;
+    const { name } = values;
     create({
       variables: {
         input: {
-          id: type.id,
           name,
-          entityType,
         },
       },
     });
@@ -47,19 +41,20 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
 
   return (
     <>
-      <Tooltip title="Edit" placement="top">
-        <FaEdit
-          className="editButton"
-          onClick={() => setVisible(true)}
-          style={{ marginRight: ".5rem" }}
-          // size="20px"
-        />
-      </Tooltip>
+      <Button
+        htmlType="button"
+        size="middle"
+        onClick={() => setVisible(true)}
+        loading={loading}
+        className="primaryButton"
+      >
+        Add Location
+      </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title="Edit Type"
+        title="Add Location"
       >
         <Form
           form={form}
@@ -67,7 +62,6 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
           name="basic"
           onFinish={onFinish}
           id="myForm"
-          initialValues={{ name: type.name, entityType: type.entityType }}
         >
           <Form.Item
             label="Name"
@@ -82,30 +76,6 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
           >
             <Input placeholder="Name" />
           </Form.Item>
-          {/* <Form.Item
-            label="Entity Type"
-            name="entityType"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please select a type of entity",
-              },
-            ]}
-          >
-            <Select
-              className="notRounded"
-              showArrow
-              placeholder="Select type"
-              allowClear={true}
-            >
-              {ENTITY_TYPES.map((type: string) => (
-                <Select.Option key={type} value={type}>
-                  {type}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item> */}
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
@@ -126,7 +96,7 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
                   loading={loading}
                   className="primaryButton"
                 >
-                  Update
+                  Add
                 </Button>
               </Form.Item>
             </Col>

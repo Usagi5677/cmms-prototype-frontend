@@ -381,6 +381,38 @@ export const TYPES = gql`
   }
 `;
 
+export const LOCATIONS = gql`
+  query locations(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    locations(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_ENTITY = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntity(
@@ -393,7 +425,7 @@ export const ALL_ENTITY = gql`
     $entityType: String
     $assignedToId: Int
     $status: EntityStatus
-    $location: [String!]
+    $locationIds: [Int!]
     $department: [String!]
     $typeId: Int
   ) {
@@ -407,7 +439,7 @@ export const ALL_ENTITY = gql`
       entityType: $entityType
       assignedToId: $assignedToId
       status: $status
-      location: $location
+      locationIds: $locationIds
       department: $department
       typeId: $typeId
     ) {
@@ -680,7 +712,7 @@ export const GET_ALL_HISTORY_OF_ENTITY = gql`
     $first: Int
     $last: Int
     $search: String
-    $location: [String!]
+    $locationIds: [Int!]
     $from: Date
     $to: Date
     $entityId: Int!
@@ -691,7 +723,7 @@ export const GET_ALL_HISTORY_OF_ENTITY = gql`
       first: $first
       last: $last
       search: $search
-      location: $location
+      locationIds: $locationIds
       from: $from
       to: $to
       entityId: $entityId
@@ -710,7 +742,10 @@ export const GET_ALL_HISTORY_OF_ENTITY = gql`
           type
           description
           createdAt
-          location
+          location {
+            id
+            name
+          }
           completedBy {
             ...UserFieldsAPS
           }
