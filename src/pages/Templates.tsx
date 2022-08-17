@@ -21,7 +21,7 @@ export const Templates: React.FC<TemplatesProps> = ({}) => {
     <div
       style={{
         width: "100%",
-        backgroundColor: "white",
+        backgroundColor: "var(--card-bg)",
         borderRadius: 20,
         boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
         padding: 10,

@@ -53,7 +53,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
       {size === "default" ? (
         <div style={{ cursor: "pointer" }}>
           <Tooltip
-            color="#efefef"
+            color="var(--dot-tooltip)"
             title={
               <div>
                 {summary.type === "Daily" && (
