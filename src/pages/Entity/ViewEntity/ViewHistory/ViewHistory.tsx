@@ -125,6 +125,14 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
     dateArray.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
+
+  const dateCount = (date: Date) =>
+    data?.getAllHistoryOfEntity.edges?.filter(
+      (rec: { node: EntityHistory }) =>
+        moment(rec.node.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR) ===
+        moment(date).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+    ).length;
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
@@ -171,25 +179,19 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
                   header={
                     <div>
                       {moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                      <Badge
-                        count={`${
-                          data?.getAllHistoryOfEntity.edges?.filter(
-                            (rec: { node: EntityHistory }) =>
-                              moment(rec.node.createdAt).format(
-                                DATETIME_FORMATS.DAY_MONTH_YEAR
-                              ) ===
-                              moment(dateVal).format(
-                                DATETIME_FORMATS.DAY_MONTH_YEAR
-                              )
-                          ).length
-                        } item`}
-                        style={{
-                          color: "black",
-                          backgroundColor: "#e5e5e5",
-                          marginLeft: ".5rem",
-                          marginBottom: ".3rem",
-                        }}
-                      />
+                      {dateCount(dateVal) > 0 && (
+                        <Badge
+                          count={`${dateCount(dateVal)} item${
+                            dateCount(dateVal) === 1 ? "" : "s"
+                          }`}
+                          style={{
+                            color: "black",
+                            backgroundColor: "#e5e5e5",
+                            marginLeft: ".5rem",
+                            marginBottom: ".3rem",
+                          }}
+                        />
+                      )}
                     </div>
                   }
                   key={index + "col"}
