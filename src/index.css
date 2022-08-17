@@ -91,6 +91,7 @@ a {
   --breakdown-color: rgb(139, 0, 0);
   --dispose-bg: rgba(102, 0, 0, 0.3);
   --dispose-color: rgb(102, 0, 0);
+  --comment-bg: #efefefa3;
   --a-disabled: rgba(0, 0, 0, 0.25);
   --caption: rgba(0, 0, 0, 0.45);
   --mark: #feffe6;
@@ -232,6 +233,7 @@ a {
   --breakdown-color: rgb(139, 0, 0);
   --dispose-bg: rgba(102, 0, 0, 0.3);
   --dispose-color: rgb(102, 0, 0);
+  --comment-bg: #efefefa3;
   --a-disabled: rgba(0, 0, 0, 0.25);
   --caption: rgba(0, 0, 0, 0.45);
   --mark: #feffe6;
@@ -373,6 +375,7 @@ a {
   --breakdown-color: #ff474a;
   --dispose-bg: rgba(102, 0, 0, 0.8);
   --dispose-color: rgb(220, 3, 3);
+  --comment-bg: #424242;
   --ant-primary-color: var(--ant-primary-6) !important;
   --a-disabled: hsla(0, 0%, 100%, 0.3);
   --caption: hsla(0, 0%, 100%, 0.45);

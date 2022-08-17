@@ -83,7 +83,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                         />
                       }
                     />
-                    <div style={{ color: "black" }}>Checklist has comments</div>
+                    <div style={{ color: "var(--text-primary)" }}>Checklist has comments</div>
                   </div>
                 )}
                 {summary.hasIssues && (
@@ -95,7 +95,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                         />
                       }
                     />
-                    <div style={{ color: "black" }}>Checklist has issues</div>
+                    <div style={{ color: "var(--text-primary)" }}>Checklist has issues</div>
                   </div>
                 )}
               </div>

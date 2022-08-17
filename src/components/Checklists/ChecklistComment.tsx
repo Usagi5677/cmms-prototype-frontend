@@ -23,7 +23,7 @@ export const ChecklistComment: React.FC<ChecklistCommentProps> = ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "flex-start",
-        backgroundColor: isIssue ? "white" : "#efefefa3",
+        backgroundColor: isIssue ? "var(--card-bg)" : "var(--comment-bg)",
         borderRadius: 10,
         padding: 3,
         paddingLeft: 10,
