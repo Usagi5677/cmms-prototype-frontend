@@ -30,7 +30,7 @@ const Login = ({ login }: { login: () => void }) => {
           <Row justify="center">
             <img height="240" src="/MTCC-logo.png" alt="" />
           </Row>
-          <Row>
+          <Row id={"loginBtn"}>
             <Button
               type={"primary"}
               icon={<UnlockOutlined style={{ fontSize: "14px" }} />}
