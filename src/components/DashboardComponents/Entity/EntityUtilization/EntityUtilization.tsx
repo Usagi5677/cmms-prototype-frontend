@@ -28,12 +28,12 @@ const EntityUtilization = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [location, setLocation] = useState([]);
+  const [locationIds, setLocationIds] = useState([]);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      location: string[];
+      locationIds: number[];
     }
   >({
     first: 3,
@@ -41,7 +41,7 @@ const EntityUtilization = () => {
     before: null,
     after: null,
     search: "",
-    location: [],
+    locationIds: [],
   });
 
   const [getAllEntityUtilization, { data, loading }] = useLazyQuery(
@@ -63,7 +63,7 @@ const EntityUtilization = () => {
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (value: string, locationValue: string[]) => {
+  const searchDebounced = (value: string, locationIdsValue: number[]) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -71,7 +71,7 @@ const EntityUtilization = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          location: locationValue,
+          locationIds: locationIdsValue,
           first: 3,
           last: null,
           before: null,
@@ -87,9 +87,9 @@ const EntityUtilization = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, location);
+    searchDebounced(search, locationIds);
     // eslint-disable-next-line
-  }, [search, location]);
+  }, [search, locationIds]);
 
   // Pagination functions
   const next = () => {
@@ -209,7 +209,7 @@ const EntityUtilization = () => {
           <Select
             showArrow
             className={classes["location"]}
-            onChange={(value) => setLocation(value)}
+            onChange={(value) => setLocationIds(value)}
             showSearch
             options={options}
             placeholder={"Location"}

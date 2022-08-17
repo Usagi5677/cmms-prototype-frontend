@@ -14,7 +14,6 @@ export const ME_QUERY = gql`
       fullName
       email
       userId
-      location
       roles {
         roleId
         role {
@@ -114,7 +113,10 @@ export const GET_ALL_USERS = gql`
       edges {
         node {
           ...UserFieldsAPS
-          location
+          location {
+            id
+            name
+          }
           roles {
             roleId
             userId
@@ -626,7 +628,10 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
           entityId
           internal
           projectName
-          location
+          location {
+            id
+            name
+          }
           reason
           additionalInfo
           attendInfo
@@ -839,7 +844,7 @@ export const ALL_ENTITY_UTILIZATION = gql`
     $first: Int
     $last: Int
     $search: String
-    $location: [String!]
+    $locationIds: [Int!]
   ) {
     getAllEntityUtilization(
       after: $after
@@ -847,7 +852,7 @@ export const ALL_ENTITY_UTILIZATION = gql`
       first: $first
       last: $last
       search: $search
-      location: $location
+      locationIds: $locationIds
     ) {
       pageInfo {
         endCursor
@@ -862,7 +867,10 @@ export const ALL_ENTITY_UTILIZATION = gql`
           machineNumber
           model
           zone
-          location
+          location {
+            id
+            name
+          }
           type {
             entityType
           }
@@ -882,7 +890,10 @@ export const ALL_ENTITY_UTILIZATION = gql`
             breakdownHour
             idleHour
             workingHour
-            location
+            location {
+              id
+              name
+            }
           }
         }
       }
@@ -931,7 +942,10 @@ export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
             machineNumber
             model
             zone
-            location
+            location {
+              id
+              name
+            }
             type {
               entityType
             }
@@ -983,7 +997,10 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
             status
             entity {
               id
-              location
+              location {
+                id
+                name
+              }
               machineNumber
               type {
                 entityType
@@ -1027,7 +1044,7 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
     $search: String
     $assignedToId: Int
     $status: EntityStatus
-    $location: [String!]
+    $locationIds: [Int!]
     $isAssigned: Boolean
   ) {
     getAllAssignedEntity(
@@ -1038,7 +1055,7 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
       search: $search
       assignedToId: $assignedToId
       status: $status
-      location: $location
+      locationIds: $locationIds
       isAssigned: $isAssigned
     ) {
       pageInfo {

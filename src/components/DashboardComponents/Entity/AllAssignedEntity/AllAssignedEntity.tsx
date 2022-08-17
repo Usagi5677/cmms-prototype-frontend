@@ -37,14 +37,14 @@ const AllAssignedEntity = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
-  const [location, setLocation] = useState([]);
+  const [locationIds, setLocationIds] = useState([]);
 
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       status: any;
-      location: string[];
+      locationIds: number[];
       isAssigned: boolean;
     }
   >({
@@ -54,7 +54,7 @@ const AllAssignedEntity = () => {
     after: null,
     search: "",
     status: null,
-    location: [],
+    locationIds: [],
     isAssigned: true,
   });
 
@@ -97,7 +97,7 @@ const AllAssignedEntity = () => {
   const searchDebounced = (
     value: string,
     statusValue: EntityStatus,
-    locationValue: string[]
+    locationIdsValue: number[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -107,7 +107,7 @@ const AllAssignedEntity = () => {
           ...filter,
           search: value,
           status: statusValue,
-          location: locationValue,
+          locationIds: locationIdsValue,
           first: 3,
           last: null,
           before: null,
@@ -124,9 +124,9 @@ const AllAssignedEntity = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status, location);
+    searchDebounced(search, status, locationIds);
     // eslint-disable-next-line
-  }, [search, status, location]);
+  }, [search, status, locationIds]);
 
   // Pagination functions
   const next = () => {
@@ -258,7 +258,7 @@ const AllAssignedEntity = () => {
             <Select
               showArrow
               className={classes["location"]}
-              onChange={(value) => setLocation(value)}
+              onChange={(value) => setLocationIds(value)}
               showSearch
               options={options}
               placeholder={"Location"}
