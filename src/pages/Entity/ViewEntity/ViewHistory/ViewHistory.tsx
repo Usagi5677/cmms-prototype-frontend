@@ -17,7 +17,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
   const [search, setSearch] = useState("");
   const [locationIds, setLocationIds] = useState<number[]>([]);
   const [dates, setDates] = useState<any>([
-    moment().subtract(1, "months"),
+    moment().subtract(1, "week"),
     moment(),
   ]);
   const [timerId, setTimerId] = useState(null);
