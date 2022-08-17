@@ -1,13 +1,8 @@
-import { Badge, ConfigProvider, Dropdown } from "antd";
-import { FaCog } from "react-icons/fa";
+import { Badge, Button, ConfigProvider, Dropdown, Switch } from "antd";
+import { FaCog, FaRegMoon, FaRegSun } from "react-icons/fa";
 import classes from "./ThemeChange.module.css";
-import {
-  AnyColorFormat,
-  Colorpicker,
-  ColorPickerValue,
-} from "antd-colorpicker";
+import { AnyColorFormat, Colorpicker } from "antd-colorpicker";
 import { useState } from "react";
-import { generate, presetDarkPalettes } from "@ant-design/colors";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 const ThemeChange = () => {
@@ -15,8 +10,13 @@ const ThemeChange = () => {
   const [color, setColor] = useState<AnyColorFormat>({
     hex: theme ? theme : "#1aaa7a",
   });
+  const [mode, setMode] = useLocalStorage("themeMode", "light");
 
-  let colors: string[];
+  const switchMode = async () => {
+    const newMode = mode === "light" ? "dark" : "light";
+    setMode(newMode);
+    document.documentElement.setAttribute("data-theme", newMode);
+  };
 
   ConfigProvider.config({
     theme: {
@@ -27,12 +27,6 @@ const ThemeChange = () => {
   const onChange = (newColor: AnyColorFormat) => {
     setColor({ hex: newColor?.hex });
     setTheme(newColor?.hex);
-    colors = generate(newColor?.hex, {
-      theme: "dark",
-      backgroundColor: "#141414",
-    });
-    //console.log(colors);
-    //console.log(presetDarkPalettes);
   };
   return (
     <Dropdown
@@ -40,11 +34,22 @@ const ThemeChange = () => {
       trigger={["click"]}
       overlay={
         <div className={classes["notification-menu"]}>
-          <div className={classes["flex"]}>
-            <div className={classes["title"]}>Change Theme</div>
-            <div id={"colorcircle"}>
-              <Badge dot color={color.hex} status={"processing"} />
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["flex"]}>
+              <div className={classes["title"]}>Change Theme</div>
+              <div id={"colorcircle"}>
+                <Badge dot color={color.hex} status={"processing"} />
+              </div>
             </div>
+            
+            <Switch
+              checkedChildren={<FaRegMoon size={14} style={{ marginTop: 4 }} />}
+              unCheckedChildren={
+                <FaRegSun size={14} style={{ marginTop: 4 }} />
+              }
+              defaultChecked={mode === "dark" ? true : false}
+              onChange={switchMode}
+            />
           </div>
 
           <div className={classes["colorpicker-container"]}>
@@ -57,7 +62,7 @@ const ThemeChange = () => {
         <FaCog
           style={{
             cursor: "pointer",
-            color: "white",
+            color: "var(--white)",
             fontSize: 18,
             marginTop: 6,
             marginRight: 10,

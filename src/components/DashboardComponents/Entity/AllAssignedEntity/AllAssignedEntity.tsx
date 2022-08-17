@@ -8,6 +8,7 @@ import { useLazyQuery } from "@apollo/client";
 import {
   GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
   GET_ALL_ASSIGNED_ENTITY,
+  GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../../api/queries";
 import { ISLANDS } from "../../../../helpers/constants";
 import classes from "./AllAssignedEntity.module.css";
@@ -17,6 +18,7 @@ import {
   FaArrowAltCircleRight,
   FaMapMarkerAlt,
   FaTractor,
+  FaTruck,
 } from "react-icons/fa";
 import { EntityStatus } from "../../../../models/Enums";
 import { stringToColor } from "../../../../helpers/style";
@@ -27,6 +29,7 @@ import EntityStatusTag from "../../../common/EntityStatusTag";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
+import { RiSailboatFill } from "react-icons/ri";
 
 const AllAssignedEntity = () => {
   const { user: self } = useContext(UserContext);
@@ -55,14 +58,16 @@ const AllAssignedEntity = () => {
     isAssigned: true,
   });
 
-  const [getAllMachineAndTransportStatusCount, { data: statusData }] =
-    useLazyQuery(GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT, {
+  const [allEntityStatusCount, { data: statusData }] = useLazyQuery(
+    GET_ALL_ENTITY_STATUS_COUNT,
+    {
       onError: (err) => {
         errorMessage(err, "Error loading status count of entities");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
-    });
+    }
+  );
 
   const [getAllAssignedEntity, { data, loading }] = useLazyQuery(
     GET_ALL_ASSIGNED_ENTITY,
@@ -78,12 +83,12 @@ const AllAssignedEntity = () => {
   // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllAssignedEntity({ variables: filter });
-    getAllMachineAndTransportStatusCount({
+    allEntityStatusCount({
       variables: {
         isAssigned: true,
       },
     });
-  }, [filter, getAllAssignedEntity, getAllMachineAndTransportStatusCount]);
+  }, [filter, getAllAssignedEntity, allEntityStatusCount]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -150,11 +155,9 @@ const AllAssignedEntity = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let working =
-    statusData?.allMachineAndTransportStatusCount?.transportationWorking;
-  let breakdown =
-    statusData?.allMachineAndTransportStatusCount?.transportationBreakdown;
-  let idle = statusData?.allMachineAndTransportStatusCount?.transportationIdle;
+  let working = statusData?.allEntityStatusCount?.working;
+  let breakdown = statusData?.allEntityStatusCount?.breakdown;
+  let idle = statusData?.allEntityStatusCount?.idle;
 
   let options: any = [];
   ISLANDS?.map((island: string) => {
@@ -188,7 +191,7 @@ const AllAssignedEntity = () => {
           transition: {
             ease: "easeOut",
             duration: 0.3,
-            delay: 0.8,
+            delay: 0.5,
           },
         }}
         viewport={{ once: true }}
@@ -204,7 +207,7 @@ const AllAssignedEntity = () => {
             transition: {
               ease: "easeOut",
               duration: 0.3,
-              delay: 1,
+              delay: 0.8,
             },
           }}
           viewport={{ once: true }}
@@ -225,7 +228,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.1,
+                delay: 1,
               },
             }}
             viewport={{ once: true }}
@@ -247,7 +250,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.2,
+                delay: 1.1,
               },
             }}
             viewport={{ once: true }}
@@ -275,7 +278,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 1.2,
               },
             }}
             viewport={{ once: true }}
@@ -291,7 +294,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 1.2,
               },
             }}
             viewport={{ once: true }}
@@ -309,7 +312,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.5,
+                delay: 1.3,
               },
             }}
             viewport={{ once: true }}
@@ -325,7 +328,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.5,
+                delay: 1.3,
               },
             }}
             viewport={{ once: true }}
@@ -343,7 +346,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.6,
+                delay: 1.4,
               },
             }}
             viewport={{ once: true }}
@@ -359,7 +362,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.6,
+                delay: 1.4,
               },
             }}
             viewport={{ once: true }}
@@ -387,7 +390,7 @@ const AllAssignedEntity = () => {
                 transition: {
                   ease: "easeOut",
                   duration: 0.3,
-                  delay: 1.7,
+                  delay: 0.3,
                 },
               }}
               viewport={{ once: true }}
@@ -403,7 +406,13 @@ const AllAssignedEntity = () => {
                         <div className={classes["first-block"]}>
                           <div>
                             <div className={classes["title-wrapper"]}>
-                              <FaTractor />
+                              {entity?.type?.entityType === "Vessel" ? (
+                                <RiSailboatFill />
+                              ) : entity?.type?.entityType === "Vehicle" ? (
+                                <FaTruck />
+                              ) : (
+                                <FaTractor />
+                              )}
                               <span className={classes["title"]}>
                                 {entity?.machineNumber}
                               </span>

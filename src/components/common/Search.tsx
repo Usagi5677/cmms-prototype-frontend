@@ -24,7 +24,7 @@ const Search = ({
     <div
       style={{
         display: "flex",
-        border: "1px solid #ccc",
+        border: "1px solid var(--border-1)",
         borderRadius: 20,
         padding: 5,
         height: 32,

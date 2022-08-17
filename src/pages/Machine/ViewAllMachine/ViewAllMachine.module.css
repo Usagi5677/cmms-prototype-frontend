@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   min-height: 500px;
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 10px;
@@ -38,7 +38,7 @@
 .total-card {
   width: 150px;
   min-height: 80px;
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 20px;
   padding: 0px 15px;
   font-size: 14px;
@@ -47,13 +47,14 @@
   justify-content: center;
   margin: 10px 5px;
   transition: transform 0.3s ease;
-  border: 1px black solid
+  border: 1px var(--total-card-border) solid;
+  color: var(--text-primary);
 }
 .total-card:hover {
   transform: translateY(-5px);
 }
 .total-title {
-  color: #727272
+  color: var(--text-primary);
 }
 .total-amount {
   font-size: 32px;

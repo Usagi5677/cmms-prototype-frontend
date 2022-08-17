@@ -177,6 +177,7 @@ const EditEntityRepairRequest = ({
                     showArrow
                     style={{ width: "100%" }}
                     options={userOptions}
+                    placeholder={"Operator"}
                   />
                 </Form.Item>
               </div>
@@ -190,6 +191,7 @@ const EditEntityRepairRequest = ({
                     showArrow
                     style={{ width: "100%" }}
                     options={userOptions}
+                    placeholder={"Supervisor"}
                   />
                 </Form.Item>
               </div>
@@ -203,6 +205,7 @@ const EditEntityRepairRequest = ({
                     showArrow
                     style={{ width: "100%" }}
                     options={userOptions}
+                    placeholder={"Project Manager"}
                   />
                 </Form.Item>
               </div>

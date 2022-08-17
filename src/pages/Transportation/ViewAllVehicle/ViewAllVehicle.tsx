@@ -235,7 +235,7 @@ const Vehicles = () => {
                 delay: 0.7,
               }}
             >
-              Transports
+              Vehicles
             </motion.div>
             <div className={classes["total-amount"]}>
               <CountUp end={total} duration={1} />
@@ -254,8 +254,8 @@ const Vehicles = () => {
           <StatusCard
             amountOne={working}
             icon={<FaTruck />}
-            iconBackgroundColor={"rgb(224,255,255)"}
-            iconColor={"rgb(0,139,139)"}
+            iconBackgroundColor={"var(--working-bg)"}
+            iconColor={"var(--working-color)"}
             name={"Working"}
           />
         </motion.div>
@@ -272,8 +272,8 @@ const Vehicles = () => {
           <StatusCard
             amountOne={idle}
             icon={<FaSpinner />}
-            iconBackgroundColor={"rgba(255,165,0,0.2)"}
-            iconColor={"rgb(219,142,0)"}
+            iconBackgroundColor={"var(--idle-bg)"}
+            iconColor={"var(--idle-color)"}
             name={"Idle"}
           />
         </motion.div>
@@ -289,8 +289,8 @@ const Vehicles = () => {
           <StatusCard
             amountOne={breakdown}
             icon={<FaCarCrash />}
-            iconBackgroundColor={"rgba(255,0,0,0.2)"}
-            iconColor={"rgb(139,0,0)"}
+            iconBackgroundColor={"var(--breakdown-bg)"}
+            iconColor={"var(--breakdown-color)"}
             name={"Breakdown"}
           />
         </motion.div>
@@ -306,8 +306,8 @@ const Vehicles = () => {
           <StatusCard
             amountOne={dispose}
             icon={<FaRecycle />}
-            iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
-            iconColor={"rgb(102, 0, 0)"}
+            iconBackgroundColor={"var(--dispose-bg)"}
+            iconColor={"var(--dispose-color)"}
             name={"Dispose"}
           />
         </motion.div>

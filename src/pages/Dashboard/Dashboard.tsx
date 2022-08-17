@@ -64,8 +64,8 @@ const Dashboard = () => {
             <StatusCard
               amountOne={working}
               icon={<FaTractor />}
-              iconBackgroundColor={"rgb(224,255,255)"}
-              iconColor={"rgb(0,139,139)"}
+              iconBackgroundColor={"var(--working-bg)"}
+              iconColor={"var(--working-color)"}
               name={"Working"}
             />
           </motion.div>
@@ -82,8 +82,8 @@ const Dashboard = () => {
             <StatusCard
               amountOne={idle}
               icon={<FaSpinner />}
-              iconBackgroundColor={"rgba(255,165,0,0.2)"}
-              iconColor={"rgb(219,142,0)"}
+              iconBackgroundColor={"var(--idle-bg)"}
+              iconColor={"var(--idle-color)"}
               name={"Idle"}
             />
           </motion.div>
@@ -100,8 +100,8 @@ const Dashboard = () => {
             <StatusCard
               amountOne={breakdown}
               icon={<FaCarCrash />}
-              iconBackgroundColor={"rgba(255,0,0,0.2)"}
-              iconColor={"rgb(139,0,0)"}
+              iconBackgroundColor={"var(--breakdown-bg)"}
+              iconColor={"var(--breakdown-color)"}
               name={"Breakdown"}
             />
           </motion.div>
@@ -118,8 +118,8 @@ const Dashboard = () => {
             <StatusCard
               amountOne={dispose}
               icon={<FaRecycle />}
-              iconBackgroundColor={"rgba(102, 0, 0,0.3)"}
-              iconColor={"rgb(102, 0, 0)"}
+              iconBackgroundColor={"var(--dispose-bg)"}
+              iconColor={"var(--dispose-color)"}
               name={"Dispose"}
             />
           </motion.div>

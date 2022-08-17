@@ -55,8 +55,6 @@ export const TaskList: React.FC<TaskListProps> = ({
     }
   );
 
-  console.log(tasks);
-
   return (
     <div>
       {tasks?.length > 0 && (

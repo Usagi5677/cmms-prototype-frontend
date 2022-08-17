@@ -72,7 +72,7 @@ const EntityCard = ({
                       </span>
                       {result[0] && (
                         <Tooltip
-                          color="#efefef"
+                          color="var(--dot-tooltip)"
                           title={
                             <div>
                               <Badge
@@ -88,7 +88,7 @@ const EntityCard = ({
                       )}
                       {result[1] && (
                         <Tooltip
-                          color="#efefef"
+                          color="var(--dot-tooltip)"
                           title={
                             <div>
                               <Badge

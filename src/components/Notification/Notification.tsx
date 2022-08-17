@@ -168,7 +168,7 @@ const Notifications = () => {
           <FaBell
             style={{
               cursor: "pointer",
-              color: "white",
+              color: "var(--white)",
               fontSize: 18,
               marginTop: 6,
             }}

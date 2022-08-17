@@ -5,6 +5,7 @@ import {
   FaMapMarkerAlt,
   FaRegClock,
   FaTractor,
+  FaTruck,
 } from "react-icons/fa";
 import moment from "moment";
 import { useLazyQuery } from "@apollo/client";
@@ -28,6 +29,7 @@ import EntityPeriodicMaintenance from "../../../../models/Entity/EntityPeriodicM
 import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
+import { RiSailboatFill } from "react-icons/ri";
 
 const EntityMaintenance = () => {
   const { user: self } = useContext(UserContext);
@@ -185,12 +187,12 @@ const EntityMaintenance = () => {
           transition: {
             ease: "easeOut",
             duration: 0.3,
-            delay: 0.8,
+            delay: 0.5,
           },
         }}
         viewport={{ once: true }}
       >
-        Assigned to me
+        Perioidic Maintenance
       </motion.div>
       <div className={classes["options-wrapper"]}>
         <motion.div
@@ -201,7 +203,7 @@ const EntityMaintenance = () => {
             transition: {
               ease: "easeOut",
               duration: 0.3,
-              delay: 1,
+              delay: 0.8,
             },
           }}
           viewport={{ once: true }}
@@ -222,7 +224,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.1,
+                delay: 1,
               },
             }}
             viewport={{ once: true }}
@@ -244,7 +246,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.2,
+                delay: 1.1,
               },
             }}
             viewport={{ once: true }}
@@ -272,7 +274,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 1.2,
               },
             }}
             viewport={{ once: true }}
@@ -288,7 +290,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 1.2,
               },
             }}
             viewport={{ once: true }}
@@ -306,7 +308,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.5,
+                delay: 1.3,
               },
             }}
             viewport={{ once: true }}
@@ -322,7 +324,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.5,
+                delay: 1.3,
               },
             }}
             viewport={{ once: true }}
@@ -340,7 +342,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.6,
+                delay: 1.4,
               },
             }}
             viewport={{ once: true }}
@@ -356,7 +358,7 @@ const EntityMaintenance = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.6,
+                delay: 1.4,
               },
             }}
             viewport={{ once: true }}
@@ -385,7 +387,7 @@ const EntityMaintenance = () => {
                   transition: {
                     ease: "easeOut",
                     duration: 0.3,
-                    delay: 1.7,
+                    delay: 0.3,
                   },
                 }}
                 viewport={{ once: true }}
@@ -401,7 +403,15 @@ const EntityMaintenance = () => {
                           <div className={classes["first-block"]}>
                             <div>
                               <div className={classes["title-wrapper"]}>
-                                <FaTractor />
+                                {periodicMaintenance?.entity?.type
+                                  ?.entityType === "Vessel" ? (
+                                  <RiSailboatFill />
+                                ) : periodicMaintenance?.entity?.type
+                                    ?.entityType === "Vehicle" ? (
+                                  <FaTruck />
+                                ) : (
+                                  <FaTractor />
+                                )}
                                 <span className={classes["title"]}>
                                   {periodicMaintenance?.entity?.machineNumber}
                                 </span>
@@ -452,7 +462,7 @@ const EntityMaintenance = () => {
                           </div>
                           <Link
                             to={
-                              "/transportation/" +
+                              "/entity/" +
                               periodicMaintenance?.entity?.id
                             }
                           >
@@ -490,158 +500,3 @@ const EntityMaintenance = () => {
 };
 
 export default EntityMaintenance;
-
-/*
-
-<div className={classes["pm-container"]}>
-      <div className={classes["heading"]}>Maintenance</div>
-      <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
-        <div className={classes["status-wrapper"]}>
-          <EntityPMStatusFilter
-            onChange={(status) => {
-              setFilter({ ...filter, status, ...DefaultPaginationArgs });
-              setPage(1);
-              setStatus(status);
-            }}
-            value={filter.status}
-          />
-          <Select
-            showArrow
-            className={classes["location"]}
-            onChange={(value) => setLocation(value)}
-            showSearch
-            options={options}
-            placeholder={"Location"}
-            mode="multiple"
-          />
-        </div>
-      </div>
-      <div className={classes["counter-container"]}>
-        <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{missed}</div>
-          <div className={classes["missed"]}>Missed</div>
-        </div>
-        <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{pending}</div>
-          <div className={classes["pending"]}>Pending</div>
-        </div>
-        <div className={classes["counter-wrapper"]}>
-          <div className={classes["counter-value"]}>{done}</div>
-          <div className={classes["done"]}>Done</div>
-        </div>
-      </div>
-      {loading && (
-        <div>
-          <Spin style={{ width: "100%", margin: "2rem auto" }} />
-        </div>
-      )}
-      {data?.getAllEntityPeriodicMaintenance.edges.length > 0 ? (
-        data?.getAllEntityPeriodicMaintenance.edges.map(
-          (rec: { node: EntityPeriodicMaintenance }) => {
-            const periodicMaintenance = rec.node;
-            return (
-              <div id="collapse" key={periodicMaintenance.id}>
-                <Collapse ghost style={{ marginBottom: ".5rem" }}>
-                  <Collapse.Panel
-                    header={
-                      <>
-                        <div
-                          className={classes["header-container"]}
-                          onClick={(event) => event.stopPropagation()}
-                        >
-                          <div className={classes["first-block"]}>
-                            <div>
-                              <div className={classes["title-wrapper"]}>
-                                <FaTractor />
-                                <span className={classes["title"]}>
-                                  {periodicMaintenance?.entity?.machineNumber}
-                                </span>
-                              </div>
-                              <div className={classes["location-wrapper"]}>
-                                <FaMapMarkerAlt />
-                                <span className={classes["title"]}>
-                                  {periodicMaintenance?.entity?.location}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className={classes["service-reading-wrapper"]}>
-                            <div className={classes["reading"]}>
-                              <span className={classes["reading-title"]}>
-                                Title:
-                              </span>
-                              <span>{periodicMaintenance?.title}</span>
-                            </div>
-                            <div className={classes["status"]}>
-                              <PeriodicMaintenanceStatusTag
-                                status={periodicMaintenance?.status}
-                              />
-                            </div>
-                            <div>
-                              <div className={classes["title-wrapper"]}>
-                                <Tooltip title="Start Date">
-                                  <FaRegClock />
-                                </Tooltip>
-
-                                <span className={classes["title"]}>
-                                  {moment(
-                                    periodicMaintenance?.startDate
-                                  ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                                </span>
-                              </div>
-                              <div className={classes["reading"]}>
-                                <span className={classes["reading-title"]}>
-                                  In:
-                                </span>
-                                <span>
-                                  {periodicMaintenance?.value}{" "}
-                                  {periodicMaintenance?.measurement}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <Link
-                            to={
-                              "/transportation/" +
-                              periodicMaintenance?.entity?.id
-                            }
-                          >
-                            <Tooltip title="Open">
-                              <FaArrowAltCircleRight
-                                className={classes["button"]}
-                              />
-                            </Tooltip>
-                          </Link>
-                        </div>
-                      </>
-                    }
-                    key={periodicMaintenance?.id}
-                  >
-                    <div className={classes["container"]}></div>
-                  </Collapse.Panel>
-                </Collapse>
-              </div>
-            );
-          }
-        )
-      ) : (
-        <Empty />
-      )}
-
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-        pageLimit={3}
-      />
-    </div>
-
-
-*/

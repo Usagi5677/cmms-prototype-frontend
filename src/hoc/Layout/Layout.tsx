@@ -31,7 +31,6 @@ const Layout = ({ children }: any) => {
         breakpoint="md"
         collapsedWidth="0"
         collapsed={collapsed}
-        theme="light"
       >
         <div
           style={{
@@ -48,7 +47,7 @@ const Layout = ({ children }: any) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "var(--ant-primary-color)",
+                backgroundColor: "var(--navbar)",
                 height: 50,
               }}
             >

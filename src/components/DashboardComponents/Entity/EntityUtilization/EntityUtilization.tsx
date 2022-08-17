@@ -8,6 +8,7 @@ import {
   FaArrowAltCircleRight,
   FaMapMarkerAlt,
   FaTractor,
+  FaTruck,
 } from "react-icons/fa";
 import { useLazyQuery } from "@apollo/client";
 import { ALL_ENTITY_UTILIZATION } from "../../../../api/queries";
@@ -20,6 +21,7 @@ import Search from "../../../common/Search";
 import EntityUtilizationGraph from "../EntityUtilizationGraph/EntityUtilizationGraph";
 import { Entity } from "../../../../models/Entity/Entity";
 import { motion } from "framer-motion";
+import { RiSailboatFill } from "react-icons/ri";
 
 const EntityUtilization = () => {
   const { user: self } = useContext(UserContext);
@@ -148,7 +150,7 @@ const EntityUtilization = () => {
           transition: {
             ease: "easeOut",
             duration: 0.3,
-            delay: 0.8,
+            delay: 0.5,
           },
         }}
         viewport={{ once: true }}
@@ -199,7 +201,7 @@ const EntityUtilization = () => {
             transition: {
               ease: "easeOut",
               duration: 0.3,
-              delay: 1.2,
+              delay: 1.1,
             },
           }}
           viewport={{ once: true }}
@@ -248,7 +250,7 @@ const EntityUtilization = () => {
                   transition: {
                     ease: "easeOut",
                     duration: 0.3,
-                    delay: 1.3,
+                    delay: 0.3,
                   },
                 }}
                 viewport={{ once: true }}
@@ -275,7 +277,13 @@ const EntityUtilization = () => {
                           >
                             <div className={classes["first-block"]}>
                               <div className={classes["title-wrapper"]}>
-                                <FaTractor />
+                                {entity?.type?.entityType === "Vessel" ? (
+                                  <RiSailboatFill />
+                                ) : entity?.type?.entityType === "Vehicle" ? (
+                                  <FaTruck />
+                                ) : (
+                                  <FaTractor />
+                                )}
                                 <span className={classes["title"]}>
                                   {entity?.machineNumber}
                                 </span>
@@ -389,7 +397,7 @@ const EntityUtilization = () => {
                   transition: {
                     ease: "easeOut",
                     duration: 0.3,
-                    delay: 1.3,
+                    delay: 0.3,
                   },
                 }}
                 viewport={{ once: true }}
@@ -408,7 +416,13 @@ const EntityUtilization = () => {
                 >
                   <div className={classes["first-block"]}>
                     <div className={classes["title-wrapper"]}>
-                      <FaTractor />
+                      {entity?.type?.entityType === "Vessel" ? (
+                        <RiSailboatFill />
+                      ) : entity?.type?.entityType === "Vehicle" ? (
+                        <FaTruck />
+                      ) : (
+                        <FaTractor />
+                      )}
                       <span className={classes["title"]}>
                         {entity?.machineNumber}
                       </span>

@@ -19,7 +19,7 @@ import { Templates } from "./pages/Templates";
 import Permissions from "./pages/Role/Permissions";
 import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
-import "antd/dist/antd.variable.min.css";
+import "./components/ThemeChange/antd.dark.min.css";
 
 function App() {
   {
@@ -32,10 +32,16 @@ function App() {
       }
     }
   }
-
   const [appLoading, setAppLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [loggedOut, setLoggedOut] = useState(false);
+
+  if (localStorage.getItem("themeMode")) {
+    document.documentElement.setAttribute(
+      "data-theme",
+      localStorage.getItem("themeMode")?.replace(/['"]+/g, "")!
+    );
+  }
 
   const [me] = useLazyQuery(ME_QUERY, {
     client: apolloClient,

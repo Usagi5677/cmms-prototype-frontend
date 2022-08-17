@@ -7,7 +7,9 @@ import {
   FaArrowAltCircleRight,
   FaMapMarkerAlt,
   FaTractor,
+  FaTruck,
 } from "react-icons/fa";
+import { RiSailboatFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import {
   GET_ALL_ENTITY_PM_TASK_STATUS_COUNT,
@@ -200,7 +202,7 @@ const MyEntityPMTask = () => {
           transition: {
             ease: "easeOut",
             duration: 0.3,
-            delay: 0.8,
+            delay: 0.5,
           },
         }}
         viewport={{ once: true }}
@@ -216,7 +218,7 @@ const MyEntityPMTask = () => {
             transition: {
               ease: "easeOut",
               duration: 0.3,
-              delay: 1,
+              delay: 0.8,
             },
           }}
           viewport={{ once: true }}
@@ -237,7 +239,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.1,
+                delay: 1,
               },
             }}
             viewport={{ once: true }}
@@ -259,7 +261,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.2,
+                delay: 1.1,
               },
             }}
             viewport={{ once: true }}
@@ -283,7 +285,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 1.2,
               },
             }}
             viewport={{ once: true }}
@@ -305,7 +307,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.4,
+                delay: 1.3,
               },
             }}
             viewport={{ once: true }}
@@ -321,7 +323,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.4,
+                delay: 1.3,
               },
             }}
             viewport={{ once: true }}
@@ -339,7 +341,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.5,
+                delay: 1.4,
               },
             }}
             viewport={{ once: true }}
@@ -355,7 +357,7 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.5,
+                delay: 1.4,
               },
             }}
             viewport={{ once: true }}
@@ -384,7 +386,7 @@ const MyEntityPMTask = () => {
                   transition: {
                     ease: "easeOut",
                     duration: 0.3,
-                    delay: 1.7,
+                    delay: 0.3,
                   },
                 }}
                 viewport={{ once: true }}
@@ -400,7 +402,15 @@ const MyEntityPMTask = () => {
                           <div className={classes["first-block"]}>
                             <div>
                               <div className={classes["title-wrapper"]}>
-                                <FaTractor />
+                                {periodicMaintenanceTask?.periodicMaintenance
+                                  ?.entity?.type?.entityType === "Vessel" ? (
+                                  <RiSailboatFill />
+                                ) : periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.type?.entityType === "Vehicle" ? (
+                                  <FaTruck />
+                                ) : (
+                                  <FaTractor />
+                                )}
                                 <span className={classes["title"]}>
                                   {
                                     periodicMaintenanceTask?.periodicMaintenance

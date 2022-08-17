@@ -4,7 +4,7 @@
     padding: 4px 0;
     text-align: left;
     list-style-type: none;
-    background-color: #fff;
+    background-color: var(--card-bg);
     background-clip: padding-box;
     border-radius: 20px;
     outline: none;
@@ -38,7 +38,7 @@
     transition: all 0.3s;
   }
   .notification-menu-item:hover {
-    background-color: #f5f5f5;
+    background-color: var(--row-hover);
   }
   
   .dropdown-menu {

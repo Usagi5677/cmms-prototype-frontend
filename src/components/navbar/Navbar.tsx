@@ -23,7 +23,7 @@ const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <ThemeChange />
-          {self?.location && <Tag>{self?.location}</Tag>}
+          {self?.location && <Tag color={"var(--white)"} style={{color: "black"}}>{self?.location}</Tag>}
 
           <Notification />
           <NavUser />

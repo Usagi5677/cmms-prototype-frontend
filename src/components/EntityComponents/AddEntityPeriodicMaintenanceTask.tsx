@@ -57,7 +57,7 @@ export const AddEntityPeriodicMaintenanceTask: React.FC<
         onKeyDown={submit}
         disabled={loading}
         style={{
-          border: "solid 1px #e5e5e5",
+          border: "solid 1px var(--border-2)",
           borderRadius: 5,
           padding: ".5rem",
           width: "100%",

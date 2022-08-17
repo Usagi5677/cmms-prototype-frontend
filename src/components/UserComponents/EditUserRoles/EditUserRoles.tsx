@@ -139,6 +139,7 @@ const EditUserRoles = ({ userData }: { userData?: User }) => {
               tagRender={tagRender}
               style={{ width: "100%" }}
               options={options}
+              placeholder="Roles"
             />
           </Form.Item>
           <Row justify="end" gutter={16}>

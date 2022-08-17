@@ -37,7 +37,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
       style={{
         display: "flex",
         alignItems: "center",
-        backgroundColor: hover ? "#f5f5f5" : undefined,
+        backgroundColor: hover ? "var(--row-hover)" : undefined,
         paddingTop: ".25rem",
         paddingBottom: ".25rem",
         paddingLeft: ".5rem",

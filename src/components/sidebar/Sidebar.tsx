@@ -189,7 +189,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                 ?.machineTaskComplete === true &&
                 item.name === "Machinery" && (
                   <Tooltip
-                    color="#efefef"
+                    color="var(--dot-tooltip)"
                     title={
                       <div>
                         <Badge
@@ -206,7 +206,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                 ?.machineChecklistComplete === true &&
                 item.name === "Machinery" && (
                   <Tooltip
-                    color="#efefef"
+                    color="var(--dot-tooltip)"
                     title={
                       <div>
                         <Badge
@@ -223,7 +223,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                 ?.vehicleTaskComplete === true &&
                 item.name === "Vehicles" && (
                   <Tooltip
-                    color="#efefef"
+                    color="var(--dot-tooltip)"
                     title={
                       <div>
                         <Badge
@@ -240,7 +240,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                 ?.vehicleChecklistComplete === true &&
                 item.name === "Vehicles" && (
                   <Tooltip
-                    color="#efefef"
+                    color="var(--dot-tooltip)"
                     title={
                       <div>
                         <Badge
@@ -257,7 +257,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                 ?.vesselTaskComplete === true &&
                 item.name === "Vessels" && (
                   <Tooltip
-                    color="#efefef"
+                    color="var(--dot-tooltip)"
                     title={
                       <div>
                         <Badge
@@ -274,7 +274,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                 ?.vesselChecklistComplete === true &&
                 item.name === "Vessels" && (
                   <Tooltip
-                    color="#efefef"
+                    color="var(--dot-tooltip)"
                     title={
                       <div>
                         <Badge

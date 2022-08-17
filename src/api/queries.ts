@@ -828,6 +828,9 @@ export const ALL_ENTITY_UTILIZATION = gql`
           model
           zone
           location
+          type {
+            entityType
+          }
           isDeleted
           deletedAt
           histories {
@@ -894,6 +897,9 @@ export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
             model
             zone
             location
+            type {
+              entityType
+            }
           }
         }
       }
@@ -944,6 +950,9 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
               id
               location
               machineNumber
+              type {
+                entityType
+              }
               assignees {
                 user {
                   ...UserFieldsAPS
