@@ -632,10 +632,7 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
           entityId
           internal
           projectName
-          location {
-            id
-            name
-          }
+          location
           reason
           additionalInfo
           attendInfo

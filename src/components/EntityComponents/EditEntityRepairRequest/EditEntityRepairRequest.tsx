@@ -23,6 +23,7 @@ import { REPAIR_LOCATION } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import EntityRepairRequest from "../../../models/Entity/EntityRepairRequest";
 import User from "../../../models/User";
+import { RepairRequestUserData } from "../../../pages/Entity/ViewEntity/ViewRepair/ViewRepair";
 import SearchAPSUser from "../../common/SearchAPS";
 
 import classes from "./EditEntityRepairRequest.module.css";
@@ -32,7 +33,7 @@ const EditEntityRepairRequest = ({
   userData,
 }: {
   repair: EntityRepairRequest;
-  userData?: User[];
+  userData?: RepairRequestUserData;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -85,16 +86,26 @@ const EditEntityRepairRequest = ({
     });
   };
 
-  let options: any = [];
+  let admin = userData?.admin;
+  let user = userData?.user;
+
+  let locationOptions: any = [];
+  let adminOptions: any = [];
+  let userOptions: any = [];
+
   REPAIR_LOCATION?.map((loc: string) => {
-    options.push({
+    locationOptions.push({
       value: loc,
       label: loc,
     });
   });
-
-  let userOptions: any = [];
-  userData?.map((user: User) => {
+  admin?.map((user: User) => {
+    adminOptions.push({
+      value: user.id,
+      label: user.fullName + " " + "(" + user.rcno + ")",
+    });
+  });
+  user?.map((user: User) => {
     userOptions.push({
       value: user.id,
       label: user.fullName + " " + "(" + user.rcno + ")",
@@ -160,7 +171,7 @@ const EditEntityRepairRequest = ({
                     showArrow
                     style={{ width: "100%" }}
                     showSearch
-                    options={options}
+                    options={locationOptions}
                     placeholder={"Location"}
                   />
                 </Form.Item>
@@ -190,7 +201,7 @@ const EditEntityRepairRequest = ({
                   <Select
                     showArrow
                     style={{ width: "100%" }}
-                    options={userOptions}
+                    options={adminOptions}
                     placeholder={"Supervisor"}
                   />
                 </Form.Item>
@@ -204,7 +215,7 @@ const EditEntityRepairRequest = ({
                   <Select
                     showArrow
                     style={{ width: "100%" }}
-                    options={userOptions}
+                    options={adminOptions}
                     placeholder={"Project Manager"}
                   />
                 </Form.Item>

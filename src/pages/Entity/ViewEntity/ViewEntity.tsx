@@ -45,7 +45,6 @@ import { UNASSIGN_USER_FROM_ENTITY } from "../../../api/mutations";
 import EntityUsageHistory from "../../../components/EntityComponents/EntityUsageHistory/EntityUsageHistory";
 import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
-import EntityAssign from "../../../models/Entity/EntityAssign";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 
 const ViewEntity = () => {

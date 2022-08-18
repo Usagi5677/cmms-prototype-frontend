@@ -17,8 +17,10 @@ import {
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
+import { hasPermissions } from "../../../helpers/permissions";
 import EntityRepairRequest from "../../../models/Entity/EntityRepairRequest";
 import User from "../../../models/User";
+import { RepairRequestUserData } from "../../../pages/Entity/ViewEntity/ViewRepair/ViewRepair";
 import DeleteEntityRepairRequest from "../DeleteEntityRepairRequest/DeleteEntityRepairRequest";
 import EditEntityRepairRequest from "../EditEntityRepairRequest/EditEntityRepairRequest";
 import classes from "./EntityRepairCard.module.css";
@@ -30,7 +32,7 @@ const EntityRepairCard = ({
 }: {
   repair: EntityRepairRequest;
   isDeleted?: boolean | undefined;
-  userData?: User[];
+  userData?: RepairRequestUserData;
 }) => {
   const { user: self } = useContext(UserContext);
   const { Paragraph } = Typography;
@@ -141,10 +143,14 @@ const EntityRepairCard = ({
                           });
                         }}
                         style={{
-                          pointerEvents: self.assignedPermission
-                            ?.hasEntityRepairRequestEdit
+                          pointerEvents: hasPermissions(self, [
+                            "ENTITY_ENGINEER",
+                          ])
                             ? "initial"
                             : "none",
+                          cursor: hasPermissions(self, ["ENTITY_ENGINEER"])
+                            ? "pointer"
+                            : "initial",
                         }}
                       >
                         {repair?.repairedAt ? "Completed" : "Incomplete"}
@@ -171,10 +177,12 @@ const EntityRepairCard = ({
                         });
                       }}
                       style={{
-                        pointerEvents: self.assignedPermission
-                          ?.hasEntityRepairRequestEdit
+                        pointerEvents: hasPermissions(self, ["ENTITY_ADMIN"])
                           ? "initial"
                           : "none",
+                        cursor: hasPermissions(self, ["ENTITY_ADMIN"])
+                          ? "pointer"
+                          : "initial",
                       }}
                     >
                       {repair?.approvedAt ? "Approved" : "Approving"}

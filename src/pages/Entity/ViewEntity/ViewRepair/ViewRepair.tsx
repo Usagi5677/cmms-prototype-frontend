@@ -16,6 +16,13 @@ import EntityRepairRequest from "../../../../models/Entity/EntityRepairRequest";
 import User from "../../../../models/User";
 import Search from "../../../../components/common/Search";
 import { useParams } from "react-router";
+import { hasPermissions } from "../../../../helpers/permissions";
+import { GetUsersWithPermission } from "../../../../helpers/getUsersWithPermission";
+
+export interface RepairRequestUserData {
+  admin: User[];
+  user: User[];
+}
 
 const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
@@ -55,27 +62,18 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
     }
   );
 
-  const [getUsersWithPermission, { data: userData, loading: loadingUsers }] =
-    useLazyQuery(GET_USERS_WITH_PERMISSION, {
-      onError: (err) => {
-        errorMessage(err, "Error loading request.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-      notifyOnNetworkStatusChange: true,
-    });
+  let admin = GetUsersWithPermission(["ENTITY_ADMIN"]);
+  let user = GetUsersWithPermission(["ENTITY_USER"]);
+
+  const userData: RepairRequestUserData = {
+    admin: admin,
+    user: user,
+  };
 
   // Fetch repairs when component mounts or when the filter object changes
   useEffect(() => {
     getAllRepairRequestOfEntity({ variables: filter });
   }, [filter, getAllRepairRequestOfEntity]);
-
-  // Fetch users when component mount
-  useEffect(() => {
-    getUsersWithPermission({
-      variables: { permissions: ["ADD_ENTITY_REPAIR_REQUEST"] },
-    });
-  }, [getUsersWithPermission]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -160,14 +158,14 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
           </Checkbox>
         </div>
 
-        {self.assignedPermission?.hasEntityRepairRequestAdd && !isDeleted ? (
-          <div className={classes["add"]}>
+        <div className={classes["add"]}>
+          {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
             <AddEntityRepairRequest
               entityID={parseInt(id)}
-              userData={userData?.getUsersWithPermission}
+              userData={userData}
             />
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
       {loading && (
         <div>
@@ -183,7 +181,7 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
                 key={repair.id}
                 repair={repair}
                 isDeleted={isDeleted}
-                userData={userData?.getUsersWithPermission}
+                userData={userData}
               />
             );
           }

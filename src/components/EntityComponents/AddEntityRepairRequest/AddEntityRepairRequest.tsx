@@ -17,17 +17,23 @@ import { useEffect, useState } from "react";
 import { ADD_ENTITY_REPAIR_REQUEST } from "../../../api/mutations";
 import { GET_USERS_WITH_PERMISSION } from "../../../api/queries";
 import { ISLANDS, REPAIR_LOCATION } from "../../../helpers/constants";
+import { GetUsersWithPermission } from "../../../helpers/getUsersWithPermission";
 import { errorMessage } from "../../../helpers/gql";
 import User from "../../../models/User";
+import { RepairRequestUserData } from "../../../pages/Entity/ViewEntity/ViewRepair/ViewRepair";
 import SearchAPSUser from "../../common/SearchAPS";
 import classes from "./AddEntityRepairRequest.module.css";
+
+
 
 const AddEntityRepairRequest = ({
   entityID,
   userData,
+  isDeleted,
 }: {
   entityID: number;
-  userData: User[];
+  userData: RepairRequestUserData;
+  isDeleted?: boolean;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -80,16 +86,26 @@ const AddEntityRepairRequest = ({
     });
   };
 
-  let options: any = [];
+  let admin = userData?.admin;
+  let user = userData?.user;
+
+  let locationOptions: any = [];
+  let adminOptions: any = [];
+  let userOptions: any = [];
+
   REPAIR_LOCATION?.map((loc: string) => {
-    options.push({
+    locationOptions.push({
       value: loc,
       label: loc,
     });
   });
-
-  let userOptions: any = [];
-  userData?.map((user: User) => {
+  admin?.map((user: User) => {
+    adminOptions.push({
+      value: user.id,
+      label: user.fullName + " " + "(" + user.rcno + ")",
+    });
+  });
+  user?.map((user: User) => {
     userOptions.push({
       value: user.id,
       label: user.fullName + " " + "(" + user.rcno + ")",
@@ -105,6 +121,7 @@ const AddEntityRepairRequest = ({
         onClick={() => setVisible(true)}
         loading={loadingRepair}
         className={classes["custom-btn-primary"]}
+        disabled={isDeleted}
       >
         Repair Request
       </Button>
@@ -149,7 +166,7 @@ const AddEntityRepairRequest = ({
                 <Select
                   showArrow
                   style={{ width: "100%" }}
-                  options={userOptions}
+                  options={adminOptions}
                   placeholder={"Supervisor"}
                 />
               </Form.Item>
@@ -159,7 +176,7 @@ const AddEntityRepairRequest = ({
                 <Select
                   showArrow
                   style={{ width: "100%" }}
-                  options={userOptions}
+                  options={adminOptions}
                   placeholder={"Project Manager"}
                 />
               </Form.Item>
@@ -181,7 +198,7 @@ const AddEntityRepairRequest = ({
                   showArrow
                   style={{ width: "100%" }}
                   showSearch
-                  options={options}
+                  options={locationOptions}
                   placeholder={"Location"}
                 />
               </Form.Item>
