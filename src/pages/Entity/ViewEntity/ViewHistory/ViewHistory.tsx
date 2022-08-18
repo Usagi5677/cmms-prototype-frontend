@@ -11,8 +11,9 @@ import moment from "moment";
 import EntityHistory from "../../../../models/Entity/EntityHistory";
 import EntityHistoryCard from "../../../../components/EntityComponents/EntityHistoryCard/EntityHistoryCard";
 import { LocationSelector } from "../../../../components/Config/Location/LocationSelector";
+import { useParams } from "react-router";
 
-const ViewHistory = ({ entityID }: { entityID: number }) => {
+const ViewHistory = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [locationIds, setLocationIds] = useState<number[]>([]);
@@ -21,6 +22,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
     moment(),
   ]);
   const [timerId, setTimerId] = useState(null);
+  const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -37,7 +39,7 @@ const ViewHistory = ({ entityID }: { entityID: number }) => {
     after: null,
     search: "",
     locationIds: [],
-    entityId: entityID,
+    entityId: parseInt(id),
     from: dates[0].toISOString(),
     to: dates[1].toISOString(),
   });

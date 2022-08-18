@@ -440,38 +440,25 @@ const ViewEntity = () => {
                 key="periodicMaintenance"
               >
                 <ViewPeriodicMaintenance
-                  entityID={entityData?.id}
                   value={entityData?.currentRunning}
                   measurement={entityData?.measurement}
                   isDeleted={entityData?.isDeleted}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
-                <ViewSparePR
-                  entityID={entityData?.id}
-                  isDeleted={entityData?.isDeleted}
-                />
+                <ViewSparePR isDeleted={entityData?.isDeleted} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair
-                  entityID={entityData?.id}
-                  isDeleted={entityData?.isDeleted}
-                />
+                <ViewRepair isDeleted={entityData?.isDeleted} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
-                <ViewBreakdown
-                  entityID={entityData?.id}
-                  isDeleted={entityData?.isDeleted}
-                />
+                <ViewBreakdown isDeleted={entityData?.isDeleted} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
-                <ViewHistory entityID={entityData?.id} />
+                <ViewHistory />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <ViewGallery
-                  entityID={entityData?.id}
-                  isDeleted={entityData?.isDeleted}
-                />
+                <ViewGallery isDeleted={entityData?.isDeleted} />
               </Tabs.TabPane>
             </Tabs>
           </div>

@@ -15,20 +15,16 @@ import EntityRepairCard from "../../../../components/EntityComponents/EntityRepa
 import EntityRepairRequest from "../../../../models/Entity/EntityRepairRequest";
 import User from "../../../../models/User";
 import Search from "../../../../components/common/Search";
+import { useParams } from "react-router";
 
-const ViewRepair = ({
-  entityID,
-  isDeleted,
-}: {
-  entityID: number;
-  isDeleted?: boolean | undefined;
-}) => {
+const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [complete, setComplete] = useState(false);
   const [approve, setApprove] = useState(false);
+  const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -43,7 +39,7 @@ const ViewRepair = ({
     before: null,
     after: null,
     search: "",
-    entityId: entityID,
+    entityId: parseInt(id),
     approve: false,
     complete: false,
   });
@@ -167,7 +163,7 @@ const ViewRepair = ({
         {self.assignedPermission?.hasEntityRepairRequestAdd && !isDeleted ? (
           <div className={classes["add"]}>
             <AddEntityRepairRequest
-              entityID={entityID}
+              entityID={parseInt(id)}
               userData={userData?.getUsersWithPermission}
             />
           </div>

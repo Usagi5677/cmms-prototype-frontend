@@ -1,6 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router";
 import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddEntityAttachment from "../../../../components/EntityComponents/AddEntityAttachment/AddEntityAttachment";
@@ -11,17 +12,12 @@ import EntityAttachment from "../../../../models/Entity/EntityAttachment";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewGallery.module.css";
 
-const ViewGallery = ({
-  entityID,
-  isDeleted,
-}: {
-  entityID: number;
-  isDeleted?: boolean | undefined;
-}) => {
+const ViewGallery = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -34,7 +30,7 @@ const ViewGallery = ({
     before: null,
     after: null,
     search: "",
-    entityId: entityID,
+    entityId: parseInt(id),
   });
   // This query only loads the attachment's info from the db, not the file
   const [
@@ -113,7 +109,7 @@ const ViewGallery = ({
     <div className={classes["container"]}>
       <div className={classes["options"]}>
         {self.assignedPermission?.hasEntityAttachmentAdd && !isDeleted ? (
-          <AddEntityAttachment entityID={entityID} />
+          <AddEntityAttachment entityID={parseInt(id)} />
         ) : null}
 
         {loadingAttachment && (

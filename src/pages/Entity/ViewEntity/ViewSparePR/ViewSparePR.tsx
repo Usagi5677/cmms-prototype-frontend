@@ -10,18 +10,14 @@ import UserContext from "../../../../contexts/UserContext";
 import AddEntitySparePR from "../../../../components/EntityComponents/AddEntitySparePR/AddEntitySparePR";
 import EntitySparePR from "../../../../models/Entity/EntitySparePR";
 import EntitySparePRCard from "../../../../components/EntityComponents/EntitySparePRCard/EntitySparePRCard";
+import { useParams } from "react-router";
 
-const ViewSparePR = ({
-  entityID,
-  isDeleted,
-}: {
-  entityID: number;
-  isDeleted?: boolean | undefined;
-}) => {
+const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -34,7 +30,7 @@ const ViewSparePR = ({
     before: null,
     after: null,
     search: "",
-    entityId: entityID,
+    entityId: parseInt(id),
   });
 
   const [getAllSparePROfEntity, { data, loading }] = useLazyQuery(
@@ -113,7 +109,7 @@ const ViewSparePR = ({
     <div className={classes["container"]}>
       <div className={classes["options"]}>
         {self.assignedPermission?.hasEntitySparePRAdd && !isDeleted ? (
-          <AddEntitySparePR entityID={entityID} />
+          <AddEntitySparePR entityID={parseInt(id)} />
         ) : null}
       </div>
       {loading && (

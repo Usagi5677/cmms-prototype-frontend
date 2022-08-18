@@ -1,6 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router";
 import { GET_ALL_BREAKDOWN_OF_ENTITY } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddEntityBreakdown from "../../../../components/EntityComponents/AddEntityBreakdown/AddEntityBreakdown";
@@ -11,17 +12,12 @@ import EntityBreakdown from "../../../../models/Entity/EntityBreakdown";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
 
-const ViewBreakdown = ({
-  entityID,
-  isDeleted,
-}: {
-  entityID: number;
-  isDeleted?: boolean | undefined;
-}) => {
+const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -34,7 +30,7 @@ const ViewBreakdown = ({
     before: null,
     after: null,
     search: "",
-    entityId: entityID,
+    entityId: parseInt(id),
   });
 
   const [getAllBreakdownOfEntity, { data, loading }] = useLazyQuery(
@@ -113,7 +109,7 @@ const ViewBreakdown = ({
     <div className={classes["container"]}>
       <div className={classes["options"]}>
         {self.assignedPermission?.hasEntityBreakdownAdd && !isDeleted ? (
-          <AddEntityBreakdown entityID={entityID} />
+          <AddEntityBreakdown entityID={parseInt(id)} />
         ) : null}
       </div>
       {loading && (

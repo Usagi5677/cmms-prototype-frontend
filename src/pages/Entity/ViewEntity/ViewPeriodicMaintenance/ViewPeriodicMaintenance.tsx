@@ -10,14 +10,15 @@ import UserContext from "../../../../contexts/UserContext";
 import AddEntityPeriodicMaintenance from "../../../../components/EntityComponents/AddEntityPeriodicMaintenance/AddEntityPeriodicMaintenance";
 import EntityPeriodicMaintenanceCard from "../../../../components/EntityComponents/EntityPeriodicMaintenanceCard/EntityPeriodicMaintenanceCard";
 import EntityPeriodicMaintenance from "../../../../models/Entity/EntityPeriodicMaintenance";
+import { useParams } from "react-router";
 
 const ViewPeriodicMaintenance = ({
-  entityID,
+
   value,
   measurement,
   isDeleted,
 }: {
-  entityID: number;
+
   value?: number;
   measurement?: string;
   isDeleted?: boolean | undefined;
@@ -26,6 +27,7 @@ const ViewPeriodicMaintenance = ({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -38,7 +40,7 @@ const ViewPeriodicMaintenance = ({
     before: null,
     after: null,
     search: "",
-    entityId: entityID,
+    entityId: parseInt(id),
   });
 
   const [getAllPeriodicMaintenanceOfEntity, { data, loading }] = useLazyQuery(
@@ -119,7 +121,7 @@ const ViewPeriodicMaintenance = ({
         {self.assignedPermission?.hasEntityPeriodicMaintenanceAdd &&
         !isDeleted ? (
           <AddEntityPeriodicMaintenance
-            entityID={entityID}
+            entityID={parseInt(id)}
             value={value}
             measurement={measurement}
           />
