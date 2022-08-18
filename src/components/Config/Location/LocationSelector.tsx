@@ -10,6 +10,7 @@ export interface LocationSelectorProps {
   rounded?: boolean;
   multiple?: boolean;
   width?: number;
+  currentName?: string;
 }
 
 export const LocationSelector: React.FC<LocationSelectorProps> = ({
@@ -18,6 +19,7 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
   rounded = false,
   multiple = false,
   width,
+  currentName,
 }) => {
   const [search, setSearch] = useState("");
   const [value, setValue] = useState<number[] | number | null>(
@@ -49,11 +51,16 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
   }, [search]);
 
   useEffect(() => {
-    if (currentId && firstLoad) {
-      setValue(currentId);
+    if (firstLoad) {
+      if (currentId) {
+        setValue(currentId);
+      }
+      if (currentName) {
+        setSearch(currentName);
+      }
       setFirstLoad(false);
     }
-  }, [currentId, firstLoad]);
+  }, [currentId, currentName, firstLoad]);
 
   return (
     <Select

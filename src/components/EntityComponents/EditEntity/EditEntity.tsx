@@ -210,6 +210,7 @@ const EditEntity = ({
               <Form.Item label="Location" name="location" required={false}>
                 <LocationSelector
                   currentId={entity?.location?.id}
+                  currentName={entity?.location?.name}
                   setLocationId={setLocationId}
                 />
               </Form.Item>
