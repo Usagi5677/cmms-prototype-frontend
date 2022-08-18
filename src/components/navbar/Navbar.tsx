@@ -10,7 +10,6 @@ import ThemeChange from "../ThemeChange/ThemeChange";
 
 const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
   const { user: self } = useContext(UserContext);
-  console.log(self);
   return (
     <nav className={classes["navbar"]}>
       <div className={classes["navbar-wrapper"]}>

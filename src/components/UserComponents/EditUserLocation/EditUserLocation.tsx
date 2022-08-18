@@ -1,27 +1,16 @@
-import { useLazyQuery, useMutation } from "@apollo/client";
-import {
-  Button,
-  Col,
-  Form,
-  message,
-  Modal,
-  Row,
-  Select,
-  Tag,
-  Tooltip,
-} from "antd";
-import { useEffect, useState } from "react";
+import { useMutation } from "@apollo/client";
+import { Button, Col, Form, message, Modal, Row, Tag, Tooltip } from "antd";
+import { useState } from "react";
 import { useForm } from "antd/lib/form/Form";
 import { errorMessage } from "../../../helpers/gql";
-import { ADD_USER_ROLE, EDIT_USER_LOCATION } from "../../../api/mutations";
-import { GET_ROLES, ME_QUERY } from "../../../api/queries";
-import Role from "../../../models/Role";
+import { EDIT_USER_LOCATION } from "../../../api/mutations";
+import { ME_QUERY } from "../../../api/queries";
 import User from "../../../models/User";
-import { FaEdit, FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import classes from "./EditUserLocation.module.css";
 import { RoleTagStringToColor } from "../../../helpers/style";
-import { ISLANDS } from "../../../helpers/constants";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
+
 
 const EditUserLocation = ({ userData }: { userData?: User }) => {
   const [visible, setVisible] = useState(false);
@@ -57,32 +46,6 @@ const EditUserLocation = ({ userData }: { userData?: User }) => {
     });
   };
 
-  function tagRender(props: any) {
-    const { label, value, closable, onClose } = props;
-    const onPreventMouseDown = (event: any) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-    return (
-      <Tag
-        onMouseDown={onPreventMouseDown}
-        closable={closable}
-        onClose={onClose}
-        style={{
-          fontWeight: 700,
-          borderRadius: 20,
-          textAlign: "center",
-          maxWidth: 250,
-          backgroundColor: RoleTagStringToColor(label),
-          borderColor: RoleTagStringToColor(label),
-          borderWidth: 1,
-        }}
-      >
-        {label}
-      </Tag>
-    );
-  }
-
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
@@ -112,6 +75,7 @@ const EditUserLocation = ({ userData }: { userData?: User }) => {
           <Form.Item label="Location" name="location" required={false}>
             <LocationSelector
               currentId={userData?.location?.id}
+              currentName={userData?.location?.name}
               setLocationId={setLocationId}
             />
           </Form.Item>

@@ -13,6 +13,7 @@ import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import EditUserLocation from "../EditUserLocation/EditUserLocation";
 import { hasPermissions } from "../../../helpers/permissions";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const UserCard = ({ userData }: { userData: User }) => {
   const { user: self } = useContext(UserContext);
@@ -42,8 +43,16 @@ const UserCard = ({ userData }: { userData: User }) => {
     <div className={classes["container"]}>
       <div className={classes["user"]}>
         <UserAvatar user={userData} size={30} />
-        <div className={classes["user-fullname"]}>
-          {userData.fullName} ({userData.rcno})
+        <div>
+          <div className={classes["title"]}>
+            {userData.fullName} ({userData.rcno})
+          </div>
+          {userData?.location?.name && (
+            <div className={classes["sub-title"]}>
+              <FaMapMarkerAlt style={{ marginRight: 5 }} />
+              {userData?.location?.name}
+            </div>
+          )}
         </div>
       </div>
       <div className={classes["secondary"]}>

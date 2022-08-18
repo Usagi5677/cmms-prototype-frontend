@@ -49,8 +49,13 @@
   align-items: center;
 }
 
-.user-fullname {
+.title {
   margin-left: 0.5rem;
+}
+
+.sub-title {
+  margin-left: 0.5rem;
+  opacity: 0.5;
 }
 
 .secondary {
@@ -58,7 +63,6 @@
   justify-content: center;
   align-items: flex-end;
   flex-direction: column-reverse;
-
 }
 
 @media only screen and (min-width: 800px) {
