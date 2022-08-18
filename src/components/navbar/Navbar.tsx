@@ -10,6 +10,7 @@ import ThemeChange from "../ThemeChange/ThemeChange";
 
 const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
   const { user: self } = useContext(UserContext);
+  console.log(self);
   return (
     <nav className={classes["navbar"]}>
       <div className={classes["navbar-wrapper"]}>
@@ -23,7 +24,7 @@ const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <ThemeChange />
-          {self?.location && <Tag color={"var(--white)"} style={{color: "black"}}>{self?.location}</Tag>}
+          {self?.location?.id && <Tag color={"var(--white)"} style={{color: "black"}}>{self?.location?.name}</Tag>}
 
           <Notification />
           <NavUser />

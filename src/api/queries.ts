@@ -31,6 +31,10 @@ export const ME_QUERY = gql`
           }
         }
       }
+      location {
+        id
+        name
+      }
     }
   }
 `;

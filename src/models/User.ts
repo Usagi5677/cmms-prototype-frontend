@@ -1,4 +1,5 @@
 import UserRole from "./UserRole";
+import Location from "./Location";
 
 export default interface User {
   id: number;
@@ -6,7 +7,7 @@ export default interface User {
   fullName: string;
   userId: string;
   email: string;
-  location?: string;
+  location?: Location;
   roles: UserRole[];
   permissions: string[];
   isAdmin?: boolean;

@@ -722,8 +722,8 @@ export const REMOVE_CHECKLIST_COMMENT = gql`
 `;
 
 export const EDIT_USER_LOCATION = gql`
-  mutation ($id: Int!, $location: String) {
-    editUserLocation(id: $id, location: $location)
+  mutation ($id: Int!, $locationId: Int) {
+    editUserLocation(id: $id, locationId: $locationId)
   }
 `;
 

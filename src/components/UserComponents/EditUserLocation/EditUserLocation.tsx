@@ -21,9 +21,11 @@ import { FaEdit, FaMapMarkerAlt } from "react-icons/fa";
 import classes from "./EditUserLocation.module.css";
 import { RoleTagStringToColor } from "../../../helpers/style";
 import { ISLANDS } from "../../../helpers/constants";
+import { LocationSelector } from "../../Config/Location/LocationSelector";
 
 const EditUserLocation = ({ userData }: { userData?: User }) => {
   const [visible, setVisible] = useState(false);
+  const [locationId, setLocationId] = useState<number | null>(null);
   const [form] = useForm();
 
   const [editUserLocation, { loading: loadingEditLocation }] = useMutation(
@@ -47,17 +49,10 @@ const EditUserLocation = ({ userData }: { userData?: User }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { location } = values;
-
-    if (location.length === 0) {
-      message.error("Please select a location.");
-      return;
-    }
-
     editUserLocation({
       variables: {
         id: userData?.id,
-        location,
+        locationId,
       },
     });
   };
@@ -87,13 +82,6 @@ const EditUserLocation = ({ userData }: { userData?: User }) => {
       </Tag>
     );
   }
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
 
   return (
     <div className={classes["info-edit"]}>
@@ -121,16 +109,10 @@ const EditUserLocation = ({ userData }: { userData?: User }) => {
           id="myForm"
           preserve={false}
         >
-          <Form.Item
-            label="Location"
-            name="location"
-            initialValue={userData?.location}
-          >
-            <Select
-              showArrow
-              tagRender={tagRender}
-              style={{ width: "100%" }}
-              options={options}
+          <Form.Item label="Location" name="location" required={false}>
+            <LocationSelector
+              currentId={userData?.location?.id}
+              setLocationId={setLocationId}
             />
           </Form.Item>
           <Row justify="end" gutter={16}>
