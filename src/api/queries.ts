@@ -165,6 +165,125 @@ export const NOTIFICATIONS = gql`
     }
   }
 `;
+export const ALL_PERIODIC_MAINTENANCE = gql`
+  ${APS_USER_FRAGMENT}
+  query periodicMaintenances(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $type: String
+    $from: Date
+    $to: Date
+    $entityId: Int
+  ) {
+    periodicMaintenances(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      type: $type
+      from: $from
+      to: $to
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          createdAt
+          entityId
+          name
+          from
+          to
+          measurement
+          value
+          previousMeterReading
+          currentMeterReading
+          type
+          verifiedAt
+          verifiedBy {
+            ...UserFieldsAPS
+          }
+          comments {
+            createdAt
+            id
+            type
+            description
+            user {
+              ...UserFieldsAPS
+            }
+          }
+          tasks {
+            id
+            periodicMaintenanceId
+            parentTaskId
+            name
+            completedBy {
+              ...UserFieldsAPS
+            }
+            remarks {
+              createdAt
+              id
+              type
+              description
+              user {
+                ...UserFieldsAPS
+              }
+            }
+            completedAt
+            subTasks {
+              id
+              periodicMaintenanceId
+              parentTaskId
+              name
+              completedBy {
+                ...UserFieldsAPS
+              }
+              remarks {
+                createdAt
+                id
+                type
+                description
+                user {
+                  ...UserFieldsAPS
+                }
+              }
+              completedAt
+              subTasks {
+                id
+                periodicMaintenanceId
+                parentTaskId
+                name
+                completedBy {
+                  ...UserFieldsAPS
+                }
+                remarks {
+                  createdAt
+                  id
+                  type
+                  description
+                  user {
+                    ...UserFieldsAPS
+                  }
+                }
+                completedAt
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const CHECKLIST_TEMPLATES = gql`
   query checklistTemplates(
@@ -327,6 +446,23 @@ export const GET_ROLE_WITH_PERMISSION = gql`
     }
   }
 `;
+
+export const PERIODIC_MAINTENANCE_SUMMARIES = gql`
+  query periodicMaintenanceSummary($entityId: Int!, $from: Date!, $to: Date!) {
+    periodicMaintenanceSummary(entityId: $entityId, from: $from, to: $to) {
+      id
+      from
+      to
+      type
+      currentMeterReading
+      hasRemarks
+      hasObservations
+      hasVerify
+      taskCompletion
+    }
+  }
+`;
+
 export const CHECKLIST_SUMMARIES = gql`
   query checklistSummary($input: ChecklistSummaryInput!) {
     checklistSummary(input: $input) {
@@ -459,6 +595,27 @@ export const ALL_ENTITY = gql`
       edges {
         node {
           ...EntityFields
+        }
+      }
+    }
+  }
+`;
+export const ALL_TEMPLATE_OF_ORIGIN_PM = gql`
+  query getAllTemplatesOfOriginPM($id: Int!) {
+    getAllTemplatesOfOriginPM(id: $id) {
+      id
+      originId
+      entityId
+      entity {
+        id
+        machineNumber
+        type {
+          entityType
+        }
+        zone
+        location {
+          id
+          name
         }
       }
     }

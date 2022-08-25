@@ -5,7 +5,13 @@ import { DELETE_ENTITY_REPAIR_REQUEST } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteEntityRepairRequest.module.css";
 
-const DeleteEntityRepairRequest = ({ id }: { id: number }) => {
+const DeleteEntityRepairRequest = ({
+  id,
+  isDeleted,
+}: {
+  id: number;
+  isDeleted?: boolean;
+}) => {
   const [removeEntityRepairRequest, { loading: deleting }] = useMutation(
     DELETE_ENTITY_REPAIR_REQUEST,
     {
@@ -29,7 +35,7 @@ const DeleteEntityRepairRequest = ({ id }: { id: number }) => {
   return (
     <Popconfirm
       key="delete"
-      disabled={deleting}
+      disabled={deleting || isDeleted}
       title={`Are you sure to remove this information?`}
       onConfirm={() => remove()}
       okText="Confirm"

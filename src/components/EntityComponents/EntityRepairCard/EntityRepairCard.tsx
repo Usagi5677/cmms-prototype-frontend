@@ -192,8 +192,12 @@ const EntityRepairCard = ({
                     <EditEntityRepairRequest
                       repair={repair}
                       userData={userData}
+                      isDeleted={isDeleted}
                     />
-                    <DeleteEntityRepairRequest id={repair.id} />
+                    <DeleteEntityRepairRequest
+                      id={repair.id}
+                      isDeleted={isDeleted}
+                    />
                   </div>
                 </div>
               </div>

@@ -60,44 +60,6 @@ export const DELETE_MACHINE = gql`
   }
 `;
 
-export const ADD_MACHINE_PERIODIC_MAINTENANCE = gql`
-  mutation (
-    $machineId: Int!
-    $title: String!
-    $measurement: String!
-    $value: Int!
-    $startDate: Date!
-    $tasks: [String!]
-  ) {
-    addMachinePeriodicMaintenance(
-      machineId: $machineId
-      title: $title
-      measurement: $measurement
-      value: $value
-      startDate: $startDate
-      tasks: $tasks
-    )
-  }
-`;
-
-export const EDIT_MACHINE_PERIODIC_MAINTENANCE = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $measurement: String!
-    $value: Int!
-    $startDate: Date!
-  ) {
-    editMachinePeriodicMaintenance(
-      id: $id
-      title: $title
-      measurement: $measurement
-      value: $value
-      startDate: $startDate
-    )
-  }
-`;
-
 export const SET_MACHINE_PERIODIC_MAINTENANCE_STATUS = gql`
   mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
     setMachinePeriodicMaintenanceStatus(id: $id, status: $status)
@@ -855,6 +817,25 @@ export const SET_ENTITY_STATUS = gql`
   }
 `;
 
+export const CREATE_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $name: String!
+    $measurement: String!
+    $value: Int!
+    $previousMeterReading: Int
+    $currentMeterReading: Int
+  ) {
+    createPeriodicMaintenance(
+      name: $name
+      measurement: $measurement
+      value: $value
+      previousMeterReading: $previousMeterReading
+      currentMeterReading: $currentMeterReading
+    )
+  }
+`;
+
+//not using
 export const ADD_ENTITY_PERIODIC_MAINTENANCE = gql`
   mutation (
     $entityId: Int!
@@ -881,6 +862,27 @@ export const SET_ENTITY_PERIODIC_MAINTENANCE_STATUS = gql`
   }
 `;
 
+export const EDIT_PERIODIC_MAINTENANCE = gql`
+  mutation (
+    $id: Int!
+    $name: String!
+    $measurement: String
+    $value: Int
+    $previousMeterReading: Int
+    $currentMeterReading: Int
+  ) {
+    editPeriodicMaintenance(
+      id: $id
+      name: $name
+      measurement: $measurement
+      value: $value
+      previousMeterReading: $previousMeterReading
+      currentMeterReading: $currentMeterReading
+    )
+  }
+`;
+
+//not using
 export const EDIT_ENTITY_PERIODIC_MAINTENANCE = gql`
   mutation (
     $id: Int!
@@ -1073,6 +1075,17 @@ export const UNASSIGN_USER_FROM_ENTITY = gql`
   }
 `;
 
+export const ADD_PERIODIC_MAINTENANCE_TASK = gql`
+  mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
+    createPeriodicMaintenanceTask(
+      parentTaskId: $parentTaskId
+      periodicMaintenanceId: $periodicMaintenanceId
+      name: $name
+    )
+  }
+`;
+
+//not using
 export const ADD_ENTITY_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
     createEntityPeriodicMaintenanceTask(
@@ -1083,23 +1096,84 @@ export const ADD_ENTITY_PERIODIC_MAINTENANCE_TASK = gql`
   }
 `;
 
+export const TOGGLE_PERIODIC_MAINTENANCE_TASK = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    togglePeriodicMaintenanceTask(id: $id, complete: $complete)
+  }
+`;
+
+export const DELETE_PERIODIC_MAINTENANCE_TASK = gql`
+  mutation ($id: Int!) {
+    deletePeriodicMaintenanceTask(id: $id)
+  }
+`;
+
+export const DELETE_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!) {
+    deletePeriodicMaintenance(id: $id)
+  }
+`;
+
+export const ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
+  mutation ($entityId: Int!, $originId: Int!) {
+    assignPeriodicMaintenanceTemplate(entityId: $entityId, originId: $originId)
+  }
+`;
+
+//not using
 export const TOGGLE_ENTITY_PM_TASK = gql`
   mutation ($id: Int!, $complete: Boolean!) {
     toggleEntityPMTask(id: $id, complete: $complete)
   }
 `;
 
+//not using
 export const DELETE_ENTITY_PM_TASK = gql`
   mutation ($id: Int!) {
     deleteEntityPMTask(id: $id)
   }
 `;
+
+export const TOGGLE_VERIFY_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!, $verify: Boolean!) {
+    toggleVerifyPeriodicMaintenance(id: $id, verify: $verify)
+  }
+`;
+
+//not using
 export const TOGGLE_VERIFY_ENTITY_PERIODIC_MAINTENANCE = gql`
   mutation ($id: Int!, $verify: Boolean!) {
     toggleVerifyEntityPeriodicMaintenance(id: $id, verify: $verify)
   }
 `;
 
+export const ADD_PERIODIC_MAINTENANCE_COMMENT = gql`
+  mutation addPeriodicMaintenanceComment(
+    $type: String!
+    $periodicMaintenanceId: Int!
+    $taskId: Int
+    $text: String!
+  ) {
+    addPeriodicMaintenanceComment(
+      type: $type
+      periodicMaintenanceId: $periodicMaintenanceId
+      taskId: $taskId
+      text: $text
+    )
+  }
+`;
+
+export const DELETE_PERIODIC_MAINTENANCE_COMMENT = gql`
+  mutation removePeriodicMaintenanceComment($id: Int!) {
+    removePeriodicMaintenanceComment(id: $id)
+  }
+`;
+
+export const PERIODIC_MAINTENANCE_UPDATE_READING = gql`
+  mutation updatePeriodicMaintenanceReading($id: Int!, $reading: Int!) {
+    updatePeriodicMaintenanceReading(id: $id, reading: $reading)
+  }
+`;
 export const ADD_CHECKLIST_ITEM_ISSUE = gql`
   mutation addChecklistIssue(
     $checklistId: Int!

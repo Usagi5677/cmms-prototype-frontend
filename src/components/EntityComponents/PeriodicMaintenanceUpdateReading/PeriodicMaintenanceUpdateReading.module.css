@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  flex-direction: column;
+}
+.col {
+  flex: 1;
+}
+.btn {
+  width: 100%;
+}
+@media only screen and (min-width: 500px) {
+  .row {
+    flex-direction: row;
+  }
+  .col {
+    flex: 1;
+  }
+  .btn {
+    width: initial;
+  }
+}

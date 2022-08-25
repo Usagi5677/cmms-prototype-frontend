@@ -1,5 +1,5 @@
 import { Badge, Button, ConfigProvider, Dropdown, Switch } from "antd";
-import { FaCog, FaRegMoon, FaRegSun } from "react-icons/fa";
+import { FaCog, FaRegMoon, FaRegSun, FaSun } from "react-icons/fa";
 import classes from "./ThemeChange.module.css";
 import { AnyColorFormat, Colorpicker } from "antd-colorpicker";
 import { useState } from "react";
@@ -45,7 +45,7 @@ const ThemeChange = () => {
             <Switch
               checkedChildren={<FaRegMoon size={14} style={{ marginTop: 4 }} />}
               unCheckedChildren={
-                <FaRegSun size={14} style={{ marginTop: 4 }} />
+                <FaSun size={14} style={{ marginTop: 4, color:"black" }} />
               }
               defaultChecked={mode === "dark" ? true : false}
               onChange={switchMode}

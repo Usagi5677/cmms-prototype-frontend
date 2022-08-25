@@ -20,7 +20,7 @@ import Permissions from "./pages/Role/Permissions";
 import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
 import "./components/ThemeChange/antd.dark.min.css";
-
+//import 'antd/dist/antd.variable.min.css';
 function App() {
   {
     const token = localStorage.getItem("cmms_token");

@@ -1,22 +1,22 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { ADD_ENTITY_PERIODIC_MAINTENANCE_TASK } from "../../api/mutations";
+import { ADD_PERIODIC_MAINTENANCE_TASK } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import EntityPeriodicMaintenance from "../../models/Entity/EntityPeriodicMaintenance";
+import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 
-export interface AddEntityPeriodicMaintenanceTaskProps {
-  periodicMaintenance: EntityPeriodicMaintenance;
+export interface AddPeriodicMaintenanceTaskProps {
+  periodicMaintenance: PeriodicMaintenance;
   parentTaskId?: number;
   text?: string;
 }
 
-export const AddEntityPeriodicMaintenanceTask: React.FC<
-  AddEntityPeriodicMaintenanceTaskProps
+export const AddPeriodicMaintenanceTask: React.FC<
+  AddPeriodicMaintenanceTaskProps
 > = ({ periodicMaintenance, parentTaskId, text = "Add new task" }) => {
   const [details, setDetails] = useState("");
 
   const [addPeriodicMaintenanceTask, { loading }] = useMutation(
-    ADD_ENTITY_PERIODIC_MAINTENANCE_TASK,
+    ADD_PERIODIC_MAINTENANCE_TASK,
     {
       onCompleted: () => {
         setDetails("");
@@ -28,6 +28,7 @@ export const AddEntityPeriodicMaintenanceTask: React.FC<
         "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
+        "periodicMaintenances"
       ],
     }
   );

@@ -253,6 +253,7 @@ const AddEntityRepairRequest = ({
                   htmlType="submit"
                   loading={loadingRepair}
                   className={classes["custom-btn-primary"]}
+                  disabled={isDeleted}
                 >
                   Add
                 </Button>

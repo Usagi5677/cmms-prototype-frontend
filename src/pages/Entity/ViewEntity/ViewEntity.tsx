@@ -382,7 +382,7 @@ const ViewEntity = () => {
                     {summaryData?.getAllEntityChecklistAndPMSummary
                       ?.machineTaskComplete === true && (
                       <Tooltip
-                        color="#efefef"
+                        color="var(--dot-tooltip)"
                         title={
                           <div>
                             <Badge
@@ -416,7 +416,7 @@ const ViewEntity = () => {
                     {summaryData?.getAllEntityChecklistAndPMSummary
                       ?.machineTaskComplete === true && (
                       <Tooltip
-                        color="#efefef"
+                        color="var(--dot-tooltip)"
                         title={
                           <div>
                             <Badge
@@ -438,11 +438,7 @@ const ViewEntity = () => {
                 }
                 key="periodicMaintenance"
               >
-                <ViewPeriodicMaintenance
-                  value={entityData?.currentRunning}
-                  measurement={entityData?.measurement}
-                  isDeleted={entityData?.isDeleted}
-                />
+                <ViewPeriodicMaintenance isDeleted={entityData?.isDeleted} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <ViewSparePR isDeleted={entityData?.isDeleted} />

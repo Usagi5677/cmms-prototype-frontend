@@ -4580,7 +4580,7 @@ a.ant-btn-sm {
   .ant-picker-panel
   .ant-picker-cell-selected:hover
   .ant-picker-calendar-date-today {
-  background: var(--ant-c-primary-1n10);
+  background: var(--ant-primary-1);
 }
 .ant-picker-calendar-full
   .ant-picker-panel
@@ -6697,7 +6697,7 @@ textarea.ant-picker-input > input {
 .ant-picker-panel
   > :not(.ant-picker-date-panel)
   .ant-picker-cell-in-view.ant-picker-cell-in-range.ant-picker-cell-range-hover-start:before {
-  background: #06213a;
+  background: var(--datepicker-range-hover);
 }
 .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end)
   .ant-picker-cell-inner {
@@ -6717,7 +6717,7 @@ textarea.ant-picker-input > input {
   top: 0;
   bottom: 0;
   z-index: -1;
-  background: #06213a;
+  background: var(--datepicker-range-hover);
   transition: all 0.3s;
   content: "";
 }

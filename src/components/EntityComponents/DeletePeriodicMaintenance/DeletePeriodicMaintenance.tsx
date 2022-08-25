@@ -3,12 +3,16 @@ import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
 import { DELETE_ENTITY_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./DeleteEntityPeriodicMaintenance.module.css";
+import classes from "./DeletePeriodicMaintenance.module.css";
 
-const DeleteEntityPeriodicMaintenance = ({
+const DeletePeriodicMaintenance = ({
   id,
+  isDeleted,
+  isCopy,
 }: {
   id: number;
+  isDeleted?: boolean;
+  isCopy?: boolean;
 }) => {
   const [removeEntityPeriodicMaintenance, { loading: deleting }] = useMutation(
     DELETE_ENTITY_PERIODIC_MAINTENANCE,
@@ -22,7 +26,10 @@ const DeleteEntityPeriodicMaintenance = ({
           "Unexpected error while removing periodic maintenance."
         );
       },
-      refetchQueries: ["getAllPeriodicMaintenanceOfEntity", "getAllHistoryOfEntity"],
+      refetchQueries: [
+        "getAllPeriodicMaintenanceOfEntity",
+        "getAllHistoryOfEntity",
+      ],
     }
   );
 
@@ -36,7 +43,7 @@ const DeleteEntityPeriodicMaintenance = ({
   return (
     <Popconfirm
       key="delete"
-      disabled={deleting}
+      disabled={deleting || isDeleted || isCopy}
       title={`Are you sure to remove this information?`}
       onConfirm={() => remove()}
       okText="Confirm"
@@ -52,4 +59,4 @@ const DeleteEntityPeriodicMaintenance = ({
   );
 };
 
-export default DeleteEntityPeriodicMaintenance;
+export default DeletePeriodicMaintenance;

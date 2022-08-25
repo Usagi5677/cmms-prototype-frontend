@@ -2,6 +2,7 @@ import { message, Tabs } from "antd";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { ChecklistTemplates } from "../components/Templates/ChecklistTemplates";
+import { PeriodicMaintenanceTemplates } from "../components/Templates/PeriodicMaintenanceTemplates";
 import UserContext from "../contexts/UserContext";
 import { hasPermissions } from "../helpers/permissions";
 
@@ -33,10 +34,9 @@ export const Templates: React.FC<TemplatesProps> = ({}) => {
         <Tabs.TabPane tab="Checklist" key="checklist">
           <ChecklistTemplates />
         </Tabs.TabPane>
-        <Tabs.TabPane
-          tab="Periodic Maintenance"
-          key="periodic-maintenance"
-        ></Tabs.TabPane>
+        <Tabs.TabPane tab="Periodic Maintenance" key="periodic-maintenance">
+          <PeriodicMaintenanceTemplates />
+        </Tabs.TabPane>
       </Tabs>
     </div>
   );

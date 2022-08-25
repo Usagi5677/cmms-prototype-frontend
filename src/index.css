@@ -142,7 +142,7 @@ a {
   --ant-transfer-list-header: #3a3a3a;
   --ant-table-filter-trigger-container-open: #525252;
   --ant-layout-footer: #f0f2f5;
-  --ant-layout-sider-trigger-bg: #002140;
+  --ant-layout-sider-trigger-bg: #fafafa;
   --ant-menu-not-horizontal-menu-item-selected: #fff1f0;
   --ant-modal-tr-ant-table-expanded-row-td: #272727;
   --ant-modal-ant-table-ant-table-filter: #525252;
@@ -211,149 +211,9 @@ a {
   --ant-picker-panel-container-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
     0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   --ant-tooltip-inner-bg: rgba(0, 0, 0, 0.75);
+  --datepicker-range-hover: var(--ant-primary-color-deprecated-l-35);
 }
-[data-theme="light"] {
-  --primary: #1aaa7a;
-  --error: #ff4d4f;
-  --text-primary: black;
-  --white: white;
-  --dot-tooltip: #efefef;
-  --row-hover: #f5f5f5;
-  --sidebar: white;
-  --navbar: var(--ant-primary-color);
-  --card-bg: white;
-  --total-card-border: black;
-  --border-1: #ccc;
-  --border-2: #e5e5e5;
-  --working-bg: rgb(224, 255, 255);
-  --working-color: rgb(0, 139, 139);
-  --idle-bg: rgba(255, 165, 0, 0.2);
-  --idle-color: rgb(219, 142, 0);
-  --breakdown-bg: rgba(255, 0, 0, 0.2);
-  --breakdown-color: rgb(139, 0, 0);
-  --dispose-bg: rgba(102, 0, 0, 0.3);
-  --dispose-color: rgb(102, 0, 0);
-  --comment-bg: #efefefa3;
-  --a-disabled: rgba(0, 0, 0, 0.25);
-  --caption: rgba(0, 0, 0, 0.45);
-  --mark: #feffe6;
-  --ant-c-primary-1n10: var(--ant-primary-1);
-  --ant-alert: rgba(0, 0, 0, 0.85);
-  --ant-success-color: #52c41a;
-  --ant-success-color-hover: #73d13d;
-  --ant-success-color-active: #389e0d;
-  --ant-success-color-outline: rgba(82, 196, 26, 0.2);
-  --ant-success-color-deprecated-bg: #f6ffed;
-  --ant-success-color-deprecated-border: #b7eb8f;
-  --ant-error-color: #ff4d4f;
-  --ant-error-color-hover: #ff7875;
-  --ant-error-color-active: #d9363e;
-  --ant-error-color-outline: rgba(255, 77, 79, 0.2);
-  --ant-error-color-deprecated-bg: #fff2f0;
-  --ant-error-color-deprecated-border: #ffccc7;
-  --ant-warning-color: #faad14;
-  --ant-warning-color-hover: #ffc53d;
-  --ant-warning-color-active: #d48806;
-  --ant-warning-color-outline: rgba(250, 173, 20, 0.2);
-  --ant-warning-color-deprecated-bg: #fffbe6;
-  --ant-warning-color-deprecated-border: #ffe58f;
-  --ant-info-color: #1890ff;
-  --ant-info-color-deprecated-bg: #e6f7ff;
-  --ant-info-color-deprecated-border: #91d5ff;
-  --anticon-close-hover: rgba(0, 0, 0, 0.75);
-  --ant-anchor-ink-before: rgba(0, 0, 0, 0.06);
-  --ant-anchor-ink-ball: #fff;
-  --ant-btn-border: rgb(217, 217, 217);
-  --ant-btn-bg: transparent;
-  --ant-btn-disabled-color: rgba(0, 0, 0, 0.25);
-  --ant-btn-disabled-bg: #f5f5f5;
-  --ant-btn-link-active: var(--ant-primary-color-active);
-  --ant-btn-dangerous-ant-btn-text-hover-border: var(--ant-primary-color-hover);
-  --ant-btn-dangerous-ant-btn-text-hover-bg: transparent;
-  --ant-btn-dangerous-ant-btn-text-active-border: var(
-    --ant-primary-color-active
-  );
-  --ant-btn-dangerous-ant-btn-text-disabled-border: #d9d9d9;
-  --ant-btn-dangerous-ant-btn-text-disabled-bg: #f5f5f5;
-  --ant-btn-background-ghost-border: #fff;
-  --ant-comment-actions-hover: #595959;
-  --ant-picker-not-disabled-hover: #fff;
-  --ant-picker-bg: transparent;
-  --ant-picker-panel: #fff;
-  --ant-divider: rgba(0, 0, 0, 0.06);
-  --ant-transfer-list-header: #3a3a3a;
-  --ant-table-filter-trigger-container-open: #525252;
-  --ant-layout-footer: #f0f2f5;
-  --ant-layout-sider-trigger-bg: #002140;
-  --ant-menu-not-horizontal-menu-item-selected: #fff1f0;
-  --ant-modal-tr-ant-table-expanded-row-td: #272727;
-  --ant-modal-ant-table-ant-table-filter: #525252;
-  --ant-popover-magenta: #eb2f96;
-  --ant-popover-red: #f5222d;
-  --ant-popover-volcano: #fa541c;
-  --ant-popover-orange: #fa8c16;
-  --ant-popover-yellow: #fadb14;
-  --ant-popover-gold: #faad14;
-  --ant-popover-cyan: #13c2c2;
-  --ant-popover-lime: #a0d911;
-  --ant-popover-green: #52c41a;
-  --ant-popover-blue: #1890ff;
-  --ant-popover-geek-blue: #2f54eb;
-  --ant-popover-purple: #722ed1;
-  --ant-radio-disabled-inner-after: rgba(0, 0, 0, 0.2);
-  --ant-rate: #fadb14;
-  --ant-switch-focus: rgba(0, 0, 0, 0.1);
-  --ant-table-small-table-thead-th: #fafafa;
-  --ant-table-column-sort: #f5f5f5;
-  --ant-tree-node-content-wrapper-hover: #f5f5f5;
-  --transparent: transparent;
-  --ant-tag-pink-color: #c41d7f;
-  --ant-tag-pink-bg: #fff0f6;
-  --ant-tag-pink-border: #ffadd2;
-  --ant-tag-red-color: #cf1322;
-  --ant-tag-red-border: #ffa39e;
-  --ant-tag-volcano-color: #d4380d;
-  --ant-tag-volcano-bg: #fff2e8;
-  --ant-tag-volcano-border: #ffbb96;
-  --ant-tag-orange-color: #d46b08;
-  --ant-tag-orange-bg: #fff7e6;
-  --ant-tag-orange-border: #ffd591;
-  --ant-tag-yellow-color: #d4b106;
-  --ant-tag-yellow-bg: #feffe6;
-  --ant-tag-yellow-border: #fffb8f;
-  --ant-tag-gold-color: #d48806;
-  --ant-tag-gold-bg: #fffbe6;
-  --ant-tag-gold-border: #ffe58f;
-  --ant-tag-cyan-color: #08979c;
-  --ant-tag-cyan-bg: #e6fffb;
-  --ant-tag-cyan-border: #87e8de;
-  --ant-tag-lime-color: #7cb305;
-  --ant-tag-lime-bg: #fcffe6;
-  --ant-tag-lime-border: #eaff8f;
-  --ant-tag-green-color: #389e0d;
-  --ant-tag-green-bg: #f6ffed;
-  --ant-tag-green-border: #b7eb8f;
-  --ant-tag-blue-color: #096dd9;
-  --ant-tag-blue-bg: #e6f7ff;
-  --ant-tag-blue-border: #91d5ff;
-  --ant-tag-geek-blue-color: #1d39c4;
-  --ant-tag-geek-blue-bg: #f0f5ff;
-  --ant-tag-geek-blue-border: #adc6ff;
-  --ant-tag-purple-color: #531dab;
-  --ant-tag-purple-bg: #f9f0ff;
-  --ant-tag-purple-border: #d3adf7;
-  --ant-empty-img-default-ellipse: #f5f5f5;
-  --ant-empty-img-default-path-1: #aeb8c2;
-  --ant-empty-img-default-path-3: #f5f5f7;
-  --ant-empty-img-default-path-4: #dce0e6;
-  --ant-empty-img-default-path-5: #dce0e6;
-  --ant-empty-img-default-g: #fff;
-  --ant-empty-img-simple-g: #d9d9d9;
-  --ant-empty-img-simple-path: #fafafa;
-  --ant-picker-panel-container-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  --ant-tooltip-inner-bg: rgba(0, 0, 0, 0.75);
-}
+
 [data-theme="dark"] {
   --primary: #1aaa7a;
   --error: #ff4d4f;
@@ -493,6 +353,7 @@ a {
   --ant-picker-panel-container-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.48),
     0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
   --ant-tooltip-inner-bg: #434343;
+  --datepicker-range-hover: #06213a;
 }
 
 ::-webkit-scrollbar-corner {
@@ -721,13 +582,46 @@ em {
   color: var(--text-primary);
 }
 
-#collapseTwo
+#collapseThree
   .ant-collapse-ghost
   > .ant-collapse-item
   > .ant-collapse-content
   > .ant-collapse-content-box {
   padding: 5px !important;
   cursor: default !important;
+}
+
+#collapseThree .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 0 !important;
+  padding-left: 5px !important;
+  border-bottom: 1px solid var(--border-1);
+  cursor: default !important;
+}
+#collapseThree .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
+  min-height: 40px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+#collapseThree
+  .ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding: 5px !important;
+  cursor: default !important;
+}
+
+#collapseTwo
+  .ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 @media only screen and (min-width: 600px) {
   #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
@@ -755,6 +649,18 @@ em {
     color: var(--text-primary);
   }
   #collapseTwo .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding: 0 5px !important;
+    cursor: default !important;
+  }
+  #collapseTwo
+    .ant-collapse-ghost
+    > .ant-collapse-item
+    > .ant-collapse-content
+    > .ant-collapse-content-box {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  #collapseThree .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 0 5px !important;
     cursor: default !important;
   }
@@ -854,4 +760,66 @@ div.ant-typography {
 
 #loginBtn .ant-btn-primary {
   background-color: #060e9f !important;
+}
+
+#pmDatepicker .ant-picker-date-panel {
+  width: clamp(280px, 90vw, 400px) !important;
+  transition: all 0.3s ease !important;
+}
+
+#pmDatepicker .ant-picker-date-panel .ant-picker-content {
+  width: 100% !important;
+}
+
+#pmDropdown .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
+  width: 1200px !important;
+}
+
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-end.ant-picker-cell-range-end-single:after,
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-end.ant-picker-cell-range-start.ant-picker-cell-range-end.ant-picker-cell-range-start-near-hover:after,
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-end:not(.ant-picker-cell-in-range):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):after,
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-start.ant-picker-cell-range-start-single:after,
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-start.ant-picker-cell-range-start.ant-picker-cell-range-end.ant-picker-cell-range-end-near-hover:after,
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover-start:not(.ant-picker-cell-in-range):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):after,
+#pmDatepicker
+  .ant-picker-cell-in-view.ant-picker-cell-range-hover:not(.ant-picker-cell-in-range):after {
+  height: 100% !important;
+}
+#pmDatepicker .ant-picker-cell:before {
+  right: 0% !important;
+  left: 0% !important;
+  height: 100% !important;
+  opacity: 0.5 !important;
+}
+#pmDatepicker .ant-picker-cell {
+  border: 1px solid var(--border-2) !important;
+}
+
+#pmDatepicker .ant-picker-panels {
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+#pmDatepicker {
+  width: min-content !important;
+}
+.ant-picker-content td,
+.ant-picker-content th {
+  position: relative;
+  max-width: 11px !important;
+  font-weight: 400;
+}
+@media only screen and (min-width: 920px) {
+  #pmDatepicker .ant-picker-panels {
+    flex-wrap: nowrap !important;
+  }
+  #pmDatepicker {
+    width: initial !important;
+  }
+  
 }

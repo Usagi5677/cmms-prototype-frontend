@@ -31,9 +31,11 @@ import classes from "./EditEntityRepairRequest.module.css";
 const EditEntityRepairRequest = ({
   repair,
   userData,
+  isDeleted
 }: {
   repair: EntityRepairRequest;
   userData?: RepairRequestUserData;
+  isDeleted?: boolean
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -276,6 +278,7 @@ const EditEntityRepairRequest = ({
                     htmlType="submit"
                     loading={loadingRepair}
                     className={classes["custom-btn-primary"]}
+                    disabled={isDeleted}
                   >
                     Edit
                   </Button>
