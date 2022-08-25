@@ -83,7 +83,6 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
         message.success("Successfully removed template.");
       },
       refetchQueries: [
-        "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",

@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ALL_PERIODIC_MAINTENANCE } from "../../../../../api/queries";
 import PaginationButtons from "../../../../../components/common/PaginationButtons/PaginationButtons";
@@ -119,17 +119,23 @@ const UpcomingPeriodicMaintenances = ({
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.periodicMaintenances.edges.map(
-          (rec: { node: PeriodicMaintenance }) => {
-            const periodicMaintenance = rec.node;
-            return (
-              <PeriodicMaintenanceCard
-                key={periodicMaintenance.id}
-                periodicMaintenance={periodicMaintenance}
-                isDeleted={isDeleted}
-              />
-            );
-          }
+        {data?.periodicMaintenances.edges.length > 0 ? (
+          <div>
+            {data?.periodicMaintenances.edges.map(
+              (rec: { node: PeriodicMaintenance }) => {
+                const periodicMaintenance = rec.node;
+                return (
+                  <PeriodicMaintenanceCard
+                    key={periodicMaintenance.id}
+                    periodicMaintenance={periodicMaintenance}
+                    isDeleted={isDeleted}
+                  />
+                );
+              }
+            )}
+          </div>
+        ) : (
+          <Empty />
         )}
       </div>
 

@@ -48,7 +48,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
-        "periodicMaintenanceSummary"
+        "periodicMaintenanceSummary",
       ],
     }
   );
@@ -64,7 +64,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
-        "periodicMaintenanceSummary"
+        "periodicMaintenanceSummary",
       ],
     }
   );
@@ -120,13 +120,17 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                             </span>
                           </div>
                         )}
-                        <AddPeriodicMaintenanceComment
-                          periodicMaintenance={periodicMaintenance}
-                          task={task}
-                          type={"Remark"}
-                          isDeleted={isDeleted}
-                          isOlder={isOlder}
-                        />
+                        {!makingTemplate && (
+                          <AddPeriodicMaintenanceComment
+                            periodicMaintenance={periodicMaintenance}
+                            task={task}
+                            type={"Remark"}
+                            isDeleted={isDeleted}
+                            isOlder={isOlder}
+                            makingTemplate={makingTemplate}
+                          />
+                        )}
+
                         {!makingTemplate && !isDeleted && (
                           <Checkbox
                             checked={task.completedAt !== null}
@@ -149,7 +153,9 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                           <div>
                             {hasPermissions(self, [
                               "MODIFY_PERIODIC_MAINTENANCE",
-                            ]) && !isDeleted && !isOlder ? (
+                            ]) &&
+                            !isDeleted &&
+                            !isOlder ? (
                               <CloseCircleOutlined
                                 onClick={() => {
                                   deleteTask({

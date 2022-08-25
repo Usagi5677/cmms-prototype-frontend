@@ -1,9 +1,16 @@
-import { CommentOutlined, MessageOutlined, WarningOutlined } from "@ant-design/icons";
+import {
+  CommentOutlined,
+  MessageOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { useState } from "react";
-import { ADD_CHECKLIST_ITEM_ISSUE, ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
+import {
+  ADD_CHECKLIST_ITEM_ISSUE,
+  ADD_PERIODIC_MAINTENANCE_COMMENT,
+} from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceTask from "../../models/PeriodicMaintenance/PeriodicMaintenanceTask";
@@ -14,11 +21,19 @@ export interface AddPeriodicMaintenanceCommentProps {
   type: string;
   isDeleted?: boolean;
   isOlder?: boolean;
+  makingTemplate?: boolean;
 }
 
 export const AddPeriodicMaintenanceComment: React.FC<
   AddPeriodicMaintenanceCommentProps
-> = ({ periodicMaintenance, task, type, isDeleted, isOlder }) => {
+> = ({
+  periodicMaintenance,
+  task,
+  type,
+  isDeleted,
+  isOlder,
+  makingTemplate,
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
@@ -52,10 +67,10 @@ export const AddPeriodicMaintenanceComment: React.FC<
     <div>
       <Tooltip title={`Add ${type}`}>
         <div
-          style={{ marginLeft: ".5rem",  marginRight: ".5rem"}}
+          style={{ marginLeft: ".5rem", marginRight: ".5rem" }}
           onClick={() => setVisible(true)}
         >
-          <MessageOutlined disabled={isDeleted || isOlder} />
+          <MessageOutlined disabled={isDeleted || isOlder || makingTemplate} />
         </div>
       </Tooltip>
       <Modal
@@ -84,7 +99,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
               },
             ]}
           >
-            <Input placeholder={`Enter ${type}`}/>
+            <Input placeholder={`Enter ${type}`} />
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>
@@ -103,7 +118,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
                   htmlType="submit"
                   loading={loading}
                   className="primaryButton"
-                  disabled={isDeleted || isOlder}
+                  disabled={isDeleted || isOlder || makingTemplate}
                 >
                   Add
                 </Button>
