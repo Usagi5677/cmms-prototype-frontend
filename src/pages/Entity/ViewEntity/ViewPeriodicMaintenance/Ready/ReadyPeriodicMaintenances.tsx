@@ -197,7 +197,7 @@ const UpcomingPeriodicMaintenances = ({
   const datePickerClasses = document.getElementsByClassName(
     "ant-picker-panel-container"
   );
-  const datePickerClassesLength = datePickerClasses.length;
+  const datePickerClassesLength = datePickerClasses?.length;
   const onclick = () => {
     const dp = document.getElementsByClassName("ant-picker-panel-container");
     dp[datePickerClassesLength].id = "pmDatepicker";
@@ -211,6 +211,9 @@ const UpcomingPeriodicMaintenances = ({
           <RangePicker
             style={{ width: "100%" }}
             value={[dates[0], dates[1]]}
+            onChange={(val) => {
+              if (val) setDates([val[0], val[1]]);
+            }}
             onClick={onclick}
             dropdownClassName={classes["dropdown"]}
             placement={"bottomRight"}
