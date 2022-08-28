@@ -212,6 +212,9 @@ a {
     0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   --ant-tooltip-inner-bg: rgba(0, 0, 0, 0.75);
   --datepicker-range-hover: var(--ant-primary-color-deprecated-l-35);
+  --scrollbar-thumb-bg: #cdcdcd;
+  --scrollbar-thumb-bg-hover: #a6a6a6;
+  --scrollbar-thumb-bg-active: #606060;
 }
 
 [data-theme="dark"] {
@@ -354,6 +357,9 @@ a {
     0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
   --ant-tooltip-inner-bg: #434343;
   --datepicker-range-hover: #06213a;
+  --scrollbar-thumb-bg: #747474;
+  --scrollbar-thumb-bg-hover: #606062;
+  --scrollbar-thumb-bg-active: #606060;
 }
 
 ::-webkit-scrollbar-corner {
@@ -367,21 +373,21 @@ a {
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 8px;
-  height: 12px;
+  height: 8px;
 }
 
 *::-webkit-scrollbar-track {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #cdcdcd;
+  background-color: var(--scrollbar-thumb-bg);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #a6a6a6;
+  background-color: var(--scrollbar-thumb-bg-hover);
 }
 *::-webkit-scrollbar-thumb:active {
-  background-color: #606060;
+  background-color: var(--scrollbar-thumb-bg-active);
 }
 
 .anticon,
