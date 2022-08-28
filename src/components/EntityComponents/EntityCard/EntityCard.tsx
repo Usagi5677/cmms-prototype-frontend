@@ -247,52 +247,26 @@ const EntityCard = ({
               </div>
               <div className={classes["container-second-block-wrapper"]}>
                 <div className={classes["container-second-block"]}>
-                  {entity?.currentMileage ||
-                    (entity?.currentMileage! >= 0 && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Current mileage ({entity?.measurement}):
-                        </span>
-                        <span>
-                          {entity?.currentMileage ? entity?.currentMileage : 0}
-                        </span>
-                      </div>
-                    ))}
-                  {entity?.lastServiceMileage ||
-                    (entity?.lastServiceMileage! >= 0 && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Last service mileage ({entity?.measurement}):
-                        </span>
-                        <span>
-                          {entity?.lastServiceMileage
-                            ? entity?.lastServiceMileage
-                            : 0}
-                        </span>
-                      </div>
-                    ))}
-                  {entity?.currentRunning ||
-                    (entity?.currentRunning! >= 0 && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Current running ({entity?.measurement}):
-                        </span>
-                        <span>
-                          {entity?.currentRunning ? entity?.currentRunning : 0}
-                        </span>
-                      </div>
-                    ))}
-                  {entity?.lastService ||
-                    (entity?.lastService! >= 0 && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Last service ({entity?.measurement}):
-                        </span>
-                        <span>
-                          {entity?.lastService ? entity?.lastService : 0}
-                        </span>
-                      </div>
-                    ))}
+                  {entity?.currentRunning! >= 0 && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Current running ({entity?.measurement}):
+                      </span>
+                      <span>
+                        {entity?.currentRunning ? entity?.currentRunning : 0}
+                      </span>
+                    </div>
+                  )}
+                  {entity?.lastService! >= 0 && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Last service ({entity?.measurement}):
+                      </span>
+                      <span>
+                        {entity?.lastService ? entity?.lastService : 0}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className={classes["container-third-block"]}>
                   <div className={classes["user-wrapper"]}>
