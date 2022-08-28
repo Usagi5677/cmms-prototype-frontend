@@ -366,7 +366,7 @@ a {
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
   height: 12px;
 }
 
@@ -375,6 +375,14 @@ a {
 
 *::-webkit-scrollbar-thumb {
   border-radius: 20px;
+  background-color: #cdcdcd;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #a6a6a6;
+}
+*::-webkit-scrollbar-thumb:active {
+  background-color: #606060;
 }
 
 .anticon,
@@ -821,5 +829,4 @@ div.ant-typography {
   #pmDatepicker {
     width: initial !important;
   }
-  
 }
