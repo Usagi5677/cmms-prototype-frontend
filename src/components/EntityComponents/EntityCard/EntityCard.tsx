@@ -329,6 +329,7 @@ const EntityCard = ({
                           color: "#f56a00",
                           backgroundColor: "#fde3cf",
                         }}
+                        size={"small"}
                       >
                         {entity?.assignees?.map((assign) => {
                           if (assign.type !== "Engineer") return;
@@ -356,6 +357,7 @@ const EntityCard = ({
                                     assign?.user?.fullName!
                                   ),
                                 }}
+                                size={"small"}
                               >
                                 {assign?.user?.fullName
                                   .match(/^\w|\b\w(?=\S+$)/g)
