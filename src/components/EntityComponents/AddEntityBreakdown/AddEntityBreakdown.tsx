@@ -8,13 +8,16 @@ import classes from "./AddEntityBreakdown.module.css";
 
 const AddEntityBreakdown = ({
   entityID,
+  isDeleted,
 }: {
   entityID: number;
+  isDeleted?: boolean;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const [addEntityBreakdown, { loading: loadingBreakdown }] =
-    useMutation(ADD_ENTITY_BREAKDOWN, {
+  const [addEntityBreakdown, { loading: loadingBreakdown }] = useMutation(
+    ADD_ENTITY_BREAKDOWN,
+    {
       onCompleted: () => {
         message.success("Successfully created breakdown.");
         handleCancel();
@@ -28,7 +31,8 @@ const AddEntityBreakdown = ({
         "getAllHistoryOfEntity",
         "allEntityBreakdownCount",
       ],
-    });
+    }
+  );
 
   const handleCancel = () => {
     form.resetFields();
@@ -64,6 +68,7 @@ const AddEntityBreakdown = ({
         onClick={() => setVisible(true)}
         loading={loadingBreakdown}
         className={classes["custom-btn-primary"]}
+        disabled={isDeleted}
       >
         Add Breakdown
       </Button>

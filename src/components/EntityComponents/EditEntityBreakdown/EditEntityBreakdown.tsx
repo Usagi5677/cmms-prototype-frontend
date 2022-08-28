@@ -1,5 +1,15 @@
 import { useMutation } from "@apollo/client";
-import { Button, Col, DatePicker, Form, Input, message, Modal, Row, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Tooltip,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 
@@ -10,12 +20,19 @@ import { errorMessage } from "../../../helpers/gql";
 import EntityBreakdown from "../../../models/Entity/EntityBreakdown";
 import classes from "./EditEntityBreakdown.module.css";
 
-const EditEntityBreakdown = ({ breakdown }: { breakdown: EntityBreakdown }) => {
+const EditEntityBreakdown = ({
+  breakdown,
+  isDeleted,
+}: {
+  breakdown: EntityBreakdown;
+  isDeleted?: boolean;
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editEntityBreakdown, { loading: loadingBreakdown }] =
-    useMutation(EDIT_ENTITY_BREAKDOWN, {
+  const [editEntityBreakdown, { loading: loadingBreakdown }] = useMutation(
+    EDIT_ENTITY_BREAKDOWN,
+    {
       onCompleted: () => {
         message.success("Successfully updated breakdown.");
         handleCancel();
@@ -23,11 +40,9 @@ const EditEntityBreakdown = ({ breakdown }: { breakdown: EntityBreakdown }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating breakdown.");
       },
-      refetchQueries: [
-        "getAllBreakdownOfEntity",
-        "getAllHistoryOfEntity",
-      ],
-    });
+      refetchQueries: ["getAllBreakdownOfEntity", "getAllHistoryOfEntity"],
+    }
+  );
 
   const handleCancel = () => {
     form.resetFields();
@@ -147,6 +162,7 @@ const EditEntityBreakdown = ({ breakdown }: { breakdown: EntityBreakdown }) => {
                     htmlType="submit"
                     loading={loadingBreakdown}
                     className={classes["custom-btn-primary"]}
+                    disabled={isDeleted}
                   >
                     Edit
                   </Button>

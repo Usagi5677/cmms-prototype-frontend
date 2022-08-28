@@ -5,7 +5,7 @@ import { DELETE_ENTITY_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteEntityBreakdown.module.css";
 
-const DeleteEntityBreakdown = ({ id }: { id: number }) => {
+const DeleteEntityBreakdown = ({ id, isDeleted }: { id: number, isDeleted?: boolean }) => {
   const [removeEntityBreakdown, { loading: deleting }] = useMutation(
     DELETE_ENTITY_BREAKDOWN,
     {
@@ -32,7 +32,7 @@ const DeleteEntityBreakdown = ({ id }: { id: number }) => {
   return (
     <Popconfirm
       key="delete"
-      disabled={deleting}
+      disabled={deleting || isDeleted}
       title={`Are you sure to remove this information?`}
       onConfirm={() => remove()}
       okText="Confirm"

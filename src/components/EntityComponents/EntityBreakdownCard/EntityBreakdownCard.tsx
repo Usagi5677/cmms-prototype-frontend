@@ -4,11 +4,11 @@ import { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
+import { hasPermissions } from "../../../helpers/permissions";
 import EntityBreakdown from "../../../models/Entity/EntityBreakdown";
 import DeleteEntityBreakdown from "../DeleteEntityBreakdown/DeleteEntityBreakdown";
 import EditEntityBreakdown from "../EditEntityBreakdown/EditEntityBreakdown";
 import EntityBreakdownStatus from "../EntityBreakdownStatus/EntityBreakdownStatus";
-
 
 import classes from "./EntityBreakdownCard.module.css";
 
@@ -87,7 +87,7 @@ const EntityBreakdownCard = ({
         </div>
 
         <div className={classes["status"]}>
-          {self.assignedPermission?.hasEntityBreakdownEdit ? (
+          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
             <EntityBreakdownStatus
               breakdown={breakdown}
               isDeleted={isDeleted}
@@ -96,10 +96,13 @@ const EntityBreakdownCard = ({
         </div>
         <div className={classes["icon-wrapper"]}>
           {self.assignedPermission?.hasEntityBreakdownEdit && !isDeleted ? (
-            <EditEntityBreakdown breakdown={breakdown} />
+            <EditEntityBreakdown breakdown={breakdown} isDeleted={isDeleted} />
           ) : null}
-          {self.assignedPermission?.hasEntityBreakdownDelete && !isDeleted ? (
-            <DeleteEntityBreakdown id={breakdown?.id} />
+          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+            <EditEntityBreakdown breakdown={breakdown} isDeleted={isDeleted} />
+          ) : null}
+          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+            <DeleteEntityBreakdown id={breakdown?.id} isDeleted={isDeleted} />
           ) : null}
         </div>
       </div>

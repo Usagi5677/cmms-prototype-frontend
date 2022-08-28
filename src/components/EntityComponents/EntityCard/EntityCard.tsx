@@ -10,7 +10,7 @@ import {
 import classes from "./EntityCard.module.css";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { Collapse, Tooltip, Image, Badge } from "antd";
+import { Collapse, Tooltip, Image, Badge, Avatar, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusTag from "../../common/EntityStatusTag";
@@ -18,6 +18,7 @@ import { getListImage } from "../../../helpers/getListImage";
 import { motion } from "framer-motion";
 import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistAndPMSummary";
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
+import { stringToColor } from "../../../helpers/style";
 
 const EntityCard = ({
   entity,
@@ -26,9 +27,41 @@ const EntityCard = ({
   entity: Entity;
   summaryData?: EntityChecklistAndPMSummary;
 }) => {
+  const { Paragraph } = Typography;
   const interServiceMileage =
     (entity.currentMileage ?? 0) - (entity.lastServiceMileage ?? 0);
   const interService = (entity.currentRunning ?? 0) - (entity.lastService ?? 0);
+
+  let fontColor = "#00e32a";
+  if (entity?.type?.entityType === "Machine") {
+    if (interService >= 500) {
+      fontColor = "red";
+    } else if (interService >= 400) {
+      fontColor = "orange";
+    }
+  } else if (
+    entity?.type?.entityType === "Vehicle" &&
+    entity?.type?.name === "Double Decker" &&
+    entity?.brand === "YUTONG"
+  ) {
+    if (interService >= 13000) {
+      fontColor = "red";
+    } else if (interService >= 12000) {
+      fontColor = "orange";
+    }
+  } else if (
+    entity?.type?.entityType === "Vehicle" &&
+    entity?.type?.name === "Car" &&
+    entity?.brand === "MAZDA"
+  ) {
+    if (interService >= 6000) {
+      fontColor = "red";
+    } else if (interService >= 5000) {
+      fontColor = "orange";
+    }
+  } else {
+    fontColor = "none";
+  }
 
   let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
 
@@ -111,32 +144,66 @@ const EntityCard = ({
                     </div>
                   </div>
                 </div>
+                <div className={classes["second-block"]}>
+                  <div className={classes["inner-second-block"]}>
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>Type:</span>
+                      <span>{entity?.type?.name}</span>
+                    </div>
+                  </div>
 
-                <div className={classes["service-reading-wrapper"]}>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>
-                      Current running ({entity?.measurement}):
-                    </span>
-                    <span>
-                      {entity?.currentRunning ? entity?.currentRunning : 0}
-                    </span>
+                  {entity?.department && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Department:
+                      </span>
+                      <span>{entity?.department}</span>
+                    </div>
+                  )}
+                  <div className={classes["service-reading-wrapper"]}>
+                    <div
+                      className={classes["reading"]}
+                      style={{
+                        border: `2px solid ${fontColor}`,
+                        borderRadius: 10,
+                        padding: 5,
+                      }}
+                    >
+                      <span className={classes["reading-title"]}>
+                        Inter service ({entity?.measurement}):
+                      </span>
+                      <span
+                        className={classes["inter-reading"]}
+                        style={{ color: fontColor }}
+                      >
+                        {interService}
+                      </span>
+                    </div>
                   </div>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>
-                      Last service ({entity?.measurement}):
-                    </span>
-                    <span>{entity?.lastService ? entity?.lastService : 0}</span>
-                  </div>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>
-                      Inter service ({entity?.measurement}):
-                    </span>
-                    <span>{interService}</span>
-                  </div>
-                  <div className={classes["status"]}>
+                  <div className={classes["third-block"]}>
                     <EntityStatusTag status={entity?.status} />
                   </div>
+                  {entity?.breakdowns[0]?.estimatedDateOfRepair && (
+                    <div className={classes["fourth-block"]}>
+                      <div className={classes["title-wrapper"]}>
+                        <Tooltip title="Estimated date of repair">
+                          <FaRegClock />
+                        </Tooltip>
+                        <span
+                          className={classes["title"]}
+                          title={moment(
+                            entity?.breakdowns[0]?.estimatedDateOfRepair
+                          ).format(DATETIME_FORMATS.FULL)}
+                        >
+                          {moment(
+                            entity?.breakdowns[0]?.estimatedDateOfRepair
+                          ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
+
                 <Link to={"/entity/" + entity.id}>
                   <Tooltip title="Open">
                     <FaArrowAltCircleRight className={classes["button"]} />
@@ -148,96 +215,210 @@ const EntityCard = ({
           key={entity.id}
         >
           <div className={classes["container"]}>
-            <div className={classes["title-wrapper"]}>
-              <Tooltip title="Registered Date">
-                <FaRegClock />
-              </Tooltip>
-
-              <span className={classes["title"]}>
-                {moment(entity?.registeredDate).format(
-                  DATETIME_FORMATS.DAY_MONTH_YEAR
-                )}
-              </span>
-            </div>
-            <div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>
-                  Current mileage ({entity?.measurement}):
-                </span>
-                <span>
-                  {entity?.currentMileage ? entity?.currentMileage : 0}
-                </span>
-              </div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>Model:</span>
-                <span>{entity?.model}</span>
-              </div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>Type:</span>
-                <span>{entity?.type?.name}</span>
-              </div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>Engine:</span>
-                <span>{entity?.engine}</span>
-              </div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>Department:</span>
-                <span>{entity?.department}</span>
-              </div>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>Brand:</span>
-                <span>{entity?.brand}</span>
-              </div>
-            </div>
-
-            <div>
-              <div className={classes["title-wrapper"]}>
-                <span>Spare PR details:</span>
-                <Tooltip
-                  title={
-                    <>
-                      {"Requested Date: "}
-                      {entity?.sparePRs[0]?.requestedDate
-                        ? moment(entity?.sparePRs[0]?.requestedDate).format(
-                            DATETIME_FORMATS.DAY_MONTH_YEAR
-                          )
-                        : null}
-                      <br />
-                      {"Title: "}
-                      {entity?.sparePRs[0]?.title}
-                      <br />
-                      {"Description: "}
-                      {entity?.sparePRs[0]?.description}
-                      <br />
-                      {"Status: "}
-                      {entity?.sparePRs[0]?.status}
-                    </>
-                  }
-                >
-                  <FaQuestionCircle style={{ marginLeft: 5 }} />
-                </Tooltip>
-              </div>
-              {entity?.breakdowns[0] && (
+            <div className={classes["container-first-row"]}>
+              <div className={classes["container-first-block"]}>
                 <div className={classes["title-wrapper"]}>
-                  <span>Breakdown details:</span>
-                  <Tooltip
-                    title={
-                      <>
-                        {"Title: "}
-                        {entity?.breakdowns[0]?.title}
-                        <br />
-                        {"Description: "}
-                        {entity?.breakdowns[0]?.description}
-                        <br />
-                        {"Status: "}
-                        {entity?.breakdowns[0]?.status}
-                      </>
-                    }
-                  >
-                    <FaQuestionCircle style={{ marginLeft: 5 }} />
+                  <Tooltip title="Registered Date">
+                    <FaRegClock />
                   </Tooltip>
+
+                  <span className={classes["title"]}>
+                    {moment(entity?.registeredDate).format(
+                      DATETIME_FORMATS.DAY_MONTH_YEAR
+                    )}
+                  </span>
                 </div>
-              )}
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>Zone:</span>
+                  <span>{entity?.zone ? entity?.zone : "None"}</span>
+                </div>
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>Model:</span>
+                  <span>{entity?.model ? entity?.model : "None"}</span>
+                </div>
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>Brand:</span>
+                  <span>{entity?.brand ? entity?.brand : "None"}</span>
+                </div>
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>Engine:</span>
+                  <span>{entity?.engine ? entity?.engine : "None"}</span>
+                </div>
+              </div>
+              <div className={classes["container-second-block-wrapper"]}>
+                <div className={classes["container-second-block"]}>
+                  {entity?.currentMileage && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Current mileage ({entity?.measurement}):
+                      </span>
+                      <span>
+                        {entity?.currentMileage ? entity?.currentMileage : 0}
+                      </span>
+                    </div>
+                  )}
+                  {entity?.lastServiceMileage && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Last service mileage ({entity?.measurement}):
+                      </span>
+                      <span>
+                        {entity?.lastServiceMileage
+                          ? entity?.lastServiceMileage
+                          : 0}
+                      </span>
+                    </div>
+                  )}
+                  {entity?.currentRunning && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Current running ({entity?.measurement}):
+                      </span>
+                      <span>
+                        {entity?.currentRunning ? entity?.currentRunning : 0}
+                      </span>
+                    </div>
+                  )}
+                  {entity?.currentRunning && (
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Last service ({entity?.measurement}):
+                      </span>
+                      <span>
+                        {entity?.lastService ? entity?.lastService : 0}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className={classes["container-third-block"]}>
+                  <div className={classes["user-wrapper"]}>
+                    <span className={classes["reading-title"]}>Admin:</span>
+                    {entity?.assignees?.length! > 0 && (
+                      <Avatar.Group
+                        maxCount={5}
+                        maxStyle={{
+                          color: "#f56a00",
+                          backgroundColor: "#fde3cf",
+                        }}
+                        size={"small"}
+                      >
+                        {entity?.assignees?.map((assign) => {
+                          if (assign.type !== "Admin") return;
+                          return (
+                            <Tooltip
+                              title={
+                                <>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    {assign?.user?.fullName} (
+                                    {assign?.user?.rcno})
+                                  </div>
+                                </>
+                              }
+                              placement="bottom"
+                              key={assign?.user?.id}
+                            >
+                              <Avatar
+                                style={{
+                                  backgroundColor: stringToColor(
+                                    assign?.user?.fullName!
+                                  ),
+                                }}
+                                size={"small"}
+                              >
+                                {assign?.user?.fullName
+                                  .match(/^\w|\b\w(?=\S+$)/g)
+                                  ?.join()
+                                  .replace(",", "")
+                                  .toUpperCase()}
+                              </Avatar>
+                            </Tooltip>
+                          );
+                        })}
+                      </Avatar.Group>
+                    )}
+                  </div>
+                  <div className={classes["user-wrapper"]}>
+                    <span className={classes["reading-title"]}>Engineer:</span>
+                    {entity?.assignees?.length! > 0 && (
+                      <Avatar.Group
+                        maxCount={5}
+                        maxStyle={{
+                          color: "#f56a00",
+                          backgroundColor: "#fde3cf",
+                        }}
+                      >
+                        {entity?.assignees?.map((assign) => {
+                          if (assign.type !== "Engineer") return;
+                          return (
+                            <Tooltip
+                              title={
+                                <>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    {assign?.user?.fullName} (
+                                    {assign?.user?.rcno})
+                                  </div>
+                                </>
+                              }
+                              placement="bottom"
+                              key={assign?.user?.id}
+                            >
+                              <Avatar
+                                style={{
+                                  backgroundColor: stringToColor(
+                                    assign?.user?.fullName!
+                                  ),
+                                }}
+                              >
+                                {assign?.user?.fullName
+                                  .match(/^\w|\b\w(?=\S+$)/g)
+                                  ?.join()
+                                  .replace(",", "")
+                                  .toUpperCase()}
+                              </Avatar>
+                            </Tooltip>
+                          );
+                        })}
+                      </Avatar.Group>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={classes["container-second-row"]}>
+              <div className={classes["container-second-row-first-block"]}>
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>
+                    Breakdown details:
+                  </span>
+                  <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                    {entity?.breakdowns[0]?.description
+                      ? entity?.breakdowns[0]?.description
+                      : "None"}
+                  </Paragraph>
+                </div>
+              </div>
+              <div className={classes["container-second-row-first-block"]}>
+                <div className={classes["reading"]}>
+                  <span className={classes["reading-title"]}>
+                    Spare PR details:
+                  </span>
+                  <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                    {entity?.sparePRs[0]?.description
+                      ? entity?.sparePRs[0]?.description
+                      : "None"}
+                  </Paragraph>
+                </div>
+              </div>
             </div>
           </div>
         </Collapse.Panel>

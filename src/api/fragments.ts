@@ -75,6 +75,7 @@ export const ENTITY_FRAGMENT = gql`
       title
       description
       status
+      estimatedDateOfRepair
     }
   }
 `;

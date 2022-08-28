@@ -8,6 +8,7 @@ import AddEntityBreakdown from "../../../../components/EntityComponents/AddEntit
 import EntityBreakdownCard from "../../../../components/EntityComponents/EntityBreakdownCard/EntityBreakdownCard";
 import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
+import { hasPermissions } from "../../../../helpers/permissions";
 import EntityBreakdown from "../../../../models/Entity/EntityBreakdown";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
@@ -108,8 +109,8 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission?.hasEntityBreakdownAdd && !isDeleted ? (
-          <AddEntityBreakdown entityID={parseInt(id)} />
+        {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+          <AddEntityBreakdown entityID={parseInt(id)} isDeleted={isDeleted} />
         ) : null}
       </div>
       {loading && (
