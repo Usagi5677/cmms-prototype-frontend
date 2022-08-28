@@ -200,7 +200,10 @@ const UpcomingPeriodicMaintenances = ({
   const datePickerClassesLength = datePickerClasses?.length;
   const onclick = () => {
     const dp = document.getElementsByClassName("ant-picker-panel-container");
-    dp[datePickerClassesLength].id = "pmDatepicker";
+    const idExist = document.getElementById("pmDatepicker");
+    if (!idExist) {
+      dp[datePickerClassesLength].id = "pmDatepicker";
+    }
   };
 
   return (
