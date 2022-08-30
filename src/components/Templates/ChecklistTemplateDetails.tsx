@@ -284,7 +284,7 @@ export const ChecklistTemplateDetails: React.FC<
                       style={{ marginLeft: ".5rem" }}
                     >
                       {" "}
-                      {u.machineNumber} ({u.zone} - {u.location}){" "}
+                      {u.machineNumber} ({u.zone} - {u.location?.name}){" "}
                       <ArrowRightOutlined />
                     </a>
                   </div>
