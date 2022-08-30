@@ -13,8 +13,8 @@
   font-size: 0.75rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-end;
   flex-wrap: wrap;
   flex: 1;
 }
@@ -61,6 +61,10 @@
   font-size: 32px;
   font-weight: 700;
 }
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
 @media only screen and (min-width: 800px) {
   .options-wrapper {
     flex-direction: row;
@@ -68,5 +72,10 @@
   }
   .item-wrapper {
     padding-top: 0;
+  }
+}
+@media only screen and (min-width: 1280px) {
+  .wrapper {
+    flex-direction: row;
   }
 }

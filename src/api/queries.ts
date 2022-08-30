@@ -565,11 +565,20 @@ export const ALL_ENTITY = gql`
     $search: String
     $createdByUserId: String
     $entityType: String
-    $assignedToId: Int
-    $status: EntityStatus
+    $status: [EntityStatus!]
     $locationIds: [Int!]
     $department: [String!]
-    $typeId: Int
+    $typeId: [Int!]
+    $zone: [String!]
+    $brand: [String!]
+    $engine: [String!]
+    $measurement: [String!]
+    $isAssigned: Boolean
+    $assignedToId: Int
+    $lteCurrentRunning: String
+    $gteCurrentRunning: String
+    $lteLastService: String
+    $gteLastService: String
   ) {
     getAllEntity(
       after: $after
@@ -579,11 +588,20 @@ export const ALL_ENTITY = gql`
       search: $search
       createdByUserId: $createdByUserId
       entityType: $entityType
-      assignedToId: $assignedToId
       status: $status
       locationIds: $locationIds
       department: $department
       typeId: $typeId
+      zone: $zone
+      brand: $brand
+      engine: $engine
+      measurement: $measurement
+      isAssigned: $isAssigned
+      assignedToId: $assignedToId
+      lteCurrentRunning: $lteCurrentRunning
+      gteCurrentRunning: $gteCurrentRunning
+      lteLastService: $lteLastService
+      gteLastService: $gteLastService
     ) {
       pageInfo {
         endCursor

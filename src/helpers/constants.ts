@@ -240,3 +240,63 @@ export const ENTITY_TYPES = ["Machine", "Vessel", "Vehicle"];
 export const REPAIR_LOCATION = ["Site", "Workshop"];
 
 export const ENTITY_ASSIGNMENT_TYPES = ["Admin", "Engineer", "User"] as const;
+
+export const ZONE = ["North", "South", "Central"];
+
+export const BRAND = [
+  "CAT",
+  "KRISHNA",
+  "VINEYAK",
+  "ISUZU",
+  "UD",
+  "Winget 200T",
+  "Winget 100T",
+  "Winget 400R",
+  "Winget 500R",
+  "XCMG-XS123",
+  "KOBELCO",
+  "XCMG",
+  "XCMG-XD102",
+  "NISSAN",
+  "NISSAN UD",
+  "DONG FENG",
+  "FUSO",
+  "MAN",
+  "ASHOK LAYLAND",
+  "Bharat Benz",
+  "AUSA",
+  "XCMG-GR1603",
+  "Wave 110S",
+  "wave 125s",
+  "Yamaha NT",
+  "Yamaha",
+  "HONDA",
+  "DENYO",
+  "POWERIKA/Isuzu6BD1GL-01Denyo",
+  "Yanmar",
+  "MCWEL",
+  "TOYOTA",
+  "XCMG/XP163",
+  "XCMG-RP453L",
+  "SURELA",
+  "JCB /VM330",
+  "Greave Cotton Ltd",
+  "Vinayak",
+  "JCB",
+  "SUZUKI",
+  "CATERPILLAR",
+  "VOLVO",
+  "LANKA ASHOK LEYLAND",
+  "YUTONG",
+  "MAZDA",
+  "YAMAHA 250HP",
+  "SUZUKI 325HP",
+  "YANMAR 250 HP",
+  "DUSSAN ENGINE",
+];
+
+export const ENGINE = [
+  "STBD",
+  "CTR",
+  "PORT",
+];

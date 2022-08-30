@@ -6,19 +6,27 @@ import Type from "../../../models/Type";
 
 export interface TypeSelectorProps {
   entityType?: "Machine" | "Vehicle" | "Vessel";
-  setTypeId: React.Dispatch<React.SetStateAction<number | null>>;
+  setTypeId: any;
   currentId?: number;
+  currentName?: string;
   rounded?: boolean;
+  multiple?: boolean;
+  width?: number | string;
 }
 
 export const TypeSelector: React.FC<TypeSelectorProps> = ({
   entityType,
   setTypeId,
   currentId,
+  currentName,
   rounded = false,
+  multiple = false,
+  width,
 }) => {
   const [search, setSearch] = useState("");
-  const [value, setValue] = useState(currentId ?? null);
+  const [value, setValue] = useState<number[] | number | null>(
+    multiple ? [] : null
+  );
   const [filter, setFilter] = useState<{
     first: number;
     name: string;
@@ -28,7 +36,7 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
     name: "",
     entityType: "",
   });
-
+  const [firstLoad, setFirstLoad] = useState(true);
   const [getTypes, { data, loading }] = useLazyQuery(TYPES, {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
@@ -48,8 +56,21 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
     }
   }, [search, entityType]);
 
+  useEffect(() => {
+    if (firstLoad) {
+      if (currentId) {
+        setValue(currentId);
+      }
+      if (currentName) {
+        setSearch(currentName);
+      }
+      setFirstLoad(false);
+    }
+  }, [currentId, currentName, firstLoad]);
+
   return (
     <Select
+      style={{ width: width ?? undefined }}
       showArrow
       placeholder="Select type"
       allowClear={true}
@@ -59,11 +80,13 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
       showSearch
       filterOption={false}
       notFoundContent={loading ? <Spin size="small" /> : null}
+      mode={multiple ? "multiple" : undefined}
       onChange={(val) => {
         setTypeId(val);
         setValue(val);
       }}
       value={value}
+      getPopupContainer={trigger => trigger.parentNode}
     >
       {data?.types.edges.map((edge: { node: Type }) => (
         <Select.Option key={edge.node.id} value={edge.node.id}>

@@ -183,25 +183,26 @@ const EntityCard = ({
                   <div className={classes["third-block"]}>
                     <EntityStatusTag status={entity?.status} />
                   </div>
-                  {entity?.breakdowns[0]?.estimatedDateOfRepair && (
-                    <div className={classes["fourth-block"]}>
-                      <div className={classes["title-wrapper"]}>
-                        <Tooltip title="Estimated date of repair">
-                          <FaRegClock />
-                        </Tooltip>
-                        <span
-                          className={classes["title"]}
-                          title={moment(
-                            entity?.breakdowns[0]?.estimatedDateOfRepair
-                          ).format(DATETIME_FORMATS.FULL)}
-                        >
-                          {moment(
-                            entity?.breakdowns[0]?.estimatedDateOfRepair
-                          ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                        </span>
+                  {entity?.breakdowns[0]?.estimatedDateOfRepair &&
+                    entity?.status === "Breakdown" && (
+                      <div className={classes["fourth-block"]}>
+                        <div className={classes["title-wrapper"]}>
+                          <Tooltip title="Estimated date of repair">
+                            <FaRegClock />
+                          </Tooltip>
+                          <span
+                            className={classes["title"]}
+                            title={moment(
+                              entity?.breakdowns[0]?.estimatedDateOfRepair
+                            ).format(DATETIME_FORMATS.FULL)}
+                          >
+                            {moment(
+                              entity?.breakdowns[0]?.estimatedDateOfRepair
+                            ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
 
                 <Link to={"/entity/" + entity.id}>

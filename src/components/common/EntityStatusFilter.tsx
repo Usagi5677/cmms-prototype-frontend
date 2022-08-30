@@ -6,27 +6,32 @@ const EntityStatusFilter = ({
   onChange,
   value,
   margin,
+  multiple,
+  width,
 }: {
-  onChange?: (val: EntityStatus) => void;
-  value: EntityStatus | null;
+  onChange?: (val: EntityStatus[]) => void;
+  value: EntityStatus[] | null;
   margin?: string;
+  multiple?: boolean;
+  width?: number | string;
 }) => {
   return (
     <div
       style={{
         display: "flex",
-        padding: "1px 5px 1px 5px",
         margin,
         alignItems: "center",
       }}
     >
       <Select
+        style={{ width: width ?? undefined }}
         showArrow
-        style={{ minWidth: 130 }}
         placeholder="Filter status"
         onChange={onChange}
         allowClear={true}
+        mode={multiple ? "multiple" : undefined}
         value={value}
+        getPopupContainer={trigger => trigger.parentNode}
       >
         {(Object.keys(EntityStatus) as Array<keyof typeof EntityStatus>).map(
           (status: any) => (

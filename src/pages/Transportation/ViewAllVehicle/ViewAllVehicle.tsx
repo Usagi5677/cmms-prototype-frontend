@@ -27,26 +27,59 @@ import { TypeSelector } from "../../../components/Config/Type/TypeSelector";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { LocationSelector } from "../../../components/Config/Location/LocationSelector";
+import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
+import {
+  DefaultBooleanOptionProps,
+  DefaultStringArrayOptionProps,
+  EntityStatus,
+  EntityStatusOptionProps,
+  FilterOptionProps,
+  LocationOptionProps,
+  SearchOptionProps,
+  SearchReadingOptionProps,
+  TypeSelectorOptionProps,
+} from "../../../models/Enums";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 const Vehicles = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [params, setParams] = useSearchParams();
-  const [department, setDepartment] = useState([]);
   const [locationIds, setLocationIds] = useState<number[]>([]);
-  const [typeId, setTypeId] = useState<number | null>(null);
+  const [typeId, setTypeId] = useState<number[]>([]);
+  const [status, setStatus] = useState<EntityStatus[]>([]);
+  const [zone, setZone] = useState<string[]>([]);
+  const [department, setDepartment] = useState<string[]>([]);
+  const [brand, setBrand] = useState<string[]>([]);
+  const [engine, setEngine] = useState<string[]>([]);
+  const [measurement, setMeasurement] = useState<string[]>([]);
+  const [isAssigned, setIsAssigned] = useState<boolean>(false);
+  const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
+  const [lteCurrentRunning, setLteCurrentRunning] = useState("");
+  const [gteCurrentRunning, setGteCurrentRunning] = useState("");
+  const [lteLastService, setLteLastService] = useState("");
+  const [gteLastService, setGteLastService] = useState("");
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      entityType: string;
-      status: any;
+      status: EntityStatus[];
       locationIds: number[];
+      entityType: string;
+      typeId: number[];
+      zone: string[];
       department: string[];
-      typeId: number | null;
+      brand: string[];
+      engine: string[];
+      isAssigned: boolean;
+      assignedToId: number | null;
+      measurement: string[];
+      lteCurrentRunning: string;
+      gteCurrentRunning: string;
+      lteLastService: string;
+      gteLastService: string;
     }
   >({
     first: 20,
@@ -55,10 +88,20 @@ const Vehicles = () => {
     after: null,
     search: "",
     locationIds: [],
+    status: [],
+    entityType: "Vessel",
+    typeId: [],
+    zone: [],
     department: [],
-    entityType: "Vehicle",
-    status: params.get("status"),
-    typeId: null,
+    brand: [],
+    engine: [],
+    isAssigned: false,
+    assignedToId: null,
+    measurement: [],
+    lteCurrentRunning: "",
+    gteCurrentRunning: "",
+    lteLastService: "",
+    gteLastService: "",
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -69,14 +112,7 @@ const Vehicles = () => {
     nextFetchPolicy: "cache-first",
   });
 
-  // Update url search param on filter change
-  useEffect(() => {
-    let newParams: any = {};
-    if (filter.status) newParams.status = filter.status;
-    setParams(newParams);
-  }, [filter, setParams, params]);
-
-  // Fetch transportation when component mounts or when the filter object changes
+  // Fetch when component mounts or when the filter object changes
   useEffect(() => {
     if (
       self?.vehicleAssignments.length === 0 &&
@@ -95,8 +131,19 @@ const Vehicles = () => {
   const searchDebounced = (
     value: string,
     locationIds: number[],
+    typeIdValue: number[],
+    statusValue: EntityStatus[],
+    zoneValue: string[],
     departmentValue: string[],
-    typeIdValue: number
+    brandValue: string[],
+    engineValue: string[],
+    measurementValue: string[],
+    isAssignedValue: boolean,
+    assignedToMeValue: number,
+    lteCurrentRunningValue: string,
+    gteCurrentRunningValue: string,
+    lteLastServiceValue: string,
+    gteLastServiceValue: string
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -106,8 +153,19 @@ const Vehicles = () => {
           ...filter,
           search: value,
           locationIds,
-          department: departmentValue,
           typeId: typeIdValue,
+          status: statusValue,
+          zone: zoneValue,
+          department: departmentValue,
+          brand: brandValue,
+          engine: engineValue,
+          measurement: measurementValue,
+          isAssigned: isAssignedValue,
+          assignedToId: assignedToMeValue,
+          lteCurrentRunning: lteCurrentRunningValue,
+          gteCurrentRunning: gteCurrentRunningValue,
+          lteLastService: lteLastServiceValue,
+          gteLastService: gteLastServiceValue,
           first: 20,
           last: null,
           before: null,
@@ -123,9 +181,41 @@ const Vehicles = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, locationIds, department, typeId!);
+    searchDebounced(
+      search,
+      locationIds,
+      typeId,
+      status,
+      zone,
+      department,
+      brand,
+      engine,
+      measurement,
+      isAssigned,
+      assignedToMe!,
+      lteCurrentRunning,
+      gteCurrentRunning,
+      lteLastService,
+      gteLastService
+    );
     // eslint-disable-next-line
-  }, [search, locationIds, department, typeId]);
+  }, [
+    search,
+    locationIds,
+    typeId,
+    status,
+    zone,
+    department,
+    brand,
+    engine,
+    measurement,
+    isAssigned,
+    assignedToMe,
+    lteCurrentRunning,
+    gteCurrentRunning,
+    lteLastService,
+    gteLastService,
+  ]);
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
@@ -183,22 +273,6 @@ const Vehicles = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let options: any = [];
-  ISLANDS?.sort((a, b) => a.localeCompare(b))?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
-
-  let departmentOptions: any = [];
-  DEPARTMENTS?.sort((a, b) => a.localeCompare(b))?.map((dp: string) => {
-    departmentOptions.push({
-      value: dp,
-      label: dp,
-    });
-  });
-
   let idle = 0;
   let working = 0;
   let breakdown = 0;
@@ -213,6 +287,196 @@ const Vehicles = () => {
     dispose = statusCountData?.dispose;
     total = idle + working + breakdown + dispose;
   }
+
+  const clearAll = () => {
+    setSearch("");
+    setLteCurrentRunning("");
+    setGteCurrentRunning("");
+    setLteLastService("");
+    setGteLastService("");
+    setStatus([]);
+    setLocationIds([]);
+    setZone([]);
+    setDepartment([]);
+    setBrand([]);
+    setEngine([]);
+    setMeasurement([]);
+    setTypeId([]);
+    setIsAssigned(false);
+    setAssignedToMe(null);
+  };
+  const searchOptions: SearchOptionProps = {
+    searchValue: search,
+    onChange: (e) => setSearch(e.target.value),
+    onClick: () => setSearch(""),
+    width: "100%",
+  };
+  const lteCurrentRunningOptions: SearchReadingOptionProps = {
+    searchValue: lteCurrentRunning,
+    onChange: (e) => setLteCurrentRunning(e.target.value),
+    onClick: () => setLteCurrentRunning(""),
+    width: "100%",
+  };
+  const gteCurrentRunningOptions: SearchReadingOptionProps = {
+    searchValue: gteCurrentRunning,
+    onChange: (e) => setGteCurrentRunning(e.target.value),
+    onClick: () => setGteCurrentRunning(""),
+    width: "100%",
+  };
+  const lteLastServiceOptions: SearchReadingOptionProps = {
+    searchValue: lteLastService,
+    onChange: (e) => setLteLastService(e.target.value),
+    onClick: () => setLteLastService(""),
+    width: "100%",
+  };
+  const gteLastServiceOptions: SearchReadingOptionProps = {
+    searchValue: gteLastService,
+    onChange: (e) => setGteLastService(e.target.value),
+    onClick: () => setGteLastService(""),
+    width: "100%",
+  };
+  const locationOptions: LocationOptionProps = {
+    setLocationId: setLocationIds,
+    width: "100%",
+  };
+  const zoneOptions: DefaultStringArrayOptionProps = {
+    onChange: (zone: string[]) => {
+      setFilter({
+        ...filter,
+        zone,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setZone(zone);
+    },
+    width: "100%",
+  };
+  const departmentOptions: DefaultStringArrayOptionProps = {
+    onChange: (department: string[]) => {
+      setFilter({
+        ...filter,
+        department,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setDepartment(department);
+    },
+    width: "100%",
+  };
+  const brandOptions: DefaultStringArrayOptionProps = {
+    onChange: (brand: string[]) => {
+      setFilter({
+        ...filter,
+        brand,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setBrand(brand);
+    },
+    width: "100%",
+  };
+  const engineOptions: DefaultStringArrayOptionProps = {
+    onChange: (engine: string[]) => {
+      setFilter({
+        ...filter,
+        engine,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setEngine(engine);
+    },
+    width: "100%",
+  };
+  const measurementOptions: DefaultStringArrayOptionProps = {
+    onChange: (measurement: string[]) => {
+      setFilter({
+        ...filter,
+        measurement,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setMeasurement(measurement);
+    },
+    width: "100%",
+  };
+  const assignedOptions: DefaultBooleanOptionProps = {
+    onChange: (isAssigned: CheckboxChangeEvent) => {
+      setFilter({
+        ...filter,
+        isAssigned: isAssigned?.target?.checked,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setIsAssigned(isAssigned?.target?.checked);
+    },
+    name: "Show all assigned machinery",
+  };
+  const assignedToMeOptions: DefaultBooleanOptionProps = {
+    onChange: (assignedToMe: CheckboxChangeEvent) => {
+      setFilter({
+        ...filter,
+        assignedToId: assignedToMe?.target?.checked ? self?.id : null,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setAssignedToMe(assignedToMe?.target?.checked ? self?.id : null);
+    },
+    name: "Show all machinery assigned to me",
+  };
+  const entityStatusOptions: EntityStatusOptionProps = {
+    onChange: (status) => {
+      setFilter({
+        ...filter,
+        status,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setStatus(status);
+    },
+    value: filter.status,
+    width: "100%",
+  };
+  const typeSelectorOptions: TypeSelectorOptionProps = {
+    entityType: "Machine",
+    setTypeId,
+    rounded: true,
+    multiple: true,
+    width: "100%",
+  };
+  const filterOptions: FilterOptionProps = {
+    searchOptions,
+    locationOptions,
+    entityStatusOptions,
+    typeSelectorOptions,
+    zoneOptions,
+    departmentOptions,
+    brandOptions,
+    engineOptions,
+    measurementOptions,
+    assignedOptions,
+    assignedToMeOptions,
+    lteCurrentRunningOptions,
+    gteCurrentRunningOptions,
+    lteLastServiceOptions,
+    gteLastServiceOptions,
+  };
+
   return (
     <>
       <div className={classes["status-card"]}>
@@ -313,131 +577,62 @@ const Vehicles = () => {
           />
         </motion.div>
       </div>
-      <div className={classes["container"]}>
-        <div className={classes["options-wrapper"]}>
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.4,
-            }}
-          >
-            <Search
-              searchValue={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onClick={() => setSearch("")}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.5,
-            }}
-          >
-            <LocationSelector
-              setLocationId={setLocationIds}
-              multiple={true}
-              rounded={true}
-              width={190}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.6,
-            }}
-          >
-            <EntityStatusFilter
-              onChange={(status) => {
-                setFilter({
-                  ...filter,
-                  status,
-                  first: 20,
-                  after: null,
-                  last: null,
-                  before: null,
-                });
-                setPage(1);
+      <div className={classes["wrapper"]}>
+        <FilterOptions options={filterOptions} onClick={clearAll} />
+        <div className={classes["container"]}>
+          <div className={classes["options-wrapper"]}>
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 0.4,
               }}
-              value={filter.status}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.7,
-            }}
-          >
-            <TypeSelector
-              entityType={"Vehicle"}
-              setTypeId={setTypeId}
-              rounded={true}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.8,
-            }}
-          >
-            <div className={classes["item-wrapper"]}>
-              {hasPermissions(self, ["ADD_ENTITY"]) ? (
-                <AddEntity entityType="Vehicle" />
-              ) : null}
+            >
+              <div className={classes["item-wrapper"]}>
+                {hasPermissions(self, ["ADD_ENTITY"]) ? (
+                  <AddEntity entityType="Vehicle" />
+                ) : null}
+              </div>
+            </motion.div>
+          </div>
+          {loading && (
+            <div>
+              <Spin style={{ width: "100%", margin: "2rem auto" }} />
             </div>
-          </motion.div>
-        </div>
-        {loading && (
-          <div>
-            <Spin style={{ width: "100%", margin: "2rem auto" }} />
-          </div>
-        )}
-        {data?.getAllEntity.edges.length > 0 ? (
-          <div>
-            {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
-              const entity = rec.node;
-              return (
-                <EntityCard
-                  entity={entity}
-                  key={entity.id}
-                  summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <div
-            style={{
-              marginTop: 50,
-            }}
-          >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          </div>
-        )}
+          )}
+          {data?.getAllEntity.edges.length > 0 ? (
+            <div>
+              {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
+                const entity = rec.node;
+                return (
+                  <EntityCard
+                    entity={entity}
+                    key={entity.id}
+                    summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div
+              style={{
+                marginTop: 50,
+              }}
+            >
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            </div>
+          )}
 
-        <PaginationButtons
-          pageInfo={pageInfo}
-          page={page}
-          next={next}
-          back={back}
-          pageLimit={20}
-        />
+          <PaginationButtons
+            pageInfo={pageInfo}
+            page={page}
+            next={next}
+            back={back}
+            pageLimit={20}
+          />
+        </div>
       </div>
     </>
   );

@@ -9,7 +9,7 @@ export interface LocationSelectorProps {
   currentId?: number;
   rounded?: boolean;
   multiple?: boolean;
-  width?: number;
+  width?: number | string;
   currentName?: string;
 }
 
@@ -80,6 +80,7 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
         setValue(val);
       }}
       value={value}
+      getPopupContainer={trigger => trigger.parentNode}
     >
       {data?.locations.edges.map((edge: { node: Location }) => (
         <Select.Option key={edge.node.id} value={edge.node.id}>
