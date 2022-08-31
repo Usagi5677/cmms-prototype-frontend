@@ -52,7 +52,7 @@ const Machinery = () => {
   const [engine, setEngine] = useState<string[]>([]);
   const [measurement, setMeasurement] = useState<string[]>([]);
   const [isAssigned, setIsAssigned] = useState<boolean>(false);
-  const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
+  //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
   const [lteCurrentRunning, setLteCurrentRunning] = useState("");
   const [gteCurrentRunning, setGteCurrentRunning] = useState("");
   const [lteLastService, setLteLastService] = useState("");
@@ -166,7 +166,7 @@ const Machinery = () => {
     engineValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
-    assignedToMeValue: number,
+    //assignedToMeValue: number,
     lteCurrentRunningValue: string,
     gteCurrentRunningValue: string,
     lteLastServiceValue: string,
@@ -188,7 +188,7 @@ const Machinery = () => {
           engine: engineValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
-          assignedToId: assignedToMeValue,
+          //assignedToId: assignedToMeValue,
           lteCurrentRunning: lteCurrentRunningValue,
           gteCurrentRunning: gteCurrentRunningValue,
           lteLastService: lteLastServiceValue,
@@ -219,7 +219,7 @@ const Machinery = () => {
       engine,
       measurement,
       isAssigned,
-      assignedToMe!,
+      //assignedToMe!,
       lteCurrentRunning,
       gteCurrentRunning,
       lteLastService,
@@ -237,7 +237,7 @@ const Machinery = () => {
     engine,
     measurement,
     isAssigned,
-    assignedToMe,
+    //assignedToMe,
     lteCurrentRunning,
     gteCurrentRunning,
     lteLastService,
@@ -301,8 +301,7 @@ const Machinery = () => {
     setMeasurement([]);
     setTypeId([]);
     setIsAssigned(false);
-    setAssignedToMe(null);
-    
+    //setAssignedToMe(null);
   };
   const searchOptions: SearchOptionProps = {
     searchValue: search,
