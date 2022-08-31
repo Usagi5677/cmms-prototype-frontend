@@ -1317,6 +1317,7 @@ export const INCOMPLETE_CHECKLISTS = gql`
         type {
           id
           name
+          entityType
         }
         location {
           id
