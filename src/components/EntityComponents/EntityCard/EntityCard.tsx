@@ -10,7 +10,15 @@ import {
 import classes from "./EntityCard.module.css";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { Collapse, Tooltip, Image, Badge, Avatar, Typography } from "antd";
+import {
+  Collapse,
+  Tooltip,
+  Image,
+  Badge,
+  Avatar,
+  Typography,
+  Skeleton,
+} from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityStatusTag from "../../common/EntityStatusTag";
@@ -19,6 +27,7 @@ import { motion } from "framer-motion";
 import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistAndPMSummary";
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
+import { useState } from "react";
 
 const EntityCard = ({
   entity,
@@ -65,6 +74,13 @@ const EntityCard = ({
 
   let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
 
+  let imagePath = getListImage(entity?.type?.name);
+
+  let loading = true;
+  if (imagePath) {
+    loading = false;
+  }
+
   return (
     <motion.div
       id="collapse"
@@ -89,9 +105,11 @@ const EntityCard = ({
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className={classes["first-block"]}>
-                  {getListImage(entity?.type?.name) && (
+                  {loading ? (
+                    <Skeleton.Image style={{width: 60, height: 50, borderRadius: 6}}/>
+                  ) : (
                     <Image
-                      src={getListImage(entity?.type?.name)}
+                      src={imagePath}
                       height={50}
                       width={60}
                       preview={false}
@@ -282,7 +300,8 @@ const EntityCard = ({
                         size={"small"}
                       >
                         {entity?.assignees?.map((assign) => {
-                          if (assign.type !== "Admin") return <div>None</div>;
+                          if (assign.type !== "Admin")
+                            return <div key={assign?.user?.id}>None</div>;
                           return (
                             <Tooltip
                               title={
@@ -336,7 +355,7 @@ const EntityCard = ({
                       >
                         {entity?.assignees?.map((assign) => {
                           if (assign.type !== "Engineer")
-                            return <div>None</div>;
+                            return <div key={assign?.user?.id}>None</div>;
                           return (
                             <Tooltip
                               title={

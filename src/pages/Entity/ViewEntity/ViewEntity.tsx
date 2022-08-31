@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   message,
+  Skeleton,
   Spin,
   Tabs,
   Tooltip,
@@ -94,7 +95,11 @@ const ViewEntity = () => {
     }
   );
 
+  let loading = true;
   const entityData: Entity = entity?.getSingleEntity;
+  if (entityData) {
+    loading = false;
+  }
 
   const renderUsers = (type: "Admin" | "Engineer" | "User") => {
     return (
@@ -184,164 +189,178 @@ const ViewEntity = () => {
     <>
       <div className={classes["container"]}>
         <div className={classes["info-container"]}>
-          <div className={classes["info-btn-wrapper"]}>
-            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-              <EditEntityLocation
-                entity={entityData}
-                isDeleted={entityData?.isDeleted}
-              />
-            ) : null}
-            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-              <EditEntity
-                entity={entityData}
-                isDeleted={entityData?.isDeleted}
-              />
-            ) : null}
-            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-              <DeleteEntity
-                entityID={entityData?.id}
-                isDeleted={entityData?.isDeleted}
-              />
-            ) : null}
-          </div>
-          {entityData?.isDeleted ? (
-            <div className={classes["deleted"]}>DISPOSED</div>
-          ) : null}
-          <div className={classes["info-wrapper"]}>
-            <div className={classes["location-wrapper"]}>
-              <FaMapMarkerAlt />
-              <span className={classes["title"]}>{entityData?.zone}</span>
-              {entityData?.zone && <span className={classes["dash"]}>-</span>}
-              <span>{entityData?.location?.name}</span>
-            </div>
-          </div>
-          <div className={classes["title-wrapper"]}>
-            {entityData?.type?.entityType === "Machine" ? (
-              <FaTractor />
-            ) : entityData?.type?.entityType === "Vehicle" ? (
-              <FaTruck />
-            ) : entityData?.type?.entityType === "Vessel" ? (
-              <RiSailboatFill />
-            ) : null}
-
-            <span className={classes["title"]}>
-              {entityData?.machineNumber}
-            </span>
-          </div>
-          <div className={classes["info-title-container"]}>
-            <div className={classes["grid-one"]}>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Entity Type</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.type?.entityType}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Machine Number</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.machineNumber}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Model</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.model}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Type</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.type?.name}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Zone</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.zone}
-                </div>
-              </div>
-            </div>
-            <div className={classes["grid-two"]}>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Current running {entityData?.measurement}</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.currentRunning}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Last service {entityData?.measurement}</div>
-                <div className={classes["info-content"]}>
-                  {entityData?.lastService}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Inter service {entityData?.measurement}</div>
-                <div className={classes["info-content"]}>
-                  {(entityData?.currentRunning ?? 0) -
-                    (entityData?.lastService ?? 0)}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Registered date</div>
-                <div className={classes["info-content"]}>
-                  {moment(entityData?.registeredDate).format(
-                    DATETIME_FORMATS.DAY_MONTH_YEAR
-                  )}
-                </div>
-              </div>
-              <div className={classes["info-title-wrapper"]}>
-                <div>Status</div>
-                <div className={classes["info-content"]}>
-                  <EntityStatuses
-                    entityStatus={entityData?.status}
+          {loading ? (
+            <Skeleton active />
+          ) : (
+            <>
+              <div className={classes["info-btn-wrapper"]}>
+                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                  <EditEntityLocation
+                    entity={entityData}
+                    isDeleted={entityData?.isDeleted}
+                  />
+                ) : null}
+                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                  <EditEntity
+                    entity={entityData}
+                    isDeleted={entityData?.isDeleted}
+                  />
+                ) : null}
+                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                  <DeleteEntity
                     entityID={entityData?.id}
                     isDeleted={entityData?.isDeleted}
                   />
+                ) : null}
+              </div>
+              {entityData?.isDeleted ? (
+                <div className={classes["deleted"]}>DISPOSED</div>
+              ) : null}
+              <div className={classes["info-wrapper"]}>
+                <div className={classes["location-wrapper"]}>
+                  <FaMapMarkerAlt />
+                  <span className={classes["title"]}>{entityData?.zone}</span>
+                  {entityData?.zone && (
+                    <span className={classes["dash"]}>-</span>
+                  )}
+                  <span>{entityData?.location?.name}</span>
                 </div>
               </div>
-            </div>
-            <GetLatestEntityImage
-              attachmentData={attachmentData?.getEntityLatestAttachment}
-            />
-          </div>
-          <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: isSmallDevice ? "column" : "row",
-              justifyContent: "space-between",
-              marginTop: 10,
-            }}
-          >
-            {ENTITY_ASSIGNMENT_TYPES.map((type) => (
-              <div key={type} style={{ marginTop: 10 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: isSmallDevice ? "space-between" : undefined,
-                  }}
-                >
-                  <div>
-                    {entityData?.type?.entityType} {type}
+              <div className={classes["title-wrapper"]}>
+                {entityData?.type?.entityType === "Machine" ? (
+                  <FaTractor />
+                ) : entityData?.type?.entityType === "Vehicle" ? (
+                  <FaTruck />
+                ) : entityData?.type?.entityType === "Vessel" ? (
+                  <RiSailboatFill />
+                ) : null}
+
+                <span className={classes["title"]}>
+                  {entityData?.machineNumber}
+                </span>
+              </div>
+              <div className={classes["info-title-container"]}>
+                <div className={classes["grid-one"]}>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Entity Type</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.type?.entityType}
+                    </div>
                   </div>
-                  {(isAssignedType("Admin", entity?.getSingleEntity, self) ||
-                    hasPermissions(self, ["ASSIGN_TO_ENTITY"])) &&
-                    !entityData?.isDeleted && (
-                      <div
-                        className={classes["info-content"]}
-                        style={{ marginLeft: "1rem" }}
-                      >
-                        <EntityAssignment
-                          entityId={entityData?.id}
-                          type={type}
-                        />
-                      </div>
-                    )}
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Machine Number</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.machineNumber}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Model</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.model}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Type</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.type?.name}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Zone</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.zone}
+                    </div>
+                  </div>
                 </div>
-                {renderUsers(type)}
+                <div className={classes["grid-two"]}>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Current running {entityData?.measurement}</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.currentRunning}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Last service {entityData?.measurement}</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.lastService}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Inter service {entityData?.measurement}</div>
+                    <div className={classes["info-content"]}>
+                      {(entityData?.currentRunning ?? 0) -
+                        (entityData?.lastService ?? 0)}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Registered date</div>
+                    <div className={classes["info-content"]}>
+                      {moment(entityData?.registeredDate).format(
+                        DATETIME_FORMATS.DAY_MONTH_YEAR
+                      )}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Status</div>
+                    <div className={classes["info-content"]}>
+                      <EntityStatuses
+                        entityStatus={entityData?.status}
+                        entityID={entityData?.id}
+                        isDeleted={entityData?.isDeleted}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <GetLatestEntityImage
+                  attachmentData={attachmentData?.getEntityLatestAttachment}
+                />
               </div>
-            ))}
-          </div>
+              <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: isSmallDevice ? "column" : "row",
+                  justifyContent: "space-between",
+                  marginTop: 10,
+                }}
+              >
+                {ENTITY_ASSIGNMENT_TYPES.map((type) => (
+                  <div key={type} style={{ marginTop: 10 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: isSmallDevice
+                          ? "space-between"
+                          : undefined,
+                      }}
+                    >
+                      <div>
+                        {entityData?.type?.entityType} {type}
+                      </div>
+                      {(isAssignedType(
+                        "Admin",
+                        entity?.getSingleEntity,
+                        self
+                      ) ||
+                        hasPermissions(self, ["ASSIGN_TO_ENTITY"])) &&
+                        !entityData?.isDeleted && (
+                          <div
+                            className={classes["info-content"]}
+                            style={{ marginLeft: "1rem" }}
+                          >
+                            <EntityAssignment
+                              entityId={entityData?.id}
+                              type={type}
+                            />
+                          </div>
+                        )}
+                    </div>
+                    {renderUsers(type)}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
         <div className={classes["first-wrapper"]}>
           <div className={classes["tab-container"]}>
