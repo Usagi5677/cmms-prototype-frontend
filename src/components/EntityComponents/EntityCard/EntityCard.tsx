@@ -176,16 +176,15 @@ const EntityCard = ({
                       <span className={classes["reading-title"]}>Type:</span>
                       <span>{entity?.type?.name}</span>
                     </div>
+                    {entity?.department && (
+                      <div className={classes["reading"]}>
+                        <span className={classes["reading-title"]}>
+                          Department:
+                        </span>
+                        <span>{entity?.department}</span>
+                      </div>
+                    )}
                   </div>
-
-                  {entity?.department && (
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Department:
-                      </span>
-                      <span>{entity?.department}</span>
-                    </div>
-                  )}
                   <div className={classes["service-reading-wrapper"]}>
                     <div
                       className={classes["reading"]}

@@ -141,7 +141,11 @@
 .inter-reading {
   font-weight: 800;
 }
-
+.inner-second-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
 @media only screen and (min-width: 500px) {
   .container-second-block-wrapper {
     display: flex;
@@ -185,8 +189,5 @@
     align-items: center;
   }
 
-  .inner-second-block {
-    display: flex;
-    flex: 1;
-  }
+  
 }
