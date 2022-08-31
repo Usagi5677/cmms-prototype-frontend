@@ -73,7 +73,7 @@ const Vessels = () => {
       brand: string[];
       engine: string[];
       isAssigned: boolean;
-      assignedToId: number | null;
+      //assignedToId: number | null;
       measurement: string[];
       lteCurrentRunning: string;
       gteCurrentRunning: string;
@@ -95,7 +95,7 @@ const Vessels = () => {
     brand: [],
     engine: [],
     isAssigned: false,
-    assignedToId: null,
+    //assignedToId: null,
     measurement: [],
     lteCurrentRunning: "",
     gteCurrentRunning: "",
@@ -422,6 +422,7 @@ const Vessels = () => {
     },
     name: "Show all assigned machinery",
   };
+  /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {
     onChange: (assignedToMe: CheckboxChangeEvent) => {
       setFilter({
@@ -436,6 +437,7 @@ const Vessels = () => {
     },
     name: "Show all machinery assigned to me",
   };
+  */
   const entityStatusOptions: EntityStatusOptionProps = {
     onChange: (status) => {
       setFilter({
@@ -469,7 +471,7 @@ const Vessels = () => {
     engineOptions,
     measurementOptions,
     assignedOptions,
-    assignedToMeOptions,
+    //assignedToMeOptions,
     lteCurrentRunningOptions,
     gteCurrentRunningOptions,
     lteLastServiceOptions,

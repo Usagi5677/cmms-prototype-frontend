@@ -71,7 +71,7 @@ const Machinery = () => {
       brand: string[];
       engine: string[];
       isAssigned: boolean;
-      assignedToId: number | null;
+      //assignedToId: number | null;
       measurement: string[];
       lteCurrentRunning: string;
       gteCurrentRunning: string;
@@ -93,7 +93,7 @@ const Machinery = () => {
     brand: [],
     engine: [],
     isAssigned: false,
-    assignedToId: null,
+    //assignedToId: null,
     measurement: [],
     lteCurrentRunning: "",
     gteCurrentRunning: "",
@@ -422,6 +422,7 @@ const Machinery = () => {
     },
     name: "Show all assigned machinery",
   };
+  /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {
     onChange: (assignedToMe: CheckboxChangeEvent) => {
       setFilter({
@@ -436,6 +437,7 @@ const Machinery = () => {
     },
     name: "Show all machinery assigned to me",
   };
+  */
   const entityStatusOptions: EntityStatusOptionProps = {
     onChange: (status) => {
       setFilter({
@@ -469,7 +471,7 @@ const Machinery = () => {
     engineOptions,
     measurementOptions,
     assignedOptions,
-    assignedToMeOptions,
+    //assignedToMeOptions,
     lteCurrentRunningOptions,
     gteCurrentRunningOptions,
     lteLastServiceOptions,

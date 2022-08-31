@@ -149,6 +149,7 @@ const FilterOptions = ({
                 />
               </Form.Item>
             </div>
+            {/*
             <div className={classes["item"]}>
               <Form.Item name="assignedToMe">
                 <AssignedOrNotCheckbox
@@ -157,6 +158,7 @@ const FilterOptions = ({
                 />
               </Form.Item>
             </div>
+            */}
           </div>
 
           <div className={classes["item-wrapper"]}>

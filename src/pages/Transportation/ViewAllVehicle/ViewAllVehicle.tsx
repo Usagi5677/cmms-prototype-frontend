@@ -74,7 +74,7 @@ const Vehicles = () => {
       brand: string[];
       engine: string[];
       isAssigned: boolean;
-      assignedToId: number | null;
+      //assignedToId: number | null;
       measurement: string[];
       lteCurrentRunning: string;
       gteCurrentRunning: string;
@@ -96,7 +96,7 @@ const Vehicles = () => {
     brand: [],
     engine: [],
     isAssigned: false,
-    assignedToId: null,
+    //assignedToId: null,
     measurement: [],
     lteCurrentRunning: "",
     gteCurrentRunning: "",
@@ -423,6 +423,7 @@ const Vehicles = () => {
     },
     name: "Show all assigned machinery",
   };
+  /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {
     onChange: (assignedToMe: CheckboxChangeEvent) => {
       setFilter({
@@ -437,6 +438,7 @@ const Vehicles = () => {
     },
     name: "Show all machinery assigned to me",
   };
+  */
   const entityStatusOptions: EntityStatusOptionProps = {
     onChange: (status) => {
       setFilter({
@@ -470,7 +472,7 @@ const Vehicles = () => {
     engineOptions,
     measurementOptions,
     assignedOptions,
-    assignedToMeOptions,
+    //assignedToMeOptions,
     lteCurrentRunningOptions,
     gteCurrentRunningOptions,
     lteLastServiceOptions,
