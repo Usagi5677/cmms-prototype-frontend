@@ -421,7 +421,7 @@ const Vehicles = () => {
       });
       setIsAssigned(isAssigned?.target?.checked);
     },
-    name: "Show all assigned machinery",
+    name: "Show all assigned vehicles",
   };
   /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {

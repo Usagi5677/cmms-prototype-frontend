@@ -19,8 +19,17 @@ export interface PeriodicMaintenanceStatusProps {
   size?: "small" | "default";
 }
 
-export interface PeriodicMaintenancesStatusProps {
-  summaries: PeriodicMaintenanceSummary[];
+export interface PeriodicMaintenancesSummaryStatusProps {
+  allTaskCompletion: number;
+  someTaskCompletion: number;
+  readings: number;
+  verified: number;
+  observations: number;
+  remarks: number;
+}
+
+export interface PeriodicMaintenanceSummaryStatus {
+  summary: PeriodicMaintenancesSummaryStatusProps;
 }
 
 export const PeriodicMaintenanceStatus: React.FC<
@@ -232,47 +241,20 @@ export const PeriodicMaintenanceStatus: React.FC<
 };
 
 export const PeriodicMaintenancesStatus: React.FC<
-  PeriodicMaintenancesStatusProps
-> = ({ summaries }) => {
-  let allTaskCompletion = summaries.length;
-  let someTaskCompletion = summaries.length;
-  let readings = summaries.length;
-  let verified = summaries.length;
-  let observations = summaries.length;
-  let remarks = summaries.length;
-
-  for (const smry of summaries) {
-    if (smry.taskCompletion === "all") {
-      allTaskCompletion = allTaskCompletion - 1;
-    } else if (smry.taskCompletion === "some") {
-      someTaskCompletion = someTaskCompletion - 1;
-    }
-    if (smry.currentMeterReading) {
-      readings = readings - 1;
-    }
-    if (smry.hasVerify) {
-      verified = verified - 1;
-    }
-    if (smry.hasObservations) {
-      observations = observations - 1;
-    }
-    if (smry.hasRemarks) {
-      remarks = remarks - 1;
-    }
-  }
-
+  PeriodicMaintenanceSummaryStatus
+> = ({ summary }) => {
   let itemColor = "none";
   let readingsColor = "none";
 
-  if (allTaskCompletion === 0) {
+  if (summary?.allTaskCompletion === 0) {
     itemColor = "#52c41a";
-  } else if (someTaskCompletion === 1) {
+  } else if (summary?.someTaskCompletion === 1) {
     itemColor = "#faad13";
   } else {
     itemColor = "#fa541c";
   }
 
-  if (readings === 0) {
+  if (summary?.readings === 0) {
     readingsColor = "#52c41a";
   } else {
     readingsColor = "#fa541c";
@@ -318,7 +300,7 @@ export const PeriodicMaintenancesStatus: React.FC<
           alignItems: "center",
         }}
       >
-        {observations <= 1 && (
+        {summary?.observations <= 1 && (
           <div>
             <CommentOutlined
               style={{
@@ -328,7 +310,7 @@ export const PeriodicMaintenancesStatus: React.FC<
             />
           </div>
         )}
-        {remarks <= 1 && (
+        {summary?.remarks <= 1 && (
           <div>
             <MessageOutlined
               style={{
@@ -338,7 +320,7 @@ export const PeriodicMaintenancesStatus: React.FC<
             />
           </div>
         )}
-        {verified <= 1 && (
+        {summary?.verified <= 1 && (
           <div>
             <CheckOutlined
               style={{

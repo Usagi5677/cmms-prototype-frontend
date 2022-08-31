@@ -272,7 +272,7 @@ const EntityCard = ({
                 <div className={classes["container-third-block"]}>
                   <div className={classes["user-wrapper"]}>
                     <span className={classes["reading-title"]}>Admin:</span>
-                    {entity?.assignees?.length! > 0 && (
+                    {entity?.assignees?.length! > 0 ? (
                       <Avatar.Group
                         maxCount={5}
                         maxStyle={{
@@ -282,7 +282,7 @@ const EntityCard = ({
                         size={"small"}
                       >
                         {entity?.assignees?.map((assign) => {
-                          if (assign.type !== "Admin") return;
+                          if (assign.type !== "Admin") return <div>None</div>;
                           return (
                             <Tooltip
                               title={
@@ -319,11 +319,13 @@ const EntityCard = ({
                           );
                         })}
                       </Avatar.Group>
+                    ) : (
+                      <div>None</div>
                     )}
                   </div>
                   <div className={classes["user-wrapper"]}>
                     <span className={classes["reading-title"]}>Engineer:</span>
-                    {entity?.assignees?.length! > 0 && (
+                    {entity?.assignees?.length! > 0 ? (
                       <Avatar.Group
                         maxCount={5}
                         maxStyle={{
@@ -333,7 +335,8 @@ const EntityCard = ({
                         size={"small"}
                       >
                         {entity?.assignees?.map((assign) => {
-                          if (assign.type !== "Engineer") return;
+                          if (assign.type !== "Engineer")
+                            return <div>None</div>;
                           return (
                             <Tooltip
                               title={
@@ -370,6 +373,8 @@ const EntityCard = ({
                           );
                         })}
                       </Avatar.Group>
+                    ) : (
+                      <div>None</div>
                     )}
                   </div>
                 </div>

@@ -420,7 +420,7 @@ const Vessels = () => {
       });
       setIsAssigned(isAssigned?.target?.checked);
     },
-    name: "Show all assigned machinery",
+    name: "Show all assigned vessels",
   };
   /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {

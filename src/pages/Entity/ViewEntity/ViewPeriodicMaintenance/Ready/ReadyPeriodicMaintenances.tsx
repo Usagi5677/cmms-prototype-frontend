@@ -190,7 +190,42 @@ const UpcomingPeriodicMaintenances = ({
     if (match.length <= 0) {
       return null;
     }
-    return <PeriodicMaintenancesStatus summaries={match} />;
+
+    let allTaskCompletion = match.length;
+    let someTaskCompletion = match.length;
+    let readings = match.length;
+    let verified = match.length;
+    let observations = match.length;
+    let remarks = match.length;
+
+    for (const smry of match) {
+      if (smry.taskCompletion === "all") {
+        allTaskCompletion = allTaskCompletion - 1;
+      } else if (smry.taskCompletion === "some") {
+        someTaskCompletion = someTaskCompletion - 1;
+      }
+      if (smry.currentMeterReading) {
+        readings = readings - 1;
+      }
+      if (smry.hasVerify) {
+        verified = verified - 1;
+      }
+      if (smry.hasObservations) {
+        observations = observations - 1;
+      }
+      if (smry.hasRemarks) {
+        remarks = remarks - 1;
+      }
+    }
+    const PeriodicMaintenancesStatusProps = {
+      allTaskCompletion,
+      someTaskCompletion,
+      readings,
+      verified,
+      observations,
+      remarks,
+    }
+    return <PeriodicMaintenancesStatus summary={PeriodicMaintenancesStatusProps} />;
   };
 
   //find class length so id can be placed on this picker only
