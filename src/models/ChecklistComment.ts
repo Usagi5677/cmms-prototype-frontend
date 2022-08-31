@@ -5,4 +5,5 @@ export default interface ChecklistComment {
   description: string;
   user: User;
   createdAt: Date;
+  type: String;
 }

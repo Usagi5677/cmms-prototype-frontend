@@ -869,3 +869,7 @@ div.ant-typography {
     width: initial !important;
   }
 }
+
+.ant-badge-count {
+  z-index: 10 !important;
+}

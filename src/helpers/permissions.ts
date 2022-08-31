@@ -1,4 +1,5 @@
 import { Entity } from "../models/Entity/Entity";
+import EntityAssign from "../models/Entity/EntityAssign";
 import User from "../models/User";
 
 export function hasPermissions(
@@ -59,4 +60,19 @@ export function isAssignedType(
   }
   const ofTypeIds = ofType.map((o) => o.user.id);
   if (ofTypeIds.includes(user.id)) return true;
+}
+
+// Check if user is assigned to type to any entity
+export function isAssignedTypeToAny(
+  type: "Admin" | "Engineer" | "User" | "any",
+  user: any
+) {
+  const assignments = user.entityAssignment;
+  let ofType: EntityAssign[];
+  if (type === "any") {
+    ofType = assignments;
+  } else {
+    ofType = assignments.filter((a: EntityAssign) => a.type === type);
+  }
+  if (ofType.length > 0) return true;
 }

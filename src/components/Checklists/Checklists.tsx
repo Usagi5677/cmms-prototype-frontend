@@ -10,13 +10,14 @@ import ChecklistItemModel from "../../models/ChecklistItem";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { ChecklistStatus, ChecklistSummary } from "./ChecklistStatus";
+import { ChecklistStatus } from "./ChecklistStatus";
 import { Entity } from "../../models/Entity/Entity";
 import { AddReading } from "./AddReading";
 import { AddChecklistAttachment } from "./AddChecklistAttachment";
 import { ChecklistAttachments } from "./ChecklistAttachments";
 import { hasPermissions, isAssignedType } from "../../helpers/permissions";
 import UserContext from "../../contexts/UserContext";
+import ChecklistSummary from "../../models/ChecklistSummary";
 
 export interface ChecklistsProps {
   entity: Entity;

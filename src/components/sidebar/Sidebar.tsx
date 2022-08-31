@@ -6,6 +6,7 @@ import {
   FaLock,
   FaPager,
   FaCog,
+  FaSquare,
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 import classes from "./Sidebar.module.css";
@@ -18,8 +19,9 @@ import { errorMessage } from "../../helpers/gql";
 import {
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_BREAKDOWN_COUNT_OF_ALL,
+  INCOMPLETE_CHECKLIST_PAST_TWO,
 } from "../../api/queries";
-import { hasPermissions } from "../../helpers/permissions";
+import { hasPermissions, isAssignedTypeToAny } from "../../helpers/permissions";
 
 const { Divider } = Menu;
 interface SidebarItem {
@@ -45,6 +47,20 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     }
   );
 
+  const [getPastTwoDayIncompleteChecklists, { data: pastTwoIncomplete }] =
+    useLazyQuery(INCOMPLETE_CHECKLIST_PAST_TWO, {
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
+  // Refetch past two day incomplete checklist count every hour
+  useEffect(() => {
+    var handle = setInterval(getPastTwoDayIncompleteChecklists, 60 * 60 * 1000);
+    return () => {
+      clearInterval(handle);
+    };
+  });
+
   const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
     useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
       onError: (err) => {
@@ -57,7 +73,12 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
   useEffect(() => {
     allEntityBreakdownCount();
     getAllEntityChecklistAndPMSummary();
-  }, [allEntityBreakdownCount, getAllEntityChecklistAndPMSummary]);
+    getPastTwoDayIncompleteChecklists();
+  }, [
+    allEntityBreakdownCount,
+    getAllEntityChecklistAndPMSummary,
+    getPastTwoDayIncompleteChecklists,
+  ]);
 
   let SidebarData: SidebarItem[] = [
     {
@@ -65,11 +86,24 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "/",
       icon: <FaHome />,
     },
-    {
-      name: "Divider",
-      path: "divider1",
-    },
   ];
+
+  // If user is admin of any entity
+  if (isAssignedTypeToAny("Admin", self) || isAssignedTypeToAny("User", self)) {
+    SidebarData.push({
+      name: "Incomplete Tasks",
+      path: "/incomplete-tasks",
+      icon: <FaSquare />,
+      count: pastTwoIncomplete?.incompleteChecklistsPastTwoDays
+        ? pastTwoIncomplete.incompleteChecklistsPastTwoDays[0]
+        : 0,
+    });
+  }
+
+  SidebarData.push({
+    name: "Divider",
+    path: "divider1",
+  });
 
   if (
     self?.machineAssignments.length > 0 ||

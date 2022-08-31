@@ -28,6 +28,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import { SearchEntities } from "../common/SearchEntitities";
 import { EntityIcon } from "../common/EntityIcon";
 import { Entity } from "../../models/Entity/Entity";
+import { EntityListing } from "../EntityComponents/EntityListing";
 
 export interface ChecklistTemplateDetailsProps {
   checklistTemplate: ChecklistTemplate;
@@ -272,22 +273,7 @@ export const ChecklistTemplateDetails: React.FC<
             ) : (
               <div style={{ maxHeight: 200, overflowY: "auto" }}>
                 {usedBy.map((u: Entity) => (
-                  <div
-                    key={u.id}
-                    className="underlineOnHover"
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <EntityIcon entityType={u.type?.entityType} />
-                    <a
-                      target="_blank"
-                      href={`/entity/${u.id}`}
-                      style={{ marginLeft: ".5rem" }}
-                    >
-                      {" "}
-                      {u.machineNumber} ({u.zone} - {u.location?.name}){" "}
-                      <ArrowRightOutlined />
-                    </a>
-                  </div>
+                  <EntityListing key={u.id} entity={u} />
                 ))}
               </div>
             )}
