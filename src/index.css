@@ -636,6 +636,40 @@ em {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
+#filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  padding: 0 !important;
+  padding-left: 5px !important;
+  border-bottom: 1px solid transparent;
+  cursor: default !important;
+  
+}
+#filterCollapse
+  .ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header
+  > div {
+  min-height: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#filterCollapse
+  .ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding: 0 !important;
+  cursor: default !important;
+}
+
+#filterCollapse .ant-collapse-ghost {
+  border: none !important;
+  background-color: var(--card-bg);
+}
+
 @media only screen and (min-width: 600px) {
   #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 5px !important;

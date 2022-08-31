@@ -1219,7 +1219,7 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
     $last: Int
     $search: String
     $assignedToId: Int
-    $status: EntityStatus
+    $status: [EntityStatus!]
     $locationIds: [Int!]
     $isAssigned: Boolean
   ) {
