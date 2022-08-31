@@ -11,9 +11,12 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isAssignedTypeToAny("Admin", user)) {
+    if (
+      !isAssignedTypeToAny("Admin", user) &&
+      !isAssignedTypeToAny("User", user)
+    ) {
       navigate("/");
-      message.error("Not an admin of any entity.");
+      message.error("Not an admin or user of any entity.");
     }
   }, []);
 
