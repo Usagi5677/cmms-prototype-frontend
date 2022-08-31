@@ -637,6 +637,11 @@ em {
   padding-right: 0 !important;
 }
 
+@media only screen and (min-width: 1280px) {
+  #filterCollapse {
+    margin-right: 20px;
+  }
+}
 #filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 !important;
   border-bottom: 1px solid transparent;

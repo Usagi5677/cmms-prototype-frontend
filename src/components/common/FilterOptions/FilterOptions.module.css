@@ -70,7 +70,7 @@
 }
 @media only screen and (min-width: 1280px) {
   .collapse-container {
-    width: 90%;
+    margin-bottom: 0;
   }
   .item-container {
     flex-direction: column;
