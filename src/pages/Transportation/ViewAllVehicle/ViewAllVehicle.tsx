@@ -89,7 +89,7 @@ const Vehicles = () => {
     search: "",
     locationIds: [],
     status: [],
-    entityType: "Vessel",
+    entityType: "Vehicle",
     typeId: [],
     zone: [],
     department: [],
