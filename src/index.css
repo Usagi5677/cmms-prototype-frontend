@@ -639,9 +639,9 @@ em {
 
 #filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 !important;
-  padding-left: 5px !important;
   border-bottom: 1px solid transparent;
   cursor: default !important;
+  padding: 6px 10px !important;
   
 }
 #filterCollapse
@@ -668,6 +668,7 @@ em {
 #filterCollapse .ant-collapse-ghost {
   border: none !important;
   background-color: var(--card-bg);
+  border-radius: 20px !important;
 }
 
 @media only screen and (min-width: 600px) {

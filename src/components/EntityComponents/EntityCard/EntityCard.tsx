@@ -80,6 +80,12 @@ const EntityCard = ({
   if (imagePath) {
     loading = false;
   }
+  let assignedEngineer = entity?.assignees?.filter(
+    (assign) => assign.type === "Engineer"
+  );
+  let assignedAdmin = entity?.assignees?.filter(
+    (assign) => assign.type === "Admin"
+  );
 
   return (
     <motion.div
@@ -106,7 +112,9 @@ const EntityCard = ({
               >
                 <div className={classes["first-block"]}>
                   {loading ? (
-                    <Skeleton.Image style={{width: 60, height: 50, borderRadius: 6}}/>
+                    <Skeleton.Image
+                      style={{ width: 60, height: 50, borderRadius: 6 }}
+                    />
                   ) : (
                     <Image
                       src={imagePath}
@@ -299,9 +307,7 @@ const EntityCard = ({
                         }}
                         size={"small"}
                       >
-                        {entity?.assignees?.map((assign) => {
-                          if (assign.type !== "Admin")
-                            return <div key={assign?.user?.id}>None</div>;
+                        {assignedAdmin?.map((assign) => {
                           return (
                             <Tooltip
                               title={
@@ -353,9 +359,7 @@ const EntityCard = ({
                         }}
                         size={"small"}
                       >
-                        {entity?.assignees?.map((assign) => {
-                          if (assign.type !== "Engineer")
-                            return <div key={assign?.user?.id}>None</div>;
+                        {assignedEngineer?.map((assign) => {
                           return (
                             <Tooltip
                               title={
