@@ -1,14 +1,7 @@
 import { CommentOutlined, WarningOutlined } from "@ant-design/icons";
 import { Badge, Tooltip } from "antd";
 import React from "react";
-import Checklist from "../../models/Checklist";
-
-export interface ChecklistSummary extends Checklist {
-  itemCompletion: "all" | "some" | "none" | "empty";
-  hasComments: boolean;
-  hasIssues: boolean;
-}
-
+import ChecklistSummary from "../../models/ChecklistSummary";
 export interface ChecklistStatusProps {
   summary: ChecklistSummary;
   size?: "small" | "default";
@@ -83,7 +76,9 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                         />
                       }
                     />
-                    <div style={{ color: "var(--text-primary)" }}>Checklist has comments</div>
+                    <div style={{ color: "var(--text-primary)" }}>
+                      Checklist has comments
+                    </div>
                   </div>
                 )}
                 {summary.hasIssues && (
@@ -95,7 +90,9 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                         />
                       }
                     />
-                    <div style={{ color: "var(--text-primary)" }}>Checklist has issues</div>
+                    <div style={{ color: "var(--text-primary)" }}>
+                      Checklist has issues
+                    </div>
                   </div>
                 )}
               </div>

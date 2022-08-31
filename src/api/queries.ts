@@ -30,6 +30,7 @@ export const ME_QUERY = gql`
             entityType
           }
         }
+        type
       }
       location {
         id
@@ -1274,6 +1275,7 @@ export const GET_BREAKDOWN_COUNT_OF_ALL = gql`
     }
   }
 `;
+
 export const GET_ALL_CHECKLIST_AND_PM_SUMMARY = gql`
   query getAllEntityChecklistAndPMSummary {
     getAllEntityChecklistAndPMSummary {
@@ -1285,6 +1287,52 @@ export const GET_ALL_CHECKLIST_AND_PM_SUMMARY = gql`
       machineChecklistComplete
       vehicleChecklistComplete
       vesselChecklistComplete
+    }
+  }
+`;
+
+export const INCOMPLETE_CHECKLIST_PAST_TWO = gql`
+  query incompleteChecklistsPastTwoDays {
+    incompleteChecklistsPastTwoDays
+  }
+`;
+
+export const INCOMPLETE_CHECKLISTS = gql`
+  query incompleteChecklists($input: IncompleteChecklistInput!) {
+    incompleteChecklists(input: $input) {
+      id
+      type
+      from
+      to
+      items {
+        id
+        completedAt
+      }
+      comments {
+        id
+        type
+      }
+      entity {
+        id
+        type {
+          id
+          name
+        }
+        location {
+          id
+          name
+        }
+        machineNumber
+      }
+    }
+  }
+`;
+
+export const INCOMPLETE_CHECKLIST_SUMMARY = gql`
+  query incompleteChecklistSummary($input: IncompleteChecklistSummaryInput!) {
+    incompleteChecklistSummary(input: $input) {
+      date
+      count
     }
   }
 `;

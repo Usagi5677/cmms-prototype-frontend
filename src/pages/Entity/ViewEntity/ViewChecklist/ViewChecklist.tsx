@@ -11,8 +11,6 @@ const ViewChecklist = ({
   entityData: Entity;
   isDeleted?: boolean | undefined;
 }) => {
-  const { user: self } = useContext(UserContext);
-
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}></div>

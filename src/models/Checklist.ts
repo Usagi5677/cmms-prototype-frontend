@@ -1,5 +1,6 @@
 import ChecklistComment from "./ChecklistComment";
 import ChecklistItem from "./ChecklistItem";
+import { Entity } from "./Entity/Entity";
 import EntityAttachment from "./Entity/EntityAttachment";
 
 export default interface Checklist {
@@ -12,4 +13,5 @@ export default interface Checklist {
   items: ChecklistItem[];
   comments: ChecklistComment[];
   attachments: EntityAttachment[];
+  entity?: Entity;
 }

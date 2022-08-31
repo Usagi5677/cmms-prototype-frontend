@@ -20,7 +20,8 @@ import Permissions from "./pages/Role/Permissions";
 import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
 import "./components/ThemeChange/antd.dark.min.css";
-//import 'antd/dist/antd.variable.min.css';
+import { IncompleteTasks } from "./pages/IncompleteTasks";
+
 function App() {
   {
     const token = localStorage.getItem("cmms_token");
@@ -185,6 +186,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/incomplete-tasks" element={<IncompleteTasks />} />
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/entity/:id" element={<ViewEntity />} />
             <Route path="/vessels" element={<ViewAllVessel />} />
