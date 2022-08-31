@@ -298,7 +298,7 @@ const EntityCard = ({
                 <div className={classes["container-third-block"]}>
                   <div className={classes["user-wrapper"]}>
                     <span className={classes["reading-title"]}>Admin:</span>
-                    {entity?.assignees?.length! > 0 ? (
+                    {assignedAdmin?.length! > 0 ? (
                       <Avatar.Group
                         maxCount={5}
                         maxStyle={{
@@ -350,7 +350,7 @@ const EntityCard = ({
                   </div>
                   <div className={classes["user-wrapper"]}>
                     <span className={classes["reading-title"]}>Engineer:</span>
-                    {entity?.assignees?.length! > 0 ? (
+                    {assignedEngineer?.length! > 0 ? (
                       <Avatar.Group
                         maxCount={5}
                         maxStyle={{
