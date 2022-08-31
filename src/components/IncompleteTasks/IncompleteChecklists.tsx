@@ -17,8 +17,8 @@ export const IncompleteChecklists: React.FC<
       }}
     >
       {["Daily", "Weekly"].map((type, i) => (
-        <div key={type}>
-          <IncompleteChecklist type={type} key={type} />
+        <React.Fragment key={type}>
+          <IncompleteChecklist type={type} />
           {i === 0 && (
             <Divider
               style={{
@@ -27,7 +27,7 @@ export const IncompleteChecklists: React.FC<
               type={isSmallDevice ? "horizontal" : "vertical"}
             />
           )}
-        </div>
+        </React.Fragment>
       ))}
     </div>
   );
