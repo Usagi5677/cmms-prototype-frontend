@@ -85,8 +85,8 @@ a {
   --border-2: #e5e5e5;
   --working-bg: rgb(224, 255, 255);
   --working-color: rgb(0, 139, 139);
-  --idle-bg: rgba(255, 165, 0, 0.2);
-  --idle-color: rgb(219, 142, 0);
+  --critical-bg: rgba(255, 165, 0, 0.2);
+  --critical-color: rgb(219, 142, 0);
   --breakdown-bg: rgba(255, 0, 0, 0.2);
   --breakdown-color: rgb(139, 0, 0);
   --dispose-bg: rgba(102, 0, 0, 0.3);
@@ -232,8 +232,8 @@ a {
   --navbar: var(--ant-primary-8);
   --working-bg: #264a4e;
   --working-color: #3cdad4;
-  --idle-bg: rgba(255, 165, 0, 0.4);
-  --idle-color: rgb(243, 159, 4);
+  --critical-bg: rgba(255, 165, 0, 0.4);
+  --critical-color: rgb(243, 159, 4);
   --breakdown-bg: rgba(255, 0, 0, 0.3);
   --breakdown-color: #ff474a;
   --dispose-bg: rgba(102, 0, 0, 0.8);

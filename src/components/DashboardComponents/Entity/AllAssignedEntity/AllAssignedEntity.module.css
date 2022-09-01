@@ -121,7 +121,7 @@
   border-radius: 4px;
   text-transform: uppercase;
 }
-.idle {
+.critical {
   color: orange;
   font-weight: 700;
   font-size: 12px;

@@ -8,7 +8,7 @@ const EntityStatusTag = ({
 }) => {
   let color: string | undefined = undefined;
   if (status === "Working") color = "cyan";
-  else if (status === "Idle") color = "orange";
+  else if (status === "Critical") color = "orange";
   else if (status === "Breakdown") color = "red";
   else if (status === "Dispose") color = "#8B0000";
   return (

@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 
 export enum EntityStatus {
   Working = "Working",
-  Idle = "Idle",
+  Critical = "Critical",
   Breakdown = "Breakdown",
   Dispose = "Dispose",
 }
