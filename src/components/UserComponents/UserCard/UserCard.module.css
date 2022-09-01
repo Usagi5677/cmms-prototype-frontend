@@ -1,0 +1,76 @@
+.container {
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-1);
+  color: var(--text-primary);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
+  transition: all 0.3s ease;
+}
+.container:hover {
+  background-color: var(--row-hover);
+  transform: translateX(6px);
+}
+.completedBy {
+  font-size: 10;
+  opacity: 0.5;
+  display: inline-block;
+}
+.edit-icon {
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+.edit-icon:hover {
+  color: var(--primary);
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.icon {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.tag {
+  margin-top: 10px;
+}
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  margin-left: 0.5rem;
+}
+
+.sub-title {
+  margin-left: 0.5rem;
+  opacity: 0.5;
+}
+
+.secondary {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+}
+
+@media only screen and (min-width: 800px) {
+  .secondary {
+    align-items: center;
+    flex-direction: row;
+  }
+  .tag {
+    margin-top: 0;
+  }
+}

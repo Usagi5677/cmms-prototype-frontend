@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  overflow-y: auto;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  padding: 0 10px;
+}
+
+.dropdown {
+  width: 400px;
+  left: clamp(0%, 100vw, 3%) !important;
+  top: 120px !important;
+}
+
+.datepicker-wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (min-width: 600px) {
+  .dropdown {
+    width: 1200px;
+    left: clamp(10%, 100vw, 14%) !important;
+    top: 66.3333px;
+  }
+ }
+
+ @media only screen and (min-width: 1000px) {
+  .dropdown {
+    left: clamp(10%, 100vw, 20%) !important;
+    top: 66.3333px;
+  }
+ }

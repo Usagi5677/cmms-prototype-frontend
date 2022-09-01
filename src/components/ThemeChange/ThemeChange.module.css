@@ -1,0 +1,86 @@
+.notification-menu {
+  position: relative;
+  margin: 0;
+  padding: 4px 0;
+  text-align: left;
+  list-style-type: none;
+  background-color: var(--card-bg);
+  background-clip: padding-box;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  width: 350px;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: var(--text-primary);
+}
+
+.notification-menu::before {
+  display: table;
+  content: "";
+}
+.notification-menu::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+.notification-menu-item {
+  clear: both;
+  margin: 0;
+  padding: 5px 12px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.notification-menu-item:hover {
+  background-color: var(--row-hover);
+}
+
+.dropdown-menu {
+  margin-top: 6px !important;
+  margin-right: 36px !important;
+}
+
+.title {
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.colorpicker-container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+}
+.sketch-picker {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 20px;
+}
+@media only screen and (min-width: 410px) {
+  .notification-menu {
+    max-width: initial;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .notification-menu {
+    max-width: initial;
+  }
+}

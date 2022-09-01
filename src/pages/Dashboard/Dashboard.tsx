@@ -1,109 +1,140 @@
-import {
-  FaBoxOpen,
-  FaSpinner,
-  FaCheck,
-  FaBan,
-  FaUserAltSlash,
-  FaCarCrash,
-  FaCar
-} from "react-icons/fa";
-import StatusCard from "../../components/UI/StatusCard/StatusCard";
+import { useContext, useEffect } from "react";
+import UserContext from "../../contexts/UserContext";
 import classes from "./Dashboard.module.css";
-import { Bar, Pie } from "react-chartjs-2";
-import { Chart, registerables } from "chart.js";
-
-Chart.register(...registerables);
-
-const data = {
-  labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  datasets: [
-    {
-      label: "Working",
-      backgroundColor: "rgba(0, 183, 255, 0.2)",
-      borderColor: "rgb(0, 183, 255)",
-      borderWidth: 1,
-      data: [3, 3, 3, 3, 3, 3, 3],
-    },
-    {
-      label: "Idle",
-      backgroundColor: "rgba(247, 173, 3, 0.2)",
-      borderColor: "rgb(247, 173, 3)",
-      borderWidth: 1,
-      data: [6, 6, 6, 6, 6, 6, 6],
-    },
-    {
-      label: "Breakdown",
-      backgroundColor: "rgba(255, 0, 0, 0.2)",
-      borderColor: "rgb(255, 0, 0)",
-      borderWidth: 1,
-      data: [1, 1, 1, 1, 1, 1],
-    },
-  ],
-};
-
-const pieData = {
-  labels: ["Urgent", "High", "Medium", "Low"],
-  datasets: [
-    {
-      backgroundColor: [
-        "rgba(71, 102, 255, 0.2)",
-        "rgba(0, 255, 239, 0.2)",
-        "rgba(0, 102, 164, 0.2)",
-        "rgba(0, 183, 235, 0.2)",
-      ],
-      borderColor: [
-        "rgba(71, 102, 255, 1)",
-        "rgba(0, 255, 239, 1)",
-        "rgba(0, 102, 164, 1)",
-        "rgba(0, 183, 235, 1)",
-      ],
-      borderWidth: 1,
-      data: [1, 2, 3, 4],
-    },
-  ],
-};
-
-const options = {
-  maintainAspectRatio: false,
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-};
+import { useLazyQuery } from "@apollo/client";
+import { GET_ALL_ENTITY_STATUS_COUNT } from "../../api/queries";
+import { errorMessage } from "../../helpers/gql";
+import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
+import StatusCard from "../../components/common/StatusCard/StatusCard";
+import MyEntityPMTask from "../../components/DashboardComponents/Entity/MyEntityPMTask/MyEntityPMTask";
+import AllAssignedEntity from "../../components/DashboardComponents/Entity/AllAssignedEntity/AllAssignedEntity";
+import AllEntityPMTask from "../../components/DashboardComponents/Entity/AllEntityPMTask/AllEntityPMTask";
+import EntityMaintenance from "../../components/DashboardComponents/Entity/EntityMaintenance/EntityMaintenance";
+import EntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/EntityUtilization";
+import { hasPermissions } from "../../helpers/permissions";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
+  const { user: self } = useContext(UserContext);
+
+  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
+    GET_ALL_ENTITY_STATUS_COUNT,
+    {
+      onError: (err) => {
+        errorMessage(
+          err,
+          "Error loading status count of machinery & transports."
+        );
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+
+  useEffect(() => {
+    getAllEntityStatusCount();
+  }, [getAllEntityStatusCount]);
+
+  let idle = 0;
+  let working = 0;
+  let breakdown = 0;
+  let dispose = 0;
+
+  const statusCountData = statusData?.allEntityStatusCount;
+  if (statusCountData) {
+    idle = statusCountData?.idle;
+    working = statusCountData?.working;
+    breakdown = statusCountData?.breakdown;
+    dispose = statusCountData?.dispose;
+  }
+
   return (
-    <div className={classes["ticket-dashboard-container"]}>
-      <div
-        className={classes["ticket-dashboard-container__status-card-wrapper"]}
-      >
-        <StatusCard
-          icon={<FaCar />}
-          title={"Working"}
-          amount={10}
-          iconBackgroundColor={"rgba(0, 183, 255, 0.2)"}
-          iconColor={"rgb(0, 183, 255)"}
-        />
-        <StatusCard
-          icon={<FaSpinner />}
-          title={"Idle"}
-          amount={10}
-          iconBackgroundColor={"rgba(247, 173, 3, 0.2)"}
-          iconColor={"rgb(247, 173, 3)"}
-        />
-        <StatusCard
-          icon={<FaCarCrash />}
-          title={"Breakdown"}
-          amount={10}
-          iconBackgroundColor={"rgba(255, 0, 0, 0.2)"}
-          iconColor={"rgb(255, 0, 0)"}
-        />
-      </div>
-      <div className={classes['ticket-dashboard-container__barchart_wrapper']}>
-        <Bar data={data} height={400} width={600} options={options} />
-      </div>    
-    </div>
+    <>
+      {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
+        <div className={classes["status-card"]}>
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.3,
+            }}
+          >
+            <StatusCard
+              amountOne={working}
+              icon={<FaTractor />}
+              iconBackgroundColor={"var(--working-bg)"}
+              iconColor={"var(--working-color)"}
+              name={"Working"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.4,
+            }}
+          >
+            <StatusCard
+              amountOne={idle}
+              icon={<FaSpinner />}
+              iconBackgroundColor={"var(--idle-bg)"}
+              iconColor={"var(--idle-color)"}
+              name={"Idle"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.5,
+            }}
+          >
+            <StatusCard
+              amountOne={breakdown}
+              icon={<FaCarCrash />}
+              iconBackgroundColor={"var(--breakdown-bg)"}
+              iconColor={"var(--breakdown-color)"}
+              name={"Breakdown"}
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.6,
+            }}
+          >
+            <StatusCard
+              amountOne={dispose}
+              icon={<FaRecycle />}
+              iconBackgroundColor={"var(--dispose-bg)"}
+              iconColor={"var(--dispose-color)"}
+              name={"Dispose"}
+            />
+          </motion.div>
+        </div>
+      )}
+      {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
+        <div className={classes["content"]}>
+          <MyEntityPMTask />
+          <AllAssignedEntity />
+          <AllEntityPMTask />
+          <EntityMaintenance />
+          <EntityUtilization />
+        </div>
+      )}
+    </>
   );
 };
 

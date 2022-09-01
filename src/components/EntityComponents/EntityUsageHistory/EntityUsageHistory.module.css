@@ -1,0 +1,21 @@
+.container {
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.datepicker {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}

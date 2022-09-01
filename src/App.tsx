@@ -1,13 +1,7 @@
 import Layout from "./hoc/Layout/Layout";
-import "./index.css";
 import ViewAllMachine from "./pages/Machine/ViewAllMachine/ViewAllMachine";
-import ViewMachine from "./pages/Machine/ViewMachine";
-import Vessels from "./pages/Vessels/Vessels";
-import Vehicles from "./pages/Vehicles/Vehicles";
-import Division from "./pages/Division/Division";
-import Breakdown from "./pages/Breakdown/Breakdown";
-import Service from "./pages/Service/Service";
-import Reports from "./pages/Reports/Reports";
+import ViewAllVessel from "./pages/Transportation/ViewAllVessel/ViewAllVessel";
+import ViewAllVehicle from "./pages/Transportation/ViewAllVehicle/ViewAllVehicle";
 import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { Route, Routes } from "react-router-dom";
@@ -19,6 +13,14 @@ import { apolloClient } from "./api/client";
 import { ME_QUERY } from "./api/queries";
 import { message } from "antd";
 import jwtDecode from "jwt-decode";
+import Roles from "./pages/Role/Roles";
+import Users from "./pages/Users/Users";
+import { Templates } from "./pages/Templates";
+import Permissions from "./pages/Role/Permissions";
+import { Config } from "./pages/Config";
+import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
+import "./components/ThemeChange/antd.dark.min.css";
+import { IncompleteTasks } from "./pages/IncompleteTasks";
 
 function App() {
   {
@@ -31,34 +33,70 @@ function App() {
       }
     }
   }
-
   const [appLoading, setAppLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [loggedOut, setLoggedOut] = useState(false);
 
+  if (localStorage.getItem("themeMode")) {
+    document.documentElement.setAttribute(
+      "data-theme",
+      localStorage.getItem("themeMode")?.replace(/['"]+/g, "")!
+    );
+  }
+
   const [me] = useLazyQuery(ME_QUERY, {
     client: apolloClient,
     onCompleted: (data) => {
+      const roles = data.me.roles;
+      let permissions = [];
+      // Get all permissions from all roles of user
+      for (const role of roles) {
+        if (role.role?.permissionRoles) {
+          const rolePermissions = role.role.permissionRoles.map(
+            (pr: any) => pr.permission
+          );
+          permissions.push(...rolePermissions);
+        }
+      }
+      // Remove duplicates
+      permissions = [...new Set(permissions)];
+      const assignments = data.me.entityAssignment;
+      const machineAssignments = assignments.filter(
+        (a: any) => a.entity.type.entityType === "Machine"
+      );
+      const vesselAssignments = assignments.filter(
+        (a: any) => a.entity.type.entityType === "Vessel"
+      );
+      const vehicleAssignments = assignments.filter(
+        (a: any) => a.entity.type.entityType === "Vehicle"
+      );
       setUser({
         ...data.me,
+        permissions,
+        machineAssignments,
+        vesselAssignments,
+        vehicleAssignments,
       });
       setAppLoading(false);
       setLoggedOut(false);
     },
     onError: (error) => {
       localStorage.removeItem("cmms_token");
+      localStorage.setItem("logOutClicked", "true");
       setLoggedOut(true);
       setAppLoading(false);
-
       if (error.message === "Unauthorized") {
         message.error("Not authorized to access this app.");
       } else {
         message.error("An error occurred while logging in.");
       }
     },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
   });
 
   const redirect = () => {
+    localStorage.setItem("logOutClicked", "false");
     window.location.href = `https://id.mtcc.com.mv/?returnUrl=${process.env.REACT_APP_RETURN_URL}&type=employee&appId=${process.env.REACT_APP_APP_ID}`;
   };
 
@@ -123,6 +161,7 @@ function App() {
 
   const logout = () => {
     localStorage.removeItem("cmms_token");
+    localStorage.setItem("logOutClicked", "true");
     logoutRedirect();
   };
 
@@ -135,23 +174,28 @@ function App() {
   }
 
   if (!appLoading && loggedOut) {
-    return <Login login={redirect} />;
+    if (localStorage.getItem("logOutClicked") === "true") {
+      return <Login login={redirect} />;
+    }
+    redirect();
   }
-  
+
   return (
     <UserContext.Provider value={{ user, setUser, logout }}>
       <ApolloProvider client={apolloClient}>
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/incomplete-tasks" element={<IncompleteTasks />} />
             <Route path="/machinery" element={<ViewAllMachine />} />
-            <Route path="/machine/:id" element={<ViewMachine />} />
-            <Route path="/vessels" element={<Vessels />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/division" element={<Division />} />
-            <Route path="/breakdown" element={<Breakdown />} />
-            <Route path="/service" element={<Service />} />
-            <Route path="/reports" element={<Reports />} />
+            <Route path="/entity/:id" element={<ViewEntity />} />
+            <Route path="/vessels" element={<ViewAllVessel />} />
+            <Route path="/vehicles" element={<ViewAllVehicle />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/roles" element={<Roles />} />
+            <Route path="/templates" element={<Templates />} />
+            <Route path="/config" element={<Config />} />
+            <Route path="/role/:id/permission" element={<Permissions />} />
           </Routes>
         </Layout>
       </ApolloProvider>

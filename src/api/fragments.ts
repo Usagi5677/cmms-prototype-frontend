@@ -28,27 +28,42 @@ export const APS_USER_FRAGMENT = gql`
   }
 `;
 
-export const MACHINE_FRAGMENT = gql`
-  ${USER_FRAGMENT}
-  fragment MachineFields on Machine {
+export const ENTITY_FRAGMENT = gql`
+  ${APS_USER_FRAGMENT}
+  fragment EntityFields on Entity {
     id
     createdAt
     createdBy {
-      ...UserFields
+      ...UserFieldsAPS
       email
     }
     machineNumber
     registeredDate
     model
-    type
+    type {
+      id
+      name
+      entityType
+    }
+    department
+    engine
     zone
-    location
-    currentRunningHrs
-    lastServiceHrs
-    interServiceHrs
+    location {
+      id
+      name
+    }
+    currentRunning
+    lastService
     status
+    measurement
+    brand
+    isDeleted
+    deletedAt
     assignees {
-      ...UserFields
+      user {
+        ...UserFieldsAPS
+      }
+      type
     }
     sparePRs {
       requestedDate
@@ -60,6 +75,41 @@ export const MACHINE_FRAGMENT = gql`
       title
       description
       status
+      estimatedDateOfRepair
+    }
+  }
+`;
+
+export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
+  fragment ChecklistTemplateFields on ChecklistTemplate {
+    id
+    type
+    name
+    items {
+      id
+      name
+    }
+    entitiesDaily {
+      id
+      machineNumber
+      location {
+        id
+        name
+      }
+      type {
+        entityType
+      }
+    }
+    entitiesWeekly {
+      id
+      machineNumber
+      location {
+        id
+        name
+      }
+      type {
+        entityType
+      }
     }
   }
 `;

@@ -7,18 +7,20 @@ const PaginationButtons = ({
   pageInfo,
   back,
   next,
+  pageLimit
 }: {
   page: number;
   pageInfo: { hasNextPage: boolean; hasPreviousPage: boolean; count: number };
   back: () => void;
   next: () => void;
+  pageLimit?: number
 }) => {
   return (
     <>
       {(pageInfo.hasNextPage || pageInfo.hasPreviousPage) && (
         <div className={classes["button-wrapper"]}>
           <div>
-            Page {page} of {Math.ceil(pageInfo.count / PAGE_LIMIT)}
+            Page {page} of {Math.ceil(pageInfo.count / (pageLimit ? pageLimit : PAGE_LIMIT) )}
           </div>
           <div style={{ display: "flex" }}>
             {pageInfo.hasPreviousPage && (

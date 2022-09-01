@@ -1,39 +1,84 @@
 import {
-  FaBook,
-  FaCarCrash,
   FaHome,
-  FaLayerGroup,
-  FaListAlt,
-  FaListUl,
-  FaRegChartBar,
-  FaTh,
-  FaUserLock,
   FaUsers,
-  FaWrench,
   FaTruck,
-  FaTractor
+  FaTractor,
+  FaLock,
+  FaPager,
+  FaCog,
+  FaSquare,
 } from "react-icons/fa";
-import { BsPeopleFill } from "react-icons/bs";
-import { IoLocationSharp} from "react-icons/io5";
-import { AiFillDatabase } from "react-icons/ai";
 import { RiSailboatFill } from "react-icons/ri";
-
 import classes from "./Sidebar.module.css";
-import { NavLink, useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
-import { Menu } from "antd";
+import { Badge, Menu, Tooltip } from "antd";
+import { useLazyQuery } from "@apollo/client";
+import { errorMessage } from "../../helpers/gql";
+import {
+  GET_ALL_CHECKLIST_AND_PM_SUMMARY,
+  GET_BREAKDOWN_COUNT_OF_ALL,
+  INCOMPLETE_CHECKLIST_PAST_TWO,
+} from "../../api/queries";
+import { hasPermissions, isAssignedTypeToAny } from "../../helpers/permissions";
 
 const { Divider } = Menu;
 interface SidebarItem {
   name: string;
   path: string;
   icon?: any;
+  count?: number;
 }
 
 const Sidebar = ({ onClick }: { onClick: () => void }) => {
-  const { user } = useContext(UserContext);
+  const { user: self } = useContext(UserContext);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const [allEntityBreakdownCount, { data: breakdownData }] = useLazyQuery(
+    GET_BREAKDOWN_COUNT_OF_ALL,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading breakdown count.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+
+  const [getPastTwoDayIncompleteChecklists, { data: pastTwoIncomplete }] =
+    useLazyQuery(INCOMPLETE_CHECKLIST_PAST_TWO, {
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
+  // Refetch past two day incomplete checklist count every hour
+  useEffect(() => {
+    var handle = setInterval(getPastTwoDayIncompleteChecklists, 60 * 60 * 1000);
+    return () => {
+      clearInterval(handle);
+    };
+  });
+
+  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
+    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+      onError: (err) => {
+        errorMessage(err, "Error loading summary data.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
+  useEffect(() => {
+    allEntityBreakdownCount();
+    getAllEntityChecklistAndPMSummary();
+    getPastTwoDayIncompleteChecklists();
+  }, [
+    allEntityBreakdownCount,
+    getAllEntityChecklistAndPMSummary,
+    getPastTwoDayIncompleteChecklists,
+  ]);
 
   let SidebarData: SidebarItem[] = [
     {
@@ -41,117 +86,118 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "/",
       icon: <FaHome />,
     },
-    {
-      name: "Divider",
-      path: "divider1",
-    },
-    {
+  ];
+
+  // If user is admin of any entity
+  if (isAssignedTypeToAny("Admin", self) || isAssignedTypeToAny("User", self)) {
+    SidebarData.push({
+      name: "Incomplete Tasks",
+      path: "/incomplete-tasks",
+      icon: <FaSquare />,
+      count: pastTwoIncomplete?.incompleteChecklistsPastTwoDays
+        ? pastTwoIncomplete.incompleteChecklistsPastTwoDays[0]
+        : 0,
+    });
+  }
+
+  SidebarData.push({
+    name: "Divider",
+    path: "divider1",
+  });
+
+  if (
+    self?.machineAssignments.length > 0 ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    // Insert at second position
+    SidebarData.push({
       name: "Machinery",
       path: "/machinery",
       icon: <FaTractor />,
-    },
-    {
+      count: breakdownData?.allEntityBreakdownCount?.machine,
+    });
+  }
+
+  if (
+    self?.vesselAssignments.length > 0 ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    SidebarData.push({
       name: "Vessels",
       path: "/vessels",
       icon: <RiSailboatFill />,
-    },
-    {
+      count: breakdownData?.allEntityBreakdownCount?.vessel,
+    });
+  }
+
+  if (
+    self?.vehicleAssignments.length > 0 ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    SidebarData.push({
       name: "Vehicles",
       path: "/vehicles",
       icon: <FaTruck />,
-    },
-    {
-      name: "Divider",
-      path: "divider2",
-    },
-    {
-      name: "Division",
-      path: "/division",
-      icon: <BsPeopleFill />,
-    },
-    {
-      name: "Breakdown",
-      path: "/breakdown",
-      icon: <FaCarCrash />,
-    },
-    {
-      name: "Service/Repair",
-      path: "/service",
-      icon: <FaWrench />,
-    },
-    {
-      name: "Reports",
-      path: "/reports",
-      icon: <FaRegChartBar />,
-    },
-    {
-      name: "Divider",
-      path: "divider3",
-    },
-  ];
-
-  // Items only shown to admins and agents
-  if (user?.isAdmin || user?.isAgent) {
-    // Insert at second position
-    SidebarData.splice(3, 0, {
-      name: "All Tickets",
-      path: "/all-tickets",
-      icon: <FaListAlt />,
+      count: breakdownData?.allEntityBreakdownCount?.vehicle,
     });
-    // Insert at the end
-    SidebarData.push(
-      {
-        name: "Categories",
-        path: "/categories",
-        icon: <FaTh />,
-      },
-      {
-        name: "User Groups",
-        path: "/usergroups",
-        icon: <FaUsers />,
-      }
-    );
   }
 
-  // Items only shown to admins
-  if (user?.isAdmin) {
-    SidebarData.push({
+  SidebarData.push({
+    name: "Divider",
+    path: "divider2",
+  });
+
+  if (hasPermissions(self, ["VIEW_USERS"])) {
+    SidebarData.splice(10, 0, {
       name: "Users",
       path: "/users",
-      icon: <FaUserLock />,
+      icon: <FaUsers />,
+    });
+  }
+  if (hasPermissions(self, ["VIEW_ROLES"])) {
+    SidebarData.splice(11, 0, {
+      name: "Roles",
+      path: "/roles",
+      icon: <FaLock />,
     });
   }
 
-  // Items only shown to agents
-  if (user?.isAgent) {
-    // Insert at third position
-    SidebarData.splice(4, 0, {
-      name: "Assigned Tickets",
-      path: "/assigned-tickets",
-      icon: <FaListUl />,
+  if (hasPermissions(self, ["VIEW_TEMPLATES", "MODIFY_TEMPLATES"], "any")) {
+    SidebarData.push({
+      name: "Templates",
+      path: "/templates",
+      icon: <FaPager />,
     });
   }
 
-  // Items only shown to super admins
-  if (user?.isSuperAdmin) {
-    SidebarData.push(
-      {
-        name: "Divider",
-        path: "divider3",
-      },
-      {
-        name: "Sites",
-        path: "/sites",
-        icon: <FaLayerGroup />,
-      }
-    );
+  if (hasPermissions(self, ["MODIFY_TYPES"], "any")) {
+    SidebarData.push({
+      name: "Config",
+      path: "/config",
+      icon: <FaCog />,
+    });
   }
+  /*
+    if (self?.assignedPermission?.hasViewMachineryReport) {
+      SidebarData.splice(13, 0, {
+        name: "Machinery Report",
+        path: "/machinery-report",
+        icon: <FaRegChartBar />,
+      });
+    }
+    if (self?.assignedPermission?.hasViewTransportationReport) {
+      SidebarData.splice(14, 0, {
+        name: "Transportation Report",
+        path: "/transportation-report",
+        icon: <FaRegChartBar />,
+      });
+    }
+  */
 
   return (
     <>
       <Menu
         mode="inline"
-        defaultOpenKeys={pathname === "my-tickets" ? ["my-tickets"] : []}
         selectedKeys={[pathname]}
         style={{ overflowX: "hidden", flex: 1 }}
       >
@@ -162,9 +208,119 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
               key={item.path}
               icon={item.icon}
               className={classes["newMenuItem"]}
-              onClick={onClick}
+              onClick={() => {
+                navigate(item.path);
+                onClick();
+              }}
             >
-              <NavLink to={item.path}>{item.name}</NavLink>
+              {item.name}{" "}
+              <Badge
+                showZero={false}
+                count={item.count ?? 0}
+                style={{ marginLeft: 10, marginRight: 10 }}
+              />
+              {summaryData?.getAllEntityChecklistAndPMSummary
+                ?.machineTaskComplete === true &&
+                item.name === "Machinery" && (
+                  <Tooltip
+                    color="var(--dot-tooltip)"
+                    title={
+                      <div>
+                        <Badge
+                          color={"red"}
+                          text={"Some tasks not completed"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Badge color={"red"} />
+                  </Tooltip>
+                )}
+              {summaryData?.getAllEntityChecklistAndPMSummary
+                ?.machineChecklistComplete === true &&
+                item.name === "Machinery" && (
+                  <Tooltip
+                    color="var(--dot-tooltip)"
+                    title={
+                      <div>
+                        <Badge
+                          color={"red"}
+                          text={"Some checklists not completed"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Badge color={"red"} />
+                  </Tooltip>
+                )}
+              {summaryData?.getAllEntityChecklistAndPMSummary
+                ?.vehicleTaskComplete === true &&
+                item.name === "Vehicles" && (
+                  <Tooltip
+                    color="var(--dot-tooltip)"
+                    title={
+                      <div>
+                        <Badge
+                          color={"red"}
+                          text={"Some tasks not completed"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Badge color={"red"} />
+                  </Tooltip>
+                )}
+              {summaryData?.getAllEntityChecklistAndPMSummary
+                ?.vehicleChecklistComplete === true &&
+                item.name === "Vehicles" && (
+                  <Tooltip
+                    color="var(--dot-tooltip)"
+                    title={
+                      <div>
+                        <Badge
+                          color={"red"}
+                          text={"Some checklists not completed"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Badge color={"red"} />
+                  </Tooltip>
+                )}
+              {summaryData?.getAllEntityChecklistAndPMSummary
+                ?.vesselTaskComplete === true &&
+                item.name === "Vessels" && (
+                  <Tooltip
+                    color="var(--dot-tooltip)"
+                    title={
+                      <div>
+                        <Badge
+                          color={"red"}
+                          text={"Some tasks not completed"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Badge color={"red"} />
+                  </Tooltip>
+                )}
+              {summaryData?.getAllEntityChecklistAndPMSummary
+                ?.vesselChecklistComplete === true &&
+                item.name === "Vessels" && (
+                  <Tooltip
+                    color="var(--dot-tooltip)"
+                    title={
+                      <div>
+                        <Badge
+                          color={"red"}
+                          text={"Some checklists not completed"}
+                        />
+                      </div>
+                    }
+                  >
+                    <Badge color={"red"} />
+                  </Tooltip>
+                )}
             </Menu.Item>
           );
         })}
