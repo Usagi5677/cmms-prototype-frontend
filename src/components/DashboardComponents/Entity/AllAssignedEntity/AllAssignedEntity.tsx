@@ -6,7 +6,6 @@ import PaginationArgs from "../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import {
-  GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT,
   GET_ALL_ASSIGNED_ENTITY,
   GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../../api/queries";
@@ -157,7 +156,7 @@ const AllAssignedEntity = () => {
 
   let working = statusData?.allEntityStatusCount?.working;
   let breakdown = statusData?.allEntityStatusCount?.breakdown;
-  let idle = statusData?.allEntityStatusCount?.idle;
+  let critical = statusData?.allEntityStatusCount?.critical;
 
   let options: any = [];
   ISLANDS?.map((island: string) => {
@@ -317,10 +316,10 @@ const AllAssignedEntity = () => {
             }}
             viewport={{ once: true }}
           >
-            <CountUp end={idle} duration={1} />
+            <CountUp end={critical} duration={1} />
           </motion.div>
           <motion.div
-            className={classes["idle"]}
+            className={classes["critical"]}
             initial={{ x: -20, opacity: 0 }}
             whileInView={{
               x: 0,
@@ -333,7 +332,7 @@ const AllAssignedEntity = () => {
             }}
             viewport={{ once: true }}
           >
-            Idle
+            Critical
           </motion.div>
         </div>
         <div className={classes["counter-wrapper"]}>

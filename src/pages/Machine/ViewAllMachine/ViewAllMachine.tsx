@@ -37,6 +37,7 @@ import {
   TypeSelectorOptionProps,
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { WarningOutlined } from "@ant-design/icons";
 
 const Machinery = () => {
   const { user: self } = useContext(UserContext);
@@ -271,7 +272,7 @@ const Machinery = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let idle = 0;
+  let critical = 0;
   let working = 0;
   let breakdown = 0;
   let dispose = 0;
@@ -279,11 +280,11 @@ const Machinery = () => {
 
   const statusCountData = statusData?.allEntityStatusCount;
   if (statusCountData) {
-    idle = statusCountData?.idle;
+    critical = statusCountData?.critical;
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
     dispose = statusCountData?.dispose;
-    total = idle + working + breakdown + dispose;
+    total = critical + working + breakdown + dispose;
   }
 
   const clearAll = () => {
@@ -536,11 +537,11 @@ const Machinery = () => {
           }}
         >
           <StatusCard
-            amountOne={idle}
-            icon={<FaSpinner />}
-            iconBackgroundColor={"var(--idle-bg)"}
-            iconColor={"var(--idle-color)"}
-            name={"Idle"}
+            amountOne={critical}
+            icon={<WarningOutlined />}
+            iconBackgroundColor={"var(--critical-bg)"}
+            iconColor={"var(--critical-color)"}
+            name={"Critical"}
           />
         </motion.div>
         <motion.div

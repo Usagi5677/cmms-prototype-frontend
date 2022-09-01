@@ -13,6 +13,7 @@ import EntityMaintenance from "../../components/DashboardComponents/Entity/Entit
 import EntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/EntityUtilization";
 import { hasPermissions } from "../../helpers/permissions";
 import { motion } from "framer-motion";
+import { WarningOutlined } from "@ant-design/icons";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -35,14 +36,14 @@ const Dashboard = () => {
     getAllEntityStatusCount();
   }, [getAllEntityStatusCount]);
 
-  let idle = 0;
+  let critical = 0;
   let working = 0;
   let breakdown = 0;
   let dispose = 0;
 
   const statusCountData = statusData?.allEntityStatusCount;
   if (statusCountData) {
-    idle = statusCountData?.idle;
+    critical = statusCountData?.critical;
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
     dispose = statusCountData?.dispose;
@@ -80,11 +81,11 @@ const Dashboard = () => {
             }}
           >
             <StatusCard
-              amountOne={idle}
-              icon={<FaSpinner />}
-              iconBackgroundColor={"var(--idle-bg)"}
-              iconColor={"var(--idle-color)"}
-              name={"Idle"}
+              amountOne={critical}
+              icon={<WarningOutlined />}
+              iconBackgroundColor={"var(--critical-bg)"}
+              iconColor={"var(--critical-color)"}
+              name={"Critical"}
             />
           </motion.div>
 

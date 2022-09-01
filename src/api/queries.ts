@@ -394,26 +394,12 @@ export const GET_CHECKLIST = gql`
   }
 `;
 
-export const GET_ALL_MACHINE_AND_TRANSPORTATION_STATUS_COUNT = gql`
-  query allMachineAndTransportStatusCount($isAssigned: Boolean) {
-    allMachineAndTransportStatusCount(isAssigned: $isAssigned) {
-      machineWorking
-      machineIdle
-      machineBreakdown
-      machineDispose
-      transportationWorking
-      transportationIdle
-      transportationBreakdown
-      transportationDispose
-    }
-  }
-`;
 
 export const GET_ALL_ENTITY_STATUS_COUNT = gql`
   query allEntityStatusCount($isAssigned: Boolean, $entityType: String) {
     allEntityStatusCount(isAssigned: $isAssigned, entityType: $entityType) {
       working
-      idle
+      critical
       breakdown
       dispose
     }
