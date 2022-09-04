@@ -394,7 +394,6 @@ export const GET_CHECKLIST = gql`
   }
 `;
 
-
 export const GET_ALL_ENTITY_STATUS_COUNT = gql`
   query allEntityStatusCount($isAssigned: Boolean, $entityType: String) {
     allEntityStatusCount(isAssigned: $isAssigned, entityType: $entityType) {
@@ -552,7 +551,7 @@ export const ALL_ENTITY = gql`
     $search: String
     $createdByUserId: String
     $entityType: String
-    $status: [EntityStatus!]
+    $status: [String!]
     $locationIds: [Int!]
     $department: [String!]
     $typeId: [Int!]
@@ -1206,7 +1205,7 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
     $last: Int
     $search: String
     $assignedToId: Int
-    $status: [EntityStatus!]
+    $status: [String!]
     $locationIds: [Int!]
     $isAssigned: Boolean
   ) {

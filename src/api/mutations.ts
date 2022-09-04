@@ -812,7 +812,7 @@ export const DELETE_ENTITY = gql`
 `;
 
 export const SET_ENTITY_STATUS = gql`
-  mutation ($entityId: Int!, $status: EntityStatus!) {
+  mutation ($entityId: Int!, $status: String!) {
     setEntityStatus(entityId: $entityId, status: $status)
   }
 `;
