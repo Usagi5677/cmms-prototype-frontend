@@ -91,7 +91,7 @@ const ViewEntity = () => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while unassigning user.");
       },
-      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity"],
+      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity", "getAllEntity"],
     }
   );
 
