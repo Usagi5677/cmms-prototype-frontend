@@ -284,6 +284,7 @@ const Machinery = () => {
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
     dispose = statusCountData?.dispose;
+    console.log(statusCountData);
     total = critical + working + breakdown + dispose;
   }
 
@@ -580,7 +581,6 @@ const Machinery = () => {
         </motion.div>
       </div>
       <div className={classes["wrapper"]}>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
             <motion.div
@@ -635,6 +635,7 @@ const Machinery = () => {
             pageLimit={20}
           />
         </div>
+        <FilterOptions options={filterOptions} onClick={clearAll} />
       </div>
     </>
   );

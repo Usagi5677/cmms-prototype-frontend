@@ -215,6 +215,7 @@ a {
   --scrollbar-thumb-bg: #cdcdcd;
   --scrollbar-thumb-bg-hover: #a6a6a6;
   --scrollbar-thumb-bg-active: #606060;
+  --card-border: none;
 }
 
 [data-theme="dark"] {
@@ -360,6 +361,7 @@ a {
   --scrollbar-thumb-bg: #747474;
   --scrollbar-thumb-bg-hover: #606062;
   --scrollbar-thumb-bg-active: #606060;
+  --card-border: 1px solid var(--ant-primary-color);
 }
 
 ::-webkit-scrollbar-corner {
@@ -637,16 +639,17 @@ em {
   padding-right: 0 !important;
 }
 
-@media only screen and (min-width: 1280px) {
-  #filterCollapse {
-    margin-right: 20px;
-  }
+
+#filterCollapse {
+  margin-top: 20px;
 }
 #filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-  padding: 0 !important;
-  border-bottom: 1px solid transparent;
-  cursor: default !important;
-  padding: 6px 10px !important;
+
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px
   
 }
 #filterCollapse
@@ -671,9 +674,17 @@ em {
 }
 
 #filterCollapse .ant-collapse-ghost {
-  border: none !important;
+  border: var(--card-border) !important;
   background-color: var(--card-bg);
   border-radius: 20px !important;
+}
+
+@media only screen and (min-width: 1280px) {
+  #filterCollapse {
+    margin-right: 0;
+    margin-left: 20px;
+    margin-top: 0;
+  }
 }
 
 @media only screen and (min-width: 600px) {

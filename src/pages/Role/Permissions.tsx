@@ -79,6 +79,7 @@ const Permissions = () => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
+        border: "var(--card-border)"
       }}
     >
       <div style={{ marginTop: "1rem", display: "flex" }}>

@@ -30,6 +30,7 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
+        border: "var(--card-border)"
       }}
     >
       <Tabs defaultActiveKey="checklist">

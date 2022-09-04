@@ -580,7 +580,6 @@ const Vessels = () => {
         </motion.div>
       </div>
       <div className={classes["wrapper"]}>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
             <motion.div
@@ -635,6 +634,7 @@ const Vessels = () => {
             pageLimit={20}
           />
         </div>
+        <FilterOptions options={filterOptions} onClick={clearAll} />
       </div>
     </>
   );

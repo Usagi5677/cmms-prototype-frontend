@@ -581,7 +581,6 @@ const Vehicles = () => {
         </motion.div>
       </div>
       <div className={classes["wrapper"]}>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
             <motion.div
@@ -636,6 +635,7 @@ const Vehicles = () => {
             pageLimit={20}
           />
         </div>
+        <FilterOptions options={filterOptions} onClick={clearAll} />
       </div>
     </>
   );
