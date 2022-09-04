@@ -17,6 +17,7 @@ import {
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ENTITY_LATEST_ATTACHMENT,
   GET_SINGLE_ENTITY,
+  ME_QUERY,
 } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./ViewEntity.module.css";
@@ -91,7 +92,7 @@ const ViewEntity = () => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while unassigning user.");
       },
-      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity", "getAllEntity","me"],
+      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity", "getAllEntity", { query: ME_QUERY }],
     }
   );
 

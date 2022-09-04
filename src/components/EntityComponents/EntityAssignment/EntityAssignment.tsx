@@ -13,7 +13,7 @@ import {
 import { useForm } from "antd/lib/form/Form";
 import { useEffect, useState } from "react";
 import { FaUserCog } from "react-icons/fa";
-import { GET_USERS_WITH_PERMISSION } from "../../../api/queries";
+import { GET_USERS_WITH_PERMISSION, ME_QUERY } from "../../../api/queries";
 import { ASSIGN_USER_TO_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { UserTagStringToColor } from "../../../helpers/style";
@@ -49,7 +49,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "getAllEntity",
-        "me"
+        { query: ME_QUERY }
       ],
     }
   );
