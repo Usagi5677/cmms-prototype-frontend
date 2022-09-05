@@ -641,7 +641,7 @@ em {
 
 
 #filterCollapse {
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 #filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
 
@@ -683,7 +683,7 @@ em {
   #filterCollapse {
     margin-right: 0;
     margin-left: 20px;
-    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 

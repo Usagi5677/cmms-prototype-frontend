@@ -64,7 +64,7 @@
 
 .wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 @media only screen and (min-width: 800px) {
   .options-wrapper {
