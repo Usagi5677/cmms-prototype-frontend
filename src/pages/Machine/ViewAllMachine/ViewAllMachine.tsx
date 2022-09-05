@@ -284,7 +284,6 @@ const Machinery = () => {
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
     dispose = statusCountData?.dispose;
-    console.log(statusCountData);
     total = critical + working + breakdown + dispose;
   }
 

@@ -48,7 +48,6 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
         "getSingleEntity",
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
-        "getAllEntity",
         { query: ME_QUERY }
       ],
     }
