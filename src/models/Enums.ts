@@ -69,7 +69,7 @@ export interface TypeSelectorOptionProps {
 
 export interface DefaultBooleanOptionProps {
   onChange?: (val: CheckboxChangeEvent) => void;
-  assignedToMe?: boolean;
+  flag?: boolean;
   name?: string;
 }
 
@@ -96,4 +96,5 @@ export interface FilterOptionProps {
   gteCurrentRunningOptions?: SearchReadingOptionProps;
   lteLastServiceOptions?: SearchReadingOptionProps;
   gteLastServiceOptions?: SearchReadingOptionProps;
+  isIncompleteChecklistTaskOptions?: DefaultBooleanOptionProps;
 }

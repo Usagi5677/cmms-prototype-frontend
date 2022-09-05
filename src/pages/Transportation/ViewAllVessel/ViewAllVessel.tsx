@@ -55,11 +55,13 @@ const Vessels = () => {
   const [engine, setEngine] = useState<string[]>([]);
   const [measurement, setMeasurement] = useState<string[]>([]);
   const [isAssigned, setIsAssigned] = useState<boolean>(false);
-  const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
+  //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
   const [lteCurrentRunning, setLteCurrentRunning] = useState("");
   const [gteCurrentRunning, setGteCurrentRunning] = useState("");
   const [lteLastService, setLteLastService] = useState("");
   const [gteLastService, setGteLastService] = useState("");
+  const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -80,6 +82,7 @@ const Vessels = () => {
       gteCurrentRunning: string;
       lteLastService: string;
       gteLastService: string;
+      isIncompleteChecklistTask: boolean;
     }
   >({
     first: 20,
@@ -102,6 +105,7 @@ const Vessels = () => {
     gteCurrentRunning: "",
     lteLastService: "",
     gteLastService: "",
+    isIncompleteChecklistTask: false,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -139,11 +143,12 @@ const Vessels = () => {
     engineValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
-    assignedToMeValue: number,
+    //assignedToMeValue: number,
     lteCurrentRunningValue: string,
     gteCurrentRunningValue: string,
     lteLastServiceValue: string,
-    gteLastServiceValue: string
+    gteLastServiceValue: string,
+    isIncompleteChecklistTaskValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -161,11 +166,12 @@ const Vessels = () => {
           engine: engineValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
-          assignedToId: assignedToMeValue,
+          //assignedToId: assignedToMeValue,
           lteCurrentRunning: lteCurrentRunningValue,
           gteCurrentRunning: gteCurrentRunningValue,
           lteLastService: lteLastServiceValue,
           gteLastService: gteLastServiceValue,
+          isIncompleteChecklistTask: isIncompleteChecklistTaskValue,
           first: 20,
           last: null,
           before: null,
@@ -192,11 +198,12 @@ const Vessels = () => {
       engine,
       measurement,
       isAssigned,
-      assignedToMe!,
+      //assignedToMe!,
       lteCurrentRunning,
       gteCurrentRunning,
       lteLastService,
-      gteLastService
+      gteLastService,
+      isIncompleteChecklistTask
     );
     // eslint-disable-next-line
   }, [
@@ -210,11 +217,12 @@ const Vessels = () => {
     engine,
     measurement,
     isAssigned,
-    assignedToMe,
+    //assignedToMe,
     lteCurrentRunning,
     gteCurrentRunning,
     lteLastService,
     gteLastService,
+    isIncompleteChecklistTask,
   ]);
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -303,7 +311,8 @@ const Vessels = () => {
     setMeasurement([]);
     setTypeId([]);
     setIsAssigned(false);
-    setAssignedToMe(null);
+    setIsIncompleteChecklistTask(false);
+    //setAssignedToMe(null);
   };
   const searchOptions: SearchOptionProps = {
     searchValue: search,
@@ -423,6 +432,20 @@ const Vessels = () => {
     },
     name: "Show all assigned vessels",
   };
+  const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
+    onChange: (isIncompleteChecklistTask: CheckboxChangeEvent) => {
+      setFilter({
+        ...filter,
+        isIncompleteChecklistTask: isIncompleteChecklistTask?.target?.checked,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
+    },
+    name: "Show all vessels with incomplete checklist",
+  };
   /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {
     onChange: (assignedToMe: CheckboxChangeEvent) => {
@@ -477,6 +500,7 @@ const Vessels = () => {
     gteCurrentRunningOptions,
     lteLastServiceOptions,
     gteLastServiceOptions,
+    isIncompleteChecklistTaskOptions,
   };
 
   return (
