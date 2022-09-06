@@ -26,6 +26,7 @@ export interface TaskListProps {
   isDeleted?: boolean | undefined;
   makingTemplate?: boolean;
   isOlder?: boolean;
+  isCopy?: boolean;
 }
 
 export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
@@ -35,6 +36,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
   isDeleted,
   makingTemplate,
   isOlder,
+  isCopy,
 }) => {
   const { user: self } = useContext(UserContext);
   const [toggleTask, { loading: toggling }] = useMutation(
@@ -120,22 +122,24 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                             </span>
                           </div>
                         )}
-                        {!makingTemplate && (
-                          <AddPeriodicMaintenanceComment
-                            periodicMaintenance={periodicMaintenance}
-                            task={task}
-                            type={"Remark"}
-                            isDeleted={isDeleted}
-                            isOlder={isOlder}
-                            makingTemplate={makingTemplate}
-                          />
-                        )}
+                        {!isCopy ||
+                          (makingTemplate && (
+                            <AddPeriodicMaintenanceComment
+                              periodicMaintenance={periodicMaintenance}
+                              task={task}
+                              type={"Remark"}
+                              isDeleted={isDeleted}
+                              isOlder={isOlder}
+                              isCopy={isCopy}
+                              makingTemplate={makingTemplate}
+                            />
+                          ))}
 
                         {!makingTemplate && !isDeleted && (
                           <Checkbox
                             checked={task.completedAt !== null}
                             style={{ marginRight: ".5rem" }}
-                            disabled={isOlder}
+                            disabled={isOlder || !isCopy}
                             onChange={(e) =>
                               toggleTask({
                                 variables: {
@@ -177,7 +181,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                         <PeriodicMaintenanceComment
                           comment={remark}
                           isRemark
-                          key={"c" + remark.id}
+                          key={remark.id}
                           isDeleted={isDeleted}
                           isOlder={isOlder}
                         />

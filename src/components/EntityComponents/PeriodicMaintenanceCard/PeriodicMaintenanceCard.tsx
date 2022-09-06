@@ -77,7 +77,7 @@ const PeriodicMaintenanceCard = ({
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
         <Collapse.Panel
           header={
-            <>
+            <div className={classes["wrapper"]}>
               <div
                 className={classes["header-container"]}
                 onClick={(event) => event.stopPropagation()}
@@ -124,7 +124,13 @@ const PeriodicMaintenanceCard = ({
                 <div className={classes["third-block"]}>
                   <Checkbox
                     checked={periodicMaintenance.verifiedAt !== null}
-                    disabled={isDeleted || isOlder}
+                    disabled={
+                      isDeleted ||
+                      isOlder ||
+                      periodicMaintenance.type === "Template"
+                        ? true
+                        : false
+                    }
                     onChange={(e) =>
                       toggleVerify({
                         variables: {
@@ -162,7 +168,14 @@ const PeriodicMaintenanceCard = ({
                   </div>
                 </div>
               </div>
-            </>
+              {periodicMaintenance.tasks!.length > 0 && periodicMaintenance.type === "Copy" && (
+                <Progress
+                  percent={progressPercentage}
+                  strokeWidth={5}
+                  style={{ marginBottom: 10, paddingRight: 10 }}
+                />
+              )}
+            </div>
           }
           key={periodicMaintenance.id}
         >
@@ -174,50 +187,49 @@ const PeriodicMaintenanceCard = ({
                 isOlder={isOlder}
               />
             )}
-
-            <div className={classes["reading"]}>
-              <span className={classes["reading-title"]}>
-                Current meter reading:
-              </span>
-              <span>{periodicMaintenance?.currentMeterReading}</span>
-            </div>
-            {periodicMaintenance.verifiedAt && (
-              <div>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>Verified by:</span>
-                  <span>
-                    {periodicMaintenance.verifiedBy?.fullName} (
-                    {periodicMaintenance.verifiedBy?.rcno})
-                  </span>
-                </div>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>Verified at:</span>
-                  <span
-                    title={moment(periodicMaintenance.verifiedAt).format(
-                      DATETIME_FORMATS.FULL
-                    )}
-                  >
-                    {moment(periodicMaintenance.verifiedAt).format(
-                      DATETIME_FORMATS.SHORT
-                    )}
-                  </span>
-                </div>
+            <div className={classes["info-wrapper"]}>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>
+                  Current meter reading:
+                </span>
+                <span>{periodicMaintenance?.currentMeterReading}</span>
               </div>
-            )}
-            <div className={classes["task-progress"]}>Task Progress</div>
-            {periodicMaintenance.tasks!.length > 0 && (
-              <Progress
-                percent={progressPercentage}
-                strokeWidth={5}
-                style={{ marginBottom: 10, paddingRight: 10 }}
-              />
-            )}
+              {periodicMaintenance.verifiedAt && (
+                <div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Verified by:
+                    </span>
+                    <span>
+                      {periodicMaintenance.verifiedBy?.fullName} (
+                      {periodicMaintenance.verifiedBy?.rcno})
+                    </span>
+                  </div>
+                  <div className={classes["reading"]}>
+                    <span className={classes["reading-title"]}>
+                      Verified at:
+                    </span>
+                    <span
+                      title={moment(periodicMaintenance.verifiedAt).format(
+                        DATETIME_FORMATS.FULL
+                      )}
+                    >
+                      {moment(periodicMaintenance.verifiedAt).format(
+                        DATETIME_FORMATS.SHORT
+                      )}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <PeriodicMaintenanceTaskList
               periodicMaintenance={periodicMaintenance}
               tasks={taskData}
               level={0}
               isDeleted={isDeleted}
               isOlder={isOlder}
+              isCopy={periodicMaintenance.type === "Copy"}
             />
             {!isDeleted ||
               (!isOlder && (
@@ -227,26 +239,33 @@ const PeriodicMaintenanceCard = ({
                   />
                 </div>
               ))}
-            {periodicMaintenance?.comments?.map(
-              (observation: PeriodicMaintenanceCommentModel) => {
-                return (
-                  observation?.type === "Observation" && (
-                    <PeriodicMaintenanceComment
-                      comment={observation}
-                      key={"o" + observation.id}
-                      isDeleted={isDeleted}
-                      isOlder={isOlder}
-                    />
-                  )
-                );
-              }
+            <div className={classes["observation-wrapper"]}>
+              {periodicMaintenance?.comments?.map(
+                (observation: PeriodicMaintenanceCommentModel) => {
+                  return (
+                    observation?.type === "Observation" && (
+                      <PeriodicMaintenanceComment
+                        comment={observation}
+                        key={observation.id}
+                        isDeleted={isDeleted}
+                        isOlder={isOlder}
+                        isCopy={periodicMaintenance.type === "Copy"}
+                      />
+                    )
+                  );
+                }
+              )}
+            </div>
+
+            {!isDeleted && !isOlder && periodicMaintenance.type === "Copy" && (
+              <AddPeriodicMaintenanceObservation
+                periodicMaintenance={periodicMaintenance}
+                type={"Observation"}
+                isDeleted={isDeleted}
+                isOlder={isOlder}
+                isCopy={periodicMaintenance.type === "Copy"}
+              />
             )}
-            <AddPeriodicMaintenanceObservation
-              periodicMaintenance={periodicMaintenance}
-              type={"Observation"}
-              isDeleted={isDeleted}
-              isOlder={isOlder}
-            />
           </div>
         </Collapse.Panel>
       </Collapse>

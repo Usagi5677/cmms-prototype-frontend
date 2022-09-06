@@ -82,6 +82,18 @@
   padding-right: 5px;
 }
 
+.wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.info-wrapper {
+  margin-bottom: 10px;
+}
+.observation-wrapper {
+  padding: 0 10px;
+  padding-bottom: 10px
+}
 @media only screen and (min-width: 600px) {
   .header-container {
     flex-direction: row;
@@ -101,6 +113,10 @@
     flex: 1;
     padding-right: 0;
     padding-bottom: 0;
+  }
+  .observation-wrapper {
+    padding-right: 0;
+    padding-left: 0
   }
 }
 @media only screen and (min-width: 800px) {

@@ -10,6 +10,7 @@ export interface AddPeriodicMaintenanceObservationProps {
   text?: string;
   isDeleted?: boolean;
   isOlder?: boolean;
+  isCopy?: boolean;
 }
 
 export const AddPeriodicMaintenanceObservation: React.FC<
@@ -20,6 +21,7 @@ export const AddPeriodicMaintenanceObservation: React.FC<
   text = "Add new observation",
   isDeleted,
   isOlder,
+  isCopy
 }) => {
   const [details, setDetails] = useState("");
 
@@ -56,7 +58,7 @@ export const AddPeriodicMaintenanceObservation: React.FC<
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         onKeyDown={submit}
-        disabled={loading || isDeleted || isOlder}
+        disabled={loading || isDeleted || isOlder || !isCopy}
         style={{
           border: "solid 1px var(--border-2)",
           borderRadius: 5,

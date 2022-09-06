@@ -15,11 +15,12 @@ export interface PeriodicMaintenanceCommentProps {
   isRemark?: boolean;
   isDeleted?: boolean;
   isOlder?: boolean;
+  isCopy?: boolean;
 }
 
 export const PeriodicMaintenanceComment: React.FC<
   PeriodicMaintenanceCommentProps
-> = ({ comment, isRemark, isDeleted, isOlder }) => {
+> = ({ comment, isRemark, isDeleted, isOlder, isCopy }) => {
   const { user } = useContext(UserContext);
   return (
     <div
@@ -58,6 +59,7 @@ export const PeriodicMaintenanceComment: React.FC<
               comment={comment}
               isDeleted={isDeleted}
               isOlder={isOlder}
+              isCopy={isCopy}
             />
           )}
         </div>
