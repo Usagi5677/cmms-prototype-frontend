@@ -58,6 +58,8 @@ const Machinery = () => {
   const [gteCurrentRunning, setGteCurrentRunning] = useState("");
   const [lteLastService, setLteLastService] = useState("");
   const [gteLastService, setGteLastService] = useState("");
+  const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -78,6 +80,7 @@ const Machinery = () => {
       gteCurrentRunning: string;
       lteLastService: string;
       gteLastService: string;
+      isIncompleteChecklistTask: boolean;
     }
   >({
     first: 20,
@@ -100,6 +103,7 @@ const Machinery = () => {
     gteCurrentRunning: "",
     lteLastService: "",
     gteLastService: "",
+    isIncompleteChecklistTask: false,
   });
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -171,7 +175,8 @@ const Machinery = () => {
     lteCurrentRunningValue: string,
     gteCurrentRunningValue: string,
     lteLastServiceValue: string,
-    gteLastServiceValue: string
+    gteLastServiceValue: string,
+    isIncompleteChecklistTaskValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -194,6 +199,7 @@ const Machinery = () => {
           gteCurrentRunning: gteCurrentRunningValue,
           lteLastService: lteLastServiceValue,
           gteLastService: gteLastServiceValue,
+          isIncompleteChecklistTask: isIncompleteChecklistTaskValue,
           first: 20,
           last: null,
           before: null,
@@ -224,7 +230,8 @@ const Machinery = () => {
       lteCurrentRunning,
       gteCurrentRunning,
       lteLastService,
-      gteLastService
+      gteLastService,
+      isIncompleteChecklistTask
     );
     // eslint-disable-next-line
   }, [
@@ -243,6 +250,7 @@ const Machinery = () => {
     gteCurrentRunning,
     lteLastService,
     gteLastService,
+    isIncompleteChecklistTask,
   ]);
 
   // Pagination functions
@@ -302,6 +310,7 @@ const Machinery = () => {
     setMeasurement([]);
     setTypeId([]);
     setIsAssigned(false);
+    setIsIncompleteChecklistTask(false);
     //setAssignedToMe(null);
   };
   const searchOptions: SearchOptionProps = {
@@ -422,6 +431,20 @@ const Machinery = () => {
     },
     name: "Show all assigned machinery",
   };
+  const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
+    onChange: (isIncompleteChecklistTask: CheckboxChangeEvent) => {
+      setFilter({
+        ...filter,
+        isIncompleteChecklistTask: isIncompleteChecklistTask?.target?.checked,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
+    },
+    name: "Show all machinery with incomplete checklist",
+  };
   /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {
     onChange: (assignedToMe: CheckboxChangeEvent) => {
@@ -476,6 +499,7 @@ const Machinery = () => {
     gteCurrentRunningOptions,
     lteLastServiceOptions,
     gteLastServiceOptions,
+    isIncompleteChecklistTaskOptions,
   };
 
   return (
@@ -580,7 +604,6 @@ const Machinery = () => {
         </motion.div>
       </div>
       <div className={classes["wrapper"]}>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
             <motion.div
@@ -635,6 +658,7 @@ const Machinery = () => {
             pageLimit={20}
           />
         </div>
+        <FilterOptions options={filterOptions} onClick={clearAll} />
       </div>
     </>
   );

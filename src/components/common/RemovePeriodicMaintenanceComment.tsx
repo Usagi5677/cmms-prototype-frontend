@@ -10,11 +10,12 @@ export interface RemovePeriodicMaintenanceCommentProps {
   comment: PeriodicMaintenanceCommentModel;
   isDeleted?: boolean;
   isOlder?: boolean;
+  isCopy?: boolean;
 }
 
 export const RemovePeriodicMaintenanceComment: React.FC<
   RemovePeriodicMaintenanceCommentProps
-> = ({ comment, isDeleted, isOlder }) => {
+> = ({ comment, isDeleted, isOlder, isCopy }) => {
   const [removeComment, { loading }] = useMutation(
     DELETE_PERIODIC_MAINTENANCE_COMMENT,
     {
@@ -30,7 +31,7 @@ export const RemovePeriodicMaintenanceComment: React.FC<
   ) : (
     <Popconfirm
       key="delete"
-      disabled={loading || isDeleted || isOlder}
+      disabled={loading || isDeleted || isOlder || !isCopy}
       title={`Are you sure to remove?`}
       onConfirm={() => {
         removeComment({

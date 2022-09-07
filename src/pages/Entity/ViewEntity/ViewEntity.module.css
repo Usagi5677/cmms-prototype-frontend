@@ -14,6 +14,7 @@
   flex-direction: column;
   width: 100%;
   color: var(--text-primary);
+  border: var(--card-border);
 }
 
 .info-container {
@@ -24,6 +25,7 @@
   font-size: 0.75rem;
   width: 100%;
   margin-bottom: 20px;
+  border: var(--card-border);
 }
 
 .first-wrapper {

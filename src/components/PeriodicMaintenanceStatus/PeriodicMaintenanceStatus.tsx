@@ -248,7 +248,7 @@ export const PeriodicMaintenancesStatus: React.FC<
 
   if (summary?.allTaskCompletion === 0) {
     itemColor = "#52c41a";
-  } else if (summary?.someTaskCompletion === 1) {
+  } else if (summary?.someTaskCompletion < 1) {
     itemColor = "#faad13";
   } else {
     itemColor = "#fa541c";
@@ -300,7 +300,7 @@ export const PeriodicMaintenancesStatus: React.FC<
           alignItems: "center",
         }}
       >
-        {summary?.observations <= 1 && (
+        {summary?.observations < 1 && (
           <div>
             <CommentOutlined
               style={{
@@ -310,7 +310,7 @@ export const PeriodicMaintenancesStatus: React.FC<
             />
           </div>
         )}
-        {summary?.remarks <= 1 && (
+        {summary?.remarks < 1 && (
           <div>
             <MessageOutlined
               style={{
@@ -320,7 +320,7 @@ export const PeriodicMaintenancesStatus: React.FC<
             />
           </div>
         )}
-        {summary?.verified <= 1 && (
+        {summary?.verified < 1 && (
           <div>
             <CheckOutlined
               style={{

@@ -28,6 +28,7 @@ export const Templates: React.FC<TemplatesProps> = ({}) => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
+        border: "var(--card-border)"
       }}
     >
       <Tabs defaultActiveKey="checklist">

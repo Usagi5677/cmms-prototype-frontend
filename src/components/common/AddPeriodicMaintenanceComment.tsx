@@ -21,6 +21,7 @@ export interface AddPeriodicMaintenanceCommentProps {
   type: string;
   isDeleted?: boolean;
   isOlder?: boolean;
+  isCopy?: boolean;
   makingTemplate?: boolean;
 }
 
@@ -32,7 +33,8 @@ export const AddPeriodicMaintenanceComment: React.FC<
   type,
   isDeleted,
   isOlder,
-  makingTemplate,
+  isCopy,
+  makingTemplate
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -70,7 +72,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
           style={{ marginLeft: ".5rem", marginRight: ".5rem" }}
           onClick={() => setVisible(true)}
         >
-          <MessageOutlined disabled={isDeleted || isOlder || makingTemplate} />
+          <MessageOutlined disabled={isDeleted || isOlder || !isCopy || makingTemplate} />
         </div>
       </Tooltip>
       <Modal
@@ -118,7 +120,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
                   htmlType="submit"
                   loading={loading}
                   className="primaryButton"
-                  disabled={isDeleted || isOlder || makingTemplate}
+                  disabled={isDeleted || isOlder || !isCopy || makingTemplate}
                 >
                   Add
                 </Button>

@@ -28,6 +28,7 @@ export const Config: React.FC<ConfigProps> = ({}) => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
+        border: "var(--card-border)"
       }}
     >
       <Tabs defaultActiveKey="types">

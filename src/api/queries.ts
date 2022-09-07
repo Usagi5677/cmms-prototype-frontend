@@ -565,6 +565,7 @@ export const ALL_ENTITY = gql`
     $gteCurrentRunning: String
     $lteLastService: String
     $gteLastService: String
+    $isIncompleteChecklistTask: Boolean
   ) {
     getAllEntity(
       after: $after
@@ -588,6 +589,7 @@ export const ALL_ENTITY = gql`
       gteCurrentRunning: $gteCurrentRunning
       lteLastService: $lteLastService
       gteLastService: $gteLastService
+      isIncompleteChecklistTask: $isIncompleteChecklistTask
     ) {
       pageInfo {
         endCursor

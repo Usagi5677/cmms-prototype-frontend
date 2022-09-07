@@ -56,11 +56,13 @@ const Vehicles = () => {
   const [engine, setEngine] = useState<string[]>([]);
   const [measurement, setMeasurement] = useState<string[]>([]);
   const [isAssigned, setIsAssigned] = useState<boolean>(false);
-  const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
+  //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
   const [lteCurrentRunning, setLteCurrentRunning] = useState("");
   const [gteCurrentRunning, setGteCurrentRunning] = useState("");
   const [lteLastService, setLteLastService] = useState("");
   const [gteLastService, setGteLastService] = useState("");
+  const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
@@ -81,6 +83,7 @@ const Vehicles = () => {
       gteCurrentRunning: string;
       lteLastService: string;
       gteLastService: string;
+      isIncompleteChecklistTask: boolean;
     }
   >({
     first: 20,
@@ -103,6 +106,7 @@ const Vehicles = () => {
     gteCurrentRunning: "",
     lteLastService: "",
     gteLastService: "",
+    isIncompleteChecklistTask: false,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -140,11 +144,12 @@ const Vehicles = () => {
     engineValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
-    assignedToMeValue: number,
+    //assignedToMeValue: number,
     lteCurrentRunningValue: string,
     gteCurrentRunningValue: string,
     lteLastServiceValue: string,
-    gteLastServiceValue: string
+    gteLastServiceValue: string,
+    isIncompleteChecklistTaskValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -162,11 +167,12 @@ const Vehicles = () => {
           engine: engineValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
-          assignedToId: assignedToMeValue,
+          //assignedToId: assignedToMeValue,
           lteCurrentRunning: lteCurrentRunningValue,
           gteCurrentRunning: gteCurrentRunningValue,
           lteLastService: lteLastServiceValue,
           gteLastService: gteLastServiceValue,
+          isIncompleteChecklistTask: isIncompleteChecklistTaskValue,
           first: 20,
           last: null,
           before: null,
@@ -193,11 +199,12 @@ const Vehicles = () => {
       engine,
       measurement,
       isAssigned,
-      assignedToMe!,
+      //assignedToMe!,
       lteCurrentRunning,
       gteCurrentRunning,
       lteLastService,
-      gteLastService
+      gteLastService,
+      isIncompleteChecklistTask
     );
     // eslint-disable-next-line
   }, [
@@ -211,11 +218,12 @@ const Vehicles = () => {
     engine,
     measurement,
     isAssigned,
-    assignedToMe,
+    //assignedToMe,
     lteCurrentRunning,
     gteCurrentRunning,
     lteLastService,
     gteLastService,
+    isIncompleteChecklistTask,
   ]);
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -304,7 +312,8 @@ const Vehicles = () => {
     setMeasurement([]);
     setTypeId([]);
     setIsAssigned(false);
-    setAssignedToMe(null);
+    setIsIncompleteChecklistTask(false);
+    //setAssignedToMe(null);
   };
   const searchOptions: SearchOptionProps = {
     searchValue: search,
@@ -424,6 +433,20 @@ const Vehicles = () => {
     },
     name: "Show all assigned vehicles",
   };
+  const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
+    onChange: (isIncompleteChecklistTask: CheckboxChangeEvent) => {
+      setFilter({
+        ...filter,
+        isIncompleteChecklistTask: isIncompleteChecklistTask?.target?.checked,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
+    },
+    name: "Show all vehicles with incomplete checklist",
+  };
   /*
   const assignedToMeOptions: DefaultBooleanOptionProps = {
     onChange: (assignedToMe: CheckboxChangeEvent) => {
@@ -478,6 +501,7 @@ const Vehicles = () => {
     gteCurrentRunningOptions,
     lteLastServiceOptions,
     gteLastServiceOptions,
+    isIncompleteChecklistTaskOptions,
   };
 
   return (
@@ -581,7 +605,6 @@ const Vehicles = () => {
         </motion.div>
       </div>
       <div className={classes["wrapper"]}>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
             <motion.div
@@ -636,6 +659,7 @@ const Vehicles = () => {
             pageLimit={20}
           />
         </div>
+        <FilterOptions options={filterOptions} onClick={clearAll} />
       </div>
     </>
   );

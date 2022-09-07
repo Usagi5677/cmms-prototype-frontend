@@ -165,16 +165,26 @@ const FilterOptions = ({
                       />
                     </Form.Item>
                   </div>
+                  <div className={classes["item"]}>
+                    <Form.Item name="incompleteChecklistTask">
+                      <AssignedOrNotCheckbox
+                        onChange={
+                          options?.isIncompleteChecklistTaskOptions!.onChange
+                        }
+                        name={options?.isIncompleteChecklistTaskOptions!.name}
+                      />
+                    </Form.Item>
+                  </div>
                   {/*
-            <div className={classes["item"]}>
-              <Form.Item name="assignedToMe">
-                <AssignedOrNotCheckbox
-                  onChange={options?.assignedToMeOptions!.onChange}
-                  name={options?.assignedToMeOptions!.name}
-                />
-              </Form.Item>
-            </div>
-            */}
+                  <div className={classes["item"]}>
+                    <Form.Item name="assignedToMe">
+                      <AssignedOrNotCheckbox
+                        onChange={options?.assignedToMeOptions!.onChange}
+                        name={options?.assignedToMeOptions!.name}
+                      />
+                    </Form.Item>
+                  </div>
+                  */}
                 </div>
 
                 <div className={classes["item-wrapper"]}>
