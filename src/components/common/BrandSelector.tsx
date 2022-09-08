@@ -1,9 +1,7 @@
-import { useLazyQuery } from "@apollo/client";
-import { Select, Spin } from "antd";
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { BRAND, ZONE } from "../../helpers/constants";
+import { Select } from "antd";
+import React from "react";
+import { BRAND } from "../../helpers/constants";
 import { DefaultStringArrayOptionProps } from "../../models/Enums";
-
 
 export const BrandSelector: React.FC<DefaultStringArrayOptionProps> = ({
   onChange,
@@ -33,7 +31,7 @@ export const BrandSelector: React.FC<DefaultStringArrayOptionProps> = ({
       mode={multiple ? "multiple" : undefined}
       options={brandOptions}
       onChange={onChange}
-      getPopupContainer={trigger => trigger.parentNode}
+      getPopupContainer={(trigger) => trigger.parentNode}
     />
   );
 };

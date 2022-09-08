@@ -27,11 +27,11 @@ import CountUp from "react-countup";
 import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
+  DefaultNumberArrayOptionProps,
   DefaultStringArrayOptionProps,
   EntityStatus,
   EntityStatusOptionProps,
   FilterOptionProps,
-  LocationOptionProps,
   SearchOptionProps,
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
@@ -45,9 +45,9 @@ const Machinery = () => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [locationIds, setLocationIds] = useState<number[]>([]);
-  const [typeId, setTypeId] = useState<number[]>([]);
+  const [typeIds, setTypeIds] = useState<number[]>([]);
   const [status, setStatus] = useState<EntityStatus[]>([]);
-  const [zone, setZone] = useState<string[]>([]);
+  const [zoneIds, setZoneIds] = useState<number[]>([]);
   const [department, setDepartment] = useState<string[]>([]);
   const [brand, setBrand] = useState<string[]>([]);
   const [engine, setEngine] = useState<string[]>([]);
@@ -68,8 +68,8 @@ const Machinery = () => {
       status: EntityStatus[];
       locationIds: number[];
       entityType: string;
-      typeId: number[];
-      zone: string[];
+      typeIds: number[];
+      zoneIds: number[];
       department: string[];
       brand: string[];
       engine: string[];
@@ -91,8 +91,8 @@ const Machinery = () => {
     locationIds: [],
     status: [],
     entityType: "Machine",
-    typeId: [],
-    zone: [],
+    typeIds: [],
+    zoneIds: [],
     department: [],
     brand: [],
     engine: [],
@@ -162,10 +162,10 @@ const Machinery = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    locationIds: number[],
-    typeIdValue: number[],
+    locationIdsValue: number[],
+    typeIdsValue: number[],
     statusValue: EntityStatus[],
-    zoneValue: string[],
+    zoneIdsValue: number[],
     departmentValue: string[],
     brandValue: string[],
     engineValue: string[],
@@ -185,10 +185,10 @@ const Machinery = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          locationIds,
-          typeId: typeIdValue,
+          locationIds: locationIdsValue,
+          typeIds: typeIdsValue,
           status: statusValue,
-          zone: zoneValue,
+          zoneIds: zoneIdsValue,
           department: departmentValue,
           brand: brandValue,
           engine: engineValue,
@@ -218,9 +218,9 @@ const Machinery = () => {
     searchDebounced(
       search,
       locationIds,
-      typeId,
+      typeIds,
       status,
-      zone,
+      zoneIds,
       department,
       brand,
       engine,
@@ -237,9 +237,9 @@ const Machinery = () => {
   }, [
     search,
     locationIds,
-    typeId,
+    typeIds,
     status,
-    zone,
+    zoneIds,
     department,
     brand,
     engine,
@@ -303,12 +303,12 @@ const Machinery = () => {
     setGteLastService("");
     setStatus([]);
     setLocationIds([]);
-    setZone([]);
+    setZoneIds([]);
     setDepartment([]);
     setBrand([]);
     setEngine([]);
     setMeasurement([]);
-    setTypeId([]);
+    setTypeIds([]);
     setIsAssigned(false);
     setIsIncompleteChecklistTask(false);
     //setAssignedToMe(null);
@@ -343,22 +343,19 @@ const Machinery = () => {
     onClick: () => setGteLastService(""),
     width: "100%",
   };
-  const locationOptions: LocationOptionProps = {
-    setLocationId: setLocationIds,
+  const locationOptions: DefaultNumberArrayOptionProps = {
+    setId: setLocationIds,
     width: "100%",
   };
-  const zoneOptions: DefaultStringArrayOptionProps = {
-    onChange: (zone: string[]) => {
-      setFilter({
-        ...filter,
-        zone,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setZone(zone);
-    },
+  const zoneOptions: DefaultNumberArrayOptionProps = {
+    setId: setZoneIds,
+    width: "100%",
+  };
+  const typeSelectorOptions: TypeSelectorOptionProps = {
+    entityType: "Machine",
+    setTypeId: setTypeIds,
+    rounded: true,
+    multiple: true,
     width: "100%",
   };
   const departmentOptions: DefaultStringArrayOptionProps = {
@@ -474,13 +471,6 @@ const Machinery = () => {
       setStatus(status);
     },
     value: filter.status,
-    width: "100%",
-  };
-  const typeSelectorOptions: TypeSelectorOptionProps = {
-    entityType: "Machine",
-    setTypeId,
-    rounded: true,
-    multiple: true,
     width: "100%",
   };
   const filterOptions: FilterOptionProps = {

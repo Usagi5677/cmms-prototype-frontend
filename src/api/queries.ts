@@ -603,8 +603,8 @@ export const ALL_ENTITY = gql`
     $status: [String!]
     $locationIds: [Int!]
     $department: [String!]
-    $typeId: [Int!]
-    $zone: [String!]
+    $typeIds: [Int!]
+    $zoneIds: [Int!]
     $brand: [String!]
     $engine: [String!]
     $measurement: [String!]
@@ -627,8 +627,8 @@ export const ALL_ENTITY = gql`
       status: $status
       locationIds: $locationIds
       department: $department
-      typeId: $typeId
-      zone: $zone
+      typeIds: $typeIds
+      zoneIds: $zoneIds
       brand: $brand
       engine: $engine
       measurement: $measurement

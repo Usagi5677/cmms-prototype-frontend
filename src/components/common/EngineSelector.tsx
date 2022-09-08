@@ -1,7 +1,6 @@
-import { useLazyQuery } from "@apollo/client";
-import { Select, Spin } from "antd";
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { BRAND, ENGINE, ZONE } from "../../helpers/constants";
+import { Select } from "antd";
+import React from "react";
+import { ENGINE } from "../../helpers/constants";
 import { DefaultStringArrayOptionProps } from "../../models/Enums";
 
 export const EngineSelector: React.FC<DefaultStringArrayOptionProps> = ({
@@ -32,7 +31,7 @@ export const EngineSelector: React.FC<DefaultStringArrayOptionProps> = ({
       mode={multiple ? "multiple" : undefined}
       options={engineOptions}
       onChange={onChange}
-      getPopupContainer={trigger => trigger.parentNode}
+      getPopupContainer={(trigger) => trigger.parentNode}
     />
   );
 };

@@ -37,8 +37,8 @@ export interface SearchOptionProps {
   width?: number | string;
   rounded?: boolean;
 }
-export interface LocationOptionProps {
-  setLocationId: any;
+export interface DefaultNumberArrayOptionProps {
+  setId: any;
   width?: number | string;
   rounded?: boolean;
 }
@@ -82,10 +82,10 @@ export interface SearchReadingOptionProps {
 }
 export interface FilterOptionProps {
   searchOptions?: SearchOptionProps;
-  locationOptions?: LocationOptionProps;
+  locationOptions?: DefaultNumberArrayOptionProps;
   entityStatusOptions?: EntityStatusOptionProps;
   typeSelectorOptions?: TypeSelectorOptionProps;
-  zoneOptions?: DefaultStringArrayOptionProps;
+  zoneOptions?: DefaultNumberArrayOptionProps;
   departmentOptions?: DefaultStringArrayOptionProps;
   brandOptions?: DefaultStringArrayOptionProps;
   engineOptions?: DefaultStringArrayOptionProps;

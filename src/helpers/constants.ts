@@ -241,8 +241,6 @@ export const REPAIR_LOCATION = ["Site", "Workshop"];
 
 export const ENTITY_ASSIGNMENT_TYPES = ["Admin", "Engineer", "User"] as const;
 
-export const ZONE = ["North", "South", "Central"];
-
 export const BRAND = [
   "CAT",
   "KRISHNA",

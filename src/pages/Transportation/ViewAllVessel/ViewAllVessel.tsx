@@ -25,15 +25,14 @@ import { hasPermissions } from "../../../helpers/permissions";
 import { TypeSelector } from "../../../components/Config/Type/TypeSelector";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import { LocationSelector } from "../../../components/Config/Location/LocationSelector";
 import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
+  DefaultNumberArrayOptionProps,
   DefaultStringArrayOptionProps,
   EntityStatus,
   EntityStatusOptionProps,
   FilterOptionProps,
-  LocationOptionProps,
   SearchOptionProps,
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
@@ -47,9 +46,9 @@ const Vessels = () => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [locationIds, setLocationIds] = useState<number[]>([]);
-  const [typeId, setTypeId] = useState<number[]>([]);
+  const [typeIds, setTypeIds] = useState<number[]>([]);
   const [status, setStatus] = useState<EntityStatus[]>([]);
-  const [zone, setZone] = useState<string[]>([]);
+  const [zoneIds, setZoneIds] = useState<number[]>([]);
   const [department, setDepartment] = useState<string[]>([]);
   const [brand, setBrand] = useState<string[]>([]);
   const [engine, setEngine] = useState<string[]>([]);
@@ -70,8 +69,8 @@ const Vessels = () => {
       status: EntityStatus[];
       locationIds: number[];
       entityType: string;
-      typeId: number[];
-      zone: string[];
+      typeIds: number[];
+      zoneIds: number[];
       department: string[];
       brand: string[];
       engine: string[];
@@ -93,8 +92,8 @@ const Vessels = () => {
     locationIds: [],
     status: [],
     entityType: "Vessel",
-    typeId: [],
-    zone: [],
+    typeIds: [],
+    zoneIds: [],
     department: [],
     brand: [],
     engine: [],
@@ -134,10 +133,10 @@ const Vessels = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    locationIds: number[],
-    typeIdValue: number[],
+    locationIdsValue: number[],
+    typeIdsValue: number[],
     statusValue: EntityStatus[],
-    zoneValue: string[],
+    zoneIdsValue: number[],
     departmentValue: string[],
     brandValue: string[],
     engineValue: string[],
@@ -157,10 +156,10 @@ const Vessels = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          locationIds,
-          typeId: typeIdValue,
+          locationIds: locationIdsValue,
+          typeIds: typeIdsValue,
           status: statusValue,
-          zone: zoneValue,
+          zoneIds: zoneIdsValue,
           department: departmentValue,
           brand: brandValue,
           engine: engineValue,
@@ -190,9 +189,9 @@ const Vessels = () => {
     searchDebounced(
       search,
       locationIds,
-      typeId,
+      typeIds,
       status,
-      zone,
+      zoneIds,
       department,
       brand,
       engine,
@@ -209,9 +208,9 @@ const Vessels = () => {
   }, [
     search,
     locationIds,
-    typeId,
+    typeIds,
     status,
-    zone,
+    zoneIds,
     department,
     brand,
     engine,
@@ -304,12 +303,12 @@ const Vessels = () => {
     setGteLastService("");
     setStatus([]);
     setLocationIds([]);
-    setZone([]);
+    setZoneIds([]);
     setDepartment([]);
     setBrand([]);
     setEngine([]);
     setMeasurement([]);
-    setTypeId([]);
+    setTypeIds([]);
     setIsAssigned(false);
     setIsIncompleteChecklistTask(false);
     //setAssignedToMe(null);
@@ -344,22 +343,19 @@ const Vessels = () => {
     onClick: () => setGteLastService(""),
     width: "100%",
   };
-  const locationOptions: LocationOptionProps = {
-    setLocationId: setLocationIds,
+  const locationOptions: DefaultNumberArrayOptionProps = {
+    setId: setLocationIds,
     width: "100%",
   };
-  const zoneOptions: DefaultStringArrayOptionProps = {
-    onChange: (zone: string[]) => {
-      setFilter({
-        ...filter,
-        zone,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setZone(zone);
-    },
+  const zoneOptions: DefaultNumberArrayOptionProps = {
+    setId: setZoneIds,
+    width: "100%",
+  };
+  const typeSelectorOptions: TypeSelectorOptionProps = {
+    entityType: "Vessel",
+    setTypeId: setTypeIds,
+    rounded: true,
+    multiple: true,
     width: "100%",
   };
   const departmentOptions: DefaultStringArrayOptionProps = {
@@ -477,13 +473,7 @@ const Vessels = () => {
     value: filter.status,
     width: "100%",
   };
-  const typeSelectorOptions: TypeSelectorOptionProps = {
-    entityType: "Machine",
-    setTypeId,
-    rounded: true,
-    multiple: true,
-    width: "100%",
-  };
+  
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,
