@@ -205,7 +205,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
               <>
                 Value
                 <span style={{ paddingLeft: 10, opacity: 0.5 }}>
-                  For example, value = 3 will be every hour 3 / km 3
+                  For example, value = 3 will be every 3 hour / 3 km
                 </span>
               </>
             }

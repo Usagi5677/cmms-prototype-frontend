@@ -17,6 +17,7 @@ import UserContext from "../../contexts/UserContext";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import { PeriodicMaintenanceTemplateDetails } from "./PeriodicMaintenanceTemplateDetails";
 import { CreatePeriodicMaintenance } from "./CreatePeriodicMaintenance";
+import UpsertPMNotificationReminder from "../common/EditPMNotificationReminder/UpsertPMNotificationReminder";
 
 export interface PeriodicMaintenanceTemplatesProps {}
 
@@ -122,6 +123,9 @@ export const PeriodicMaintenanceTemplates: React.FC<
           <div style={{ marginRight: ".5rem" }}>
             <PeriodicMaintenanceTemplateDetails periodicMaintenance={rec} />
           </div>
+          <div style={{ marginRight: ".5rem" }}>
+            <UpsertPMNotificationReminder periodicMaintenance={rec}/>
+          </div>
           <DeleteListing
             id={rec.id}
             mutation={DELETE_PERIODIC_MAINTENANCE}
@@ -136,6 +140,7 @@ export const PeriodicMaintenanceTemplates: React.FC<
 
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>

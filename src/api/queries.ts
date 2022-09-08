@@ -214,6 +214,15 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
           verifiedBy {
             ...UserFieldsAPS
           }
+          notificationReminder {
+            id
+            type
+            measurement
+            previousValue
+            value
+            periodicMaintenanceId
+            originId
+          }
           comments {
             createdAt
             id
