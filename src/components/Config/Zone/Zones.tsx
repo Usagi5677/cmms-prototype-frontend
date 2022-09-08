@@ -10,47 +10,39 @@ import PaginationButtons from "../../common/PaginationButtons/PaginationButtons"
 import Search from "../../common/Search";
 import type { ColumnsType } from "antd/es/table";
 import { DeleteListing } from "../../common/DeleteListing";
-import { DELETE_LOCATION } from "../../../api/mutations";
-import { CreateLocation } from "./CreateLocation";
-import { EditLocation } from "./EditLocation";
-import { LOCATIONS } from "../../../api/queries";
-import Location from "../../../models/Location";
-import { ZoneSelector } from "../Zone/ZoneSelector";
+import { ZONES } from "../../../api/queries";
+import { EditZone } from "./EditZone";
+import { DELETE_ZONE } from "../../../api/mutations";
 import Zone from "../../../models/Zone";
+import { CreateZone } from "./CreateZone";
+import { ZoneMapping } from "./ZoneMapping";
 
-export interface LocationsProps {}
+export interface ZonesProps {}
 
-export const Locations: React.FC<LocationsProps> = ({}) => {
+export const Zones: React.FC<ZonesProps> = ({}) => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<
     PaginationArgs & {
       name: string;
-      zoneId: null | number;
     }
   >({
     ...DefaultPaginationArgs,
     name: "",
-    zoneId: null,
   });
 
-  const setZoneId = (zoneId: number) => {
-    console.log(zoneId);
-    setFilter({ ...filter, zoneId });
-  };
-
-  const [getLocations, { data, loading }] = useLazyQuery(LOCATIONS, {
+  const [getZones, { data, loading }] = useLazyQuery(ZONES, {
     onError: (err) => {
-      errorMessage(err, "Error loading locations.");
+      errorMessage(err, "Error loading zones.");
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
 
   useEffect(() => {
-    getLocations({ variables: filter });
-  }, [filter, getLocations]);
+    getZones({ variables: filter });
+  }, [filter, getZones]);
 
   const searchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
@@ -99,21 +91,11 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
     setPage(page - 1);
   };
 
-  const columns: ColumnsType<Location> = [
+  const columns: ColumnsType<Zone> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (name, location) => (
-        <div>
-          <span>{name}</span>
-          {location.zone && (
-            <span style={{ marginLeft: "1rem", opacity: 0.7 }}>
-              {location.zone.name}
-            </span>
-          )}
-        </div>
-      ),
     },
     {
       title: "",
@@ -127,18 +109,18 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
             justifyContent: "end",
           }}
         >
-          <EditLocation location={rec} />
+          <EditZone zone={rec} />
           <DeleteListing
             id={rec.id}
-            mutation={DELETE_LOCATION}
-            refetchQueries={["locations"]}
+            mutation={DELETE_ZONE}
+            refetchQueries={["zones"]}
           />
         </div>
       ),
     },
   ];
 
-  const pageInfo = data?.locations.pageInfo ?? {};
+  const pageInfo = data?.zones.pageInfo ?? {};
 
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
@@ -160,29 +142,17 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
             onClick={() => setSearch("")}
             margin={filterMargin}
           />
-          <div
-            style={{
-              display: "flex",
-              padding: "1px 5px 1px 5px",
-              margin: filterMargin,
-              alignItems: "center",
-            }}
-          >
-            <ZoneSelector
-              setZoneId={setZoneId}
-              rounded={true}
-              width={190}
-              placeholder="Filter zone"
-            />
-          </div>
         </div>
-        <CreateLocation />
+        <div style={{ display: "flex" }}>
+          <div style={{ marginRight: "1rem" }}>
+            <ZoneMapping />
+          </div>
+          <CreateZone />
+        </div>
       </div>
       <Table
         rowKey="id"
-        dataSource={data?.locations.edges.map(
-          (edge: { node: Location }) => edge.node
-        )}
+        dataSource={data?.zones.edges.map((edge: { node: Zone }) => edge.node)}
         columns={columns}
         pagination={false}
         size="small"

@@ -1,7 +1,5 @@
-import { useLazyQuery } from "@apollo/client";
-import { Checkbox, Select, Spin } from "antd";
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { BRAND, ENGINE, ZONE } from "../../helpers/constants";
+import { Checkbox } from "antd";
+import React from "react";
 import { DefaultBooleanOptionProps } from "../../models/Enums";
 
 export const AssignedOrNotCheckbox: React.FC<DefaultBooleanOptionProps> = ({

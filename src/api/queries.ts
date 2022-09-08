@@ -525,8 +525,48 @@ export const LOCATIONS = gql`
     $first: Int
     $last: Int
     $name: String
+    $zoneId: Int
+    $showOnlyUnzoned: Boolean
   ) {
     locations(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+      zoneId: $zoneId
+      showOnlyUnzoned: $showOnlyUnzoned
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          zone {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ZONES = gql`
+  query zones(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    zones(
       after: $after
       before: $before
       first: $first
@@ -563,8 +603,8 @@ export const ALL_ENTITY = gql`
     $status: [String!]
     $locationIds: [Int!]
     $department: [String!]
-    $typeId: [Int!]
-    $zone: [String!]
+    $typeIds: [Int!]
+    $zoneIds: [Int!]
     $brand: [String!]
     $engine: [String!]
     $measurement: [String!]
@@ -587,8 +627,8 @@ export const ALL_ENTITY = gql`
       status: $status
       locationIds: $locationIds
       department: $department
-      typeId: $typeId
-      zone: $zone
+      typeIds: $typeIds
+      zoneIds: $zoneIds
       brand: $brand
       engine: $engine
       measurement: $measurement

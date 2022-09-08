@@ -5,12 +5,14 @@ import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { errorMessage } from "../../../helpers/gql";
 import { CREATE_LOCATION } from "../../../api/mutations";
+import { ZoneSelector } from "../Zone/ZoneSelector";
 
 export interface CreateLocationProps {}
 
 export const CreateLocation: React.FC<CreateLocationProps> = () => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [zoneId, setZoneId] = useState<null | number>(null);
 
   const [create, { loading }] = useMutation(CREATE_LOCATION, {
     onCompleted: () => {
@@ -34,6 +36,7 @@ export const CreateLocation: React.FC<CreateLocationProps> = () => {
       variables: {
         input: {
           name,
+          zoneId,
         },
       },
     });
@@ -75,6 +78,9 @@ export const CreateLocation: React.FC<CreateLocationProps> = () => {
             ]}
           >
             <Input placeholder="Name" />
+          </Form.Item>
+          <Form.Item label="Zone" required={false}>
+            <ZoneSelector setZoneId={setZoneId} />
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>

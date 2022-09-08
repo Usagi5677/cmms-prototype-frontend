@@ -3,6 +3,7 @@ import { useForm } from "antd/lib/form/Form";
 import { FilterOptionProps } from "../../../models/Enums";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
+import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 import { AssignedOrNotCheckbox } from "../AssignedOrNotCheckbox";
 import { BrandSelector } from "../BrandSelector";
 import { DepartmentSelector } from "../DepartmentSelector";
@@ -10,7 +11,7 @@ import { EngineSelector } from "../EngineSelector";
 import EntityStatusFilter from "../EntityStatusFilter";
 import { MeasurementSelector } from "../MeasurementSelector";
 import Search from "../Search";
-import { ZoneSelector } from "../ZoneSelector";
+
 import classes from "./FilterOptions.module.css";
 
 const FilterOptions = ({
@@ -125,7 +126,7 @@ const FilterOptions = ({
                   <div className={classes["item"]}>
                     <Form.Item name="location">
                       <LocationSelector
-                        setLocationId={options?.locationOptions!.setLocationId}
+                        setLocationId={options?.locationOptions!.setId}
                         multiple={true}
                         rounded={true}
                         width={options?.locationOptions!.width}
@@ -135,7 +136,7 @@ const FilterOptions = ({
                   <div className={classes["item"]}>
                     <Form.Item name="zone">
                       <ZoneSelector
-                        onChange={options?.zoneOptions!.onChange}
+                        setZoneId={options?.zoneOptions!.setId}
                         multiple={true}
                         rounded={true}
                         width={options?.zoneOptions!.width}

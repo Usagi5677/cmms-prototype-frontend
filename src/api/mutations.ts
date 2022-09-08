@@ -731,7 +731,7 @@ export const EDIT_TYPE = gql`
 
 export const CREATE_LOCATION = gql`
   mutation createLocation($input: CreateLocationInput!) {
-    createLocation(createLocationInput: $input)
+    createLocation(input: $input)
   }
 `;
 
@@ -743,7 +743,25 @@ export const DELETE_LOCATION = gql`
 
 export const EDIT_LOCATION = gql`
   mutation updateLocation($input: UpdateLocationInput!) {
-    updateLocation(updateLocationInput: $input)
+    updateLocation(input: $input)
+  }
+`;
+
+export const CREATE_ZONE = gql`
+  mutation createZone($input: CreateZoneInput!) {
+    createZone(input: $input)
+  }
+`;
+
+export const DELETE_ZONE = gql`
+  mutation removeZone($id: Int!) {
+    removeZone(id: $id)
+  }
+`;
+
+export const EDIT_ZONE = gql`
+  mutation updateZone($input: UpdateZoneInput!) {
+    updateZone(input: $input)
   }
 `;
 

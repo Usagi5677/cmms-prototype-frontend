@@ -1,6 +1,6 @@
-import { Select, } from "antd";
+import { Select } from "antd";
 import React from "react";
-import { DEPARTMENTS, ZONE } from "../../helpers/constants";
+import { DEPARTMENTS } from "../../helpers/constants";
 import { DefaultStringArrayOptionProps } from "../../models/Enums";
 
 export const DepartmentSelector: React.FC<DefaultStringArrayOptionProps> = ({
@@ -31,7 +31,7 @@ export const DepartmentSelector: React.FC<DefaultStringArrayOptionProps> = ({
       mode={multiple ? "multiple" : undefined}
       options={departmentOptions}
       onChange={onChange}
-      getPopupContainer={trigger => trigger.parentNode}
+      getPopupContainer={(trigger) => trigger.parentNode}
     />
   );
 };

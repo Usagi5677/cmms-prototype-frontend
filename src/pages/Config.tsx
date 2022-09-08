@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Locations } from "../components/Config/Location/Locations";
 import { Types } from "../components/Config/Type/Types";
+import { Zones } from "../components/Config/Zone/Zones";
 import UserContext from "../contexts/UserContext";
 import { hasPermissions } from "../helpers/permissions";
 
@@ -28,7 +29,7 @@ export const Config: React.FC<ConfigProps> = ({}) => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
-        border: "var(--card-border)"
+        border: "var(--card-border)",
       }}
     >
       <Tabs defaultActiveKey="types">
@@ -38,9 +39,14 @@ export const Config: React.FC<ConfigProps> = ({}) => {
           </Tabs.TabPane>
         )}
         {hasPermissions(user, ["MODIFY_LOCATIONS"]) && (
-          <Tabs.TabPane tab="Locations" key="locations">
-            <Locations />
-          </Tabs.TabPane>
+          <>
+            <Tabs.TabPane tab="Locations" key="locations">
+              <Locations />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Zones" key="zones">
+              <Zones />
+            </Tabs.TabPane>
+          </>
         )}
       </Tabs>
     </div>
