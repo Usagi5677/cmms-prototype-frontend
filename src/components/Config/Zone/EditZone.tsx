@@ -3,30 +3,28 @@ import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { EDIT_LOCATION } from "../../../api/mutations";
+import { EDIT_ZONE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { FaEdit } from "react-icons/fa";
-import Location from "../../../models/Location";
-import { ZoneSelector } from "../Zone/ZoneSelector";
+import Zone from "../../../models/Zone";
 
-export interface EditLocationProps {
-  location: Location;
+export interface EditZoneProps {
+  zone: Zone;
 }
 
-export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
+export const EditZone: React.FC<EditZoneProps> = ({ zone }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const [zoneId, setZoneId] = useState(location.zone?.id ?? null);
 
-  const [edit, { loading }] = useMutation(EDIT_LOCATION, {
+  const [create, { loading }] = useMutation(EDIT_ZONE, {
     onCompleted: () => {
-      message.success("Successfully updated location.");
+      message.success("Successfully updated zone.");
       handleCancel();
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while updating location.");
+      errorMessage(error, "Unexpected error while updating zone.");
     },
-    refetchQueries: ["locations"],
+    refetchQueries: ["zones"],
   });
 
   const handleCancel = () => {
@@ -36,12 +34,11 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
 
   const onFinish = async (values: any) => {
     const { name } = values;
-    edit({
+    create({
       variables: {
         input: {
-          id: location.id,
+          id: zone.id,
           name,
-          zoneId,
         },
       },
     });
@@ -54,13 +51,14 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}
+          // size="20px"
         />
       </Tooltip>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title="Edit Location"
+        title="Edit Zone"
       >
         <Form
           form={form}
@@ -68,7 +66,7 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
           name="basic"
           onFinish={onFinish}
           id="myForm"
-          initialValues={{ name: location.name }}
+          initialValues={{ name: zone.name }}
         >
           <Form.Item
             label="Name"
@@ -82,9 +80,6 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
             ]}
           >
             <Input placeholder="Name" />
-          </Form.Item>
-          <Form.Item label="Zone" required={false}>
-            <ZoneSelector setZoneId={setZoneId} currentId={zoneId} />
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>
