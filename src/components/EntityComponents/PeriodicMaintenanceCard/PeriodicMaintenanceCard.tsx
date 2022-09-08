@@ -23,6 +23,7 @@ import {
 import { AddPeriodicMaintenanceObservation } from "../../common/AddPeriodicMaintenanceObservation";
 import PeriodicMaintenanceCommentModel from "../../../models/PeriodicMaintenance/PeriodicMaintenanceComment";
 import { PeriodicMaintenanceComment } from "../../common/PeriodicMaintenanceComment/PeriodicMaintenanceComment";
+import UpsertPMNotificationReminder from "../../common/EditPMNotificationReminder/UpsertPMNotificationReminder";
 
 const PeriodicMaintenanceCard = ({
   periodicMaintenance,
@@ -156,6 +157,19 @@ const PeriodicMaintenanceCard = ({
                         }
                       />
                     ) : null}
+                    {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
+                    !isDeleted ? (
+                      <UpsertPMNotificationReminder
+                        periodicMaintenance={periodicMaintenance}
+                        isDeleted={isDeleted}
+                        isCopy={
+                          periodicMaintenance.type === "Copy" ? true : false
+                        }
+                        isTemplate={
+                          periodicMaintenance.type === "Template" ? true : false
+                        }
+                      />
+                    ) : null}
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ? (
                       <DeletePeriodicMaintenance
                         id={periodicMaintenance?.id}
@@ -168,13 +182,14 @@ const PeriodicMaintenanceCard = ({
                   </div>
                 </div>
               </div>
-              {periodicMaintenance.tasks!.length > 0 && periodicMaintenance.type === "Copy" && (
-                <Progress
-                  percent={progressPercentage}
-                  strokeWidth={5}
-                  style={{ marginBottom: 10, paddingRight: 10 }}
-                />
-              )}
+              {periodicMaintenance.tasks!.length > 0 &&
+                periodicMaintenance.type === "Copy" && (
+                  <Progress
+                    percent={progressPercentage}
+                    strokeWidth={5}
+                    style={{ marginBottom: 10, paddingRight: 10 }}
+                  />
+                )}
             </div>
           }
           key={periodicMaintenance.id}

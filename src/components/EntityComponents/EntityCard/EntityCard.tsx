@@ -189,7 +189,7 @@ const EntityCard = ({
                     <div
                       className={classes["reading"]}
                       style={{
-                        border: `2px solid ${fontColor}`,
+                        border: `1px solid ${fontColor}`,
                         borderRadius: 10,
                         padding: 5,
                       }}

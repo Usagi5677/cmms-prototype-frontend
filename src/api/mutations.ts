@@ -1199,3 +1199,25 @@ export const TOGGLE_COMPLETE_ENTITY_REPAIR_REQUEST = gql`
     toggleCompleteEntityRepairRequest(id: $id, complete: $complete)
   }
 `;
+
+export const UPSERT_PM_NOTIFICATION_REMINDER = gql`
+  mutation upsertPMNotificationReminder(
+    $periodicMaintenanceId: Int
+    $type: String
+    $hour: Int
+    $kilometer: Int
+    $day: Int
+    $week: Int
+    $month: Int
+  ) {
+    upsertPMNotificationReminder(
+      periodicMaintenanceId: $periodicMaintenanceId
+      type: $type
+      hour: $hour
+      kilometer: $kilometer
+      day: $day
+      week: $week
+      month: $month
+    )
+  }
+`;
