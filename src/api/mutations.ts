@@ -747,6 +747,24 @@ export const EDIT_LOCATION = gql`
   }
 `;
 
+export const CREATE_KEY = gql`
+  mutation createApiKey($input: CreateApiKeyInput!) {
+    createApiKey(input: $input)
+  }
+`;
+
+export const DEACTIVATE_KEY = gql`
+  mutation deactivateApiKey($id: Int!) {
+    deactivateApiKey(id: $id)
+  }
+`;
+
+export const EDIT_KEY = gql`
+  mutation editKey($input: EditApiKeyInput!) {
+    editKey(input: $input)
+  }
+`;
+
 export const CREATE_ZONE = gql`
   mutation createZone($input: CreateZoneInput!) {
     createZone(input: $input)

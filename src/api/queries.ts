@@ -518,6 +518,45 @@ export const TYPES = gql`
   }
 `;
 
+export const API_KEYS = gql`
+  query apiKeys(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+  ) {
+    apiKeys(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          apiKeyStart
+          calls
+          active
+          expiresAt
+          permissions {
+            permission
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const LOCATIONS = gql`
   query locations(
     $after: String

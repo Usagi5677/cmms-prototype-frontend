@@ -8,12 +8,16 @@ export interface DeleteListingProps {
   id: number;
   mutation: DocumentNode;
   refetchQueries: string[];
+  tooltip?: string;
+  title?: string;
 }
 
 export const DeleteListing: React.FC<DeleteListingProps> = ({
   id,
   mutation,
   refetchQueries,
+  tooltip = "Delete",
+  title = "Are you sure to remove?",
 }) => {
   const [removeListing, { loading }] = useMutation(mutation, {
     onCompleted: () => {
@@ -38,13 +42,13 @@ export const DeleteListing: React.FC<DeleteListingProps> = ({
     <Popconfirm
       key="delete"
       disabled={loading}
-      title={`Are you sure to remove?`}
+      title={title}
       onConfirm={() => remove()}
       okText="Confirm"
       cancelText="No"
       placement="left"
     >
-      <Tooltip title={"Delete"} placement="top">
+      <Tooltip title={tooltip} placement="top">
         <FaTrash className="deleteButton" />
       </Tooltip>
     </Popconfirm>

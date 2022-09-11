@@ -21,6 +21,8 @@ import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
 import "./components/ThemeChange/antd.dark.min.css";
 import { IncompleteTasks } from "./pages/IncompleteTasks";
+import { Assignments } from "./pages/Assignments";
+import { DeveloperOptions } from "./pages/DeveloperOptions";
 
 function App() {
   {
@@ -191,9 +193,11 @@ function App() {
             <Route path="/entity/:id" element={<ViewEntity />} />
             <Route path="/vessels" element={<ViewAllVessel />} />
             <Route path="/vehicles" element={<ViewAllVehicle />} />
+            {/* <Route path="/assignments" element={<Assignments />} /> */}
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/templates" element={<Templates />} />
+            <Route path="/developer" element={<DeveloperOptions />} />
             <Route path="/config" element={<Config />} />
             <Route path="/role/:id/permission" element={<Permissions />} />
           </Routes>

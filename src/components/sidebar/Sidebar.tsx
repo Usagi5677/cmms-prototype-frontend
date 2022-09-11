@@ -7,6 +7,8 @@ import {
   FaPager,
   FaCog,
   FaSquare,
+  FaUserPlus,
+  FaCode,
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 import classes from "./Sidebar.module.css";
@@ -147,6 +149,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     path: "divider2",
   });
 
+  // if (hasPermissions(self, ["ASSIGN_TO_ENTITY"])) {
+  //   SidebarData.push({
+  //     name: "Assignments",
+  //     path: "/assignments",
+  //     icon: <FaUserPlus />,
+  //   });
+  // }
   if (hasPermissions(self, ["VIEW_USERS"])) {
     SidebarData.splice(10, 0, {
       name: "Users",
@@ -170,7 +179,15 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (hasPermissions(self, ["MODIFY_TYPES"], "any")) {
+  if (hasPermissions(self, ["VIEW_KEYS", "MODIFY_KEYS"], "any")) {
+    SidebarData.push({
+      name: "Developer Options",
+      path: "/developer",
+      icon: <FaCode />,
+    });
+  }
+
+  if (hasPermissions(self, ["MODIFY_TYPES", "MODIFY_LOCATIONS"], "any")) {
     SidebarData.push({
       name: "Config",
       path: "/config",
