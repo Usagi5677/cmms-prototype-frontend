@@ -7,7 +7,10 @@ import { DATETIME_FORMATS } from "../../../helpers/constants";
 import classes from "./PeriodicMaintenanceCard.module.css";
 import { useMutation } from "@apollo/client";
 import { errorMessage } from "../../../helpers/gql";
-import { TOGGLE_VERIFY_PERIODIC_MAINTENANCE } from "../../../api/mutations";
+import {
+  DELETE_PERIODIC_MAINTENANCE_COMMENT,
+  TOGGLE_VERIFY_PERIODIC_MAINTENANCE,
+} from "../../../api/mutations";
 import DeletePeriodicMaintenance from "../DeletePeriodicMaintenance/DeletePeriodicMaintenance";
 import { hasPermissions } from "../../../helpers/permissions";
 import { ToolOutlined } from "@ant-design/icons";
@@ -20,21 +23,23 @@ import {
   PeriodicMaintenanceStatus,
   PeriodicMaintenanceSummary,
 } from "../../PeriodicMaintenanceStatus/PeriodicMaintenanceStatus";
-import { AddPeriodicMaintenanceObservation } from "../../common/AddPeriodicMaintenanceObservation";
-import PeriodicMaintenanceCommentModel from "../../../models/PeriodicMaintenance/PeriodicMaintenanceComment";
-import { PeriodicMaintenanceComment } from "../../common/PeriodicMaintenanceComment/PeriodicMaintenanceComment";
+import { CommentCard } from "../../common/CommentCard/CommentCard";
 import UpsertPMNotificationReminder from "../../common/EditPMNotificationReminder/UpsertPMNotificationReminder";
+import Comment from "../../../models/Comment";
+import { AddPeriodicMaintenanceObservation } from "../../common/AddPeriodicMaintenanceObservation";
 
 const PeriodicMaintenanceCard = ({
   periodicMaintenance,
   isDeleted,
   isOlder,
   summary,
+  isCopy
 }: {
   periodicMaintenance: PeriodicMaintenance;
   isDeleted?: boolean | undefined;
   isOlder?: boolean;
   summary?: PeriodicMaintenanceSummary[];
+  isCopy?: boolean;
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -244,7 +249,7 @@ const PeriodicMaintenanceCard = ({
               level={0}
               isDeleted={isDeleted}
               isOlder={isOlder}
-              isCopy={periodicMaintenance.type === "Copy"}
+              isCopy={isCopy}
             />
             {!isDeleted ||
               (!isOlder && (
@@ -255,27 +260,31 @@ const PeriodicMaintenanceCard = ({
                 </div>
               ))}
             <div className={classes["observation-wrapper"]}>
-              {periodicMaintenance?.comments?.map(
-                (observation: PeriodicMaintenanceCommentModel) => {
-                  return (
-                    observation?.type === "Observation" && (
-                      <PeriodicMaintenanceComment
-                        comment={observation}
-                        key={observation.id}
-                        isDeleted={isDeleted}
-                        isOlder={isOlder}
-                        isCopy={periodicMaintenance.type === "Copy"}
-                      />
-                    )
-                  );
-                }
-              )}
+              {periodicMaintenance?.comments?.map((observation: Comment) => {
+                return (
+                  observation?.type === "Observation" && (
+                    <CommentCard
+                      comment={observation}
+                      key={observation.id}
+                      isDeleted={isDeleted}
+                      isOlder={isOlder}
+                      isCopy={periodicMaintenance.type === "Copy"}
+                      mutation={DELETE_PERIODIC_MAINTENANCE_COMMENT}
+                      refetchQueries={[
+                        "periodicMaintenances",
+                        "periodicMaintenanceSummary",
+                      ]}
+                    />
+                  )
+                );
+              })}
             </div>
 
             {!isDeleted && !isOlder && periodicMaintenance.type === "Copy" && (
               <AddPeriodicMaintenanceObservation
-                periodicMaintenance={periodicMaintenance}
+                periodicMaintenanceId={periodicMaintenance.id}
                 type={"Observation"}
+                placeholder={"Add new observation"}
                 isDeleted={isDeleted}
                 isOlder={isOlder}
                 isCopy={periodicMaintenance.type === "Copy"}

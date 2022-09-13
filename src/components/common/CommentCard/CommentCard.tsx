@@ -1,27 +1,35 @@
-import { MessageOutlined, WarningOutlined } from "@ant-design/icons";
-import { Tooltip } from "antd";
+import { DocumentNode } from "@apollo/client";
 import moment from "moment";
 import React, { useContext } from "react";
 import { FaRegClock } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import PeriodicMaintenanceCommentModel from "../../../models/PeriodicMaintenance/PeriodicMaintenanceComment";
-import { RemovePeriodicMaintenanceComment } from "../RemovePeriodicMaintenanceComment";
+import Comment from "../../../models/Comment";
+import { RemoveComment } from "../RemoveComment";
 import UserAvatar from "../UserAvatar";
-import classes from "./PeriodicMaintenanceComment.module.css";
+import classes from "./CommentCard.module.css";
 
-export interface PeriodicMaintenanceCommentProps {
-  comment: PeriodicMaintenanceCommentModel;
+export interface CommentProps {
+  comment: Comment;
   isRemark?: boolean;
   isDeleted?: boolean;
   isOlder?: boolean;
   isCopy?: boolean;
+  mutation: DocumentNode;
+  refetchQueries: string[];
 }
 
-export const PeriodicMaintenanceComment: React.FC<
-  PeriodicMaintenanceCommentProps
-> = ({ comment, isRemark, isDeleted, isOlder, isCopy }) => {
+export const CommentCard: React.FC<CommentProps> = ({
+  comment,
+  isRemark,
+  isDeleted,
+  isOlder,
+  isCopy,
+  mutation,
+  refetchQueries,
+}) => {
   const { user } = useContext(UserContext);
+
   return (
     <div
       className={classes["container"]}
@@ -32,15 +40,17 @@ export const PeriodicMaintenanceComment: React.FC<
     >
       <div className={classes["first-block"]}>
         <UserAvatar
-          user={comment?.user}
+          user={comment?.createdBy}
           size={20}
-          withTooltip={`${comment?.user?.fullName} (${comment?.user?.rcno})`}
+          withTooltip={`${comment?.createdBy?.fullName} (${comment?.createdBy?.rcno})`}
         />
       </div>
       <div className={classes["second-block"]}>
         <div className={classes["top-wrapper"]}>
           <div className={classes["name-wrapper"]}>
-            <div className={classes["name"]}>{comment?.user?.fullName}</div>
+            <div className={classes["name"]}>
+              {comment?.createdBy?.fullName}
+            </div>
             <div
               className={classes["time"]}
               title={`${moment(comment.createdAt).format(
@@ -54,12 +64,14 @@ export const PeriodicMaintenanceComment: React.FC<
             </div>
           </div>
 
-          {comment?.user?.id === user.id && (
-            <RemovePeriodicMaintenanceComment
+          {comment?.createdBy?.id === user.id && (
+            <RemoveComment
               comment={comment}
               isDeleted={isDeleted}
               isOlder={isOlder}
               isCopy={isCopy}
+              mutation={mutation}
+              refetchQueries={refetchQueries}
             />
           )}
         </div>

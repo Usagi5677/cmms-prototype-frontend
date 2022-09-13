@@ -1,38 +1,31 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
+import { ADD_REPAIR_COMMENT } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 
-export interface PMObservationProps {
-  periodicMaintenanceId: number;
+export interface RepairObservationProps {
+  repairId: number;
   type: string;
   placeholder?: string;
   isDeleted?: boolean;
-  isOlder?: boolean;
-  isCopy?: boolean;
 }
 
-export const AddPeriodicMaintenanceObservation: React.FC<
-  PMObservationProps
-> = ({
-  periodicMaintenanceId,
+export const AddRepairObservation: React.FC<RepairObservationProps> = ({
+  repairId,
   type,
   placeholder,
   isDeleted,
-  isOlder,
-  isCopy,
 }) => {
   const [details, setDetails] = useState("");
 
-  const [create, { loading }] = useMutation(ADD_PERIODIC_MAINTENANCE_COMMENT, {
+  const [create, { loading }] = useMutation(ADD_REPAIR_COMMENT, {
     onCompleted: () => {
       setDetails("");
     },
     onError: (error) => {
       errorMessage(error, "Unexpected error while adding observation.");
     },
-    refetchQueries: ["periodicMaintenances", "periodicMaintenanceSummary"],
+    refetchQueries: ["repairs", "getAllHistoryOfEntity"],
   });
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -43,9 +36,11 @@ export const AddPeriodicMaintenanceObservation: React.FC<
       setDetails("");
       create({
         variables: {
-          periodicMaintenanceId,
-          type,
-          description: details,
+          createRepairCommentInput: {
+            repairId,
+            type,
+            description: details,
+          },
         },
       });
     }
@@ -58,7 +53,7 @@ export const AddPeriodicMaintenanceObservation: React.FC<
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         onKeyDown={submit}
-        disabled={loading || isDeleted || isOlder || !isCopy}
+        disabled={loading || isDeleted}
         style={{
           border: "solid 1px var(--border-2)",
           borderRadius: 5,

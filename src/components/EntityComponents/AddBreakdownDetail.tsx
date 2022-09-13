@@ -1,38 +1,28 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
+import { ADD_BREAKDOWN_DETAIL } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
+import BreakdownDetail from "../../models/BreakdownDetails";
 
-export interface PMObservationProps {
-  periodicMaintenanceId: number;
-  type: string;
-  placeholder?: string;
-  isDeleted?: boolean;
-  isOlder?: boolean;
-  isCopy?: boolean;
+interface AddBreakdownDetailProps {
+  breakdownId?: number;
+  description?: string;
 }
 
-export const AddPeriodicMaintenanceObservation: React.FC<
-  PMObservationProps
-> = ({
-  periodicMaintenanceId,
-  type,
-  placeholder,
-  isDeleted,
-  isOlder,
-  isCopy,
+export const AddBreakdownDetail: React.FC<AddBreakdownDetailProps> = ({
+  breakdownId,
+  description = "Add new breakdown detail",
 }) => {
   const [details, setDetails] = useState("");
 
-  const [create, { loading }] = useMutation(ADD_PERIODIC_MAINTENANCE_COMMENT, {
+  const [addBreakdownDetail, { loading }] = useMutation(ADD_BREAKDOWN_DETAIL, {
     onCompleted: () => {
       setDetails("");
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while adding observation.");
+      errorMessage(error, "Unexpected error while adding breakdown detail.");
     },
-    refetchQueries: ["periodicMaintenances", "periodicMaintenanceSummary"],
+    refetchQueries: ["breakdowns", "getAllHistoryOfEntity"],
   });
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -41,11 +31,12 @@ export const AddPeriodicMaintenanceObservation: React.FC<
       event.preventDefault();
       if (details.trim() === "") return;
       setDetails("");
-      create({
+      addBreakdownDetail({
         variables: {
-          periodicMaintenanceId,
-          type,
-          description: details,
+          createBreakdownDetailInput: {
+            breakdownId,
+            description: details,
+          },
         },
       });
     }
@@ -54,11 +45,11 @@ export const AddPeriodicMaintenanceObservation: React.FC<
     <div>
       <input
         type="text"
-        placeholder={loading ? "Adding..." : placeholder}
+        placeholder={loading ? "Adding..." : description}
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         onKeyDown={submit}
-        disabled={loading || isDeleted || isOlder || !isCopy}
+        disabled={loading}
         style={{
           border: "solid 1px var(--border-2)",
           borderRadius: 5,

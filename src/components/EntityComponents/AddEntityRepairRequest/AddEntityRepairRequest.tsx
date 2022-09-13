@@ -32,7 +32,7 @@ const AddEntityRepairRequest = ({
   isDeleted,
 }: {
   entityID: number;
-  userData: RepairRequestUserData;
+  userData?: RepairRequestUserData;
   isDeleted?: boolean;
 }) => {
   const [visible, setVisible] = useState(false);

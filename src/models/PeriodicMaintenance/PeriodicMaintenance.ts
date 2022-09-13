@@ -1,6 +1,6 @@
+import Comment from "../Comment";
 import { Entity } from "../Entity/Entity";
 import User from "../User";
-import PeriodicMaintenanceCommentModel from "./PeriodicMaintenanceComment";
 import PeriodicMaintenanceNotificationModel from "./PeriodicMaintenanceNotification";
 import PeriodicMaintenanceTask from "./PeriodicMaintenanceTask";
 
@@ -20,6 +20,6 @@ export default interface PeriodicMaintenance {
   verifiedBy?: User;
   verifiedAt?: Date;
   entity?: Entity;
-  comments?: PeriodicMaintenanceCommentModel[];
+  comments?: Comment[];
   notificationReminder?: PeriodicMaintenanceNotificationModel[];
 }

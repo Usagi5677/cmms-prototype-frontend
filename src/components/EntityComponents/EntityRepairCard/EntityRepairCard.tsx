@@ -104,7 +104,7 @@ const EntityRepairCard = ({
                   </div>
                   <div className={classes["reading"]}>
                     <span className={classes["reading-title"]}>
-                      Project Name:
+                      Name:
                     </span>
                     <span>
                       {repair?.projectName ? repair?.projectName : "None"}

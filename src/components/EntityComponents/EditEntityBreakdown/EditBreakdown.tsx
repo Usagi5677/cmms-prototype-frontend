@@ -8,6 +8,7 @@ import {
   message,
   Modal,
   Row,
+  Select,
   Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -15,12 +16,12 @@ import moment from "moment";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_ENTITY_BREAKDOWN } from "../../../api/mutations";
+import { UPDATE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import EntityBreakdown from "../../../models/Entity/EntityBreakdown";
-import classes from "./EditEntityBreakdown.module.css";
+import EntityBreakdown from "../../../models/Entity/Breakdown";
+import classes from "./EditBreakdown.module.css";
 
-const EditEntityBreakdown = ({
+const EditBreakdown = ({
   breakdown,
   isDeleted,
 }: {
@@ -30,8 +31,8 @@ const EditEntityBreakdown = ({
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editEntityBreakdown, { loading: loadingBreakdown }] = useMutation(
-    EDIT_ENTITY_BREAKDOWN,
+  const [updateBreakdown, { loading: loadingBreakdown }] = useMutation(
+    UPDATE_BREAKDOWN,
     {
       onCompleted: () => {
         message.success("Successfully updated breakdown.");
@@ -40,7 +41,7 @@ const EditEntityBreakdown = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating breakdown.");
       },
-      refetchQueries: ["getAllBreakdownOfEntity", "getAllHistoryOfEntity"],
+      refetchQueries: ["breakdowns", "getAllHistoryOfEntity"],
     }
   );
 
@@ -50,26 +51,27 @@ const EditEntityBreakdown = ({
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, estimatedDateOfRepair } = values;
-
-    if (!title) {
-      message.error("Please enter the title.");
+    const { name, type, estimatedDateOfRepair } = values;
+    if (!name) {
+      message.error("Please enter the description.");
       return;
     }
-    if (!description) {
-      message.error("Please enter the description.");
+    if (!type) {
+      message.error("Please select the type.");
       return;
     }
     if (!estimatedDateOfRepair) {
       message.error("Please select the estimated date of repair.");
       return;
     }
-    editEntityBreakdown({
+    updateBreakdown({
       variables: {
-        id: breakdown.id,
-        title,
-        description,
-        estimatedDateOfRepair,
+        updateBreakdownInput: {
+          id: breakdown.id,
+          name,
+          type,
+          estimatedDateOfRepair,
+        },
       },
     });
   };
@@ -97,32 +99,43 @@ const EditEntityBreakdown = ({
             preserve={false}
           >
             <Form.Item
-              label="Title"
-              name="title"
+              label="Name"
+              name="name"
               required={false}
-              initialValue={breakdown?.title}
+              initialValue={breakdown?.name}
               rules={[
                 {
                   required: true,
-                  message: "Please enter the title.",
+                  message: "Please enter the name.",
                 },
               ]}
             >
-              <Input placeholder="Title" />
+              <Input placeholder="Name" />
             </Form.Item>
             <Form.Item
-              label="Description"
-              name="description"
+              label="Type"
+              name="type"
               required={false}
-              initialValue={breakdown?.description}
+              initialValue={breakdown?.type}
               rules={[
                 {
                   required: true,
-                  message: "Please enter the description.",
+                  message: "Please select the type.",
                 },
               ]}
             >
-              <Input placeholder="Description" />
+              <Select
+                style={{ width: "100%" }}
+                getPopupContainer={(trigger) => trigger.parentNode}
+                placeholder={"Type"}
+                className={"notRounded"}
+              >
+                {["Breakdown", "Critical"].map((type: string) => (
+                  <Select.Option key={type} value={type}>
+                    {type}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item
               label="Estimated Date of Repair"
@@ -176,4 +189,4 @@ const EditEntityBreakdown = ({
   );
 };
 
-export default EditEntityBreakdown;
+export default EditBreakdown;

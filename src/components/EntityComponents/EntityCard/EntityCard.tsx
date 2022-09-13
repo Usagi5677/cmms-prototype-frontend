@@ -409,9 +409,9 @@ const EntityCard = ({
                     Breakdown details:
                   </span>
                   <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                    {entity?.breakdowns[0]?.description &&
+                    {entity?.breakdowns[0]?.name &&
                     entity?.status === "Breakdown"
-                      ? entity?.breakdowns[0]?.description
+                      ? entity?.breakdowns[0]?.name
                       : "None"}
                   </Paragraph>
                 </div>

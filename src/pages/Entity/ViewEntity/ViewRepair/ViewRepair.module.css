@@ -21,10 +21,6 @@
   flex-direction: column;
 }
 
-.checkbox {
-  margin: 10px 20px;
-}
-
 .add {
   margin-top: 10px;
 }
@@ -35,9 +31,6 @@
   }
   .first-block {
     flex-direction: row;
-  }
-  .checkbox {
-    margin: 0 20px;
   }
   .add {
     margin-top: 0;

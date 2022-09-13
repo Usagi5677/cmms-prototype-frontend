@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import {
   GET_ALL_REPAIR_OF_ENTITY,
   GET_USERS_WITH_PERMISSION,
+  REPAIRS,
 } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import { errorMessage } from "../../../../helpers/gql";
@@ -18,6 +19,9 @@ import Search from "../../../../components/common/Search";
 import { useParams } from "react-router";
 import { hasPermissions } from "../../../../helpers/permissions";
 import { GetUsersWithPermission } from "../../../../helpers/getUsersWithPermission";
+import Repair from "../../../../models/Entity/Repair";
+import RepairCard from "../../../../components/EntityComponents/RepairCard/RepairCard";
+import AddRepair from "../../../../components/EntityComponents/AddRepair/AddRepair";
 
 export interface RepairRequestUserData {
   admin: User[];
@@ -29,16 +33,12 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [complete, setComplete] = useState(false);
-  const [approve, setApprove] = useState(false);
   const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       entityId: number;
-      complete: boolean;
-      approve: boolean;
     }
   >({
     first: 5,
@@ -47,43 +47,26 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
     after: null,
     search: "",
     entityId: parseInt(id),
-    approve: false,
-    complete: false,
   });
 
-  const [getAllRepairRequestOfEntity, { data, loading }] = useLazyQuery(
-    GET_ALL_REPAIR_OF_ENTITY,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading repair.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
-  let admin = GetUsersWithPermission(["ENTITY_ADMIN"]);
-  let user = GetUsersWithPermission(["ENTITY_USER"]);
-
-  const userData: RepairRequestUserData = {
-    admin: admin,
-    user: user,
-  };
+  const [repairs, { data, loading }] = useLazyQuery(REPAIRS, {
+    onError: (err) => {
+      errorMessage(err, "Error loading repair.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
   // Fetch repairs when component mounts or when the filter object changes
   useEffect(() => {
-    getAllRepairRequestOfEntity({ variables: filter });
-  }, [filter, getAllRepairRequestOfEntity]);
+    repairs({ variables: filter });
+  }, [filter, repairs]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
-  const searchDebounced = (
-    value: string,
-    approveValue: boolean,
-    completeValue: boolean
-  ) => {
+  const searchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
       //@ts-ignore
@@ -91,9 +74,7 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          approve: approveValue,
-          complete: completeValue,
-          first: 3,
+          first: 5,
           last: null,
           before: null,
           after: null,
@@ -109,9 +90,9 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, approve, complete);
+    searchDebounced(search);
     // eslint-disable-next-line
-  }, [search, approve, complete]);
+  }, [search]);
 
   // Pagination functions
   const next = () => {
@@ -136,7 +117,7 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllRepairRequestOfEntity.pageInfo ?? {};
+  const pageInfo = data?.repairs.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
@@ -147,23 +128,11 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
           />
-          <div className={classes["checkbox"]}>
-            <Checkbox onChange={(e) => setComplete(e.target.checked)}>
-              Complete
-            </Checkbox>
-          </div>
-
-          <Checkbox onChange={(e) => setApprove(e.target.checked)}>
-            Approve
-          </Checkbox>
         </div>
 
         <div className={classes["add"]}>
           {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
-            <AddEntityRepairRequest
-              entityID={parseInt(id)}
-              userData={userData}
-            />
+            <AddRepair />
           ) : null}
         </div>
       </div>
@@ -173,19 +142,12 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllRepairRequestOfEntity.edges.map(
-          (rec: { node: EntityRepairRequest }) => {
-            const repair = rec.node;
-            return (
-              <EntityRepairCard
-                key={repair.id}
-                repair={repair}
-                isDeleted={isDeleted}
-                userData={userData}
-              />
-            );
-          }
-        )}
+        {data?.repairs.edges.map((rec: { node: Repair }) => {
+          const repair = rec.node;
+          return (
+            <RepairCard key={repair.id} repair={repair} isDeleted={isDeleted} />
+          );
+        })}
       </div>
 
       <PaginationButtons

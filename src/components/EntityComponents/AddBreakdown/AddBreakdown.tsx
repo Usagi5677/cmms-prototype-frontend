@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row } from "antd";
+import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { ADD_ENTITY_BREAKDOWN } from "../../../api/mutations";
+import { CREATE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./AddEntityBreakdown.module.css";
+import classes from "./AddBreakdown.module.css";
 
-const AddEntityBreakdown = ({
+const AddBreakdown = ({
   entityID,
   isDeleted,
 }: {
@@ -15,8 +15,8 @@ const AddEntityBreakdown = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const [addEntityBreakdown, { loading: loadingBreakdown }] = useMutation(
-    ADD_ENTITY_BREAKDOWN,
+  const [createBreakdown, { loading: loadingBreakdown }] = useMutation(
+    CREATE_BREAKDOWN,
     {
       onCompleted: () => {
         message.success("Successfully created breakdown.");
@@ -26,7 +26,7 @@ const AddEntityBreakdown = ({
         errorMessage(error, "Unexpected error while creating breakdown.");
       },
       refetchQueries: [
-        "getAllBreakdownOfEntity",
+        "breakdowns",
         "getSingleEntity",
         "getAllHistoryOfEntity",
         "allEntityBreakdownCount",
@@ -40,22 +40,24 @@ const AddEntityBreakdown = ({
   };
 
   const onFinish = async (values: any) => {
-    const { title, description } = values;
+    const { name, type } = values;
 
-    if (!title) {
-      message.error("Please enter the title.");
+    if (!name) {
+      message.error("Please enter the name.");
       return;
     }
-    if (!description) {
-      message.error("Please enter the description.");
+    if (!type) {
+      message.error("Please select the type.");
       return;
     }
 
-    addEntityBreakdown({
+    createBreakdown({
       variables: {
-        entityId: entityID,
-        title,
-        description,
+        createBreakdownInput: {
+          entityId: entityID,
+          name,
+          type,
+        },
       },
     });
   };
@@ -88,30 +90,41 @@ const AddEntityBreakdown = ({
           id="myForm"
         >
           <Form.Item
-            label="Title"
-            name="title"
+            label="Name"
+            name="name"
             required={false}
             rules={[
               {
                 required: true,
-                message: "Please enter the title.",
+                message: "Please enter the name.",
               },
             ]}
           >
-            <Input placeholder="Title" />
+            <Input placeholder="Name" />
           </Form.Item>
           <Form.Item
-            label="Description"
-            name="description"
+            label="Type"
+            name="type"
             required={false}
             rules={[
               {
                 required: true,
-                message: "Please enter the description.",
+                message: "Please select the type.",
               },
             ]}
           >
-            <Input placeholder="Description" />
+            <Select
+              style={{ width: "100%" }}
+              getPopupContainer={(trigger) => trigger.parentNode}
+              placeholder={"Type"}
+              className={"notRounded"}
+            >
+              {["Breakdown", "Critical"].map((type: string) => (
+                <Select.Option key={type} value={type}>
+                  {type}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Row justify="end" gutter={16}>
@@ -145,4 +158,4 @@ const AddEntityBreakdown = ({
   );
 };
 
-export default AddEntityBreakdown;
+export default AddBreakdown;

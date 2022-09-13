@@ -286,6 +286,7 @@ const UpcomingPeriodicMaintenances = ({
                     periodicMaintenance={periodicMaintenance}
                     isDeleted={isDeleted}
                     isOlder={isOlderPeriodicMaintenance}
+                    isCopy
                     summary={summary?.periodicMaintenanceSummary}
                   />
                 );

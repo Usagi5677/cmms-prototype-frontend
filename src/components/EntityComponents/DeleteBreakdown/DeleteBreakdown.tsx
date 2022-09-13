@@ -1,13 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
-import { DELETE_ENTITY_BREAKDOWN } from "../../../api/mutations";
+import { REMOVE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./DeleteEntityBreakdown.module.css";
+import classes from "./DeleteBreakdown.module.css";
 
-const DeleteEntityBreakdown = ({ id, isDeleted }: { id: number, isDeleted?: boolean }) => {
-  const [removeEntityBreakdown, { loading: deleting }] = useMutation(
-    DELETE_ENTITY_BREAKDOWN,
+const DeleteBreakdown = ({ id, isDeleted }: { id: number, isDeleted?: boolean }) => {
+  const [removeBreakdown, { loading: deleting }] = useMutation(
+    REMOVE_BREAKDOWN,
     {
       onCompleted: () => {
         message.success("Successfully removed breakdown.");
@@ -16,14 +16,14 @@ const DeleteEntityBreakdown = ({ id, isDeleted }: { id: number, isDeleted?: bool
         errorMessage(error, "Unexpected error while removing breakdown.");
       },
       refetchQueries: [
-        "getAllBreakdownOfEntity",
+        "breakdowns",
         "getAllHistoryOfEntity",
       ],
     }
   );
 
   const remove = () => {
-    removeEntityBreakdown({
+    removeBreakdown({
       variables: {
         id,
       },
@@ -48,4 +48,4 @@ const DeleteEntityBreakdown = ({ id, isDeleted }: { id: number, isDeleted?: bool
   );
 };
 
-export default DeleteEntityBreakdown;
+export default DeleteBreakdown;

@@ -72,10 +72,13 @@ export const ENTITY_FRAGMENT = gql`
       status
     }
     breakdowns {
-      title
-      description
-      status
+      id
+      name
+      type
       estimatedDateOfRepair
+      createdBy {
+        ...UserFieldsAPS
+      }
     }
   }
 `;

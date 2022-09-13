@@ -3,34 +3,32 @@ import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { useState } from "react";
-import { ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
+import { ADD_REPAIR_COMMENT } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
-import PeriodicMaintenanceTask from "../../models/PeriodicMaintenance/PeriodicMaintenanceTask";
+import Repair from "../../models/Entity/Repair";
 
-export interface AddPeriodicMaintenanceCommentProps {
-  periodicMaintenance: PeriodicMaintenance;
-  task: PeriodicMaintenanceTask;
-  type: string;
+export interface AddRepairCommentProps {
+  repair: Repair;
+  type?: string;
   isDeleted?: boolean;
-  isOlder?: boolean;
-  isCopy?: boolean;
 }
 
-export const AddPeriodicMaintenanceComment: React.FC<
-  AddPeriodicMaintenanceCommentProps
-> = ({ periodicMaintenance, task, type, isDeleted, isOlder, isCopy }) => {
+export const AddRepairComment: React.FC<AddRepairCommentProps> = ({
+  repair,
+  type = "Remark",
+  isDeleted
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [create, { loading }] = useMutation(ADD_PERIODIC_MAINTENANCE_COMMENT, {
+  const [create, { loading }] = useMutation(ADD_REPAIR_COMMENT, {
     onCompleted: () => {
       handleCancel();
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while adding issue.");
+      errorMessage(error, "Unexpected error while adding remark.");
     },
-    refetchQueries: ["periodicMaintenances", "periodicMaintenanceSummary"],
+    refetchQueries: ["repairs", "breakdowns", "getAllHistoryOfEntity"],
   });
 
   const handleCancel = () => {
@@ -39,33 +37,32 @@ export const AddPeriodicMaintenanceComment: React.FC<
   };
 
   const onFinish = async (values: any) => {
-    const { description } = values;
+    const { comment } = values;
     create({
       variables: {
-        periodicMaintenanceId: periodicMaintenance.id,
-        taskId: task.id,
-        type,
-        description,
+        createRepairCommentInput: {
+          repairId: repair.id,
+          description: comment,
+          type,
+        },
       },
     });
   };
   return (
     <div>
-      <Tooltip title={`Add ${type}`}>
+      <Tooltip title="Add remark">
         <div
-          style={{ marginLeft: ".5rem", marginRight: ".5rem" }}
+          style={{ marginLeft: ".5rem", cursor: "pointer", zIndex: 1 }}
           onClick={() => setVisible(true)}
         >
-          <MessageOutlined disabled={isDeleted || isOlder || isCopy} />
+          <MessageOutlined disabled={isDeleted} />
         </div>
       </Tooltip>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={`Add ${type} to ${
-          type === "Remark" ? "Task" : "Periodic Maintenance"
-        }: ${task.name}`}
+        title={`Add remark to repair: ${repair.name}`}
       >
         <Form
           form={form}
@@ -75,17 +72,17 @@ export const AddPeriodicMaintenanceComment: React.FC<
           id="myForm"
         >
           <Form.Item
-            label={type}
-            name="description"
+            label="Remark"
+            name="comment"
             required={false}
             rules={[
               {
                 required: true,
-                message: `Please enter the ${type}.`,
+                message: "Please enter the remark.",
               },
             ]}
           >
-            <Input placeholder={`Enter ${type}`} />
+            <Input placeholder="Enter remark" />
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>
@@ -104,7 +101,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
                   htmlType="submit"
                   loading={loading}
                   className="primaryButton"
-                  disabled={isDeleted || isOlder || !isCopy}
+                  disabled={isDeleted}
                 >
                   Add
                 </Button>
