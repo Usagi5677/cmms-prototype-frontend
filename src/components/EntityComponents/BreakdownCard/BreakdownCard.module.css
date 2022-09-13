@@ -37,6 +37,7 @@
 }
 .third-block {
   flex: 2;
+  padding-bottom: 10px;
 }
 .fourth-block {
   display: flex;
@@ -129,6 +130,7 @@
   flex: 1;
   flex-direction: column;
 }
+
 @media only screen and (min-width: 600px) {
   .header-container {
     flex-direction: row;
@@ -145,7 +147,9 @@
     display: flex;
     justify-content: space-around;
   }
-
+  .third-block {
+    padding-bottom: 0;
+  }
   .fourth-block {
     flex-direction: column;
   }
@@ -186,11 +190,29 @@
   }
 }
 @media only screen and (min-width: 1000px) {
-  .second-block {
-    flex: 2;
-  }
-
+  
   .icon {
     font-size: 14px;
   }
 }
+
+@media only screen and (min-width: 1300px) {
+  .first-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
+  }
+  .second-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex: 2;
+  }
+  .third-block {
+    display: flex;
+    justify-content: space-around;
+    flex: 2
+  }
+}
+

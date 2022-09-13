@@ -54,7 +54,6 @@ const EntityBreakdownCard = ({
                         <CommentOutlined
                           style={{
                             marginLeft: 20,
-                            marginTop: breakdown?.repairs?.length! ? 0 : 4,
                           }}
                         />
                       ) : null}
@@ -72,7 +71,7 @@ const EntityBreakdownCard = ({
                       )}
                     </div>
                     <div className={classes["title-wrapper"]}>
-                      <Tooltip title="Requested Date">
+                      <Tooltip title="Created Date">
                         <FaRegClock className={classes["icon"]} />
                       </Tooltip>
 
@@ -98,33 +97,48 @@ const EntityBreakdownCard = ({
                         {"(" + breakdown?.createdBy?.rcno + ")"}
                       </div>
                     </div>
-                    {breakdown?.estimatedDateOfRepair && (
-                      <div className={classes["title-wrapper"]}>
-                        <Tooltip title="Estimated Date of Repair">
-                          <FaRegClock className={classes["icon"]} />
-                        </Tooltip>
-
-                        <span
-                          className={classes["title"]}
-                          title={moment(
-                            breakdown?.estimatedDateOfRepair
-                          ).format(DATETIME_FORMATS.FULL)}
-                        >
-                          {moment(breakdown?.estimatedDateOfRepair).format(
-                            DATETIME_FORMATS.SHORT
-                          )}
-                        </span>
-                      </div>
-                    )}
+                    <div
+                      className={classes["title-wrapper"]}
+                      style={{
+                        visibility: breakdown?.estimatedDateOfRepair
+                          ? "visible"
+                          : "initial",
+                      }}
+                    >
+                      {breakdown?.estimatedDateOfRepair ? (
+                        <>
+                          <Tooltip title="Estimated Date of Repair">
+                            <FaRegClock className={classes["icon"]} />
+                          </Tooltip>
+                          <span
+                            className={classes["title"]}
+                            title={moment(
+                              breakdown?.estimatedDateOfRepair
+                            ).format(DATETIME_FORMATS.FULL)}
+                          >
+                            {moment(breakdown?.estimatedDateOfRepair).format(
+                              DATETIME_FORMATS.SHORT
+                            )}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <Tooltip title="Estimated Date of Repair">
+                            <FaRegClock className={classes["icon"]} />
+                          </Tooltip>
+                          <span className={classes["title"]}>None</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className={classes["third-block"]}>
                     <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Name:</span>
-                      {breakdown?.name}
-                    </div>
-                    <div className={classes["reading"]}>
                       <span className={classes["reading-title"]}>Type:</span>
                       {breakdown?.type}
+                    </div>
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>Name:</span>
+                      {breakdown?.name}
                     </div>
                   </div>
                 </div>

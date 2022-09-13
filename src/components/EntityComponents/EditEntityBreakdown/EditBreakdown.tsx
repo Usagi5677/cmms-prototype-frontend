@@ -41,7 +41,7 @@ const EditBreakdown = ({
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating breakdown.");
       },
-      refetchQueries: ["breakdowns", "getAllHistoryOfEntity"],
+      refetchQueries: ["breakdowns", "repairs", "getAllHistoryOfEntity"],
     }
   );
 

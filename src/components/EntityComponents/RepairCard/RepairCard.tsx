@@ -17,6 +17,7 @@ import { AddRepairObservation } from "../../common/AddRepairObservation";
 import { hasPermissions } from "../../../helpers/permissions";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 const RepairCard = ({
   repair,
@@ -32,8 +33,8 @@ const RepairCard = ({
   const observationComments = repair?.comments?.filter(
     (c: Comment) => c.type === "Observation"
   );
-  const visible = repair?.breakdown;
-
+  const breakdownExist = repair?.breakdown;
+  
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -84,29 +85,36 @@ const RepairCard = ({
                         {"(" + repair?.createdBy?.rcno + ")"}
                       </div>
                     </div>
+                  </div>
+                  <div className={classes["third-block"]}>
                     <div className={classes["reading"]}>
                       <span className={classes["reading-title"]}>Name:</span>
                       {repair?.name}
                     </div>
                   </div>
+
                   <div
-                    className={classes["third-block"]}
+                    className={classes["fourth-block"]}
                     style={{
-                      visibility: visible ? "visible" : "hidden",
+                      visibility: breakdownExist ? "visible" : "initial",
                     }}
                   >
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Breakdown Type:
-                      </span>
-                      {repair?.breakdown?.type}
-                    </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Breakdown Name:
-                      </span>
-                      ({repair?.breakdown?.id}) {repair?.breakdown?.name}
-                    </div>
+                    {breakdownExist && (
+                      <div className={classes["reading"]}>
+                        <span className={classes["reading-title"]}>
+                          Breakdown Type:
+                        </span>
+                        {repair?.breakdown?.type}
+                      </div>
+                    )}
+                    {breakdownExist && (
+                      <div className={classes["reading"]}>
+                        <span className={classes["reading-title"]}>
+                          Breakdown Name:
+                        </span>
+                        ({repair?.breakdown?.id}) {repair?.breakdown?.name}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className={classes["fifth-block"]}>
