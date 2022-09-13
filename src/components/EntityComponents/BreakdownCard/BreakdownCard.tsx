@@ -1,4 +1,4 @@
-import { Collapse, Tooltip } from "antd";
+import { Badge, Collapse, Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
 import { REMOVE_BREAKDOWN_COMMENT } from "../../../api/mutations";
@@ -58,6 +58,18 @@ const EntityBreakdownCard = ({
                         }}
                       />
                       <span className={classes["title"]}>{breakdown?.id}</span>
+                      {breakdown?.repairs?.length! > 0 && (
+                        <Tooltip
+                          color="var(--dot-tooltip)"
+                          title={
+                            <div>
+                              <Badge color={"#52c41a"} text={"Repair added"} />
+                            </div>
+                          }
+                        >
+                          <Badge color={"#52c41a"} style={{ marginLeft: 20 }} />
+                        </Tooltip>
+                      )}
                     </div>
                     <div className={classes["title-wrapper"]}>
                       <Tooltip title="Requested Date">
