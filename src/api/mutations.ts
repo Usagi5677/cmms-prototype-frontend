@@ -491,36 +491,6 @@ export const ADD_APP_USER = gql`
   }
 `;
 
-export const ASSIGN_USER_TO_MACHINE = gql`
-  mutation ($machineId: Int!, $userIds: [Int!]!) {
-    assignUserToMachine(machineId: $machineId, userIds: $userIds)
-  }
-`;
-
-export const UNASSIGN_USER_FROM_MACHINE = gql`
-  mutation ($machineId: Int!, $userId: Int!) {
-    unassignUserFromMachine(machineId: $machineId, userId: $userId)
-  }
-`;
-
-export const ASSIGN_USER_TO_TRANSPORTATION = gql`
-  mutation ($transportationId: Int!, $userIds: [Int!]!) {
-    assignUserToTransportation(
-      transportationId: $transportationId
-      userIds: $userIds
-    )
-  }
-`;
-
-export const UNASSIGN_USER_FROM_TRANSPORTATION = gql`
-  mutation ($transportationId: Int!, $userId: Int!) {
-    unassignUserFromTransportation(
-      transportationId: $transportationId
-      userId: $userId
-    )
-  }
-`;
-
 export const READ_ONE_NOTIFICATION = gql`
   mutation readNotification($notificationId: Int!) {
     readNotification(notificationId: $notificationId)
@@ -1255,5 +1225,11 @@ export const UPSERT_PM_NOTIFICATION_REMINDER = gql`
       week: $week
       month: $month
     )
+  }
+`;
+
+export const BULK_ASSIGN = gql`
+  mutation bulkAssign($input: BulkAssignInput!) {
+    bulkAssign(input: $input)
   }
 `;

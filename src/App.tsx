@@ -193,7 +193,7 @@ function App() {
             <Route path="/entity/:id" element={<ViewEntity />} />
             <Route path="/vessels" element={<ViewAllVessel />} />
             <Route path="/vehicles" element={<ViewAllVehicle />} />
-            {/* <Route path="/assignments" element={<Assignments />} /> */}
+            <Route path="/assignments" element={<Assignments />} />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/templates" element={<Templates />} />

@@ -10,6 +10,7 @@ export interface DeleteListingProps {
   refetchQueries: string[];
   tooltip?: string;
   title?: string;
+  variables?: any;
 }
 
 export const DeleteListing: React.FC<DeleteListingProps> = ({
@@ -18,6 +19,7 @@ export const DeleteListing: React.FC<DeleteListingProps> = ({
   refetchQueries,
   tooltip = "Delete",
   title = "Are you sure to remove?",
+  variables,
 }) => {
   const [removeListing, { loading }] = useMutation(mutation, {
     onCompleted: () => {
@@ -31,7 +33,7 @@ export const DeleteListing: React.FC<DeleteListingProps> = ({
 
   const remove = () => {
     removeListing({
-      variables: {
+      variables: variables ?? {
         id,
       },
     });

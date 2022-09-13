@@ -5,13 +5,14 @@ import { ZONES } from "../../../api/queries";
 import Zone from "../../../models/Zone";
 
 export interface ZoneSelectorProps {
-  setZoneId: any;
+  setZoneId?: any;
   currentId?: number;
   rounded?: boolean;
   multiple?: boolean;
   width?: number | string;
   currentName?: string;
   placeholder?: string;
+  onChange?: (zoneId: number | number[], clear: any) => void;
 }
 
 export const ZoneSelector: React.FC<ZoneSelectorProps> = ({
@@ -22,6 +23,7 @@ export const ZoneSelector: React.FC<ZoneSelectorProps> = ({
   width,
   currentName,
   placeholder = "Select zone",
+  onChange,
 }) => {
   const [search, setSearch] = useState("");
   const [value, setValue] = useState<number[] | number | null>(
@@ -61,6 +63,10 @@ export const ZoneSelector: React.FC<ZoneSelectorProps> = ({
     }
   }, [currentId, currentName, firstLoad]);
 
+  const clear = () => {
+    setValue(null);
+  };
+
   return (
     <Select
       style={{ width: width ?? undefined }}
@@ -75,8 +81,9 @@ export const ZoneSelector: React.FC<ZoneSelectorProps> = ({
       notFoundContent={loading ? <Spin size="small" /> : null}
       mode={multiple ? "multiple" : undefined}
       onChange={(val) => {
-        setZoneId(val);
+        if (setZoneId) setZoneId(val);
         setValue(val);
+        if (onChange) onChange(val, clear);
       }}
       value={value}
       getPopupContainer={(trigger) => trigger.parentNode}

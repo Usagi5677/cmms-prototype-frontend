@@ -149,13 +149,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     path: "divider2",
   });
 
-  // if (hasPermissions(self, ["ASSIGN_TO_ENTITY"])) {
-  //   SidebarData.push({
-  //     name: "Assignments",
-  //     path: "/assignments",
-  //     icon: <FaUserPlus />,
-  //   });
-  // }
+  if (hasPermissions(self, ["ASSIGN_TO_ENTITY"])) {
+    SidebarData.push({
+      name: "Assignments",
+      path: "/assignments",
+      icon: <FaUserPlus />,
+    });
+  }
   if (hasPermissions(self, ["VIEW_USERS"])) {
     SidebarData.splice(10, 0, {
       name: "Users",
