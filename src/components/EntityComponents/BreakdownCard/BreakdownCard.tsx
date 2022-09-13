@@ -72,6 +72,24 @@ const EntityBreakdownCard = ({
                         {"(" + breakdown?.createdBy?.rcno + ")"}
                       </div>
                     </div>
+                    {breakdown?.estimatedDateOfRepair && (
+                      <div className={classes["title-wrapper"]}>
+                        <Tooltip title="Estimated Date of Repair">
+                          <FaRegClock className={classes["icon"]} />
+                        </Tooltip>
+
+                        <span
+                          className={classes["title"]}
+                          title={moment(
+                            breakdown?.estimatedDateOfRepair
+                          ).format(DATETIME_FORMATS.FULL)}
+                        >
+                          {moment(breakdown?.estimatedDateOfRepair).format(
+                            DATETIME_FORMATS.SHORT
+                          )}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className={classes["third-block"]}>
                     <div className={classes["reading"]}>
