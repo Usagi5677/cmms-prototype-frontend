@@ -1,7 +1,7 @@
 import { LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Divider, Switch, Tag, Typography } from "antd";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { TOGGLE_PERMISSION } from "../../api/mutations";
 import {
@@ -9,11 +9,14 @@ import {
   GET_ROLE_WITH_PERMISSION,
 } from "../../api/queries";
 import { CenteredSpin } from "../../components/common/CenteredSpin";
+import UserContext from "../../contexts/UserContext";
 import { errorMessage } from "../../helpers/gql";
+import { hasPermissions } from "../../helpers/permissions";
 import { RoleTagStringToColor } from "../../helpers/style";
 import Permission from "../../models/Permission";
 
 const Permissions = () => {
+  const { user } = useContext(UserContext);
   const { id }: any = useParams();
   const navigate = useNavigate();
 
@@ -55,10 +58,15 @@ const Permissions = () => {
     });
   }, [getAllPermissions, getRoleWithPermission]);
 
+  let permissions = allPermissions?.permissions;
+  if (!hasPermissions(user, ["MODIFY_DEVELOPER_PERMISSIONS"])) {
+    permissions = permissions?.filter(
+      (p: Permission) => p.type !== "Developer"
+    );
+  }
+
   const uniqueTypes: string[] = [
-    ...new Set(
-      allPermissions?.permissions.map((p: Permission) => p.type) as string[]
-    ),
+    ...new Set(permissions?.map((p: Permission) => p.type) as string[]),
   ];
 
   const hasPermission = (permission: string) => {
@@ -79,7 +87,7 @@ const Permissions = () => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
-        border: "var(--card-border)"
+        border: "var(--card-border)",
       }}
     >
       <div style={{ marginTop: "1rem", display: "flex" }}>

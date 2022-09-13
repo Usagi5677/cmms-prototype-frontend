@@ -5,12 +5,14 @@ import { LOCATIONS } from "../../../api/queries";
 import Location from "../../../models/Location";
 
 export interface LocationSelectorProps {
-  setLocationId: any;
+  setLocationId?: any;
   currentId?: number;
   rounded?: boolean;
   multiple?: boolean;
   width?: number | string;
   currentName?: string;
+  placeholder?: string;
+  onChange?: (locationId: number | number[], clear: any) => void;
 }
 
 export const LocationSelector: React.FC<LocationSelectorProps> = ({
@@ -20,6 +22,8 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
   multiple = false,
   width,
   currentName,
+  placeholder = "Select location",
+  onChange,
 }) => {
   const [search, setSearch] = useState("");
   const [value, setValue] = useState<number[] | number | null>(
@@ -62,11 +66,15 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
     }
   }, [currentId, currentName, firstLoad]);
 
+  const clear = () => {
+    setValue(null);
+  };
+
   return (
     <Select
       style={{ width: width ?? undefined }}
       showArrow
-      placeholder="Select location"
+      placeholder={placeholder}
       allowClear={true}
       loading={loading}
       onSearch={setSearch}
@@ -76,11 +84,12 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
       notFoundContent={loading ? <Spin size="small" /> : null}
       mode={multiple ? "multiple" : undefined}
       onChange={(val) => {
-        setLocationId(val);
+        if (setLocationId) setLocationId(val);
         setValue(val);
+        if (onChange) onChange(val, clear);
       }}
       value={value}
-      getPopupContainer={trigger => trigger.parentNode}
+      getPopupContainer={(trigger) => trigger.parentNode}
     >
       {data?.locations.edges.map((edge: { node: Location }) => (
         <Select.Option key={edge.node.id} value={edge.node.id}>

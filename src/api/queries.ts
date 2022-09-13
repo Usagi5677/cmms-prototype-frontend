@@ -147,8 +147,8 @@ export const GET_ROLES = gql`
 
 export const GET_USERS_WITH_PERMISSION = gql`
   ${APS_USER_FRAGMENT}
-  query getUsersWithPermission($permissions: [String!]!) {
-    getUsersWithPermission(permissions: $permissions) {
+  query getUsersWithPermission($permissions: [String!]!, $search: String) {
+    getUsersWithPermission(permissions: $permissions, search: $search) {
       ...UserFieldsAPS
     }
   }
@@ -512,6 +512,45 @@ export const TYPES = gql`
           id
           name
           entityType
+        }
+      }
+    }
+  }
+`;
+
+export const API_KEYS = gql`
+  query apiKeys(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+  ) {
+    apiKeys(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          apiKeyStart
+          calls
+          active
+          expiresAt
+          permissions {
+            permission
+          }
         }
       }
     }
@@ -1459,6 +1498,59 @@ export const INCOMPLETE_CHECKLIST_SUMMARY = gql`
     incompleteChecklistSummary(input: $input) {
       date
       count
+    }
+  }
+`;
+
+export const ASSIGNMENTS = gql`
+  query assignments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $entityIds: [Int!]!
+    $userIds: [Int!]!
+    $current: Boolean!
+    $type: String
+  ) {
+    assignments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      entityIds: $entityIds
+      userIds: $userIds
+      current: $current
+      type: $type
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          type
+          createdAt
+          removedAt
+          user {
+            id
+            rcno
+            fullName
+          }
+          entity {
+            id
+            machineNumber
+            location {
+              id
+              name
+            }
+          }
+        }
+      }
     }
   }
 `;

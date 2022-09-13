@@ -1,15 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
 import { Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { SEARCH_ENTITY } from "../../api/queries";
-import { Entity } from "../../models/Entity/Entity";
-import { EntityIcon } from "./EntityIcon";
+import { GET_USERS_WITH_PERMISSION } from "../../api/queries";
+import User from "../../models/User";
 
-export interface SearchEntitiesProps {
-  onChange: (entity: Entity) => void;
+export interface SearchUsersWithPermissionsProps {
+  type: string;
+  onChange: (user: User) => void;
   allowClear?: any;
   onClear?: any;
-  current?: Entity[];
+  current?: User[];
   changing?: boolean;
   placeholder?: string;
   rounded?: boolean;
@@ -17,36 +17,48 @@ export interface SearchEntitiesProps {
   margin?: string;
 }
 
-export const SearchEntities: React.FC<SearchEntitiesProps> = ({
+export const SearchUsersWithPermissions: React.FC<
+  SearchUsersWithPermissionsProps
+> = ({
+  type,
   onChange,
   allowClear,
   onClear,
   current,
   changing,
-  placeholder = "Select machinery or transport",
+  placeholder = "Select user",
   rounded = false,
   width,
   margin,
 }) => {
   const [selected, setSelected] = useState<null | number>(null);
-  const [searchEntity, { data: data, loading: searchLoading }] =
-    useLazyQuery(SEARCH_ENTITY);
+  const [getAllUsers, { data: data, loading: searchLoading }] = useLazyQuery(
+    GET_USERS_WITH_PERMISSION
+  );
 
   useEffect(() => {
     if (selected) {
-      const entity = data.searchEntity.find((x: Entity) => x.id === selected);
-      if (entity) {
-        onChange(entity);
+      const user = data.getUsersWithPermission.find(
+        (user: User) => user.id === selected
+      );
+      if (user) {
+        onChange(user);
         setSelected(null);
       }
     }
   }, [selected]);
 
-  const fetchEntity = (value: string) => {
+  let typePermission: string;
+  if (type === "Admin") typePermission = "ENTITY_ADMIN";
+  else if (type === "Engineer") typePermission = "ENTITY_ENGINEER";
+  else if (type === "User") typePermission = "ENTITY_USER";
+
+  const fetchUsers = (value: string) => {
     if (value.length < 20) {
-      searchEntity({
+      getAllUsers({
         variables: {
-          query: value,
+          search: value,
+          permissions: [typePermission],
         },
       });
     }
@@ -57,13 +69,13 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
   const fetchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
     //@ts-ignore
-    setTimerId(setTimeout(() => fetchEntity(value), 500));
+    setTimerId(setTimeout(() => fetchUsers(value), 500));
   };
 
-  const filtered = data?.searchEntity.filter((entity: Entity) => {
+  const filtered = data?.getUsersWithPermission.filter((user: User) => {
     if (current) {
       for (const e of current) {
-        if (e.id === entity.id) {
+        if (e.id === user.id) {
           return false;
         }
       }
@@ -87,19 +99,9 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
       className={rounded ? undefined : "notRounded"}
     >
       {data
-        ? filtered.map((entity: Entity) => (
-            <Select.Option key={entity.id} value={entity.id}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <EntityIcon entityType={entity.type?.entityType} />
-                <div style={{ marginLeft: ".5rem" }}>
-                  {entity.machineNumber}
-                </div>
-                <div
-                  style={{ marginLeft: ".5rem", fontSize: "80%", opacity: 0.7 }}
-                >
-                  {entity.location?.name}
-                </div>
-              </div>
+        ? filtered.map((user: User) => (
+            <Select.Option key={user.id} value={user.id}>
+              {user.fullName} ({user.rcno})
             </Select.Option>
           ))
         : null}
