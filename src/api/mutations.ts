@@ -491,36 +491,6 @@ export const ADD_APP_USER = gql`
   }
 `;
 
-export const ASSIGN_USER_TO_MACHINE = gql`
-  mutation ($machineId: Int!, $userIds: [Int!]!) {
-    assignUserToMachine(machineId: $machineId, userIds: $userIds)
-  }
-`;
-
-export const UNASSIGN_USER_FROM_MACHINE = gql`
-  mutation ($machineId: Int!, $userId: Int!) {
-    unassignUserFromMachine(machineId: $machineId, userId: $userId)
-  }
-`;
-
-export const ASSIGN_USER_TO_TRANSPORTATION = gql`
-  mutation ($transportationId: Int!, $userIds: [Int!]!) {
-    assignUserToTransportation(
-      transportationId: $transportationId
-      userIds: $userIds
-    )
-  }
-`;
-
-export const UNASSIGN_USER_FROM_TRANSPORTATION = gql`
-  mutation ($transportationId: Int!, $userId: Int!) {
-    unassignUserFromTransportation(
-      transportationId: $transportationId
-      userId: $userId
-    )
-  }
-`;
-
 export const READ_ONE_NOTIFICATION = gql`
   mutation readNotification($notificationId: Int!) {
     readNotification(notificationId: $notificationId)
@@ -744,6 +714,24 @@ export const DELETE_LOCATION = gql`
 export const EDIT_LOCATION = gql`
   mutation updateLocation($input: UpdateLocationInput!) {
     updateLocation(input: $input)
+  }
+`;
+
+export const CREATE_KEY = gql`
+  mutation createApiKey($input: CreateApiKeyInput!) {
+    createApiKey(input: $input)
+  }
+`;
+
+export const DEACTIVATE_KEY = gql`
+  mutation deactivateApiKey($id: Int!) {
+    deactivateApiKey(id: $id)
+  }
+`;
+
+export const EDIT_KEY = gql`
+  mutation editKey($input: EditApiKeyInput!) {
+    editKey(input: $input)
   }
 `;
 
@@ -1237,5 +1225,11 @@ export const UPSERT_PM_NOTIFICATION_REMINDER = gql`
       week: $week
       month: $month
     )
+  }
+`;
+
+export const BULK_ASSIGN = gql`
+  mutation bulkAssign($input: BulkAssignInput!) {
+    bulkAssign(input: $input)
   }
 `;
