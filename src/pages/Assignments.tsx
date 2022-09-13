@@ -168,6 +168,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       ...filter,
       entityIds: selectedEntities.map((s) => s.id),
     });
+    setPage(1);
   }, [selectedEntities]);
 
   useEffect(() => {
@@ -175,6 +176,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       ...filter,
       userIds: selectedUsers.map((s) => s.id),
     });
+    setPage(1);
   }, [selectedUsers]);
 
   return (
@@ -232,14 +234,18 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             margin={filterMargin}
             value={filter.type}
             width={190}
-            onChange={(type) => setFilter({ ...filter, type })}
+            onChange={(type) => {
+              setFilter({ ...filter, type });
+              setPage(1);
+            }}
           />
           <Checkbox
             style={{ margin: filterMargin }}
             checked={filter.current}
-            onChange={(e) =>
-              setFilter({ ...filter, current: e.target.checked })
-            }
+            onChange={(e) => {
+              setFilter({ ...filter, current: e.target.checked });
+              setPage(1);
+            }}
           >
             Active assignments only
           </Checkbox>
