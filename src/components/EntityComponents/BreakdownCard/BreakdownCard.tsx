@@ -16,7 +16,7 @@ import EditBreakdown from "../EditEntityBreakdown/EditBreakdown";
 import Comment from "../../../models/Comment";
 import classes from "./BreakdownCard.module.css";
 import RepairDetailCard from "../RepairDetailCard/RepairDetailCard";
-import { ToolOutlined } from "@ant-design/icons";
+import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
 import { hasPermissions } from "../../../helpers/permissions";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
@@ -48,16 +48,16 @@ const EntityBreakdownCard = ({
                 <div className={classes["info-wrapper"]}>
                   <div className={classes["first-block"]}>
                     <div className={classes["id-wrapper"]}>
-                      <ToolOutlined
-                        className={classes["icon"]}
-                        style={{
-                          color:
-                            breakdown?.comments?.length! > 0 || rCommentExist
-                              ? "#52c41a"
-                              : "none",
-                        }}
-                      />
+                      <ToolOutlined className={classes["icon"]} />
                       <span className={classes["title"]}>{breakdown?.id}</span>
+                      {breakdown?.comments?.length! > 0 || rCommentExist ? (
+                        <CommentOutlined
+                          style={{
+                            marginLeft: 20,
+                            marginTop: breakdown?.repairs?.length! ? 0 : 4,
+                          }}
+                        />
+                      ) : null}
                       {breakdown?.repairs?.length! > 0 && (
                         <Tooltip
                           color="var(--dot-tooltip)"
@@ -67,7 +67,7 @@ const EntityBreakdownCard = ({
                             </div>
                           }
                         >
-                          <Badge color={"#52c41a"} style={{ marginLeft: 20 }} />
+                          <Badge color={"#52c41a"} style={{ marginLeft: 10 }} />
                         </Tooltip>
                       )}
                     </div>

@@ -1,4 +1,4 @@
-import { ToolOutlined } from "@ant-design/icons";
+import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Collapse, Tooltip } from "antd";
 import moment from "moment";
@@ -47,16 +47,15 @@ const RepairCard = ({
                 <div className={classes["info-wrapper"]}>
                   <div className={classes["first-block"]}>
                     <div className={classes["id-wrapper"]}>
-                      <ToolOutlined
-                        className={classes["icon"]}
-                        style={{
-                          color:
-                            repair?.comments?.length! > 0
-                              ? "#52c41a"
-                              : "none",
-                        }}
-                      />
+                      <ToolOutlined className={classes["icon"]} />
                       <span className={classes["title"]}>{repair?.id}</span>
+                      {repair?.comments?.length! > 0 ? (
+                        <CommentOutlined
+                          style={{
+                            marginLeft: 20,
+                          }}
+                        />
+                      ) : null}
                     </div>
                     <div className={classes["title-wrapper"]}>
                       <Tooltip title="Created Date">
