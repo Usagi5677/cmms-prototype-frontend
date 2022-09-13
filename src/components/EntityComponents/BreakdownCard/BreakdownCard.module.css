@@ -79,7 +79,17 @@
   width: 100%;
   padding: 20px;
   border: 1px solid var(--border-1);
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  overflow-y: auto;
+
+}
+
+.inner-block:last-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .icon {
@@ -162,6 +172,17 @@
   }
   .flex {
     flex-direction: row;
+  }
+  .inner-block {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 10px;
+  }
+  .inner-block:last-child {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 0;
   }
 }
 @media only screen and (min-width: 1000px) {
