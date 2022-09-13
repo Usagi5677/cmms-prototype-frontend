@@ -47,7 +47,15 @@ const RepairCard = ({
                 <div className={classes["info-wrapper"]}>
                   <div className={classes["first-block"]}>
                     <div className={classes["id-wrapper"]}>
-                      <ToolOutlined className={classes["icon"]} />
+                      <ToolOutlined
+                        className={classes["icon"]}
+                        style={{
+                          color:
+                            repair?.comments?.length! > 0
+                              ? "#52c41a"
+                              : "none",
+                        }}
+                      />
                       <span className={classes["title"]}>{repair?.id}</span>
                     </div>
                     <div className={classes["title-wrapper"]}>

@@ -29,6 +29,12 @@ const EntityBreakdownCard = ({
   isDeleted?: boolean | undefined;
 }) => {
   const { user: self } = useContext(UserContext);
+  let rCommentExist = false;
+  breakdown?.repairs?.map((c) => {
+    if (c.comments?.length! > 0) {
+      rCommentExist = true;
+    }
+  });
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -42,7 +48,15 @@ const EntityBreakdownCard = ({
                 <div className={classes["info-wrapper"]}>
                   <div className={classes["first-block"]}>
                     <div className={classes["id-wrapper"]}>
-                      <ToolOutlined className={classes["icon"]} />
+                      <ToolOutlined
+                        className={classes["icon"]}
+                        style={{
+                          color:
+                            breakdown?.comments?.length! > 0 || rCommentExist
+                              ? "#52c41a"
+                              : "none",
+                        }}
+                      />
                       <span className={classes["title"]}>{breakdown?.id}</span>
                     </div>
                     <div className={classes["title-wrapper"]}>
