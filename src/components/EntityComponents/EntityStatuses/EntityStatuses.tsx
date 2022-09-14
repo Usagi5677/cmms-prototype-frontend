@@ -41,14 +41,13 @@ const EntityStatuses = ({
     CREATE_BREAKDOWN,
     {
       onCompleted: () => {
-        message.success("Successfully created breakdown.");
         handleCancel();
       },
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating breakdown.");
       },
       refetchQueries: [
-        "getAllBreakdownOfEntity",
+        "breakdowns",
         "getSingleEntity",
         "getAllHistoryOfEntity",
         "allEntityBreakdownCount",
@@ -75,14 +74,18 @@ const EntityStatuses = ({
 
     createBreakdown({
       variables: {
-        entityId: entityID,
-        name,
-        type,
+        createBreakdownInput: {
+          entityId: entityID,
+          name,
+          type,
+        },
       },
     });
   };
   const onChangeClick = async (status: EntityStatus) => {
     if (status === "Breakdown") {
+      setVisible(true);
+    } else if (status === "Critical") {
       setVisible(true);
     } else {
       setEntityStatus({

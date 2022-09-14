@@ -94,7 +94,7 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 5,
       before: pageInfo.startCursor,
       first: null,
       after: null,
