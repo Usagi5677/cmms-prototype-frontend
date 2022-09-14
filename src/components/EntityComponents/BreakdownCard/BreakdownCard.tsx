@@ -1,4 +1,4 @@
-import { Badge, Collapse, Tooltip } from "antd";
+import { Badge, Collapse, Tag, Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
 import { REMOVE_BREAKDOWN_COMMENT } from "../../../api/mutations";
@@ -134,7 +134,19 @@ const EntityBreakdownCard = ({
                   <div className={classes["third-block"]}>
                     <div className={classes["reading"]}>
                       <span className={classes["reading-title"]}>Type:</span>
-                      {breakdown?.type}
+                      <Tag
+                        color={
+                          breakdown?.type === "Breakdown" ? "red" : "orange"
+                        }
+                        style={{
+                          fontWeight: 700,
+                          borderRadius: 20,
+                          textAlign: "center",
+                          maxWidth: 250,
+                        }}
+                      >
+                        {breakdown?.type}
+                      </Tag>
                     </div>
                     <div className={classes["reading"]}>
                       <span className={classes["reading-title"]}>Name:</span>

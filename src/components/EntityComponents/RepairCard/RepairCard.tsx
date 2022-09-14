@@ -1,6 +1,6 @@
 import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { Collapse, Tooltip } from "antd";
+import { Collapse, Tag, Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
 import { REMOVE_REPAIR_COMMENT } from "../../../api/mutations";
@@ -34,7 +34,7 @@ const RepairCard = ({
     (c: Comment) => c.type === "Observation"
   );
   const breakdownExist = repair?.breakdown;
-  
+
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -104,7 +104,21 @@ const RepairCard = ({
                         <span className={classes["reading-title"]}>
                           Breakdown Type:
                         </span>
-                        {repair?.breakdown?.type}
+                        <Tag
+                          color={
+                            repair?.breakdown?.type === "Breakdown"
+                              ? "red"
+                              : "orange"
+                          }
+                          style={{
+                            fontWeight: 700,
+                            borderRadius: 20,
+                            textAlign: "center",
+                            maxWidth: 250,
+                          }}
+                        >
+                          {repair?.breakdown?.type}
+                        </Tag>
                       </div>
                     )}
                     {breakdownExist && (

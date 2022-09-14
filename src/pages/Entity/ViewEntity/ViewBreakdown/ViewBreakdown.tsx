@@ -114,9 +114,11 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
             onClick={() => setSearch("")}
           />
         </div>
-        {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
-          <AddBreakdown entityID={parseInt(id)} isDeleted={isDeleted} />
-        ) : null}
+        <div className={classes["add"]}>
+          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+            <AddBreakdown entityID={parseInt(id)} isDeleted={isDeleted} />
+          ) : null}
+        </div>
       </div>
       {loading && (
         <div>
