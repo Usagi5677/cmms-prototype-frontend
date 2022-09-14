@@ -102,7 +102,7 @@ const EntityBreakdownCard = ({
                         </Tag>
                       </div>
                       <div
-                        className={(classes["reading"], classes["space-two"])}
+                        className={(classes["reading"], classes["space-two"], classes["flex-limit"])}
                       >
                         <span className={classes["reading-title"]}>Name:</span>
                         {breakdown?.name}
