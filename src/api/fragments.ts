@@ -66,10 +66,10 @@ export const ENTITY_FRAGMENT = gql`
       type
     }
     sparePRs {
+      id
+      createdAt
+      name
       requestedDate
-      title
-      description
-      status
     }
     breakdowns {
       id
