@@ -1,5 +1,5 @@
-import { Badge, Button, ConfigProvider, Dropdown, Switch } from "antd";
-import { FaCog, FaRegMoon, FaRegSun, FaSun } from "react-icons/fa";
+import { Badge, ConfigProvider, Popover, Switch } from "antd";
+import { FaCog, FaRegMoon, FaSun } from "react-icons/fa";
 import classes from "./ThemeChange.module.css";
 import { AnyColorFormat, Colorpicker } from "antd-colorpicker";
 import { useState } from "react";
@@ -29,11 +29,11 @@ const ThemeChange = () => {
     setTheme(newColor?.hex);
   };
   return (
-    <Dropdown
+    <Popover
       placement="bottomRight"
       trigger={["click"]}
-      overlay={
-        <div className={classes["notification-menu"]}>
+      content={
+        <div className={classes["theme-menu"]}>
           <div className={classes["title-wrapper"]}>
             <div className={classes["flex"]}>
               <div className={classes["title"]}>Change Theme</div>
@@ -69,7 +69,7 @@ const ThemeChange = () => {
           }}
         />
       </div>
-    </Dropdown>
+    </Popover>
   );
 };
 
