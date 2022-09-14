@@ -14,18 +14,24 @@ import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { EDIT_ENTITY_SPARE_PR } from "../../../api/mutations";
+import { EDIT_SPARE_PR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import EntitySparePR from "../../../models/Entity/EntitySparePR";
+import SparePR from "../../../models/Entity/SparePR";
 
-import classes from "./EditEntitySparePR.module.css";
+import classes from "./EditSparePR.module.css";
 
-const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
+const EditSparePR = ({
+  sparePR,
+  isDeleted,
+}: {
+  sparePR: SparePR;
+  isDeleted?: boolean;
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [editEntitySparePR, { loading: loadingSparePR }] = useMutation(
-    EDIT_ENTITY_SPARE_PR,
+  const [updateSparePR, { loading: loadingSparePR }] = useMutation(
+    EDIT_SPARE_PR,
     {
       onCompleted: () => {
         message.success("Successfully updated spare PR.");
@@ -34,7 +40,7 @@ const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while updating spare PR.");
       },
-      refetchQueries: ["getAllSparePROfEntity", "getAllHistoryOfEntity"],
+      refetchQueries: ["sparePRs", "getAllHistoryOfEntity"],
     }
   );
 
@@ -44,14 +50,10 @@ const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, requestedDate } = values;
+    const { name, requestedDate } = values;
 
-    if (!title) {
-      message.error("Please enter the title.");
-      return;
-    }
-    if (!description) {
-      message.error("Please enter the description.");
+    if (!name) {
+      message.error("Please enter the name.");
       return;
     }
     if (!requestedDate) {
@@ -59,12 +61,13 @@ const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
       return;
     }
 
-    editEntitySparePR({
+    updateSparePR({
       variables: {
-        id: sparePR.id,
-        title,
-        description,
-        requestedDate,
+        updateSparePrInput: {
+          id: sparePR.id,
+          name,
+          requestedDate,
+        },
       },
     });
   };
@@ -92,34 +95,19 @@ const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
             preserve={false}
           >
             <Form.Item
-              label="Title"
-              name="title"
+              label="Name"
+              name="name"
               required={false}
-              initialValue={sparePR?.title}
+              initialValue={sparePR?.name}
               rules={[
                 {
                   required: true,
-                  message: "Please enter the title.",
+                  message: "Please enter the name.",
                 },
               ]}
             >
-              <Input placeholder="Title" />
+              <Input placeholder="Name" />
             </Form.Item>
-            <Form.Item
-              label="Description"
-              name="description"
-              required={false}
-              initialValue={sparePR?.description}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the description.",
-                },
-              ]}
-            >
-              <Input placeholder="Description" />
-            </Form.Item>
-
             <Form.Item
               label="Requested Date"
               name="requestedDate"
@@ -155,6 +143,7 @@ const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
                     htmlType="submit"
                     loading={loadingSparePR}
                     className={classes["custom-btn-primary"]}
+                    disabled={isDeleted}
                   >
                     Edit
                   </Button>
@@ -168,4 +157,4 @@ const EditEntitySparePR = ({ sparePR }: { sparePR: EntitySparePR }) => {
   );
 };
 
-export default EditEntitySparePR;
+export default EditSparePR;

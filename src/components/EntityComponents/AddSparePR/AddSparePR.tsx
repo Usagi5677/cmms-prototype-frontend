@@ -11,16 +11,16 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { ADD_ENTITY_SPARE_PR } from "../../../api/mutations";
+import { CREATE_SPARE_PR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./AddEntitySparePR.module.css";
+import classes from "./AddSparePR.module.css";
 
-const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
+const AddSparePR = ({ entityID }: { entityID: number }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [addEntitySparePR, { loading: loadingSparePR }] = useMutation(
-    ADD_ENTITY_SPARE_PR,
+  const [createSparePR, { loading: loadingSparePR }] = useMutation(
+    CREATE_SPARE_PR,
     {
       onCompleted: () => {
         message.success("Successfully created spare PR.");
@@ -29,7 +29,7 @@ const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating spare PR.");
       },
-      refetchQueries: ["getAllSparePROfEntity", "getAllHistoryOfEntity"],
+      refetchQueries: ["sparePRs", "getAllHistoryOfEntity"],
     }
   );
 
@@ -39,14 +39,10 @@ const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { title, description, requestedDate } = values;
+    const { name, requestedDate } = values;
 
-    if (!title) {
-      message.error("Please enter the title.");
-      return;
-    }
-    if (!description) {
-      message.error("Please enter the description.");
+    if (!name) {
+      message.error("Please enter the name.");
       return;
     }
     if (!requestedDate) {
@@ -54,12 +50,13 @@ const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
       return;
     }
 
-    addEntitySparePR({
+    createSparePR({
       variables: {
-        entityId: entityID,
-        title,
-        description,
-        requestedDate,
+        createSparePrInput: {
+          entityId: entityID,
+          name,
+          requestedDate,
+        },
       },
     });
   };
@@ -91,32 +88,18 @@ const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
           id="myForm"
         >
           <Form.Item
-            label="Title"
-            name="title"
+            label="Name"
+            name="name"
             required={false}
             rules={[
               {
                 required: true,
-                message: "Please enter the title.",
+                message: "Please enter the name.",
               },
             ]}
           >
-            <Input placeholder="Title" />
+            <Input placeholder="Name" />
           </Form.Item>
-          <Form.Item
-            label="Description"
-            name="description"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the description.",
-              },
-            ]}
-          >
-            <Input placeholder="Description" />
-          </Form.Item>
-
           <Form.Item
             label="Requested Date"
             name="requestedDate"
@@ -163,4 +146,4 @@ const AddEntitySparePR = ({ entityID }: { entityID: number }) => {
   );
 };
 
-export default AddEntitySparePR;
+export default AddSparePR;

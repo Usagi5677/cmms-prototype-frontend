@@ -804,17 +804,17 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_ENTITY = gql`
   }
 `;
 
-export const GET_ALL_SPARE_PR_OF_ENTITY = gql`
+export const SPARE_PRS = gql`
   ${APS_USER_FRAGMENT}
-  query getAllSparePROfEntity(
+  query sparePRs(
     $after: String
     $before: String
     $first: Int
     $last: Int
     $search: String
-    $entityId: Int!
+    $entityId: Int
   ) {
-    getAllSparePROfEntity(
+    sparePRs(
       after: $after
       before: $before
       first: $first
@@ -832,14 +832,10 @@ export const GET_ALL_SPARE_PR_OF_ENTITY = gql`
       edges {
         node {
           id
-          entityId
-          title
-          description
+          name
           requestedDate
-          status
-          completedAt
           createdAt
-          completedBy {
+          createdBy {
             ...UserFieldsAPS
           }
         }

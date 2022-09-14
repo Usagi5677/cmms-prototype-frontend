@@ -422,8 +422,8 @@ const EntityCard = ({
                     Spare PR details:
                   </span>
                   <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                    {entity?.sparePRs[0]?.description
-                      ? entity?.sparePRs[0]?.description
+                    {entity?.sparePRs[0]?.name
+                      ? entity?.sparePRs[0]?.name
                       : "None"}
                   </Paragraph>
                 </div>

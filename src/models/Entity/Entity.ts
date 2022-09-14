@@ -8,7 +8,7 @@ import Breakdown from "./Breakdown";
 import EntityHistory from "./EntityHistory";
 import EntityPeriodicMaintenance from "./EntityPeriodicMaintenance";
 import EntityRepairRequest from "./EntityRepairRequest";
-import EntitySparePR from "./EntitySparePR";
+import SparePR from "./SparePR";
 
 export interface Entity {
   id: number;
@@ -36,6 +36,6 @@ export interface Entity {
   periodicMaintenancePlans: EntityPeriodicMaintenance[];
   repairs: EntityRepairRequest[];
   breakdowns: Breakdown[];
-  sparePRs: EntitySparePR[];
+  sparePRs: SparePR[];
   histories: EntityHistory[];
 }

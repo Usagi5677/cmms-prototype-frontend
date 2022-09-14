@@ -913,47 +913,21 @@ export const DELETE_ENTITY_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
-export const ADD_ENTITY_SPARE_PR = gql`
-  mutation (
-    $entityId: Int!
-    $title: String!
-    $description: String!
-    $requestedDate: Date!
-  ) {
-    addEntitySparePR(
-      entityId: $entityId
-      title: $title
-      description: $description
-      requestedDate: $requestedDate
-    )
+export const CREATE_SPARE_PR = gql`
+  mutation ($createSparePrInput: CreateSparePrInput!) {
+    createSparePR(createSparePrInput: $createSparePrInput)
   }
 `;
 
-export const EDIT_ENTITY_SPARE_PR = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-    $requestedDate: Date!
-  ) {
-    editEntitySparePR(
-      id: $id
-      title: $title
-      description: $description
-      requestedDate: $requestedDate
-    )
+export const EDIT_SPARE_PR = gql`
+  mutation ($updateSparePrInput: UpdateSparePrInput!) {
+    updateSparePR(updateSparePrInput: $updateSparePrInput)
   }
 `;
 
-export const DELETE_ENTITY_SPARE_PR = gql`
+export const DELETE_SPARE_PR = gql`
   mutation ($id: Int!) {
-    deleteEntitySparePR(id: $id)
-  }
-`;
-
-export const SET_ENTITY_SPARE_PR_STATUS = gql`
-  mutation ($id: Int!, $status: SparePRStatus!) {
-    setEntitySparePRStatus(id: $id, status: $status)
+    removeSparePR(id: $id)
   }
 `;
 

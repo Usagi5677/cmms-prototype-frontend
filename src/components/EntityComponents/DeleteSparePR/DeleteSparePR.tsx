@@ -1,17 +1,19 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
-import { DELETE_ENTITY_SPARE_PR } from "../../../api/mutations";
+import { DELETE_SPARE_PR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import classes from "./DeleteEntitySparePR.module.css";
+import classes from "./DeleteSparePR.module.css";
 
-const DeleteEntitySparePR = ({
+const DeleteSparePR = ({
   id,
+  isDeleted,
 }: {
   id: number;
+  isDeleted?: boolean;
 }) => {
-  const [removeEntitySparePR, { loading: deleting }] = useMutation(
-    DELETE_ENTITY_SPARE_PR,
+  const [removeSparePR, { loading: deleting }] = useMutation(
+    DELETE_SPARE_PR,
     {
       onCompleted: () => {
         message.success("Successfully removed spare PR.");
@@ -22,12 +24,12 @@ const DeleteEntitySparePR = ({
           "Unexpected error while removing spare PR."
         );
       },
-      refetchQueries: ["getAllSparePROfEntity", "getAllHistoryOfEntity"],
+      refetchQueries: ["sparePRs", "getAllHistoryOfEntity"],
     }
   );
 
   const remove = () => {
-    removeEntitySparePR({
+    removeSparePR({
       variables: {
         id,
       },
@@ -36,7 +38,7 @@ const DeleteEntitySparePR = ({
   return (
     <Popconfirm
       key="delete"
-      disabled={deleting}
+      disabled={deleting || isDeleted}
       title={`Are you sure to remove this information?`}
       onConfirm={() => remove()}
       okText="Confirm"
@@ -52,4 +54,4 @@ const DeleteEntitySparePR = ({
   );
 };
 
-export default DeleteEntitySparePR;
+export default DeleteSparePR;
