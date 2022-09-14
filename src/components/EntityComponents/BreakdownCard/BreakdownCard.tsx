@@ -45,126 +45,143 @@ const EntityBreakdownCard = ({
                 className={classes["header-container"]}
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className={classes["info-wrapper"]}>
-                  <div className={classes["first-block"]}>
-                    <div className={classes["id-wrapper"]}>
-                      <ToolOutlined className={classes["icon"]} />
-                      <span className={classes["title"]}>{breakdown?.id}</span>
-                      {breakdown?.comments?.length! > 0 || rCommentExist ? (
-                        <CommentOutlined
-                          style={{
-                            marginLeft: 20,
-                          }}
-                        />
-                      ) : null}
-                      {breakdown?.repairs?.length! > 0 && (
-                        <Tooltip
-                          color="var(--dot-tooltip)"
-                          title={
-                            <div>
-                              <Badge color={"#52c41a"} text={"Repair added"} />
-                            </div>
-                          }
-                        >
-                          <Badge color={"#52c41a"} style={{ marginLeft: 10 }} />
-                        </Tooltip>
-                      )}
-                    </div>
-                    <div className={classes["title-wrapper"]}>
-                      <Tooltip title="Created Date">
-                        <FaRegClock className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span
-                        className={classes["title"]}
-                        title={moment(breakdown?.createdAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(breakdown?.createdAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={classes["second-block"]}>
-                    <div className={classes["createdBy-wrapper"]}>
-                      <Tooltip title="Created by">
-                        <FaRegUser />
-                      </Tooltip>
-                      <div className={classes["createdBy"]}>
-                        {breakdown?.createdBy?.fullName}{" "}
-                        {"(" + breakdown?.createdBy?.rcno + ")"}
-                      </div>
-                    </div>
-                    <div
-                      className={classes["title-wrapper"]}
-                      style={{
-                        visibility: breakdown?.estimatedDateOfRepair
-                          ? "visible"
-                          : "initial",
-                      }}
-                    >
-                      {breakdown?.estimatedDateOfRepair ? (
-                        <>
-                          <Tooltip title="Estimated Date of Repair">
-                            <FaRegClock className={classes["icon"]} />
-                          </Tooltip>
-                          <span
-                            className={classes["title"]}
-                            title={moment(
-                              breakdown?.estimatedDateOfRepair
-                            ).format(DATETIME_FORMATS.FULL)}
-                          >
-                            {moment(breakdown?.estimatedDateOfRepair).format(
-                              DATETIME_FORMATS.SHORT
-                            )}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <Tooltip title="Estimated Date of Repair">
-                            <FaRegClock className={classes["icon"]} />
-                          </Tooltip>
-                          <span className={classes["title"]}>None</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <div className={classes["third-block"]}>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Type:</span>
-                      <Tag
-                        color={
-                          breakdown?.type === "Breakdown" ? "red" : "orange"
+                <div className={classes["level-one"]}>
+                  <div className={classes["info-wrapper"]}>
+                    <div className={classes["first-block"]}>
+                      <div
+                        className={
+                          (classes["title-wrapper"], classes["space-two"])
                         }
                         style={{
-                          fontWeight: 700,
-                          borderRadius: 20,
-                          textAlign: "center",
-                          maxWidth: 250,
+                          visibility: breakdown?.estimatedDateOfRepair
+                            ? "visible"
+                            : "initial",
                         }}
                       >
-                        {breakdown?.type}
-                      </Tag>
+                        {breakdown?.estimatedDateOfRepair ? (
+                          <>
+                            <Tooltip title="Estimated Date of Repair">
+                              <FaRegClock className={classes["icon"]} />
+                            </Tooltip>
+                            <span
+                              className={classes["title"]}
+                              title={moment(
+                                breakdown?.estimatedDateOfRepair
+                              ).format(DATETIME_FORMATS.FULL)}
+                            >
+                              {moment(breakdown?.estimatedDateOfRepair).format(
+                                DATETIME_FORMATS.SHORT
+                              )}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Tooltip title="Estimated Date of Repair">
+                              <FaRegClock className={classes["icon"]} />
+                            </Tooltip>
+                            <span className={classes["title"]}>None</span>
+                          </>
+                        )}
+                      </div>
+                      <div
+                        className={(classes["reading"], classes["space-two"])}
+                      >
+                        <span className={classes["reading-title"]}>Type:</span>
+                        <Tag
+                          color={
+                            breakdown?.type === "Breakdown" ? "red" : "orange"
+                          }
+                          style={{
+                            fontWeight: 700,
+                            borderRadius: 20,
+                            textAlign: "center",
+                            maxWidth: 250,
+                          }}
+                        >
+                          {breakdown?.type}
+                        </Tag>
+                      </div>
+                      <div
+                        className={(classes["reading"], classes["space-two"])}
+                      >
+                        <span className={classes["reading-title"]}>Name:</span>
+                        {breakdown?.name}
+                      </div>
                     </div>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Name:</span>
-                      {breakdown?.name}
+                    <div className={classes["second-block"]}>
+                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                        <EditBreakdown
+                          breakdown={breakdown}
+                          isDeleted={isDeleted}
+                        />
+                      ) : null}
+                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                        <DeleteBreakdown
+                          id={breakdown.id}
+                          isDeleted={isDeleted}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 </div>
 
-                <div className={classes["fifth-block"]}>
-                  {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
-                    <EditBreakdown
-                      breakdown={breakdown}
-                      isDeleted={isDeleted}
+                <div className={classes["level-two"]}>
+                  {breakdown?.comments?.length! > 0 || rCommentExist ? (
+                    <CommentOutlined
+                      style={{
+                        marginRight: 10,
+                      }}
                     />
                   ) : null}
-                  {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
-                    <DeleteBreakdown id={breakdown.id} isDeleted={isDeleted} />
-                  ) : null}
+                  {breakdown?.repairs?.length! > 0 && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge color={"#52c41a"} text={"Repair added"} />
+                        </div>
+                      }
+                    >
+                      <Badge
+                        color={"#52c41a"}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                  <div className={(classes["id-wrapper"], classes["space"])}>
+                    <ToolOutlined className={classes["icon"]} />
+                    <span className={classes["title"]}>{breakdown?.id}</span>
+                  </div>
+                  <div className={(classes["title-wrapper"], classes["space"])}>
+                    <Tooltip title="Created Date">
+                      <FaRegClock className={classes["icon"]} />
+                    </Tooltip>
+
+                    <span
+                      className={classes["title"]}
+                      title={moment(breakdown?.createdAt).format(
+                        DATETIME_FORMATS.FULL
+                      )}
+                    >
+                      {moment(breakdown?.createdAt).format(
+                        DATETIME_FORMATS.SHORT
+                      )}
+                    </span>
+                  </div>
+                  <div
+                    className={(classes["createdBy-wrapper"], classes["space"])}
+                  >
+                    <Tooltip title="Created by">
+                      <FaRegUser />
+                    </Tooltip>
+                    <div className={classes["createdBy"]}>
+                      {breakdown?.createdBy?.fullName}{" "}
+                      {"(" + breakdown?.createdBy?.rcno + ")"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>

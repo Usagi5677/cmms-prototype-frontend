@@ -1,11 +1,12 @@
-import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
-import { useMutation } from "@apollo/client";
+import {
+  CommentOutlined,
+  ToolOutlined,
+} from "@ant-design/icons";
 import { Collapse, Tag, Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
 import { REMOVE_REPAIR_COMMENT } from "../../../api/mutations";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { errorMessage } from "../../../helpers/gql";
 import Repair from "../../../models/Entity/Repair";
 import { CommentCard } from "../../common/CommentCard/CommentCard";
 import DeleteRepair from "../DeleteRepair/DeleteRepair";
@@ -17,7 +18,6 @@ import { AddRepairObservation } from "../../common/AddRepairObservation";
 import { hasPermissions } from "../../../helpers/permissions";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 const RepairCard = ({
   repair,
@@ -45,104 +45,110 @@ const RepairCard = ({
                 className={classes["header-container"]}
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className={classes["info-wrapper"]}>
-                  <div className={classes["first-block"]}>
-                    <div className={classes["id-wrapper"]}>
-                      <ToolOutlined className={classes["icon"]} />
-                      <span className={classes["title"]}>{repair?.id}</span>
-                      {repair?.comments?.length! > 0 ? (
-                        <CommentOutlined
-                          style={{
-                            marginLeft: 20,
-                          }}
-                        />
-                      ) : null}
-                    </div>
-                    <div className={classes["title-wrapper"]}>
-                      <Tooltip title="Created Date">
-                        <FaRegClock className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span
-                        className={classes["title"]}
-                        title={moment(repair?.createdAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(repair?.createdAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={classes["second-block"]}>
-                    <div className={classes["createdBy-wrapper"]}>
-                      <Tooltip title="Created by">
-                        <FaRegUser style={{ opacity: 0.5 }} />
-                      </Tooltip>
-                      <div className={classes["createdBy"]}>
-                        {repair?.createdBy?.fullName}{" "}
-                        {"(" + repair?.createdBy?.rcno + ")"}
+                <div className={classes["level-one"]}>
+                  <div className={classes["info-wrapper"]}>
+                    <div className={classes["first-block"]}>
+                      <div className={classes["reading"]}>
+                        <span className={classes["reading-title"]}>Name:</span>
+                        {repair?.name}
                       </div>
+                    </div>
+                    <div
+                      className={classes["second-block"]}
+                      style={{
+                        visibility: breakdownExist ? "visible" : "initial",
+                      }}
+                    >
+                      {breakdownExist && (
+                        <div className={classes["reading"]}>
+                          <span className={classes["reading-title"]}>
+                            Breakdown Type:
+                          </span>
+                          <Tag
+                            color={
+                              repair?.breakdown?.type === "Breakdown"
+                                ? "red"
+                                : "orange"
+                            }
+                            style={{
+                              fontWeight: 700,
+                              borderRadius: 20,
+                              textAlign: "center",
+                              maxWidth: 250,
+                            }}
+                          >
+                            {repair?.breakdown?.type}
+                          </Tag>
+                        </div>
+                      )}
+                      {breakdownExist && (
+                        <div
+                          className={
+                            (classes["reading"], classes["flex-limit"])
+                          }
+                        >
+                          <span className={classes["reading-title"]}>
+                            Breakdown Name:
+                          </span>
+                          ({repair?.breakdown?.id}) {repair?.breakdown?.name}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className={classes["third-block"]}>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Name:</span>
-                      {repair?.name}
+                    <div style={{ marginRight: 8, marginTop: 4 }}>
+                      {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
+                        <AddRepairComment
+                          repair={repair}
+                          isDeleted={isDeleted}
+                        />
+                      ) : null}
                     </div>
-                  </div>
-
-                  <div
-                    className={classes["fourth-block"]}
-                    style={{
-                      visibility: breakdownExist ? "visible" : "initial",
-                    }}
-                  >
-                    {breakdownExist && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Breakdown Type:
-                        </span>
-                        <Tag
-                          color={
-                            repair?.breakdown?.type === "Breakdown"
-                              ? "red"
-                              : "orange"
-                          }
-                          style={{
-                            fontWeight: 700,
-                            borderRadius: 20,
-                            textAlign: "center",
-                            maxWidth: 250,
-                          }}
-                        >
-                          {repair?.breakdown?.type}
-                        </Tag>
-                      </div>
-                    )}
-                    {breakdownExist && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Breakdown Name:
-                        </span>
-                        ({repair?.breakdown?.id}) {repair?.breakdown?.name}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className={classes["fifth-block"]}>
-                  <div style={{ marginRight: 8, marginTop: 4 }}>
                     {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
-                      <AddRepairComment repair={repair} isDeleted={isDeleted} />
+                      <EditRepair repair={repair} isDeleted={isDeleted} />
+                    ) : null}
+                    {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
+                      <DeleteRepair id={repair.id} isDeleted={isDeleted} />
                     ) : null}
                   </div>
-                  {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
-                    <EditRepair repair={repair} isDeleted={isDeleted} />
+                </div>
+                <div className={classes["level-two"]}>
+                {repair?.comments?.length! > 0 ? (
+                    <CommentOutlined
+                      style={{
+                        marginRight: 10,
+                      }}
+                    />
                   ) : null}
-                  {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
-                    <DeleteRepair id={repair.id} isDeleted={isDeleted} />
-                  ) : null}
+                  <div className={(classes["id-wrapper"], classes["space"])}>
+                    <ToolOutlined className={classes["icon"]} />
+                    <span className={classes["title"]}>{repair?.id}</span>
+                  </div>
+                  <div className={(classes["title-wrapper"], classes["space"])}>
+                    <Tooltip title="Created Date">
+                      <FaRegClock className={classes["icon"]} />
+                    </Tooltip>
+
+                    <span
+                      className={classes["title"]}
+                      title={moment(repair?.createdAt).format(
+                        DATETIME_FORMATS.FULL
+                      )}
+                    >
+                      {moment(repair?.createdAt).format(DATETIME_FORMATS.SHORT)}
+                    </span>
+                  </div>
+                  <div
+                    className={(classes["createdBy-wrapper"], classes["space"])}
+                  >
+                    <Tooltip title="Created by">
+                      <FaRegUser />
+                    </Tooltip>
+                    <div className={classes["createdBy"]}>
+                      {repair?.createdBy?.fullName}{" "}
+                      {"(" + repair?.createdBy?.rcno + ")"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>
