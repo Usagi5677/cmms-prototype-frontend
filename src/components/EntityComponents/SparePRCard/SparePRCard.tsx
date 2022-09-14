@@ -29,72 +29,88 @@ const SparePRCard = ({
                 className={classes["header-container"]}
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className={classes["info-wrapper"]}>
-                  <div className={classes["first-block"]}>
-                    <div className={classes["id-wrapper"]}>
-                      <ToolOutlined className={classes["icon"]} />
-                      <span className={classes["title"]}>{sparePR?.id}</span>
-                    </div>
-                    <div className={classes["title-wrapper"]}>
-                      <Tooltip title="Created Date">
-                        <FaRegClock className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span
-                        className={classes["title"]}
-                        title={moment(sparePR?.createdAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
+                <div className={classes["level-one"]}>
+                  <div className={classes["info-wrapper"]}>
+                    <div className={classes["first-block"]}>
+                      <div
+                        className={
+                          (classes["title-wrapper"], classes["space-two"])
+                        }
                       >
-                        {moment(sparePR?.createdAt).format(
-                          DATETIME_FORMATS.SHORT
+                        {sparePR?.requestedDate ? (
+                          <>
+                            <Tooltip title="Requested Date">
+                              <FaRegClock className={classes["icon"]} />
+                            </Tooltip>
+                            <span
+                              className={classes["title"]}
+                              title={moment(sparePR?.requestedDate).format(
+                                DATETIME_FORMATS.FULL
+                              )}
+                            >
+                              {moment(sparePR?.requestedDate).format(
+                                DATETIME_FORMATS.SHORT
+                              )}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Tooltip title="Requested Date">
+                              <FaRegClock className={classes["icon"]} />
+                            </Tooltip>
+                            <span className={classes["title"]}>None</span>
+                          </>
                         )}
-                      </span>
-                    </div>
-                  </div>
-                  <div className={classes["second-block"]}>
-                    <div className={classes["createdBy-wrapper"]}>
-                      <Tooltip title="Created by">
-                        <FaRegUser style={{ opacity: 0.5 }} />
-                      </Tooltip>
-                      <div className={classes["createdBy"]}>
-                        {sparePR?.createdBy?.fullName}{" "}
-                        {"(" + sparePR?.createdBy?.rcno + ")"}
+                      </div>
+                      <div
+                        className={(classes["reading"], classes["flex-limit"])}
+                      >
+                        <span className={classes["reading-title"]}>Name:</span>
+                        {sparePR?.name}
                       </div>
                     </div>
                   </div>
-                  <div className={classes["third-block"]}>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Name:</span>
-                      {sparePR?.name}
-                    </div>
-                  </div>
-                  <div className={classes["fourth-block"]}>
-                    <div className={classes["title-wrapper"]}>
-                      <Tooltip title="Requested Date">
-                        <FaRegClock className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span
-                        className={classes["title"]}
-                        title={moment(sparePR?.requestedDate).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(sparePR?.requestedDate).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    </div>
+                  <div className={classes["second-block"]}>
+                    {hasPermissions(self, ["MODIFY_SPARE_PR"]) ? (
+                      <EditSparePR sparePR={sparePR} isDeleted={isDeleted} />
+                    ) : null}
+                    {hasPermissions(self, ["MODIFY_SPARE_PR"]) ? (
+                      <DeleteSparePR id={sparePR.id} isDeleted={isDeleted} />
+                    ) : null}
                   </div>
                 </div>
-                <div className={classes["fifth-block"]}>
-                  {hasPermissions(self, ["MODIFY_SPARE_PR"]) ? (
-                    <EditSparePR sparePR={sparePR} isDeleted={isDeleted} />
-                  ) : null}
-                  {hasPermissions(self, ["MODIFY_SPARE_PR"]) ? (
-                    <DeleteSparePR id={sparePR.id} isDeleted={isDeleted} />
-                  ) : null}
+                <div className={classes["level-two"]}>
+                  <div className={(classes["id-wrapper"], classes["space"])}>
+                    <ToolOutlined className={classes["icon"]} />
+                    <span className={classes["title"]}>{sparePR?.id}</span>
+                  </div>
+                  <div className={(classes["title-wrapper"], classes["space"])}>
+                    <Tooltip title="Created Date">
+                      <FaRegClock className={classes["icon"]} />
+                    </Tooltip>
+
+                    <span
+                      className={classes["title"]}
+                      title={moment(sparePR?.createdAt).format(
+                        DATETIME_FORMATS.FULL
+                      )}
+                    >
+                      {moment(sparePR?.createdAt).format(
+                        DATETIME_FORMATS.SHORT
+                      )}
+                    </span>
+                  </div>
+                  <div
+                    className={(classes["createdBy-wrapper"], classes["space"])}
+                  >
+                    <Tooltip title="Created by">
+                      <FaRegUser />
+                    </Tooltip>
+                    <div className={classes["createdBy"]}>
+                      {sparePR?.createdBy?.fullName}{" "}
+                      {"(" + sparePR?.createdBy?.rcno + ")"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>
