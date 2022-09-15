@@ -48,6 +48,8 @@ import EntityUsageHistory from "../../../components/EntityComponents/EntityUsage
 import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
+import { isDeleted } from "../../../helpers/isDeleted";
+import { EntityStatus } from "../../../models/Enums";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -92,7 +94,11 @@ const ViewEntity = () => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while unassigning user.");
       },
-      refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity", { query: ME_QUERY }],
+      refetchQueries: [
+        "getSingleEntity",
+        "getAllHistoryOfEntity",
+        { query: ME_QUERY },
+      ],
     }
   );
 
@@ -186,6 +192,8 @@ const ViewEntity = () => {
 
   const isSmallDevice = useIsSmallDevice();
 
+  const flag = isDeleted(entityData?.deletedAt, entityData?.status);
+
   return (
     <>
       <div className={classes["container"]}>
@@ -196,25 +204,20 @@ const ViewEntity = () => {
             <>
               <div className={classes["info-btn-wrapper"]}>
                 {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-                  <EditEntityLocation
-                    entity={entityData}
-                    isDeleted={entityData?.isDeleted}
-                  />
+                  <EditEntityLocation entity={entityData} isDeleted={flag} />
                 ) : null}
                 {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-                  <EditEntity
-                    entity={entityData}
-                    isDeleted={entityData?.isDeleted}
-                  />
+                  <EditEntity entity={entityData} isDeleted={flag} />
                 ) : null}
                 {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
                   <DeleteEntity
                     entityID={entityData?.id}
-                    isDeleted={entityData?.isDeleted}
+                    isDeleted={flag}
+                    entityType={entityData?.type?.entityType}
                   />
                 ) : null}
               </div>
-              {entityData?.isDeleted ? (
+              {entityData?.status === "Dispose" ? (
                 <div className={classes["deleted"]}>DISPOSED</div>
               ) : null}
               <div className={classes["info-wrapper"]}>
@@ -307,7 +310,7 @@ const ViewEntity = () => {
                       <EntityStatuses
                         entityStatus={entityData?.status}
                         entityID={entityData?.id}
-                        isDeleted={entityData?.isDeleted}
+                        isDeleted={entityData?.deletedAt ? true : false}
                       />
                     </div>
                   </div>
@@ -344,7 +347,7 @@ const ViewEntity = () => {
                         self
                       ) ||
                         hasPermissions(self, ["ASSIGN_TO_ENTITY"])) &&
-                        !entityData?.isDeleted && (
+                        !flag && (
                           <div
                             className={classes["info-content"]}
                             style={{ marginLeft: "1rem" }}
@@ -424,10 +427,7 @@ const ViewEntity = () => {
                 }
                 key="checklist"
               >
-                <ViewChecklist
-                  entityData={entityData}
-                  isDeleted={entityData?.isDeleted}
-                />
+                <ViewChecklist entityData={entityData} isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab={
@@ -458,22 +458,22 @@ const ViewEntity = () => {
                 }
                 key="periodicMaintenance"
               >
-                <ViewPeriodicMaintenance isDeleted={entityData?.isDeleted} />
+                <ViewPeriodicMaintenance isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
-                <ViewSparePR isDeleted={entityData?.isDeleted} />
+                <ViewSparePR isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair isDeleted={entityData?.isDeleted} />
+                <ViewRepair isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
-                <ViewBreakdown isDeleted={entityData?.isDeleted} />
+                <ViewBreakdown isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
                 <ViewHistory />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <ViewGallery isDeleted={entityData?.isDeleted} />
+                <ViewGallery isDeleted={flag} />
               </Tabs.TabPane>
             </Tabs>
           </div>

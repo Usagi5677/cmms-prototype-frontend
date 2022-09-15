@@ -1211,7 +1211,6 @@ export const ALL_ENTITY_UTILIZATION = gql`
           type {
             entityType
           }
-          isDeleted
           deletedAt
           histories {
             id
