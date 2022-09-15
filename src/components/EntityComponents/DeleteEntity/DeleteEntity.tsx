@@ -9,28 +9,32 @@ import classes from "./DeleteEntity.module.css";
 const DeleteEntity = ({
   entityID,
   isDeleted,
+  entityType,
 }: {
   entityID: number;
   isDeleted?: boolean | undefined;
+  entityType?: string;
 }) => {
   const navigate = useNavigate();
 
-  const [removeEntity, { loading: deleting }] = useMutation(
-    DELETE_ENTITY,
-    {
-      onCompleted: () => {
-        message.success("Successfully disposed entity.");
-        navigate("/entity");
-      },
-      onError: (error) => {
-        errorMessage(error, "Unexpected error while disposing machine.");
-      },
-      refetchQueries: [
-        "getAllEntityVessels",
-        "getAllEntityVehicles",
-      ],
-    }
-  );
+  const [removeEntity, { loading: deleting }] = useMutation(DELETE_ENTITY, {
+    onCompleted: () => {
+      message.success("Successfully deleted entity.");
+      if (entityType === "Machine") {
+        navigate("/machinery");
+      } else if (entityType === "Vessel") {
+        navigate("/vessels");
+      } else if (entityType === "Vehicle") {
+        navigate("/vehicles");
+      } else {
+        navigate("/");
+      }
+    },
+    onError: (error) => {
+      errorMessage(error, "Unexpected error while deleting.");
+    },
+    refetchQueries: ["getAllEntity"],
+  });
 
   const remove = () => {
     removeEntity({

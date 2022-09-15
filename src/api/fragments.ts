@@ -57,7 +57,6 @@ export const ENTITY_FRAGMENT = gql`
     status
     measurement
     brand
-    isDeleted
     deletedAt
     assignees {
       user {
