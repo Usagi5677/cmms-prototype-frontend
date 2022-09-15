@@ -72,7 +72,7 @@ const PeriodicMaintenanceCard = ({
     );
     if (!match) return null;
     return (
-      <div>
+      <div style={{ display: "flex", alignItems: "center", paddingRight: 5 }}>
         <PeriodicMaintenanceStatus summary={match} />
       </div>
     );

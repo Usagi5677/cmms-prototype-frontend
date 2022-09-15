@@ -145,17 +145,31 @@ export const PeriodicMaintenanceStatus: React.FC<
             {summary.taskCompletion !== "empty" && <Badge color={itemColor} />}
             {summary.hasObservations && (
               <span>
-                <Badge count={<CommentOutlined style={{ color: "gray" }} />} />
+                <Badge
+                  count={
+                    <CommentOutlined
+                      style={{ color: "gray", marginBottom: 4 }}
+                    />
+                  }
+                />
               </span>
             )}
             {summary.hasRemarks && (
               <span style={{ marginLeft: 5 }}>
-                <Badge count={<MessageOutlined />} />
+                <Badge
+                  count={<MessageOutlined style={{ marginBottom: 4 }} />}
+                />
               </span>
             )}
             {summary.hasVerify && (
               <span style={{ marginLeft: 5 }}>
-                <Badge count={<CheckOutlined style={{ color: "#52c41a" }} />} />
+                <Badge
+                  count={
+                    <CheckOutlined
+                      style={{ color: "#52c41a", marginBottom: 4 }}
+                    />
+                  }
+                />
               </span>
             )}
           </Tooltip>

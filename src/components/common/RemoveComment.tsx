@@ -35,7 +35,7 @@ export const RemoveComment: React.FC<RemoveCommentProps> = ({
   ) : (
     <Popconfirm
       key="delete"
-      disabled={loading || isDeleted || isOlder || isCopy}
+      disabled={loading || isDeleted || isOlder}
       title={`Are you sure to remove?`}
       onConfirm={() => {
         removeComment({
