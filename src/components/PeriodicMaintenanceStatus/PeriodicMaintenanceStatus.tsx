@@ -277,7 +277,7 @@ export const PeriodicMaintenancesStatus: React.FC<
     readingsText = "Reading not updated";
   }
 
-  if (summary.verified) {
+  if (summary?.verified === 0) {
     verifiedColor = "#52c41a";
     verifiedText = "Verified";
   } else {
