@@ -228,7 +228,7 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
             id
             type
             description
-            user {
+            createdBy {
               ...UserFieldsAPS
             }
           }
@@ -245,7 +245,7 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
               id
               type
               description
-              user {
+              createdBy {
                 ...UserFieldsAPS
               }
             }
@@ -263,7 +263,7 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
                 id
                 type
                 description
-                user {
+                createdBy {
                   ...UserFieldsAPS
                 }
               }
@@ -281,7 +281,7 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
                   id
                   type
                   description
-                  user {
+                  createdBy {
                     ...UserFieldsAPS
                   }
                 }
@@ -804,17 +804,17 @@ export const GET_ALL_PERIODIC_MAINTENANCE_OF_ENTITY = gql`
   }
 `;
 
-export const GET_ALL_SPARE_PR_OF_ENTITY = gql`
+export const SPARE_PRS = gql`
   ${APS_USER_FRAGMENT}
-  query getAllSparePROfEntity(
+  query sparePRs(
     $after: String
     $before: String
     $first: Int
     $last: Int
     $search: String
-    $entityId: Int!
+    $entityId: Int
   ) {
-    getAllSparePROfEntity(
+    sparePRs(
       after: $after
       before: $before
       first: $first
@@ -832,14 +832,10 @@ export const GET_ALL_SPARE_PR_OF_ENTITY = gql`
       edges {
         node {
           id
-          entityId
-          title
-          description
+          name
           requestedDate
-          status
-          completedAt
           createdAt
-          completedBy {
+          createdBy {
             ...UserFieldsAPS
           }
         }
@@ -917,17 +913,17 @@ export const GET_ALL_REPAIR_OF_ENTITY = gql`
   }
 `;
 
-export const GET_ALL_BREAKDOWN_OF_ENTITY = gql`
+export const BREAKDOWNS = gql`
   ${APS_USER_FRAGMENT}
-  query getAllBreakdownOfEntity(
+  query breakdowns(
     $after: String
     $before: String
     $first: Int
     $last: Int
     $search: String
-    $entityId: Int!
+    $entityId: Int
   ) {
-    getAllBreakdownOfEntity(
+    breakdowns(
       after: $after
       before: $before
       first: $first
@@ -945,22 +941,111 @@ export const GET_ALL_BREAKDOWN_OF_ENTITY = gql`
       edges {
         node {
           id
-          entityId
-          title
-          description
+          name
+          type
           createdAt
-          status
-          completedAt
-          completedBy {
+          estimatedDateOfRepair
+          createdBy {
             ...UserFieldsAPS
           }
-          estimatedDateOfRepair
+          comments {
+            id
+            type
+            description
+            createdBy {
+              ...UserFieldsAPS
+            }
+          }
+          details {
+            id
+            description
+            createdBy {
+              ...UserFieldsAPS
+            }
+            comments {
+              id
+              type
+              description
+              createdBy {
+                ...UserFieldsAPS
+              }
+            }
+          }
+          repairs {
+            id
+            name
+            createdBy {
+              ...UserFieldsAPS
+            }
+            comments {
+              id
+              type
+              description
+              createdBy {
+                ...UserFieldsAPS
+              }
+            }
+          }
         }
       }
     }
   }
 `;
 
+export const REPAIRS = gql`
+  ${APS_USER_FRAGMENT}
+  query repairs(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $entityId: Int
+  ) {
+    repairs(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          createdAt
+          createdBy {
+            ...UserFieldsAPS
+          }
+          breakdown {
+            id
+            type
+            name
+            createdBy {
+              ...UserFieldsAPS
+            }
+          }
+          comments {
+            id
+            type
+            description
+            createdBy {
+              ...UserFieldsAPS
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 export const GET_ALL_HISTORY_OF_ENTITY = gql`
   ${APS_USER_FRAGMENT}
   query getAllHistoryOfEntity(

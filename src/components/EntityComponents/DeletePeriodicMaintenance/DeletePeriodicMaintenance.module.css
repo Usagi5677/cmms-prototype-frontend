@@ -5,6 +5,7 @@
   color: var(--error);
   cursor: pointer;
   margin-left: 5px;
+  margin-top: 1px;
 }
 .btn-delete:hover {
   color: rgb(185, 3, 3) !important;

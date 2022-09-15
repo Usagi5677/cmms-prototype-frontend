@@ -240,7 +240,6 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
             periodicMaintenance={periodicMaintenance}
             tasks={periodicMaintenance?.tasks!}
             level={0}
-            makingTemplate
           />
         </div>
         <div style={{ marginTop: ".5rem", fontSize: 14 }}>

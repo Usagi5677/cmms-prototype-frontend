@@ -1,0 +1,28 @@
+.container {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 5px;
+}
+.container:hover {
+  background-color: var(--row-hover);
+}
+.repair-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.repair-description {
+  display: flex;
+  align-items: center;
+}
+.description-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.number {
+  font-size: 14px;
+  margin-right: 6px;
+}

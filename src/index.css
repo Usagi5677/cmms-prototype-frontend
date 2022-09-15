@@ -216,6 +216,8 @@ a {
   --scrollbar-thumb-bg-hover: #a6a6a6;
   --scrollbar-thumb-bg-active: #606060;
   --card-border: none;
+  --calendar-border-top-color: rgba(0,0,0,.06);
+  --ant-picker-calendar-date-today: var(--ant-primary-1);
 }
 
 [data-theme="dark"] {
@@ -362,6 +364,8 @@ a {
   --scrollbar-thumb-bg-hover: #606062;
   --scrollbar-thumb-bg-active: #606060;
   --card-border: 1px solid var(--ant-primary-color);
+  --calendar-border-top-color: #303030;
+  --ant-picker-calendar-date-today: var(--ant-primary-10);
 }
 
 ::-webkit-scrollbar-corner {
@@ -779,7 +783,10 @@ em {
   flex-direction: column-reverse !important;
   background-color: var(--card-bg) !important;
   border: 1px var(--border-1) solid !important;
+  width: 100% !important;
+  box-shadow: none !important;
 }
+
 .flexbox-fix {
   border-top: 1px var(--border-1) solid !important;
 }

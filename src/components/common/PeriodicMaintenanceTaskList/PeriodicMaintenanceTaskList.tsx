@@ -9,22 +9,22 @@ import { DATETIME_FORMATS } from "../../../helpers/constants";
 import {
   TOGGLE_PERIODIC_MAINTENANCE_TASK,
   DELETE_PERIODIC_MAINTENANCE_TASK,
+  DELETE_PERIODIC_MAINTENANCE_COMMENT,
 } from "../../../api/mutations";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceTask from "../../../models/PeriodicMaintenance/PeriodicMaintenanceTask";
 import { AddPeriodicMaintenanceTask } from "../AddPeriodicMaintenanceTask";
 import { hasPermissions } from "../../../helpers/permissions";
 import { AddPeriodicMaintenanceComment } from "../AddPeriodicMaintenanceComment";
-import { PeriodicMaintenanceComment } from "../PeriodicMaintenanceComment/PeriodicMaintenanceComment";
-import PeriodicMaintenanceCommentModel from "../../../models/PeriodicMaintenance/PeriodicMaintenanceComment";
+import { CommentCard } from "../CommentCard/CommentCard";
 import classes from "./PeriodicMaintenanceTaskList.module.css";
+import Comment from "../../../models/Comment";
 
 export interface TaskListProps {
   periodicMaintenance: PeriodicMaintenance;
   tasks: PeriodicMaintenanceTask[];
   level: number;
   isDeleted?: boolean | undefined;
-  makingTemplate?: boolean;
   isOlder?: boolean;
   isCopy?: boolean;
 }
@@ -34,7 +34,6 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
   tasks,
   level,
   isDeleted,
-  makingTemplate,
   isOlder,
   isCopy,
 }) => {
@@ -122,20 +121,18 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                             </span>
                           </div>
                         )}
-                        {!isCopy ||
-                          (makingTemplate && (
-                            <AddPeriodicMaintenanceComment
-                              periodicMaintenance={periodicMaintenance}
-                              task={task}
-                              type={"Remark"}
-                              isDeleted={isDeleted}
-                              isOlder={isOlder}
-                              isCopy={isCopy}
-                              makingTemplate={makingTemplate}
-                            />
-                          ))}
+                        {isCopy && (
+                          <AddPeriodicMaintenanceComment
+                            periodicMaintenance={periodicMaintenance}
+                            task={task}
+                            type={"Remark"}
+                            isDeleted={isDeleted}
+                            isOlder={isOlder}
+                            isCopy={isCopy}
+                          />
+                        )}
 
-                        {!makingTemplate && !isDeleted && (
+                        {isCopy && !isDeleted && (
                           <Checkbox
                             checked={task.completedAt !== null}
                             style={{ marginRight: ".5rem" }}
@@ -176,17 +173,20 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                       </div>
                     </div>
 
-                    {task?.remarks?.map(
-                      (remark: PeriodicMaintenanceCommentModel) => (
-                        <PeriodicMaintenanceComment
-                          comment={remark}
-                          isRemark
-                          key={remark.id}
-                          isDeleted={isDeleted}
-                          isOlder={isOlder}
-                        />
-                      )
-                    )}
+                    {task?.remarks?.map((remark: Comment) => (
+                      <CommentCard
+                        comment={remark}
+                        isRemark
+                        key={remark.id}
+                        isDeleted={isDeleted}
+                        isOlder={isOlder}
+                        mutation={DELETE_PERIODIC_MAINTENANCE_COMMENT}
+                        refetchQueries={[
+                          "periodicMaintenances",
+                          "periodicMaintenanceSummary",
+                        ]}
+                      />
+                    ))}
                   </div>
                 </div>
               }

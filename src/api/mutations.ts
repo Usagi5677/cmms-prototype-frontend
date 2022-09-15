@@ -913,47 +913,21 @@ export const DELETE_ENTITY_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
-export const ADD_ENTITY_SPARE_PR = gql`
-  mutation (
-    $entityId: Int!
-    $title: String!
-    $description: String!
-    $requestedDate: Date!
-  ) {
-    addEntitySparePR(
-      entityId: $entityId
-      title: $title
-      description: $description
-      requestedDate: $requestedDate
-    )
+export const CREATE_SPARE_PR = gql`
+  mutation ($createSparePrInput: CreateSparePrInput!) {
+    createSparePR(createSparePrInput: $createSparePrInput)
   }
 `;
 
-export const EDIT_ENTITY_SPARE_PR = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-    $requestedDate: Date!
-  ) {
-    editEntitySparePR(
-      id: $id
-      title: $title
-      description: $description
-      requestedDate: $requestedDate
-    )
+export const EDIT_SPARE_PR = gql`
+  mutation ($updateSparePrInput: UpdateSparePrInput!) {
+    updateSparePR(updateSparePrInput: $updateSparePrInput)
   }
 `;
 
-export const DELETE_ENTITY_SPARE_PR = gql`
+export const DELETE_SPARE_PR = gql`
   mutation ($id: Int!) {
-    deleteEntitySparePR(id: $id)
-  }
-`;
-
-export const SET_ENTITY_SPARE_PR_STATUS = gql`
-  mutation ($id: Int!, $status: SparePRStatus!) {
-    setEntitySparePRStatus(id: $id, status: $status)
+    removeSparePR(id: $id)
   }
 `;
 
@@ -1019,35 +993,77 @@ export const DELETE_ENTITY_REPAIR_REQUEST = gql`
   }
 `;
 
-export const ADD_ENTITY_BREAKDOWN = gql`
-  mutation ($entityId: Int!, $title: String!, $description: String!) {
-    addEntityBreakdown(
-      entityId: $entityId
-      title: $title
-      description: $description
-    )
+export const CREATE_BREAKDOWN = gql`
+  mutation ($createBreakdownInput: CreateBreakdownInput!) {
+    createBreakdown(createBreakdownInput: $createBreakdownInput)
   }
 `;
 
-export const EDIT_ENTITY_BREAKDOWN = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-    $estimatedDateOfRepair: Date!
-  ) {
-    editEntityBreakdown(
-      id: $id
-      title: $title
-      description: $description
-      estimatedDateOfRepair: $estimatedDateOfRepair
-    )
+export const ADD_BREAKDOWN_DETAIL = gql`
+  mutation ($createBreakdownDetailInput: CreateBreakdownDetailInput!) {
+    addBreakdownDetail(createBreakdownDetailInput: $createBreakdownDetailInput)
   }
 `;
 
-export const DELETE_ENTITY_BREAKDOWN = gql`
+export const REMOVE_BREAKDOWN_DETAIL = gql`
   mutation ($id: Int!) {
-    deleteEntityBreakdown(id: $id)
+    removeBreakdownDetail(id: $id)
+  }
+`;
+
+export const ADD_BREAKDOWN_COMMENT = gql`
+  mutation addBreakdownComment(
+    $createBreakdownCommentInput: CreateBreakdownCommentInput!
+  ) {
+    addBreakdownComment(
+      createBreakdownCommentInput: $createBreakdownCommentInput
+    )
+  }
+`;
+
+export const REMOVE_BREAKDOWN_COMMENT = gql`
+  mutation removeBreakdownComment($id: Int!) {
+    removeBreakdownComment(id: $id)
+  }
+`;
+
+export const CREATE_REPAIR = gql`
+  mutation ($createRepairInput: CreateRepairInput!) {
+    createRepair(createRepairInput: $createRepairInput)
+  }
+`;
+export const UPDATE_REPAIR = gql`
+  mutation ($updateRepairInput: UpdateRepairInput!) {
+    updateRepair(updateRepairInput: $updateRepairInput)
+  }
+`;
+export const REMOVE_REPAIR = gql`
+  mutation ($id: Int!) {
+    removeRepair(id: $id)
+  }
+`;
+export const ADD_REPAIR_COMMENT = gql`
+  mutation addRepairComment(
+    $createRepairCommentInput: CreateRepairCommentInput!
+  ) {
+    addRepairComment(createRepairCommentInput: $createRepairCommentInput)
+  }
+`;
+export const REMOVE_REPAIR_COMMENT = gql`
+  mutation ($id: Int!) {
+    removeRepairComment(id: $id)
+  }
+`;
+
+export const UPDATE_BREAKDOWN = gql`
+  mutation ($updateBreakdownInput: UpdateBreakdownInput!) {
+    updateBreakdown(updateBreakdownInput: $updateBreakdownInput)
+  }
+`;
+
+export const REMOVE_BREAKDOWN = gql`
+  mutation ($id: Int!) {
+    removeBreakdown(id: $id)
   }
 `;
 
@@ -1158,13 +1174,13 @@ export const ADD_PERIODIC_MAINTENANCE_COMMENT = gql`
     $type: String!
     $periodicMaintenanceId: Int!
     $taskId: Int
-    $text: String!
+    $description: String!
   ) {
     addPeriodicMaintenanceComment(
       type: $type
       periodicMaintenanceId: $periodicMaintenanceId
       taskId: $taskId
-      text: $text
+      description: $description
     )
   }
 `;

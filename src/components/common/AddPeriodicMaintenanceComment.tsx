@@ -1,16 +1,9 @@
-import {
-  CommentOutlined,
-  MessageOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { MessageOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { useState } from "react";
-import {
-  ADD_CHECKLIST_ITEM_ISSUE,
-  ADD_PERIODIC_MAINTENANCE_COMMENT,
-} from "../../api/mutations";
+import { ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceTask from "../../models/PeriodicMaintenance/PeriodicMaintenanceTask";
@@ -22,20 +15,11 @@ export interface AddPeriodicMaintenanceCommentProps {
   isDeleted?: boolean;
   isOlder?: boolean;
   isCopy?: boolean;
-  makingTemplate?: boolean;
 }
 
 export const AddPeriodicMaintenanceComment: React.FC<
   AddPeriodicMaintenanceCommentProps
-> = ({
-  periodicMaintenance,
-  task,
-  type,
-  isDeleted,
-  isOlder,
-  isCopy,
-  makingTemplate
-}) => {
+> = ({ periodicMaintenance, task, type, isDeleted, isOlder, isCopy }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
@@ -55,13 +39,13 @@ export const AddPeriodicMaintenanceComment: React.FC<
   };
 
   const onFinish = async (values: any) => {
-    const { text } = values;
+    const { description } = values;
     create({
       variables: {
         periodicMaintenanceId: periodicMaintenance.id,
         taskId: task.id,
         type,
-        text,
+        description,
       },
     });
   };
@@ -72,7 +56,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
           style={{ marginLeft: ".5rem", marginRight: ".5rem" }}
           onClick={() => setVisible(true)}
         >
-          <MessageOutlined disabled={isDeleted || isOlder || !isCopy || makingTemplate} />
+          <MessageOutlined disabled={isDeleted || isOlder || isCopy} />
         </div>
       </Tooltip>
       <Modal
@@ -92,7 +76,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
         >
           <Form.Item
             label={type}
-            name="text"
+            name="description"
             required={false}
             rules={[
               {
@@ -120,7 +104,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
                   htmlType="submit"
                   loading={loading}
                   className="primaryButton"
-                  disabled={isDeleted || isOlder || !isCopy || makingTemplate}
+                  disabled={isDeleted || isOlder || !isCopy}
                 >
                   Add
                 </Button>

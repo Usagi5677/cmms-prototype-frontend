@@ -1,6 +1,6 @@
+import Comment from "../Comment";
 import User from "../User";
 import PeriodicMaintenance from "./PeriodicMaintenance";
-import PeriodicMaintenanceCommentModel from "./PeriodicMaintenanceComment";
 
 export default interface PeriodicMaintenanceTask {
   id?: number;
@@ -13,5 +13,5 @@ export default interface PeriodicMaintenanceTask {
   parentTask?: PeriodicMaintenanceTask;
   subTasks?: PeriodicMaintenanceTask;
   periodicMaintenance: PeriodicMaintenance;
-  remarks?: PeriodicMaintenanceCommentModel[];
+  remarks?: Comment[];
 }

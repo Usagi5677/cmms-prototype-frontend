@@ -194,7 +194,7 @@ const FilterOptions = ({
                   <div className={classes["reading-container"]}>
                     <div className={classes["reading-wrapper"]}>
                       <div className={classes["sub-title"]}>
-                        Greater than equal
+                        Greater than
                       </div>
                       <Search
                         searchValue={
@@ -209,7 +209,7 @@ const FilterOptions = ({
                     </div>
                     <div className={classes["reading-wrapper"]}>
                       <div className={classes["sub-title"]}>
-                        Less than equal
+                        Less than
                       </div>
                       <Search
                         searchValue={
@@ -231,7 +231,7 @@ const FilterOptions = ({
                   <div className={classes["reading-container"]}>
                     <div className={classes["reading-wrapper"]}>
                       <div className={classes["sub-title"]}>
-                        Greater than equal
+                        Greater than
                       </div>
                       <Search
                         searchValue={
@@ -246,7 +246,7 @@ const FilterOptions = ({
                     </div>
                     <div className={classes["reading-wrapper"]}>
                       <div className={classes["sub-title"]}>
-                        Less than equal
+                        Less than
                       </div>
                       <Search
                         searchValue={

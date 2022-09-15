@@ -4,24 +4,24 @@ import { ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 
-export interface AddPeriodicMaintenanceObservationProps {
-  periodicMaintenance: PeriodicMaintenance;
+export interface PMObservationProps {
+  periodicMaintenanceId: number;
   type: string;
-  text?: string;
+  placeholder?: string;
   isDeleted?: boolean;
   isOlder?: boolean;
   isCopy?: boolean;
 }
 
 export const AddPeriodicMaintenanceObservation: React.FC<
-  AddPeriodicMaintenanceObservationProps
+  PMObservationProps
 > = ({
-  periodicMaintenance,
+  periodicMaintenanceId,
   type,
-  text = "Add new observation",
+  placeholder,
   isDeleted,
   isOlder,
-  isCopy
+  isCopy,
 }) => {
   const [details, setDetails] = useState("");
 
@@ -43,9 +43,9 @@ export const AddPeriodicMaintenanceObservation: React.FC<
       setDetails("");
       create({
         variables: {
-          periodicMaintenanceId: periodicMaintenance.id,
+          periodicMaintenanceId,
           type,
-          text: details,
+          description: details,
         },
       });
     }
@@ -54,7 +54,7 @@ export const AddPeriodicMaintenanceObservation: React.FC<
     <div>
       <input
         type="text"
-        placeholder={loading ? "Adding..." : text}
+        placeholder={loading ? "Adding..." : placeholder}
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         onKeyDown={submit}

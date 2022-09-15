@@ -64,13 +64,13 @@ function App() {
       permissions = [...new Set(permissions)];
       const assignments = data.me.entityAssignment;
       const machineAssignments = assignments.filter(
-        (a: any) => a.entity.type.entityType === "Machine"
+        (a: any) => a.entity.type?.entityType === "Machine"
       );
       const vesselAssignments = assignments.filter(
-        (a: any) => a.entity.type.entityType === "Vessel"
+        (a: any) => a.entity.type?.entityType === "Vessel"
       );
       const vehicleAssignments = assignments.filter(
-        (a: any) => a.entity.type.entityType === "Vehicle"
+        (a: any) => a.entity.type?.entityType === "Vehicle"
       );
       setUser({
         ...data.me,

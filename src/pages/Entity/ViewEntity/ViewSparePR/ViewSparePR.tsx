@@ -1,16 +1,18 @@
 import { useLazyQuery } from "@apollo/client";
 import { Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { GET_ALL_SPARE_PR_OF_ENTITY } from "../../../../api/queries";
+import { SPARE_PRS } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewSparePR.module.css";
 import UserContext from "../../../../contexts/UserContext";
-import AddEntitySparePR from "../../../../components/EntityComponents/AddEntitySparePR/AddEntitySparePR";
-import EntitySparePR from "../../../../models/Entity/EntitySparePR";
-import EntitySparePRCard from "../../../../components/EntityComponents/EntitySparePRCard/EntitySparePRCard";
+import AddSparePR from "../../../../components/EntityComponents/AddSparePR/AddSparePR";
+import SparePR from "../../../../models/Entity/SparePR";
+import SparePRCard from "../../../../components/EntityComponents/SparePRCard/SparePRCard";
 import { useParams } from "react-router";
+import Search from "../../../../components/common/Search";
+import { hasPermissions } from "../../../../helpers/permissions";
 
 const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
@@ -33,21 +35,18 @@ const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
     entityId: parseInt(id),
   });
 
-  const [getAllSparePROfEntity, { data, loading }] = useLazyQuery(
-    GET_ALL_SPARE_PR_OF_ENTITY,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading spare PR.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
+  const [sparePRs, { data, loading }] = useLazyQuery(SPARE_PRS, {
+    onError: (err) => {
+      errorMessage(err, "Error loading spare PR.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
   // Fetch spare pr when component mounts or when the filter object changes
   useEffect(() => {
-    getAllSparePROfEntity({ variables: filter });
-  }, [filter, getAllSparePROfEntity]);
+    sparePRs({ variables: filter });
+  }, [filter, sparePRs]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -103,14 +102,24 @@ const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllSparePROfEntity.pageInfo ?? {};
+  const pageInfo = data?.sparePRs.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission?.hasEntitySparePRAdd && !isDeleted ? (
-          <AddEntitySparePR entityID={parseInt(id)} />
-        ) : null}
+        <div className={classes["first-block"]}>
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+        </div>
+
+        <div className={classes["add"]}>
+          {hasPermissions(self, ["MODIFY_SPARE_PR"]) ? (
+            <AddSparePR entityID={parseInt(id)} />
+          ) : null}
+        </div>
       </div>
       {loading && (
         <div>
@@ -118,18 +127,16 @@ const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.getAllSparePROfEntity.edges.map(
-          (rec: { node: EntitySparePR }) => {
-            const sparePR = rec.node;
-            return (
-              <EntitySparePRCard
-                key={sparePR.id}
-                sparePR={sparePR}
-                isDeleted={isDeleted}
-              />
-            );
-          }
-        )}
+        {data?.sparePRs.edges.map((rec: { node: SparePR }) => {
+          const sparePR = rec.node;
+          return (
+            <SparePRCard
+              key={sparePR.id}
+              sparePR={sparePR}
+              isDeleted={isDeleted}
+            />
+          );
+        })}
       </div>
 
       <PaginationButtons
