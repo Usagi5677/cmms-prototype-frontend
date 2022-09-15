@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SPARE_PRS } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
@@ -127,16 +127,22 @@ const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.sparePRs.edges.map((rec: { node: SparePR }) => {
-          const sparePR = rec.node;
-          return (
-            <SparePRCard
-              key={sparePR.id}
-              sparePR={sparePR}
-              isDeleted={isDeleted}
-            />
-          );
-        })}
+        {data?.sparePRs.edges.length > 0 ? (
+          <div>
+            {data?.sparePRs.edges.map((rec: { node: SparePR }) => {
+              const sparePR = rec.node;
+              return (
+                <SparePRCard
+                  key={sparePR.id}
+                  sparePR={sparePR}
+                  isDeleted={isDeleted}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <Empty />
+        )}
       </div>
 
       <PaginationButtons

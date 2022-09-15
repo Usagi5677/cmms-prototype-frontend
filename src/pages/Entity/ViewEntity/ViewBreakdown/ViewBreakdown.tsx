@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { BREAKDOWNS } from "../../../../api/queries";
@@ -126,16 +126,22 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.breakdowns.edges.map((rec: { node: Breakdown }) => {
-          const breakdown = rec.node;
-          return (
-            <BreakdownCard
-              key={breakdown.id}
-              breakdown={breakdown}
-              isDeleted={isDeleted}
-            />
-          );
-        })}
+        {data?.breakdowns.edges.length > 0 ? (
+          <div>
+            {data?.breakdowns.edges.map((rec: { node: Breakdown }) => {
+              const breakdown = rec.node;
+              return (
+                <BreakdownCard
+                  key={breakdown.id}
+                  breakdown={breakdown}
+                  isDeleted={isDeleted}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <Empty />
+        )}
       </div>
 
       <PaginationButtons

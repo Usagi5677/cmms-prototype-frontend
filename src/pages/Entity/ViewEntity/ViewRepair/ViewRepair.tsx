@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Checkbox, Spin } from "antd";
+import { Checkbox, Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
   GET_ALL_REPAIR_OF_ENTITY,
@@ -142,12 +142,22 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.repairs.edges.map((rec: { node: Repair }) => {
-          const repair = rec.node;
-          return (
-            <RepairCard key={repair.id} repair={repair} isDeleted={isDeleted} />
-          );
-        })}
+        {data?.repairs.edges.length > 0 ? (
+          <div>
+            {data?.repairs.edges.map((rec: { node: Repair }) => {
+              const repair = rec.node;
+              return (
+                <RepairCard
+                  key={repair.id}
+                  repair={repair}
+                  isDeleted={isDeleted}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <Empty />
+        )}
       </div>
 
       <PaginationButtons
