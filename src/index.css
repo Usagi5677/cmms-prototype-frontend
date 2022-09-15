@@ -780,6 +780,7 @@ em {
   background-color: var(--card-bg) !important;
   border: 1px var(--border-1) solid !important;
   width: 100% !important;
+  box-shadow: none !important;
 }
 
 .flexbox-fix {
