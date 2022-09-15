@@ -14,53 +14,23 @@
   flex-direction: column;
   justify-content: space-between;
 }
-
+.first-block {
+  display: flex;
+  flex-direction: column;
+}
 .second-block {
   display: flex;
-  flex: 1;
-}
-.third-block {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-right: 5px;
-  padding-bottom: 5px;
-}
-.fourth-block {
-  display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
-
-.edit-icon {
-  font-size: 16px;
-  transition: color 0.3s ease;
-}
-.delete-icon {
-  font-size: 16px;
-  transition: color 0.3s ease;
-  padding-left: 5px;
-}
-.edit-icon:hover {
-  color: var(--primary);
-}
-.delete-icon:hover {
-  color: red;
-}
-
-.time-wrapper {
-  display: flex;
-  align-items: center;
-}
-.time {
-  padding-left: 5px;
-}
 
 .task-progress {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
 }
 
 .id-wrapper {
@@ -92,38 +62,74 @@
 }
 .observation-wrapper {
   padding: 0 10px;
-  padding-bottom: 10px
+  padding-bottom: 10px;
 }
+
+.header-info-wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.level-one {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.level-two {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 10px;
+}
+.space {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  opacity: 0.5;
+}
+
+.flex-limit {
+  flex: 1;
+  margin-right: 40px;
+}
+
 @media only screen and (min-width: 600px) {
-  .header-container {
+  .header-info-wrapper {
     flex-direction: row;
-    align-items: center !important;
   }
   .id-wrapper {
     margin-top: 0;
   }
   .first-block {
-    flex: 1;
+    flex-direction: row;
+    align-items: center;
   }
   .second-block {
-    flex: 1;
-    flex-direction: column;
-  }
-  .third-block {
     flex: 1;
     padding-right: 0;
     padding-bottom: 0;
   }
   .observation-wrapper {
     padding-right: 0;
-    padding-left: 0
+    padding-left: 0;
+  }
+  .space-two {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
   }
 }
 @media only screen and (min-width: 800px) {
+  .header-info-wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
   .collapse-container {
     font-size: 12px;
   }
   .header-container {
     font-size: 12px;
+  }
+  .level-one {
+    flex-direction: row;
   }
 }

@@ -1,7 +1,7 @@
 import { Checkbox, Collapse, Progress, Spin, Tooltip } from "antd";
 import moment from "moment";
 import { useContext } from "react";
-import { FaRegClock } from "react-icons/fa";
+import { FaRegClock, FaRegUser } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import classes from "./PeriodicMaintenanceCard.module.css";
@@ -33,7 +33,7 @@ const PeriodicMaintenanceCard = ({
   isDeleted,
   isOlder,
   summary,
-  isCopy
+  isCopy,
 }: {
   periodicMaintenance: PeriodicMaintenance;
   isDeleted?: boolean | undefined;
@@ -72,7 +72,7 @@ const PeriodicMaintenanceCard = ({
     );
     if (!match) return null;
     return (
-      <div style={{ marginLeft: "1rem" }}>
+      <div>
         <PeriodicMaintenanceStatus summary={match} />
       </div>
     );
@@ -88,71 +88,56 @@ const PeriodicMaintenanceCard = ({
                 className={classes["header-container"]}
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className={classes["first-block"]}>
-                  <div className={classes["id-wrapper"]}>
-                    <ToolOutlined className={classes["icon"]} />
-                    <span className={classes["title"]}>
-                      {periodicMaintenance?.id}
-                    </span>
-                    {summaryMatchCurrent()}
-                  </div>
-                  <div className={classes["time-wrapper"]}>
-                    <Tooltip title="Created At">
-                      <FaRegClock />
-                    </Tooltip>
-                    <div
-                      className={classes["time"]}
-                      title={moment(periodicMaintenance?.createdAt).format(
-                        DATETIME_FORMATS.FULL
-                      )}
-                    >
-                      {moment(periodicMaintenance?.createdAt).format(
-                        DATETIME_FORMATS.SHORT
-                      )}
+                <div className={classes["level-one"]}>
+                  <div className={classes["header-info-wrapper"]}>
+                    <div className={classes["first-block"]}>
+                      <div
+                        className={(classes["reading"], classes["flex-limit"])}
+                      >
+                        <span className={classes["reading-title"]}>Name:</span>
+                        {periodicMaintenance?.name}
+                      </div>
+                      <div
+                        className={(classes["reading"], classes["space-two"])}
+                      >
+                        <span className={classes["reading-title"]}>Value:</span>
+                        <span>
+                          <span title="Value">
+                            {periodicMaintenance?.value}{" "}
+                          </span>
+                          <span title="Measurement">
+                            {periodicMaintenance?.measurement}
+                          </span>
+                        </span>
+                      </div>
+                      <Checkbox
+                        checked={periodicMaintenance.verifiedAt !== null}
+                        disabled={
+                          isDeleted ||
+                          isOlder ||
+                          periodicMaintenance.type === "Template"
+                            ? true
+                            : false
+                        }
+                        onChange={(e) =>
+                          toggleVerify({
+                            variables: {
+                              id: periodicMaintenance.id,
+                              verify: e.target.checked,
+                            },
+                          })
+                        }
+                        style={{ wordBreak: "break-all" }}
+                      >
+                        Verify{" "}
+                        {toggling && (
+                          <Spin style={{ marginRight: 5 }} size="small" />
+                        )}
+                      </Checkbox>
                     </div>
                   </div>
-                </div>
-                <div className={classes["second-block"]}>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>Name:</span>
-                    <span>{periodicMaintenance?.name}</span>
-                  </div>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>Value:</span>
-                    <span>
-                      <span title="Value">{periodicMaintenance?.value} </span>
-                      <span title="Measurement">
-                        {periodicMaintenance?.measurement}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div className={classes["third-block"]}>
-                  <Checkbox
-                    checked={periodicMaintenance.verifiedAt !== null}
-                    disabled={
-                      isDeleted ||
-                      isOlder ||
-                      periodicMaintenance.type === "Template"
-                        ? true
-                        : false
-                    }
-                    onChange={(e) =>
-                      toggleVerify({
-                        variables: {
-                          id: periodicMaintenance.id,
-                          verify: e.target.checked,
-                        },
-                      })
-                    }
-                    style={{ wordBreak: "break-all" }}
-                  >
-                    Verify{" "}
-                    {toggling && (
-                      <Spin style={{ marginRight: 5 }} size="small" />
-                    )}
-                  </Checkbox>
-                  <div className={classes["fourth-block"]}>
+
+                  <div className={classes["second-block"]}>
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ? (
                       <EditPeriodicMaintenance
                         periodicMaintenance={periodicMaintenance}
@@ -186,15 +171,36 @@ const PeriodicMaintenanceCard = ({
                     ) : null}
                   </div>
                 </div>
+                {periodicMaintenance.tasks!.length > 0 &&
+                  periodicMaintenance.type === "Copy" && (
+                    <Progress percent={progressPercentage} strokeWidth={5} />
+                  )}
+                <div className={classes["level-two"]}>
+                  {summaryMatchCurrent()}
+                  <div className={(classes["id-wrapper"], classes["space"])}>
+                    <ToolOutlined className={classes["icon"]} />
+                    <span className={classes["title"]}>
+                      {periodicMaintenance?.id}
+                    </span>
+                  </div>
+                  <div className={(classes["title-wrapper"], classes["space"])}>
+                    <Tooltip title="Created Date">
+                      <FaRegClock className={classes["icon"]} />
+                    </Tooltip>
+
+                    <span
+                      className={classes["title"]}
+                      title={moment(periodicMaintenance?.createdAt).format(
+                        DATETIME_FORMATS.FULL
+                      )}
+                    >
+                      {moment(periodicMaintenance?.createdAt).format(
+                        DATETIME_FORMATS.SHORT
+                      )}
+                    </span>
+                  </div>
+                </div>
               </div>
-              {periodicMaintenance.tasks!.length > 0 &&
-                periodicMaintenance.type === "Copy" && (
-                  <Progress
-                    percent={progressPercentage}
-                    strokeWidth={5}
-                    style={{ marginBottom: 10, paddingRight: 10 }}
-                  />
-                )}
             </div>
           }
           key={periodicMaintenance.id}
