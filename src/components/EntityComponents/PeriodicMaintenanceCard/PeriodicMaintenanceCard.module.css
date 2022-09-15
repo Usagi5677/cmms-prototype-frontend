@@ -83,8 +83,9 @@
 .space {
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 10px;
   opacity: 0.5;
+  margin-left: 10px
 }
 
 .flex-limit {

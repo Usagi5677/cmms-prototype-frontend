@@ -137,7 +137,7 @@ export const PeriodicMaintenanceStatus: React.FC<
             {<Badge color={readingsColor} />}
             {summary.taskCompletion !== "empty" && <Badge color={itemColor} />}
             {summary.hasObservations && (
-              <span>
+              <span style={{ marginRight: 5 }}>
                 <Badge
                   count={
                     <CommentOutlined
@@ -148,14 +148,14 @@ export const PeriodicMaintenanceStatus: React.FC<
               </span>
             )}
             {summary.hasRemarks && (
-              <span style={{ marginLeft: 5 }}>
+              <span style={{ marginRight: 5 }}>
                 <Badge
                   count={<MessageOutlined style={{ marginBottom: 4 }} />}
                 />
               </span>
             )}
             {summary.hasVerify && (
-              <span style={{ marginLeft: 5 }}>
+              <span>
                 <Badge
                   count={
                     <CheckOutlined
