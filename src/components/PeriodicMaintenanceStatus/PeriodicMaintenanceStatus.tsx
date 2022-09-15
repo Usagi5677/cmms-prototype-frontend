@@ -119,26 +119,18 @@ export const PeriodicMaintenanceStatus: React.FC<
                     </div>
                   </div>
                 )}
-                {summary.hasVerify ? (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <Badge
-                      count={
-                        <CheckOutlined
-                          style={{ marginRight: ".25rem", color: "#52c41a" }}
-                        />
-                      }
-                    />
-                    <div style={{ color: "var(--text-primary)" }}>Verified</div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Badge
+                    count={
+                      <CheckOutlined
+                        style={{ marginRight: ".25rem", color: verifyColor }}
+                      />
+                    }
+                  />
+                  <div style={{ color: "var(--text-primary)" }}>
+                    {verifyText}
                   </div>
-                ) : (
-                  <div>
-                    <Badge
-                      color={verifyColor}
-                      text={verifyText}
-                      style={{ marginRight: ".5rem" }}
-                    />
-                  </div>
-                )}
+                </div>
               </div>
             }
           >
@@ -297,38 +289,51 @@ export const PeriodicMaintenancesStatus: React.FC<
     return (
       <div style={{ fontSize }}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Badge color={readingsColor}/>
+          <Badge color={readingsColor} />
           <div style={{ color: "var(--text-primary)" }}>{readingsText}</div>
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Badge color={itemColor}/>
+          <Badge color={itemColor} />
           <div style={{ color: "var(--text-primary)" }}>{itemText}</div>
         </div>
-        
+
+        {summary?.observations < 1 && (
+          <div
+            style={{ display: "flex", alignItems: "center", marginBottom: 4 }}
+          >
+            <Badge
+              count={
+                <CommentOutlined
+                  style={{ color: "gray", marginRight: ".25rem", fontSize }}
+                />
+              }
+            />
+            <div style={{ color: "var(--text-primary)" }}>Has observation</div>
+          </div>
+        )}
+
+        {summary?.remarks < 1 && (
+          <div
+            style={{ display: "flex", alignItems: "center", marginBottom: 4 }}
+          >
+            <Badge
+              count={
+                <MessageOutlined style={{ marginRight: ".25rem", fontSize }} />
+              }
+            />
+            <div style={{ color: "var(--text-primary)" }}>Has remark</div>
+          </div>
+        )}
+
         <div style={{ display: "flex", alignItems: "center", marginBottom: 4 }}>
           <Badge
             count={
-              <CommentOutlined
-                style={{ color: "gray", marginRight: ".25rem", fontSize }}
-              />
-            }
-          />
-          <div style={{ color: "var(--text-primary)" }}>
-            Has observation
-          </div>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 4  }}>
-          <Badge
-            count={<MessageOutlined style={{ marginRight: ".25rem", fontSize }} />}
-          />
-          <div style={{ color: "var(--text-primary)" }}>Has remark</div>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 4  }}>
-          <Badge
-            count={
               <CheckOutlined
-                style={{ marginRight: ".25rem", color: verifiedColor, fontSize }}
+                style={{
+                  marginRight: ".25rem",
+                  color: verifiedColor,
+                  fontSize,
+                }}
               />
             }
           />
