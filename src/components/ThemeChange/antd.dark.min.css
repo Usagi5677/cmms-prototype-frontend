@@ -4580,7 +4580,7 @@ a.ant-btn-sm {
   .ant-picker-panel
   .ant-picker-cell-selected:hover
   .ant-picker-calendar-date-today {
-  background: var(--ant-primary-1);
+  background:var(--ant-picker-calendar-date-today);
 }
 .ant-picker-calendar-full
   .ant-picker-panel
@@ -18433,7 +18433,7 @@ textarea.ant-mentions {
   .ant-picker-calendar-full
   .ant-picker-panel
   .ant-picker-calendar-date {
-  border-top: 2px solid var(--ant-transfer-list-header);
+  border-top: 2px solid var(--calendar-border-top-color);
 }
 .ant-modal .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
   background-color: var(--ant-picker-panel);

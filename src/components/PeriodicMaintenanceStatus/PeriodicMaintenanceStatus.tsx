@@ -30,6 +30,7 @@ export interface PeriodicMaintenancesSummaryStatusProps {
 
 export interface PeriodicMaintenanceSummaryStatus {
   summary: PeriodicMaintenancesSummaryStatusProps;
+  calendarView?: boolean;
 }
 
 export const PeriodicMaintenanceStatus: React.FC<
@@ -256,24 +257,86 @@ export const PeriodicMaintenanceStatus: React.FC<
 
 export const PeriodicMaintenancesStatus: React.FC<
   PeriodicMaintenanceSummaryStatus
-> = ({ summary }) => {
+> = ({ summary, calendarView }) => {
   let itemColor = "none";
   let readingsColor = "none";
+  let readingsText = "";
+  let itemText = "";
+  let verifiedColor = "none";
+  let verifiedText = "";
+  const fontSize = 10;
 
   if (summary?.allTaskCompletion === 0) {
     itemColor = "#52c41a";
+    itemText = "All tasks completed";
   } else if (summary?.someTaskCompletion < 1) {
     itemColor = "#faad13";
+    itemText = "Some tasks completed";
   } else {
     itemColor = "#fa541c";
+    itemText = "No tasks completed";
   }
 
   if (summary?.readings === 0) {
     readingsColor = "#52c41a";
+    readingsText = "Reading updated";
   } else {
     readingsColor = "#fa541c";
+    readingsText = "Reading not updated";
   }
 
+  if (summary.verified) {
+    verifiedColor = "#52c41a";
+    verifiedText = "Verified";
+  } else {
+    verifiedColor = "#fa541c";
+    verifiedText = "Not verified";
+  }
+
+  if (calendarView) {
+    return (
+      <div style={{ fontSize }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Badge color={readingsColor}/>
+          <div style={{ color: "var(--text-primary)" }}>{readingsText}</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Badge color={itemColor}/>
+          <div style={{ color: "var(--text-primary)" }}>{itemText}</div>
+        </div>
+        
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 4 }}>
+          <Badge
+            count={
+              <CommentOutlined
+                style={{ color: "gray", marginRight: ".25rem", fontSize }}
+              />
+            }
+          />
+          <div style={{ color: "var(--text-primary)" }}>
+            Has observation
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 4  }}>
+          <Badge
+            count={<MessageOutlined style={{ marginRight: ".25rem", fontSize }} />}
+          />
+          <div style={{ color: "var(--text-primary)" }}>Has remark</div>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 4  }}>
+          <Badge
+            count={
+              <CheckOutlined
+                style={{ marginRight: ".25rem", color: verifiedColor, fontSize }}
+              />
+            }
+          />
+          <div style={{ color: "var(--text-primary)" }}>{verifiedText}</div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div
       style={{

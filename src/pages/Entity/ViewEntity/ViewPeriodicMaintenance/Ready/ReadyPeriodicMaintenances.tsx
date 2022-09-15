@@ -15,12 +15,11 @@ import PeriodicMaintenance from "../../../../../models/PeriodicMaintenance/Perio
 import PeriodicMaintenanceCard from "../../../../../components/EntityComponents/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
 import moment from "moment";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { DATETIME_FORMATS } from "../../../../../helpers/constants";
 import {
   PeriodicMaintenancesStatus,
-  PeriodicMaintenanceStatus,
   PeriodicMaintenanceSummary,
 } from "../../../../../components/PeriodicMaintenanceStatus/PeriodicMaintenanceStatus";
+import PeriodicMaintenanceCalendar from "../../../../../components/EntityComponents/PeriodicMaintenanceCalendar/PeriodicMaintenanceCalendar";
 
 const UpcomingPeriodicMaintenances = ({
   isDeleted,
@@ -224,8 +223,10 @@ const UpcomingPeriodicMaintenances = ({
       verified,
       observations,
       remarks,
-    }
-    return <PeriodicMaintenancesStatus summary={PeriodicMaintenancesStatusProps} />;
+    };
+    return (
+      <PeriodicMaintenancesStatus summary={PeriodicMaintenancesStatusProps} />
+    );
   };
 
   //find class length so id can be placed on this picker only
@@ -264,6 +265,9 @@ const UpcomingPeriodicMaintenances = ({
             )}
           />
           {changeDateButton("forward")}
+        </div>
+        <div className={classes["calendar"]}>
+          <PeriodicMaintenanceCalendar summary={summary} />
         </div>
       </div>
       {loading && (

@@ -129,6 +129,9 @@
   .header-container {
     font-size: 12px;
   }
+}
+@media only screen and (min-width: 1100px) {
+  
   .level-one {
     flex-direction: row;
   }

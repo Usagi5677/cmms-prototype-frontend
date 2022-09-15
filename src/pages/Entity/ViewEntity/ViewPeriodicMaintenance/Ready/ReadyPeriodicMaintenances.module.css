@@ -5,8 +5,10 @@
 
 .options {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .content {
@@ -20,7 +22,7 @@
 }
 
 .datepicker-wrapper {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
@@ -31,11 +33,21 @@
     left: clamp(10%, 100vw, 14%) !important;
     top: 66.3333px;
   }
- }
+  .options {
+    flex-direction: row;
+  }
+  .calendar {
+    margin-left: auto;
+  }
+  .datepicker-wrapper {
+    margin-left: auto;
+    margin-bottom: 0;
+  }
+}
 
- @media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1000px) {
   .dropdown {
     left: clamp(10%, 100vw, 20%) !important;
     top: 66.3333px;
   }
- }
+}
