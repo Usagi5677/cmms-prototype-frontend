@@ -51,7 +51,10 @@ const DeletePeriodicMaintenance = ({
       placement="topRight"
     >
       <Tooltip title={"Delete"} placement="top">
-        <div className={classes["btn-delete"]}>
+        <div className={classes["btn-delete"]} style={{
+            pointerEvents: isDeleted || isCopy ? "none" : "auto",
+            color: isDeleted || isCopy ? "grey" : "var(--error)",
+          }}>
           <FaTrash />
         </div>
       </Tooltip>
