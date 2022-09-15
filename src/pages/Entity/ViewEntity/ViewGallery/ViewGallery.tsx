@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../../../api/queries";
@@ -118,20 +118,24 @@ const ViewGallery = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
           </div>
         )}
       </div>
-      <div className={classes["grid-container"]}>
-        {attachment?.entityAttachments.edges.map(
-          (rec: { node: EntityAttachment }) => {
-            const attachment = rec.node;
-            return (
-              <ParsedEntityAttachment
-                key={attachment.id}
-                attachmentData={attachment}
-                isDeleted={isDeleted}
-              />
-            );
-          }
-        )}
-      </div>
+      {attachment?.entityAttachments.edges.length > 0 ? (
+        <div className={classes["grid-container"]}>
+          {attachment?.entityAttachments.edges.map(
+            (rec: { node: EntityAttachment }) => {
+              const attachment = rec.node;
+              return (
+                <ParsedEntityAttachment
+                  key={attachment.id}
+                  attachmentData={attachment}
+                  isDeleted={isDeleted}
+                />
+              );
+            }
+          )}
+        </div>
+      ) : (
+        <Empty />
+      )}
 
       <PaginationButtons
         pageInfo={pageInfo}
