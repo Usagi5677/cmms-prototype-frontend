@@ -42,10 +42,10 @@ const EntityUtilizationGraph = () => {
     "Working hour",
     "Idle hour",
     "Breakdown hour",
-    "Total hour",
-    "Working percentage",
-    "Idle percentage",
-    "Breakdown percentage",
+    // "Total hour",
+    // "Working percentage",
+    // "Idle percentage",
+    // "Breakdown percentage",
   ];
 
   let data = () => {

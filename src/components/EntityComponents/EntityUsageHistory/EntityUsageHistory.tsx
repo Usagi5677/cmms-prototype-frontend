@@ -101,6 +101,12 @@ const EntityUsageHistory = () => {
               scales: {
                 y: {
                   beginAtZero: true,
+                  max: 24,
+                  min: 0,
+                  suggestedMax: 24,
+                  ticks: {
+                    stepSize: 4,
+                  },
                 },
               },
             }}

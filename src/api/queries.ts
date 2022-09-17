@@ -355,6 +355,7 @@ export const GET_CHECKLIST = gql`
       id
       workingHour
       currentMeterReading
+      dailyUsageHours
       to
       attachments {
         id
@@ -467,6 +468,7 @@ export const CHECKLIST_SUMMARIES = gql`
       type
       hasComments
       workingHour
+      dailyUsageHours
       currentMeterReading
       itemCompletion
       hasIssues
