@@ -18,6 +18,7 @@ import { ChecklistAttachments } from "./ChecklistAttachments";
 import { hasPermissions, isAssignedType } from "../../helpers/permissions";
 import UserContext from "../../contexts/UserContext";
 import ChecklistSummary from "../../models/ChecklistSummary";
+import { AddDailyUsage } from "./AddDailyUsage";
 
 export interface ChecklistsProps {
   entity: Entity;
@@ -108,7 +109,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
     if (!match) return null;
     return (
       <div style={{ marginLeft: "1rem" }}>
-        <ChecklistStatus summary={match} />
+        <ChecklistStatus summary={match} entity={entity} />
       </div>
     );
   };
@@ -123,7 +124,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
       }
     });
     if (!match) return null;
-    return <ChecklistStatus summary={match} size="small" />;
+    return <ChecklistStatus summary={match} size="small" entity={entity} />;
   };
 
   const isOlderChecklist =
@@ -220,6 +221,21 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       </div>
                     </>
                   )}
+                {data?.checklist.dailyUsageHours && (
+                  <div style={{ display: "flex" }}>
+                    <div style={{ flex: 1 }}>
+                      <InputNumber
+                        disabled
+                        addonBefore={
+                          <span style={{ paddingRight: 11 }}>Daily Usage</span>
+                        }
+                        addonAfter="hr"
+                        style={{ width: "100%", marginBottom: ".5rem" }}
+                        value={data?.checklist.dailyUsageHours}
+                      />
+                    </div>
+                  </div>
+                )}
                 {!isOlderChecklist && (
                   <div
                     style={{
@@ -228,12 +244,22 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     }}
                   >
                     {isAssignedType("any", entity, user) && (
-                      <div style={{ marginRight: "1rem" }}>
-                        <AddReading
-                          entity={entity}
-                          checklist={data?.checklist}
-                        />
-                      </div>
+                      <>
+                        <div style={{ marginRight: "1rem" }}>
+                          <AddReading
+                            entity={entity}
+                            checklist={data?.checklist}
+                          />
+                        </div>
+                        {entity.measurement !== "hr" && (
+                          <div style={{ marginRight: "1rem" }}>
+                            <AddDailyUsage
+                              entity={entity}
+                              checklist={data?.checklist}
+                            />
+                          </div>
+                        )}
+                      </>
                     )}
                     <AddChecklistAttachment
                       entity={entity}

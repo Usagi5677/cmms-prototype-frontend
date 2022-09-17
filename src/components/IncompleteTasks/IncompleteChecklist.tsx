@@ -11,6 +11,7 @@ import { generateSummary } from "../../helpers/checklist";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
 import Checklist from "../../models/Checklist";
+import { Entity } from "../../models/Entity/Entity";
 import IncompleteChecklistSummary from "../../models/IncompleteChecklistSummary";
 import { ChecklistStatus } from "../Checklists/ChecklistStatus";
 import { CenteredSpin } from "../common/CenteredSpin";
@@ -156,7 +157,10 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
         {data?.incompleteChecklists.map((checklist: Checklist) => (
           <div key={checklist.id} style={{ display: "flex" }}>
             <div style={{ marginRight: ".5rem" }}>
-              <ChecklistStatus summary={generateSummary(checklist)} />
+              <ChecklistStatus
+                summary={generateSummary(checklist)}
+                entity={checklist.entity as Entity}
+              />
             </div>
             <EntityListing entity={checklist.entity} />
           </div>

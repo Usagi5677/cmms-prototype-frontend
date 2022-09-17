@@ -641,6 +641,12 @@ export const UPDATE_READING = gql`
   }
 `;
 
+export const UPDATE_DAILY_USAGE = gql`
+  mutation updateDailyUsage($id: Int!, $hours: Int!) {
+    updateDailyUsage(id: $id, hours: $hours)
+  }
+`;
+
 export const ADD_CHECKLIST_COMMENT = gql`
   mutation addChecklistComment($checklistId: Int!, $comment: String!) {
     addChecklistComment(checklistId: $checklistId, comment: $comment)
