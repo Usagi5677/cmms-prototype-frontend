@@ -1113,16 +1113,6 @@ export const ADD_PERIODIC_MAINTENANCE_TASK = gql`
   }
 `;
 
-//not using
-export const ADD_ENTITY_PERIODIC_MAINTENANCE_TASK = gql`
-  mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
-    createEntityPeriodicMaintenanceTask(
-      parentTaskId: $parentTaskId
-      periodicMaintenanceId: $periodicMaintenanceId
-      name: $name
-    )
-  }
-`;
 
 export const TOGGLE_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($id: Int!, $complete: Boolean!) {
@@ -1145,20 +1135,6 @@ export const DELETE_PERIODIC_MAINTENANCE = gql`
 export const ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
   mutation ($entityId: Int!, $originId: Int!) {
     assignPeriodicMaintenanceTemplate(entityId: $entityId, originId: $originId)
-  }
-`;
-
-//not using
-export const TOGGLE_ENTITY_PM_TASK = gql`
-  mutation ($id: Int!, $complete: Boolean!) {
-    toggleEntityPMTask(id: $id, complete: $complete)
-  }
-`;
-
-//not using
-export const DELETE_ENTITY_PM_TASK = gql`
-  mutation ($id: Int!) {
-    deleteEntityPMTask(id: $id)
   }
 `;
 
@@ -1247,6 +1223,12 @@ export const UPSERT_PM_NOTIFICATION_REMINDER = gql`
       week: $week
       month: $month
     )
+  }
+`;
+
+export const TOGGLE_BREAKDOWN_COMPLETE = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleComplete(id: $id, complete: $complete)
   }
 `;
 

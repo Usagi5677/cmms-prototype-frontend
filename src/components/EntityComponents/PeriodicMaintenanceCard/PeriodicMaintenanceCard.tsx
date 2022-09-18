@@ -113,7 +113,7 @@ const PeriodicMaintenanceCard = ({
                       <Checkbox
                         checked={periodicMaintenance.verifiedAt !== null}
                         disabled={
-                          hasPermissions(self, [
+                          !hasPermissions(self, [
                             "MODIFY_PERIODIC_MAINTENANCE",
                           ]) ||
                           isDeleted ||

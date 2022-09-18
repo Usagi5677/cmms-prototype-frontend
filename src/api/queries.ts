@@ -947,6 +947,7 @@ export const BREAKDOWNS = gql`
           type
           createdAt
           estimatedDateOfRepair
+          completedAt
           createdBy {
             ...UserFieldsAPS
           }

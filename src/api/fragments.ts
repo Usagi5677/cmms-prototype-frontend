@@ -75,6 +75,7 @@ export const ENTITY_FRAGMENT = gql`
       name
       type
       estimatedDateOfRepair
+      completedAt
       createdBy {
         ...UserFieldsAPS
       }
