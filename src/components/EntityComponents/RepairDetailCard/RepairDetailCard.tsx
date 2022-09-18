@@ -14,10 +14,12 @@ const RepairDetailCard = ({
   index,
   repair,
   isDeleted,
+  hasPermission,
 }: {
   index: number;
   repair: Repair;
   isDeleted?: boolean;
+  hasPermission?: boolean;
 }) => {
   const [hover, setHover] = useState(false);
   const [removeRepair, { loading }] = useMutation(REMOVE_REPAIR, {
@@ -34,8 +36,9 @@ const RepairDetailCard = ({
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         style={{
-          backgroundColor:
-            repair?.breakdownDetail ? "rgba(82, 196, 26, 0.3)" : "initial",
+          backgroundColor: repair?.breakdownDetail
+            ? "rgba(82, 196, 26, 0.3)"
+            : "initial",
         }}
       >
         <div className={classes["repair-description"]}>
@@ -63,16 +66,18 @@ const RepairDetailCard = ({
           </div>
           {hover && <AddRepairComment repair={repair} isDeleted={isDeleted} />}
         </div>
-        <CloseCircleOutlined
-          style={{ color: "red" }}
-          onClick={() => {
-            removeRepair({
-              variables: {
-                id: repair.id,
-              },
-            });
-          }}
-        />
+        {hasPermission && (
+          <CloseCircleOutlined
+            style={{ color: "red" }}
+            onClick={() => {
+              removeRepair({
+                variables: {
+                  id: repair.id,
+                },
+              });
+            }}
+          />
+        )}
       </div>
       {repair?.comments?.map((c: Comment) => (
         <CommentCard

@@ -12,10 +12,12 @@ const EntityStatuses = ({
   entityID,
   entityStatus,
   isDeleted,
+  hasPermission,
 }: {
   entityID: number;
   entityStatus: EntityStatus;
   isDeleted?: boolean | undefined;
+  hasPermission?: boolean
 }) => {
   const [setEntityStatus, { loading: settingStatus }] = useMutation(
     SET_ENTITY_STATUS,
@@ -168,6 +170,7 @@ const EntityStatuses = ({
                   htmlType="submit"
                   loading={loadingBreakdown}
                   className={classes["custom-btn-primary"]}
+                  disabled={isDeleted || hasPermission}
                 >
                   Add
                 </Button>
@@ -183,7 +186,7 @@ const EntityStatuses = ({
         placeholder="Select status"
         value={entityStatus}
         onChange={(status) => onChangeClick(status)}
-        disabled={isDeleted}
+        disabled={isDeleted || hasPermission}
       >
         {(Object.keys(EntityStatus) as Array<keyof typeof EntityStatus>).map(
           (status: any) => (

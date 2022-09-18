@@ -20,11 +20,13 @@ const BreakdownDetailCard = ({
   breakdown,
   detail,
   isDeleted,
+  hasPermission,
 }: {
   index: number;
   breakdown: Breakdown;
   detail: BreakdownDetail;
   isDeleted?: boolean;
+  hasPermission?: boolean;
 }) => {
   const [hover, setHover] = useState(false);
   const [removeBreakdownDetail, { loading }] = useMutation(
@@ -77,7 +79,7 @@ const BreakdownDetailCard = ({
               isDeleted={isDeleted}
             />
           )}
-          {hover && (
+          {hover && hasPermission && (
             <HoverAddRepairDetail
               breakdownId={breakdown.id}
               detail={detail}
@@ -85,16 +87,18 @@ const BreakdownDetailCard = ({
             />
           )}
         </div>
-        <CloseCircleOutlined
-          style={{ color: "red" }}
-          onClick={() => {
-            removeBreakdownDetail({
-              variables: {
-                id: detail.id,
-              },
-            });
-          }}
-        />
+        {hasPermission && (
+          <CloseCircleOutlined
+            style={{ color: "red" }}
+            onClick={() => {
+              removeBreakdownDetail({
+                variables: {
+                  id: detail.id,
+                },
+              });
+            }}
+          />
+        )}
       </div>
       {detail?.comments?.map((remark: Comment) => (
         <CommentCard

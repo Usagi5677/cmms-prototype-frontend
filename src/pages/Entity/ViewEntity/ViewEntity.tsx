@@ -49,7 +49,6 @@ import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { isDeleted } from "../../../helpers/isDeleted";
-import { EntityStatus } from "../../../models/Enums";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -310,7 +309,8 @@ const ViewEntity = () => {
                       <EntityStatuses
                         entityStatus={entityData?.status}
                         entityID={entityData?.id}
-                        isDeleted={entityData?.deletedAt ? true : false}
+                        isDeleted={entityData?.deletedAt !== null}
+                        hasPermission={!hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"])}
                       />
                     </div>
                   </div>
