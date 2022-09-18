@@ -16,6 +16,7 @@ import classes from "./ViewBreakdown.module.css";
 
 const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   const { user: self } = useContext(UserContext);
+  console.log(self);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
