@@ -86,6 +86,7 @@ const Notifications = () => {
           style={{
             fontStyle: "italic",
             fontSize: ".8em",
+            color:"var(--text-primary)",
             opacity: 0.8,
           }}
         >
