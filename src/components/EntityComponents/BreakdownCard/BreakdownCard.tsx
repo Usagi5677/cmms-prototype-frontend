@@ -1,6 +1,6 @@
 import { Badge, Checkbox, Collapse, Spin, Tag, Tooltip } from "antd";
 import moment from "moment";
-import { FaRegClock, FaRegUser } from "react-icons/fa";
+import { FaCarCrash, FaRegClock, FaRegUser } from "react-icons/fa";
 import {
   REMOVE_BREAKDOWN_COMMENT,
   TOGGLE_BREAKDOWN_COMPLETE,
@@ -64,16 +64,7 @@ const EntityBreakdownCard = ({
                 <div className={classes["level-one"]}>
                   <div className={classes["info-wrapper"]}>
                     <div className={classes["first-block"]}>
-                      <div
-                        className={
-                          (classes["title-wrapper"], classes["space-two"])
-                        }
-                        style={{
-                          visibility: breakdown?.estimatedDateOfRepair
-                            ? "visible"
-                            : "initial",
-                        }}
-                      >
+                      <div className={classes["space-two"]}>
                         <Checkbox
                           checked={breakdown?.completedAt !== null}
                           disabled={
@@ -95,6 +86,13 @@ const EntityBreakdownCard = ({
                             <Spin style={{ marginRight: 5 }} size="small" />
                           )}
                         </Checkbox>
+                      </div>
+
+                      <div
+                        className={
+                          (classes["title-wrapper"], classes["space-two"])
+                        }
+                      >
                         {breakdown?.estimatedDateOfRepair ? (
                           <>
                             <Tooltip title="Estimated Date of Repair">
@@ -226,6 +224,19 @@ const EntityBreakdownCard = ({
                       {"(" + breakdown?.createdBy?.rcno + ")"}
                     </div>
                   </div>
+                  {!breakdown?.completedAt && (
+                    <div
+                      className={(classes["title-wrapper"], classes["space"])}
+                    >
+                      <Tooltip title="Breakdown Duration">
+                        <FaCarCrash className={classes["icon"]} />
+                      </Tooltip>
+
+                      <span className={classes["title"]}>
+                        {moment(breakdown?.createdAt).fromNow()}
+                      </span>
+                    </div>
+                  )}
                   {breakdown?.completedAt && (
                     <div
                       className={classes["title-wrapper"]}
@@ -237,11 +248,11 @@ const EntityBreakdownCard = ({
 
                       <span
                         className={classes["title"]}
-                        title={moment(breakdown?.createdAt).format(
+                        title={moment(breakdown?.completedAt).format(
                           DATETIME_FORMATS.FULL
                         )}
                       >
-                        {moment(breakdown?.createdAt).format(
+                        {moment(breakdown?.completedAt).format(
                           DATETIME_FORMATS.SHORT
                         )}
                       </span>
