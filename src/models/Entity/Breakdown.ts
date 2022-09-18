@@ -11,6 +11,7 @@ export default interface Breakdown {
   createdBy: User;
   createdAt?: Date;
   estimatedDateOfRepair?: Date;
+  completedAt?: Date;
   details?: BreakdownDetail[];
   comments?: Comment[];
   repairs?: Repair[];
