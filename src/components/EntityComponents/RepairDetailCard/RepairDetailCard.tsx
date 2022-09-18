@@ -35,11 +35,6 @@ const RepairDetailCard = ({
         key={repair.id}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        style={{
-          backgroundColor: repair?.breakdownDetail
-            ? "rgba(82, 196, 26, 0.3)"
-            : "initial",
-        }}
       >
         <div className={classes["repair-description"]}>
           <div className={classes["description-wrapper"]}>

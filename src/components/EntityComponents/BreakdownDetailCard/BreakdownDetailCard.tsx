@@ -1,5 +1,6 @@
 import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
+import { Badge, Tooltip } from "antd";
 import { useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import {
@@ -12,7 +13,6 @@ import Comment from "../../../models/Comment";
 import Breakdown from "../../../models/Entity/Breakdown";
 import { CommentCard } from "../../common/CommentCard/CommentCard";
 import { AddBreakdownComment } from "../AddBreakdownComment";
-import { AddRepairDetail } from "../AddRepairDetail";
 import { HoverAddRepairDetail } from "../HoverAddRepairDetail";
 import classes from "./BreakdownDetailCard.module.css";
 const BreakdownDetailCard = ({
@@ -48,14 +48,30 @@ const BreakdownDetailCard = ({
         key={detail.id}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        style={{
-          backgroundColor:
-            detail?.repairs?.length! > 0 ? "rgba(82, 196, 26, 0.3)" : "initial",
-        }}
       >
         <div className={classes["breakdown-description"]}>
           <div className={classes["description-wrapper"]}>
-            <div style={{ fontSize: 14 }}>{detail.description}</div>
+            <div className={classes["indicator-wrapper"]}>
+              <div style={{ fontSize: 14 }}>{detail.description}</div>
+              {detail?.repairs?.length! > 0 && (
+                <Tooltip
+                  color="var(--dot-tooltip)"
+                  title={
+                    <div>
+                      <Badge color={"#52c41a"} text={"Repair added"} />
+                    </div>
+                  }
+                >
+                  <Badge
+                    color={"#52c41a"}
+                    style={{
+                      marginLeft: 10
+                    }}
+                  />
+                </Tooltip>
+              )}
+            </div>
+
             <div className={classes["info-wrapper"]}>
               <div
                 className={classes["icon-text"]}

@@ -115,7 +115,7 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
           />
         </div>
         <div className={classes["add"]}>
-          {hasPermissions(self, ["ENTITY_ADMIN","ENTITY_ENGINEER"]) ? (
+          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
             <AddBreakdown entityID={parseInt(id)} isDeleted={isDeleted} />
           ) : null}
         </div>
