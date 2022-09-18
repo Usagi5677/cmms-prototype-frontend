@@ -51,6 +51,14 @@ const EntityBreakdownCard = ({
       rCommentExist = true;
     }
   });
+
+  const bdComments = breakdown?.comments;
+  const bdRepairs = breakdown?.repairs;
+
+  const combine = bdComments?.concat(bdRepairs!).sort();
+
+  console.log(combine);
+
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -68,8 +76,10 @@ const EntityBreakdownCard = ({
                         <Checkbox
                           checked={breakdown?.completedAt !== null}
                           disabled={
-                            !hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
-                            isDeleted
+                            !hasPermissions(self, [
+                              "ENTITY_ADMIN",
+                              "ENTITY_ENGINEER",
+                            ]) || isDeleted
                           }
                           onChange={(e) =>
                             toggle({
@@ -148,13 +158,19 @@ const EntityBreakdownCard = ({
                       </div>
                     </div>
                     <div className={classes["second-block"]}>
-                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                      {hasPermissions(self, [
+                        "ENTITY_ADMIN",
+                        "ENTITY_ENGINEER",
+                      ]) ? (
                         <EditBreakdown
                           breakdown={breakdown}
                           isDeleted={isDeleted}
                         />
                       ) : null}
-                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                      {hasPermissions(self, [
+                        "ENTITY_ADMIN",
+                        "ENTITY_ENGINEER",
+                      ]) ? (
                         <DeleteBreakdown
                           id={breakdown.id}
                           isDeleted={isDeleted}
@@ -279,6 +295,10 @@ const EntityBreakdownCard = ({
                           index={index}
                           breakdown={breakdown}
                           detail={b}
+                          hasPermission={hasPermissions(self, [
+                            "ENTITY_ADMIN",
+                            "ENTITY_ENGINEER",
+                          ])}
                           key={b.id}
                         />
                       )
@@ -287,7 +307,7 @@ const EntityBreakdownCard = ({
                 ) : (
                   <div style={{ marginBottom: 20 }}>None</div>
                 )}
-                {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                {hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"]) ? (
                   <AddBreakdownDetail breakdownId={breakdown.id} />
                 ) : null}
               </div>
@@ -296,13 +316,21 @@ const EntityBreakdownCard = ({
                 {breakdown?.repairs ? (
                   <div className={classes["detail-container"]}>
                     {breakdown?.repairs?.map((r: Repair, index: number) => (
-                      <RepairDetailCard index={index} repair={r} key={r.id} />
+                      <RepairDetailCard
+                        index={index}
+                        repair={r}
+                        key={r.id}
+                        hasPermission={hasPermissions(self, [
+                          "ENTITY_ADMIN",
+                          "ENTITY_ENGINEER",
+                        ])}
+                      />
                     ))}
                   </div>
                 ) : (
                   <div style={{ marginBottom: 20 }}>None</div>
                 )}
-                {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                {hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"]) ? (
                   <AddRepairDetail breakdownId={breakdown.id} />
                 ) : null}
               </div>

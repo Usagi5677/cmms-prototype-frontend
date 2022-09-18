@@ -17,7 +17,6 @@ export interface Entity {
   machineNumber?: string;
   registeredDate?: Date;
   model?: string;
-  zone?: string;
   location?: Location;
   department?: string;
   engine?: string;

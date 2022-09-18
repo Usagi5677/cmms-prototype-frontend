@@ -59,7 +59,7 @@
 }
 .inner-block {
   width: 100%;
-  padding: 20px;
+  padding: 5px;
   border: 1px solid var(--border-1);
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
@@ -150,6 +150,9 @@
   .level-two {
     flex-direction: row;
     align-items: center;
+  }
+  .inner-block {
+    padding: 20px;
   }
 }
 

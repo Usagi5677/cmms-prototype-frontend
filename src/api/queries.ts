@@ -708,10 +708,12 @@ export const ALL_TEMPLATE_OF_ORIGIN_PM = gql`
         type {
           entityType
         }
-        zone
         location {
           id
           name
+          zone {
+            name
+          }
         }
       }
     }
@@ -965,6 +967,9 @@ export const BREAKDOWNS = gql`
             createdBy {
               ...UserFieldsAPS
             }
+            repairs {
+              id
+            }
             comments {
               id
               type
@@ -979,6 +984,10 @@ export const BREAKDOWNS = gql`
             name
             createdBy {
               ...UserFieldsAPS
+            }
+            breakdownDetail {
+              id
+              description
             }
             comments {
               id
@@ -1206,10 +1215,12 @@ export const ALL_ENTITY_UTILIZATION = gql`
           id
           machineNumber
           model
-          zone
           location {
             id
             name
+            zone {
+              name
+            }
           }
           type {
             entityType
@@ -1240,14 +1251,14 @@ export const ALL_ENTITY_UTILIZATION = gql`
   }
 `;
 export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
+  ${APS_USER_FRAGMENT}
   query getAllEntityPeriodicMaintenance(
     $after: String
     $before: String
     $first: Int
     $last: Int
     $search: String
-    $status: PeriodicMaintenanceStatus
-    $location: [String!]
+    $locationIds: [Int!]
   ) {
     getAllEntityPeriodicMaintenance(
       after: $after
@@ -1255,8 +1266,7 @@ export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
       first: $first
       last: $last
       search: $search
-      status: $status
-      location: $location
+      locationIds: $locationIds
     ) {
       pageInfo {
         endCursor
@@ -1268,25 +1278,93 @@ export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
       edges {
         node {
           id
+          createdAt
           entityId
-          title
+          name
+          from
+          to
           measurement
           value
-          startDate
-          status
-          completedAt
-          createdAt
-          entity {
+          previousMeterReading
+          currentMeterReading
+          type
+          verifiedAt
+          verifiedBy {
+            ...UserFieldsAPS
+          }
+          notificationReminder {
             id
-            machineNumber
-            model
-            zone
-            location {
-              id
-              name
+            type
+            measurement
+            previousValue
+            value
+            periodicMaintenanceId
+            originId
+          }
+          comments {
+            createdAt
+            id
+            type
+            description
+            createdBy {
+              ...UserFieldsAPS
             }
-            type {
-              entityType
+          }
+          tasks {
+            id
+            periodicMaintenanceId
+            parentTaskId
+            name
+            completedBy {
+              ...UserFieldsAPS
+            }
+            remarks {
+              createdAt
+              id
+              type
+              description
+              createdBy {
+                ...UserFieldsAPS
+              }
+            }
+            completedAt
+            subTasks {
+              id
+              periodicMaintenanceId
+              parentTaskId
+              name
+              completedBy {
+                ...UserFieldsAPS
+              }
+              remarks {
+                createdAt
+                id
+                type
+                description
+                createdBy {
+                  ...UserFieldsAPS
+                }
+              }
+              completedAt
+              subTasks {
+                id
+                periodicMaintenanceId
+                parentTaskId
+                name
+                completedBy {
+                  ...UserFieldsAPS
+                }
+                remarks {
+                  createdAt
+                  id
+                  type
+                  description
+                  createdBy {
+                    ...UserFieldsAPS
+                  }
+                }
+                completedAt
+              }
             }
           }
         }
@@ -1303,8 +1381,7 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
     $last: Int
     $search: String
     $complete: Boolean
-    $location: [String!]
-    $status: PeriodicMaintenanceStatus
+    $locationIds: [Int!]
     $assignedToId: Int
   ) {
     getAllEntityPeriodicMaintenanceTask(
@@ -1314,8 +1391,7 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
       last: $last
       search: $search
       complete: $complete
-      location: $location
-      status: $status
+      locationIds: $locationIds
       assignedToId: $assignedToId
     ) {
       pageInfo {
@@ -1333,7 +1409,6 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
           parentTaskId
           completedAt
           periodicMaintenance {
-            status
             entity {
               id
               location {

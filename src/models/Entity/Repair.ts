@@ -1,6 +1,7 @@
 import User from "../User";
 import Breakdown from "./Breakdown";
 import Comment from "../Comment";
+import BreakdownDetail from "../BreakdownDetails";
 export default interface Repair {
   id: number;
   entityId: number;
@@ -9,5 +10,6 @@ export default interface Repair {
   createdBy: User;
   createdAt?: Date;
   breakdown?: Breakdown;
+  breakdownDetail?: BreakdownDetail;
   comments?: Comment[];
 }

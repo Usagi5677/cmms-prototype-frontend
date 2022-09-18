@@ -29,6 +29,7 @@ import PaginationButtons from "../../../common/PaginationButtons/PaginationButto
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { RiSailboatFill } from "react-icons/ri";
+import { LocationSelector } from "../../../Config/Location/LocationSelector";
 
 const AllAssignedEntity = () => {
   const { user: self } = useContext(UserContext);
@@ -254,15 +255,14 @@ const AllAssignedEntity = () => {
             }}
             viewport={{ once: true }}
           >
-            <Select
-              showArrow
-              className={classes["location"]}
-              onChange={(value) => setLocationIds(value)}
-              showSearch
-              options={options}
-              placeholder={"Location"}
-              mode="multiple"
-            />
+            <div className={classes["location"]}>
+              <LocationSelector
+                setLocationId={setLocationIds}
+                multiple={true}
+                rounded={true}
+                width={"100%"}
+              />
+            </div>
           </motion.div>
         </div>
       </div>

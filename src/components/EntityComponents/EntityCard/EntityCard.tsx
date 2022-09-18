@@ -256,7 +256,7 @@ const EntityCard = ({
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Zone:</span>
-                  <span>{entity?.zone ? entity?.zone : "None"}</span>
+                  <span>{entity?.location?.zone?.name ? entity?.location?.zone?.name : "None"}</span>
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Model:</span>

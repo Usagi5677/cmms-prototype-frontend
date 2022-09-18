@@ -22,13 +22,14 @@ import EntityUtilizationGraph from "../EntityUtilizationGraph/EntityUtilizationG
 import { Entity } from "../../../../models/Entity/Entity";
 import { motion } from "framer-motion";
 import { RiSailboatFill } from "react-icons/ri";
+import { LocationSelector } from "../../../Config/Location/LocationSelector";
 
 const EntityUtilization = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [locationIds, setLocationIds] = useState([]);
+  const [locationIds, setLocationIds] = useState<number[]>([]);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -206,15 +207,14 @@ const EntityUtilization = () => {
           }}
           viewport={{ once: true }}
         >
-          <Select
-            showArrow
-            className={classes["location"]}
-            onChange={(value) => setLocationIds(value)}
-            showSearch
-            options={options}
-            placeholder={"Location"}
-            mode="multiple"
-          />
+          <div className={classes["location"]}>
+            <LocationSelector
+              setLocationId={setLocationIds}
+              multiple={true}
+              rounded={true}
+              width={"100%"}
+            />
+          </div>
         </motion.div>
       </div>
       {loading && (
@@ -263,39 +263,26 @@ const EntityUtilization = () => {
                           className={classes["header-container"]}
                           onClick={(event) => event.stopPropagation()}
                         >
-                          <Tooltip
-                            title={
-                              <>
-                                <span className={classes["title"]}>
-                                  Registered Date:{" "}
-                                  {moment(entity?.registeredDate).format(
-                                    DATETIME_FORMATS.DAY_MONTH_YEAR
-                                  )}
-                                </span>
-                              </>
-                            }
-                          >
-                            <div className={classes["first-block"]}>
-                              <div className={classes["title-wrapper"]}>
-                                {entity?.type?.entityType === "Vessel" ? (
-                                  <RiSailboatFill />
-                                ) : entity?.type?.entityType === "Vehicle" ? (
-                                  <FaTruck />
-                                ) : (
-                                  <FaTractor />
-                                )}
-                                <span className={classes["title"]}>
-                                  {entity?.machineNumber}
-                                </span>
-                              </div>
-                              <div className={classes["location-wrapper"]}>
-                                <FaMapMarkerAlt />
-                                <span className={classes["title"]}>
-                                  {entity?.location?.name}
-                                </span>
-                              </div>
+                          <div className={classes["first-block"]}>
+                            <div className={classes["title-wrapper"]}>
+                              {entity?.type?.entityType === "Vessel" ? (
+                                <RiSailboatFill />
+                              ) : entity?.type?.entityType === "Vehicle" ? (
+                                <FaTruck />
+                              ) : (
+                                <FaTractor />
+                              )}
+                              <span className={classes["title"]}>
+                                {entity?.machineNumber}
+                              </span>
                             </div>
-                          </Tooltip>
+                            <div className={classes["location-wrapper"]}>
+                              <FaMapMarkerAlt />
+                              <span className={classes["title"]}>
+                                {entity?.location?.name}
+                              </span>
+                            </div>
+                          </div>
 
                           <div
                             className={classes["service-reading-wrapper-two"]}
@@ -402,39 +389,28 @@ const EntityUtilization = () => {
                 }}
                 viewport={{ once: true }}
               >
-                <Tooltip
-                  title={
-                    <>
-                      <span className={classes["title"]}>
-                        Registered Date:{" "}
-                        {moment(entity?.registeredDate).format(
-                          DATETIME_FORMATS.DAY_MONTH_YEAR
-                        )}
-                      </span>
-                    </>
-                  }
-                >
-                  <div className={classes["first-block"]}>
-                    <div className={classes["title-wrapper"]}>
-                      {entity?.type?.entityType === "Vessel" ? (
-                        <RiSailboatFill />
-                      ) : entity?.type?.entityType === "Vehicle" ? (
-                        <FaTruck />
-                      ) : (
-                        <FaTractor />
-                      )}
-                      <span className={classes["title"]}>
-                        {entity?.machineNumber}
-                      </span>
-                    </div>
-                    <div className={classes["location-wrapper"]}>
-                      <FaMapMarkerAlt />
-                      <span className={classes["title"]}>{entity?.zone}</span>
-                      <span className={classes["dash"]}>-</span>
-                      <span>{entity?.location?.name}</span>
-                    </div>
+                <div className={classes["first-block"]}>
+                  <div className={classes["title-wrapper"]}>
+                    {entity?.type?.entityType === "Vessel" ? (
+                      <RiSailboatFill />
+                    ) : entity?.type?.entityType === "Vehicle" ? (
+                      <FaTruck />
+                    ) : (
+                      <FaTractor />
+                    )}
+                    <span className={classes["title"]}>
+                      {entity?.machineNumber}
+                    </span>
                   </div>
-                </Tooltip>
+                  <div className={classes["location-wrapper"]}>
+                    <FaMapMarkerAlt />
+                    <span className={classes["title"]}>
+                      {entity?.location?.zone?.name}
+                    </span>
+                    <span className={classes["dash"]}>-</span>
+                    <span>{entity?.location?.name}</span>
+                  </div>
+                </div>
 
                 <div className={classes["service-reading-wrapper"]}>
                   <div className={classes["reading"]}>

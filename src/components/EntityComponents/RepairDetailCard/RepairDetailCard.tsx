@@ -1,10 +1,8 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import {
-  REMOVE_REPAIR,
-  REMOVE_REPAIR_COMMENT,
-} from "../../../api/mutations";
+import { FaRegUser } from "react-icons/fa";
+import { REMOVE_REPAIR, REMOVE_REPAIR_COMMENT } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import Comment from "../../../models/Comment";
 import Repair from "../../../models/Entity/Repair";
@@ -16,28 +14,20 @@ const RepairDetailCard = ({
   index,
   repair,
   isDeleted,
+  hasPermission,
 }: {
   index: number;
   repair: Repair;
   isDeleted?: boolean;
+  hasPermission?: boolean;
 }) => {
   const [hover, setHover] = useState(false);
-  const [removeRepair, { loading }] = useMutation(
-    REMOVE_REPAIR,
-    {
-      onError: (error) => {
-        errorMessage(
-          error,
-          "Unexpected error while removing repair detail."
-        );
-      },
-      refetchQueries: [
-        "repairs",
-        "breakdowns",
-        "getAllHistoryOfEntity",
-      ],
-    }
-  );
+  const [removeRepair, { loading }] = useMutation(REMOVE_REPAIR, {
+    onError: (error) => {
+      errorMessage(error, "Unexpected error while removing repair detail.");
+    },
+    refetchQueries: ["repairs", "breakdowns", "getAllHistoryOfEntity"],
+  });
   return (
     <div className={classes["container"]}>
       <div
@@ -45,29 +35,49 @@ const RepairDetailCard = ({
         key={repair.id}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
+        style={{
+          backgroundColor: repair?.breakdownDetail
+            ? "rgba(82, 196, 26, 0.3)"
+            : "initial",
+        }}
       >
         <div className={classes["repair-description"]}>
-          <span className={classes["number"]}>{index + 1}.</span>
           <div className={classes["description-wrapper"]}>
             <div style={{ fontSize: 14 }}>{repair.name}</div>
-            <div style={{ opacity: 0.5, fontSize: 12 }}>
-              {repair.createdBy.fullName} ({repair.createdBy.rcno})
+            <div className={classes["info-wrapper"]}>
+              {repair?.breakdownDetail && (
+                <div
+                  className={classes["icon-text"]}
+                  title={`Breakdown detail: ${repair?.breakdownDetail?.id}`}
+                >
+                  <ToolOutlined />
+                  <div className={classes["text"]}>
+                    {repair?.breakdownDetail?.id}
+                  </div>
+                </div>
+              )}
+              <div className={classes["icon-text"]}>
+                <FaRegUser />
+                <div className={classes["text"]}>
+                  {repair.createdBy.fullName} ({repair.createdBy.rcno})
+                </div>
+              </div>
             </div>
           </div>
-          {hover && (
-            <AddRepairComment repair={repair} isDeleted={isDeleted} />
-          )}
+          {hover && <AddRepairComment repair={repair} isDeleted={isDeleted} />}
         </div>
-        <CloseCircleOutlined
-          style={{ color: "red" }}
-          onClick={() => {
-            removeRepair({
-              variables: {
-                id: repair.id,
-              },
-            });
-          }}
-        />
+        {hasPermission && (
+          <CloseCircleOutlined
+            style={{ color: "red" }}
+            onClick={() => {
+              removeRepair({
+                variables: {
+                  id: repair.id,
+                },
+              });
+            }}
+          />
+        )}
       </div>
       {repair?.comments?.map((c: Comment) => (
         <CommentCard

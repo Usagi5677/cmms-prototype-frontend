@@ -62,7 +62,6 @@ const EditEntity = ({
       machineNumber,
       model,
       department,
-      zone,
       currentMileage,
       lastServiceMileage,
       measurement,
@@ -77,7 +76,6 @@ const EditEntity = ({
         machineNumber,
         model,
         department,
-        zone,
         locationId,
         currentMileage,
         lastServiceMileage,
@@ -196,16 +194,6 @@ const EditEntity = ({
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Zone"
-                name="zone"
-                required={false}
-                initialValue={entity?.zone}
-              >
-                <Input placeholder="Zone" />
-              </Form.Item>
-            </div>
             <div className={classes["col"]}>
               <Form.Item label="Location" name="location" required={false}>
                 <LocationSelector

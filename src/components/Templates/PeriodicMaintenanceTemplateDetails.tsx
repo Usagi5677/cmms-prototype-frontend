@@ -266,7 +266,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
                   style={{ marginLeft: ".5rem", flex: 1 }}
                 >
                   {" "}
-                  {u?.entity?.machineNumber} ({u?.entity?.zone} -{" "}
+                  {u?.entity?.machineNumber} ({u?.entity?.location?.zone?.name} -{" "}
                   {u?.entity?.location?.name}) <ArrowRightOutlined />
                 </a>
                 <div>

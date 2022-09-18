@@ -148,7 +148,12 @@
 .no-info {
   text-align: center;
 }
-
+@media only screen and (min-width: 600px) {
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+}
 @media only screen and (min-width: 1200px) {
   .service-reading-wrapper {
     flex-direction: row;
@@ -159,10 +164,6 @@
   }
   .collapse-container {
     font-size: 12px;
-  }
-  .options-wrapper {
-    flex-direction: row;
-    margin-bottom: 0;
   }
   .header-container {
     font-size: 12px;
