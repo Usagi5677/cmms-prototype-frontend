@@ -16,6 +16,7 @@ import moment from "moment";
 
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
+import { useParams } from "react-router";
 import { UPDATE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import EntityBreakdown from "../../../models/Entity/Breakdown";
@@ -30,7 +31,7 @@ const EditBreakdown = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-
+  const { id }: any = useParams();
   const [updateBreakdown, { loading: loadingBreakdown }] = useMutation(
     UPDATE_BREAKDOWN,
     {
@@ -68,6 +69,7 @@ const EditBreakdown = ({
       variables: {
         updateBreakdownInput: {
           id: breakdown.id,
+          entityId: parseInt(id),
           name,
           type,
           estimatedDateOfRepair,
