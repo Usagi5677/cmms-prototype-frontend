@@ -965,6 +965,9 @@ export const BREAKDOWNS = gql`
             createdBy {
               ...UserFieldsAPS
             }
+            repairs {
+              id
+            }
             comments {
               id
               type
@@ -979,6 +982,10 @@ export const BREAKDOWNS = gql`
             name
             createdBy {
               ...UserFieldsAPS
+            }
+            breakdownDetail {
+              id
+              description
             }
             comments {
               id

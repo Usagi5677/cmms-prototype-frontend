@@ -1,37 +1,42 @@
-import { MessageOutlined, WarningOutlined } from "@ant-design/icons";
+import { ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { useState } from "react";
-import { ADD_BREAKDOWN_COMMENT } from "../../api/mutations";
+import { useParams } from "react-router";
+import { CREATE_REPAIR } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import BreakdownDetail from "../../models/BreakdownDetails";
-import Breakdown from "../../models/Entity/Breakdown";
 
-export interface AddBreakdownCommentProps {
-  breakdown: Breakdown;
+export interface HoverAddRepairDetailProps {
   detail: BreakdownDetail;
-  type?: string;
+  breakdownId?: number;
   isDeleted?: boolean;
 }
 
-export const AddBreakdownComment: React.FC<AddBreakdownCommentProps> = ({
-  breakdown,
+export const HoverAddRepairDetail: React.FC<HoverAddRepairDetailProps> = ({
   detail,
-  type = "Remark",
-  isDeleted
+  breakdownId,
+  isDeleted,
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [create, { loading }] = useMutation(ADD_BREAKDOWN_COMMENT, {
+  const { id }: any = useParams();
+  const [createRepair, { loading }] = useMutation(CREATE_REPAIR, {
     onCompleted: () => {
       handleCancel();
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while adding remark.");
+      errorMessage(error, "Unexpected error while adding repair detail.");
     },
-    refetchQueries: ["repairs", "breakdowns", "getAllHistoryOfEntity"],
+    refetchQueries: [
+      "breakdowns",
+      "repairs",
+      "getAllHistoryOfEntity",
+      "getAllEntityChecklistAndPMSummary",
+      "periodicMaintenances",
+    ],
   });
 
   const handleCancel = () => {
@@ -40,33 +45,33 @@ export const AddBreakdownComment: React.FC<AddBreakdownCommentProps> = ({
   };
 
   const onFinish = async (values: any) => {
-    const { comment } = values;
-    create({
+    const { description } = values;
+    createRepair({
       variables: {
-        createBreakdownCommentInput: {
-          breakdownId: breakdown.id,
-          detailId: detail.id,
-          description: comment,
-          type,
+        createRepairInput: {
+          entityId: parseInt(id),
+          breakdownDetailId: detail.id,
+          breakdownId,
+          name: description,
         },
       },
     });
   };
   return (
     <div>
-      <Tooltip title="Add Remark">
+      <Tooltip title="Add Repair">
         <div
           style={{ marginLeft: ".5rem", cursor: "pointer", zIndex: 1 }}
           onClick={() => setVisible(true)}
         >
-          <MessageOutlined disabled={isDeleted} />
+          <ToolOutlined disabled={isDeleted} />
         </div>
       </Tooltip>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={`Add Remark to detail: ${detail.description}`}
+        title={`Add Repair to detail: ${detail.description}`}
       >
         <Form
           form={form}
@@ -76,17 +81,17 @@ export const AddBreakdownComment: React.FC<AddBreakdownCommentProps> = ({
           id="myForm"
         >
           <Form.Item
-            label="Remark"
-            name="comment"
+            label="Repair"
+            name="description"
             required={false}
             rules={[
               {
                 required: true,
-                message: "Please enter the remark.",
+                message: "Please enter the repair.",
               },
             ]}
           >
-            <Input placeholder="Enter remark" />
+            <Input placeholder="Enter repair" />
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>

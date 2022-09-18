@@ -51,6 +51,14 @@ const EntityBreakdownCard = ({
       rCommentExist = true;
     }
   });
+
+  const bdComments = breakdown?.comments;
+  const bdRepairs = breakdown?.repairs;
+
+  const combine = bdComments?.concat(bdRepairs!).sort();
+
+  console.log(combine);
+
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>

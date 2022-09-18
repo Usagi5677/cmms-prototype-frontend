@@ -1,6 +1,7 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import { FaRegUser } from "react-icons/fa";
 import {
   REMOVE_BREAKDOWN_COMMENT,
   REMOVE_BREAKDOWN_DETAIL,
@@ -11,6 +12,8 @@ import Comment from "../../../models/Comment";
 import Breakdown from "../../../models/Entity/Breakdown";
 import { CommentCard } from "../../common/CommentCard/CommentCard";
 import { AddBreakdownComment } from "../AddBreakdownComment";
+import { AddRepairDetail } from "../AddRepairDetail";
+import { HoverAddRepairDetail } from "../HoverAddRepairDetail";
 import classes from "./BreakdownDetailCard.module.css";
 const BreakdownDetailCard = ({
   index,
@@ -43,18 +46,40 @@ const BreakdownDetailCard = ({
         key={detail.id}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
+        style={{
+          backgroundColor:
+            detail?.repairs?.length! > 0 ? "rgba(82, 196, 26, 0.3)" : "initial",
+        }}
       >
         <div className={classes["breakdown-description"]}>
-          <span className={classes["number"]}>{index + 1}.</span>
           <div className={classes["description-wrapper"]}>
             <div style={{ fontSize: 14 }}>{detail.description}</div>
-            <div style={{ opacity: 0.5, fontSize: 12 }}>
-              {detail.createdBy.fullName} ({detail.createdBy.rcno})
+            <div className={classes["info-wrapper"]}>
+              <div
+                className={classes["icon-text"]}
+                title={`Breakdown detail: ${detail?.id}`}
+              >
+                <ToolOutlined />
+                <div className={classes["text"]}>{detail?.id}</div>
+              </div>
+              <div className={classes["icon-text"]}>
+                <FaRegUser />
+                <div className={classes["text"]}>
+                  {detail.createdBy.fullName} ({detail.createdBy.rcno})
+                </div>
+              </div>
             </div>
           </div>
           {hover && (
             <AddBreakdownComment
               breakdown={breakdown}
+              detail={detail}
+              isDeleted={isDeleted}
+            />
+          )}
+          {hover && (
+            <HoverAddRepairDetail
+              breakdownId={breakdown.id}
               detail={detail}
               isDeleted={isDeleted}
             />

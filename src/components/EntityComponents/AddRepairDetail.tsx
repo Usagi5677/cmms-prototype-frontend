@@ -3,16 +3,17 @@ import React, { useState } from "react";
 import { useParams } from "react-router";
 import { CREATE_REPAIR } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import BreakdownDetail from "../../models/BreakdownDetails";
 
 interface AddRepairDetailProps {
   breakdownId?: number;
   description?: string;
+  isDeleted?: boolean;
 }
 
 export const AddRepairDetail: React.FC<AddRepairDetailProps> = ({
   breakdownId,
   description = "Add new repair",
+  isDeleted,
 }) => {
   const [details, setDetails] = useState("");
   const { id }: any = useParams();
@@ -57,7 +58,7 @@ export const AddRepairDetail: React.FC<AddRepairDetailProps> = ({
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         onKeyDown={submit}
-        disabled={loading}
+        disabled={loading || isDeleted}
         style={{
           border: "solid 1px var(--border-2)",
           borderRadius: 5,

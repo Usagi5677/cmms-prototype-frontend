@@ -3,7 +3,7 @@
   padding-bottom: 0.25rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 .container:hover {
   background-color: var(--row-hover);
@@ -12,6 +12,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 6px;
+  padding: 4px;
 }
 
 .breakdown-description {
@@ -25,4 +27,27 @@
 .number {
   font-size: 14px;
   margin-right: 6px;
+}
+
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.icon-text {
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  margin-right: 20px;
+}
+.text {
+  display: inline-block;
+  padding-left: 5px;
+}
+
+@media only screen and (min-width: 500px) {
+  .info-wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
 }
