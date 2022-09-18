@@ -90,7 +90,7 @@
 
 .flex-limit {
   max-width: 500px;
-  margin-right: 40px;
+ 
 }
 
 @media only screen and (min-width: 600px) {
@@ -100,12 +100,7 @@
   .id-wrapper {
     margin-top: 0;
   }
-  .first-block {
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
-   
-  }
+  
   .second-block {
     padding-right: 0;
     padding-bottom: 0;
@@ -131,10 +126,17 @@
   .header-container {
     font-size: 12px;
   }
+  .first-block {
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+   
+  }
 }
 @media only screen and (min-width: 1100px) {
   
   .level-one {
     flex-direction: row;
   }
+  
 }

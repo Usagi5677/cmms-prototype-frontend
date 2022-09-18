@@ -91,25 +91,6 @@ const PeriodicMaintenanceCard = ({
                 <div className={classes["level-one"]}>
                   <div className={classes["header-info-wrapper"]}>
                     <div className={classes["first-block"]}>
-                      <div
-                        className={(classes["reading"], classes["flex-limit"])}
-                      >
-                        <span className={classes["reading-title"]}>Name:</span>
-                        {periodicMaintenance?.name}
-                      </div>
-                      <div
-                        className={(classes["reading"], classes["space-two"])}
-                      >
-                        <span className={classes["reading-title"]}>Value:</span>
-                        <span>
-                          <span title="Value">
-                            {periodicMaintenance?.value}{" "}
-                          </span>
-                          <span title="Measurement">
-                            {periodicMaintenance?.measurement}
-                          </span>
-                        </span>
-                      </div>
                       <Checkbox
                         checked={periodicMaintenance.verifiedAt !== null}
                         disabled={
@@ -130,13 +111,32 @@ const PeriodicMaintenanceCard = ({
                             },
                           })
                         }
-                        style={{ wordBreak: "break-all" }}
+                        style={{ wordBreak: "break-all", marginRight: 40 }}
                       >
                         Verify{" "}
                         {toggling && (
                           <Spin style={{ marginRight: 5 }} size="small" />
                         )}
                       </Checkbox>
+                      <div
+                        className={(classes["reading"], classes["space-two"])}
+                      >
+                        <span className={classes["reading-title"]}>Value:</span>
+                        <span>
+                          <span title="Value">
+                            {periodicMaintenance?.value}{" "}
+                          </span>
+                          <span title="Measurement">
+                            {periodicMaintenance?.measurement}
+                          </span>
+                        </span>
+                      </div>
+                      <div
+                        className={(classes["reading"], classes["flex-limit"])}
+                      >
+                        <span className={classes["reading-title"]}>Name:</span>
+                        {periodicMaintenance?.name}
+                      </div>
                     </div>
                   </div>
 
