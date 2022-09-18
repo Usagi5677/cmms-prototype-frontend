@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import {
   GET_ALL_ENTITY_PM_STATUS_COUNT,
   GET_ALL_ENTITY_PERIODIC_MAINTENANCE,
+  PERIODIC_MAINTENANCE_SUMMARIES,
 } from "../../../../api/queries";
 import UserContext from "../../../../contexts/UserContext";
 import { ISLANDS, DATETIME_FORMATS } from "../../../../helpers/constants";
@@ -30,20 +31,24 @@ import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
 import { RiSailboatFill } from "react-icons/ri";
+import { LocationSelector } from "../../../Config/Location/LocationSelector";
+import PeriodicMaintenance from "../../../../models/PeriodicMaintenance/PeriodicMaintenance";
+import PeriodicMaintenanceCard from "../../../EntityComponents/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
 
 const EntityMaintenance = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<any>();
+
   const [timerId, setTimerId] = useState(null);
-  const [location, setLocation] = useState([]);
+
+
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      status: any;
-      location: string[];
+
+
     }
   >({
     first: 3,
@@ -51,8 +56,7 @@ const EntityMaintenance = () => {
     before: null,
     after: null,
     search: "",
-    status: null,
-    location: [],
+
   });
 
   const [
@@ -60,10 +64,7 @@ const EntityMaintenance = () => {
     { data: statusData, loading: statusLoading },
   ] = useLazyQuery(GET_ALL_ENTITY_PM_STATUS_COUNT, {
     onError: (err) => {
-      errorMessage(
-        err,
-        "Error loading all entity periodic maintenance status count."
-      );
+      errorMessage(err, "Error loading all periodic maintenance status count.");
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
@@ -73,7 +74,7 @@ const EntityMaintenance = () => {
     GET_ALL_ENTITY_PERIODIC_MAINTENANCE,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading all entity periodic maintenance.");
+        errorMessage(err, "Error loading all periodic maintenance.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -92,8 +93,6 @@ const EntityMaintenance = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    statusValue: PeriodicMaintenanceStatus,
-    locationValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -102,8 +101,6 @@ const EntityMaintenance = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          status: statusValue,
-          location: locationValue,
           first: 3,
           last: null,
           before: null,
@@ -120,9 +117,9 @@ const EntityMaintenance = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status, location);
+    searchDebounced(search);
     // eslint-disable-next-line
-  }, [search, status, location]);
+  }, [search]);
 
   // Pagination functions
   const next = () => {
@@ -214,54 +211,6 @@ const EntityMaintenance = () => {
             onClick={() => setSearch("")}
           />
         </motion.div>
-
-        <div className={classes["status-wrapper"]}>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <EntityPMStatusFilter
-              onChange={(status) => {
-                setFilter({ ...filter, status, ...DefaultPaginationArgs });
-                setPage(1);
-                setStatus(status);
-              }}
-              value={filter.status}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 1.1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <Select
-              showArrow
-              className={classes["location"]}
-              onChange={(value) => setLocation(value)}
-              showSearch
-              options={options}
-              placeholder={"Location"}
-              mode="multiple"
-            />
-          </motion.div>
-        </div>
       </div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
@@ -374,8 +323,11 @@ const EntityMaintenance = () => {
       )}
       {data?.getAllEntityPeriodicMaintenance.edges.length > 0 ? (
         data?.getAllEntityPeriodicMaintenance.edges.map(
-          (rec: { node: EntityPeriodicMaintenance }) => {
+          (rec: { node: PeriodicMaintenance }) => {
             const periodicMaintenance = rec.node;
+            const isOlderPeriodicMaintenance = moment(
+              periodicMaintenance.to
+            ).isBefore(moment(), "second");
             return (
               <motion.div
                 id="collapse"
@@ -392,94 +344,12 @@ const EntityMaintenance = () => {
                 }}
                 viewport={{ once: true }}
               >
-                <Collapse ghost style={{ marginBottom: ".5rem" }}>
-                  <Collapse.Panel
-                    header={
-                      <>
-                        <div
-                          className={classes["header-container"]}
-                          onClick={(event) => event.stopPropagation()}
-                        >
-                          <div className={classes["first-block"]}>
-                            <div>
-                              <div className={classes["title-wrapper"]}>
-                                {periodicMaintenance?.entity?.type
-                                  ?.entityType === "Vessel" ? (
-                                  <RiSailboatFill />
-                                ) : periodicMaintenance?.entity?.type
-                                    ?.entityType === "Vehicle" ? (
-                                  <FaTruck />
-                                ) : (
-                                  <FaTractor />
-                                )}
-                                <span className={classes["title"]}>
-                                  {periodicMaintenance?.entity?.machineNumber}
-                                </span>
-                              </div>
-                              <div className={classes["location-wrapper"]}>
-                                <FaMapMarkerAlt />
-                                <span className={classes["title"]}>
-                                  {periodicMaintenance?.entity?.location?.name}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className={classes["service-reading-wrapper"]}>
-                            <div className={classes["reading"]}>
-                              <span className={classes["reading-title"]}>
-                                Title:
-                              </span>
-                              <span>{periodicMaintenance?.title}</span>
-                            </div>
-                            <div className={classes["status"]}>
-                              <PeriodicMaintenanceStatusTag
-                                status={periodicMaintenance?.status}
-                              />
-                            </div>
-                            <div>
-                              <div className={classes["title-wrapper"]}>
-                                <Tooltip title="Start Date">
-                                  <FaRegClock />
-                                </Tooltip>
-
-                                <span className={classes["title"]}>
-                                  {moment(
-                                    periodicMaintenance?.startDate
-                                  ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                                </span>
-                              </div>
-                              <div className={classes["reading"]}>
-                                <span className={classes["reading-title"]}>
-                                  In:
-                                </span>
-                                <span>
-                                  {periodicMaintenance?.value}{" "}
-                                  {periodicMaintenance?.measurement}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <Link
-                            to={
-                              "/entity/" +
-                              periodicMaintenance?.entity?.id
-                            }
-                          >
-                            <Tooltip title="Open">
-                              <FaArrowAltCircleRight
-                                className={classes["button"]}
-                              />
-                            </Tooltip>
-                          </Link>
-                        </div>
-                      </>
-                    }
-                    key={periodicMaintenance?.id}
-                  >
-                    <div className={classes["container"]}></div>
-                  </Collapse.Panel>
-                </Collapse>
+                <PeriodicMaintenanceCard
+                  periodicMaintenance={periodicMaintenance}
+                  isDeleted={periodicMaintenance?.entity?.deletedAt !== null}
+                  isOlder={isOlderPeriodicMaintenance}
+                  isCopy
+                />
               </motion.div>
             );
           }
@@ -500,4 +370,3 @@ const EntityMaintenance = () => {
 };
 
 export default EntityMaintenance;
-

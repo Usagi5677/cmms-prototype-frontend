@@ -28,6 +28,7 @@ import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceStatusTag";
 import Search from "../../../common/Search";
+import { LocationSelector } from "../../../Config/Location/LocationSelector";
 import classes from "./MyEntityPMTask.module.css";
 
 const MyEntityPMTask = () => {
@@ -36,14 +37,13 @@ const MyEntityPMTask = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
-  const [location, setLocation] = useState([]);
+  const [locationIds, setLocationIds] = useState([]);
   const [complete, setComplete] = useState(false);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      status: any;
-      location: string[];
+      locationIds: number[];
       complete: boolean;
       assignedToId: number;
     }
@@ -53,8 +53,7 @@ const MyEntityPMTask = () => {
     before: null,
     after: null,
     search: "",
-    status: null,
-    location: [],
+    locationIds: [],
     complete: false,
     assignedToId: self.id,
   });
@@ -107,8 +106,7 @@ const MyEntityPMTask = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    statusValue: PeriodicMaintenanceStatus,
-    locationValue: string[],
+    locationIdsValue: number[],
     completeValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
@@ -118,8 +116,7 @@ const MyEntityPMTask = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          status: statusValue,
-          location: locationValue,
+          locationIds: locationIdsValue,
           complete: completeValue,
           first: 3,
           last: null,
@@ -137,9 +134,9 @@ const MyEntityPMTask = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status, location, complete);
+    searchDebounced(search, locationIds, complete);
     // eslint-disable-next-line
-  }, [search, status, location, complete]);
+  }, [search, locationIds, complete]);
 
   // Pagination functions
   const next = () => {
@@ -239,42 +236,19 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <EntityPMStatusFilter
-              onChange={(status) => {
-                setFilter({ ...filter, status, ...DefaultPaginationArgs });
-                setPage(1);
-                setStatus(status);
-              }}
-              value={filter.status}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
                 delay: 1.1,
               },
             }}
             viewport={{ once: true }}
           >
-            <Select
-              showArrow
-              className={classes["location"]}
-              onChange={(value) => setLocation(value)}
-              showSearch
-              options={options}
-              placeholder={"Location"}
-              mode="multiple"
-            />
+            <div className={classes["location"]}>
+              <LocationSelector
+                setLocationId={setLocationIds}
+                multiple={true}
+                rounded={true}
+                width={"100%"}
+              />
+            </div>
           </motion.div>
 
           <motion.div

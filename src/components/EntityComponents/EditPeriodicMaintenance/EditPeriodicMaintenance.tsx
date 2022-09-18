@@ -48,7 +48,6 @@ const EditEntity = ({
   );
 
   const handleCancel = () => {
-    form.resetFields();
     setVisible(false);
   };
 

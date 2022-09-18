@@ -89,7 +89,7 @@
 }
 
 .flex-limit {
-  flex: 1;
+  max-width: 500px;
   margin-right: 40px;
 }
 
@@ -101,11 +101,12 @@
     margin-top: 0;
   }
   .first-block {
+    flex: 1;
     flex-direction: row;
     align-items: center;
+   
   }
   .second-block {
-    flex: 1;
     padding-right: 0;
     padding-bottom: 0;
   }

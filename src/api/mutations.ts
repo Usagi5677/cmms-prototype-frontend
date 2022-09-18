@@ -5,7 +5,6 @@ export const CREATE_MACHINE = gql`
     $machineNumber: String
     $model: String
     $typeId: Int
-    $zone: String
     $location: String
     $currentRunning: Int
     $lastService: Int
@@ -16,7 +15,6 @@ export const CREATE_MACHINE = gql`
       machineNumber: $machineNumber
       model: $model
       typeId: $typeId
-      zone: $zone
       location: $location
       currentRunning: $currentRunning
       lastService: $lastService
@@ -32,7 +30,6 @@ export const EDIT_MACHINE = gql`
     $machineNumber: String
     $model: String
     $typeId: Int
-    $zone: String
     $location: String
     $currentRunning: Int
     $lastService: Int
@@ -44,7 +41,6 @@ export const EDIT_MACHINE = gql`
       machineNumber: $machineNumber
       model: $model
       typeId: $typeId
-      zone: $zone
       location: $location
       currentRunning: $currentRunning
       lastService: $lastService

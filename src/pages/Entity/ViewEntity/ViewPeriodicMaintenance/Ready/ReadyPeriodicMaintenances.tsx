@@ -21,7 +21,7 @@ import {
 } from "../../../../../components/PeriodicMaintenanceStatus/PeriodicMaintenanceStatus";
 import PeriodicMaintenanceCalendar from "../../../../../components/EntityComponents/PeriodicMaintenanceCalendar/PeriodicMaintenanceCalendar";
 
-const UpcomingPeriodicMaintenances = ({
+const ReadyPeriodicMaintenances = ({
   isDeleted,
 }: {
   isDeleted?: boolean | undefined;
@@ -313,4 +313,4 @@ const UpcomingPeriodicMaintenances = ({
   );
 };
 
-export default UpcomingPeriodicMaintenances;
+export default ReadyPeriodicMaintenances;

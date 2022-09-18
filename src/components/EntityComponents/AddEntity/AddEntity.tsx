@@ -55,7 +55,6 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
       machineNumber,
       model,
       department,
-      zone,
       currentRunning,
       lastService,
       currentMileage,
@@ -71,7 +70,6 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
         machineNumber,
         model,
         department,
-        zone,
         locationId,
         currentRunning,
         lastService,
@@ -173,11 +171,6 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item label="Zone" name="zone" required={false}>
-                <Input placeholder="Zone" />
-              </Form.Item>
-            </div>
             <div className={classes["col"]}>
               <Form.Item label="Location" name="location" required={false}>
                 <LocationSelector setLocationId={setLocationId} />

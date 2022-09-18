@@ -47,10 +47,13 @@ export const ENTITY_FRAGMENT = gql`
     }
     department
     engine
-    zone
     location {
       id
       name
+      zone {
+        id
+        name
+      }
     }
     currentRunning
     lastService

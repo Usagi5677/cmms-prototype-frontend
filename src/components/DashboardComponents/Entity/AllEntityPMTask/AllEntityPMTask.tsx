@@ -30,21 +30,21 @@ import EntityPMTask from "../../../../models/Entity/EntityPMTask";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { RiSailboatFill } from "react-icons/ri";
+import { LocationSelector } from "../../../Config/Location/LocationSelector";
 
 const AllEntityPMTask = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
-  const [location, setLocation] = useState([]);
   const [complete, setComplete] = useState(false);
+  const [locationIds, setLocationIds] = useState<number[]>([]);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       status: any;
-      location: string[];
+      locationIds: number[];
       complete: boolean;
     }
   >({
@@ -54,7 +54,7 @@ const AllEntityPMTask = () => {
     after: null,
     search: "",
     status: null,
-    location: [],
+    locationIds: [],
     complete: false,
   });
 
@@ -102,8 +102,7 @@ const AllEntityPMTask = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    statusValue: PeriodicMaintenanceStatus,
-    locationValue: string[],
+    locationIdsValue: number[],
     completeValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
@@ -113,8 +112,7 @@ const AllEntityPMTask = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          status: statusValue,
-          location: locationValue,
+          locationIds: locationIdsValue,
           complete: completeValue,
           first: 3,
           last: null,
@@ -132,9 +130,9 @@ const AllEntityPMTask = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status, location, complete);
+    searchDebounced(search, locationIds, complete);
     // eslint-disable-next-line
-  }, [search, status, location, complete]);
+  }, [search, status, locationIds, complete]);
 
   // Pagination functions
   const next = () => {
@@ -234,42 +232,19 @@ const AllEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <EntityPMStatusFilter
-              onChange={(status) => {
-                setFilter({ ...filter, status, ...DefaultPaginationArgs });
-                setPage(1);
-                setStatus(status);
-              }}
-              value={filter.status}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
                 delay: 1.1,
               },
             }}
             viewport={{ once: true }}
           >
-            <Select
-              showArrow
-              className={classes["location"]}
-              onChange={(value) => setLocation(value)}
-              showSearch
-              options={options}
-              placeholder={"Location"}
-              mode="multiple"
-            />
+            <div className={classes["location"]}>
+              <LocationSelector
+                setLocationId={setLocationIds}
+                multiple={true}
+                rounded={true}
+                width={"100%"}
+              />
+            </div>
           </motion.div>
 
           <motion.div
@@ -495,14 +470,6 @@ const AllEntityPMTask = () => {
                                   )}
                                 </span>
                               </div>
-                            </div>
-                            <div className={classes["status"]}>
-                              <PeriodicMaintenanceStatusTag
-                                status={
-                                  periodicMaintenanceTask?.periodicMaintenance
-                                    ?.status
-                                }
-                              />
                             </div>
                           </div>
                           <Link
