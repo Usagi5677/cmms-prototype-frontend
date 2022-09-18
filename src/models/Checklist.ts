@@ -10,6 +10,7 @@ export default interface Checklist {
   type: string;
   currentMeterReading?: number;
   workingHour?: number;
+  dailyUsageHours?: number;
   items: ChecklistItem[];
   comments: ChecklistComment[];
   attachments: EntityAttachment[];

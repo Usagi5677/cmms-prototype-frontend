@@ -2,13 +2,16 @@ import { CommentOutlined, WarningOutlined } from "@ant-design/icons";
 import { Badge, Tooltip } from "antd";
 import React from "react";
 import ChecklistSummary from "../../models/ChecklistSummary";
+import { Entity } from "../../models/Entity/Entity";
 export interface ChecklistStatusProps {
   summary: ChecklistSummary;
+  entity: Entity;
   size?: "small" | "default";
 }
 
 export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
   summary,
+  entity,
   size = "default",
 }) => {
   let itemText = "";
@@ -34,6 +37,16 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
     readingsText = "Reading not updated";
   }
 
+  let usageText = "";
+  let usageColor = "none";
+  if (summary.dailyUsageHours) {
+    usageColor = "#52c41a";
+    usageText = "Usage updated";
+  } else {
+    usageColor = "#fa541c";
+    usageText = "Usage not updated";
+  }
+
   const smallStyle = {
     height: 5,
     width: 5,
@@ -50,13 +63,24 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
             title={
               <div>
                 {summary.type === "Daily" && (
-                  <div>
-                    <Badge
-                      color={readingsColor}
-                      text={readingsText}
-                      style={{ marginRight: ".5rem" }}
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <Badge
+                        color={readingsColor}
+                        text={readingsText}
+                        style={{ marginRight: ".5rem" }}
+                      />
+                    </div>
+                    {entity.measurement !== "hr" && (
+                      <div>
+                        <Badge
+                          color={usageColor}
+                          text={usageText}
+                          style={{ marginRight: ".5rem" }}
+                        />
+                      </div>
+                    )}
+                  </>
                 )}
                 {summary.itemCompletion !== "empty" && (
                   <div>
@@ -98,7 +122,12 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
               </div>
             }
           >
-            {summary.type === "Daily" && <Badge color={readingsColor} />}
+            {summary.type === "Daily" && (
+              <>
+                <Badge color={readingsColor} />
+                {entity.measurement !== "hr" && <Badge color={usageColor} />}
+              </>
+            )}
             {summary.itemCompletion !== "empty" && <Badge color={itemColor} />}
             {summary.hasComments && (
               <span style={{ marginRight: 5 }}>
@@ -113,12 +142,22 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
           {summary.type === "Daily" && (
-            <div
-              style={{
-                ...smallStyle,
-                backgroundColor: readingsColor,
-              }}
-            ></div>
+            <>
+              <div
+                style={{
+                  ...smallStyle,
+                  backgroundColor: readingsColor,
+                }}
+              ></div>
+              {entity.measurement !== "hr" && (
+                <div
+                  style={{
+                    ...smallStyle,
+                    backgroundColor: usageColor,
+                  }}
+                ></div>
+              )}
+            </>
           )}
           {summary.itemCompletion !== "empty" && (
             <div
