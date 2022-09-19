@@ -792,7 +792,6 @@ export const EDIT_ENTITY = gql`
     $machineNumber: String
     $model: String
     $department: String
-    $zone: String
     $locationId: Int
     $engine: String
     $measurement: String
@@ -804,7 +803,6 @@ export const EDIT_ENTITY = gql`
       machineNumber: $machineNumber
       model: $model
       department: $department
-      zone: $zone
       locationId: $locationId
       engine: $engine
       measurement: $measurement
