@@ -1,7 +1,4 @@
-import {
-  CommentOutlined,
-  ToolOutlined,
-} from "@ant-design/icons";
+import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
 import { Collapse, Tag, Tooltip } from "antd";
 import moment from "moment";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
@@ -15,16 +12,19 @@ import classes from "./RepairCard.module.css";
 import Comment from "../../../models/Comment";
 import { AddRepairComment } from "../AddRepairComment";
 import { AddRepairObservation } from "../../common/AddRepairObservation";
-import { hasPermissions } from "../../../helpers/permissions";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
+import { Entity } from "../../../models/Entity/Entity";
 
 const RepairCard = ({
   repair,
   isDeleted,
+  entity,
 }: {
   repair: Repair;
   isDeleted?: boolean;
+  entity?: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
   const remarkComments = repair?.comments?.filter(
@@ -97,23 +97,22 @@ const RepairCard = ({
                   </div>
                   <div className={classes["third-block"]}>
                     <div style={{ marginRight: 8, marginTop: 4 }}>
-                      {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
-                        <AddRepairComment
-                          repair={repair}
-                          isDeleted={isDeleted}
-                        />
-                      ) : null}
+                      <AddRepairComment repair={repair} isDeleted={isDeleted} />
                     </div>
-                    {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
+                    {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ||
+                    isAssignedType("Admin", entity!, self) ||
+                    isAssignedType("Engineer", entity!, self) ? (
                       <EditRepair repair={repair} isDeleted={isDeleted} />
                     ) : null}
-                    {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
+                    {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ||
+                    isAssignedType("Admin", entity!, self) ||
+                    isAssignedType("Engineer", entity!, self) ? (
                       <DeleteRepair id={repair.id} isDeleted={isDeleted} />
                     ) : null}
                   </div>
                 </div>
                 <div className={classes["level-two"]}>
-                {repair?.comments?.length! > 0 ? (
+                  {repair?.comments?.length! > 0 ? (
                     <CommentOutlined
                       style={{
                         marginRight: 10,
@@ -189,18 +188,16 @@ const RepairCard = ({
                 ]}
               />
             ))}
-            {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
-              <div style={{ marginTop: 10 }}>
-                {!isDeleted && (
-                  <AddRepairObservation
-                    repairId={repair.id}
-                    type={"Observation"}
-                    placeholder={"Add new observation"}
-                    isDeleted={isDeleted}
-                  />
-                )}
-              </div>
-            ) : null}
+            <div style={{ marginTop: 10 }}>
+              {!isDeleted && (
+                <AddRepairObservation
+                  repairId={repair.id}
+                  type={"Observation"}
+                  placeholder={"Add new observation"}
+                  isDeleted={isDeleted}
+                />
+              )}
+            </div>
           </div>
         </Collapse.Panel>
       </Collapse>

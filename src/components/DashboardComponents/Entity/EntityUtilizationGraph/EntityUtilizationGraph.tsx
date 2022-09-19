@@ -13,7 +13,11 @@ import { usageColors } from "../../../../helpers/style";
 
 Chart.register(...registerables);
 
-const EntityUtilizationGraph = () => {
+const EntityUtilizationGraph = ({
+  locationIds,
+}: {
+  locationIds?: number[];
+}) => {
   const { id }: any = useParams();
   const [dates, setDates] = useState<any>([
     moment().subtract(1, "day"),
@@ -34,9 +38,10 @@ const EntityUtilizationGraph = () => {
         machineId: parseInt(id),
         from: dates[0].toISOString(),
         to: dates[1].toISOString(),
+        locationIds,
       },
     });
-  }, [dates, allEntityUsageHistory]);
+  }, [dates, allEntityUsageHistory, locationIds]);
 
   const labelData = [
     "Working hour",

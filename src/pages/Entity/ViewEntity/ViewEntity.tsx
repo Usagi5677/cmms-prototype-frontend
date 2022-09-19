@@ -464,10 +464,10 @@ const ViewEntity = () => {
                 <ViewSparePR isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair isDeleted={flag} />
+                <ViewRepair isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
-                <ViewBreakdown isDeleted={flag} />
+                <ViewBreakdown isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="History" key="history">
                 <ViewHistory />

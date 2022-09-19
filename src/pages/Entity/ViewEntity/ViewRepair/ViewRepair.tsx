@@ -1,34 +1,36 @@
 import { useLazyQuery } from "@apollo/client";
 import { Checkbox, Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import {
-  GET_ALL_REPAIR_OF_ENTITY,
-  GET_USERS_WITH_PERMISSION,
-  REPAIRS,
-} from "../../../../api/queries";
+import { REPAIRS } from "../../../../api/queries";
 import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import { errorMessage } from "../../../../helpers/gql";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewRepair.module.css";
 import UserContext from "../../../../contexts/UserContext";
-import AddEntityRepairRequest from "../../../../components/EntityComponents/AddEntityRepairRequest/AddEntityRepairRequest";
-import EntityRepairCard from "../../../../components/EntityComponents/EntityRepairCard/EntityRepairCard";
-import EntityRepairRequest from "../../../../models/Entity/EntityRepairRequest";
 import User from "../../../../models/User";
 import Search from "../../../../components/common/Search";
 import { useParams } from "react-router";
-import { hasPermissions } from "../../../../helpers/permissions";
-import { GetUsersWithPermission } from "../../../../helpers/getUsersWithPermission";
+import {
+  hasPermissions,
+  isAssignedType,
+} from "../../../../helpers/permissions";
 import Repair from "../../../../models/Entity/Repair";
 import RepairCard from "../../../../components/EntityComponents/RepairCard/RepairCard";
 import AddRepair from "../../../../components/EntityComponents/AddRepair/AddRepair";
+import { Entity } from "../../../../models/Entity/Entity";
 
 export interface RepairRequestUserData {
   admin: User[];
   user: User[];
 }
 
-const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
+const ViewRepair = ({
+  isDeleted,
+  entity,
+}: {
+  isDeleted?: boolean | undefined;
+  entity: Entity;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -131,7 +133,9 @@ const ViewRepair = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
         </div>
 
         <div className={classes["add"]}>
-          {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ? (
+          {hasPermissions(self, ["MODIFY_REPAIR_REQUEST"]) ||
+          isAssignedType("Admin", entity!, self) ||
+          isAssignedType("Engineer", entity!, self) ? (
             <AddRepair />
           ) : null}
         </div>

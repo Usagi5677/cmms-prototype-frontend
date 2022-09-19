@@ -1,7 +1,6 @@
-import { Collapse, Empty, Select, Spin, Tooltip } from "antd";
+import { Collapse, Empty, Spin, Tooltip } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { DATETIME_FORMATS, ISLANDS } from "../../../../helpers/constants";
 import classes from "./EntityUtilization.module.css";
 import moment from "moment";
 import {
@@ -25,7 +24,6 @@ import { RiSailboatFill } from "react-icons/ri";
 import { LocationSelector } from "../../../Config/Location/LocationSelector";
 
 const EntityUtilization = () => {
-  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -119,14 +117,6 @@ const EntityUtilization = () => {
   const isSmallDevice = useIsSmallDevice(1290);
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
-
   return (
     <motion.div
       className={classes["container"]}
@@ -171,7 +161,7 @@ const EntityUtilization = () => {
         }}
         viewport={{ once: true }}
       >
-        <EntityUtilizationGraph />
+        <EntityUtilizationGraph locationIds={locationIds} />
       </motion.div>
 
       <div className={classes["options-wrapper"]}>

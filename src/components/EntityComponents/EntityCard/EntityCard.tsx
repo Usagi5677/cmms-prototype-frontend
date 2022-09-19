@@ -53,9 +53,9 @@ const EntityCard = ({
     entity?.type?.name === "Double Decker" &&
     entity?.brand === "YUTONG"
   ) {
-    if (interService >= 13000) {
+    if (interService >= 12000) {
       fontColor = "red";
-    } else if (interService >= 12000) {
+    } else if (interService >= 10000) {
       fontColor = "orange";
     }
   } else if (
@@ -63,9 +63,9 @@ const EntityCard = ({
     entity?.type?.name === "Car" &&
     entity?.brand === "MAZDA"
   ) {
-    if (interService >= 6000) {
+    if (interService >= 5000) {
       fontColor = "red";
-    } else if (interService >= 5000) {
+    } else if (interService >= 3000) {
       fontColor = "orange";
     }
   } else {
