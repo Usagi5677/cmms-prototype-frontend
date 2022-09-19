@@ -1489,8 +1489,8 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
 `;
 
 export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
-  query allEntityUsageHistory($from: Date!, $to: Date!) {
-    allEntityUsageHistory(from: $from, to: $to) {
+  query allEntityUsageHistory($from: Date!, $to: Date!, $locationIds: [Int!]) {
+    allEntityUsageHistory(from: $from, to: $to, locationIds: $locationIds) {
       date
       workingHour
       idleHour
