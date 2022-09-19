@@ -2,7 +2,6 @@ import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { ADD_BREAKDOWN_DETAIL } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import BreakdownDetail from "../../models/BreakdownDetails";
 
 interface AddBreakdownDetailProps {
   breakdownId?: number;

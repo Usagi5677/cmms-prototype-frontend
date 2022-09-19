@@ -9,12 +9,22 @@ import AddBreakdown from "../../../../components/EntityComponents/AddBreakdown/A
 import BreakdownCard from "../../../../components/EntityComponents/BreakdownCard/BreakdownCard";
 import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
-import { hasPermissions } from "../../../../helpers/permissions";
+import {
+  hasPermissions,
+  isAssignedType,
+} from "../../../../helpers/permissions";
 import Breakdown from "../../../../models/Entity/Breakdown";
+import { Entity } from "../../../../models/Entity/Entity";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewBreakdown.module.css";
 
-const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
+const ViewBreakdown = ({
+  isDeleted,
+  entity,
+}: {
+  isDeleted?: boolean | undefined;
+  entity: Entity;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -115,7 +125,9 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
           />
         </div>
         <div className={classes["add"]}>
-          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+          {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+          isAssignedType("Admin", entity, self) ||
+          isAssignedType("Engineer", entity, self) ? (
             <AddBreakdown entityID={parseInt(id)} isDeleted={isDeleted} />
           ) : null}
         </div>
@@ -135,6 +147,7 @@ const ViewBreakdown = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
                   key={breakdown.id}
                   breakdown={breakdown}
                   isDeleted={isDeleted}
+                  entity={entity}
                 />
               );
             })}

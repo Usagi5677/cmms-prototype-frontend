@@ -20,18 +20,21 @@ import Comment from "../../../models/Comment";
 import classes from "./BreakdownCard.module.css";
 import RepairDetailCard from "../RepairDetailCard/RepairDetailCard";
 import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
-import { hasPermissions } from "../../../helpers/permissions";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
 import { useMutation } from "@apollo/client";
+import { Entity } from "../../../models/Entity/Entity";
 
 const EntityBreakdownCard = ({
   breakdown,
   isDeleted,
+  entity,
 }: {
   breakdown: Breakdown;
   isDeleted?: boolean | undefined;
+  entity?: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -69,7 +72,9 @@ const EntityBreakdownCard = ({
                         <Checkbox
                           checked={breakdown?.completedAt !== null}
                           disabled={
-                            !hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                            (!hasPermissions(self, ["MODIFY_BREAKDOWN"]) &&
+                              !isAssignedType("Admin", entity!, self) &&
+                              !isAssignedType("Engineer", entity!, self)) ||
                             isDeleted
                           }
                           onChange={(e) =>
@@ -149,13 +154,17 @@ const EntityBreakdownCard = ({
                       </div>
                     </div>
                     <div className={classes["second-block"]}>
-                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                      isAssignedType("Admin", entity!, self) ||
+                      isAssignedType("Engineer", entity!, self) ? (
                         <EditBreakdown
                           breakdown={breakdown}
                           isDeleted={isDeleted}
                         />
                       ) : null}
-                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                      isAssignedType("Admin", entity!, self) ||
+                      isAssignedType("Engineer", entity!, self) ? (
                         <DeleteBreakdown
                           id={breakdown.id}
                           isDeleted={isDeleted}
@@ -280,9 +289,11 @@ const EntityBreakdownCard = ({
                           index={index}
                           breakdown={breakdown}
                           detail={b}
-                          hasPermission={hasPermissions(self, [
-                            "MODIFY_BREAKDOWN",
-                          ])}
+                          hasPermission={
+                            hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                            isAssignedType("Admin", entity!, self) ||
+                            isAssignedType("Engineer", entity!, self)
+                          }
                           key={b.id}
                         />
                       )
@@ -291,7 +302,10 @@ const EntityBreakdownCard = ({
                 ) : (
                   <div style={{ marginBottom: 20 }}>None</div>
                 )}
-                {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                isAssignedType("Admin", entity!, self) ||
+                isAssignedType("Engineer", entity!, self) ||
+                !isDeleted ? (
                   <AddBreakdownDetail breakdownId={breakdown.id} />
                 ) : null}
               </div>
@@ -304,16 +318,21 @@ const EntityBreakdownCard = ({
                         index={index}
                         repair={r}
                         key={r.id}
-                        hasPermission={hasPermissions(self, [
-                          "MODIFY_BREAKDOWN",
-                        ])}
+                        hasPermission={
+                          hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                          isAssignedType("Admin", entity!, self) ||
+                          isAssignedType("Engineer", entity!, self)
+                        }
                       />
                     ))}
                   </div>
                 ) : (
                   <div style={{ marginBottom: 20 }}>None</div>
                 )}
-                {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
+                {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                isAssignedType("Admin", entity!, self) ||
+                isAssignedType("Engineer", entity!, self) ||
+                !isDeleted ? (
                   <AddRepairDetail breakdownId={breakdown.id} />
                 ) : null}
               </div>
@@ -327,18 +346,16 @@ const EntityBreakdownCard = ({
                 refetchQueries={["breakdowns", "getAllHistoryOfEntity"]}
               />
             ))}
-            {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ? (
-              <div style={{ marginTop: 20 }}>
-                {!isDeleted && (
-                  <AddBreakdownObservation
-                    breakdownId={breakdown.id}
-                    type={"Observation"}
-                    placeholder={"Add new observation"}
-                    isDeleted={isDeleted}
-                  />
-                )}
-              </div>
-            ) : null}
+            <div style={{ marginTop: 20 }}>
+              {!isDeleted && (
+                <AddBreakdownObservation
+                  breakdownId={breakdown.id}
+                  type={"Observation"}
+                  placeholder={"Add new observation"}
+                  isDeleted={isDeleted}
+                />
+              )}
+            </div>
           </div>
         </Collapse.Panel>
       </Collapse>
