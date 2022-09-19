@@ -222,7 +222,9 @@ const ViewEntity = () => {
               <div className={classes["info-wrapper"]}>
                 <div className={classes["location-wrapper"]}>
                   <FaMapMarkerAlt />
-                  <span className={classes["title"]}>{entityData?.location?.zone?.name}</span>
+                  <span className={classes["title"]}>
+                    {entityData?.location?.zone?.name}
+                  </span>
                   {entityData?.location?.zone?.name && (
                     <span className={classes["dash"]}>-</span>
                   )}
@@ -310,7 +312,19 @@ const ViewEntity = () => {
                         entityStatus={entityData?.status}
                         entityID={entityData?.id}
                         isDeleted={entityData?.deletedAt !== null}
-                        hasPermission={!hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"])}
+                        hasPermission={
+                          !hasPermissions(self, ["MODIFY_BREAKDOWN"]) &&
+                          !isAssignedType(
+                            "Admin",
+                            entity?.getSingleEntity,
+                            self
+                          ) &&
+                          !isAssignedType(
+                            "Engineer",
+                            entity?.getSingleEntity,
+                            self
+                          )
+                        }
                       />
                     </div>
                   </div>
