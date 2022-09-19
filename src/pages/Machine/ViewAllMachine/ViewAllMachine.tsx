@@ -1,8 +1,6 @@
-import { Empty, message, Select, Spin } from "antd";
-import Search from "../../../components/common/Search";
+import { Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
+import { useNavigate } from "react-router-dom";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -11,13 +9,12 @@ import {
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../api/queries";
-import { ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllMachine.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
+import { FaCarCrash, FaRecycle, FaTractor } from "react-icons/fa";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
@@ -148,13 +145,9 @@ const Machinery = () => {
 
   //Fetch all machine status count
   useEffect(() => {
-    getAllEntityStatusCount({
-      variables: {
-        entityType: "Machine",
-      },
-    });
+    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
