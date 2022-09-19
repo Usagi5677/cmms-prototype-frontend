@@ -84,10 +84,7 @@ const PeriodicMaintenanceCard = ({
         <Collapse.Panel
           header={
             <div className={classes["wrapper"]}>
-              <div
-                className={classes["header-container"]}
-                onClick={(event) => event.stopPropagation()}
-              >
+              <div className={classes["header-container"]}>
                 <div className={classes["level-one"]}>
                   <div className={classes["header-info-wrapper"]}>
                     <div className={classes["first-block"]}>

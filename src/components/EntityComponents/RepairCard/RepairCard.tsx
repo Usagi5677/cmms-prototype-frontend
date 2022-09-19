@@ -41,10 +41,7 @@ const RepairCard = ({
         <Collapse.Panel
           header={
             <>
-              <div
-                className={classes["header-container"]}
-                onClick={(event) => event.stopPropagation()}
-              >
+              <div className={classes["header-container"]}>
                 <div className={classes["level-one"]}>
                   <div className={classes["info-wrapper"]}>
                     <div className={classes["first-block"]}>
