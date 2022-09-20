@@ -42,7 +42,6 @@ const Machinery = () => {
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
-    
   }
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
