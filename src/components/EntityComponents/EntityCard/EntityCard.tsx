@@ -106,10 +106,7 @@ const EntityCard = ({
         <Collapse.Panel
           header={
             <>
-              <div
-                className={classes["header-container"]}
-                onClick={(event) => event.stopPropagation()}
-              >
+              <div className={classes["header-container"]}>
                 <div className={classes["first-block"]}>
                   {loading ? (
                     <Skeleton.Image
@@ -256,7 +253,11 @@ const EntityCard = ({
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Zone:</span>
-                  <span>{entity?.location?.zone?.name ? entity?.location?.zone?.name : "None"}</span>
+                  <span>
+                    {entity?.location?.zone?.name
+                      ? entity?.location?.zone?.name
+                      : "None"}
+                  </span>
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Model:</span>

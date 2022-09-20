@@ -1,5 +1,4 @@
 import { Empty, message, Spin } from "antd";
-import Search from "../../../components/common/Search";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PaginationArgs from "../../../models/PaginationArgs";
@@ -15,14 +14,12 @@ import classes from "./ViewAllVessel.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle, FaSpinner } from "react-icons/fa";
+import { FaCarCrash, FaRecycle } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
-import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
 import { hasPermissions } from "../../../helpers/permissions";
-import { TypeSelector } from "../../../components/Config/Type/TypeSelector";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
@@ -245,13 +242,9 @@ const Vessels = () => {
     });
 
   useEffect(() => {
-    getAllEntityStatusCount({
-      variables: {
-        entityType: "Vessel",
-      },
-    });
+    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -473,7 +466,7 @@ const Vessels = () => {
     value: filter.status,
     width: "100%",
   };
-  
+
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,

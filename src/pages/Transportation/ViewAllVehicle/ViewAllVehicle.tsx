@@ -11,16 +11,14 @@ import {
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../api/queries";
-import { DEPARTMENTS, ISLANDS } from "../../../helpers/constants";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVehicle.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle, FaSpinner, FaTruck } from "react-icons/fa";
+import { FaCarCrash, FaRecycle, FaTruck } from "react-icons/fa";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
-import EntityStatusFilter from "../../../components/common/EntityStatusFilter";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import { hasPermissions } from "../../../helpers/permissions";
 import { motion } from "framer-motion";
@@ -245,13 +243,9 @@ const Vehicles = () => {
     });
 
   useEffect(() => {
-    getAllEntityStatusCount({
-      variables: {
-        entityType: "Vehicle",
-      },
-    });
+    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {

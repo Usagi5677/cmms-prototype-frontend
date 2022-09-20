@@ -405,8 +405,46 @@ export const GET_CHECKLIST = gql`
 `;
 
 export const GET_ALL_ENTITY_STATUS_COUNT = gql`
-  query allEntityStatusCount($isAssigned: Boolean, $entityType: String) {
-    allEntityStatusCount(isAssigned: $isAssigned, entityType: $entityType) {
+  query allEntityStatusCount(
+    $search: String
+    $createdByUserId: String
+    $entityType: String
+    $status: [String!]
+    $locationIds: [Int!]
+    $department: [String!]
+    $typeIds: [Int!]
+    $zoneIds: [Int!]
+    $brand: [String!]
+    $engine: [String!]
+    $measurement: [String!]
+    $isAssigned: Boolean
+    $assignedToId: Int
+    $lteCurrentRunning: String
+    $gteCurrentRunning: String
+    $lteLastService: String
+    $gteLastService: String
+    $isIncompleteChecklistTask: Boolean
+  ) {
+    allEntityStatusCount(
+      search: $search
+      createdByUserId: $createdByUserId
+      entityType: $entityType
+      status: $status
+      locationIds: $locationIds
+      department: $department
+      typeIds: $typeIds
+      zoneIds: $zoneIds
+      brand: $brand
+      engine: $engine
+      measurement: $measurement
+      isAssigned: $isAssigned
+      assignedToId: $assignedToId
+      lteCurrentRunning: $lteCurrentRunning
+      gteCurrentRunning: $gteCurrentRunning
+      lteLastService: $lteLastService
+      gteLastService: $gteLastService
+      isIncompleteChecklistTask: $isIncompleteChecklistTask
+    ) {
       working
       critical
       breakdown
