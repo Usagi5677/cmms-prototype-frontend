@@ -40,7 +40,7 @@ import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Vessels = () => {
   const getFilter = localStorage.getItem("filter");
-  let getFilterObjects: any = "";
+  let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
   }

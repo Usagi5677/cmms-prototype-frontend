@@ -39,9 +39,10 @@ import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Machinery = () => {
   const getFilter = localStorage.getItem("filter");
-  let getFilterObjects: any = "";
+  let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
+    
   }
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -174,7 +175,7 @@ const Machinery = () => {
       navigate("/");
       message.error("No permission to view all entity.");
     }
-    
+
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -277,14 +278,11 @@ const Machinery = () => {
     isIncompleteChecklistTask,
   ]);
 
-
   //Fetch all machine status count
   useEffect(() => {
     getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
   }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
-
-  
 
   // Pagination functions
   const next = () => {
