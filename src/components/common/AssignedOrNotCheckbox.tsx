@@ -5,7 +5,12 @@ import { DefaultBooleanOptionProps } from "../../models/Enums";
 export const AssignedOrNotCheckbox: React.FC<DefaultBooleanOptionProps> = ({
   onChange,
   name,
+  flag,
 }) => {
   //no engine master list from db
-  return <Checkbox onChange={onChange}>{name}</Checkbox>;
+  return (
+    <Checkbox onChange={onChange} defaultChecked={flag}>
+      {name}
+    </Checkbox>
+  );
 };

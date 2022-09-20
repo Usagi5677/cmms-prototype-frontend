@@ -6,7 +6,7 @@ import Location from "../../../models/Location";
 
 export interface LocationSelectorProps {
   setLocationId?: any;
-  currentId?: number;
+  currentId?: number | number[];
   rounded?: boolean;
   multiple?: boolean;
   width?: number | string;
@@ -88,8 +88,8 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
         setValue(val);
         if (onChange) onChange(val, clear);
       }}
-      value={value}
       getPopupContainer={(trigger) => trigger.parentNode}
+      value={value}
     >
       {data?.locations.edges.map((edge: { node: Location }) => (
         <Select.Option key={edge.node.id} value={edge.node.id}>

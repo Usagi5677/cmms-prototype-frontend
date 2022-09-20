@@ -7,7 +7,7 @@ import Type from "../../../models/Type";
 export interface TypeSelectorProps {
   entityType?: "Machine" | "Vehicle" | "Vessel";
   setTypeId: any;
-  currentId?: number;
+  currentId?: number | number[];
   currentName?: string;
   rounded?: boolean;
   multiple?: boolean;

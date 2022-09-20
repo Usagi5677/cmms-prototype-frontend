@@ -1,4 +1,5 @@
 import { Select } from "antd";
+import { useEffect, useState } from "react";
 import { EntityStatus } from "../../models/Enums";
 import EntityStatusTag from "./EntityStatusTag";
 
@@ -31,7 +32,7 @@ const EntityStatusFilter = ({
         allowClear={true}
         mode={multiple ? "multiple" : undefined}
         value={value}
-        getPopupContainer={trigger => trigger.parentNode}
+        getPopupContainer={(trigger) => trigger.parentNode}
       >
         {(Object.keys(EntityStatus) as Array<keyof typeof EntityStatus>).map(
           (status: any) => (

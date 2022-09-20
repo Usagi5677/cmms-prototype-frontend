@@ -8,6 +8,7 @@ export const BrandSelector: React.FC<DefaultStringArrayOptionProps> = ({
   rounded = false,
   multiple = false,
   width,
+  value,
 }) => {
   //no brand master list from db yet
 
@@ -32,6 +33,7 @@ export const BrandSelector: React.FC<DefaultStringArrayOptionProps> = ({
       options={brandOptions}
       onChange={onChange}
       getPopupContainer={(trigger) => trigger.parentNode}
+      defaultValue={value}
     />
   );
 };

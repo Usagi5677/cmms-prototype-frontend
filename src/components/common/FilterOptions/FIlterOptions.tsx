@@ -1,5 +1,6 @@
 import { Button, Collapse, Divider, Form } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import { useEffect } from "react";
 import { FilterOptionProps } from "../../../models/Enums";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
@@ -22,10 +23,18 @@ const FilterOptions = ({
   onClick?: () => void;
 }) => {
   const [form] = useForm();
+
   const handleCancel = () => {
-    form.resetFields();
     onClick!();
+    form.resetFields();
+
+    //running 1 more time so that tags can dissapear
+    setTimeout(function () {
+      form.resetFields();
+    }, 1000);
   };
+
+  //console.log(options?.typeSelectorOptions!.currentId)
   return (
     <div id="filterCollapse">
       <Collapse
@@ -44,6 +53,7 @@ const FilterOptions = ({
               name="basic"
               id="myForm"
               className={classes["form-container"]}
+              preserve={false}
             >
               <Form.Item style={{ marginBottom: 20 }}>
                 <Button
@@ -55,12 +65,17 @@ const FilterOptions = ({
                 </Button>
               </Form.Item>
               <div className={classes["search"]}>
-                <Search
-                  searchValue={options?.searchOptions!.searchValue!}
-                  onChange={options?.searchOptions!.onChange!}
-                  onClick={options?.searchOptions!.onClick!}
-                  width={options?.searchOptions!.width}
-                />
+                <Form.Item
+                  name="search"
+                  initialValue={options?.searchOptions!.searchValue!}
+                >
+                  <Search
+                    searchValue={options?.searchOptions!.searchValue!}
+                    onChange={options?.searchOptions!.onChange!}
+                    onClick={options?.searchOptions!.onClick!}
+                    width={options?.searchOptions!.width}
+                  />
+                </Form.Item>
               </div>
 
               <div className={classes["item-container"]}>
@@ -68,7 +83,7 @@ const FilterOptions = ({
                   <div className={classes["title"]}>Entity</div>
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["item"]}>
-                    <Form.Item name="status">
+                    <Form.Item name="status" initialValue={options?.entityStatusOptions!.value}>
                       <EntityStatusFilter
                         onChange={options?.entityStatusOptions!.onChange}
                         value={options?.entityStatusOptions!.value!}
@@ -78,10 +93,14 @@ const FilterOptions = ({
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="type">
+                    <Form.Item
+                      name="type"
+                      initialValue={options?.typeSelectorOptions!.currentId!}
+                    >
                       <TypeSelector
                         entityType={options?.typeSelectorOptions!.entityType}
                         setTypeId={options?.typeSelectorOptions!.setTypeId}
+                        currentId={options?.typeSelectorOptions!.currentId!}
                         rounded={options?.typeSelectorOptions!.rounded}
                         multiple={options?.typeSelectorOptions!.multiple}
                         width={options?.typeSelectorOptions!.width}
@@ -89,32 +108,44 @@ const FilterOptions = ({
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="brand">
+                    <Form.Item
+                      name="brand"
+                      initialValue={options?.brandOptions!.value}
+                    >
                       <BrandSelector
                         onChange={options?.brandOptions!.onChange}
                         multiple={true}
                         rounded={true}
                         width={options?.brandOptions!.width}
+                        value={options?.brandOptions!.value}
                       />
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="engine">
+                    <Form.Item
+                      name="engine"
+                      initialValue={options?.engineOptions!.value}
+                    >
                       <EngineSelector
                         onChange={options?.engineOptions!.onChange}
                         multiple={true}
                         rounded={true}
                         width={options?.engineOptions!.width!}
+                        value={options?.engineOptions!.value}
                       />
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="measurement">
+                    <Form.Item
+                      name="measurement"
+                      initialValue={options?.measurementOptions!.value}
+                    >
                       <MeasurementSelector
                         onChange={options?.measurementOptions!.onChange}
+                        multiple
                         rounded={true}
                         width={options?.measurementOptions!.width!}
-                        multiple
+                        value={options?.measurementOptions!.value!}
                       />
                     </Form.Item>
                   </div>
@@ -124,32 +155,44 @@ const FilterOptions = ({
                   <div className={classes["title"]}>Location</div>
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["item"]}>
-                    <Form.Item name="location">
+                    <Form.Item
+                      name="location"
+                      initialValue={options?.locationOptions!.currentId}
+                    >
                       <LocationSelector
                         setLocationId={options?.locationOptions!.setId}
                         multiple={true}
                         rounded={true}
                         width={options?.locationOptions!.width}
+                        currentId={options?.locationOptions!.currentId!}
                       />
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="zone">
+                    <Form.Item
+                      name="zone"
+                      initialValue={options?.zoneOptions!.currentId}
+                    >
                       <ZoneSelector
                         setZoneId={options?.zoneOptions!.setId}
                         multiple={true}
                         rounded={true}
                         width={options?.zoneOptions!.width}
+                        currentId={options?.zoneOptions!.currentId!}
                       />
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="department">
+                    <Form.Item
+                      name="department"
+                      initialValue={options?.departmentOptions!.value}
+                    >
                       <DepartmentSelector
                         onChange={options?.departmentOptions!.onChange}
                         multiple={true}
                         rounded={true}
-                        width={options?.departmentOptions!.width}
+                        width={options?.departmentOptions!.width!}
+                        value={options?.departmentOptions!.value}
                       />
                     </Form.Item>
                   </div>
@@ -159,20 +202,30 @@ const FilterOptions = ({
                   <div className={classes["title"]}>Assigned</div>
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["item"]}>
-                    <Form.Item name="assigned">
+                    <Form.Item
+                      name="assigned"
+                      initialValue={options?.assignedOptions!.flag}
+                    >
                       <AssignedOrNotCheckbox
                         onChange={options?.assignedOptions!.onChange}
                         name={options?.assignedOptions!.name}
+                        flag={options?.assignedOptions!.flag}
                       />
                     </Form.Item>
                   </div>
                   <div className={classes["item"]}>
-                    <Form.Item name="incompleteChecklistTask">
+                    <Form.Item
+                      name="incompleteChecklistTask"
+                      initialValue={
+                        options?.isIncompleteChecklistTaskOptions!.flag
+                      }
+                    >
                       <AssignedOrNotCheckbox
                         onChange={
                           options?.isIncompleteChecklistTaskOptions!.onChange
                         }
                         name={options?.isIncompleteChecklistTaskOptions!.name}
+                        flag={options?.isIncompleteChecklistTaskOptions!.flag}
                       />
                     </Form.Item>
                   </div>
@@ -193,9 +246,7 @@ const FilterOptions = ({
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["reading-container"]}>
                     <div className={classes["reading-wrapper"]}>
-                      <div className={classes["sub-title"]}>
-                        Greater than
-                      </div>
+                      <div className={classes["sub-title"]}>Greater than</div>
                       <Search
                         searchValue={
                           options?.gteCurrentRunningOptions!.searchValue!
@@ -208,9 +259,7 @@ const FilterOptions = ({
                       />
                     </div>
                     <div className={classes["reading-wrapper"]}>
-                      <div className={classes["sub-title"]}>
-                        Less than
-                      </div>
+                      <div className={classes["sub-title"]}>Less than</div>
                       <Search
                         searchValue={
                           options?.lteCurrentRunningOptions!.searchValue!
@@ -230,9 +279,7 @@ const FilterOptions = ({
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["reading-container"]}>
                     <div className={classes["reading-wrapper"]}>
-                      <div className={classes["sub-title"]}>
-                        Greater than
-                      </div>
+                      <div className={classes["sub-title"]}>Greater than</div>
                       <Search
                         searchValue={
                           options?.gteLastServiceOptions!.searchValue!
@@ -245,9 +292,7 @@ const FilterOptions = ({
                       />
                     </div>
                     <div className={classes["reading-wrapper"]}>
-                      <div className={classes["sub-title"]}>
-                        Less than
-                      </div>
+                      <div className={classes["sub-title"]}>Less than</div>
                       <Search
                         searchValue={
                           options?.lteLastServiceOptions!.searchValue!

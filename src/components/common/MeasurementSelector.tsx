@@ -7,6 +7,7 @@ export const MeasurementSelector: React.FC<DefaultStringArrayOptionProps> = ({
   rounded = false,
   multiple = false,
   width,
+  value,
 }) => {
   return (
     <Select
@@ -20,6 +21,7 @@ export const MeasurementSelector: React.FC<DefaultStringArrayOptionProps> = ({
       mode={multiple ? "multiple" : undefined}
       onChange={onChange}
       getPopupContainer={(trigger) => trigger.parentNode}
+      defaultValue={value}
     >
       {["hr", "km", "days"].map((measurement: string) => (
         <Select.Option key={measurement} value={measurement}>

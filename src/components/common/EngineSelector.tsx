@@ -8,6 +8,7 @@ export const EngineSelector: React.FC<DefaultStringArrayOptionProps> = ({
   rounded = false,
   multiple = false,
   width,
+  value
 }) => {
   //no engine master list from db
 
@@ -32,6 +33,7 @@ export const EngineSelector: React.FC<DefaultStringArrayOptionProps> = ({
       options={engineOptions}
       onChange={onChange}
       getPopupContainer={(trigger) => trigger.parentNode}
+      defaultValue={value}
     />
   );
 };

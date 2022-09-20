@@ -6,7 +6,7 @@ import Zone from "../../../models/Zone";
 
 export interface ZoneSelectorProps {
   setZoneId?: any;
-  currentId?: number;
+  currentId?: number | number[];
   rounded?: boolean;
   multiple?: boolean;
   width?: number | string;
