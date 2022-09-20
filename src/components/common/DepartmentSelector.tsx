@@ -8,6 +8,7 @@ export const DepartmentSelector: React.FC<DefaultStringArrayOptionProps> = ({
   rounded = false,
   multiple = false,
   width,
+  value,
 }) => {
   //no department master list from db yet
 
@@ -32,6 +33,7 @@ export const DepartmentSelector: React.FC<DefaultStringArrayOptionProps> = ({
       options={departmentOptions}
       onChange={onChange}
       getPopupContainer={(trigger) => trigger.parentNode}
+      defaultValue={value}
     />
   );
 };

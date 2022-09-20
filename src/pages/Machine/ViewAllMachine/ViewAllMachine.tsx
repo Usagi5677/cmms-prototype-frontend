@@ -35,29 +35,62 @@ import {
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { WarningOutlined } from "@ant-design/icons";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Machinery = () => {
+  const getFilter = localStorage.getItem("filter");
+  let getFilterObjects: any = "";
+  if (getFilter) {
+    getFilterObjects = JSON.parse(JSON.parse(getFilter));
+  }
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [locationIds, setLocationIds] = useState<number[]>([]);
-  const [typeIds, setTypeIds] = useState<number[]>([]);
-  const [status, setStatus] = useState<EntityStatus[]>([]);
-  const [zoneIds, setZoneIds] = useState<number[]>([]);
-  const [department, setDepartment] = useState<string[]>([]);
-  const [brand, setBrand] = useState<string[]>([]);
-  const [engine, setEngine] = useState<string[]>([]);
-  const [measurement, setMeasurement] = useState<string[]>([]);
-  const [isAssigned, setIsAssigned] = useState<boolean>(false);
+  const [search, setSearch] = useState(getFilterObjects?.search);
+  const [locationIds, setLocationIds] = useState<number[]>(getFilterObjects?.locationIds);
+  const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
+  const [status, setStatus] = useState<EntityStatus[]>(getFilterObjects?.status);
+  const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
+  const [department, setDepartment] = useState<string[]>(getFilterObjects?.department);
+  const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
+  const [engine, setEngine] = useState<string[]>(getFilterObjects?.engine);
+  const [measurement, setMeasurement] = useState<string[]>(getFilterObjects?.measurement);
+  const [isAssigned, setIsAssigned] = useState<boolean>(getFilterObjects?.isAssigned);
   //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
-  const [lteCurrentRunning, setLteCurrentRunning] = useState("");
-  const [gteCurrentRunning, setGteCurrentRunning] = useState("");
-  const [lteLastService, setLteLastService] = useState("");
-  const [gteLastService, setGteLastService] = useState("");
+  const [lteCurrentRunning, setLteCurrentRunning] = useState(getFilterObjects?.lteCurrentRunning);
+  const [gteCurrentRunning, setGteCurrentRunning] = useState(getFilterObjects?.gteCurrentRunning);
+  const [lteLastService, setLteLastService] = useState(getFilterObjects?.lteLastService);
+  const [gteLastService, setGteLastService] = useState(getFilterObjects?.gteLastService);
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
-    useState<boolean>(false);
+    useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
   const navigate = useNavigate();
+
+  const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
+    "filter",
+    JSON.stringify({
+      first: 20,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      locationIds: [],
+      status: [],
+      entityType: "Machine",
+      typeIds: [],
+      zoneIds: [],
+      department: [],
+      brand: [],
+      engine: [],
+      isAssigned: false,
+      //assignedToId: null,
+      measurement: [],
+      lteCurrentRunning: "",
+      gteCurrentRunning: "",
+      lteLastService: "",
+      gteLastService: "",
+      isIncompleteChecklistTask: false,
+    })
+  );
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -84,23 +117,24 @@ const Machinery = () => {
     last: null,
     before: null,
     after: null,
-    search: "",
-    locationIds: [],
-    status: [],
+    search: JSON.parse(saveFilterOptions)?.search,
+    locationIds: JSON.parse(saveFilterOptions)?.locationIds,
+    status: JSON.parse(saveFilterOptions)?.status,
     entityType: "Machine",
-    typeIds: [],
-    zoneIds: [],
-    department: [],
-    brand: [],
-    engine: [],
-    isAssigned: false,
+    typeIds: JSON.parse(saveFilterOptions)?.typeIds,
+    zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
+    department: JSON.parse(saveFilterOptions)?.department,
+    brand: JSON.parse(saveFilterOptions)?.brand,
+    engine: JSON.parse(saveFilterOptions)?.engine,
+    isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
-    measurement: [],
-    lteCurrentRunning: "",
-    gteCurrentRunning: "",
-    lteLastService: "",
-    gteLastService: "",
-    isIncompleteChecklistTask: false,
+    measurement: JSON.parse(saveFilterOptions)?.measurement,
+    lteCurrentRunning: JSON.parse(saveFilterOptions)?.lteCurrentRunning,
+    gteCurrentRunning: JSON.parse(saveFilterOptions)?.gteCurrentRunning,
+    lteLastService: JSON.parse(saveFilterOptions)?.lteLastService,
+    gteLastService: JSON.parse(saveFilterOptions)?.gteLastService,
+    isIncompleteChecklistTask:
+      JSON.parse(saveFilterOptions)?.isIncompleteChecklistTask,
   });
 
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -140,14 +174,11 @@ const Machinery = () => {
       navigate("/");
       message.error("No permission to view all entity.");
     }
+    
     getAllEntity({ variables: filter });
+    setSaveFilterOptions(JSON.stringify(filter));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, getAllEntity]);
-
-  //Fetch all machine status count
-  useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
-    getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -246,6 +277,15 @@ const Machinery = () => {
     isIncompleteChecklistTask,
   ]);
 
+
+  //Fetch all machine status count
+  useEffect(() => {
+    getAllEntityStatusCount({ variables: filter });
+    getAllEntityChecklistAndPMSummary();
+  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+
+  
+
   // Pagination functions
   const next = () => {
     setFilter({
@@ -289,6 +329,31 @@ const Machinery = () => {
   }
 
   const clearAll = () => {
+    const clearFilter = {
+      first: 20,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      locationIds: [],
+      status: [],
+      entityType: "Machine",
+      typeIds: [],
+      zoneIds: [],
+      department: [],
+      brand: [],
+      engine: [],
+      isAssigned: false,
+      //assignedToId: null,
+      measurement: [],
+      lteCurrentRunning: "",
+      gteCurrentRunning: "",
+      lteLastService: "",
+      gteLastService: "",
+      isIncompleteChecklistTask: false,
+    };
+    setSaveFilterOptions(JSON.stringify(clearFilter));
+
     setSearch("");
     setLteCurrentRunning("");
     setGteCurrentRunning("");
@@ -306,6 +371,7 @@ const Machinery = () => {
     setIsIncompleteChecklistTask(false);
     //setAssignedToMe(null);
   };
+
   const searchOptions: SearchOptionProps = {
     searchValue: search,
     onChange: (e) => setSearch(e.target.value),
@@ -338,15 +404,18 @@ const Machinery = () => {
   };
   const locationOptions: DefaultNumberArrayOptionProps = {
     setId: setLocationIds,
+    currentId: locationIds,
     width: "100%",
   };
   const zoneOptions: DefaultNumberArrayOptionProps = {
     setId: setZoneIds,
+    currentId: zoneIds,
     width: "100%",
   };
   const typeSelectorOptions: TypeSelectorOptionProps = {
     entityType: "Machine",
     setTypeId: setTypeIds,
+    currentId: typeIds,
     rounded: true,
     multiple: true,
     width: "100%",
@@ -363,6 +432,7 @@ const Machinery = () => {
       });
       setDepartment(department);
     },
+    value: filter.department,
     width: "100%",
   };
   const brandOptions: DefaultStringArrayOptionProps = {
@@ -377,6 +447,7 @@ const Machinery = () => {
       });
       setBrand(brand);
     },
+    value: filter.brand,
     width: "100%",
   };
   const engineOptions: DefaultStringArrayOptionProps = {
@@ -391,6 +462,7 @@ const Machinery = () => {
       });
       setEngine(engine);
     },
+    value: filter.engine,
     width: "100%",
   };
   const measurementOptions: DefaultStringArrayOptionProps = {
@@ -405,6 +477,7 @@ const Machinery = () => {
       });
       setMeasurement(measurement);
     },
+    value: filter.measurement,
     width: "100%",
   };
   const assignedOptions: DefaultBooleanOptionProps = {
@@ -419,6 +492,7 @@ const Machinery = () => {
       });
       setIsAssigned(isAssigned?.target?.checked);
     },
+    flag: filter.isAssigned,
     name: "Show all assigned machinery",
   };
   const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
@@ -433,6 +507,7 @@ const Machinery = () => {
       });
       setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
     },
+    flag: filter.isIncompleteChecklistTask,
     name: "Show all machinery with incomplete checklist",
   };
   /*
@@ -455,7 +530,7 @@ const Machinery = () => {
     onChange: (status) => {
       setFilter({
         ...filter,
-        status,
+        status: status,
         first: 20,
         after: null,
         last: null,
@@ -466,6 +541,7 @@ const Machinery = () => {
     value: filter.status,
     width: "100%",
   };
+
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,

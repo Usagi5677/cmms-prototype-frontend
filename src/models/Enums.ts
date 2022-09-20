@@ -39,6 +39,7 @@ export interface SearchOptionProps {
 }
 export interface DefaultNumberArrayOptionProps {
   setId: any;
+  currentId?: number | number[];
   width?: number | string;
   rounded?: boolean;
 }
@@ -48,6 +49,7 @@ export interface DefaultStringArrayOptionProps {
   width?: number | string;
   rounded?: boolean;
   multiple?: boolean;
+  value?: string[];
 }
 
 export interface EntityStatusOptionProps {
@@ -60,7 +62,7 @@ export interface EntityStatusOptionProps {
 export interface TypeSelectorOptionProps {
   entityType?: "Machine" | "Vehicle" | "Vessel";
   setTypeId: any;
-  currentId?: number;
+  currentId?: number | number[];
   currentName?: string;
   rounded?: boolean;
   multiple?: boolean;

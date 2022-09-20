@@ -37,29 +37,62 @@ import {
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { WarningOutlined } from "@ant-design/icons";
+import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Vehicles = () => {
+  const getFilter = localStorage.getItem("filter");
+  let getFilterObjects: any = "";
+  if (getFilter) {
+    getFilterObjects = JSON.parse(JSON.parse(getFilter));
+  }
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [locationIds, setLocationIds] = useState<number[]>([]);
-  const [typeIds, setTypeIds] = useState<number[]>([]);
-  const [status, setStatus] = useState<EntityStatus[]>([]);
-  const [zoneIds, setZoneIds] = useState<number[]>([]);
-  const [department, setDepartment] = useState<string[]>([]);
-  const [brand, setBrand] = useState<string[]>([]);
-  const [engine, setEngine] = useState<string[]>([]);
-  const [measurement, setMeasurement] = useState<string[]>([]);
-  const [isAssigned, setIsAssigned] = useState<boolean>(false);
+  const [search, setSearch] = useState(getFilterObjects?.search);
+  const [locationIds, setLocationIds] = useState<number[]>(getFilterObjects?.locationIds);
+  const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
+  const [status, setStatus] = useState<EntityStatus[]>(getFilterObjects?.status);
+  const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
+  const [department, setDepartment] = useState<string[]>(getFilterObjects?.department);
+  const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
+  const [engine, setEngine] = useState<string[]>(getFilterObjects?.engine);
+  const [measurement, setMeasurement] = useState<string[]>(getFilterObjects?.measurement);
+  const [isAssigned, setIsAssigned] = useState<boolean>(getFilterObjects?.isAssigned);
   //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
-  const [lteCurrentRunning, setLteCurrentRunning] = useState("");
-  const [gteCurrentRunning, setGteCurrentRunning] = useState("");
-  const [lteLastService, setLteLastService] = useState("");
-  const [gteLastService, setGteLastService] = useState("");
+  const [lteCurrentRunning, setLteCurrentRunning] = useState(getFilterObjects?.lteCurrentRunning);
+  const [gteCurrentRunning, setGteCurrentRunning] = useState(getFilterObjects?.gteCurrentRunning);
+  const [lteLastService, setLteLastService] = useState(getFilterObjects?.lteLastService);
+  const [gteLastService, setGteLastService] = useState(getFilterObjects?.gteLastService);
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
-    useState<boolean>(false);
+    useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
   const navigate = useNavigate();
+
+  const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
+    "filter",
+    JSON.stringify({
+      first: 20,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      locationIds: [],
+      status: [],
+      entityType: "Vehicle",
+      typeIds: [],
+      zoneIds: [],
+      department: [],
+      brand: [],
+      engine: [],
+      isAssigned: false,
+      //assignedToId: null,
+      measurement: [],
+      lteCurrentRunning: "",
+      gteCurrentRunning: "",
+      lteLastService: "",
+      gteLastService: "",
+      isIncompleteChecklistTask: false,
+    })
+  );
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -86,23 +119,24 @@ const Vehicles = () => {
     last: null,
     before: null,
     after: null,
-    search: "",
-    locationIds: [],
-    status: [],
+    search: JSON.parse(saveFilterOptions)?.search,
+    locationIds: JSON.parse(saveFilterOptions)?.locationIds,
+    status: JSON.parse(saveFilterOptions)?.status,
     entityType: "Vehicle",
-    typeIds: [],
-    zoneIds: [],
-    department: [],
-    brand: [],
-    engine: [],
-    isAssigned: false,
+    typeIds: JSON.parse(saveFilterOptions)?.typeIds,
+    zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
+    department: JSON.parse(saveFilterOptions)?.department,
+    brand: JSON.parse(saveFilterOptions)?.brand,
+    engine: JSON.parse(saveFilterOptions)?.engine,
+    isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
-    measurement: [],
-    lteCurrentRunning: "",
-    gteCurrentRunning: "",
-    lteLastService: "",
-    gteLastService: "",
-    isIncompleteChecklistTask: false,
+    measurement: JSON.parse(saveFilterOptions)?.measurement,
+    lteCurrentRunning: JSON.parse(saveFilterOptions)?.lteCurrentRunning,
+    gteCurrentRunning: JSON.parse(saveFilterOptions)?.gteCurrentRunning,
+    lteLastService: JSON.parse(saveFilterOptions)?.lteLastService,
+    gteLastService: JSON.parse(saveFilterOptions)?.gteLastService,
+    isIncompleteChecklistTask:
+      JSON.parse(saveFilterOptions)?.isIncompleteChecklistTask,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -123,6 +157,8 @@ const Vehicles = () => {
       message.error("No permission to view all vehicles.");
     }
     getAllEntity({ variables: filter });
+    setSaveFilterOptions(JSON.stringify(filter));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, getAllEntity]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -290,6 +326,31 @@ const Vehicles = () => {
   }
 
   const clearAll = () => {
+    const clearFilter = {
+      first: 20,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      locationIds: [],
+      status: [],
+      entityType: "Vehicle",
+      typeIds: [],
+      zoneIds: [],
+      department: [],
+      brand: [],
+      engine: [],
+      isAssigned: false,
+      //assignedToId: null,
+      measurement: [],
+      lteCurrentRunning: "",
+      gteCurrentRunning: "",
+      lteLastService: "",
+      gteLastService: "",
+      isIncompleteChecklistTask: false,
+    };
+    setSaveFilterOptions(JSON.stringify(clearFilter));
+
     setSearch("");
     setLteCurrentRunning("");
     setGteCurrentRunning("");
@@ -339,15 +400,18 @@ const Vehicles = () => {
   };
   const locationOptions: DefaultNumberArrayOptionProps = {
     setId: setLocationIds,
+    currentId: locationIds,
     width: "100%",
   };
   const zoneOptions: DefaultNumberArrayOptionProps = {
-    setId: setLocationIds,
+    setId: setZoneIds,
+    currentId: zoneIds,
     width: "100%",
   };
   const typeSelectorOptions: TypeSelectorOptionProps = {
     entityType: "Vehicle",
     setTypeId: setTypeIds,
+    currentId: typeIds,
     rounded: true,
     multiple: true,
     width: "100%",
@@ -364,6 +428,7 @@ const Vehicles = () => {
       });
       setDepartment(department);
     },
+    value: filter.department,
     width: "100%",
   };
   const brandOptions: DefaultStringArrayOptionProps = {
@@ -378,6 +443,7 @@ const Vehicles = () => {
       });
       setBrand(brand);
     },
+    value: filter.brand,
     width: "100%",
   };
   const engineOptions: DefaultStringArrayOptionProps = {
@@ -392,6 +458,7 @@ const Vehicles = () => {
       });
       setEngine(engine);
     },
+    value: filter.engine,
     width: "100%",
   };
   const measurementOptions: DefaultStringArrayOptionProps = {
@@ -406,6 +473,7 @@ const Vehicles = () => {
       });
       setMeasurement(measurement);
     },
+    value: filter.measurement,
     width: "100%",
   };
   const assignedOptions: DefaultBooleanOptionProps = {
@@ -420,6 +488,7 @@ const Vehicles = () => {
       });
       setIsAssigned(isAssigned?.target?.checked);
     },
+    flag: filter.isAssigned,
     name: "Show all assigned vehicles",
   };
   const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
@@ -434,6 +503,7 @@ const Vehicles = () => {
       });
       setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
     },
+    flag: filter.isIncompleteChecklistTask,
     name: "Show all vehicles with incomplete checklist",
   };
   /*
@@ -449,14 +519,14 @@ const Vehicles = () => {
       });
       setAssignedToMe(assignedToMe?.target?.checked ? self?.id : null);
     },
-    name: "Show all machinery assigned to me",
+    name: "Show all vehicles assigned to me",
   };
   */
   const entityStatusOptions: EntityStatusOptionProps = {
     onChange: (status) => {
       setFilter({
         ...filter,
-        status,
+        status: status,
         first: 20,
         after: null,
         last: null,
