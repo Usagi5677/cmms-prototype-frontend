@@ -119,7 +119,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     self?.machineAssignments.length === 0 &&
     self?.vehicleAssignments.length === 0 &&
     self?.vesselAssignments.length === 0 &&
-    !hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"])
+    hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"])
   ) {
     SidebarData.push({
       name: "Issues",
