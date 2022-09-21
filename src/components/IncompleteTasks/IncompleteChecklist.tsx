@@ -118,9 +118,11 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
 
   return (
     <div style={{ width: "100%" }}>
-      <Badge count={data?.incompleteChecklists.length}>
-        <div style={{ paddingRight: ".6rem" }}>{type}</div>
-      </Badge>
+      <div id="noZIndexBadge">
+        <Badge count={data?.incompleteChecklists.length}>
+          <div style={{ paddingRight: ".6rem" }}>{type}</div>
+        </Badge>
+      </div>
       <div style={{ display: "flex", alignItems: "center" }}>
         {changeDateButton("back")}
         <DatePicker

@@ -118,9 +118,12 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
 
   return (
     <div style={{ width: "100%" }}>
-      <Badge count={data?.checklistsWithIssue.length}>
-        <div style={{ paddingRight: ".6rem" }}>{type}</div>
-      </Badge>
+      <div id="noZIndexBadge">
+        <Badge count={data?.checklistsWithIssue.length}>
+          <div style={{ paddingRight: ".6rem" }}>{type}</div>
+        </Badge>
+      </div>
+      
       <div style={{ display: "flex", alignItems: "center" }}>
         {changeDateButton("back")}
         <DatePicker

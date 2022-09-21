@@ -898,3 +898,7 @@ div.ant-typography {
 .darkenOnHover:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
+#noZIndexBadge .ant-badge-count {
+  z-index: 0 !important;
+}
