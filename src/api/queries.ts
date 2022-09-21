@@ -1579,6 +1579,9 @@ export const INCOMPLETE_CHECKLISTS = gql`
       type
       from
       to
+      currentMeterReading
+      workingHour
+      dailyUsageHours
       items {
         id
         completedAt
@@ -1607,6 +1610,56 @@ export const INCOMPLETE_CHECKLISTS = gql`
 export const INCOMPLETE_CHECKLIST_SUMMARY = gql`
   query incompleteChecklistSummary($input: IncompleteChecklistSummaryInput!) {
     incompleteChecklistSummary(input: $input) {
+      date
+      count
+    }
+  }
+`;
+
+export const CHECKLISTS_WITH_ISSUE_PAST_TWO = gql`
+  query checklistsWithIssuePastTwoDays {
+    checklistsWithIssuePastTwoDays
+  }
+`;
+
+export const CHECKLISTS_WITH_ISSUE = gql`
+  query checklistsWithIssue($input: IncompleteChecklistInput!) {
+    checklistsWithIssue(input: $input) {
+      id
+      type
+      from
+      to
+      currentMeterReading
+      workingHour
+      dailyUsageHours
+      items {
+        id
+        completedAt
+      }
+      comments {
+        id
+        type
+      }
+      entity {
+        id
+        type {
+          id
+          name
+          entityType
+        }
+        location {
+          id
+          name
+        }
+        machineNumber
+      }
+    }
+  }
+`;
+
+export const CHECKLIST_WITH_ISSUE_SUMMARY = gql`
+  query checklistWithIssueSummary($input: IncompleteChecklistSummaryInput!) {
+    checklistWithIssueSummary(input: $input) {
       date
       count
     }

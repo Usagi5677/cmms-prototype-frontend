@@ -1,15 +1,18 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Button, DatePicker, Empty } from "antd";
+import { Badge, Button, DatePicker, Empty, message } from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import {
-  INCOMPLETE_CHECKLISTS,
-  INCOMPLETE_CHECKLIST_SUMMARY,
+  CHECKLISTS_WITH_ISSUE,
+  CHECKLIST_WITH_ISSUE_SUMMARY,
 } from "../../api/queries";
+import UserContext from "../../contexts/UserContext";
 import { generateSummary } from "../../helpers/checklist";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
+import { hasPermissions } from "../../helpers/permissions";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
 import IncompleteChecklistSummary from "../../models/IncompleteChecklistSummary";
@@ -17,21 +20,23 @@ import { ChecklistStatus } from "../Checklists/ChecklistStatus";
 import { CenteredSpin } from "../common/CenteredSpin";
 import { EntityListing } from "../EntityComponents/EntityListing";
 
-export interface IncompleteChecklistProps {
+export interface ChecklistWithIssueProps {
   type: string;
 }
 
-export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
+export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   type,
 }) => {
+  const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const [date, setDate] = useState(moment());
   const [month, setMonth] = useState([
     date.clone().startOf("month"),
     date.clone().endOf("month"),
   ]);
 
-  const [getIncompleteChecklists, { data, loading, refetch }] = useLazyQuery(
-    INCOMPLETE_CHECKLISTS,
+  const [getChecklistsWithIssue, { data, loading, refetch }] = useLazyQuery(
+    CHECKLISTS_WITH_ISSUE,
     {
       onError: (err) => {
         errorMessage(err, "Error loading checklist.");
@@ -41,11 +46,11 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   );
 
   const [getSummary, { data: monthSummary }] = useLazyQuery(
-    INCOMPLETE_CHECKLIST_SUMMARY
+    CHECKLIST_WITH_ISSUE_SUMMARY
   );
 
   useEffect(() => {
-    getIncompleteChecklists({
+    getChecklistsWithIssue({
       variables: {
         input: {
           type,
@@ -97,7 +102,7 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   const summaryMatch = (current: moment.Moment) => {
     if (!monthSummary) return null;
     const match: IncompleteChecklistSummary =
-      monthSummary.incompleteChecklistSummary.find(
+      monthSummary.checklistWithIssueSummary.find(
         (cs: IncompleteChecklistSummary) => {
           if (type === "Daily") {
             return current
@@ -119,10 +124,11 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   return (
     <div style={{ width: "100%" }}>
       <div id="noZIndexBadge">
-        <Badge count={data?.incompleteChecklists.length}>
+        <Badge count={data?.checklistsWithIssue.length}>
           <div style={{ paddingRight: ".6rem" }}>{type}</div>
         </Badge>
       </div>
+
       <div style={{ display: "flex", alignItems: "center" }}>
         {changeDateButton("back")}
         <DatePicker
@@ -155,8 +161,8 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
       </div>
       {loading && <CenteredSpin />}
       <div style={{ marginTop: "1rem" }}>
-        {data?.incompleteChecklists.length === 0 && <Empty />}
-        {data?.incompleteChecklists.map((checklist: Checklist) => (
+        {data?.checklistsWithIssue.length === 0 && <Empty />}
+        {data?.checklistsWithIssue.map((checklist: Checklist) => (
           <div key={checklist.id} style={{ display: "flex" }}>
             <div style={{ marginRight: ".5rem" }}>
               <ChecklistStatus

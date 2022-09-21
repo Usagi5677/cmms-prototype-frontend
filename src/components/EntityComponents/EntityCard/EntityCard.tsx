@@ -30,6 +30,7 @@ import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncomplete
 import { stringToColor } from "../../../helpers/style";
 import { useState } from "react";
 import { RiSailboatFill } from "react-icons/ri";
+import { EntityIcon } from "../../common/EntityIcon";
 
 const EntityCard = ({
   entity,
@@ -124,13 +125,7 @@ const EntityCard = ({
                   )}
                   <div className={classes["inner-first-block"]}>
                     <div className={classes["title-wrapper"]}>
-                      {entity?.type?.entityType === "Machine" ? (
-                        <FaTractor />
-                      ) : entity?.type?.entityType === "Vehicle" ? (
-                        <FaTruck />
-                      ) : entity?.type?.entityType === "Vessel" ? (
-                        <RiSailboatFill />
-                      ) : null}
+                      <EntityIcon entityType={entity?.type?.entityType} />
                       <span className={classes["mn-title"]}>
                         {entity?.machineNumber}
                       </span>

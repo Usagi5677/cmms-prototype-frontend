@@ -20,6 +20,7 @@ import { Badge, Menu, Tooltip } from "antd";
 import { useLazyQuery } from "@apollo/client";
 import { errorMessage } from "../../helpers/gql";
 import {
+  CHECKLISTS_WITH_ISSUE_PAST_TWO,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_BREAKDOWN_COUNT_OF_ALL,
   INCOMPLETE_CHECKLIST_PAST_TWO,
@@ -56,11 +57,20 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       nextFetchPolicy: "cache-first",
     });
 
+  const [getPastTwoDayChecklistsWithIssue, { data: pastTwoIssue }] =
+    useLazyQuery(CHECKLISTS_WITH_ISSUE_PAST_TWO, {
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
+
   // Refetch past two day incomplete checklist count every hour
+  // Refetch past two day checklist with issue count every hour
   useEffect(() => {
     var handle = setInterval(getPastTwoDayIncompleteChecklists, 60 * 60 * 1000);
+    var handle2 = setInterval(getPastTwoDayChecklistsWithIssue, 60 * 60 * 1000);
     return () => {
       clearInterval(handle);
+      clearInterval(handle2);
     };
   });
 
@@ -77,10 +87,12 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     allEntityBreakdownCount();
     getAllEntityChecklistAndPMSummary();
     getPastTwoDayIncompleteChecklists();
+    getPastTwoDayChecklistsWithIssue();
   }, [
     allEntityBreakdownCount,
     getAllEntityChecklistAndPMSummary,
     getPastTwoDayIncompleteChecklists,
+    getPastTwoDayChecklistsWithIssue,
   ]);
 
   let SidebarData: SidebarItem[] = [
@@ -99,6 +111,22 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       icon: <FaSquare />,
       count: pastTwoIncomplete?.incompleteChecklistsPastTwoDays
         ? pastTwoIncomplete.incompleteChecklistsPastTwoDays[0]
+        : 0,
+    });
+  }
+  // If user is admin of any entity
+  if (
+    (self?.machineAssignments.length === 0 ||
+      self?.vehicleAssignments.length === 0 ||
+      self?.vesselAssignments.length === 0) &&
+    hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"], "any")
+  ) {
+    SidebarData.push({
+      name: "Issues",
+      path: "/issues",
+      icon: <FaSquare />,
+      count: pastTwoIssue?.checklistsWithIssuePastTwoDays
+        ? pastTwoIssue.checklistsWithIssuePastTwoDays[0]
         : 0,
     });
   }
