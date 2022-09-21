@@ -52,7 +52,9 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   useEffect(() => {
     if (
       self?.machineAssignments.length === 0 &&
-      !hasPermissions(self, ["ENTITY_ENGINEER"])
+      self?.vehicleAssignments.length === 0 &&
+      self?.vesselAssignments.length === 0 &&
+        !hasPermissions(self, ["ENTITY_ENGINEER"])
     ) {
       navigate("/");
       message.error(
