@@ -1,15 +1,18 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Button, DatePicker, Empty } from "antd";
+import { Badge, Button, DatePicker, Empty, message } from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import {
   CHECKLISTS_WITH_ISSUE,
   CHECKLIST_WITH_ISSUE_SUMMARY,
 } from "../../api/queries";
+import UserContext from "../../contexts/UserContext";
 import { generateSummary } from "../../helpers/checklist";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
+import { hasPermissions } from "../../helpers/permissions";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
 import IncompleteChecklistSummary from "../../models/IncompleteChecklistSummary";
@@ -24,6 +27,8 @@ export interface ChecklistWithIssueProps {
 export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   type,
 }) => {
+  const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const [date, setDate] = useState(moment());
   const [month, setMonth] = useState([
     date.clone().startOf("month"),
@@ -45,6 +50,15 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   );
 
   useEffect(() => {
+    if (
+      self?.machineAssignments.length === 0 &&
+      !hasPermissions(self, ["ENTITY_ENGINEER"])
+    ) {
+      navigate("/");
+      message.error(
+        "You are not assigned to an entity as an engineer or you are not an engineer."
+      );
+    }
     getChecklistsWithIssue({
       variables: {
         input: {
@@ -97,7 +111,7 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   const summaryMatch = (current: moment.Moment) => {
     if (!monthSummary) return null;
     const match: IncompleteChecklistSummary =
-      monthSummary?.checklistWithIssueSummary.find(
+      monthSummary.checklistWithIssueSummary.find(
         (cs: IncompleteChecklistSummary) => {
           if (type === "Daily") {
             return current
@@ -119,11 +133,11 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   return (
     <div style={{ width: "100%" }}>
       <div id="noZIndexBadge">
-        <Badge count={data?.checklistsWithIssue?.length}>
+        <Badge count={data?.checklistsWithIssue.length}>
           <div style={{ paddingRight: ".6rem" }}>{type}</div>
         </Badge>
       </div>
-      
+
       <div style={{ display: "flex", alignItems: "center" }}>
         {changeDateButton("back")}
         <DatePicker
@@ -156,8 +170,8 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
       </div>
       {loading && <CenteredSpin />}
       <div style={{ marginTop: "1rem" }}>
-        {data?.checklistsWithIssue?.length === 0 && <Empty />}
-        {data?.checklistsWithIssue?.map((checklist: Checklist) => (
+        {data?.checklistsWithIssue.length === 0 && <Empty />}
+        {data?.checklistsWithIssue.map((checklist: Checklist) => (
           <div key={checklist.id} style={{ display: "flex" }}>
             <div style={{ marginRight: ".5rem" }}>
               <ChecklistStatus
