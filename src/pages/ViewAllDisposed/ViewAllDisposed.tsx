@@ -1,43 +1,38 @@
 import { Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PaginationArgs from "../../../models/PaginationArgs";
-import { errorMessage } from "../../../helpers/gql";
+import PaginationArgs from "../../models/PaginationArgs";
+import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
-} from "../../../api/queries";
-import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import classes from "./ViewAllMachine.module.css";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
-import UserContext from "../../../contexts/UserContext";
-import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle, FaTractor } from "react-icons/fa";
-import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
-import { Entity } from "../../../models/Entity/Entity";
-import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
-import { hasPermissions } from "../../../helpers/permissions";
+} from "../../api/queries";
+import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
+import classes from "./ViewAllDisposed.module.css";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import UserContext from "../../contexts/UserContext";
+import { Entity } from "../../models/Entity/Entity";
+import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
+import { hasPermissions } from "../../helpers/permissions";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
+import FilterOptions from "../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
   DefaultNumberArrayOptionProps,
   DefaultStringArrayOptionProps,
   EntityStatus,
-  EntityStatusOptionProps,
   FilterOptionProps,
   SearchOptionProps,
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
-} from "../../../models/Enums";
+} from "../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { WarningOutlined } from "@ant-design/icons";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
 
-const Machinery = () => {
+const ViewAllDisposed = () => {
   const getFilter = localStorage.getItem("filter");
   let getFilterObjects: any;
   if (getFilter) {
@@ -51,9 +46,7 @@ const Machinery = () => {
     getFilterObjects?.locationIds
   );
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
-  const [status, setStatus] = useState<EntityStatus[]>(
-    getFilterObjects?.status
-  );
+
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [department, setDepartment] = useState<string[]>(
     getFilterObjects?.department
@@ -81,6 +74,10 @@ const Machinery = () => {
   );
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
     useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
+
+  const [entityType, setEntityType] = useState<string[]>(
+    getFilterObjects?.entityType
+  );
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
@@ -92,8 +89,8 @@ const Machinery = () => {
       after: null,
       search: "",
       locationIds: [],
-      status: [],
-      entityType: ["Machine"],
+      status: ["Dispose"],
+      entityType: [],
       typeIds: [],
       zoneIds: [],
       department: [],
@@ -137,8 +134,8 @@ const Machinery = () => {
     after: null,
     search: JSON.parse(saveFilterOptions)?.search,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
-    status: JSON.parse(saveFilterOptions)?.status,
-    entityType: ["Machine"],
+    status: ["Dispose" as EntityStatus],
+    entityType: JSON.parse(saveFilterOptions)?.entityType,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     department: JSON.parse(saveFilterOptions)?.department,
@@ -206,7 +203,6 @@ const Machinery = () => {
     value: string,
     locationIdsValue: number[],
     typeIdsValue: number[],
-    statusValue: EntityStatus[],
     zoneIdsValue: number[],
     departmentValue: string[],
     brandValue: string[],
@@ -218,7 +214,8 @@ const Machinery = () => {
     gteCurrentRunningValue: string,
     lteLastServiceValue: string,
     gteLastServiceValue: string,
-    isIncompleteChecklistTaskValue: boolean
+    isIncompleteChecklistTaskValue: boolean,
+    entityTypeValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -229,7 +226,6 @@ const Machinery = () => {
           search: value,
           locationIds: locationIdsValue,
           typeIds: typeIdsValue,
-          status: statusValue,
           zoneIds: zoneIdsValue,
           department: departmentValue,
           brand: brandValue,
@@ -242,6 +238,7 @@ const Machinery = () => {
           lteLastService: lteLastServiceValue,
           gteLastService: gteLastServiceValue,
           isIncompleteChecklistTask: isIncompleteChecklistTaskValue,
+          entityType: entityTypeValue,
           first: 20,
           last: null,
           before: null,
@@ -261,7 +258,6 @@ const Machinery = () => {
       search,
       locationIds,
       typeIds,
-      status,
       zoneIds,
       department,
       brand,
@@ -273,14 +269,14 @@ const Machinery = () => {
       gteCurrentRunning,
       lteLastService,
       gteLastService,
-      isIncompleteChecklistTask
+      isIncompleteChecklistTask,
+      entityType
     );
     // eslint-disable-next-line
   }, [
     search,
     locationIds,
     typeIds,
-    status,
     zoneIds,
     department,
     brand,
@@ -293,6 +289,7 @@ const Machinery = () => {
     lteLastService,
     gteLastService,
     isIncompleteChecklistTask,
+    entityType,
   ]);
 
   //Fetch all machine status count
@@ -351,8 +348,8 @@ const Machinery = () => {
       after: null,
       search: "",
       locationIds: [],
-      status: [],
-      entityType: ["Machine"],
+      status: ["Dispose" as EntityStatus],
+      entityType: [],
       typeIds: [],
       zoneIds: [],
       department: [],
@@ -374,7 +371,6 @@ const Machinery = () => {
     setGteCurrentRunning("");
     setLteLastService("");
     setGteLastService("");
-    setStatus([]);
     setLocationIds([]);
     setZoneIds([]);
     setDepartment([]);
@@ -384,6 +380,7 @@ const Machinery = () => {
     setTypeIds([]);
     setIsAssigned(false);
     setIsIncompleteChecklistTask(false);
+    setEntityType([]);
     //setAssignedToMe(null);
   };
 
@@ -428,7 +425,6 @@ const Machinery = () => {
     width: "100%",
   };
   const typeSelectorOptions: TypeSelectorOptionProps = {
-    entityType: "Machine",
     setTypeId: setTypeIds,
     currentId: typeIds,
     rounded: true,
@@ -508,7 +504,7 @@ const Machinery = () => {
       setIsAssigned(isAssigned?.target?.checked);
     },
     flag: filter.isAssigned,
-    name: "Show all assigned machinery",
+    name: "Show all assigned entities",
   };
   const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
     onChange: (isIncompleteChecklistTask: CheckboxChangeEvent) => {
@@ -523,44 +519,28 @@ const Machinery = () => {
       setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
     },
     flag: filter.isIncompleteChecklistTask,
-    name: "Show all machinery with incomplete checklist",
+    name: "Show all entities with incomplete checklist",
   };
-  /*
-  const assignedToMeOptions: DefaultBooleanOptionProps = {
-    onChange: (assignedToMe: CheckboxChangeEvent) => {
+
+  const entityTypeOptions: DefaultStringArrayOptionProps = {
+    onChange: (entityType: string[]) => {
       setFilter({
         ...filter,
-        assignedToId: assignedToMe?.target?.checked ? self?.id : null,
+        entityType,
         first: 20,
         after: null,
         last: null,
         before: null,
       });
-      setAssignedToMe(assignedToMe?.target?.checked ? self?.id : null);
+      setEntityType(entityType);
     },
-    name: "Show all machinery assigned to me",
-  };
-  */
-  const entityStatusOptions: EntityStatusOptionProps = {
-    onChange: (status) => {
-      setFilter({
-        ...filter,
-        status: status,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setStatus(status);
-    },
-    value: filter.status,
+    value: filter.entityType,
     width: "100%",
   };
 
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,
-    entityStatusOptions,
     typeSelectorOptions,
     zoneOptions,
     departmentOptions,
@@ -568,12 +548,12 @@ const Machinery = () => {
     engineOptions,
     measurementOptions,
     assignedOptions,
-    //assignedToMeOptions,
     lteCurrentRunningOptions,
     gteCurrentRunningOptions,
     lteLastServiceOptions,
     gteLastServiceOptions,
     isIncompleteChecklistTaskOptions,
+    entityTypeOptions,
   };
 
   return (
@@ -599,86 +579,16 @@ const Machinery = () => {
                 delay: 0.7,
               }}
             >
-              Machinery
+              Entities
             </motion.div>
             <div className={classes["total-amount"]}>
               <CountUp end={total} duration={1} />
             </div>
           </div>
         </motion.div>
-
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.4,
-          }}
-        >
-          <StatusCard
-            amountOne={working}
-            icon={<FaTractor />}
-            iconBackgroundColor={"var(--working-bg)"}
-            iconColor={"var(--working-color)"}
-            name={"Working"}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.5,
-          }}
-        >
-          <StatusCard
-            amountOne={critical}
-            icon={<WarningOutlined />}
-            iconBackgroundColor={"var(--critical-bg)"}
-            iconColor={"var(--critical-color)"}
-            name={"Critical"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.6,
-          }}
-        >
-          <StatusCard
-            amountOne={breakdown}
-            icon={<FaCarCrash />}
-            iconBackgroundColor={"var(--breakdown-bg)"}
-            iconColor={"var(--breakdown-color)"}
-            name={"Breakdown"}
-          />
-        </motion.div>
       </div>
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
-          <div className={classes["options-wrapper"]}>
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.8,
-              }}
-            >
-              <div className={classes["item-wrapper"]}>
-                {hasPermissions(self, ["ADD_ENTITY"]) ? (
-                  <AddEntity entityType="Machine" />
-                ) : null}
-              </div>
-            </motion.div>
-          </div>
           {loading && (
             <div>
               <Spin style={{ width: "100%", margin: "2rem auto" }} />
@@ -715,10 +625,14 @@ const Machinery = () => {
             pageLimit={20}
           />
         </div>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
+        <FilterOptions
+          options={filterOptions}
+          onClick={clearAll}
+          disposedView
+        />
       </div>
     </>
   );
 };
 
-export default Machinery;
+export default ViewAllDisposed;

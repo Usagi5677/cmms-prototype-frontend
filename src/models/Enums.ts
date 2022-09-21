@@ -99,4 +99,5 @@ export interface FilterOptionProps {
   lteLastServiceOptions?: SearchReadingOptionProps;
   gteLastServiceOptions?: SearchReadingOptionProps;
   isIncompleteChecklistTaskOptions?: DefaultBooleanOptionProps;
+  entityTypeOptions?: DefaultStringArrayOptionProps;
 }

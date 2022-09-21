@@ -10,6 +10,7 @@ import { BrandSelector } from "../BrandSelector";
 import { DepartmentSelector } from "../DepartmentSelector";
 import { EngineSelector } from "../EngineSelector";
 import EntityStatusFilter from "../EntityStatusFilter";
+import { EntityTypeSelector } from "../EntityTypeSelector";
 import { MeasurementSelector } from "../MeasurementSelector";
 import Search from "../Search";
 
@@ -18,9 +19,11 @@ import classes from "./FilterOptions.module.css";
 const FilterOptions = ({
   options,
   onClick,
+  disposedView,
 }: {
   options?: FilterOptionProps;
   onClick?: () => void;
+  disposedView?: boolean;
 }) => {
   const [form] = useForm();
 
@@ -34,7 +37,6 @@ const FilterOptions = ({
     }, 1000);
   };
 
-  //console.log(options?.typeSelectorOptions!.currentId)
   return (
     <div id="filterCollapse">
       <Collapse
@@ -82,16 +84,37 @@ const FilterOptions = ({
                 <div className={classes["item-wrapper"]}>
                   <div className={classes["title"]}>Entity</div>
                   <Divider style={{ marginTop: 10 }} />
-                  <div className={classes["item"]}>
-                    <Form.Item name="status" initialValue={options?.entityStatusOptions!.value}>
-                      <EntityStatusFilter
-                        onChange={options?.entityStatusOptions!.onChange}
-                        value={options?.entityStatusOptions!.value!}
-                        multiple={true}
-                        width={options?.entityStatusOptions!.width}
-                      />
-                    </Form.Item>
-                  </div>
+                  {disposedView ? (
+                    <div className={classes["item"]}>
+                      <Form.Item
+                        name="entityType"
+                        initialValue={options?.entityTypeOptions!.value}
+                      >
+                        <EntityTypeSelector
+                          onChange={options?.entityTypeOptions!.onChange}
+                          multiple={true}
+                          rounded={true}
+                          width={options?.entityTypeOptions!.width}
+                          value={options?.entityTypeOptions!.value}
+                        />
+                      </Form.Item>
+                    </div>
+                  ) : (
+                    <div className={classes["item"]}>
+                      <Form.Item
+                        name="status"
+                        initialValue={options?.entityStatusOptions!.value}
+                      >
+                        <EntityStatusFilter
+                          onChange={options?.entityStatusOptions!.onChange}
+                          value={options?.entityStatusOptions!.value!}
+                          multiple={true}
+                          width={options?.entityStatusOptions!.width}
+                        />
+                      </Form.Item>
+                    </div>
+                  )}
+
                   <div className={classes["item"]}>
                     <Form.Item
                       name="type"

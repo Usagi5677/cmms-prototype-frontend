@@ -53,6 +53,12 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
         entityType: entityType,
         name: search,
       }));
+    } else {
+      setFilter((filter) => ({
+        ...filter,
+        entityType: entityType!,
+        name: search,
+      }));
     }
   }, [search, entityType]);
 

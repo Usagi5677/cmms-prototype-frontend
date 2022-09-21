@@ -5,6 +5,7 @@ import {
   FaQuestionCircle,
   FaRegClock,
   FaTractor,
+  FaTruck,
 } from "react-icons/fa";
 
 import classes from "./EntityCard.module.css";
@@ -28,6 +29,7 @@ import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistA
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
 import { useState } from "react";
+import { RiSailboatFill } from "react-icons/ri";
 
 const EntityCard = ({
   entity,
@@ -122,7 +124,13 @@ const EntityCard = ({
                   )}
                   <div className={classes["inner-first-block"]}>
                     <div className={classes["title-wrapper"]}>
-                      <FaTractor />
+                      {entity?.type?.entityType === "Machine" ? (
+                        <FaTractor />
+                      ) : entity?.type?.entityType === "Vehicle" ? (
+                        <FaTruck />
+                      ) : entity?.type?.entityType === "Vessel" ? (
+                        <RiSailboatFill />
+                      ) : null}
                       <span className={classes["mn-title"]}>
                         {entity?.machineNumber}
                       </span>

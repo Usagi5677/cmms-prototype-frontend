@@ -9,6 +9,7 @@ import {
   FaSquare,
   FaUserPlus,
   FaCode,
+  FaRecycle,
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 import classes from "./Sidebar.module.css";
@@ -141,6 +142,14 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
       path: "/vehicles",
       icon: <FaTruck />,
       count: breakdownData?.allEntityBreakdownCount?.vehicle,
+    });
+  }
+
+  if (hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
+    SidebarData.push({
+      name: "Disposed",
+      path: "/disposed",
+      icon: <FaRecycle />,
     });
   }
 
