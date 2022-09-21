@@ -97,7 +97,7 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   const summaryMatch = (current: moment.Moment) => {
     if (!monthSummary) return null;
     const match: IncompleteChecklistSummary =
-      monthSummary.checklistWithIssueSummary.find(
+      monthSummary?.checklistWithIssueSummary.find(
         (cs: IncompleteChecklistSummary) => {
           if (type === "Daily") {
             return current
@@ -119,7 +119,7 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   return (
     <div style={{ width: "100%" }}>
       <div id="noZIndexBadge">
-        <Badge count={data?.checklistsWithIssue.length}>
+        <Badge count={data?.checklistsWithIssue?.length}>
           <div style={{ paddingRight: ".6rem" }}>{type}</div>
         </Badge>
       </div>
@@ -156,8 +156,8 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
       </div>
       {loading && <CenteredSpin />}
       <div style={{ marginTop: "1rem" }}>
-        {data?.checklistsWithIssue.length === 0 && <Empty />}
-        {data?.checklistsWithIssue.map((checklist: Checklist) => (
+        {data?.checklistsWithIssue?.length === 0 && <Empty />}
+        {data?.checklistsWithIssue?.map((checklist: Checklist) => (
           <div key={checklist.id} style={{ display: "flex" }}>
             <div style={{ marginRight: ".5rem" }}>
               <ChecklistStatus
