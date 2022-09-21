@@ -114,12 +114,10 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
         : 0,
     });
   }
-  // If user is admin of any entity
+
   if (
-    (self?.machineAssignments.length === 0 ||
-      self?.vehicleAssignments.length === 0 ||
-      self?.vesselAssignments.length === 0) &&
-    hasPermissions(self, ["ENTITY_ADMIN", "ENTITY_ENGINEER"], "any")
+    isAssignedTypeToAny("Admin", self) ||
+    isAssignedTypeToAny("Engineer", self)
   ) {
     SidebarData.push({
       name: "Issues",
