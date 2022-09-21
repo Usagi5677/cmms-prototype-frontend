@@ -1,0 +1,82 @@
+.container {
+  width: 100%;
+  min-height: 500px;
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px;
+  border: var(--card-border)
+}
+
+.options-wrapper {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.item-wrapper {
+  padding-top: 10px;
+}
+
+.location {
+  width: 190px;
+  margin: 10px 0 !important;
+}
+
+.status-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex: 1;
+  margin-bottom: 40px;
+}
+.total-card {
+  width: 150px;
+  min-height: 80px;
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  padding: 0px 15px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px 5px;
+  transition: transform 0.3s ease;
+  border: 1px var(--total-card-border) solid;
+  color: var(--text-primary);
+}
+.total-card:hover {
+  transform: translateY(-5px);
+}
+.total-title {
+  color: var(--text-primary);
+}
+.total-amount {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+@media only screen and (min-width: 800px) {
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+  .item-wrapper {
+    padding-top: 0;
+  }
+}
+@media only screen and (min-width: 1280px) {
+  .wrapper {
+    flex-direction: row;
+  }
+}

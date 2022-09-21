@@ -235,7 +235,7 @@ export const ISLANDS = [
   "Jarraafa-IV (J-4)",
 ];
 
-export const ENTITY_TYPES = ["Machine", "Vessel", "Vehicle"];
+export const ENTITY_TYPES = ["Machine", "Vehicle", "Vessel"];
 
 export const REPAIR_LOCATION = ["Site", "Workshop"];
 
@@ -293,8 +293,4 @@ export const BRAND = [
   "DUSSAN ENGINE",
 ];
 
-export const ENGINE = [
-  "STBD",
-  "CTR",
-  "PORT",
-];
+export const ENGINE = ["STBD", "CTR", "PORT"];

@@ -408,7 +408,7 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
   query allEntityStatusCount(
     $search: String
     $createdByUserId: String
-    $entityType: String
+    $entityType: [String!]
     $status: [String!]
     $locationIds: [Int!]
     $department: [String!]
@@ -678,7 +678,7 @@ export const ALL_ENTITY = gql`
     $last: Int
     $search: String
     $createdByUserId: String
-    $entityType: String
+    $entityType: [String!]
     $status: [String!]
     $locationIds: [Int!]
     $department: [String!]

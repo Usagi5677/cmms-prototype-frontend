@@ -48,20 +48,38 @@ const Vessels = () => {
   const [page, setPage] = useState(1);
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState(getFilterObjects?.search);
-  const [locationIds, setLocationIds] = useState<number[]>(getFilterObjects?.locationIds);
+  const [locationIds, setLocationIds] = useState<number[]>(
+    getFilterObjects?.locationIds
+  );
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
-  const [status, setStatus] = useState<EntityStatus[]>(getFilterObjects?.status);
+  const [status, setStatus] = useState<EntityStatus[]>(
+    getFilterObjects?.status
+  );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [department, setDepartment] = useState<string[]>(getFilterObjects?.department);
+  const [department, setDepartment] = useState<string[]>(
+    getFilterObjects?.department
+  );
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [engine, setEngine] = useState<string[]>(getFilterObjects?.engine);
-  const [measurement, setMeasurement] = useState<string[]>(getFilterObjects?.measurement);
-  const [isAssigned, setIsAssigned] = useState<boolean>(getFilterObjects?.isAssigned);
+  const [measurement, setMeasurement] = useState<string[]>(
+    getFilterObjects?.measurement
+  );
+  const [isAssigned, setIsAssigned] = useState<boolean>(
+    getFilterObjects?.isAssigned
+  );
   //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
-  const [lteCurrentRunning, setLteCurrentRunning] = useState(getFilterObjects?.lteCurrentRunning);
-  const [gteCurrentRunning, setGteCurrentRunning] = useState(getFilterObjects?.gteCurrentRunning);
-  const [lteLastService, setLteLastService] = useState(getFilterObjects?.lteLastService);
-  const [gteLastService, setGteLastService] = useState(getFilterObjects?.gteLastService);
+  const [lteCurrentRunning, setLteCurrentRunning] = useState(
+    getFilterObjects?.lteCurrentRunning
+  );
+  const [gteCurrentRunning, setGteCurrentRunning] = useState(
+    getFilterObjects?.gteCurrentRunning
+  );
+  const [lteLastService, setLteLastService] = useState(
+    getFilterObjects?.lteLastService
+  );
+  const [gteLastService, setGteLastService] = useState(
+    getFilterObjects?.gteLastService
+  );
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
     useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
   const navigate = useNavigate();
@@ -76,7 +94,7 @@ const Vessels = () => {
       search: "",
       locationIds: [],
       status: [],
-      entityType: "Vessel",
+      entityType: ["Vessel"],
       typeIds: [],
       zoneIds: [],
       department: [],
@@ -98,7 +116,7 @@ const Vessels = () => {
       search: string;
       status: EntityStatus[];
       locationIds: number[];
-      entityType: string;
+      entityType: string[];
       typeIds: number[];
       zoneIds: number[];
       department: string[];
@@ -121,7 +139,7 @@ const Vessels = () => {
     search: JSON.parse(saveFilterOptions)?.search,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
     status: JSON.parse(saveFilterOptions)?.status,
-    entityType: "Vessel",
+    entityType: ["Vessel"],
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     department: JSON.parse(saveFilterOptions)?.department,
@@ -333,7 +351,7 @@ const Vessels = () => {
       search: "",
       locationIds: [],
       status: [],
-      entityType: "Vessel",
+      entityType: ["Vessel"],
       typeIds: [],
       zoneIds: [],
       department: [],
@@ -367,7 +385,7 @@ const Vessels = () => {
     setIsIncompleteChecklistTask(false);
     //setAssignedToMe(null);
   };
-  
+
   const searchOptions: SearchOptionProps = {
     searchValue: search,
     onChange: (e) => setSearch(e.target.value),
@@ -637,23 +655,6 @@ const Vessels = () => {
             iconBackgroundColor={"var(--breakdown-bg)"}
             iconColor={"var(--breakdown-color)"}
             name={"Breakdown"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.7,
-          }}
-        >
-          <StatusCard
-            amountOne={dispose}
-            icon={<FaRecycle />}
-            iconBackgroundColor={"var(--dispose-bg)"}
-            iconColor={"var(--dispose-color)"}
-            name={"Dispose"}
           />
         </motion.div>
       </div>
