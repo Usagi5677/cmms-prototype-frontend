@@ -50,17 +50,6 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   );
 
   useEffect(() => {
-    if (
-      self?.machineAssignments.length === 0 &&
-      self?.vehicleAssignments.length === 0 &&
-      self?.vesselAssignments.length === 0 &&
-        !hasPermissions(self, ["ENTITY_ENGINEER"])
-    ) {
-      navigate("/");
-      message.error(
-        "You are not assigned to an entity as an engineer or you are not an engineer."
-      );
-    }
     getChecklistsWithIssue({
       variables: {
         input: {
