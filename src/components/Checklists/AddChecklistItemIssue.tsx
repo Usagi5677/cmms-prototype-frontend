@@ -27,7 +27,13 @@ export const AddChecklistItemIssue: React.FC<AddChecklistItemIssueProps> = ({
     onError: (error) => {
       errorMessage(error, "Unexpected error while adding issue.");
     },
-    refetchQueries: ["checklist", "checklistSummary"],
+    refetchQueries: [
+      "checklist",
+      "checklistSummary",
+      "checklistsWithIssue",
+      "checklistWithIssueSummary",
+      "checklistsWithIssuePastTwoDays"
+    ],
   });
 
   const handleCancel = () => {

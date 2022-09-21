@@ -1616,7 +1616,7 @@ export const INCOMPLETE_CHECKLIST_SUMMARY = gql`
   }
 `;
 
-export const CHECKLIST_WITH_ISSUE_PAST_TWO = gql`
+export const CHECKLISTS_WITH_ISSUE_PAST_TWO = gql`
   query checklistsWithIssuePastTwoDays {
     checklistsWithIssuePastTwoDays
   }

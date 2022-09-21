@@ -20,7 +20,7 @@ import { Badge, Menu, Tooltip } from "antd";
 import { useLazyQuery } from "@apollo/client";
 import { errorMessage } from "../../helpers/gql";
 import {
-  CHECKLIST_WITH_ISSUE_PAST_TWO,
+  CHECKLISTS_WITH_ISSUE_PAST_TWO,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_BREAKDOWN_COUNT_OF_ALL,
   INCOMPLETE_CHECKLIST_PAST_TWO,
@@ -58,7 +58,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
 
   const [getPastTwoDayChecklistsWithIssue, { data: pastTwoIssue }] =
-    useLazyQuery(CHECKLIST_WITH_ISSUE_PAST_TWO, {
+    useLazyQuery(CHECKLISTS_WITH_ISSUE_PAST_TWO, {
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
     });
@@ -114,7 +114,6 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
         : 0,
     });
   }
-
   // If user is admin of any entity
   if (hasPermissions(self, ["ENTITY_ENGINEER"])) {
     SidebarData.push({
