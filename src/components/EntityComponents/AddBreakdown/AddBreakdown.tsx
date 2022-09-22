@@ -1,3 +1,4 @@
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -15,6 +16,8 @@ const AddBreakdown = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const [detail, setDetail] = useState("");
+  const [details, setDetails] = useState<string[]>([]);
   const [createBreakdown, { loading: loadingBreakdown }] = useMutation(
     CREATE_BREAKDOWN,
     {
@@ -57,10 +60,28 @@ const AddBreakdown = ({
           entityId: entityID,
           name,
           type,
+          details,
         },
       },
     });
   };
+
+  const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") setDetail("");
+    else if (event.key === "Enter") {
+      event.preventDefault();
+      if (detail.trim() === "") return;
+      setDetail("");
+      setDetails([...details, detail]);
+    }
+  };
+  const removeItem = (index: number) => {
+    setDetails([
+      ...details.slice(0, index),
+      ...details.slice(index + 1, details.length),
+    ]);
+  };
+
   return (
     <>
       <Button
@@ -126,7 +147,35 @@ const AddBreakdown = ({
               ))}
             </Select>
           </Form.Item>
+          <div style={{ marginBottom: 6 }}>Details</div>
+          <div style={{ marginBottom: 20 }}>
+            {details.map((d: string, index: number) => (
+              <div key={index} className={classes["detail"]}>
+                {d}
+                <CloseCircleOutlined
+                  style={{ color: "red" }}
+                  onClick={() => {
+                    removeItem(index);
+                  }}
+                />
+              </div>
+            ))}
+          </div>
 
+          <input
+            type="text"
+            placeholder={"Add detail"}
+            value={detail}
+            onChange={(e) => setDetail(e.target.value)}
+            onKeyDown={submit}
+            style={{
+              border: "solid 1px var(--border-2)",
+              borderRadius: 5,
+              padding: ".5rem",
+              width: "100%",
+              marginBottom: 20,
+            }}
+          />
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
