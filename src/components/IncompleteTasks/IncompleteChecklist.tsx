@@ -1,6 +1,6 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Button, DatePicker, Empty } from "antd";
+import { Badge, Button, Checkbox, DatePicker, Empty } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
@@ -29,6 +29,7 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
     date.clone().startOf("month"),
     date.clone().endOf("month"),
   ]);
+  const [isAssigned, setIsAssigned] = useState(false);
 
   const [getIncompleteChecklists, { data, loading, refetch }] = useLazyQuery(
     INCOMPLETE_CHECKLISTS,
@@ -50,13 +51,14 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
         input: {
           type,
           date,
+          isAssigned,
         },
       },
     });
     if (!month[0].isSame(date, "month")) {
       setMonth([date.clone().startOf("month"), date.clone().endOf("month")]);
     }
-  }, [date]);
+  }, [date, isAssigned]);
 
   useEffect(() => {
     getSummary({
@@ -65,10 +67,11 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
           type,
           from: month[0],
           to: month[1],
+          isAssigned,
         },
       },
     });
-  }, [month]);
+  }, [month, isAssigned]);
 
   const changeDate = (direction: "forward" | "back") => {
     if (direction === "forward") {
@@ -122,6 +125,12 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
         <Badge count={data?.incompleteChecklists.length}>
           <div style={{ paddingRight: ".6rem" }}>{type}</div>
         </Badge>
+        <Checkbox
+          onChange={(e) => setIsAssigned(e.target.checked)}
+          style={{ marginLeft: 30 }}
+        >
+          Assigned to me
+        </Checkbox>
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
         {changeDateButton("back")}
