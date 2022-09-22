@@ -475,7 +475,7 @@ const ViewEntity = () => {
                 <ViewPeriodicMaintenance isDeleted={flag} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
-                <ViewSparePR isDeleted={flag} />
+                <ViewSparePR isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Repair" key="repair">
                 <ViewRepair isDeleted={flag} entity={entityData} />

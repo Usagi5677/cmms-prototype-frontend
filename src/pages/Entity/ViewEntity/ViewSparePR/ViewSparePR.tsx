@@ -13,8 +13,15 @@ import SparePRCard from "../../../../components/EntityComponents/SparePRCard/Spa
 import { useParams } from "react-router";
 import Search from "../../../../components/common/Search";
 import { hasPermissions } from "../../../../helpers/permissions";
+import { Entity } from "../../../../models/Entity/Entity";
 
-const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
+const ViewSparePR = ({
+  isDeleted,
+  entity,
+}: {
+  isDeleted?: boolean | undefined;
+  entity: Entity;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -136,6 +143,7 @@ const ViewSparePR = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
                   key={sparePR.id}
                   sparePR={sparePR}
                   isDeleted={isDeleted}
+                  entity={entity}
                 />
               );
             })}

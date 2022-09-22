@@ -1,24 +1,41 @@
 import { ToolOutlined } from "@ant-design/icons";
-import { Collapse, Tooltip } from "antd";
+import { useMutation } from "@apollo/client";
+import { Checkbox, Collapse, Spin, Tooltip } from "antd";
 import moment from "moment";
 import { useContext } from "react";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
+import { TOGGLE_SPARE_PR_COMPLETE } from "../../../api/mutations";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
-import { hasPermissions } from "../../../helpers/permissions";
+import { errorMessage } from "../../../helpers/gql";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
+import { Entity } from "../../../models/Entity/Entity";
 import SparePR from "../../../models/Entity/SparePR";
+import { AddSparePRDetail } from "../AddSparePRDetail";
 import DeleteSparePR from "../DeleteSparePR/DeleteSparePR";
 import EditSparePR from "../EditSparePR/EditSparePR";
+import SparePRDetailCard from "../SparePRDetailCard/SparePRDetailCard";
 import classes from "./SparePRCard.module.css";
 
 const SparePRCard = ({
   sparePR,
   isDeleted,
+  entity,
 }: {
   sparePR: SparePR;
   isDeleted: boolean | undefined;
+  entity: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
+  const [toggle, { loading: toggling }] = useMutation(
+    TOGGLE_SPARE_PR_COMPLETE,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating complete.");
+      },
+      refetchQueries: ["sparePRs", "getAllHistoryOfEntity"],
+    }
+  );
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -29,6 +46,32 @@ const SparePRCard = ({
                 <div className={classes["level-one"]}>
                   <div className={classes["info-wrapper"]}>
                     <div className={classes["first-block"]}>
+                      <div className={classes["space-two"]}>
+                        <Checkbox
+                          checked={sparePR?.completedAt !== null}
+                          disabled={
+                            (!hasPermissions(self, ["MODIFY_SPARE_PR"]) &&
+                              !isAssignedType("Admin", entity!, self) &&
+                              !isAssignedType("Engineer", entity!, self)) ||
+                            isDeleted
+                          }
+                          onChange={(e) =>
+                            toggle({
+                              variables: {
+                                id: sparePR.id,
+                                complete: e.target.checked,
+                              },
+                            })
+                          }
+                          style={{ wordBreak: "break-all" }}
+                        >
+                          Complete{" "}
+                          {toggling && (
+                            <Spin style={{ marginRight: 5 }} size="small" />
+                          )}
+                        </Checkbox>
+                      </div>
+
                       <div
                         className={
                           (classes["title-wrapper"], classes["space-two"])
@@ -115,7 +158,20 @@ const SparePRCard = ({
           key={sparePR.id}
         >
           <div className={classes["collapse-container"]}>
-            <div className={classes["inner-info"]}></div>
+            <span className={classes["inner-header"]}>Details</span>
+            {sparePR?.sparePRDetails?.map((d) => (
+              <SparePRDetailCard
+                sparePRDetail={d}
+                hasPermission={
+                  hasPermissions(self, ["MODIFY_SPARE_PR"]) ||
+                  isAssignedType("Admin", entity, self) ||
+                  isAssignedType("Engineer", entity, self)
+                }
+              />
+            ))}
+            <div style={{ marginTop: 10 }}>
+              <AddSparePRDetail sparePRId={sparePR.id} />
+            </div>
           </div>
         </Collapse.Panel>
       </Collapse>

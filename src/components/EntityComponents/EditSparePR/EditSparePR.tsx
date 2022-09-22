@@ -56,10 +56,6 @@ const EditSparePR = ({
       message.error("Please enter the name.");
       return;
     }
-    if (!requestedDate) {
-      message.error("Please enter the requested date.");
-      return;
-    }
 
     updateSparePR({
       variables: {
@@ -112,7 +108,11 @@ const EditSparePR = ({
               label="Requested Date"
               name="requestedDate"
               required={false}
-              initialValue={moment(sparePR?.requestedDate)}
+              initialValue={
+                moment(sparePR?.requestedDate).isValid()
+                  ? moment(sparePR?.requestedDate)
+                  : undefined
+              }
             >
               <DatePicker
                 placeholder="Select requested date"

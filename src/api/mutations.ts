@@ -1009,6 +1009,18 @@ export const REMOVE_BREAKDOWN_DETAIL = gql`
   }
 `;
 
+export const ADD_SPARE_PR_DETAIL = gql`
+  mutation ($createSparePRDetailInput: CreateSparePRDetailInput!) {
+    addSparePRDetail(createSparePRDetailInput: $createSparePRDetailInput)
+  }
+`;
+
+export const REMOVE_SPARE_PR_DETAIL = gql`
+  mutation ($id: Int!) {
+    removeSparePRDetail(id: $id)
+  }
+`;
+
 export const ADD_BREAKDOWN_COMMENT = gql`
   mutation addBreakdownComment(
     $createBreakdownCommentInput: CreateBreakdownCommentInput!
@@ -1224,6 +1236,11 @@ export const TOGGLE_BREAKDOWN_COMPLETE = gql`
   }
 `;
 
+export const TOGGLE_SPARE_PR_COMPLETE = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleSparePRComplete(id: $id, complete: $complete)
+  }
+`;
 export const BULK_ASSIGN = gql`
   mutation bulkAssign($input: BulkAssignInput!) {
     bulkAssign(input: $input)
