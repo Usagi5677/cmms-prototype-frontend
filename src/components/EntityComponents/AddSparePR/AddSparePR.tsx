@@ -58,6 +58,8 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
         },
       },
     });
+
+    setDetails([]);
   };
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {

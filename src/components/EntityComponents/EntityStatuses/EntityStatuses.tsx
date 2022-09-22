@@ -87,6 +87,8 @@ const EntityStatuses = ({
         },
       },
     });
+
+    setDetails([]);
   };
   const onChangeClick = async (status: EntityStatus) => {
     if (status === "Breakdown") {
