@@ -103,8 +103,11 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     },
   ];
 
-  // If user is admin of any entity
-  if (hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
+  if (
+    isAssignedTypeToAny("Admin", self) ||
+    isAssignedTypeToAny("User", self) ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
     SidebarData.push({
       name: "Incomplete Tasks",
       path: "/incomplete-tasks",
@@ -115,7 +118,11 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
+  if (
+    isAssignedTypeToAny("Admin", self) ||
+    isAssignedTypeToAny("Engineer", self) ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
     SidebarData.push({
       name: "Issues",
       path: "/issues",

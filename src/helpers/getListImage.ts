@@ -76,6 +76,8 @@ export function getListImage(name?: string) {
       return require("../images/vehicle/Pick up.png");
     case "Car":
       return require("../images/vehicle/Car.png");
+    case "Minibus":
+        return require("../images/vehicle/Mini bus.png");
     case "Speed Boat (25)":
       return require("../images/vessel/Speed Boat (25).png");
     case "Speed Boat (47)":
