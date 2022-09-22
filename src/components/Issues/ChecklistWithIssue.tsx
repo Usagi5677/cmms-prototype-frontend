@@ -1,18 +1,15 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Button, DatePicker, Empty, message } from "antd";
+import { Badge, Button, Checkbox, DatePicker, Empty } from "antd";
 import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useEffect, useState } from "react";
 import {
   CHECKLISTS_WITH_ISSUE,
   CHECKLIST_WITH_ISSUE_SUMMARY,
 } from "../../api/queries";
-import UserContext from "../../contexts/UserContext";
 import { generateSummary } from "../../helpers/checklist";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
-import { hasPermissions } from "../../helpers/permissions";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
 import IncompleteChecklistSummary from "../../models/IncompleteChecklistSummary";
@@ -27,13 +24,12 @@ export interface ChecklistWithIssueProps {
 export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   type,
 }) => {
-  const { user: self } = useContext(UserContext);
-  const navigate = useNavigate();
   const [date, setDate] = useState(moment());
   const [month, setMonth] = useState([
     date.clone().startOf("month"),
     date.clone().endOf("month"),
   ]);
+  const [isAssigned, setIsAssigned] = useState(false);
 
   const [getChecklistsWithIssue, { data, loading, refetch }] = useLazyQuery(
     CHECKLISTS_WITH_ISSUE,
@@ -55,13 +51,14 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
         input: {
           type,
           date,
+          isAssigned,
         },
       },
     });
     if (!month[0].isSame(date, "month")) {
       setMonth([date.clone().startOf("month"), date.clone().endOf("month")]);
     }
-  }, [date]);
+  }, [date, isAssigned]);
 
   useEffect(() => {
     getSummary({
@@ -70,10 +67,11 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
           type,
           from: month[0],
           to: month[1],
+          isAssigned,
         },
       },
     });
-  }, [month]);
+  }, [month, isAssigned]);
 
   const changeDate = (direction: "forward" | "back") => {
     if (direction === "forward") {
@@ -127,6 +125,12 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
         <Badge count={data?.checklistsWithIssue.length}>
           <div style={{ paddingRight: ".6rem" }}>{type}</div>
         </Badge>
+        <Checkbox
+          onChange={(e) => setIsAssigned(e.target.checked)}
+          style={{ marginLeft: 30 }}
+        >
+          Assigned to me
+        </Checkbox>
       </div>
 
       <div style={{ display: "flex", alignItems: "center" }}>

@@ -115,10 +115,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
-  if (
-    isAssignedTypeToAny("Admin", self) ||
-    isAssignedTypeToAny("Engineer", self)
-  ) {
+  if (hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
     SidebarData.push({
       name: "Issues",
       path: "/issues",
