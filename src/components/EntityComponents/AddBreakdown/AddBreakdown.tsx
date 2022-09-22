@@ -64,6 +64,8 @@ const AddBreakdown = ({
         },
       },
     });
+
+    setDetails([]);
   };
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
