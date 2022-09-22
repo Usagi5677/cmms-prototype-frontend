@@ -38,6 +38,8 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
+    setDetail("");
+    setDetails([]);
   };
 
   const onFinish = async (values: any) => {

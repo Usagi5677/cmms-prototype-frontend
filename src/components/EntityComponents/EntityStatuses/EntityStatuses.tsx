@@ -63,6 +63,8 @@ const EntityStatuses = ({
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
+    setDetail("");
+    setDetails([]);
   };
 
   const onFinish = async (values: any) => {
