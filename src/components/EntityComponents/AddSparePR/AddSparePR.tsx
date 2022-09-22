@@ -59,6 +59,7 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
       },
     });
 
+    setDetail("");
     setDetails([]);
   };
 

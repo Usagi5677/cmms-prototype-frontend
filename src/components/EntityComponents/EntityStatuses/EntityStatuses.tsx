@@ -88,6 +88,7 @@ const EntityStatuses = ({
       },
     });
 
+    setDetail("");
     setDetails([]);
   };
   const onChangeClick = async (status: EntityStatus) => {
