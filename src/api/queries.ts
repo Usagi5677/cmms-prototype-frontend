@@ -877,8 +877,16 @@ export const SPARE_PRS = gql`
           name
           requestedDate
           createdAt
+          completedAt
           createdBy {
             ...UserFieldsAPS
+          }
+          sparePRDetails {
+            id
+            description
+            createdBy {
+              ...UserFieldsAPS
+            }
           }
         }
       }

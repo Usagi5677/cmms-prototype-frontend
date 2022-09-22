@@ -1,3 +1,4 @@
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import {
   Button,
@@ -18,7 +19,8 @@ import classes from "./AddSparePR.module.css";
 const AddSparePR = ({ entityID }: { entityID: number }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-
+  const [detail, setDetail] = useState("");
+  const [details, setDetails] = useState<string[]>([]);
   const [createSparePR, { loading: loadingSparePR }] = useMutation(
     CREATE_SPARE_PR,
     {
@@ -36,6 +38,8 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
+    setDetail("");
+    setDetails([]);
   };
 
   const onFinish = async (values: any) => {
@@ -45,10 +49,6 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
       message.error("Please enter the name.");
       return;
     }
-    if (!requestedDate) {
-      message.error("Please enter the requested date.");
-      return;
-    }
 
     createSparePR({
       variables: {
@@ -56,10 +56,31 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
           entityId: entityID,
           name,
           requestedDate,
+          details,
         },
       },
     });
+
+    setDetail("");
+    setDetails([]);
   };
+
+  const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") setDetail("");
+    else if (event.key === "Enter") {
+      event.preventDefault();
+      if (detail.trim() === "") return;
+      setDetail("");
+      setDetails([...details, detail]);
+    }
+  };
+  const removeItem = (index: number) => {
+    setDetails([
+      ...details.slice(0, index),
+      ...details.slice(index + 1, details.length),
+    ]);
+  };
+
   return (
     <>
       <Button
@@ -114,6 +135,35 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
               allowClear={false}
             />
           </Form.Item>
+          <div style={{ marginBottom: 6 }}>Details</div>
+          <div style={{ marginBottom: 20 }}>
+            {details.map((d: string, index: number) => (
+              <div key={index} className={classes["spare-pr-detail"]}>
+                {d}
+                <CloseCircleOutlined
+                  style={{ color: "red" }}
+                  onClick={() => {
+                    removeItem(index);
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+          <input
+            type="text"
+            placeholder={"Add detail"}
+            value={detail}
+            onChange={(e) => setDetail(e.target.value)}
+            onKeyDown={submit}
+            style={{
+              border: "solid 1px var(--border-2)",
+              borderRadius: 5,
+              padding: ".5rem",
+              width: "100%",
+              marginBottom: 20
+            }}
+          />
 
           <Row justify="end" gutter={16}>
             <Col>

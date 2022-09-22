@@ -7,3 +7,15 @@
   border-radius: 20px !important;
   border-color: var(--ant-primary-color);
 }
+
+.spare-pr-detail {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+}
+
+.spare-pr-detail:hover {
+  background-color: var(--row-hover);
+}
