@@ -538,6 +538,35 @@ const EntityCard = ({
                 </div>
               </div>
             </div>
+            <div>
+              <div className={classes["reading"]}>
+                <span className={classes["reading-title"]}>Repairs:</span>
+                {entity?.repairs?.length > 0 ? (
+                  <div>
+                    {entity?.repairs.map((r) => {
+                      return (
+                        <div key={r.id}>
+                          <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                            <div className={classes["id-wrapper"]}>
+                              <ToolOutlined
+                                className={classes["icon"]}
+                                style={{ paddingRight: 4, opacity: 0.5 }}
+                              />
+                              <span style={{ opacity: 0.5, paddingRight: 10 }}>
+                                {r.id}
+                              </span>
+                              <span>{r.name}</span>
+                            </div>
+                          </Paragraph>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div>None</div>
+                )}
+              </div>
+            </div>
           </div>
         </Collapse.Panel>
       </Collapse>
