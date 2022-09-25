@@ -75,7 +75,7 @@ const BreakdownDetailCard = ({
             <div className={classes["info-wrapper"]}>
               <div
                 className={classes["icon-text"]}
-                title={`Breakdown detail: ${detail?.id}`}
+                title={`Breakdown Detail: ${detail?.id}`}
               >
                 <ToolOutlined />
                 <div className={classes["text"]}>{detail?.id}</div>

@@ -43,7 +43,7 @@ const RepairDetailCard = ({
               {repair?.breakdownDetail && (
                 <div
                   className={classes["icon-text"]}
-                  title={`Breakdown detail: ${repair?.breakdownDetail?.id}`}
+                  title={`Breakdown Detail: ${repair?.breakdownDetail?.id}`}
                 >
                   <ToolOutlined />
                   <div className={classes["text"]}>

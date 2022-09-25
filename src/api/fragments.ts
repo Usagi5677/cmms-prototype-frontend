@@ -72,6 +72,14 @@ export const ENTITY_FRAGMENT = gql`
       createdAt
       name
       requestedDate
+      sparePRDetails {
+        id
+        description
+      }
+    }
+    repairs {
+      id
+      name
     }
     breakdowns {
       id
@@ -81,6 +89,21 @@ export const ENTITY_FRAGMENT = gql`
       completedAt
       createdBy {
         ...UserFieldsAPS
+      }
+      details {
+        id
+        description
+        repairs {
+          id
+          name
+        }
+      }
+      repairs {
+        id
+        name
+        breakdownDetail {
+          id
+        }
       }
     }
   }
