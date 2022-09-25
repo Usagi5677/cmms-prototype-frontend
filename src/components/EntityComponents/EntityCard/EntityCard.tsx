@@ -414,82 +414,78 @@ const EntityCard = ({
                   {entity?.breakdowns?.length > 0 ? (
                     <div>
                       {entity?.breakdowns.map((b) => {
-                        if (b.completedAt == null) {
-                          return (
-                            <div key={b.id}>
-                              <Paragraph
-                                ellipsis={{ rows: 3, expandable: true }}
-                              >
-                                <div className={classes["id-wrapper"]}>
-                                  <ToolOutlined
-                                    className={classes["icon"]}
-                                    style={{ paddingRight: 4, opacity: 0.5 }}
-                                  />
-                                  <span
-                                    style={{ opacity: 0.5, paddingRight: 10 }}
-                                  >
-                                    {" "}
-                                    {b.id}
-                                  </span>
-                                  <span
-                                    style={{
-                                      color:
-                                        b.type === "Breakdown"
-                                          ? "red"
-                                          : b.type === "Critical"
-                                          ? "orange"
-                                          : "var(--text-primary)",
-                                    }}
-                                    title={
+                        return (
+                          <div key={b.id}>
+                            <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                              <div className={classes["id-wrapper"]}>
+                                <ToolOutlined
+                                  className={classes["icon"]}
+                                  style={{ paddingRight: 4, opacity: 0.5 }}
+                                />
+                                <span
+                                  style={{ opacity: 0.5, paddingRight: 10 }}
+                                >
+                                  {" "}
+                                  {b.id}
+                                </span>
+                                <span
+                                  style={{
+                                    color:
                                       b.type === "Breakdown"
-                                        ? `Breakdown (${b.id})`
-                                        : `Critical (${b.id})`
-                                    }
-                                  >
-                                    {b.name}
+                                        ? "red"
+                                        : b.type === "Critical"
+                                        ? "orange"
+                                        : "var(--text-primary)",
+                                  }}
+                                  title={
+                                    b.type === "Breakdown"
+                                      ? `Breakdown (${b.id})`
+                                      : `Critical (${b.id})`
+                                  }
+                                >
+                                  {b.name}
+                                </span>
+                              </div>
+                            </Paragraph>
+                            {b?.details?.map((d) => (
+                              <div key={d.id}>
+                                <div className={classes["list"]} key={d.id}>
+                                  <span title={`Breakdown detail (${d.id})`}>
+                                    {d.description}
                                   </span>
                                 </div>
-                              </Paragraph>
-                              {b?.details?.map((d) => (
-                                <div key={d.id}>
-                                  <div className={classes["list"]} key={d.id}>
-                                    <span title={`Breakdown detail (${d.id})`}>
-                                      {d.description}
+                                {d?.repairs?.map((r) => (
+                                  <div
+                                    className={classes["list-two"]}
+                                    key={r.id}
+                                  >
+                                    <span
+                                      style={{ color: "#52c41a" }}
+                                      title={`Repair (${r.id}) of breakdown detail (${d.id})`}
+                                    >
+                                      {r.name}
                                     </span>
                                   </div>
-                                  {d?.repairs?.map((r) => (
-                                    <div
-                                      className={classes["list-two"]}
-                                      key={r.id}
+                                ))}
+                              </div>
+                            ))}
+                            {b?.repairs?.map((r) => {
+                              //We are only showing breakdown's repair here. Not details
+                              if (!r?.breakdownDetail?.id) {
+                                return (
+                                  <div className={classes["list"]} key={r.id}>
+                                    <span
+                                      style={{ color: "#52c41a" }}
+                                      title={`Repair (${r.id}) of breakdown (${b.id})`}
                                     >
-                                      <span
-                                        style={{ color: "#52c41a" }}
-                                        title={`Repair (${r.id}) of breakdown detail (${d.id})`}
-                                      >
-                                        {r.name}
-                                      </span>
-                                    </div>
-                                  ))}
-                                </div>
-                              ))}
-                              {b?.repairs?.map((r) => {
-                                //We are only showing breakdown's repair here. Not details
-                                if (!r?.breakdownDetail?.id) {
-                                  return (
-                                    <div className={classes["list"]} key={r.id}>
-                                      <span
-                                        style={{ color: "#52c41a" }}
-                                        title={`Repair (${r.id}) of breakdown (${b.id})`}
-                                      >
-                                        {r.name}
-                                      </span>
-                                    </div>
-                                  );
-                                }
-                              })}
-                            </div>
-                          );
-                        }
+                                      {r.name}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            })}
+                          </div>
+                        );
                       })}
                     </div>
                   ) : (
@@ -505,39 +501,35 @@ const EntityCard = ({
                   {entity?.sparePRs?.length > 0 ? (
                     <div>
                       {entity?.sparePRs?.map((s) => {
-                        if (s?.completedAt == null) {
-                          return (
-                            <div key={s.id}>
-                              <Paragraph
-                                ellipsis={{ rows: 3, expandable: true }}
-                              >
-                                <div className={classes["id-wrapper"]}>
-                                  <ToolOutlined
-                                    className={classes["icon"]}
-                                    style={{ paddingRight: 4, opacity: 0.5 }}
-                                  />
-                                  <span
-                                    style={{ opacity: 0.5, paddingRight: 10 }}
-                                  >
-                                    {s.id}
-                                  </span>
-                                  <span title={`Spare PR (${s.id})`}>
-                                    {s.name}
-                                  </span>
-                                </div>
-                              </Paragraph>
-                              {s?.sparePRDetails?.map((d) => (
-                                <div className={classes["list"]} key={d.id}>
-                                  <span
-                                    title={`Spare PR Detail (${d.id}) of Spare PR (${s.id})`}
-                                  >
-                                    {d.description}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          );
-                        }
+                        return (
+                          <div key={s.id}>
+                            <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                              <div className={classes["id-wrapper"]}>
+                                <ToolOutlined
+                                  className={classes["icon"]}
+                                  style={{ paddingRight: 4, opacity: 0.5 }}
+                                />
+                                <span
+                                  style={{ opacity: 0.5, paddingRight: 10 }}
+                                >
+                                  {s.id}
+                                </span>
+                                <span title={`Spare PR (${s.id})`}>
+                                  {s.name}
+                                </span>
+                              </div>
+                            </Paragraph>
+                            {s?.sparePRDetails?.map((d) => (
+                              <div className={classes["list"]} key={d.id}>
+                                <span
+                                  title={`Spare PR Detail (${d.id}) of Spare PR (${s.id})`}
+                                >
+                                  {d.description}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        );
                       })}
                     </div>
                   ) : (
