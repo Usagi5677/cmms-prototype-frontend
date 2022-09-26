@@ -294,3 +294,6 @@ export const BRAND = [
 ];
 
 export const ENGINE = ["STBD", "CTR", "PORT"];
+
+// 10 MB
+export const MAX_FILE_SIZE = 10 * 1000000;

@@ -9,6 +9,7 @@ import {
   GET_ALL_ATTACHMENT_OF_ENTITY,
   GET_ALL_HISTORY_OF_ENTITY,
 } from "../../../api/queries";
+import { MAX_FILE_SIZE } from "../../../helpers/constants";
 import classes from "./AddEntityAttachment.module.css";
 
 const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
@@ -60,9 +61,8 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
 
     if (attachment.file.status === "removed") return;
     // Max allowed file size in bytes.
-    const maxFileSize = 2 * 1000000;
-    if (attachment.file.size > maxFileSize) {
-      message.error("File size cannot be greater than 2 MB.");
+    if (attachment.file.size > MAX_FILE_SIZE) {
+      message.error("File size cannot be greater than 10 MB.");
       return;
     }
     setUploading(true);
