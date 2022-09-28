@@ -14,15 +14,19 @@ import { DATETIME_FORMATS } from "../../../helpers/constants";
 import EntityAttachment from "../../../models/Entity/EntityAttachment";
 import EditEntityAttachment from "../EditEntityAttachment/EditEntityAttachment";
 import DeleteEntityAttachment from "../DeleteEntityAttachment/DeleteEntityAttachment";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
+import { Entity } from "../../../models/Entity/Entity";
 
 const ParsedEntityAttachment = ({
   attachmentData,
   isDeleted,
   checklistView = false,
+  entity,
 }: {
   attachmentData: EntityAttachment;
   isDeleted?: boolean | undefined;
   checklistView?: boolean;
+  entity?: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
   const attachmentId = attachmentData.id;
@@ -93,23 +97,25 @@ const ParsedEntityAttachment = ({
           {!checklistView && (
             <>
               {file &&
-                self.assignedPermission?.hasEntityAttachmentEdit &&
-                !isDeleted && (
+                hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+                isAssignedType("any", entity!, self) && (
                   <EditEntityAttachment attachment={attachmentData} />
                 )}
               {file &&
-                self.assignedPermission?.hasEntityAttachmentDelete &&
-                !isDeleted && (
+                hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+                isAssignedType("any", entity!, self) && (
                   <DeleteEntityAttachment id={attachmentData?.id} />
                 )}
-              {file && (
-                <Tooltip title={"Download"}>
-                  <DownloadOutlined
-                    className={classes["download-icon"]}
-                    onClick={download}
-                  />
-                </Tooltip>
-              )}
+              {file &&
+                hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+                isAssignedType("any", entity!, self) && (
+                  <Tooltip title={"Download"}>
+                    <DownloadOutlined
+                      className={classes["download-icon"]}
+                      onClick={download}
+                    />
+                  </Tooltip>
+                )}
             </>
           )}
         </div>
