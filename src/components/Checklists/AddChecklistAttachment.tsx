@@ -4,6 +4,7 @@ import { useForm } from "antd/lib/form/Form";
 import Upload, { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import React, { useState } from "react";
+import { MAX_FILE_SIZE } from "../../helpers/constants";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
 
@@ -45,9 +46,8 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
 
     if (attachment.file.status === "removed") return;
     // Max allowed file size in bytes.
-    const maxFileSize = 2 * 1000000;
-    if (attachment.file.size > maxFileSize) {
-      message.error("File size cannot be greater than 2 MB.");
+    if (attachment.file.size > MAX_FILE_SIZE) {
+      message.error("File size cannot be greater than 10 MB.");
       return;
     }
     setUploading(true);
