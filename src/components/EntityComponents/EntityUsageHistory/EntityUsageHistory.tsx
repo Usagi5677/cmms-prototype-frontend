@@ -5,7 +5,6 @@ import { GET_USAGE_HISTORY_OF_ENTITY } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { DatePicker, Spin } from "antd";
-import { Chart, registerables } from "chart.js";
 import { useParams } from "react-router";
 import classes from "./EntityUsageHistory.module.css";
 import Highcharts from "highcharts";
