@@ -32,22 +32,40 @@ import HighchartsReact from "highcharts-react-official";
 import { TypeSelector } from "../../../Config/Type/TypeSelector";
 import EntityCard from "../../../EntityComponents/EntityCard/EntityCard";
 import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
+import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 
 const EntityUtilization = () => {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const getFilter = localStorage.getItem("dashboardUtilizationFilter");
+  let getFilterObjects: any;
+  if (getFilter) {
+    getFilterObjects = JSON.parse(JSON.parse(getFilter));
+  }
   const [timerId, setTimerId] = useState(null);
   const { id }: any = useParams();
-  const [locationIds, setLocationIds] = useState<number[]>([]);
-  const [zoneIds, setZoneIds] = useState<number[]>([]);
-  const [typeIds, setTypeIds] = useState<number[]>([]);
+  const [search, setSearch] = useState(getFilterObjects?.search);
+  const [locationIds, setLocationIds] = useState<number[]>(
+    getFilterObjects?.locationIds
+  );
+  const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
+  const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
   const [dates, setDates] = useState<any>([
-    moment().subtract(1, "day"),
-    moment(),
+    moment(getFilterObjects?.from),
+    moment(getFilterObjects?.to),
   ]);
+  const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
+    "dashboardUtilizationFilter",
+    JSON.stringify({
+      search: "",
+      zoneIds: [],
+      locationIds: [],
+      typeIds: [],
+      from: moment().subtract(1, "day"),
+      to: moment(),
+    })
+  );
 
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<{
@@ -56,10 +74,10 @@ const EntityUtilization = () => {
     zoneIds: number[];
     typeIds: number[];
   }>({
-    search: "",
-    zoneIds: [],
-    locationIds: [],
-    typeIds: [],
+    search: JSON.parse(saveFilterOptions)?.search,
+    locationIds: JSON.parse(saveFilterOptions)?.locationIds,
+    zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
+    typeIds: JSON.parse(saveFilterOptions)?.typeIds,
   });
 
   const [allEntityUsageHistory, { data: history, loading: historyLoading }] =
@@ -81,6 +99,12 @@ const EntityUtilization = () => {
         typeIds,
       },
     });
+    const newfilter = {
+      ...filter,
+      from: dates[0].toISOString(),
+      to: dates[1].toISOString(),
+    };
+    setSaveFilterOptions(JSON.stringify(newfilter));
   }, [dates, allEntityUsageHistory, search, locationIds, zoneIds, typeIds]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -104,7 +128,6 @@ const EntityUtilization = () => {
           zoneIds: zoneIdsValue,
           typeIds: typeIdsValue,
         }));
-        setPage(1);
       }, 500)
     );
   };
@@ -140,6 +163,12 @@ const EntityUtilization = () => {
   useEffect(() => {
     getAllEntityWithoutPagination({ variables: filter });
     getAllEntityChecklistAndPMSummary();
+    const newfilter = {
+      ...filter,
+      from: dates[0].toISOString(),
+      to: dates[1].toISOString(),
+    };
+    setSaveFilterOptions(JSON.stringify(newfilter));
   }, [filter, getAllEntityWithoutPagination]);
 
   const isSmallDevice = useIsSmallDevice(1290);
