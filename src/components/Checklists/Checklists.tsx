@@ -205,8 +205,6 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                 {data?.checklist.workingHour !== null &&
                   !data?.checklist.currentMeterReading !== null && (
                     <>
-  
-                   
                       <span style={{ opacity: 0.7 }}>
                         Meter not available or broken
                       </span>
@@ -224,22 +222,20 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     </>
                   )}
                 {data?.checklist.dailyUsageHours !== null && (
-                    <div style={{ display: "flex" }}>
-                      <div style={{ flex: 1 }}>
-                        <InputNumber
-                          disabled
-                          addonBefore={
-                            <span style={{ paddingRight: 11 }}>
-                              Daily Usage
-                            </span>
-                          }
-                          addonAfter="hr"
-                          style={{ width: "100%", marginBottom: ".5rem" }}
-                          value={data?.checklist.dailyUsageHours}
-                        />
-                      </div>
+                  <div style={{ display: "flex" }}>
+                    <div style={{ flex: 1 }}>
+                      <InputNumber
+                        disabled
+                        addonBefore={
+                          <span style={{ paddingRight: 11 }}>Daily Usage</span>
+                        }
+                        addonAfter="hr"
+                        style={{ width: "100%", marginBottom: ".5rem" }}
+                        value={data?.checklist.dailyUsageHours}
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
                 {!isOlderChecklist && (
                   <div
                     style={{
@@ -293,6 +289,11 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                   key={item.id}
                   disabled={isOlderChecklist}
                   isAssigned={isAssignedType("any", entity, user)}
+                  readingDone={
+                    data?.checklist.currentMeterReading !== null ||
+                    data?.checklist.workingHour !== null ||
+                    data?.checklist.dailyUsageHours
+                  }
                 />
               ))}
             </div>
