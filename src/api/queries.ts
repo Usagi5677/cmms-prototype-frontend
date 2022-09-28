@@ -991,7 +991,6 @@ export const BREAKDOWNS = gql`
       edges {
         node {
           id
-          name
           type
           createdAt
           estimatedDateOfRepair
@@ -1086,9 +1085,12 @@ export const REPAIRS = gql`
           breakdown {
             id
             type
-            name
             createdBy {
               ...UserFieldsAPS
+            }
+            details {
+              id
+              description
             }
           }
           comments {

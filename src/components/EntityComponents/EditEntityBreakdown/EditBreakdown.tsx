@@ -52,11 +52,7 @@ const EditBreakdown = ({
   };
 
   const onFinish = async (values: any) => {
-    const { name, type, estimatedDateOfRepair } = values;
-    if (!name) {
-      message.error("Please enter the description.");
-      return;
-    }
+    const { type, estimatedDateOfRepair } = values;
     if (!type) {
       message.error("Please select the type.");
       return;
@@ -70,7 +66,6 @@ const EditBreakdown = ({
         updateBreakdownInput: {
           id: breakdown.id,
           entityId: parseInt(id),
-          name,
           type,
           estimatedDateOfRepair,
         },
@@ -100,20 +95,6 @@ const EditBreakdown = ({
             id="myForm"
             preserve={false}
           >
-            <Form.Item
-              label="Name"
-              name="name"
-              required={false}
-              initialValue={breakdown?.name}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the name.",
-                },
-              ]}
-            >
-              <Input placeholder="Name" />
-            </Form.Item>
             <Form.Item
               label="Type"
               name="type"

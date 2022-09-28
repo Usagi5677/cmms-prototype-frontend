@@ -46,7 +46,7 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
     const { name, requestedDate } = values;
 
     if (!name) {
-      message.error("Please enter the name.");
+      message.error("Please enter the PR number.");
       return;
     }
 
@@ -109,13 +109,13 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
           id="myForm"
         >
           <Form.Item
-            label="Name"
+            label="PR Number"
             name="name"
             required={false}
             rules={[
               {
                 required: true,
-                message: "Please enter the name.",
+                message: "Please enter the PR number.",
               },
             ]}
           >

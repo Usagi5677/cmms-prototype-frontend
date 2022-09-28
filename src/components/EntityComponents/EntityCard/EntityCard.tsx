@@ -417,7 +417,10 @@ const EntityCard = ({
                         return (
                           <div key={b.id}>
                             <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                              <div className={classes["id-wrapper"]}>
+                              <div
+                                className={classes["id-wrapper"]}
+                                title={`Breakdown ID: ${b.id}`}
+                              >
                                 <ToolOutlined
                                   className={classes["icon"]}
                                   style={{ paddingRight: 4, opacity: 0.5 }}
@@ -425,32 +428,24 @@ const EntityCard = ({
                                 <span
                                   style={{ opacity: 0.5, paddingRight: 10 }}
                                 >
-                                  {" "}
                                   {b.id}
-                                </span>
-                                <span
-                                  style={{
-                                    color:
-                                      b.type === "Breakdown"
-                                        ? "red"
-                                        : b.type === "Critical"
-                                        ? "orange"
-                                        : "var(--text-primary)",
-                                  }}
-                                  title={
-                                    b.type === "Breakdown"
-                                      ? `Breakdown (${b.id})`
-                                      : `Critical (${b.id})`
-                                  }
-                                >
-                                  {b.name}
                                 </span>
                               </div>
                             </Paragraph>
                             {b?.details?.map((d) => (
                               <div key={d.id}>
                                 <div className={classes["list"]} key={d.id}>
-                                  <span title={`Breakdown detail (${d.id})`}>
+                                  <span
+                                    title={`Breakdown detail (${d.id})`}
+                                    style={{
+                                      color:
+                                        b.type === "Breakdown"
+                                          ? "red"
+                                          : b.type === "Critical"
+                                          ? "orange"
+                                          : "var(--text-primary)",
+                                    }}
+                                  >
                                     {d.description}
                                   </span>
                                 </div>

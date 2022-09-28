@@ -45,10 +45,10 @@ const AddBreakdown = ({
   };
 
   const onFinish = async (values: any) => {
-    const { name, type } = values;
+    const { type } = values;
 
-    if (!name) {
-      message.error("Please enter the name.");
+    if(details.length < 1) {
+      message.error("Please enter the detail.");
       return;
     }
     if (!type) {
@@ -60,7 +60,6 @@ const AddBreakdown = ({
       variables: {
         createBreakdownInput: {
           entityId: entityID,
-          name,
           type,
           details,
         },
@@ -115,19 +114,6 @@ const AddBreakdown = ({
           onFinish={onFinish}
           id="myForm"
         >
-          <Form.Item
-            label="Name"
-            name="name"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the name.",
-              },
-            ]}
-          >
-            <Input placeholder="Name" />
-          </Form.Item>
           <Form.Item
             label="Type"
             name="type"

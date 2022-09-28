@@ -139,16 +139,20 @@ const EntityBreakdownCard = ({
                           {breakdown?.type}
                         </Tag>
                       </div>
-                      <div
-                        className={
-                          (classes["reading"],
-                          classes["space-two"],
-                          classes["flex-limit"])
-                        }
-                      >
-                        <span className={classes["reading-title"]}>Name:</span>
-                        {breakdown?.name}
-                      </div>
+                      {breakdown?.details[0]?.description && (
+                        <div
+                          className={
+                            (classes["reading"],
+                            classes["space-two"],
+                            classes["flex-limit"])
+                          }
+                        >
+                          <span className={classes["reading-title"]}>
+                            Detail:
+                          </span>
+                          {breakdown?.details[0]?.description}
+                        </div>
+                      )}
                     </div>
                     <div className={classes["second-block"]}>
                       {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||

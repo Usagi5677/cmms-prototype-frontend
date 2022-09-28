@@ -17,6 +17,7 @@
   align-items: center;
   margin-right: 10px;
 }
+
 .title-wrapper {
   display: flex;
   align-items: center;
@@ -137,13 +138,15 @@
   .header-container {
     font-size: 12px;
   }
-
   .second-block {
     flex-direction: column;
     justify-content: flex-start;
   }
   .flex {
     flex-direction: row;
+  }
+  .level-two {
+    margin-top: 0;
   }
 }
 

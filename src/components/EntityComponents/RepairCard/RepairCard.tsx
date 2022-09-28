@@ -46,7 +46,9 @@ const RepairCard = ({
                   <div className={classes["info-wrapper"]}>
                     <div className={classes["first-block"]}>
                       <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>Name:</span>
+                        <span className={classes["reading-title"]}>
+                          Repair Detail:
+                        </span>
                         {repair?.name}
                       </div>
                     </div>
@@ -57,37 +59,59 @@ const RepairCard = ({
                       }}
                     >
                       {breakdownExist && (
-                        <div className={classes["reading"]}>
-                          <span className={classes["reading-title"]}>
-                            Breakdown Type:
-                          </span>
-                          <Tag
-                            color={
-                              repair?.breakdown?.type === "Breakdown"
-                                ? "red"
-                                : "orange"
-                            }
-                            style={{
-                              fontWeight: 700,
-                              borderRadius: 20,
-                              textAlign: "center",
-                              maxWidth: 250,
-                            }}
-                          >
-                            {repair?.breakdown?.type}
-                          </Tag>
-                        </div>
-                      )}
-                      {breakdownExist && (
-                        <div
-                          className={
-                            (classes["reading"], classes["flex-limit"])
-                          }
-                        >
-                          <span className={classes["reading-title"]}>
-                            Breakdown Name:
-                          </span>
-                          ({repair?.breakdown?.id}) {repair?.breakdown?.name}
+                        <div style={{marginTop: 4}}>
+                          <div className={classes["reading"]}>
+                            <span className={classes["reading-title"]}>
+                              Breakdown Type:
+                            </span>
+                            <Tag
+                              color={
+                                repair?.breakdown?.type === "Breakdown"
+                                  ? "red"
+                                  : "orange"
+                              }
+                              style={{
+                                fontWeight: 700,
+                                borderRadius: 20,
+                                textAlign: "center",
+                                maxWidth: 250,
+                              }}
+                            >
+                              {repair?.breakdown?.type}
+                            </Tag>
+                          </div>
+                          {breakdownExist && (
+                            <div
+                              className={
+                                (classes["reading"], classes["flex-limit"])
+                              }
+                            >
+                              <div className={classes["id-wrapper"]} style={{marginTop: 4}}>
+                                <ToolOutlined
+                                  className={
+                                    (classes["icon"])
+                                  }
+                                  style={{ opacity: 0.5 }}
+                                />
+                                <span
+                                  style={{
+                                    opacity: 0.5,
+                                    fontSize: 12,
+                                    paddingLeft: 2,
+                                  }}
+                                  title={`Breakdown ID: ${repair?.breakdown?.id}`}
+                                >
+                                  {repair?.breakdown?.id}
+                                </span>
+                                <span
+                                  title={`Breakdown Detail ID: ${repair?.breakdown?.details[0]?.id}`}
+                                  className={classes["title"]}
+                                >
+                                  {repair?.breakdown?.details[0]?.description}
+                                </span>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

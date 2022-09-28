@@ -140,6 +140,7 @@ const ViewGallery = ({
                   key={attachment.id}
                   attachmentData={attachment}
                   isDeleted={isDeleted}
+                  entity={entity}
                 />
               );
             }
