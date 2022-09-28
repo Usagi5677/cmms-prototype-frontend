@@ -8,11 +8,22 @@ import AddEntityAttachment from "../../../../components/EntityComponents/AddEnti
 import ParsedEntityAttachment from "../../../../components/EntityComponents/ParsedEntityAttachment/ParsedEntityAttachment";
 import UserContext from "../../../../contexts/UserContext";
 import { errorMessage } from "../../../../helpers/gql";
+import {
+  hasPermissions,
+  isAssignedType,
+} from "../../../../helpers/permissions";
+import { Entity } from "../../../../models/Entity/Entity";
 import EntityAttachment from "../../../../models/Entity/EntityAttachment";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import classes from "./ViewGallery.module.css";
 
-const ViewGallery = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
+const ViewGallery = ({
+  isDeleted,
+  entity,
+}: {
+  isDeleted?: boolean | undefined;
+  entity: Entity;
+}) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -108,7 +119,8 @@ const ViewGallery = ({ isDeleted }: { isDeleted?: boolean | undefined }) => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        {self.assignedPermission?.hasEntityAttachmentAdd && !isDeleted ? (
+        {hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
+        isAssignedType("any", entity, self) ? (
           <AddEntityAttachment entityID={parseInt(id)} />
         ) : null}
 

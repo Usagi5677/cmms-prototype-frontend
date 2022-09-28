@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { Checkbox, Spin } from "antd";
+import { Checkbox, message, Spin } from "antd";
 import React, { useState } from "react";
 import { TOGGLE_CHECKLIST_ITEM } from "../../api/mutations";
 import ChecklistItemModel from "../../models/ChecklistItem";
@@ -14,6 +14,7 @@ export interface ChecklistItemProps {
   item: ChecklistItemModel;
   disabled: boolean;
   isAssigned?: boolean;
+  readingDone?: boolean;
 }
 
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({
@@ -21,6 +22,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
   item,
   disabled,
   isAssigned,
+  readingDone,
 }) => {
   const [hover, setHover] = useState(false);
 
@@ -51,11 +53,15 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
       ) : (
         <Checkbox
           style={{ marginRight: ".25rem" }}
-          onChange={(e) =>
-            toggle({
-              variables: { id: item.id, complete: e.target.checked },
-            })
-          }
+          onChange={(e) => {
+            if (readingDone) {
+              toggle({
+                variables: { id: item.id, complete: e.target.checked },
+              });
+            } else {
+              message.error("Please enter the reading before doing checklist.");
+            }
+          }}
           checked={item.completedAt ? true : false}
           disabled={disabled || !isAssigned}
         />

@@ -487,14 +487,16 @@ const ViewEntity = () => {
                 <ViewHistory />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <ViewGallery isDeleted={flag} />
+                <ViewGallery isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
             </Tabs>
           </div>
         </div>
-        <div className={classes["usage-container"]}>
-          <EntityUsageHistory />
-        </div>
+        {false && (
+          <div className={classes["usage-container"]}>
+            <EntityUsageHistory />
+          </div>
+        )}
       </div>
     </>
   );

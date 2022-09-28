@@ -89,6 +89,9 @@ const EntityStatuses = ({
         },
       },
     });
+    setEntityStatus({
+      variables: { entityId: entityID, status: type },
+    });
 
     setDetail("");
     setDetails([]);

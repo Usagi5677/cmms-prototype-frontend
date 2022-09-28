@@ -189,7 +189,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
           <div style={{ marginTop: ".5rem" }}>
             {type === "Daily" ? (
               <>
-                {data?.checklist.currentMeterReading && (
+                {data?.checklist.currentMeterReading !== null && (
                   <div style={{ display: "flex" }}>
                     <div style={{ flex: 1 }}>
                       <InputNumber
@@ -202,8 +202,8 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     </div>
                   </div>
                 )}
-                {data?.checklist.workingHour &&
-                  !data?.checklist.currentMeterReading && (
+                {data?.checklist.workingHour !== null &&
+                  !data?.checklist.currentMeterReading !== null && (
                     <>
                       <span style={{ opacity: 0.7 }}>
                         Meter not available or broken
@@ -221,7 +221,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       </div>
                     </>
                   )}
-                {data?.checklist.dailyUsageHours && (
+                {data?.checklist.dailyUsageHours !== null && (
                   <div style={{ display: "flex" }}>
                     <div style={{ flex: 1 }}>
                       <InputNumber
@@ -289,6 +289,11 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                   key={item.id}
                   disabled={isOlderChecklist}
                   isAssigned={isAssignedType("any", entity, user)}
+                  readingDone={
+                    data?.checklist.currentMeterReading !== null ||
+                    data?.checklist.workingHour !== null ||
+                    data?.checklist.dailyUsageHours
+                  }
                 />
               ))}
             </div>
