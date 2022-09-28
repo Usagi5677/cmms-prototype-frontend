@@ -68,12 +68,8 @@ const EntityStatuses = ({
   };
 
   const onFinish = async (values: any) => {
-    const { name, type } = values;
+    const { type } = values;
 
-    if (!name) {
-      message.error("Please enter the name.");
-      return;
-    }
     if (!type) {
       message.error("Please select the type.");
       return;
@@ -83,7 +79,6 @@ const EntityStatuses = ({
       variables: {
         createBreakdownInput: {
           entityId: entityID,
-          name,
           type,
           details,
         },
@@ -141,19 +136,6 @@ const EntityStatuses = ({
           onFinish={onFinish}
           id="myForm"
         >
-          <Form.Item
-            label="Name"
-            name="name"
-            required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the name.",
-              },
-            ]}
-          >
-            <Input placeholder="Title" />
-          </Form.Item>
           <Form.Item
             label="Type"
             name="type"

@@ -6,13 +6,12 @@ import Repair from "./Repair";
 export default interface Breakdown {
   id: number;
   entityId: number;
-  name: string;
   type: string;
   createdBy: User;
   createdAt?: Date;
   estimatedDateOfRepair?: Date;
   completedAt?: Date;
-  details?: BreakdownDetail[];
+  details: BreakdownDetail[];
   comments?: Comment[];
   repairs?: Repair[];
 }

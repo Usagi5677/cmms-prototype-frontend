@@ -32,7 +32,10 @@ const AddEntityRepairRequest = ({ isDeleted }: { isDeleted?: boolean }) => {
 
   const onFinish = async (values: any) => {
     const { name } = values;
-
+    if (!name) {
+      message.error("Please enter the detail.");
+      return;
+    }
     createRepair({
       variables: {
         createRepairInput: {
@@ -73,8 +76,18 @@ const AddEntityRepairRequest = ({ isDeleted }: { isDeleted?: boolean }) => {
         >
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item label="Name" name="name" required={false}>
-                <Input placeholder="Name" />
+              <Form.Item
+                label="Detail"
+                name="name"
+                required={false}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the detail.",
+                  },
+                ]}
+              >
+                <Input placeholder="Detail" />
               </Form.Item>
             </div>
           </div>

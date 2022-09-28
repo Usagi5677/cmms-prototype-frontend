@@ -83,7 +83,6 @@ export const ENTITY_FRAGMENT = gql`
     }
     breakdowns {
       id
-      name
       type
       estimatedDateOfRepair
       completedAt
