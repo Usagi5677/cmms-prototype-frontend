@@ -87,6 +87,10 @@ const ParsedEntityAttachment = ({
     return `${rest.substring(0, 20)}...${ext}`;
   };
 
+  let assigned = false;
+  if (isAssignedType("any", entity!, self)) {
+    assigned = true;
+  }
   return (
     <div className={classes["container"]}>
       <div className={classes["option-wrapper"]}>
@@ -96,26 +100,21 @@ const ParsedEntityAttachment = ({
           )}
           {!checklistView && (
             <>
-              {file &&
-                hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-                isAssignedType("any", entity!, self) && (
-                  <EditEntityAttachment attachment={attachmentData} />
-                )}
-              {file &&
-                hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-                isAssignedType("any", entity!, self) && (
-                  <DeleteEntityAttachment id={attachmentData?.id} />
-                )}
-              {file &&
-                hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-                isAssignedType("any", entity!, self) && (
-                  <Tooltip title={"Download"}>
-                    <DownloadOutlined
-                      className={classes["download-icon"]}
-                      onClick={download}
-                    />
-                  </Tooltip>
-                )}
+              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                assigned) && (
+                <EditEntityAttachment attachment={attachmentData} />
+              )}
+              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                assigned) && <DeleteEntityAttachment id={attachmentData?.id} />}
+              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                assigned) && (
+                <Tooltip title={"Download"}>
+                  <DownloadOutlined
+                    className={classes["download-icon"]}
+                    onClick={download}
+                  />
+                </Tooltip>
+              )}
             </>
           )}
         </div>
