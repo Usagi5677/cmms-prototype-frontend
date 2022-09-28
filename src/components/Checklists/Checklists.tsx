@@ -189,7 +189,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
           <div style={{ marginTop: ".5rem" }}>
             {type === "Daily" ? (
               <>
-                {data?.checklist.currentMeterReading && (
+                {data?.checklist.currentMeterReading >= 0 && (
                   <div style={{ display: "flex" }}>
                     <div style={{ flex: 1 }}>
                       <InputNumber
@@ -202,8 +202,8 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     </div>
                   </div>
                 )}
-                {data?.checklist.workingHour &&
-                  !data?.checklist.currentMeterReading && (
+                {data?.checklist.workingHour >= 0 &&
+                  !(data?.checklist.currentMeterReading >= 0) && (
                     <>
                       <span style={{ opacity: 0.7 }}>
                         Meter not available or broken
@@ -221,21 +221,24 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       </div>
                     </>
                   )}
-                {data?.checklist.dailyUsageHours && (
-                  <div style={{ display: "flex" }}>
-                    <div style={{ flex: 1 }}>
-                      <InputNumber
-                        disabled
-                        addonBefore={
-                          <span style={{ paddingRight: 11 }}>Daily Usage</span>
-                        }
-                        addonAfter="hr"
-                        style={{ width: "100%", marginBottom: ".5rem" }}
-                        value={data?.checklist.dailyUsageHours}
-                      />
+                {data?.checklist.dailyUsageHours >= 0 &&
+                  entity.measurement !== "hr" && (
+                    <div style={{ display: "flex" }}>
+                      <div style={{ flex: 1 }}>
+                        <InputNumber
+                          disabled
+                          addonBefore={
+                            <span style={{ paddingRight: 11 }}>
+                              Daily Usage
+                            </span>
+                          }
+                          addonAfter="hr"
+                          style={{ width: "100%", marginBottom: ".5rem" }}
+                          value={data?.checklist.dailyUsageHours}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 {!isOlderChecklist && (
                   <div
                     style={{

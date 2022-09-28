@@ -54,17 +54,18 @@ export const AddReading: React.FC<AddReadingProps> = ({
 
   const onFinish = async (values: any) => {
     const { meter, today } = values;
-    if (!meter && !today) {
+    if (meter < 0 && today < 0) {
+      console.log(meter);
       message.error("Please enter the values.");
     }
-    if (meter) {
+    if (meter >= 0) {
       updateReading({
         variables: {
           id: checklist.id,
           reading: meter,
         },
       });
-    } else if (today) {
+    } else if (today >= 0) {
       updateToday({
         variables: {
           id: checklist.id,
@@ -99,6 +100,7 @@ export const AddReading: React.FC<AddReadingProps> = ({
                   addonAfter={`${entity.measurement}`}
                   placeholder={`Enter ${entity.measurement}`}
                   style={{ width: "100%", marginBottom: ".5rem" }}
+         
                   //@ts-ignore
                   // value={reading}
                   // onChange={(val: number) => {
@@ -123,7 +125,6 @@ export const AddReading: React.FC<AddReadingProps> = ({
                   placeholder={`Enter ${entity.measurement}`}
                   style={{ width: "100%", marginBottom: ".5rem" }}
                   max={entity.measurement === "hr" ? 24 : undefined}
-                  min={0}
                 />
               </Form.Item>
             </>
