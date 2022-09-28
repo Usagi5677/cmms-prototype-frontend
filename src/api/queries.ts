@@ -1231,71 +1231,6 @@ export const GET_ENTITY_LATEST_ATTACHMENT = gql`
   }
 `;
 
-export const ALL_ENTITY_UTILIZATION = gql`
-  ${APS_USER_FRAGMENT}
-  query getAllEntityUtilization(
-    $after: String
-    $before: String
-    $first: Int
-    $last: Int
-    $search: String
-    $locationIds: [Int!]
-  ) {
-    getAllEntityUtilization(
-      after: $after
-      before: $before
-      first: $first
-      last: $last
-      search: $search
-      locationIds: $locationIds
-    ) {
-      pageInfo {
-        endCursor
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        count
-      }
-      edges {
-        node {
-          id
-          machineNumber
-          model
-          location {
-            id
-            name
-            zone {
-              name
-            }
-          }
-          type {
-            entityType
-          }
-          deletedAt
-          histories {
-            id
-            createdAt
-            entityId
-            type
-            description
-            completedBy {
-              ...UserFieldsAPS
-            }
-            entityStatus
-            entityType
-            breakdownHour
-            idleHour
-            workingHour
-            location {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 export const GET_ALL_ENTITY_PERIODIC_MAINTENANCE = gql`
   ${APS_USER_FRAGMENT}
   query getAllEntityPeriodicMaintenance(
@@ -1535,16 +1470,50 @@ export const GET_ALL_ASSIGNED_ENTITY = gql`
 `;
 
 export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
-  query allEntityUsageHistory($from: Date!, $to: Date!, $locationIds: [Int!]) {
-    allEntityUsageHistory(from: $from, to: $to, locationIds: $locationIds) {
-      date
+  query allEntityUsageHistory(
+    $from: Date!
+    $to: Date!
+    $search: String
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $typeIds: [Int!]
+  ) {
+    allEntityUsageHistory(
+      from: $from
+      to: $to
+      search: $search
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      typeIds: $typeIds
+    ) {
       workingHour
       idleHour
       breakdownHour
+      na
       totalHour
       workingPercentage
       idlePercentage
       breakdownPercentage
+      machineNumber
+    }
+  }
+`;
+
+export const ALL_ENTITY_WITHOUT_PAGINATION = gql`
+  ${ENTITY_FRAGMENT}
+  query getAllEntityWithoutPagination(
+    $search: String
+    $locationIds: [Int!]
+    $typeIds: [Int!]
+    $zoneIds: [Int!]
+  ) {
+    getAllEntityWithoutPagination(
+      search: $search
+      locationIds: $locationIds
+      typeIds: $typeIds
+      zoneIds: $zoneIds
+    ) {
+      ...EntityFields
     }
   }
 `;

@@ -216,8 +216,9 @@ a {
   --scrollbar-thumb-bg-hover: #a6a6a6;
   --scrollbar-thumb-bg-active: #606060;
   --card-border: none;
-  --calendar-border-top-color: rgba(0,0,0,.06);
+  --calendar-border-top-color: rgba(0, 0, 0, 0.06);
   --ant-picker-calendar-date-today: var(--ant-primary-1);
+  --highchart-menu-btn-border: none;
 }
 
 [data-theme="dark"] {
@@ -366,6 +367,7 @@ a {
   --card-border: 1px solid var(--ant-primary-color);
   --calendar-border-top-color: #303030;
   --ant-picker-calendar-date-today: var(--ant-primary-10);
+  --highchart-menu-btn-border: var(--ant-primary-color);
 }
 
 ::-webkit-scrollbar-corner {
@@ -527,10 +529,6 @@ em {
 
 .ant-dropdown {
   position: fixed !important;
-}
-
-.ant-collapse-header {
-  padding-bottom: 0px !important;
 }
 
 .ant-btn-round.ant-btn-icon-only {
@@ -899,6 +897,38 @@ div.ant-typography {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-#noZIndexBadge .ant-badge-count {
+#noZIndexBadge .ant-badge -count {
   z-index: 0 !important;
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+.highcharts-background {
+  fill: var(--card-bg) !important;
+}
+
+.highcharts-title,
+.highcharts-legend-item text {
+  color: var(--text-primary) !important;
+  fill: var(--text-primary) !important;
+}
+
+.highcharts-button-box {
+  fill: var(--card-bg) !important;
+  stroke: var(--highchart-menu-btn-border) !important;
+  stroke-width: 1;
+}
+.highcharts-no-tooltip.highcharts-button.highcharts-contextbutton:hover .highcharts-button-box {
+  fill: var(--row-hover) !important;
+}
+
+.highcharts-grid-line,
+.highcharts-axis-line {
+  stroke: var(--border-1) !important;
+}
+
+.highcharts-point {
+  stroke: var(--border-1) !important;
 }

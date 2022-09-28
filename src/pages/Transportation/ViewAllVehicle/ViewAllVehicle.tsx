@@ -677,12 +677,11 @@ const Vehicles = () => {
               </div>
             </motion.div>
           </div>
-          {loading && (
+          {loading ? (
             <div>
               <Spin style={{ width: "100%", margin: "2rem auto" }} />
             </div>
-          )}
-          {data?.getAllEntity.edges.length > 0 ? (
+          ) : data?.getAllEntity.edges.length > 0 ? (
             <div>
               {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
                 const entity = rec.node;
