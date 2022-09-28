@@ -487,7 +487,7 @@ const ViewEntity = () => {
                 <ViewHistory />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Gallery" key="gallery">
-                <ViewGallery isDeleted={flag} />
+                <ViewGallery isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
             </Tabs>
           </div>
