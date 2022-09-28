@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { IncompleteChecklists } from "../components/IncompleteTasks/IncompleteChecklists";
 import UserContext from "../contexts/UserContext";
-import { isAssignedTypeToAny } from "../helpers/permissions";
+import { hasPermissions, isAssignedTypeToAny } from "../helpers/permissions";
 
 export interface IncompleteTasksProps {}
 
@@ -13,7 +13,8 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
   useEffect(() => {
     if (
       !isAssignedTypeToAny("Admin", user) &&
-      !isAssignedTypeToAny("User", user)
+      !isAssignedTypeToAny("User", user) &&
+      !hasPermissions(user, ["VIEW_ALL_ENTITY"])
     ) {
       navigate("/");
       message.error("Not an admin or user of any entity.");
@@ -30,7 +31,7 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
-        border: "var(--card-border)"
+        border: "var(--card-border)",
       }}
     >
       <Tabs defaultActiveKey="checklist">
