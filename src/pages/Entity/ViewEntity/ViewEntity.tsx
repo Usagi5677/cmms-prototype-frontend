@@ -492,11 +492,9 @@ const ViewEntity = () => {
             </Tabs>
           </div>
         </div>
-        {false && (
-          <div className={classes["usage-container"]}>
-            <EntityUsageHistory />
-          </div>
-        )}
+        <div className={classes["usage-container"]}>
+          <EntityUsageHistory entity={entityData} />
+        </div>
       </div>
     </>
   );

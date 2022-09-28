@@ -1216,6 +1216,7 @@ export const GET_USAGE_HISTORY_OF_ENTITY = gql`
       workingHour
       idleHour
       breakdownHour
+      na
     }
   }
 `;
