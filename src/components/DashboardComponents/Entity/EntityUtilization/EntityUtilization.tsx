@@ -1,13 +1,7 @@
-import { Badge, Collapse, DatePicker, Empty, Spin, Tooltip } from "antd";
+import { Badge, Collapse, DatePicker, Empty, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
-import {
-  FaArrowAltCircleRight,
-  FaMapMarkerAlt,
-  FaTractor,
-  FaTruck,
-} from "react-icons/fa";
 import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY_WITHOUT_PAGINATION,
@@ -16,15 +10,10 @@ import {
 } from "../../../../api/queries";
 import { errorMessage } from "../../../../helpers/gql";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import PaginationArgs from "../../../../models/PaginationArgs";
-import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import Search from "../../../common/Search";
-import EntityUtilizationGraph from "../EntityUtilizationGraph/EntityUtilizationGraph";
 import { Entity } from "../../../../models/Entity/Entity";
 import { motion } from "framer-motion";
-import { RiSailboatFill } from "react-icons/ri";
 import { LocationSelector } from "../../../Config/Location/LocationSelector";
-import ApexChart from "react-apexcharts";
 import { DATETIME_FORMATS } from "../../../../helpers/constants";
 import moment from "moment";
 import Highcharts from "highcharts";
