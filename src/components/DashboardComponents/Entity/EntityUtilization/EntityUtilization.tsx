@@ -22,6 +22,7 @@ import { TypeSelector } from "../../../Config/Type/TypeSelector";
 import EntityCard from "../../../EntityComponents/EntityCard/EntityCard";
 import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
+import { MeasurementSelector } from "../../../common/MeasurementSelector";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
@@ -40,6 +41,9 @@ const EntityUtilization = () => {
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
+  const [measurement, setMeasurement] = useState<string[]>(
+    getFilterObjects?.measurement
+  );
   const [dates, setDates] = useState<any>([
     moment(getFilterObjects?.from),
     moment(getFilterObjects?.to),
@@ -51,6 +55,7 @@ const EntityUtilization = () => {
       zoneIds: [],
       locationIds: [],
       typeIds: [],
+      measurement: [],
       from: moment().subtract(1, "day"),
       to: moment(),
     })
@@ -62,11 +67,13 @@ const EntityUtilization = () => {
     locationIds: number[];
     zoneIds: number[];
     typeIds: number[];
+    measurement: string[];
   }>({
     search: JSON.parse(saveFilterOptions)?.search,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
+    measurement: JSON.parse(saveFilterOptions)?.measurement,
   });
 
   const [allEntityUsageHistory, { data: history, loading: historyLoading }] =
@@ -86,6 +93,7 @@ const EntityUtilization = () => {
         locationIds,
         zoneIds,
         typeIds,
+        measurement,
       },
     });
     const newfilter = {
@@ -94,7 +102,15 @@ const EntityUtilization = () => {
       to: dates[1].toISOString(),
     };
     setSaveFilterOptions(JSON.stringify(newfilter));
-  }, [dates, allEntityUsageHistory, search, locationIds, zoneIds, typeIds]);
+  }, [
+    dates,
+    allEntityUsageHistory,
+    search,
+    locationIds,
+    zoneIds,
+    typeIds,
+    measurement,
+  ]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -104,7 +120,8 @@ const EntityUtilization = () => {
     value: string,
     locationIdsValue: number[],
     zoneIdsValue: number[],
-    typeIdsValue: number[]
+    typeIdsValue: number[],
+    measurementValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -116,6 +133,7 @@ const EntityUtilization = () => {
           locationIds: locationIdsValue,
           zoneIds: zoneIdsValue,
           typeIds: typeIdsValue,
+          measurement: measurementValue,
         }));
       }, 500)
     );
@@ -126,9 +144,9 @@ const EntityUtilization = () => {
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, locationIds, zoneIds, typeIds);
+    searchDebounced(search, locationIds, zoneIds, typeIds, measurement);
     // eslint-disable-next-line
-  }, [search, locationIds, zoneIds, typeIds]);
+  }, [search, locationIds, zoneIds, typeIds, measurement]);
 
   const [getAllEntityWithoutPagination, { data, loading }] = useLazyQuery(
     ALL_ENTITY_WITHOUT_PAGINATION,
@@ -167,7 +185,7 @@ const EntityUtilization = () => {
   if (history?.allEntityUsageHistory) {
     options = {
       title: {
-        text: "Utilization",
+        text: `Utilization (${history?.allEntityUsageHistory.length})`,
       },
       subtitle: {
         text: `${moment(dates[0]).format(
@@ -210,7 +228,7 @@ const EntityUtilization = () => {
             ],
           },
         },
-        filename: `Utilization (${moment(dates[0]).format(
+        filename: `Utilization (${history?.allEntityUsageHistory.length}) (${moment(dates[0]).format(
           DATETIME_FORMATS.DAY_MONTH_YEAR
         )} - ${moment(dates[1]).format(DATETIME_FORMATS.DAY_MONTH_YEAR)})`,
         csv: {
@@ -344,14 +362,7 @@ const EntityUtilization = () => {
             width={"100%"}
           />
         </div>
-        <div
-          style={{
-            marginTop: 10,
-            width: "100%",
-            paddingRight: 10,
-            paddingLeft: 10,
-          }}
-        >
+        <div className={classes["option"]}>
           <LocationSelector
             setLocationId={setLocationIds}
             currentId={locationIds}
@@ -360,17 +371,25 @@ const EntityUtilization = () => {
             width={"100%"}
           />
         </div>
-        <div
-          style={{
-            marginTop: 10,
-            width: "100%",
-            paddingRight: 10,
-            paddingLeft: 10,
-          }}
-        >
+        <div className={classes["option"]}>
           <ZoneSelector
             setZoneId={setZoneIds}
             currentId={zoneIds}
+            rounded
+            multiple
+            width={"100%"}
+          />
+        </div>
+        <div className={classes["option"]}>
+          <MeasurementSelector
+            onChange={(measurement: string[]) => {
+              setFilter({
+                ...filter,
+                measurement,
+              });
+              setMeasurement(measurement);
+            }}
+            value={measurement}
             rounded
             multiple
             width={"100%"}

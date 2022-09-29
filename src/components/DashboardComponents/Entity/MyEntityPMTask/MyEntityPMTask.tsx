@@ -1,59 +1,63 @@
 import { useLazyQuery } from "@apollo/client";
-import { Avatar, Checkbox, Collapse, Empty, Select, Spin, Tooltip } from "antd";
+import {
+  Avatar,
+  Checkbox,
+  Collapse,
+  Empty,
+  Image,
+  Skeleton,
+  Spin,
+  Tooltip,
+} from "antd";
 import { motion } from "framer-motion";
 import { useContext, useState, useEffect, useRef } from "react";
 import CountUp from "react-countup";
-import {
-  FaArrowAltCircleRight,
-  FaMapMarkerAlt,
-  FaTractor,
-  FaTruck,
-} from "react-icons/fa";
-import { RiSailboatFill } from "react-icons/ri";
+import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
   GET_ALL_ENTITY_PM_TASK_STATUS_COUNT,
   GET_ALL_ENTITY_PM_TASK,
 } from "../../../../api/queries";
 import UserContext from "../../../../contexts/UserContext";
-import { ISLANDS } from "../../../../helpers/constants";
+import { getListImage } from "../../../../helpers/getListImage";
 import { errorMessage } from "../../../../helpers/gql";
 import { stringToColor } from "../../../../helpers/style";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
+import EntityAssignment from "../../../../models/Entity/EntityAssign";
 import EntityPMTask from "../../../../models/Entity/EntityPMTask";
-import { PeriodicMaintenanceStatus } from "../../../../models/Enums";
 import PaginationArgs from "../../../../models/PaginationArgs";
-import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
+import { EntityIcon } from "../../../common/EntityIcon";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
-import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceStatusTag";
 import Search from "../../../common/Search";
 import { LocationSelector } from "../../../Config/Location/LocationSelector";
+import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
 import classes from "./MyEntityPMTask.module.css";
 
 const MyEntityPMTask = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
   const [locationIds, setLocationIds] = useState([]);
+  const [zoneIds, setZoneIds] = useState([]);
   const [complete, setComplete] = useState(false);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       locationIds: number[];
+      zoneIds: number[];
       complete: boolean;
       assignedToId: number;
     }
   >({
-    first: 3,
+    first: 5,
     last: null,
     before: null,
     after: null,
     search: "",
     locationIds: [],
+    zoneIds: [],
     complete: false,
     assignedToId: self.id,
   });
@@ -89,16 +93,8 @@ const MyEntityPMTask = () => {
   // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllEntityPeriodicMaintenanceTask({ variables: filter });
-    getAllEntityPMTaskStatusCount({
-      variables: {
-        assignedToId: self.id,
-      },
-    });
-  }, [
-    filter,
-    getAllEntityPeriodicMaintenanceTask,
-    getAllEntityPMTaskStatusCount,
-  ]);
+    getAllEntityPMTaskStatusCount({ variables: filter });
+  }, [filter, getAllEntityPeriodicMaintenanceTask]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -107,6 +103,7 @@ const MyEntityPMTask = () => {
   const searchDebounced = (
     value: string,
     locationIdsValue: number[],
+    zoneIdsValue: number[],
     completeValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
@@ -117,8 +114,9 @@ const MyEntityPMTask = () => {
           ...filter,
           search: value,
           locationIds: locationIdsValue,
+          zoneIds: zoneIdsValue,
           complete: completeValue,
-          first: 3,
+          first: 5,
           last: null,
           before: null,
           after: null,
@@ -134,15 +132,15 @@ const MyEntityPMTask = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, locationIds, complete);
+    searchDebounced(search, locationIds, zoneIds, complete);
     // eslint-disable-next-line
-  }, [search, locationIds, complete]);
+  }, [search, locationIds, zoneIds, complete]);
 
   // Pagination functions
   const next = () => {
     setFilter({
       ...filter,
-      first: 3,
+      first: 5,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -153,7 +151,7 @@ const MyEntityPMTask = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 5,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -165,15 +163,8 @@ const MyEntityPMTask = () => {
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let done = statusData?.allEntityPMTaskStatusCount?.done;
-  let pending = statusData?.allEntityPMTaskStatusCount?.pending;
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
+  let complete2 = statusData?.allEntityPMTaskStatusCount?.complete;
+  let ongoing = statusData?.allEntityPMTaskStatusCount?.ongoing;
 
   return (
     <motion.div
@@ -215,60 +206,79 @@ const MyEntityPMTask = () => {
             transition: {
               ease: "easeOut",
               duration: 0.3,
-              delay: 0.8,
+              delay: 0.4,
             },
           }}
           viewport={{ once: true }}
+          style={{ width: "100%" }}
         >
           <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
+            width={"100%"}
           />
         </motion.div>
-
-        <div className={classes["status-wrapper"]}>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 1.1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <div className={classes["location"]}>
-              <LocationSelector
-                setLocationId={setLocationIds}
-                multiple={true}
-                rounded={true}
-                width={"100%"}
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 1.2,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <Checkbox onChange={(e) => setComplete(e.target.checked)}>
-              Complete
-            </Checkbox>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.5,
+            },
+          }}
+          viewport={{ once: true }}
+          className={classes["option"]}
+        >
+          <LocationSelector
+            setLocationId={setLocationIds}
+            multiple={true}
+            rounded={true}
+            width={"100%"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.6,
+            },
+          }}
+          viewport={{ once: true }}
+          className={classes["option"]}
+        >
+          <ZoneSelector
+            setZoneId={setZoneIds}
+            multiple={true}
+            rounded={true}
+            width={"100%"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.7,
+            },
+          }}
+          viewport={{ once: true }}
+          className={classes["option"]}
+        >
+          <Checkbox onChange={(e) => setComplete(e.target.checked)}>
+            Complete
+          </Checkbox>
+        </motion.div>
       </div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
@@ -281,12 +291,12 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
           >
-            <CountUp end={pending} duration={1} />
+            <CountUp end={ongoing} duration={1} />
           </motion.div>
           <motion.div
             className={classes["pending"]}
@@ -297,12 +307,12 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
           >
-            Pending
+            Ongoing
           </motion.div>
         </div>
         <div className={classes["counter-wrapper"]}>
@@ -315,12 +325,12 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.4,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
           >
-            <CountUp end={done} duration={1} />
+            <CountUp end={complete2} duration={1} />
           </motion.div>
           <motion.div
             className={classes["done"]}
@@ -331,12 +341,12 @@ const MyEntityPMTask = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.4,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
           >
-            Done
+            Complete
           </motion.div>
         </div>
       </div>
@@ -349,6 +359,30 @@ const MyEntityPMTask = () => {
         data?.getAllEntityPeriodicMaintenanceTask.edges.map(
           (rec: { node: EntityPMTask }) => {
             const periodicMaintenanceTask = rec.node;
+            let imagePath = getListImage(
+              periodicMaintenanceTask?.periodicMaintenance?.entity?.type?.name
+            );
+
+            let loading = true;
+            if (imagePath) {
+              loading = false;
+            }
+
+            const unique = [
+              ...new Set(
+                periodicMaintenanceTask?.periodicMaintenance?.entity?.assignees?.map(
+                  (assign) => assign.user.id
+                )
+              ),
+            ];
+            let uniqueAssign: any = [];
+            for (const b of unique) {
+              let assign =
+                periodicMaintenanceTask?.periodicMaintenance?.entity?.assignees.find(
+                  (a) => a.user.id === b
+                );
+              uniqueAssign.push(assign);
+            }
             return (
               <motion.div
                 id="collapse"
@@ -369,22 +403,32 @@ const MyEntityPMTask = () => {
                   <Collapse.Panel
                     header={
                       <>
-                        <div
-                          className={classes["header-container"]}
-                          onClick={(event) => event.stopPropagation()}
-                        >
+                        <div className={classes["header-container"]}>
                           <div className={classes["first-block"]}>
+                            {loading ? (
+                              <Skeleton.Image
+                                style={{
+                                  width: 60,
+                                  height: 50,
+                                  borderRadius: 6,
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                src={imagePath}
+                                height={50}
+                                width={60}
+                                preview={false}
+                              />
+                            )}
                             <div>
                               <div className={classes["title-wrapper"]}>
-                                {periodicMaintenanceTask?.periodicMaintenance
-                                  ?.entity?.type?.entityType === "Vessel" ? (
-                                  <RiSailboatFill />
-                                ) : periodicMaintenanceTask?.periodicMaintenance
-                                    ?.entity?.type?.entityType === "Vehicle" ? (
-                                  <FaTruck />
-                                ) : (
-                                  <FaTractor />
-                                )}
+                                <EntityIcon
+                                  entityType={
+                                    periodicMaintenanceTask?.periodicMaintenance
+                                      ?.entity?.type?.entityType
+                                  }
+                                />
                                 <span className={classes["title"]}>
                                   {
                                     periodicMaintenanceTask?.periodicMaintenance
@@ -392,96 +436,82 @@ const MyEntityPMTask = () => {
                                   }
                                 </span>
                               </div>
-                              <div className={classes["location-wrapper"]}>
+                              <div className={classes["title-wrapper"]}>
                                 <FaMapMarkerAlt style={{ marginRight: 5 }} />
-                                <div>
-                                  <div className={classes["location-width"]}>
-                                    {
-                                      periodicMaintenanceTask
-                                        ?.periodicMaintenance?.entity?.location
-                                        ?.name
-                                    }
-                                  </div>
-                                </div>
+                                {
+                                  periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.location?.name
+                                }
                               </div>
                             </div>
                           </div>
 
-                          <div className={classes["service-reading-wrapper"]}>
+                          <div className={classes["second-block"]}>
                             <div className={classes["reading"]}>
                               <span className={classes["reading-title"]}>
                                 Task:
                               </span>
                               <span>{periodicMaintenanceTask?.name}</span>
                             </div>
-                            <div className={classes["reading"]}>
-                              <div>
-                                <span className={classes["reading-title"]}>
-                                  Assigned to:
-                                </span>
-                                <span className={classes["center"]}>
-                                  {periodicMaintenanceTask.periodicMaintenance
-                                    .entity?.assignees?.length > 0 ? (
-                                    <Avatar.Group
-                                      maxCount={5}
-                                      maxStyle={{
-                                        color: "#f56a00",
-                                        backgroundColor: "#fde3cf",
-                                      }}
-                                    >
-                                      {periodicMaintenanceTask.periodicMaintenance.entity?.assignees?.map(
-                                        (assign) => {
-                                          return (
-                                            <Tooltip
-                                              title={
-                                                <>
-                                                  <div
-                                                    style={{
-                                                      display: "flex",
-                                                      alignItems: "center",
-                                                    }}
-                                                  >
-                                                    {assign?.user?.fullName} (
-                                                    {assign?.user?.rcno})
-                                                  </div>
-                                                </>
-                                              }
-                                              placement="bottom"
-                                              key={assign?.user?.id}
+                            <div
+                              className={classes["reading"]}
+                              style={{ marginTop: 2 }}
+                            >
+                              <span className={classes["reading-title"]}>
+                                Assigned to:
+                              </span>
+                              <span>
+                                {uniqueAssign?.length > 0 ? (
+                                  <Avatar.Group
+                                    maxCount={5}
+                                    maxStyle={{
+                                      color: "#f56a00",
+                                      backgroundColor: "#fde3cf",
+                                    }}
+                                  >
+                                    {uniqueAssign.map(
+                                      (assign: EntityAssignment) => {
+                                        return (
+                                          <Tooltip
+                                            title={
+                                              <>
+                                                <div
+                                                  style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                  }}
+                                                >
+                                                  {assign?.user?.fullName} (
+                                                  {assign?.user?.rcno})
+                                                </div>
+                                              </>
+                                            }
+                                            placement="bottom"
+                                            key={assign?.user?.id}
+                                          >
+                                            <Avatar
+                                              style={{
+                                                backgroundColor: stringToColor(
+                                                  assign?.user?.fullName!
+                                                ),
+                                              }}
+                                              size={20}
                                             >
-                                              <Avatar
-                                                style={{
-                                                  backgroundColor:
-                                                    stringToColor(
-                                                      assign?.user?.fullName!
-                                                    ),
-                                                }}
-                                                size={22}
-                                              >
-                                                {assign?.user?.fullName
-                                                  .match(/^\w|\b\w(?=\S+$)/g)
-                                                  ?.join()
-                                                  .replace(",", "")
-                                                  .toUpperCase()}
-                                              </Avatar>
-                                            </Tooltip>
-                                          );
-                                        }
-                                      )}
-                                    </Avatar.Group>
-                                  ) : (
-                                    <span>None</span>
-                                  )}
-                                </span>
-                              </div>
-                            </div>
-                            <div className={classes["status"]}>
-                              <PeriodicMaintenanceStatusTag
-                                status={
-                                  periodicMaintenanceTask?.periodicMaintenance
-                                    ?.status
-                                }
-                              />
+                                              {assign?.user?.fullName
+                                                .match(/^\w|\b\w(?=\S+$)/g)
+                                                ?.join()
+                                                .replace(",", "")
+                                                .toUpperCase()}
+                                            </Avatar>
+                                          </Tooltip>
+                                        );
+                                      }
+                                    )}
+                                  </Avatar.Group>
+                                ) : (
+                                  <span>None</span>
+                                )}
+                              </span>
                             </div>
                           </div>
                           <Link

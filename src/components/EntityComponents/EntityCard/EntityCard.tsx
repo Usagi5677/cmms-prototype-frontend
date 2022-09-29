@@ -1,11 +1,7 @@
 import {
   FaArrowAltCircleRight,
-  FaGlobe,
   FaMapMarkerAlt,
-  FaQuestionCircle,
   FaRegClock,
-  FaTractor,
-  FaTruck,
 } from "react-icons/fa";
 
 import classes from "./EntityCard.module.css";

@@ -128,10 +128,17 @@ const Dashboard = () => {
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["content"]}>
-          <MyEntityPMTask />
-          <AllAssignedEntity />
-          <AllEntityPMTask />
-          <EntityMaintenance />
+          {hasPermissions(self, ["VIEW_DASHBOARD"]) &&
+            hasPermissions(
+              self,
+              ["ENTITY_ENGINEER", "ENTITY_ADMIN"],
+              "any"
+            ) && <MyEntityPMTask />}
+          {hasPermissions(self, ["VIEW_DASHBOARD"]) &&
+            hasPermissions(self, ["ENTITY_USER", "ENTITY_ADMIN"], "any") && (
+              <AllAssignedEntity />
+            )}
+
           <EntityUtilization />
         </div>
       )}

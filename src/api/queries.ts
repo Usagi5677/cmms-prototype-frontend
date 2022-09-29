@@ -1366,6 +1366,7 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
     $search: String
     $complete: Boolean
     $locationIds: [Int!]
+    $zoneIds: [Int!]
     $assignedToId: Int
   ) {
     getAllEntityPeriodicMaintenanceTask(
@@ -1376,6 +1377,7 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
       search: $search
       complete: $complete
       locationIds: $locationIds
+      zoneIds: $zoneIds
       assignedToId: $assignedToId
     ) {
       pageInfo {
@@ -1401,6 +1403,7 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
               }
               machineNumber
               type {
+                name
                 entityType
               }
               assignees {
@@ -1416,10 +1419,20 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
   }
 `;
 export const GET_ALL_ENTITY_PM_TASK_STATUS_COUNT = gql`
-  query allEntityPMTaskStatusCount($assignedToId: Int) {
-    allEntityPMTaskStatusCount(assignedToId: $assignedToId) {
-      pending
-      done
+  query allEntityPMTaskStatusCount(
+    $search: String
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $assignedToId: Int
+  ) {
+    allEntityPMTaskStatusCount(
+      search: $search
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      assignedToId: $assignedToId
+    ) {
+      ongoing
+      complete
     }
   }
 `;
@@ -1480,6 +1493,7 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
     $locationIds: [Int!]
     $zoneIds: [Int!]
     $typeIds: [Int!]
+    $measurement: [String!]
   ) {
     allEntityUsageHistory(
       from: $from
@@ -1488,6 +1502,7 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
       locationIds: $locationIds
       zoneIds: $zoneIds
       typeIds: $typeIds
+      measurement: $measurement
     ) {
       workingHour
       idleHour
