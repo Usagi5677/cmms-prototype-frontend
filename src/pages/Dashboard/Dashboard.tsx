@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import classes from "./Dashboard.module.css";
 import { useLazyQuery } from "@apollo/client";
@@ -14,10 +14,12 @@ import EntityUtilization from "../../components/DashboardComponents/Entity/Entit
 import { hasPermissions } from "../../helpers/permissions";
 import { motion } from "framer-motion";
 import { WarningOutlined } from "@ant-design/icons";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import CloneEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/CloneEntityUtilization";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
-
+  const [active, setActive] = useState(false);
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
     {
@@ -49,6 +51,10 @@ const Dashboard = () => {
     dispose = statusCountData?.dispose;
   }
 
+  const compare = () => {
+    setActive(!active);
+  };
+  const isSmallDevice = useIsSmallDevice(1200, true);
   return (
     <>
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
@@ -138,8 +144,14 @@ const Dashboard = () => {
             hasPermissions(self, ["ENTITY_USER", "ENTITY_ADMIN"], "any") && (
               <AllAssignedEntity />
             )}
-
-          <EntityUtilization />
+          {active && (
+            <div
+              className={classes["compare"]}
+              style={{ display: active && isSmallDevice ? "block" : "none" }}
+            ></div>
+          )}
+          <EntityUtilization active={active} onClick={compare} />
+          {active && <CloneEntityUtilization active={active} clone={true} />}
         </div>
       )}
     </>
