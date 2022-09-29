@@ -294,6 +294,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                     data?.checklist.workingHour !== null ||
                     data?.checklist.dailyUsageHours
                   }
+                  type={type}
                 />
               ))}
             </div>

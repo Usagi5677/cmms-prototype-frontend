@@ -15,6 +15,7 @@ export interface ChecklistItemProps {
   disabled: boolean;
   isAssigned?: boolean;
   readingDone?: boolean;
+  type?: string;
 }
 
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({
@@ -23,6 +24,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
   disabled,
   isAssigned,
   readingDone,
+  type
 }) => {
   const [hover, setHover] = useState(false);
 
@@ -54,7 +56,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
         <Checkbox
           style={{ marginRight: ".25rem" }}
           onChange={(e) => {
-            if (readingDone) {
+            if (readingDone || type === "Weekly") {
               toggle({
                 variables: { id: item.id, complete: e.target.checked },
               });
