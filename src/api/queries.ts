@@ -1480,6 +1480,7 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
     $locationIds: [Int!]
     $zoneIds: [Int!]
     $typeIds: [Int!]
+    $measurement: [String!]
   ) {
     allEntityUsageHistory(
       from: $from
@@ -1488,6 +1489,7 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
       locationIds: $locationIds
       zoneIds: $zoneIds
       typeIds: $typeIds
+      measurement: $measurement
     ) {
       workingHour
       idleHour
