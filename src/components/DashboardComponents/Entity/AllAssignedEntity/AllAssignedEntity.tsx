@@ -1,5 +1,5 @@
 import { Avatar, Collapse, Empty, Image, Skeleton, Spin, Tooltip } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../helpers/gql";
@@ -11,7 +11,6 @@ import {
 import classes from "./AllAssignedEntity.module.css";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
 import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
-import { EntityStatus } from "../../../../models/Enums";
 import { stringToColor } from "../../../../helpers/style";
 import Search from "../../../common/Search";
 import { Entity } from "../../../../models/Entity/Entity";
@@ -24,8 +23,10 @@ import { getListImage } from "../../../../helpers/getListImage";
 import { EntityIcon } from "../../../common/EntityIcon";
 import EntityAssignment from "../../../../models/Entity/EntityAssign";
 import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
+import UserContext from "../../../../contexts/UserContext";
 
 const AllAssignedEntity = () => {
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -37,8 +38,8 @@ const AllAssignedEntity = () => {
     PaginationArgs & {
       search: string;
       locationIds: number[];
-      isAssigned: boolean;
       zoneIds: number[];
+      assignedToId: number;
     }
   >({
     first: 6,
@@ -47,7 +48,7 @@ const AllAssignedEntity = () => {
     after: null,
     search: "",
     locationIds: [],
-    isAssigned: true,
+    assignedToId: self.id,
     zoneIds: [],
   });
 
