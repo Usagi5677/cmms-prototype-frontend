@@ -400,7 +400,6 @@ const AllAssignedEntity = () => {
                     <>
                       <div
                         className={classes["header-container"]}
-                        onClick={(event) => event.stopPropagation()}
                       >
                         <div className={classes["first-block"]}>
                           <div>

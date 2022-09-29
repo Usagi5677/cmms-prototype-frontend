@@ -177,8 +177,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
 
   if (hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
     SidebarData.push({
-      name: "Disposed",
-      path: "/disposed",
+      name: "Dispose",
+      path: "/dispose",
       icon: <FaRecycle />,
     });
   }

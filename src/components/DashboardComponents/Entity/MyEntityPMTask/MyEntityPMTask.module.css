@@ -18,7 +18,10 @@
   justify-content: space-between;
   align-items: center;
 }
-
+.option {
+  width: 100%;
+  margin-top: 10px;
+}
 .header-container {
   display: flex;
   align-items: center;
@@ -35,32 +38,11 @@
 .title-wrapper {
   display: flex;
   align-items: center;
-}
-
-.location-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.service-reading-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  flex: 5;
-  padding: 5px 0;
+  margin-left: 10px;
 }
 
 .reading {
-  margin-right: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -76,7 +58,13 @@
 .first-block {
   display: flex;
   flex-direction: column;
-  flex: 2;
+  flex: 5;
+}
+
+.second-block {
+  display: flex;
+  flex-direction: column;
+  flex: 6;
 }
 
 .container {
@@ -147,14 +135,6 @@
   justify-content: center;
 }
 
-.status-wrapper {
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex-direction: column;
-}
-
 .heading {
   font-size: 22px;
   font-weight: 700;
@@ -182,12 +162,12 @@
   .header-container {
     font-size: 10px;
   }
-  .service-reading-wrapper {
-    flex-direction: row;
+  .second-block {
     padding: 0;
   }
   .first-block {
     flex-direction: row;
+    align-items: center;
   }
   .counter-container {
     flex-direction: row;
@@ -196,10 +176,6 @@
     margin: 10px 0;
     margin-right: 5px;
     margin-left: 20px;
-  }
-  .options-wrapper {
-    flex-direction: row;
-    margin-bottom: 0;
   }
 }
 @media only screen and (min-width: 1200px) {
