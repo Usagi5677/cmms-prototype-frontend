@@ -1,8 +1,6 @@
-import { Empty, message, Select, Spin } from "antd";
-import Search from "../../../components/common/Search";
+import { Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
+import { useNavigate } from "react-router-dom";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -16,7 +14,7 @@ import classes from "./ViewAllVehicle.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle, FaTruck } from "react-icons/fa";
+import { FaCarCrash, FaTruck } from "react-icons/fa";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
@@ -40,7 +38,7 @@ import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Vehicles = () => {
-  const getFilter = localStorage.getItem("filter");
+  const getFilter = localStorage.getItem("vehiclesFilter");
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -86,7 +84,7 @@ const Vehicles = () => {
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "filter",
+    "vehiclesFilter",
     JSON.stringify({
       first: 20,
       last: null,

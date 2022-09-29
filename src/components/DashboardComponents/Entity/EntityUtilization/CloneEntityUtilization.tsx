@@ -28,7 +28,7 @@ require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 
-const EntityUtilization = ({
+const CloneEntityUtilization = ({
   clone,
   active,
   onClick,
@@ -37,7 +37,7 @@ const EntityUtilization = ({
   active?: boolean;
   onClick?: () => void;
 }) => {
-  const getFilter = localStorage.getItem("dashboardUtilizationFilter");
+  const getFilter = localStorage.getItem("cloneDashboardUtilizationFilter");
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -58,7 +58,7 @@ const EntityUtilization = ({
     moment(getFilterObjects?.to),
   ]);
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "dashboardUtilizationFilter",
+    "cloneDashboardUtilizationFilter",
     JSON.stringify({
       search: "",
       zoneIds: [],
@@ -510,4 +510,4 @@ const EntityUtilization = ({
   );
 };
 
-export default EntityUtilization;
+export default CloneEntityUtilization;

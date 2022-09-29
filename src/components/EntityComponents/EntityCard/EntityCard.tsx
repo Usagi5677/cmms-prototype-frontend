@@ -30,9 +30,11 @@ import { ToolOutlined } from "@ant-design/icons";
 const EntityCard = ({
   entity,
   summaryData,
+  smallView,
 }: {
   entity: Entity;
   summaryData?: EntityChecklistAndPMSummary;
+  smallView?: boolean;
 }) => {
   const { Paragraph } = Typography;
   const interServiceMileage =
@@ -104,8 +106,8 @@ const EntityCard = ({
         <Collapse.Panel
           header={
             <>
-              <div className={classes["header-container"]}>
-                <div className={classes["first-block"]}>
+              <div className={classes["header-container"]} >
+                <div className={classes["first-block"]} style={{flex: smallView ? 2 : 1}}>
                   {loading ? (
                     <Skeleton.Image
                       style={{ width: 60, height: 50, borderRadius: 6 }}
@@ -118,7 +120,7 @@ const EntityCard = ({
                       preview={false}
                     />
                   )}
-                  <div className={classes["inner-first-block"]}>
+                  <div className={classes["inner-first-block"]} style={{flex: smallView ? 2 : 1}}>
                     <div className={classes["title-wrapper"]}>
                       <EntityIcon entityType={entity?.type?.entityType} />
                       <span className={classes["mn-title"]}>
@@ -180,31 +182,34 @@ const EntityCard = ({
                       </div>
                     )}
                   </div>
-                  <div className={classes["service-reading-wrapper"]}>
-                    <div
-                      className={classes["reading"]}
-                      style={{
-                        border: `1px solid ${fontColor}`,
-                        borderRadius: 10,
-                        padding: 5,
-                      }}
-                    >
-                      <span className={classes["reading-title"]}>
-                        Inter service ({entity?.measurement}):
-                      </span>
-                      <span
-                        className={classes["inter-reading"]}
-                        style={{ color: fontColor }}
+                  {!smallView ? (
+                    <div className={classes["service-reading-wrapper"]}>
+                      <div
+                        className={classes["reading"]}
+                        style={{
+                          border: `1px solid ${fontColor}`,
+                          borderRadius: 10,
+                          padding: 5,
+                        }}
                       >
-                        {interService}
-                      </span>
+                        <span className={classes["reading-title"]}>
+                          Inter service ({entity?.measurement}):
+                        </span>
+                        <span
+                          className={classes["inter-reading"]}
+                          style={{ color: fontColor }}
+                        >
+                          {interService}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
+
                   <div className={classes["third-block"]}>
                     <EntityStatusTag status={entity?.status} />
                   </div>
                   {entity?.breakdowns[0]?.estimatedDateOfRepair &&
-                    entity?.status === "Breakdown" && (
+                    entity?.status === "Breakdown" && !smallView && (
                       <div className={classes["fourth-block"]}>
                         <div className={classes["title-wrapper"]}>
                           <Tooltip title="Estimated date of repair">
@@ -289,6 +294,26 @@ const EntityCard = ({
                       </span>
                       <span>
                         {entity?.lastService ? entity?.lastService : 0}
+                      </span>
+                    </div>
+                  )}
+                  {smallView && (
+                    <div
+                      className={classes["reading"]}
+                      style={{
+                        border: `1px solid ${fontColor}`,
+                        borderRadius: 10,
+                        padding: 5,
+                      }}
+                    >
+                      <span className={classes["reading-title"]}>
+                        Inter service ({entity?.measurement}):
+                      </span>
+                      <span
+                        className={classes["inter-reading"]}
+                        style={{ color: fontColor }}
+                      >
+                        {interService}
                       </span>
                     </div>
                   )}

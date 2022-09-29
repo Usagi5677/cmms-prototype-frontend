@@ -24,6 +24,7 @@
 
 .search {
   margin-top: 10px;
+  margin-left: 10px;
 }
 
 .datepicker {
@@ -38,6 +39,31 @@
   padding-left: 10px;
 }
 
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: visible;
+}
+
+.btn {
+  border-radius: 20px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.btn:hover {
+  background-color: var(--ant-primary-color-hover) !important;
+  border-color: var(--ant-primary-color-hover) !important;
+  color: white !important
+}
+
+
 @media only screen and (min-width: 600px) {
   .options-wrapper {
     flex-direction: row;
@@ -51,10 +77,6 @@
   }
 }
 @media only screen and (min-width: 1200px) {
-  .service-reading-wrapper {
-    flex-direction: row;
-    padding: 0;
-  }
   .first-block {
     flex-direction: column;
   }
@@ -63,5 +85,8 @@
   }
   .header-container {
     font-size: 12px;
+  }
+  .container {
+    width: 48%;
   }
 }

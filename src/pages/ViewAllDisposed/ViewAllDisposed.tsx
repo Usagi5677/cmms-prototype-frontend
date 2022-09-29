@@ -33,7 +33,7 @@ import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 
 const ViewAllDisposed = () => {
-  const getFilter = localStorage.getItem("filter");
+  const getFilter = localStorage.getItem("disposeFilter");
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -46,7 +46,6 @@ const ViewAllDisposed = () => {
     getFilterObjects?.locationIds
   );
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
-
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [department, setDepartment] = useState<string[]>(
     getFilterObjects?.department
@@ -81,7 +80,7 @@ const ViewAllDisposed = () => {
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "filter",
+    "disposeFilter",
     JSON.stringify({
       first: 20,
       last: null,

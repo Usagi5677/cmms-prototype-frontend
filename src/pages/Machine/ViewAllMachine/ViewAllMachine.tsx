@@ -14,7 +14,7 @@ import classes from "./ViewAllMachine.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle, FaTractor } from "react-icons/fa";
+import { FaCarCrash, FaTractor } from "react-icons/fa";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
@@ -38,7 +38,7 @@ import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Machinery = () => {
-  const getFilter = localStorage.getItem("filter");
+  const getFilter = localStorage.getItem("machineryFilter");
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -84,7 +84,7 @@ const Machinery = () => {
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "filter",
+    "machineryFilter",
     JSON.stringify({
       first: 20,
       last: null,

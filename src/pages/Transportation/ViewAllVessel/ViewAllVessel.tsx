@@ -14,7 +14,7 @@ import classes from "./ViewAllVessel.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaRecycle } from "react-icons/fa";
+import { FaCarCrash } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
@@ -39,7 +39,7 @@ import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 
 const Vessels = () => {
-  const getFilter = localStorage.getItem("filter");
+  const getFilter = localStorage.getItem("vesselsFilter");
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -85,7 +85,7 @@ const Vessels = () => {
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "filter",
+    "vesselsFilter",
     JSON.stringify({
       first: 20,
       last: null,

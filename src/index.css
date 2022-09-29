@@ -219,6 +219,9 @@ a {
   --calendar-border-top-color: rgba(0, 0, 0, 0.06);
   --ant-picker-calendar-date-today: var(--ant-primary-1);
   --highchart-menu-btn-border: none;
+  --compare-btn-color: black;
+  --compare-btn-border: black;
+  --compare-btn-active-border: var(--ant-primary-color);
 }
 
 [data-theme="dark"] {
@@ -368,6 +371,9 @@ a {
   --calendar-border-top-color: #303030;
   --ant-picker-calendar-date-today: var(--ant-primary-10);
   --highchart-menu-btn-border: var(--ant-primary-color);
+  --compare-btn-color: #666666;
+  --compare-btn-border: var(--ant-primary-color);
+  --compare-btn-active-border: var(--ant-primary-color);
 }
 
 ::-webkit-scrollbar-corner {
@@ -920,7 +926,8 @@ div.ant-typography {
   stroke: var(--highchart-menu-btn-border) !important;
   stroke-width: 1;
 }
-.highcharts-no-tooltip.highcharts-button.highcharts-contextbutton:hover .highcharts-button-box {
+.highcharts-no-tooltip.highcharts-button.highcharts-contextbutton:hover
+  .highcharts-button-box {
   fill: var(--row-hover) !important;
 }
 
