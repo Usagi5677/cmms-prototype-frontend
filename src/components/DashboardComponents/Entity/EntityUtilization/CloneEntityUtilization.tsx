@@ -356,8 +356,8 @@ const CloneEntityUtilization = ({
             className={classes["btn"]}
             style={{
               backgroundColor: active ? "var(--ant-primary-color)" : "initial",
-              color: active ? "white" : "black",
-              borderColor: active ? "var(--ant-primary-color)" : "black",
+              color: active ? "white" : "var(--compare-btn-color)",
+              borderColor: active ? "var(--compare-btn-active-border)" : "var(--compare-btn-border)",
             }}
             onClick={work}
           >

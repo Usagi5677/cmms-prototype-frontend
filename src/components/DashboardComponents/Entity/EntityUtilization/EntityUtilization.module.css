@@ -48,16 +48,20 @@
 
 .btn {
   border-radius: 20px;
-  border: 1px solid;
+  border: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 60px;
   height: 30px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-
+.btn:hover {
+  background-color: var(--ant-primary-color-hover) !important;
+  border-color: var(--ant-primary-color-hover) !important;
+  color: white !important
+}
 
 
 @media only screen and (min-width: 600px) {
