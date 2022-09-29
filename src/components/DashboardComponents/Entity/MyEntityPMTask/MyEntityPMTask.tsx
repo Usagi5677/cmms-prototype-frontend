@@ -23,6 +23,7 @@ import { getListImage } from "../../../../helpers/getListImage";
 import { errorMessage } from "../../../../helpers/gql";
 import { stringToColor } from "../../../../helpers/style";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
+import EntityAssignment from "../../../../models/Entity/EntityAssign";
 import EntityPMTask from "../../../../models/Entity/EntityPMTask";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import { EntityIcon } from "../../../common/EntityIcon";
@@ -366,6 +367,22 @@ const MyEntityPMTask = () => {
             if (imagePath) {
               loading = false;
             }
+
+            const unique = [
+              ...new Set(
+                periodicMaintenanceTask?.periodicMaintenance?.entity?.assignees?.map(
+                  (assign) => assign.user.id
+                )
+              ),
+            ];
+            let uniqueAssign: any = [];
+            for (const b of unique) {
+              let assign =
+                periodicMaintenanceTask?.periodicMaintenance?.entity?.assignees.find(
+                  (a) => a.user.id === b
+                );
+              uniqueAssign.push(assign);
+            }
             return (
               <motion.div
                 id="collapse"
@@ -421,15 +438,10 @@ const MyEntityPMTask = () => {
                               </div>
                               <div className={classes["title-wrapper"]}>
                                 <FaMapMarkerAlt style={{ marginRight: 5 }} />
-                                <div>
-                                  <div className={classes["location-width"]}>
-                                    {
-                                      periodicMaintenanceTask
-                                        ?.periodicMaintenance?.entity?.location
-                                        ?.name
-                                    }
-                                  </div>
-                                </div>
+                                {
+                                  periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.location?.name
+                                }
                               </div>
                             </div>
                           </div>
@@ -449,8 +461,7 @@ const MyEntityPMTask = () => {
                                 Assigned to:
                               </span>
                               <span>
-                                {periodicMaintenanceTask.periodicMaintenance
-                                  .entity?.assignees?.length > 0 ? (
+                                {uniqueAssign?.length > 0 ? (
                                   <Avatar.Group
                                     maxCount={5}
                                     maxStyle={{
@@ -458,8 +469,8 @@ const MyEntityPMTask = () => {
                                       backgroundColor: "#fde3cf",
                                     }}
                                   >
-                                    {periodicMaintenanceTask.periodicMaintenance.entity?.assignees?.map(
-                                      (assign) => {
+                                    {uniqueAssign.map(
+                                      (assign: EntityAssignment) => {
                                         return (
                                           <Tooltip
                                             title={

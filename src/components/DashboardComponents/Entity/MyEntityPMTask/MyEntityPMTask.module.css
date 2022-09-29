@@ -82,10 +82,11 @@
   display: flex;
   align-items: center;
   transition: color 0.3s ease;
+  margin-right: 4px;
 }
 
 .button:hover {
-  color: var(--primary);
+  color: var(--ant-primary-color-hover);
 }
 
 .counter-container {
@@ -119,15 +120,6 @@
   border-radius: 4px;
   text-transform: uppercase;
 }
-.missed {
-  color: red;
-  font-weight: 700;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  padding: 2px 4px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
 
 .counter-wrapper {
   display: flex;
@@ -143,18 +135,6 @@
   text-align: center;
 }
 
-.no-info {
-  text-align: center;
-}
-
-.location {
-  width: 190px;
-  margin: 10px 0 !important;
-}
-
-.location-width {
-  flex: 1;
-}
 @media only screen and (min-width: 770px) {
   .container {
     font-size: 12px;

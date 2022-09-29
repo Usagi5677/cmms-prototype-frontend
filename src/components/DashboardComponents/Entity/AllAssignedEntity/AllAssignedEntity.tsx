@@ -1,7 +1,6 @@
-import { Avatar, Collapse, Empty, Select, Spin, Tooltip } from "antd";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Avatar, Collapse, Empty, Image, Skeleton, Spin, Tooltip } from "antd";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import DefaultPaginationArgs from "../../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -9,53 +8,47 @@ import {
   GET_ALL_ASSIGNED_ENTITY,
   GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../../api/queries";
-import { ISLANDS } from "../../../../helpers/constants";
 import classes from "./AllAssignedEntity.module.css";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import UserContext from "../../../../contexts/UserContext";
-import {
-  FaArrowAltCircleRight,
-  FaMapMarkerAlt,
-  FaTractor,
-  FaTruck,
-} from "react-icons/fa";
+import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
 import { EntityStatus } from "../../../../models/Enums";
 import { stringToColor } from "../../../../helpers/style";
 import Search from "../../../common/Search";
-import EntityStatusFilter from "../../../common/EntityStatusFilter";
 import { Entity } from "../../../../models/Entity/Entity";
 import EntityStatusTag from "../../../common/EntityStatusTag";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import { RiSailboatFill } from "react-icons/ri";
 import { LocationSelector } from "../../../Config/Location/LocationSelector";
+import { getListImage } from "../../../../helpers/getListImage";
+import { EntityIcon } from "../../../common/EntityIcon";
+import EntityAssignment from "../../../../models/Entity/EntityAssign";
+import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
 
 const AllAssignedEntity = () => {
-  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<any>();
   const [timerId, setTimerId] = useState(null);
   const [locationIds, setLocationIds] = useState([]);
+  const [zoneIds, setZoneIds] = useState([]);
 
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      status: any;
       locationIds: number[];
       isAssigned: boolean;
+      zoneIds: number[];
     }
   >({
-    first: 3,
+    first: 6,
     last: null,
     before: null,
     after: null,
     search: "",
-    status: null,
     locationIds: [],
     isAssigned: true,
+    zoneIds: [],
   });
 
   const [allEntityStatusCount, { data: statusData }] = useLazyQuery(
@@ -83,11 +76,7 @@ const AllAssignedEntity = () => {
   // Fetch pm when component mounts or when the filter object changes
   useEffect(() => {
     getAllAssignedEntity({ variables: filter });
-    allEntityStatusCount({
-      variables: {
-        isAssigned: true,
-      },
-    });
+    allEntityStatusCount({ variables: filter });
   }, [filter, getAllAssignedEntity, allEntityStatusCount]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -96,8 +85,8 @@ const AllAssignedEntity = () => {
   // call as well).
   const searchDebounced = (
     value: string,
-    statusValue: EntityStatus,
-    locationIdsValue: number[]
+    locationIdsValue: number[],
+    zoneIdsValue: number[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -106,9 +95,9 @@ const AllAssignedEntity = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
-          status: statusValue,
           locationIds: locationIdsValue,
-          first: 3,
+          zoneIds: zoneIdsValue,
+          first: 6,
           last: null,
           before: null,
           after: null,
@@ -124,15 +113,15 @@ const AllAssignedEntity = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, status, locationIds);
+    searchDebounced(search, locationIds, zoneIds);
     // eslint-disable-next-line
-  }, [search, status, locationIds]);
+  }, [search, locationIds, zoneIds]);
 
   // Pagination functions
   const next = () => {
     setFilter({
       ...filter,
-      first: 3,
+      first: 6,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -143,7 +132,7 @@ const AllAssignedEntity = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 3,
+      last: 6,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -158,14 +147,6 @@ const AllAssignedEntity = () => {
   let working = statusData?.allEntityStatusCount?.working;
   let breakdown = statusData?.allEntityStatusCount?.breakdown;
   let critical = statusData?.allEntityStatusCount?.critical;
-
-  let options: any = [];
-  ISLANDS?.map((island: string) => {
-    options.push({
-      value: island,
-      label: island,
-    });
-  });
 
   return (
     <motion.div
@@ -200,71 +181,68 @@ const AllAssignedEntity = () => {
       </motion.div>
       <div className={classes["options-wrapper"]}>
         <motion.div
-          initial={{ x: -20, opacity: 0 }}
+          initial={{ x: 20, opacity: 0 }}
           whileInView={{
             x: 0,
             opacity: 1,
             transition: {
               ease: "easeOut",
               duration: 0.3,
-              delay: 0.8,
+              delay: 0.4,
             },
           }}
           viewport={{ once: true }}
+          style={{ width: "100%" }}
         >
           <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
+            width={"100%"}
           />
         </motion.div>
-
-        <div className={classes["status-wrapper"]}>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <EntityStatusFilter
-              onChange={(status) => {
-                setFilter({ ...filter, status, ...DefaultPaginationArgs });
-                setPage(1);
-                setStatus(status);
-              }}
-              value={filter.status}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            whileInView={{
-              x: 0,
-              opacity: 1,
-              transition: {
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 1.1,
-              },
-            }}
-            viewport={{ once: true }}
-          >
-            <div className={classes["location"]}>
-              <LocationSelector
-                setLocationId={setLocationIds}
-                multiple={true}
-                rounded={true}
-                width={"100%"}
-              />
-            </div>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.5,
+            },
+          }}
+          viewport={{ once: true }}
+          className={classes["option"]}
+        >
+          <LocationSelector
+            setLocationId={setLocationIds}
+            multiple={true}
+            rounded={true}
+            width={"100%"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.6,
+            },
+          }}
+          viewport={{ once: true }}
+          className={classes["option"]}
+        >
+          <ZoneSelector
+            setZoneId={setZoneIds}
+            multiple={true}
+            rounded={true}
+            width={"100%"}
+          />
+        </motion.div>
       </div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
@@ -277,7 +255,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.2,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
@@ -293,7 +271,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.2,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
@@ -311,7 +289,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
@@ -327,7 +305,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.3,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
@@ -345,7 +323,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.4,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
@@ -361,7 +339,7 @@ const AllAssignedEntity = () => {
               transition: {
                 ease: "easeOut",
                 duration: 0.3,
-                delay: 1.4,
+                delay: 0.8,
               },
             }}
             viewport={{ once: true }}
@@ -378,6 +356,22 @@ const AllAssignedEntity = () => {
       {data?.getAllAssignedEntity.edges.length > 0 ? (
         data?.getAllAssignedEntity.edges.map((rec: { node: Entity }) => {
           const entity = rec.node;
+          let imagePath = getListImage(entity?.type?.name);
+
+          let loading = true;
+          if (imagePath) {
+            loading = false;
+          }
+
+          const unique = [
+            ...new Set(entity?.assignees?.map((assign) => assign.user.id)),
+          ];
+          let uniqueAssign: any = [];
+          for (const b of unique) {
+            let assign = entity?.assignees.find((a) => a.user.id === b);
+            uniqueAssign.push(assign);
+          }
+
           return (
             <motion.div
               id="collapse"
@@ -398,50 +392,56 @@ const AllAssignedEntity = () => {
                 <Collapse.Panel
                   header={
                     <>
-                      <div
-                        className={classes["header-container"]}
-                      >
+                      <div className={classes["header-container"]}>
                         <div className={classes["first-block"]}>
+                          {loading ? (
+                            <Skeleton.Image
+                              style={{
+                                width: 60,
+                                height: 50,
+                                borderRadius: 6,
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              src={imagePath}
+                              height={50}
+                              width={60}
+                              preview={false}
+                            />
+                          )}
                           <div>
                             <div className={classes["title-wrapper"]}>
-                              {entity?.type?.entityType === "Vessel" ? (
-                                <RiSailboatFill />
-                              ) : entity?.type?.entityType === "Vehicle" ? (
-                                <FaTruck />
-                              ) : (
-                                <FaTractor />
-                              )}
+                              <EntityIcon
+                                entityType={entity?.type?.entityType}
+                              />
                               <span className={classes["title"]}>
                                 {entity?.machineNumber}
                               </span>
                             </div>
-                            <div className={classes["location-wrapper"]}>
+                            <div className={classes["title-wrapper"]}>
                               <FaMapMarkerAlt style={{ marginRight: 5 }} />
-                              <div>
-                                <div className={classes["location-width"]}>
-                                  {entity?.location?.name}
-                                </div>
-                              </div>
+                              {entity?.location?.name}
                             </div>
                           </div>
                         </div>
 
-                        <div className={classes["service-reading-wrapper"]}>
-                          <div className={classes["reading"]}>
-                            <div>
-                              <span className={classes["reading-title"]}>
-                                Assigned to:
-                              </span>
-                              <span className={classes["center"]}>
-                                {entity?.assignees?.length! > 0 ? (
-                                  <Avatar.Group
-                                    maxCount={5}
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                    }}
-                                  >
-                                    {entity?.assignees?.map((assign) => {
+                        <div className={classes["second-block"]}>
+                          <div>
+                            <span className={classes["reading-title"]}>
+                              Assigned to:
+                            </span>
+                            <span className={classes["center"]}>
+                              {uniqueAssign?.length! > 0 ? (
+                                <Avatar.Group
+                                  maxCount={5}
+                                  maxStyle={{
+                                    color: "#f56a00",
+                                    backgroundColor: "#fde3cf",
+                                  }}
+                                >
+                                  {uniqueAssign.map(
+                                    (assign: EntityAssignment) => {
                                       return (
                                         <Tooltip
                                           title={
@@ -466,7 +466,7 @@ const AllAssignedEntity = () => {
                                                 assign?.user?.fullName!
                                               ),
                                             }}
-                                            size={22}
+                                            size={20}
                                           >
                                             {assign?.user?.fullName
                                               .match(/^\w|\b\w(?=\S+$)/g)
@@ -476,13 +476,13 @@ const AllAssignedEntity = () => {
                                           </Avatar>
                                         </Tooltip>
                                       );
-                                    })}
-                                  </Avatar.Group>
-                                ) : (
-                                  <span>None</span>
-                                )}
-                              </span>
-                            </div>
+                                    }
+                                  )}
+                                </Avatar.Group>
+                              ) : (
+                                <span>None</span>
+                              )}
+                            </span>
                           </div>
                           <div className={classes["status"]}>
                             <EntityStatusTag status={entity?.status} />
