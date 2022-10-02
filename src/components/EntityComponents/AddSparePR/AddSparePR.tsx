@@ -119,7 +119,7 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
               },
             ]}
           >
-            <Input placeholder="Name" />
+            <Input placeholder="PR Number" />
           </Form.Item>
           <Form.Item
             label="Requested Date"
