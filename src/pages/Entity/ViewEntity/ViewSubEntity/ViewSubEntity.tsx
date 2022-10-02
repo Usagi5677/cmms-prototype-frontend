@@ -1,7 +1,10 @@
 import { Collapse, Divider } from "antd";
+import { useContext } from "react";
 import { DELETE_ENTITY } from "../../../../api/mutations";
 import { DeleteListing } from "../../../../components/common/DeleteListing";
 import EditEntity from "../../../../components/EntityComponents/EditEntity/EditEntity";
+import UserContext from "../../../../contexts/UserContext";
+import { isAssignedType } from "../../../../helpers/permissions";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
 import { Entity } from "../../../../models/Entity/Entity";
 import classes from "./ViewSubEntity.module.css";
@@ -14,6 +17,7 @@ const ViewSubEntity = ({
   isDeleted?: boolean;
 }) => {
   const isSmallDevice = useIsSmallDevice(600, true);
+  const { user: self } = useContext(UserContext);
   return (
     <div id="subEntityCollapse">
       <Collapse
@@ -27,24 +31,28 @@ const ViewSubEntity = ({
         >
           <div className={classes["info-container"]}>
             {subEntity?.subEntities?.map((s: Entity, index: number) => (
-              <div className={classes["info-wrapper"]}>
+              <div className={classes["info-wrapper"]} key={s.id}>
                 <div>
                   <div className={classes["info"]}>
                     <div className={classes["info-title"]}></div>
                     <div className={classes["options"]}>
-                      <EditEntity
-                        entity={s}
-                        isDeleted={isDeleted}
-                        fontSize={14}
-                        includeSubEntity
-                      />
-                      <div className={classes["delete"]}>
-                        <DeleteListing
-                          id={s.id}
-                          mutation={DELETE_ENTITY}
-                          refetchQueries={["getAllEntity", "getSingleEntity"]}
+                      {isAssignedType("Admin", subEntity, self) ? (
+                        <EditEntity
+                          entity={s}
+                          isDeleted={isDeleted}
+                          fontSize={14}
+                          includeSubEntity
                         />
-                      </div>
+                      ) : null}
+                      {isAssignedType("Admin", subEntity, self) ? (
+                        <div className={classes["delete"]}>
+                          <DeleteListing
+                            id={s.id}
+                            mutation={DELETE_ENTITY}
+                            refetchQueries={["getAllEntity", "getSingleEntity"]}
+                          />
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                   <div className={classes["info"]}>
