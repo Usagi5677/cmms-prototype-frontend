@@ -20,6 +20,18 @@
   flex: 1;
 }
 
+.info-edit {
+  display: flex;
+  justify-content: center;
+  color: var(--ant-primary-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.info-edit:hover {
+  color: var(--ant-primary-color-hover);
+}
+
+
 @media only screen and (min-width: 700px) {
   .row {
     flex-direction: row;

@@ -1,4 +1,8 @@
-import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  LeftOutlined,
+  SubnodeOutlined,
+} from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Avatar,
@@ -49,6 +53,9 @@ import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { isDeleted } from "../../../helpers/isDeleted";
+import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
+import { EntityIcon } from "../../../components/common/EntityIcon";
+import ViewSubEntity from "./ViewSubEntity/ViewSubEntity";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -232,14 +239,7 @@ const ViewEntity = () => {
                 </div>
               </div>
               <div className={classes["title-wrapper"]}>
-                {entityData?.type?.entityType === "Machine" ? (
-                  <FaTractor />
-                ) : entityData?.type?.entityType === "Vehicle" ? (
-                  <FaTruck />
-                ) : entityData?.type?.entityType === "Vessel" ? (
-                  <RiSailboatFill />
-                ) : null}
-
+                <EntityIcon entityType={entityData?.type?.entityType} />
                 <span className={classes["title"]}>
                   {entityData?.machineNumber}
                 </span>
@@ -274,6 +274,15 @@ const ViewEntity = () => {
                     <div>Zone</div>
                     <div className={classes["info-content"]}>
                       {entityData?.location?.zone?.name}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-btn-wrapper"]}>
+                    <div>Sub Entity</div>
+                    <div className={classes["info-content-btn"]}>
+                      <AddEntity
+                        includeSubEntity
+                        entityType={entityData?.type?.entityType!}
+                      />
                     </div>
                   </div>
                 </div>
@@ -380,6 +389,9 @@ const ViewEntity = () => {
             </>
           )}
         </div>
+        {entityData?.subEntities?.length! > 0 && (
+          <ViewSubEntity subEntity={entityData} isDeleted={flag} />
+        )}
         <div className={classes["first-wrapper"]}>
           <div className={classes["tab-container"]}>
             <div className={classes["view-ticket-wrapper__header"]}>
@@ -391,13 +403,10 @@ const ViewEntity = () => {
                 Back
               </Button>
               <div className={classes["tab-header-wrapper"]}>
-                {entityData?.type?.entityType === "Machine" ? (
-                  <FaTractor className={classes["icon"]} />
-                ) : entityData?.type?.entityType === "Vehicle" ? (
-                  <FaTruck className={classes["icon"]} />
-                ) : entityData?.type?.entityType === "Vessel" ? (
-                  <RiSailboatFill className={classes["icon"]} />
-                ) : null}
+                <EntityIcon
+                  entityType={entityData?.type?.entityType}
+                  size={16}
+                />
                 <div className={classes["tab-header"]}>
                   {entityData?.machineNumber}
                 </div>

@@ -760,6 +760,7 @@ export const CREATE_ENTITY = gql`
     $typeId: Int
     $machineNumber: String
     $model: String
+    $brand: String
     $department: String
     $locationId: Int
     $engine: String
@@ -767,11 +768,13 @@ export const CREATE_ENTITY = gql`
     $currentRunning: Int
     $lastService: Int
     $registeredDate: Date
+    $parentEntityId: Int
   ) {
     createEntity(
       typeId: $typeId
       machineNumber: $machineNumber
       model: $model
+      brand: $brand
       department: $department
       locationId: $locationId
       engine: $engine
@@ -779,6 +782,7 @@ export const CREATE_ENTITY = gql`
       currentRunning: $currentRunning
       lastService: $lastService
       registeredDate: $registeredDate
+      parentEntityId: $parentEntityId
     )
   }
 `;
@@ -810,8 +814,8 @@ export const EDIT_ENTITY = gql`
 `;
 
 export const DELETE_ENTITY = gql`
-  mutation ($entityId: Int!) {
-    removeEntity(entityId: $entityId)
+  mutation ($id: Int!) {
+    removeEntity(id: $id)
   }
 `;
 
