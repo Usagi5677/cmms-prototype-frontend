@@ -143,12 +143,6 @@ const ParsedEntityAttachment = ({
       <div className={classes["file-info-wrapper"]}>
         {!checklistView && (
           <>
-            <div>
-              <FileOutlined />{" "}
-              {attachmentData && (
-                <span>{shortFileName(attachmentData?.originalName)}</span>
-              )}
-            </div>
             <div className={classes["title-wrapper"]}>
               <Tooltip title="Created At" className={classes["flex"]}>
                 <FaRegClock />
