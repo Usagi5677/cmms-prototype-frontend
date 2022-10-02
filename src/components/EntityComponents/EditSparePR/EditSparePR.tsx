@@ -91,18 +91,18 @@ const EditSparePR = ({
             preserve={false}
           >
             <Form.Item
-              label="Name"
+              label="PR Number"
               name="name"
               required={false}
               initialValue={sparePR?.name}
               rules={[
                 {
                   required: true,
-                  message: "Please enter the name.",
+                  message: "Please enter the PR number.",
                 },
               ]}
             >
-              <Input placeholder="Name" />
+              <Input placeholder="PR Number" />
             </Form.Item>
             <Form.Item
               label="Requested Date"

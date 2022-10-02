@@ -60,7 +60,7 @@ const EditRepair = ({
           visible={visible}
           onCancel={handleCancel}
           footer={null}
-          title={"Edit Repair Request"}
+          title={"Edit Repair"}
           width="90vw"
           style={{ maxWidth: 700 }}
           destroyOnClose
@@ -75,12 +75,12 @@ const EditRepair = ({
             <div className={classes["row"]}>
               <div className={classes["col"]}>
                 <Form.Item
-                  label="Name"
+                  label="Detail"
                   name="name"
                   required={false}
                   initialValue={repair?.name}
                 >
-                  <Input placeholder="Name" />
+                  <Input placeholder="Detail" />
                 </Form.Item>
               </div>
             </div>
