@@ -37,9 +37,9 @@ const EntityCard = ({
   smallView?: boolean;
 }) => {
   const { Paragraph } = Typography;
-  const interServiceMileage =
-    (entity.currentMileage ?? 0) - (entity.lastServiceMileage ?? 0);
-  const interService = (entity.currentRunning ?? 0) - (entity.lastService ?? 0);
+  const interService =
+    (entity.currentRunning ? entity.currentRunning : 0) -
+    (entity.lastService ? entity.lastService : 0);
 
   let fontColor = "#00e32a";
   if (entity?.type?.entityType === "Machine") {

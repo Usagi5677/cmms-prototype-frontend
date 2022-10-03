@@ -1,8 +1,4 @@
-import {
-  CloseCircleOutlined,
-  LeftOutlined,
-  SubnodeOutlined,
-} from "@ant-design/icons";
+import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Avatar,

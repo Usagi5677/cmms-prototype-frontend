@@ -416,14 +416,11 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
     $typeIds: [Int!]
     $zoneIds: [Int!]
     $brand: [String!]
-    $engine: [String!]
     $measurement: [String!]
     $isAssigned: Boolean
     $assignedToId: Int
-    $lteCurrentRunning: String
-    $gteCurrentRunning: String
-    $lteLastService: String
-    $gteLastService: String
+    $lteInterService: String
+    $gteInterService: String
     $isIncompleteChecklistTask: Boolean
   ) {
     allEntityStatusCount(
@@ -436,14 +433,11 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
       typeIds: $typeIds
       zoneIds: $zoneIds
       brand: $brand
-      engine: $engine
       measurement: $measurement
       isAssigned: $isAssigned
       assignedToId: $assignedToId
-      lteCurrentRunning: $lteCurrentRunning
-      gteCurrentRunning: $gteCurrentRunning
-      lteLastService: $lteLastService
-      gteLastService: $gteLastService
+      lteInterService: $lteInterService
+      gteInterService: $gteInterService
       isIncompleteChecklistTask: $isIncompleteChecklistTask
     ) {
       working
@@ -686,14 +680,11 @@ export const ALL_ENTITY = gql`
     $typeIds: [Int!]
     $zoneIds: [Int!]
     $brand: [String!]
-    $engine: [String!]
     $measurement: [String!]
     $isAssigned: Boolean
     $assignedToId: Int
-    $lteCurrentRunning: String
-    $gteCurrentRunning: String
-    $lteLastService: String
-    $gteLastService: String
+    $lteInterService: String
+    $gteInterService: String
     $isIncompleteChecklistTask: Boolean
   ) {
     getAllEntity(
@@ -710,14 +701,11 @@ export const ALL_ENTITY = gql`
       typeIds: $typeIds
       zoneIds: $zoneIds
       brand: $brand
-      engine: $engine
       measurement: $measurement
       isAssigned: $isAssigned
       assignedToId: $assignedToId
-      lteCurrentRunning: $lteCurrentRunning
-      gteCurrentRunning: $gteCurrentRunning
-      lteLastService: $lteLastService
-      gteLastService: $gteLastService
+      lteInterService: $lteInterService
+      gteInterService: $gteInterService
       isIncompleteChecklistTask: $isIncompleteChecklistTask
     ) {
       pageInfo {

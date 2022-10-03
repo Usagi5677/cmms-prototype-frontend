@@ -93,10 +93,12 @@
 }
 
 @media only screen and (min-width: 1300px) {
-  .reading-container {
-    flex-direction: row;
-  }
   .sub-title {
     padding: 0;
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .reading-container {
+    flex-direction: row;
   }
 }

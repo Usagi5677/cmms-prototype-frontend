@@ -90,7 +90,6 @@ export interface FilterOptionProps {
   zoneOptions?: DefaultNumberArrayOptionProps;
   departmentOptions?: DefaultStringArrayOptionProps;
   brandOptions?: DefaultStringArrayOptionProps;
-  engineOptions?: DefaultStringArrayOptionProps;
   assignedOptions?: DefaultBooleanOptionProps;
   assignedToMeOptions?: DefaultBooleanOptionProps;
   measurementOptions?: DefaultStringArrayOptionProps;
@@ -98,6 +97,8 @@ export interface FilterOptionProps {
   gteCurrentRunningOptions?: SearchReadingOptionProps;
   lteLastServiceOptions?: SearchReadingOptionProps;
   gteLastServiceOptions?: SearchReadingOptionProps;
+  lteInterServiceOptions?: SearchReadingOptionProps;
+  gteInterServiceOptions?: SearchReadingOptionProps;
   isIncompleteChecklistTaskOptions?: DefaultBooleanOptionProps;
   entityTypeOptions?: DefaultStringArrayOptionProps;
 }
