@@ -41,7 +41,7 @@
   align-items: center;
 }
 
-.delete {
+.button {
   display: flex;
   align-items: center;
   margin-left: 6px;

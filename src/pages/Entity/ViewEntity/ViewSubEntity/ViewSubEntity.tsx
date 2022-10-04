@@ -1,5 +1,7 @@
-import { Collapse, Divider } from "antd";
+import { Collapse, Divider, Tooltip } from "antd";
 import { useContext } from "react";
+import { FaArrowAltCircleRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { DELETE_ENTITY } from "../../../../api/mutations";
 import { DeleteListing } from "../../../../components/common/DeleteListing";
 import EditEntity from "../../../../components/EntityComponents/EditEntity/EditEntity";
@@ -45,7 +47,7 @@ const ViewSubEntity = ({
                         />
                       ) : null}
                       {isAssignedType("Admin", subEntity, self) ? (
-                        <div className={classes["delete"]}>
+                        <div className={classes["button"]}>
                           <DeleteListing
                             id={s.id}
                             mutation={DELETE_ENTITY}
@@ -53,6 +55,19 @@ const ViewSubEntity = ({
                           />
                         </div>
                       ) : null}
+                      <Link to={"/entity/" + s.id}>
+                        <Tooltip title="Open">
+                          <FaArrowAltCircleRight
+                            className={classes["button"]}
+                          />
+                        </Tooltip>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className={classes["info"]}>
+                    <div className={classes["info-title"]}>Machine Number</div>
+                    <div className={classes["info-content"]}>
+                      {s.machineNumber}
                     </div>
                   </div>
                   <div className={classes["info"]}>
@@ -62,6 +77,12 @@ const ViewSubEntity = ({
                   <div className={classes["info"]}>
                     <div className={classes["info-title"]}>Model</div>
                     <div className={classes["info-content"]}>{s.model}</div>
+                  </div>
+                  <div className={classes["info"]}>
+                    <div className={classes["info-title"]}>Type</div>
+                    <div className={classes["info-content"]}>
+                      {s.type?.name}
+                    </div>
                   </div>
                   <div className={classes["info"]}>
                     <div className={classes["info-title"]}>Brand</div>

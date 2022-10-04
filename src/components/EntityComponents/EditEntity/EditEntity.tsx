@@ -116,18 +116,16 @@ const EditEntity = ({
           id="myForm"
         >
           <div className={classes["row"]}>
-            {!includeSubEntity && (
-              <div className={classes["col"]}>
-                <Form.Item
-                  label="Machine Number"
-                  name="machineNumber"
-                  required={false}
-                  initialValue={entity?.machineNumber}
-                >
-                  <Input placeholder="Machine Number" />
-                </Form.Item>
-              </div>
-            )}
+            <div className={classes["col"]}>
+              <Form.Item
+                label="Machine Number"
+                name="machineNumber"
+                required={false}
+                initialValue={entity?.machineNumber}
+              >
+                <Input placeholder="Machine Number" />
+              </Form.Item>
+            </div>
 
             <div className={classes["col"]}>
               <Form.Item
