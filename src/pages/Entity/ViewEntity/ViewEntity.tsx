@@ -274,10 +274,12 @@ const ViewEntity = () => {
                   <div className={classes["info-title-btn-wrapper"]}>
                     <div>Sub Entity</div>
                     <div className={classes["info-content-btn"]}>
-                      <AddEntity
-                        includeSubEntity
-                        entityType={entityData?.type?.entityType!}
-                      />
+                      {hasPermissions(self, ["ADD_ENTITY"]) && (
+                        <AddEntity
+                          includeSubEntity
+                          entityType={entityData?.type?.entityType!}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -387,7 +389,7 @@ const ViewEntity = () => {
 
         {entityData?.subEntities?.length! > 0 && (
           <div>
-            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+            {hasPermissions(self, ["ADD_ENTITY"]) ? (
               <ViewSubEntity subEntity={entityData} isDeleted={flag} />
             ) : null}
           </div>

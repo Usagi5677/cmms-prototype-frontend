@@ -71,7 +71,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                         style={{ marginRight: ".5rem" }}
                       />
                     </div>
-                    {entity.measurement !== "hr" && (
+                    {entity?.measurement !== "hr" && (
                       <div>
                         <Badge
                           color={usageColor}
@@ -125,7 +125,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
             {summary.type === "Daily" && (
               <>
                 <Badge color={readingsColor} />
-                {entity.measurement !== "hr" && <Badge color={usageColor} />}
+                {entity?.measurement !== "hr" && <Badge color={usageColor} />}
               </>
             )}
             {summary.itemCompletion !== "empty" && <Badge color={itemColor} />}
@@ -149,7 +149,7 @@ export const ChecklistStatus: React.FC<ChecklistStatusProps> = ({
                   backgroundColor: readingsColor,
                 }}
               ></div>
-              {entity.measurement !== "hr" && (
+              {entity?.measurement !== "hr" && (
                 <div
                   style={{
                     ...smallStyle,
