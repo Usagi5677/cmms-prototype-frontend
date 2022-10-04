@@ -239,7 +239,7 @@ export const ENTITY_TYPES = ["Machine", "Vehicle", "Vessel"];
 
 export const REPAIR_LOCATION = ["Site", "Workshop"];
 
-export const ENTITY_ASSIGNMENT_TYPES = ["Admin", "Engineer", "User"] as const;
+export const ENTITY_ASSIGNMENT_TYPES = ["Admin", "Engineer", "Technician", "User"] as const;
 
 export const BRAND = [
   "CAT",

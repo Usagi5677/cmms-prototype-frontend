@@ -24,7 +24,7 @@ import React from "react";
 
 export interface EntityAssignmentProps {
   entityId: number;
-  type: "Admin" | "Engineer" | "User";
+  type: "Admin" | "Engineer" | "Technician" | "User";
 }
 
 export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
@@ -66,6 +66,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
   let typePermission: string;
   if (type === "Admin") typePermission = "ENTITY_ADMIN";
   else if (type === "Engineer") typePermission = "ENTITY_ENGINEER";
+  else if (type === "Technician") typePermission = "ENTITY_TECHNICIAN";
   else if (type === "User") typePermission = "ENTITY_USER";
 
   // Fetch users when component mount

@@ -243,7 +243,9 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       marginTop: "1rem",
                     }}
                   >
-                    {isAssignedType("any", entity, user) && (
+                    {(isAssignedType("Admin", entity, user) ||
+                      isAssignedType("Engineer", entity, user) ||
+                      isAssignedType("User", entity, user)) && (
                       <>
                         <div style={{ marginRight: "1rem" }}>
                           <AddReading
@@ -288,7 +290,11 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                   item={item}
                   key={item.id}
                   disabled={isOlderChecklist}
-                  isAssigned={isAssignedType("any", entity, user)}
+                  isAssigned={
+                    isAssignedType("Admin", entity, user) ||
+                    isAssignedType("Engineer", entity, user) ||
+                    isAssignedType("User", entity, user)
+                  }
                   readingDone={
                     data?.checklist.currentMeterReading !== null ||
                     data?.checklist.workingHour !== null ||

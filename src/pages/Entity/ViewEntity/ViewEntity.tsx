@@ -109,7 +109,7 @@ const ViewEntity = () => {
     loading = false;
   }
 
-  const renderUsers = (type: "Admin" | "Engineer" | "User") => {
+  const renderUsers = (type: "Admin" | "Engineer" | "Technician" | "User") => {
     return (
       entityData?.assignees?.length! > 0 && (
         <Avatar.Group

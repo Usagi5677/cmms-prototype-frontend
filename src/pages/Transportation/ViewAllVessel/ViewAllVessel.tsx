@@ -151,8 +151,9 @@ const Vessels = () => {
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
     if (
-      self?.machineAssignments.length === 0 &&
-      !hasPermissions(self, ["VIEW_ALL_ENTITY"])
+      (self?.machineAssignments.length === 0 &&
+        !hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+      !hasPermissions(self, ["VIEW_ALL_VESSELS"])
     ) {
       navigate("/");
       message.error("No permission to view all vessels.");

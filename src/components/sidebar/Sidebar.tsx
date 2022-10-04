@@ -140,7 +140,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
 
   if (
     self?.machineAssignments.length > 0 ||
-    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
+    hasPermissions(self, ["VIEW_ALL_MACHINERY"])
   ) {
     // Insert at second position
     SidebarData.push({
@@ -153,7 +154,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
 
   if (
     self?.vesselAssignments.length > 0 ||
-    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
+    hasPermissions(self, ["VIEW_ALL_VESSELS"])
   ) {
     SidebarData.push({
       name: "Vessels",
@@ -165,7 +167,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
 
   if (
     self?.vehicleAssignments.length > 0 ||
-    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
+    hasPermissions(self, ["VIEW_ALL_VEHICLES"])
   ) {
     SidebarData.push({
       name: "Vehicles",

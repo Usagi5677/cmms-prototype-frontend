@@ -46,7 +46,7 @@ export function hasPermissions(
 }
 
 export function isAssignedType(
-  type: "Admin" | "Engineer" | "User" | "any",
+  type: "Admin" | "Engineer" | "Technician" | "User" | "any",
   entity: Entity,
   user: any
 ) {
@@ -64,7 +64,7 @@ export function isAssignedType(
 
 // Check if user is assigned to type to any entity
 export function isAssignedTypeToAny(
-  type: "Admin" | "Engineer" | "User" | "any",
+  type: "Admin" | "Engineer" | "Technician" | "User" | "any",
   user: any
 ) {
   const assignments = user.entityAssignment;
