@@ -647,7 +647,8 @@ em {
   padding-right: 0 !important;
 }
 
-#filterCollapse {
+#filterCollapse,
+#subEntityCollapse {
   margin-bottom: 20px;
 }
 #filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
@@ -657,11 +658,14 @@ em {
   justify-content: space-between;
   padding: 0 5px;
 }
-#filterCollapse
-  .ant-collapse
-  > .ant-collapse-item
-  > .ant-collapse-header
-  > div {
+#subEntityCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+}
+#filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
   min-height: 20px !important;
   display: flex;
   align-items: center;
@@ -678,7 +682,8 @@ em {
   cursor: default !important;
 }
 
-#filterCollapse .ant-collapse-ghost {
+#filterCollapse .ant-collapse-ghost,
+#subEntityCollapse .ant-collapse-ghost  {
   border: var(--card-border) !important;
   background-color: var(--card-bg);
   border-radius: 20px !important;
@@ -689,6 +694,9 @@ em {
     margin-right: 0;
     margin-left: 20px;
     margin-bottom: 0;
+  }
+  #subEntityCollapse {
+    margin-right: 0;
   }
 }
 

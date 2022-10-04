@@ -9,7 +9,6 @@ import {
   Modal,
   Radio,
   Row,
-  Select,
   Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -18,9 +17,11 @@ import moment from "moment";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { EDIT_ENTITY } from "../../../api/mutations";
-import { DEPARTMENTS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
+import { BrandSelector } from "../../common/BrandSelector";
+import { DepartmentSelector } from "../../common/DepartmentSelector";
+import { EngineSelector } from "../../common/EngineSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./EditEntity.module.css";
@@ -28,9 +29,13 @@ import classes from "./EditEntity.module.css";
 const EditEntity = ({
   entity,
   isDeleted,
+  fontSize,
+  includeSubEntity,
 }: {
   entity: Entity;
   isDeleted?: boolean | undefined;
+  fontSize?: number;
+  includeSubEntity?: boolean;
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
@@ -53,7 +58,6 @@ const EditEntity = ({
   });
 
   const handleCancel = () => {
-    form.resetFields();
     setVisible(false);
   };
 
@@ -61,9 +65,8 @@ const EditEntity = ({
     const {
       machineNumber,
       model,
+      brand,
       department,
-      currentMileage,
-      lastServiceMileage,
       measurement,
       engine,
       registeredDate,
@@ -75,24 +78,15 @@ const EditEntity = ({
         typeId,
         machineNumber,
         model,
+        brand,
         department,
         locationId,
-        currentMileage,
-        lastServiceMileage,
         registeredDate,
         measurement,
         engine,
       },
     });
   };
-
-  let departmentOptions: any = [];
-  DEPARTMENTS?.map((department: string) => {
-    departmentOptions.push({
-      value: department,
-      label: department,
-    });
-  });
 
   return (
     <div className={classes["info-edit"]}>
@@ -102,6 +96,7 @@ const EditEntity = ({
           style={{
             pointerEvents: isDeleted ? "none" : "auto",
             color: isDeleted ? "grey" : "inherit",
+            fontSize: fontSize ? fontSize : "inherit",
           }}
         />
       </Tooltip>
@@ -109,7 +104,7 @@ const EditEntity = ({
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Edit Entity"}
+        title={`Edit ${includeSubEntity ? "Sub Entity" : "Entity"}`}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -121,16 +116,19 @@ const EditEntity = ({
           id="myForm"
         >
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Machine Number"
-                name="machineNumber"
-                required={false}
-                initialValue={entity?.machineNumber}
-              >
-                <Input placeholder="Machine Number" />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Machine Number"
+                  name="machineNumber"
+                  required={false}
+                  initialValue={entity?.machineNumber}
+                >
+                  <Input placeholder="Machine Number" />
+                </Form.Item>
+              </div>
+            )}
+
             <div className={classes["col"]}>
               <Form.Item
                 label="Model"
@@ -141,26 +139,32 @@ const EditEntity = ({
                 <Input placeholder="Model" />
               </Form.Item>
             </div>
+            <div className={classes["col"]}>
+              <Form.Item
+                label="Brand"
+                name="brand"
+                required={false}
+                initialValue={entity?.brand}
+              >
+                <BrandSelector />
+              </Form.Item>
+            </div>
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Department"
-                name="department"
-                required={false}
-                initialValue={entity?.department}
-              >
-                <Select
-                  className="notRounded"
-                  showArrow
-                  style={{ width: "100%" }}
-                  showSearch
-                  options={departmentOptions}
-                  placeholder={"Department"}
-                />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Department"
+                  name="department"
+                  required={false}
+                  initialValue={entity?.department}
+                >
+                  <DepartmentSelector />
+                </Form.Item>
+              </div>
+            )}
+
             <div className={classes["col"]}>
               <Form.Item label="Type" required={false}>
                 <TypeSelector
@@ -170,39 +174,43 @@ const EditEntity = ({
                 />
               </Form.Item>
             </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Registered Date"
-                name="registeredDate"
-                required={false}
-                initialValue={
-                  moment(entity?.registeredDate).isValid()
-                    ? moment(entity?.registeredDate)
-                    : undefined
-                }
-              >
-                <DatePicker
-                  placeholder="Select registered date"
-                  style={{
-                    width: 200,
-                    marginRight: "1rem",
-                  }}
-                  allowClear={false}
-                />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Registered Date"
+                  name="registeredDate"
+                  required={false}
+                  initialValue={
+                    moment(entity?.registeredDate).isValid()
+                      ? moment(entity?.registeredDate)
+                      : undefined
+                  }
+                >
+                  <DatePicker
+                    placeholder="Select registered date"
+                    style={{
+                      width: 200,
+                      marginRight: "1rem",
+                    }}
+                    allowClear={false}
+                  />
+                </Form.Item>
+              </div>
+            )}
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item label="Location" name="location" required={false}>
-                <LocationSelector
-                  currentId={entity?.location?.id}
-                  currentName={entity?.location?.name}
-                  setLocationId={setLocationId}
-                />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item label="Location" name="location" required={false}>
+                  <LocationSelector
+                    currentId={entity?.location?.id}
+                    currentName={entity?.location?.name}
+                    setLocationId={setLocationId}
+                  />
+                </Form.Item>
+              </div>
+            )}
           </div>
           <div className={classes["row"]}>
             <div className={classes["col"]}>
@@ -212,7 +220,7 @@ const EditEntity = ({
                 required={false}
                 initialValue={entity?.engine}
               >
-                <Input placeholder="Engine" />
+                <EngineSelector />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
@@ -223,7 +231,7 @@ const EditEntity = ({
               >
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
-                  <Radio.Button value="h">H</Radio.Button>
+                  <Radio.Button value="hr">H</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>

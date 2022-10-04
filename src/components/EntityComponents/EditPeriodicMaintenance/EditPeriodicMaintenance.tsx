@@ -18,7 +18,7 @@ import { errorMessage } from "../../../helpers/gql";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import classes from "./EditPeriodicMaintenance.module.css";
 
-const EditEntity = ({
+const EditPeriodicMaintenance = ({
   periodicMaintenance,
   isDeleted,
   isCopy,
@@ -170,4 +170,4 @@ const EditEntity = ({
   );
 };
 
-export default EditEntity;
+export default EditPeriodicMaintenance;

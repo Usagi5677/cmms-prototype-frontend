@@ -59,7 +59,6 @@ const Machinery = () => {
     getFilterObjects?.department
   );
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
-  const [engine, setEngine] = useState<string[]>(getFilterObjects?.engine);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -67,17 +66,11 @@ const Machinery = () => {
     getFilterObjects?.isAssigned
   );
   //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
-  const [lteCurrentRunning, setLteCurrentRunning] = useState(
-    getFilterObjects?.lteCurrentRunning
+  const [lteInterService, setLteInterService] = useState(
+    getFilterObjects?.lteInterService
   );
-  const [gteCurrentRunning, setGteCurrentRunning] = useState(
-    getFilterObjects?.gteCurrentRunning
-  );
-  const [lteLastService, setLteLastService] = useState(
-    getFilterObjects?.lteLastService
-  );
-  const [gteLastService, setGteLastService] = useState(
-    getFilterObjects?.gteLastService
+  const [gteInterService, setGteInterService] = useState(
+    getFilterObjects?.gteInterService
   );
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
     useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
@@ -98,14 +91,11 @@ const Machinery = () => {
       zoneIds: [],
       department: [],
       brand: [],
-      engine: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
-      lteCurrentRunning: "",
-      gteCurrentRunning: "",
-      lteLastService: "",
-      gteLastService: "",
+      lteInterService: "",
+      gteInterService: "",
       isIncompleteChecklistTask: false,
     })
   );
@@ -120,14 +110,11 @@ const Machinery = () => {
       zoneIds: number[];
       department: string[];
       brand: string[];
-      engine: string[];
       isAssigned: boolean;
       //assignedToId: number | null;
       measurement: string[];
-      lteCurrentRunning: string;
-      gteCurrentRunning: string;
-      lteLastService: string;
-      gteLastService: string;
+      lteInterService: string;
+      gteInterService: string;
       isIncompleteChecklistTask: boolean;
     }
   >({
@@ -143,14 +130,11 @@ const Machinery = () => {
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     department: JSON.parse(saveFilterOptions)?.department,
     brand: JSON.parse(saveFilterOptions)?.brand,
-    engine: JSON.parse(saveFilterOptions)?.engine,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
-    lteCurrentRunning: JSON.parse(saveFilterOptions)?.lteCurrentRunning,
-    gteCurrentRunning: JSON.parse(saveFilterOptions)?.gteCurrentRunning,
-    lteLastService: JSON.parse(saveFilterOptions)?.lteLastService,
-    gteLastService: JSON.parse(saveFilterOptions)?.gteLastService,
+    lteInterService: JSON.parse(saveFilterOptions)?.lteInterService,
+    gteInterService: JSON.parse(saveFilterOptions)?.gteInterService,
     isIncompleteChecklistTask:
       JSON.parse(saveFilterOptions)?.isIncompleteChecklistTask,
   });
@@ -210,14 +194,11 @@ const Machinery = () => {
     zoneIdsValue: number[],
     departmentValue: string[],
     brandValue: string[],
-    engineValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
     //assignedToMeValue: number,
-    lteCurrentRunningValue: string,
-    gteCurrentRunningValue: string,
-    lteLastServiceValue: string,
-    gteLastServiceValue: string,
+    lteInterServiceValue: string,
+    gteInterServiceValue: string,
     isIncompleteChecklistTaskValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
@@ -233,14 +214,11 @@ const Machinery = () => {
           zoneIds: zoneIdsValue,
           department: departmentValue,
           brand: brandValue,
-          engine: engineValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
           //assignedToId: assignedToMeValue,
-          lteCurrentRunning: lteCurrentRunningValue,
-          gteCurrentRunning: gteCurrentRunningValue,
-          lteLastService: lteLastServiceValue,
-          gteLastService: gteLastServiceValue,
+          lteInterService: lteInterServiceValue,
+          gteInterService: gteInterServiceValue,
           isIncompleteChecklistTask: isIncompleteChecklistTaskValue,
           first: 20,
           last: null,
@@ -265,14 +243,11 @@ const Machinery = () => {
       zoneIds,
       department,
       brand,
-      engine,
       measurement,
       isAssigned,
       //assignedToMe!,
-      lteCurrentRunning,
-      gteCurrentRunning,
-      lteLastService,
-      gteLastService,
+      lteInterService,
+      gteInterService,
       isIncompleteChecklistTask
     );
     // eslint-disable-next-line
@@ -284,14 +259,11 @@ const Machinery = () => {
     zoneIds,
     department,
     brand,
-    engine,
     measurement,
     isAssigned,
     //assignedToMe,
-    lteCurrentRunning,
-    gteCurrentRunning,
-    lteLastService,
-    gteLastService,
+    lteInterService,
+    gteInterService,
     isIncompleteChecklistTask,
   ]);
 
@@ -357,7 +329,6 @@ const Machinery = () => {
       zoneIds: [],
       department: [],
       brand: [],
-      engine: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -370,16 +341,13 @@ const Machinery = () => {
     setSaveFilterOptions(JSON.stringify(clearFilter));
 
     setSearch("");
-    setLteCurrentRunning("");
-    setGteCurrentRunning("");
-    setLteLastService("");
-    setGteLastService("");
+    setLteInterService("");
+    setGteInterService("");
     setStatus([]);
     setLocationIds([]);
     setZoneIds([]);
     setDepartment([]);
     setBrand([]);
-    setEngine([]);
     setMeasurement([]);
     setTypeIds([]);
     setIsAssigned(false);
@@ -393,28 +361,17 @@ const Machinery = () => {
     onClick: () => setSearch(""),
     width: "100%",
   };
-  const lteCurrentRunningOptions: SearchReadingOptionProps = {
-    searchValue: lteCurrentRunning,
-    onChange: (e) => setLteCurrentRunning(e.target.value),
-    onClick: () => setLteCurrentRunning(""),
+
+  const lteInterServiceOptions: SearchReadingOptionProps = {
+    searchValue: lteInterService,
+    onChange: (e) => setLteInterService(e.target.value),
+    onClick: () => setLteInterService(""),
     width: "100%",
   };
-  const gteCurrentRunningOptions: SearchReadingOptionProps = {
-    searchValue: gteCurrentRunning,
-    onChange: (e) => setGteCurrentRunning(e.target.value),
-    onClick: () => setGteCurrentRunning(""),
-    width: "100%",
-  };
-  const lteLastServiceOptions: SearchReadingOptionProps = {
-    searchValue: lteLastService,
-    onChange: (e) => setLteLastService(e.target.value),
-    onClick: () => setLteLastService(""),
-    width: "100%",
-  };
-  const gteLastServiceOptions: SearchReadingOptionProps = {
-    searchValue: gteLastService,
-    onChange: (e) => setGteLastService(e.target.value),
-    onClick: () => setGteLastService(""),
+  const gteInterServiceOptions: SearchReadingOptionProps = {
+    searchValue: gteInterService,
+    onChange: (e) => setGteInterService(e.target.value),
+    onClick: () => setGteInterService(""),
     width: "100%",
   };
   const locationOptions: DefaultNumberArrayOptionProps = {
@@ -463,21 +420,6 @@ const Machinery = () => {
       setBrand(brand);
     },
     value: filter.brand,
-    width: "100%",
-  };
-  const engineOptions: DefaultStringArrayOptionProps = {
-    onChange: (engine: string[]) => {
-      setFilter({
-        ...filter,
-        engine,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setEngine(engine);
-    },
-    value: filter.engine,
     width: "100%",
   };
   const measurementOptions: DefaultStringArrayOptionProps = {
@@ -565,14 +507,11 @@ const Machinery = () => {
     zoneOptions,
     departmentOptions,
     brandOptions,
-    engineOptions,
     measurementOptions,
     assignedOptions,
     //assignedToMeOptions,
-    lteCurrentRunningOptions,
-    gteCurrentRunningOptions,
-    lteLastServiceOptions,
-    gteLastServiceOptions,
+    lteInterServiceOptions,
+    gteInterServiceOptions,
     isIncompleteChecklistTaskOptions,
   };
 

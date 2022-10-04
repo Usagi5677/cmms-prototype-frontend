@@ -37,4 +37,5 @@ export interface Entity {
   breakdowns: Breakdown[];
   sparePRs: SparePR[];
   histories: EntityHistory[];
+  subEntities?: Entity[] | undefined;
 }

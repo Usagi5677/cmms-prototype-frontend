@@ -4,15 +4,16 @@ import { RiSailboatFill } from "react-icons/ri";
 
 export interface EntityIconProps {
   entityType?: string;
+  size?: number;
 }
 
-export const EntityIcon: React.FC<EntityIconProps> = ({ entityType }) => {
+export const EntityIcon: React.FC<EntityIconProps> = ({ entityType, size }) => {
   if (entityType === "Vehicle") {
-    return <FaTruck />;
+    return <FaTruck style={{ fontSize: size ? size : "initial" }} />;
   } else if (entityType === "Vessel") {
-    return <RiSailboatFill />;
+    return <RiSailboatFill style={{ fontSize: size ? size : "initial" }} />;
   } else {
-    return <FaTractor />;
+    return <FaTractor style={{ fontSize: size ? size : "initial" }} />;
   }
   return <div></div>;
 };

@@ -81,7 +81,11 @@
   align-items: center;
   margin: 10px 0;
 }
-
+.info-title-btn-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
 .image {
   display: flex;
   justify-content: center;
@@ -93,6 +97,10 @@
 
 .info-content {
   font-weight: 800;
+}
+
+.info-content-btn {
+  margin-left: 1rem;
 }
 
 .info-btn-wrapper {
@@ -175,9 +183,6 @@
   font-weight: 700;
 }
 
-.icon {
-  font-size: 16px;
-}
 @media only screen and (min-width: 600px) {
   .location-wrapper {
     font-size: 22px;

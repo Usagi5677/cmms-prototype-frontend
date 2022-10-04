@@ -35,7 +35,7 @@ import ViewGallery from "./ViewGallery/ViewGallery";
 import ViewChecklist from "./ViewChecklist/ViewChecklist";
 import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
-import { FaMapMarkerAlt, FaTractor, FaTruck } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { Entity } from "../../../models/Entity/Entity";
 import EditEntityLocation from "../../../components/EntityComponents/EditEntityLocation/EditEntityLocation";
 import EditEntity from "../../../components/EntityComponents/EditEntity/EditEntity";
@@ -45,10 +45,12 @@ import EntityStatuses from "../../../components/EntityComponents/EntityStatuses/
 import GetLatestEntityImage from "../../../components/EntityComponents/GetLatestEntityImage/GetLatestEntityImage";
 import { UNASSIGN_USER_FROM_ENTITY } from "../../../api/mutations";
 import EntityUsageHistory from "../../../components/EntityComponents/EntityUsageHistory/EntityUsageHistory";
-import { RiSailboatFill } from "react-icons/ri";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { isDeleted } from "../../../helpers/isDeleted";
+import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
+import { EntityIcon } from "../../../components/common/EntityIcon";
+import ViewSubEntity from "./ViewSubEntity/ViewSubEntity";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -232,14 +234,7 @@ const ViewEntity = () => {
                 </div>
               </div>
               <div className={classes["title-wrapper"]}>
-                {entityData?.type?.entityType === "Machine" ? (
-                  <FaTractor />
-                ) : entityData?.type?.entityType === "Vehicle" ? (
-                  <FaTruck />
-                ) : entityData?.type?.entityType === "Vessel" ? (
-                  <RiSailboatFill />
-                ) : null}
-
+                <EntityIcon entityType={entityData?.type?.entityType} />
                 <span className={classes["title"]}>
                   {entityData?.machineNumber}
                 </span>
@@ -274,6 +269,15 @@ const ViewEntity = () => {
                     <div>Zone</div>
                     <div className={classes["info-content"]}>
                       {entityData?.location?.zone?.name}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-btn-wrapper"]}>
+                    <div>Sub Entity</div>
+                    <div className={classes["info-content-btn"]}>
+                      <AddEntity
+                        includeSubEntity
+                        entityType={entityData?.type?.entityType!}
+                      />
                     </div>
                   </div>
                 </div>
@@ -380,6 +384,14 @@ const ViewEntity = () => {
             </>
           )}
         </div>
+
+        {entityData?.subEntities?.length! > 0 && (
+          <div>
+            {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+              <ViewSubEntity subEntity={entityData} isDeleted={flag} />
+            ) : null}
+          </div>
+        )}
         <div className={classes["first-wrapper"]}>
           <div className={classes["tab-container"]}>
             <div className={classes["view-ticket-wrapper__header"]}>
@@ -391,13 +403,10 @@ const ViewEntity = () => {
                 Back
               </Button>
               <div className={classes["tab-header-wrapper"]}>
-                {entityData?.type?.entityType === "Machine" ? (
-                  <FaTractor className={classes["icon"]} />
-                ) : entityData?.type?.entityType === "Vehicle" ? (
-                  <FaTruck className={classes["icon"]} />
-                ) : entityData?.type?.entityType === "Vessel" ? (
-                  <RiSailboatFill className={classes["icon"]} />
-                ) : null}
+                <EntityIcon
+                  entityType={entityData?.type?.entityType}
+                  size={16}
+                />
                 <div className={classes["tab-header"]}>
                   {entityData?.machineNumber}
                 </div>

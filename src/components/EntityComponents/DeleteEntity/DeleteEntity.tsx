@@ -39,7 +39,7 @@ const DeleteEntity = ({
   const remove = () => {
     removeEntity({
       variables: {
-        entityId: entityID,
+        id: entityID,
       },
     });
   };

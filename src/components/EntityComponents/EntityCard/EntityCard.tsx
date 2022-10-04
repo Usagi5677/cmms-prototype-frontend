@@ -37,9 +37,9 @@ const EntityCard = ({
   smallView?: boolean;
 }) => {
   const { Paragraph } = Typography;
-  const interServiceMileage =
-    (entity.currentMileage ?? 0) - (entity.lastServiceMileage ?? 0);
-  const interService = (entity.currentRunning ?? 0) - (entity.lastService ?? 0);
+  const interService =
+    (entity.currentRunning ? entity.currentRunning : 0) -
+    (entity.lastService ? entity.lastService : 0);
 
   let fontColor = "#00e32a";
   if (entity?.type?.entityType === "Machine") {
@@ -106,8 +106,11 @@ const EntityCard = ({
         <Collapse.Panel
           header={
             <>
-              <div className={classes["header-container"]} >
-                <div className={classes["first-block"]} style={{flex: smallView ? 2 : 1}}>
+              <div className={classes["header-container"]}>
+                <div
+                  className={classes["first-block"]}
+                  style={{ flex: smallView ? 2 : 1 }}
+                >
                   {loading ? (
                     <Skeleton.Image
                       style={{ width: 60, height: 50, borderRadius: 6 }}
@@ -120,7 +123,10 @@ const EntityCard = ({
                       preview={false}
                     />
                   )}
-                  <div className={classes["inner-first-block"]} style={{flex: smallView ? 2 : 1}}>
+                  <div
+                    className={classes["inner-first-block"]}
+                    style={{ flex: smallView ? 2 : 1 }}
+                  >
                     <div className={classes["title-wrapper"]}>
                       <EntityIcon entityType={entity?.type?.entityType} />
                       <span className={classes["mn-title"]}>
@@ -206,28 +212,30 @@ const EntityCard = ({
                   ) : null}
 
                   <div className={classes["third-block"]}>
-                    <EntityStatusTag status={entity?.status} />
-                  </div>
-                  {entity?.breakdowns[0]?.estimatedDateOfRepair &&
-                    entity?.status === "Breakdown" && !smallView && (
-                      <div className={classes["fourth-block"]}>
-                        <div className={classes["title-wrapper"]}>
-                          <Tooltip title="Estimated date of repair">
-                            <FaRegClock />
-                          </Tooltip>
-                          <span
-                            className={classes["title"]}
-                            title={moment(
-                              entity?.breakdowns[0]?.estimatedDateOfRepair
-                            ).format(DATETIME_FORMATS.FULL)}
-                          >
-                            {moment(
-                              entity?.breakdowns[0]?.estimatedDateOfRepair
-                            ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                          </span>
+                    {entity?.breakdowns[0]?.estimatedDateOfRepair &&
+                      entity?.status === "Breakdown" && (
+                        <div className={classes["fourth-block"]}>
+                          <div className={classes["title-wrapper"]}>
+                            <Tooltip title="Estimated date of repair">
+                              <FaRegClock />
+                            </Tooltip>
+                            <span
+                              className={classes["title"]}
+                              title={moment(
+                                entity?.breakdowns[0]?.estimatedDateOfRepair
+                              ).format(DATETIME_FORMATS.FULL)}
+                            >
+                              {moment(
+                                entity?.breakdowns[0]?.estimatedDateOfRepair
+                              ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    <div>
+                      <EntityStatusTag status={entity?.status} />
+                    </div>
+                  </div>
                 </div>
 
                 <Link to={"/entity/" + entity.id}>

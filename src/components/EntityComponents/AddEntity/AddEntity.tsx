@@ -1,3 +1,4 @@
+import { PlusCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import {
   Button,
@@ -10,27 +11,34 @@ import {
   Modal,
   Radio,
   Row,
-  Select,
+  Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
+import { useParams } from "react-router";
 import { CREATE_ENTITY } from "../../../api/mutations";
-import { DEPARTMENTS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
+import { BrandSelector } from "../../common/BrandSelector";
+import { DepartmentSelector } from "../../common/DepartmentSelector";
+import { EngineSelector } from "../../common/EngineSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./AddEntity.module.css";
 
 export interface AddEntityProps {
   entityType: "Machine" | "Vehicle" | "Vessel";
+  includeSubEntity?: boolean;
 }
 
-const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
+const AddEntity: React.FC<AddEntityProps> = ({
+  entityType,
+  includeSubEntity,
+}) => {
   const [typeId, setTypeId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-
+  const { id }: any = useParams();
   const [createEntity, { loading: loadingEntity }] = useMutation(
     CREATE_ENTITY,
     {
@@ -41,7 +49,7 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while creating entity.");
       },
-      refetchQueries: ["getAllEntity"],
+      refetchQueries: ["getAllEntity", "getSingleEntity"],
     }
   );
 
@@ -54,11 +62,10 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
     const {
       machineNumber,
       model,
+      brand,
       department,
       currentRunning,
       lastService,
-      currentMileage,
-      lastServiceMileage,
       measurement,
       engine,
       registeredDate,
@@ -69,44 +76,48 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
         typeId,
         machineNumber,
         model,
+        brand,
         department,
         locationId,
         currentRunning,
         lastService,
-        currentMileage,
-        lastServiceMileage,
         registeredDate,
         measurement,
         engine,
+        parentEntityId: parseInt(id),
       },
     });
   };
 
-  let departmentOptions: any = [];
-  DEPARTMENTS?.map((department: string) => {
-    departmentOptions.push({
-      value: department,
-      label: department,
-    });
-  });
-
   return (
     <>
-      <Button
-        htmlType="button"
-        size="middle"
-        type="primary"
-        onClick={() => setVisible(true)}
-        loading={loadingEntity}
-        className={classes["custom-btn-primary"]}
-      >
-        Add {entityType}
-      </Button>
+      {includeSubEntity ? (
+        <div className={classes["info-edit"]}>
+          <Tooltip title={`Add Sub Entity`}>
+            <PlusCircleOutlined
+              onClick={() => setVisible(true)}
+              style={{ fontSize: 16 }}
+            />
+          </Tooltip>
+        </div>
+      ) : (
+        <Button
+          htmlType="button"
+          size="middle"
+          type="primary"
+          onClick={() => setVisible(true)}
+          loading={loadingEntity}
+          className={classes["custom-btn-primary"]}
+        >
+          Add {includeSubEntity ? "Sub Entity" : entityType}
+        </Button>
+      )}
+
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={`Add ${entityType}`}
+        title={`Add ${includeSubEntity ? "Sub Entity" : entityType}`}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -118,65 +129,78 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
           id="myForm"
         >
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Machine Number"
-                name="machineNumber"
-                required={false}
-              >
-                <Input placeholder="Machine Number" />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Machine Number"
+                  name="machineNumber"
+                  required={false}
+                >
+                  <Input placeholder="Machine Number" />
+                </Form.Item>
+              </div>
+            )}
+
             <div className={classes["col"]}>
               <Form.Item label="Model" name="model" required={false}>
                 <Input placeholder="Model" />
               </Form.Item>
             </div>
+            <div className={classes["col"]}>
+              <Form.Item label="Brand" name="brand" required={false}>
+                <BrandSelector />
+              </Form.Item>
+            </div>
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item label="Department" name="department" required={false}>
-                <Select
-                  showArrow
-                  style={{ width: "100%" }}
-                  showSearch
-                  options={departmentOptions}
-                  placeholder={"Department"}
-                  className="notRounded"
-                />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Department"
+                  name="department"
+                  required={false}
+                >
+                  <DepartmentSelector />
+                </Form.Item>
+              </div>
+            )}
+
             <div className={classes["col"]}>
               <Form.Item label="Type" required={false}>
                 <TypeSelector entityType={entityType} setTypeId={setTypeId} />
               </Form.Item>
             </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Registered Date"
-                name="registeredDate"
-                required={false}
-              >
-                <DatePicker
-                  placeholder="Select registered date"
-                  style={{
-                    width: 200,
-                    marginRight: "1rem",
-                  }}
-                  allowClear={false}
-                />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Registered Date"
+                  name="registeredDate"
+                  required={false}
+                >
+                  <DatePicker
+                    placeholder="Select registered date"
+                    style={{
+                      width: 200,
+                      marginRight: "1rem",
+                    }}
+                    allowClear={false}
+                  />
+                </Form.Item>
+              </div>
+            )}
           </div>
 
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item label="Location" name="location" required={false}>
-                <LocationSelector setLocationId={setLocationId} />
-              </Form.Item>
+          {!includeSubEntity && (
+            <div className={classes["row"]}>
+              <div className={classes["col"]}>
+                <Form.Item label="Location" name="location" required={false}>
+                  <LocationSelector setLocationId={setLocationId} />
+                </Form.Item>
+              </div>
             </div>
-          </div>
+          )}
+
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item
@@ -203,17 +227,18 @@ const AddEntity: React.FC<AddEntityProps> = ({ entityType }) => {
               </Form.Item>
             </div>
           </div>
+
           <div className={classes["row"]}>
             <div className={classes["col"]}>
               <Form.Item label="Engine" name="engine" required={false}>
-                <Input placeholder="Engine" />
+                <EngineSelector />
               </Form.Item>
             </div>
             <div className={classes["col"]}>
               <Form.Item label="Measurement" name="measurement">
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
-                  <Radio.Button value="h">H</Radio.Button>
+                  <Radio.Button value="hr">H</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>

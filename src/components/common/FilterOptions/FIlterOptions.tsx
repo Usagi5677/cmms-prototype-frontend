@@ -146,20 +146,6 @@ const FilterOptions = ({
                   </div>
                   <div className={classes["item"]}>
                     <Form.Item
-                      name="engine"
-                      initialValue={options?.engineOptions!.value}
-                    >
-                      <EngineSelector
-                        onChange={options?.engineOptions!.onChange}
-                        multiple={true}
-                        rounded={true}
-                        width={options?.engineOptions!.width!}
-                        value={options?.engineOptions!.value}
-                      />
-                    </Form.Item>
-                  </div>
-                  <div className={classes["item"]}>
-                    <Form.Item
                       name="measurement"
                       initialValue={options?.measurementOptions!.value}
                     >
@@ -265,66 +251,33 @@ const FilterOptions = ({
                 </div>
 
                 <div className={classes["item-wrapper"]}>
-                  <div className={classes["title"]}>Current Running</div>
+                  <div className={classes["title"]}>Inter Service</div>
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["reading-container"]}>
                     <div className={classes["reading-wrapper"]}>
                       <div className={classes["sub-title"]}>Greater than</div>
                       <Search
                         searchValue={
-                          options?.gteCurrentRunningOptions!.searchValue!
+                          options?.gteInterServiceOptions!.searchValue!
                         }
-                        onChange={options?.gteCurrentRunningOptions!.onChange!}
-                        onClick={options?.gteCurrentRunningOptions!.onClick!}
-                        width={options?.gteCurrentRunningOptions!.width}
+                        onChange={options?.gteInterServiceOptions!.onChange!}
+                        onClick={options?.gteInterServiceOptions!.onClick!}
+                        width={options?.gteInterServiceOptions!.width}
                         noIcon={true}
-                        name={"Current running"}
+                        name={"Inter service"}
                       />
                     </div>
                     <div className={classes["reading-wrapper"]}>
                       <div className={classes["sub-title"]}>Less than</div>
                       <Search
                         searchValue={
-                          options?.lteCurrentRunningOptions!.searchValue!
+                          options?.lteInterServiceOptions!.searchValue!
                         }
-                        onChange={options?.lteCurrentRunningOptions!.onChange!}
-                        onClick={options?.lteCurrentRunningOptions!.onClick!}
-                        width={options?.lteCurrentRunningOptions!.width}
+                        onChange={options?.lteInterServiceOptions!.onChange!}
+                        onClick={options?.lteInterServiceOptions!.onClick!}
+                        width={options?.lteInterServiceOptions!.width}
                         noIcon={true}
-                        name={"Current running"}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className={classes["item-wrapper"]}>
-                  <div className={classes["title"]}>Last Service</div>
-                  <Divider style={{ marginTop: 10 }} />
-                  <div className={classes["reading-container"]}>
-                    <div className={classes["reading-wrapper"]}>
-                      <div className={classes["sub-title"]}>Greater than</div>
-                      <Search
-                        searchValue={
-                          options?.gteLastServiceOptions!.searchValue!
-                        }
-                        onChange={options?.gteLastServiceOptions!.onChange!}
-                        onClick={options?.gteLastServiceOptions!.onClick!}
-                        width={options?.gteLastServiceOptions!.width}
-                        noIcon={true}
-                        name={"Last service"}
-                      />
-                    </div>
-                    <div className={classes["reading-wrapper"]}>
-                      <div className={classes["sub-title"]}>Less than</div>
-                      <Search
-                        searchValue={
-                          options?.lteLastServiceOptions!.searchValue!
-                        }
-                        onChange={options?.lteLastServiceOptions!.onChange!}
-                        onClick={options?.lteLastServiceOptions!.onClick!}
-                        width={options?.lteLastServiceOptions!.width}
-                        noIcon={true}
-                        name={"Last service"}
+                        name={"Inter service"}
                       />
                     </div>
                   </div>

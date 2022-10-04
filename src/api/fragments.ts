@@ -27,9 +27,51 @@ export const APS_USER_FRAGMENT = gql`
     rcno
   }
 `;
+export const SUB_ENTITY_FRAGMENT = gql`
+${APS_USER_FRAGMENT}
+  fragment SubEntityFields on Entity {
+    id
+    createdAt
+    createdBy {
+      ...UserFieldsAPS
+      email
+    }
+    machineNumber
+    registeredDate
+    model
+    type {
+      id
+      name
+      entityType
+    }
+    department
+    engine
+    location {
+      id
+      name
+      zone {
+        id
+        name
+      }
+    }
+    currentRunning
+    lastService
+    status
+    measurement
+    brand
+    deletedAt
+    assignees {
+      user {
+        ...UserFieldsAPS
+      }
+      type
+    }
+  }
+`;
 
 export const ENTITY_FRAGMENT = gql`
   ${APS_USER_FRAGMENT}
+  ${SUB_ENTITY_FRAGMENT}
   fragment EntityFields on Entity {
     id
     createdAt
@@ -105,8 +147,12 @@ export const ENTITY_FRAGMENT = gql`
         }
       }
     }
+    subEntities {
+      ...SubEntityFields
+    }
   }
 `;
+
 
 export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
   fragment ChecklistTemplateFields on ChecklistTemplate {
