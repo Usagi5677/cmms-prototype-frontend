@@ -51,6 +51,7 @@ export const SearchUsersWithPermissions: React.FC<
   let typePermission: string;
   if (type === "Admin") typePermission = "ENTITY_ADMIN";
   else if (type === "Engineer") typePermission = "ENTITY_ENGINEER";
+  else if (type === "Technician") typePermission = "ENTITY_TECHNICIAN";
   else if (type === "User") typePermission = "ENTITY_USER";
 
   const fetchUsers = (value: string) => {
