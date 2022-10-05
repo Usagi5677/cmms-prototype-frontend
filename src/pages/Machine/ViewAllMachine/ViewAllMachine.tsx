@@ -172,7 +172,8 @@ const Machinery = () => {
     const flag =
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
       !hasPermissions(self, ["VIEW_ALL_MACHINERY"]);
-    if (self?.machineAssignments.length === 0 && flag) {
+    const flag2 = self?.machineAssignments.length > 0;
+    if (!flag2 && flag) {
       navigate("/");
       message.error("No permission to view all machinery.");
     }
