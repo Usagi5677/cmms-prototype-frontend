@@ -150,7 +150,7 @@ const Vehicles = () => {
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
     const flag =
-      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
       !hasPermissions(self, ["VIEW_ALL_VEHICLES"]);
     if (self?.vehicleAssignments.length === 0 && flag) {
       navigate("/");
