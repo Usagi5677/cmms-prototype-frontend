@@ -210,17 +210,21 @@ const EditEntity = ({
               </div>
             )}
           </div>
+
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Engine"
-                name="engine"
-                required={false}
-                initialValue={entity?.engine}
-              >
-                <EngineSelector />
-              </Form.Item>
-            </div>
+            {!entity?.subEntities?.some((e) => e.engine !== null) && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Engine"
+                  name="engine"
+                  required={false}
+                  initialValue={entity?.engine}
+                >
+                  <EngineSelector />
+                </Form.Item>
+              </div>
+            )}
+
             <div className={classes["col"]}>
               <Form.Item
                 label="Measurement"

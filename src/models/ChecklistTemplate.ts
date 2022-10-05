@@ -5,4 +5,5 @@ export default interface ChecklistTemplate {
   name: string;
   type: string;
   items: ChecklistTemplateItem[];
+  skipFriday?: boolean;
 }

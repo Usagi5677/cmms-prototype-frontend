@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation } from "@apollo/client";
 import {
   Button,
+  Checkbox,
   Col,
   Form,
   Input,
@@ -48,7 +49,7 @@ export const CreateChecklistTemplate: React.FC<
   };
 
   const onFinish = async (values: any) => {
-    const { name, type, items } = values;
+    const { name, type, items, skipFriday } = values;
 
     create({
       variables: {
@@ -56,6 +57,7 @@ export const CreateChecklistTemplate: React.FC<
           name,
           type,
           items,
+          skipFriday,
         },
       },
     });
@@ -120,6 +122,9 @@ export const CreateChecklistTemplate: React.FC<
                 </Select.Option>
               ))}
             </Select>
+          </Form.Item>
+          <Form.Item name="skipFriday" required={false} valuePropName="checked">
+            <Checkbox>Skip Friday</Checkbox>
           </Form.Item>
           <Form.List
             name="items"

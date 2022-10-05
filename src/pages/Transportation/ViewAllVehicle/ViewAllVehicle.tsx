@@ -149,6 +149,17 @@ const Vehicles = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
+    if (
+      self?.vehicleAssignments.length === 0 &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+      !hasPermissions(self, ["VIEW_ALL_VEHICLE"])
+    ) {
+      navigate("/");
+      message.error(
+        "You don't have permission to view all vehicles and you're not assigned to a vehicle."
+      );
+    }
+
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps

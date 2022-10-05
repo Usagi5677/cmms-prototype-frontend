@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
+  Checkbox,
   Divider,
   Form,
   Input,
@@ -126,7 +127,7 @@ export const ChecklistTemplateDetails: React.FC<
   };
 
   const onFinish = async (values: any) => {
-    const { name, type } = values;
+    const { name, type, skipFriday } = values;
 
     editChecklistTemplate({
       variables: {
@@ -134,6 +135,7 @@ export const ChecklistTemplateDetails: React.FC<
           id: checklistTemplate.id,
           name,
           type,
+          skipFriday,
         },
       },
     });
@@ -216,6 +218,14 @@ export const ChecklistTemplateDetails: React.FC<
                 </Select.Option>
               ))}
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="skipFriday"
+            required={false}
+            initialValue={checklistTemplate?.skipFriday}
+            valuePropName="checked"
+          >
+            <Checkbox>Skip Friday</Checkbox>
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Form.Item style={{ marginBottom: 0 }}>

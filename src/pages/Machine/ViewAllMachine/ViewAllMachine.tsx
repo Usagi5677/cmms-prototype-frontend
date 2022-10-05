@@ -169,6 +169,17 @@ const Machinery = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
+    if (
+      self?.machineAssignments.length === 0 &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+      !hasPermissions(self, ["VIEW_ALL_MACHINERY"])
+    ) {
+      navigate("/");
+      message.error(
+        "You don't have permission to view all machinery and you're not assigned to a machine."
+      );
+    }
+
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps

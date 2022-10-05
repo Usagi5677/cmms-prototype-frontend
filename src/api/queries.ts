@@ -325,6 +325,7 @@ export const CHECKLIST_TEMPLATES = gql`
           id
           name
           type
+          skipFriday
         }
       }
     }
