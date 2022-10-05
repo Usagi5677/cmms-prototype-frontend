@@ -10,11 +10,14 @@ import UserContext from "../../../../../contexts/UserContext";
 import { useParams } from "react-router";
 import PeriodicMaintenance from "../../../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceCard from "../../../../../components/EntityComponents/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
+import { Entity } from "../../../../../models/Entity/Entity";
 
 const UpcomingPeriodicMaintenances = ({
   isDeleted,
+  entity,
 }: {
   isDeleted?: boolean | undefined;
+  entity: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -129,6 +132,7 @@ const UpcomingPeriodicMaintenances = ({
                     key={periodicMaintenance.id}
                     periodicMaintenance={periodicMaintenance}
                     isDeleted={isDeleted}
+                    entity={entity}
                   />
                 );
               }

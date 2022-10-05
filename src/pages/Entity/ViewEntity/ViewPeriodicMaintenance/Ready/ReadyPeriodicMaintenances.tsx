@@ -20,11 +20,14 @@ import {
   PeriodicMaintenanceSummary,
 } from "../../../../../components/PeriodicMaintenanceStatus/PeriodicMaintenanceStatus";
 import PeriodicMaintenanceCalendar from "../../../../../components/EntityComponents/PeriodicMaintenanceCalendar/PeriodicMaintenanceCalendar";
+import { Entity } from "../../../../../models/Entity/Entity";
 
 const ReadyPeriodicMaintenances = ({
   isDeleted,
+  entity,
 }: {
   isDeleted?: boolean | undefined;
+  entity: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
@@ -292,6 +295,7 @@ const ReadyPeriodicMaintenances = ({
                     isOlder={isOlderPeriodicMaintenance}
                     isCopy
                     summary={summary?.periodicMaintenanceSummary}
+                    entity={entity}
                   />
                 );
               }

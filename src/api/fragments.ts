@@ -28,7 +28,7 @@ export const APS_USER_FRAGMENT = gql`
   }
 `;
 export const SUB_ENTITY_FRAGMENT = gql`
-${APS_USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   fragment SubEntityFields on Entity {
     id
     createdAt
@@ -66,6 +66,7 @@ ${APS_USER_FRAGMENT}
       }
       type
     }
+    parentEntityId
   }
 `;
 
@@ -150,9 +151,9 @@ export const ENTITY_FRAGMENT = gql`
     subEntities {
       ...SubEntityFields
     }
+    parentEntityId
   }
 `;
-
 
 export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
   fragment ChecklistTemplateFields on ChecklistTemplate {

@@ -27,6 +27,7 @@ import { CommentCard } from "../../common/CommentCard/CommentCard";
 import UpsertPMNotificationReminder from "../../common/EditPMNotificationReminder/UpsertPMNotificationReminder";
 import Comment from "../../../models/Comment";
 import { AddPeriodicMaintenanceObservation } from "../../common/AddPeriodicMaintenanceObservation";
+import { Entity } from "../../../models/Entity/Entity";
 
 const PeriodicMaintenanceCard = ({
   periodicMaintenance,
@@ -34,12 +35,14 @@ const PeriodicMaintenanceCard = ({
   isOlder,
   summary,
   isCopy,
+  entity,
 }: {
   periodicMaintenance: PeriodicMaintenance;
   isDeleted?: boolean | undefined;
   isOlder?: boolean;
   summary?: PeriodicMaintenanceSummary[];
   isCopy?: boolean;
+  entity?: Entity,
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -77,7 +80,6 @@ const PeriodicMaintenanceCard = ({
       </div>
     );
   };
-
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -96,7 +98,7 @@ const PeriodicMaintenanceCard = ({
                           ]) ||
                           !isAssignedType(
                             "Technician",
-                            periodicMaintenance.entity!,
+                            entity!,
                             self
                           ) ||
                           isDeleted ||
@@ -146,7 +148,7 @@ const PeriodicMaintenanceCard = ({
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
                     isAssignedType(
                       "Technician",
-                      periodicMaintenance.entity!,
+                      entity!,
                       self
                     ) ? (
                       <EditPeriodicMaintenance
@@ -160,7 +162,7 @@ const PeriodicMaintenanceCard = ({
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
                     (isAssignedType(
                       "Technician",
-                      periodicMaintenance.entity!,
+                      entity!,
                       self
                     ) &&
                       !isDeleted) ? (
@@ -178,7 +180,7 @@ const PeriodicMaintenanceCard = ({
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
                     isAssignedType(
                       "Technician",
-                      periodicMaintenance.entity!,
+                      entity!,
                       self
                     ) ? (
                       <DeletePeriodicMaintenance
@@ -227,7 +229,7 @@ const PeriodicMaintenanceCard = ({
         >
           <div className={classes["collapse-container"]}>
             {(periodicMaintenance?.type === "Copy" && !isDeleted && !isOlder) ||
-              isAssignedType("Technician", periodicMaintenance.entity!, self) ||
+              isAssignedType("Technician", entity!, self) ||
               (hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) && (
                 <PeriodicMaintenanceUpdateReading
                   periodicMaintenance={periodicMaintenance}
@@ -281,7 +283,7 @@ const PeriodicMaintenanceCard = ({
             />
             {!isDeleted ||
               !isOlder ||
-              isAssignedType("Technician", periodicMaintenance.entity!, self) ||
+              isAssignedType("Technician", entity!, self) ||
               (hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) && (
                 <div style={{ marginTop: ".5rem", fontSize: 14 }}>
                   <AddPeriodicMaintenanceTask
