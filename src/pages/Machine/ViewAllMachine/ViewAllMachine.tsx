@@ -175,7 +175,7 @@ const Machinery = () => {
         !hasPermissions(self, ["VIEW_ALL_MACHINERY"]))
     ) {
       navigate("/");
-      message.error("No permission to view all entity.");
+      message.error("No permission to view all machinery.");
     }
 
     getAllEntity({ variables: filter });
