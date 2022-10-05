@@ -153,7 +153,7 @@ const Vessels = () => {
     const flag =
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
       !hasPermissions(self, ["VIEW_ALL_VEHICLES"]);
-    if (self?.vesselAssignments.length === 0 && flag) {
+    if (self?.vesselAssignments.length === 0 || flag) {
       navigate("/");
       message.error("No permission to view all vessels.");
     }
