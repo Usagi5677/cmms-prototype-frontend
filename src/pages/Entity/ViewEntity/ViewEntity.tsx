@@ -271,17 +271,19 @@ const ViewEntity = () => {
                       {entityData?.location?.zone?.name}
                     </div>
                   </div>
-                  <div className={classes["info-title-btn-wrapper"]}>
-                    <div>Sub Entity</div>
-                    <div className={classes["info-content-btn"]}>
-                      {hasPermissions(self, ["ADD_ENTITY"]) && (
-                        <AddEntity
-                          includeSubEntity
-                          entityType={entityData?.type?.entityType!}
-                        />
-                      )}
+                  {entityData.parentEntityId == null && (
+                    <div className={classes["info-title-btn-wrapper"]}>
+                      <div>Sub Entity</div>
+                      <div className={classes["info-content-btn"]}>
+                        {hasPermissions(self, ["ADD_ENTITY"]) && (
+                          <AddEntity
+                            includeSubEntity
+                            entityType={entityData?.type?.entityType!}
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <div className={classes["grid-two"]}>
                   <div className={classes["info-title-wrapper"]}>
@@ -483,7 +485,7 @@ const ViewEntity = () => {
                 }
                 key="periodicMaintenance"
               >
-                <ViewPeriodicMaintenance isDeleted={flag} />
+                <ViewPeriodicMaintenance isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <ViewSparePR isDeleted={flag} entity={entityData} />
