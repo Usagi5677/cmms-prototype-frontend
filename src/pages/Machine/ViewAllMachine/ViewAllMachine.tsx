@@ -169,11 +169,10 @@ const Machinery = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
-    if (
-      (self?.machineAssignments.length === 0 &&
-        !hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-      !hasPermissions(self, ["VIEW_ALL_MACHINERY"])
-    ) {
+    const flag =
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+      !hasPermissions(self, ["VIEW_ALL_MACHINERY"]);
+    if (self?.machineAssignments.length === 0 && flag) {
       navigate("/");
       message.error("No permission to view all machinery.");
     }
