@@ -150,6 +150,16 @@ const Vessels = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
+    if (
+      self?.vesselAssignments.length === 0 &&
+      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+      !hasPermissions(self, ["VIEW_ALL_VESSELS"])
+    ) {
+      navigate("/");
+      message.error(
+        "You don't have permission to view all vessels and you're not assigned to a vessel."
+      );
+    }
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
