@@ -27,7 +27,6 @@ export const AddPeriodicMaintenanceTask: React.FC<
       refetchQueries: [
         "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
-        "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances"
       ],
     }
