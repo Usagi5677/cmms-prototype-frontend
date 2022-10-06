@@ -49,7 +49,6 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
-        "periodicMaintenanceSummary",
       ],
     }
   );
@@ -65,7 +64,6 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
-        "periodicMaintenanceSummary",
       ],
     }
   );
@@ -79,7 +77,6 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
               header={
                 <div
                   className={classes["header-container"]}
-                  onClick={(event) => event.stopPropagation()}
                 >
                   <div className={classes["comment-wrapper"]}>
                     <div className={classes["top-wrapper"]}>
