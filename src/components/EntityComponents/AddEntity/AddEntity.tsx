@@ -166,7 +166,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
 
             <div className={classes["col"]}>
               <Form.Item label="Type" required={false}>
-                <TypeSelector entityType={entityType} setTypeId={setTypeId} />
+                <TypeSelector setTypeId={setTypeId} />
               </Form.Item>
             </div>
             {!includeSubEntity && (

@@ -166,7 +166,6 @@ const EditEntity = ({
             <div className={classes["col"]}>
               <Form.Item label="Type" required={false}>
                 <TypeSelector
-                  entityType={entity?.type?.entityType}
                   setTypeId={setTypeId}
                   currentId={entity?.type?.id}
                 />
