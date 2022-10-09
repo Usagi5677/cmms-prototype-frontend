@@ -5,7 +5,7 @@ import { TYPES } from "../../../api/queries";
 import Type from "../../../models/Type";
 
 export interface TypeSelectorProps {
-  entityType?: "Machine" | "Vehicle" | "Vessel";
+  entityType?: "Machine" | "Vehicle" | "Vessel" | "Sub Entity";
   setTypeId: any;
   currentId?: number | number[];
   currentName?: string;
