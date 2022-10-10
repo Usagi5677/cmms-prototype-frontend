@@ -777,6 +777,8 @@ em {
   color: var(--ant-primary-color);
   cursor: pointer;
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 .editButton:hover {
   color: var(--ant-primary-color-hover);

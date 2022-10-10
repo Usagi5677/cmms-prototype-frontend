@@ -21,6 +21,7 @@ import { errorMessage } from "../../../helpers/gql";
 import { BrandSelector } from "../../common/BrandSelector";
 import { DepartmentSelector } from "../../common/DepartmentSelector";
 import { EngineSelector } from "../../common/EngineSelector";
+import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./AddEntity.module.css";
@@ -36,6 +37,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
 }) => {
   const [typeId, setTypeId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
+  const [divisionId, setDivisionId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const { id }: any = useParams();
@@ -63,7 +65,6 @@ const AddEntity: React.FC<AddEntityProps> = ({
       machineNumber,
       model,
       brand,
-      department,
       currentRunning,
       lastService,
       measurement,
@@ -77,7 +78,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
         machineNumber,
         model,
         brand,
-        department,
+        divisionId,
         locationId,
         currentRunning,
         lastService,
@@ -154,12 +155,8 @@ const AddEntity: React.FC<AddEntityProps> = ({
           <div className={classes["row"]}>
             {!includeSubEntity && (
               <div className={classes["col"]}>
-                <Form.Item
-                  label="Department"
-                  name="department"
-                  required={false}
-                >
-                  <DepartmentSelector />
+                <Form.Item label="Division" name="division" required={false}>
+                  <DivisionSelector setDivisionId={setDivisionId} />
                 </Form.Item>
               </div>
             )}

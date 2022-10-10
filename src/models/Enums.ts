@@ -88,7 +88,7 @@ export interface FilterOptionProps {
   entityStatusOptions?: EntityStatusOptionProps;
   typeSelectorOptions?: TypeSelectorOptionProps;
   zoneOptions?: DefaultNumberArrayOptionProps;
-  departmentOptions?: DefaultStringArrayOptionProps;
+  divisionOptions?: DefaultNumberArrayOptionProps;
   brandOptions?: DefaultStringArrayOptionProps;
   assignedOptions?: DefaultBooleanOptionProps;
   assignedToMeOptions?: DefaultBooleanOptionProps;

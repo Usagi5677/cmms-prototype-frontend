@@ -2,6 +2,7 @@ import { Button, Collapse, Divider, Form } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect } from "react";
 import { FilterOptionProps } from "../../../models/Enums";
+import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
@@ -193,15 +194,15 @@ const FilterOptions = ({
                   </div>
                   <div className={classes["item"]}>
                     <Form.Item
-                      name="department"
-                      initialValue={options?.departmentOptions!.value}
+                      name="division"
+                      initialValue={options?.divisionOptions!.currentId}
                     >
-                      <DepartmentSelector
-                        onChange={options?.departmentOptions!.onChange}
+                      <DivisionSelector
+                        setDivisionId={options?.divisionOptions!.setId}
                         multiple={true}
                         rounded={true}
-                        width={options?.departmentOptions!.width!}
-                        value={options?.departmentOptions!.value}
+                        width={options?.divisionOptions!.width}
+                        currentId={options?.divisionOptions!.currentId!}
                       />
                     </Form.Item>
                   </div>

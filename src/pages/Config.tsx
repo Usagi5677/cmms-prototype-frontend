@@ -1,6 +1,7 @@
 import { message, Tabs } from "antd";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { Divisions } from "../components/Config/Division/Divisions";
 import { Locations } from "../components/Config/Location/Locations";
 import { Types } from "../components/Config/Type/Types";
 import { Zones } from "../components/Config/Zone/Zones";
@@ -45,6 +46,13 @@ export const Config: React.FC<ConfigProps> = ({}) => {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Zones" key="zones">
               <Zones />
+            </Tabs.TabPane>
+          </>
+        )}
+        {hasPermissions(user, ["MODIFY_DIVISIONS"]) && (
+          <>
+            <Tabs.TabPane tab="Divisions" key="divisions">
+              <Divisions />
             </Tabs.TabPane>
           </>
         )}

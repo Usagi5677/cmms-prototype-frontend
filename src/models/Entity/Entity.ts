@@ -10,6 +10,7 @@ import EntityPeriodicMaintenance from "./EntityPeriodicMaintenance";
 import EntityRepairRequest from "./EntityRepairRequest";
 import SparePR from "./SparePR";
 import Repair from "./Repair";
+import Division from "../Division";
 
 export interface Entity {
   id: number;
@@ -19,7 +20,7 @@ export interface Entity {
   registeredDate?: Date;
   model?: string;
   location?: Location;
-  department?: string;
+  division?: Division;
   engine?: string;
   currentRunning?: number;
   lastService?: number;

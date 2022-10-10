@@ -22,6 +22,7 @@ import { Entity } from "../../../models/Entity/Entity";
 import { BrandSelector } from "../../common/BrandSelector";
 import { DepartmentSelector } from "../../common/DepartmentSelector";
 import { EngineSelector } from "../../common/EngineSelector";
+import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./EditEntity.module.css";
@@ -41,6 +42,7 @@ const EditEntity = ({
   const [form] = useForm();
   const [typeId, setTypeId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
+  const [divisionId, setDivisionId] = useState<number | null>(null);
 
   const [editEntity, { loading: loadingEntity }] = useMutation(EDIT_ENTITY, {
     onCompleted: () => {
@@ -66,7 +68,6 @@ const EditEntity = ({
       machineNumber,
       model,
       brand,
-      department,
       measurement,
       engine,
       registeredDate,
@@ -79,7 +80,7 @@ const EditEntity = ({
         machineNumber,
         model,
         brand,
-        department,
+        divisionId,
         locationId,
         registeredDate,
         measurement,
@@ -152,13 +153,12 @@ const EditEntity = ({
           <div className={classes["row"]}>
             {!includeSubEntity && (
               <div className={classes["col"]}>
-                <Form.Item
-                  label="Department"
-                  name="department"
-                  required={false}
-                  initialValue={entity?.department}
-                >
-                  <DepartmentSelector />
+               <Form.Item label="Division" name="division" required={false}>
+                  <DivisionSelector
+                    currentId={entity?.division?.id}
+                    currentName={entity?.division?.name}
+                    setDivisionId={setDivisionId}
+                  />
                 </Form.Item>
               </div>
             )}
