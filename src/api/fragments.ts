@@ -44,7 +44,10 @@ export const SUB_ENTITY_FRAGMENT = gql`
       name
       entityType
     }
-    department
+    division {
+      id
+      name
+    }
     engine
     location {
       id
@@ -88,7 +91,10 @@ export const ENTITY_FRAGMENT = gql`
       name
       entityType
     }
-    department
+    division {
+      id
+      name
+    }
     engine
     location {
       id

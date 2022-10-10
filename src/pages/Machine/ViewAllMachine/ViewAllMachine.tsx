@@ -55,9 +55,7 @@ const Machinery = () => {
     getFilterObjects?.status
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [department, setDepartment] = useState<string[]>(
-    getFilterObjects?.department
-  );
+  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -89,7 +87,7 @@ const Machinery = () => {
       entityType: ["Machine"],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -108,7 +106,7 @@ const Machinery = () => {
       entityType: string[];
       typeIds: number[];
       zoneIds: number[];
-      department: string[];
+      divisionIds: number[];
       brand: string[];
       isAssigned: boolean;
       //assignedToId: number | null;
@@ -128,7 +126,7 @@ const Machinery = () => {
     entityType: ["Machine"],
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
-    department: JSON.parse(saveFilterOptions)?.department,
+    divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brand: JSON.parse(saveFilterOptions)?.brand,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
@@ -195,7 +193,7 @@ const Machinery = () => {
     typeIdsValue: number[],
     statusValue: EntityStatus[],
     zoneIdsValue: number[],
-    departmentValue: string[],
+    divisionIdsValue: number[],
     brandValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
@@ -215,7 +213,7 @@ const Machinery = () => {
           typeIds: typeIdsValue,
           status: statusValue,
           zoneIds: zoneIdsValue,
-          department: departmentValue,
+          divisionIds: divisionIdsValue,
           brand: brandValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
@@ -244,7 +242,7 @@ const Machinery = () => {
       typeIds,
       status,
       zoneIds,
-      department,
+      divisionIds,
       brand,
       measurement,
       isAssigned,
@@ -260,7 +258,7 @@ const Machinery = () => {
     typeIds,
     status,
     zoneIds,
-    department,
+    divisionIds,
     brand,
     measurement,
     isAssigned,
@@ -314,7 +312,7 @@ const Machinery = () => {
     critical = statusCountData?.critical;
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
-    dispose = statusCountData?.dispose;
+    //dispose = statusCountData?.dispose;
     total = critical + working + breakdown + dispose;
   }
 
@@ -330,7 +328,7 @@ const Machinery = () => {
       entityType: ["Machine"],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -349,7 +347,7 @@ const Machinery = () => {
     setStatus([]);
     setLocationIds([]);
     setZoneIds([]);
-    setDepartment([]);
+    setDivisionIds([]);
     setBrand([]);
     setMeasurement([]);
     setTypeIds([]);
@@ -395,21 +393,12 @@ const Machinery = () => {
     multiple: true,
     width: "100%",
   };
-  const departmentOptions: DefaultStringArrayOptionProps = {
-    onChange: (department: string[]) => {
-      setFilter({
-        ...filter,
-        department,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setDepartment(department);
-    },
-    value: filter.department,
+  const divisionOptions: DefaultNumberArrayOptionProps = {
+    setId: setDivisionIds,
+    currentId: divisionIds,
     width: "100%",
   };
+  
   const brandOptions: DefaultStringArrayOptionProps = {
     onChange: (brand: string[]) => {
       setFilter({
@@ -508,7 +497,7 @@ const Machinery = () => {
     entityStatusOptions,
     typeSelectorOptions,
     zoneOptions,
-    departmentOptions,
+    divisionOptions,
     brandOptions,
     measurementOptions,
     assignedOptions,

@@ -55,9 +55,7 @@ const Vehicles = () => {
     getFilterObjects?.status
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [department, setDepartment] = useState<string[]>(
-    getFilterObjects?.department
-  );
+  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -89,7 +87,7 @@ const Vehicles = () => {
       entityType: ["Vehicle"],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -108,7 +106,7 @@ const Vehicles = () => {
       entityType: string[];
       typeIds: number[];
       zoneIds: number[];
-      department: string[];
+      divisionIds: number[];
       brand: string[];
       isAssigned: boolean;
       //assignedToId: number | null;
@@ -128,7 +126,7 @@ const Vehicles = () => {
     entityType: ["Vehicle"],
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
-    department: JSON.parse(saveFilterOptions)?.department,
+    divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brand: JSON.parse(saveFilterOptions)?.brand,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
@@ -152,7 +150,7 @@ const Vehicles = () => {
     if (
       self?.vehicleAssignments.length === 0 &&
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_VEHICLE"])
+      !hasPermissions(self, ["VIEW_ALL_VEHICLES"])
     ) {
       navigate("/");
       message.error(
@@ -175,7 +173,7 @@ const Vehicles = () => {
     typeIdsValue: number[],
     statusValue: EntityStatus[],
     zoneIdsValue: number[],
-    departmentValue: string[],
+    divisionIdsValue: number[],
     brandValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
@@ -195,7 +193,7 @@ const Vehicles = () => {
           typeIds: typeIdsValue,
           status: statusValue,
           zoneIds: zoneIdsValue,
-          department: departmentValue,
+          divisionIds: divisionIdsValue,
           brand: brandValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
@@ -224,7 +222,7 @@ const Vehicles = () => {
       typeIds,
       status,
       zoneIds,
-      department,
+      divisionIds,
       brand,
       measurement,
       isAssigned,
@@ -240,7 +238,7 @@ const Vehicles = () => {
     typeIds,
     status,
     zoneIds,
-    department,
+    divisionIds,
     brand,
     measurement,
     isAssigned,
@@ -313,7 +311,7 @@ const Vehicles = () => {
     critical = statusCountData?.critical;
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
-    dispose = statusCountData?.dispose;
+    //dispose = statusCountData?.dispose;
     total = critical + working + breakdown + dispose;
   }
 
@@ -329,7 +327,7 @@ const Vehicles = () => {
       entityType: ["Vehicle"],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -346,7 +344,7 @@ const Vehicles = () => {
     setStatus([]);
     setLocationIds([]);
     setZoneIds([]);
-    setDepartment([]);
+    setDivisionIds([]);
     setBrand([]);
     setMeasurement([]);
     setTypeIds([]);
@@ -390,19 +388,9 @@ const Vehicles = () => {
     multiple: true,
     width: "100%",
   };
-  const departmentOptions: DefaultStringArrayOptionProps = {
-    onChange: (department: string[]) => {
-      setFilter({
-        ...filter,
-        department,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setDepartment(department);
-    },
-    value: filter.department,
+  const divisionOptions: DefaultNumberArrayOptionProps = {
+    setId: setDivisionIds,
+    currentId: divisionIds,
     width: "100%",
   };
   const brandOptions: DefaultStringArrayOptionProps = {
@@ -503,7 +491,7 @@ const Vehicles = () => {
     entityStatusOptions,
     typeSelectorOptions,
     zoneOptions,
-    departmentOptions,
+    divisionOptions,
     brandOptions,
     measurementOptions,
     assignedOptions,

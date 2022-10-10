@@ -47,9 +47,7 @@ const ViewAllDisposed = () => {
   );
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [department, setDepartment] = useState<string[]>(
-    getFilterObjects?.department
-  );
+  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -85,7 +83,7 @@ const ViewAllDisposed = () => {
       entityType: [],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -104,7 +102,7 @@ const ViewAllDisposed = () => {
       entityType: string[];
       typeIds: number[];
       zoneIds: number[];
-      department: string[];
+      divisionIds: number[];
       brand: string[];
       isAssigned: boolean;
       //assignedToId: number | null;
@@ -124,7 +122,7 @@ const ViewAllDisposed = () => {
     entityType: JSON.parse(saveFilterOptions)?.entityType,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
-    department: JSON.parse(saveFilterOptions)?.department,
+    divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brand: JSON.parse(saveFilterOptions)?.brand,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
@@ -187,7 +185,7 @@ const ViewAllDisposed = () => {
     locationIdsValue: number[],
     typeIdsValue: number[],
     zoneIdsValue: number[],
-    departmentValue: string[],
+    divisionIdsValue: number[],
     brandValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
@@ -207,7 +205,7 @@ const ViewAllDisposed = () => {
           locationIds: locationIdsValue,
           typeIds: typeIdsValue,
           zoneIds: zoneIdsValue,
-          department: departmentValue,
+          divisionIds: divisionIdsValue,
           brand: brandValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
@@ -236,7 +234,7 @@ const ViewAllDisposed = () => {
       locationIds,
       typeIds,
       zoneIds,
-      department,
+      divisionIds,
       brand,
       measurement,
       isAssigned,
@@ -252,7 +250,7 @@ const ViewAllDisposed = () => {
     locationIds,
     typeIds,
     zoneIds,
-    department,
+    divisionIds,
     brand,
     measurement,
     isAssigned,
@@ -323,7 +321,7 @@ const ViewAllDisposed = () => {
       entityType: [],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -339,7 +337,7 @@ const ViewAllDisposed = () => {
     setGteInterService("");
     setLocationIds([]);
     setZoneIds([]);
-    setDepartment([]);
+    setDivisionIds([]);
     setBrand([]);
     setMeasurement([]);
     setTypeIds([]);
@@ -384,21 +382,12 @@ const ViewAllDisposed = () => {
     multiple: true,
     width: "100%",
   };
-  const departmentOptions: DefaultStringArrayOptionProps = {
-    onChange: (department: string[]) => {
-      setFilter({
-        ...filter,
-        department,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setDepartment(department);
-    },
-    value: filter.department,
+  const divisionOptions: DefaultNumberArrayOptionProps = {
+    setId: setDivisionIds,
+    currentId: divisionIds,
     width: "100%",
   };
+  
   const brandOptions: DefaultStringArrayOptionProps = {
     onChange: (brand: string[]) => {
       setFilter({
@@ -481,7 +470,7 @@ const ViewAllDisposed = () => {
     locationOptions,
     typeSelectorOptions,
     zoneOptions,
-    departmentOptions,
+    divisionOptions,
     brandOptions,
     measurementOptions,
     assignedOptions,

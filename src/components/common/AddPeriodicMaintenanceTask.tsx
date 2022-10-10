@@ -25,8 +25,8 @@ export const AddPeriodicMaintenanceTask: React.FC<
         errorMessage(error, "Unexpected error while adding task.");
       },
       refetchQueries: [
-        "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
+        "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances"
       ],
     }

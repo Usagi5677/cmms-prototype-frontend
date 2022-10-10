@@ -56,9 +56,7 @@ const Vessels = () => {
     getFilterObjects?.status
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [department, setDepartment] = useState<string[]>(
-    getFilterObjects?.department
-  );
+  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -90,7 +88,7 @@ const Vessels = () => {
       entityType: ["Vessel"],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -109,7 +107,7 @@ const Vessels = () => {
       entityType: string[];
       typeIds: number[];
       zoneIds: number[];
-      department: string[];
+      divisionIds: number[];
       brand: string[];
       isAssigned: boolean;
       //assignedToId: number | null;
@@ -129,7 +127,7 @@ const Vessels = () => {
     entityType: ["Vessel"],
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
-    department: JSON.parse(saveFilterOptions)?.department,
+    divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brand: JSON.parse(saveFilterOptions)?.brand,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
@@ -175,7 +173,7 @@ const Vessels = () => {
     typeIdsValue: number[],
     statusValue: EntityStatus[],
     zoneIdsValue: number[],
-    departmentValue: string[],
+    divisionIdsValue: number[],
     brandValue: string[],
     measurementValue: string[],
     isAssignedValue: boolean,
@@ -195,7 +193,7 @@ const Vessels = () => {
           typeIds: typeIdsValue,
           status: statusValue,
           zoneIds: zoneIdsValue,
-          department: departmentValue,
+          divisionIds: divisionIdsValue,
           brand: brandValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
@@ -224,7 +222,7 @@ const Vessels = () => {
       typeIds,
       status,
       zoneIds,
-      department,
+      divisionIds,
       brand,
       measurement,
       isAssigned,
@@ -240,7 +238,7 @@ const Vessels = () => {
     typeIds,
     status,
     zoneIds,
-    department,
+    divisionIds,
     brand,
     measurement,
     isAssigned,
@@ -313,7 +311,7 @@ const Vessels = () => {
     critical = statusCountData?.critical;
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
-    dispose = statusCountData?.dispose;
+    //dispose = statusCountData?.dispose;
     total = critical + working + breakdown + dispose;
   }
 
@@ -329,7 +327,7 @@ const Vessels = () => {
       entityType: ["Vessel"],
       typeIds: [],
       zoneIds: [],
-      department: [],
+      divisionIds: [],
       brand: [],
       isAssigned: false,
       //assignedToId: null,
@@ -346,7 +344,7 @@ const Vessels = () => {
     setStatus([]);
     setLocationIds([]);
     setZoneIds([]);
-    setDepartment([]);
+    setDivisionIds([]);
     setBrand([]);
     setMeasurement([]);
     setTypeIds([]);
@@ -391,21 +389,12 @@ const Vessels = () => {
     multiple: true,
     width: "100%",
   };
-  const departmentOptions: DefaultStringArrayOptionProps = {
-    onChange: (department: string[]) => {
-      setFilter({
-        ...filter,
-        department,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setDepartment(department);
-    },
-    value: filter.department,
+  const divisionOptions: DefaultNumberArrayOptionProps = {
+    setId: setDivisionIds,
+    currentId: divisionIds,
     width: "100%",
   };
+ 
   const brandOptions: DefaultStringArrayOptionProps = {
     onChange: (brand: string[]) => {
       setFilter({
@@ -504,7 +493,7 @@ const Vessels = () => {
     entityStatusOptions,
     typeSelectorOptions,
     zoneOptions,
-    departmentOptions,
+    divisionOptions,
     brandOptions,
     measurementOptions,
     assignedOptions,

@@ -413,7 +413,7 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
     $entityType: [String!]
     $status: [String!]
     $locationIds: [Int!]
-    $department: [String!]
+    $divisionIds: [Int!]
     $typeIds: [Int!]
     $zoneIds: [Int!]
     $brand: [String!]
@@ -430,7 +430,7 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
       entityType: $entityType
       status: $status
       locationIds: $locationIds
-      department: $department
+      divisionIds: $divisionIds
       typeIds: $typeIds
       zoneIds: $zoneIds
       brand: $brand
@@ -665,6 +665,44 @@ export const ZONES = gql`
   }
 `;
 
+export const DIVISIONS = gql`
+  ${APS_USER_FRAGMENT}
+  query divisions(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    divisions(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          assignees {
+            user {
+              ...UserFieldsAPS
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_ENTITY = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntity(
@@ -677,7 +715,7 @@ export const ALL_ENTITY = gql`
     $entityType: [String!]
     $status: [String!]
     $locationIds: [Int!]
-    $department: [String!]
+    $divisionIds: [Int!]
     $typeIds: [Int!]
     $zoneIds: [Int!]
     $brand: [String!]
@@ -698,7 +736,7 @@ export const ALL_ENTITY = gql`
       entityType: $entityType
       status: $status
       locationIds: $locationIds
-      department: $department
+      divisionIds: $divisionIds
       typeIds: $typeIds
       zoneIds: $zoneIds
       brand: $brand

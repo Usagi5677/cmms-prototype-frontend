@@ -196,255 +196,6 @@ export const EDIT_MACHINE_ATTACHMENT = gql`
   }
 `;
 
-export const CREATE_TRANSPORTATION = gql`
-  mutation (
-    $machineNumber: String
-    $model: String
-    $typeId: Int
-    $department: String
-    $location: String
-    $engine: String
-    $measurement: String
-    $transportType: String
-    $currentMileage: Int
-    $lastServiceMileage: Int
-    $registeredDate: Date
-  ) {
-    createTransportation(
-      machineNumber: $machineNumber
-      model: $model
-      typeId: $typeId
-      department: $department
-      location: $location
-      engine: $engine
-      measurement: $measurement
-      transportType: $transportType
-      currentMileage: $currentMileage
-      lastServiceMileage: $lastServiceMileage
-      registeredDate: $registeredDate
-    )
-  }
-`;
-
-export const EDIT_TRANSPORTATION = gql`
-  mutation (
-    $id: Int!
-    $machineNumber: String
-    $model: String
-    $typeId: Int
-    $department: String
-    $location: String
-    $engine: String
-    $measurement: String
-    $transportType: String
-    $currentMileage: Int
-    $lastServiceMileage: Int
-    $registeredDate: Date
-  ) {
-    editTransportation(
-      id: $id
-      machineNumber: $machineNumber
-      model: $model
-      typeId: $typeId
-      department: $department
-      location: $location
-      engine: $engine
-      measurement: $measurement
-      transportType: $transportType
-      currentMileage: $currentMileage
-      lastServiceMileage: $lastServiceMileage
-      registeredDate: $registeredDate
-    )
-  }
-`;
-
-export const DELETE_TRANSPORTATION = gql`
-  mutation ($transportationId: Int!) {
-    removeTransportation(transportationId: $transportationId)
-  }
-`;
-
-export const SET_TRANSPORTATION_STATUS = gql`
-  mutation ($transportationId: Int!, $status: TransportationStatus!) {
-    setTransportationStatus(
-      transportationId: $transportationId
-      status: $status
-    )
-  }
-`;
-
-export const ADD_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
-  mutation (
-    $transportationId: Int!
-    $title: String!
-    $measurement: String!
-    $value: Int!
-    $startDate: Date!
-    $tasks: [String!]
-  ) {
-    addTransportationPeriodicMaintenance(
-      transportationId: $transportationId
-      title: $title
-      measurement: $measurement
-      value: $value
-      startDate: $startDate
-      tasks: $tasks
-    )
-  }
-`;
-
-export const SET_TRANSPORTATION_PERIODIC_MAINTENANCE_STATUS = gql`
-  mutation ($id: Int!, $status: PeriodicMaintenanceStatus!) {
-    setTransportationPeriodicMaintenanceStatus(id: $id, status: $status)
-  }
-`;
-
-export const EDIT_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $measurement: String!
-    $value: Int!
-    $startDate: Date!
-  ) {
-    editTransportationPeriodicMaintenance(
-      id: $id
-      title: $title
-      measurement: $measurement
-      value: $value
-      startDate: $startDate
-    )
-  }
-`;
-
-export const DELETE_TRANSPORTATION_PERIODIC_MAINTENANCE = gql`
-  mutation ($id: Int!) {
-    deleteTransportationPeriodicMaintenance(id: $id)
-  }
-`;
-
-export const ADD_TRANSPORTATION_SPARE_PR = gql`
-  mutation (
-    $transportationId: Int!
-    $title: String!
-    $description: String!
-    $requestedDate: Date!
-  ) {
-    addTransportationSparePR(
-      transportationId: $transportationId
-      title: $title
-      description: $description
-      requestedDate: $requestedDate
-    )
-  }
-`;
-
-export const EDIT_TRANSPORTATION_SPARE_PR = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-    $requestedDate: Date!
-  ) {
-    editTransportationSparePR(
-      id: $id
-      title: $title
-      description: $description
-      requestedDate: $requestedDate
-    )
-  }
-`;
-
-export const DELETE_TRANSPORTATION_SPARE_PR = gql`
-  mutation ($id: Int!) {
-    deleteTransportationSparePR(id: $id)
-  }
-`;
-
-export const SET_TRANSPORTATION_SPARE_PR_STATUS = gql`
-  mutation ($id: Int!, $status: SparePRStatus!) {
-    setTransportationSparePRStatus(id: $id, status: $status)
-  }
-`;
-
-export const ADD_TRANSPORTATION_REPAIR = gql`
-  mutation ($transportationId: Int!, $title: String!, $description: String!) {
-    addTransportationRepair(
-      transportationId: $transportationId
-      title: $title
-      description: $description
-    )
-  }
-`;
-
-export const EDIT_TRANSPORTATION_REPAIR = gql`
-  mutation ($id: Int!, $title: String!, $description: String!) {
-    editTransportationRepair(id: $id, title: $title, description: $description)
-  }
-`;
-
-export const DELETE_TRANSPORTATION_REPAIR = gql`
-  mutation ($id: Int!) {
-    deleteTransportationRepair(id: $id)
-  }
-`;
-
-export const SET_TRANSPORTATION_REPAIR_STATUS = gql`
-  mutation ($id: Int!, $status: RepairStatus!) {
-    setTransportationRepairStatus(id: $id, status: $status)
-  }
-`;
-
-export const ADD_TRANSPORTATION_BREAKDOWN = gql`
-  mutation ($transportationId: Int!, $title: String!, $description: String!) {
-    addTransportationBreakdown(
-      transportationId: $transportationId
-      title: $title
-      description: $description
-    )
-  }
-`;
-
-export const EDIT_TRANSPORTATION_BREAKDOWN = gql`
-  mutation (
-    $id: Int!
-    $title: String!
-    $description: String!
-    $estimatedDateOfRepair: Date!
-  ) {
-    editTransportationBreakdown(
-      id: $id
-      title: $title
-      description: $description
-      estimatedDateOfRepair: $estimatedDateOfRepair
-    )
-  }
-`;
-
-export const DELETE_TRANSPORTATION_BREAKDOWN = gql`
-  mutation ($id: Int!) {
-    deleteTransportationBreakdown(id: $id)
-  }
-`;
-
-export const SET_TRANSPORTATION_BREAKDOWN_STATUS = gql`
-  mutation ($id: Int!, $status: BreakdownStatus!) {
-    setTransportationBreakdownStatus(id: $id, status: $status)
-  }
-`;
-
-export const EDIT_TRANSPORTATION_ATTACHMENT = gql`
-  mutation ($id: Int!, $description: String!) {
-    editTransportationAttachment(id: $id, description: $description)
-  }
-`;
-
-export const DELETE_TRANSPORTATION_ATTACHMENT = gql`
-  mutation ($id: Int!) {
-    removeTransportationAttachment(id: $id)
-  }
-`;
-
 export const ADD_ROLE = gql`
   mutation ($name: String!) {
     addRole(name: $name)
@@ -755,13 +506,36 @@ export const EDIT_ZONE = gql`
   }
 `;
 
+export const CREATE_DIVISION = gql`
+  mutation createDivision($input: CreateDivisionInput!) {
+    createDivision(input: $input)
+  }
+`;
+
+export const DELETE_DIVISION = gql`
+  mutation removeDivision($id: Int!) {
+    removeDivision(id: $id)
+  }
+`;
+
+export const EDIT_DIVISION = gql`
+  mutation updateDivision($input: UpdateDivisionInput!) {
+    updateDivision(input: $input)
+  }
+`;
+
+export const ASSIGN_USER_TO_DIVISION = gql`
+  mutation assignUserToDivision($input: DivisionAssignInput!) {
+    assignUserToDivision(input: $input)
+  }
+`;
 export const CREATE_ENTITY = gql`
   mutation (
     $typeId: Int
     $machineNumber: String
     $model: String
     $brand: String
-    $department: String
+    $divisionId: Int
     $locationId: Int
     $engine: String
     $measurement: String
@@ -775,7 +549,7 @@ export const CREATE_ENTITY = gql`
       machineNumber: $machineNumber
       model: $model
       brand: $brand
-      department: $department
+      divisionId: $divisionId
       locationId: $locationId
       engine: $engine
       measurement: $measurement
@@ -793,7 +567,7 @@ export const EDIT_ENTITY = gql`
     $typeId: Int
     $machineNumber: String
     $model: String
-    $department: String
+    $divisionId: Int
     $locationId: Int
     $engine: String
     $measurement: String
@@ -804,7 +578,7 @@ export const EDIT_ENTITY = gql`
       typeId: $typeId
       machineNumber: $machineNumber
       model: $model
-      department: $department
+      divisionId: $divisionId
       locationId: $locationId
       engine: $engine
       measurement: $measurement
@@ -1120,7 +894,6 @@ export const ADD_PERIODIC_MAINTENANCE_TASK = gql`
     )
   }
 `;
-
 
 export const TOGGLE_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($id: Int!, $complete: Boolean!) {

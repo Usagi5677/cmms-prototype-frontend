@@ -13,4 +13,5 @@ export default interface User {
   isAdmin?: boolean;
   isAgent?: boolean;
   isSuperAdmin: boolean;
+  user?: User;
 }

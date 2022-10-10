@@ -45,7 +45,6 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         errorMessage(error, "Unexpected error while updating task.");
       },
       refetchQueries: [
-        "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
@@ -60,7 +59,6 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         errorMessage(error, "Unexpected error while deleting task.");
       },
       refetchQueries: [
-        "getAllPeriodicMaintenanceOfEntity",
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
