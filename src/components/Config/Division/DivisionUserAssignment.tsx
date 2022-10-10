@@ -153,6 +153,7 @@ export const DivisionUserAssignment: React.FC<DivisionUserProps> = ({
                     },
                   },
                 });
+                setVisible(false);
               }}
             >
               Assign
