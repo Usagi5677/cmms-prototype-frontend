@@ -312,7 +312,7 @@ const Machinery = () => {
     critical = statusCountData?.critical;
     working = statusCountData?.working;
     breakdown = statusCountData?.breakdown;
-    dispose = statusCountData?.dispose;
+    //dispose = statusCountData?.dispose;
     total = critical + working + breakdown + dispose;
   }
 
