@@ -120,8 +120,7 @@ export const PeriodicMaintenanceTemplates: React.FC<
       // width: "33%",
       render: (val, rec) => (
         <div style={{ display: "flex", alignItems: "center" }}>
-          {/* 
-            <div style={{ marginRight: ".5rem" }}>
+          <div style={{ marginRight: ".5rem" }}>
             <PeriodicMaintenanceTemplateDetails periodicMaintenance={rec} />
           </div>
           <div style={{ marginRight: ".5rem" }}>
@@ -132,8 +131,6 @@ export const PeriodicMaintenanceTemplates: React.FC<
             mutation={DELETE_PERIODIC_MAINTENANCE}
             refetchQueries={["periodicMaintenances"]}
           />
-          
-          */}
         </div>
       ),
     });
@@ -163,10 +160,9 @@ export const PeriodicMaintenanceTemplates: React.FC<
             margin={filterMargin}
           />
         </div>
-        {/*
-        hasPermissions(user, ["MODIFY_TEMPLATES"]) && (
+        {hasPermissions(user, ["MODIFY_TEMPLATES"]) && (
           <CreatePeriodicMaintenance />
-        )*/}
+        )}
       </div>
       <Table
         rowKey="id"
