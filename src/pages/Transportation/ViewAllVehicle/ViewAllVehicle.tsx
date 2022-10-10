@@ -150,7 +150,7 @@ const Vehicles = () => {
     if (
       self?.vehicleAssignments.length === 0 &&
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_VEHICLE"])
+      !hasPermissions(self, ["VIEW_ALL_VEHICLES"])
     ) {
       navigate("/");
       message.error(
