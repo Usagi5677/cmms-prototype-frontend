@@ -33,6 +33,8 @@ export const RemoveChecklistTemplateItem: React.FC<
 
   let variables: any = {
     id: item.id,
+    templateId,
+    entityId: entity?.id,
   };
 
   if (entityType && entity && templateId) {
