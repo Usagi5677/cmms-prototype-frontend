@@ -1,8 +1,19 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Tooltip,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
+import { FaMinusCircle, FaPlus } from "react-icons/fa";
 import { CREATE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./AddBreakdown.module.css";
@@ -16,8 +27,6 @@ const AddBreakdown = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const [detail, setDetail] = useState("");
-  const [details, setDetails] = useState<string[]>([]);
   const [createBreakdown, { loading: loadingBreakdown }] = useMutation(
     CREATE_BREAKDOWN,
     {
@@ -40,17 +49,12 @@ const AddBreakdown = ({
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
-    setDetail("");
-    setDetails([]);
   };
 
   const onFinish = async (values: any) => {
-    const { type } = values;
+    const { type, details } = values;
 
-    if(details.length < 1) {
-      message.error("Please enter the detail.");
-      return;
-    }
+    
     if (!type) {
       message.error("Please select the type.");
       return;
@@ -65,26 +69,9 @@ const AddBreakdown = ({
         },
       },
     });
-
-    setDetail("");
-    setDetails([]);
   };
 
-  const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Escape") setDetail("");
-    else if (event.key === "Enter") {
-      event.preventDefault();
-      if (detail.trim() === "") return;
-      setDetail("");
-      setDetails([...details, detail]);
-    }
-  };
-  const removeItem = (index: number) => {
-    setDetails([
-      ...details.slice(0, index),
-      ...details.slice(index + 1, details.length),
-    ]);
-  };
+  
 
   return (
     <>
@@ -138,35 +125,75 @@ const AddBreakdown = ({
               ))}
             </Select>
           </Form.Item>
-          <div style={{ marginBottom: 6 }}>Details</div>
-          <div style={{ marginBottom: 20 }}>
-            {details.map((d: string, index: number) => (
-              <div key={index} className={classes["detail"]}>
-                {d}
-                <CloseCircleOutlined
-                  style={{ color: "red" }}
-                  onClick={() => {
-                    removeItem(index);
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+          <Form.List
+            name="details"
+            rules={[
+              {
+                validator: async (_, items) => {
+                  if (!items || items.length < 1) {
+                    return Promise.reject(
+                      new Error("At least 1 detail required")
+                    );
+                  }
+                },
+              },
+            ]}
+            initialValue={[""]}
+          >
+            {(fields, { add, remove }, { errors }) => (
+              <>
+                {fields.map((field, index) => (
+                  <Form.Item
+                    label={index === 0 ? "Details" : undefined}
+                    required={false}
+                    key={field.key}
+                    style={{ marginBottom: ".5rem" }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Form.Item
+                        {...field}
+                        validateTrigger={["onChange", "onBlur"]}
+                        rules={[
+                          {
+                            required: true,
+                            whitespace: true,
+                            message:
+                              "Please enter a detail or delete this field.",
+                          },
+                        ]}
+                        noStyle
+                      >
+                        <Input placeholder="Detail" />
+                      </Form.Item>
+                      {fields.length > 1 ? (
+                        <Tooltip title="Remove detail" placement="bottom">
+                          <FaMinusCircle
+                            onClick={() => remove(field.name)}
+                            style={{ marginLeft: ".5rem" }}
+                          />
+                        </Tooltip>
+                      ) : null}
+                    </div>
+                  </Form.Item>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    icon={
+                      <FaPlus
+                        style={{ paddingTop: 3, marginRight: ".25rem" }}
+                      />
+                    }
+                  >
+                    Add Detail
+                  </Button>
+                  <Form.ErrorList errors={errors} />
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
 
-          <input
-            type="text"
-            placeholder={"Add detail"}
-            value={detail}
-            onChange={(e) => setDetail(e.target.value)}
-            onKeyDown={submit}
-            style={{
-              border: "solid 1px var(--border-2)",
-              borderRadius: 5,
-              padding: ".5rem",
-              width: "100%",
-              marginBottom: 20,
-            }}
-          />
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
