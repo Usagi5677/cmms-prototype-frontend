@@ -140,13 +140,13 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
         loading={uploading}
         className={classes["custom-btn-primary"]}
       >
-        Add Attachment
+        Upload Image
       </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Add Attachment"}
+        title={"Upload Image"}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -201,8 +201,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
                 Click or drag file to this area to upload
               </p>
               <p className="ant-upload-hint">
-                Support for a single or bulk upload. Strictly prohibit from
-                uploading company data or other band files
+                Support for a single or bulk upload.
               </p>
             </Upload.Dragger>
           </Form.Item>
