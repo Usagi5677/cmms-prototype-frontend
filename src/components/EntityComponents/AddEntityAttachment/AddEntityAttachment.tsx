@@ -8,6 +8,7 @@ import { useState } from "react";
 import {
   GET_ALL_ATTACHMENT_OF_ENTITY,
   GET_ALL_HISTORY_OF_ENTITY,
+  GET_ENTITY_LATEST_ATTACHMENT,
 } from "../../../api/queries";
 import { MAX_FILE_SIZE } from "../../../helpers/constants";
 import classes from "./AddEntityAttachment.module.css";
@@ -39,6 +40,15 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       entityId: entityID,
     },
   });
+
+  const { refetch: refetchLatestImage } = useQuery(
+    GET_ENTITY_LATEST_ATTACHMENT,
+    {
+      variables: {
+        entityId: entityID,
+      },
+    }
+  );
 
   const handleCancel = () => {
     form.resetFields();
@@ -111,6 +121,9 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
           before: null,
           after: null,
           search: "",
+          entityId: entityID,
+        });
+        refetchLatestImage({
           entityId: entityID,
         });
       });
