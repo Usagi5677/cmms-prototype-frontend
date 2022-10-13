@@ -1,4 +1,4 @@
-import { UploadOutlined } from "@ant-design/icons";
+import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Upload } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import {
   GET_ALL_ATTACHMENT_OF_ENTITY,
   GET_ALL_HISTORY_OF_ENTITY,
+  GET_ENTITY_LATEST_ATTACHMENT,
 } from "../../../api/queries";
 import { MAX_FILE_SIZE } from "../../../helpers/constants";
 import classes from "./AddEntityAttachment.module.css";
@@ -20,7 +21,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
   const [form] = useForm();
   const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
     variables: {
-      first: 6,
+      first: 8,
       last: null,
       before: null,
       after: null,
@@ -31,7 +32,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
 
   const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_ENTITY, {
     variables: {
-      first: 3,
+      first: 8,
       last: null,
       before: null,
       after: null,
@@ -40,6 +41,15 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
     },
   });
 
+  const { refetch: refetchLatestImage } = useQuery(
+    GET_ENTITY_LATEST_ATTACHMENT,
+    {
+      variables: {
+        entityId: entityID,
+      },
+    }
+  );
+
   const handleCancel = () => {
     form.resetFields();
     setFileList([]);
@@ -47,30 +57,34 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
   };
 
   const onFinish = async (values: any) => {
-    const { description, attachment } = values;
-
+    const { description } = values;
     if (!description) {
       message.error("Please enter the description.");
       return;
     }
-    if (!attachment) {
-      message.error("Please select an attachment.");
+    if (!fileList) {
+      message.error("Please select an image.");
       return;
     }
-    // Whenever file is selected, upload
-
-    if (attachment.file.status === "removed") return;
-    // Max allowed file size in bytes.
-    if (attachment.file.size > MAX_FILE_SIZE) {
-      message.error("File size cannot be greater than 10 MB.");
-      return;
+    for (const f of fileList) {
+      if (!f.type.includes("image")) {
+        message.error("Please select an image file.");
+        return;
+      }
+      // Max allowed file size in bytes.
+      if (f.size > MAX_FILE_SIZE) {
+        message.error("File size cannot be greater than 10 MB.");
+        return;
+      }
     }
     setUploading(true);
     // Send request as form data as files cannot be sent through graphql
     const data: any = new FormData();
     data.append("entityId", `${entityID}`);
     data.append("description", description.trim());
-    data.append("attachment", attachment.file);
+    for (const f of fileList) {
+      data.append("attachments", f);
+    }
     const token = localStorage.getItem("cmms_token");
     const url = `${
       process.env.REACT_APP_API_URL?.split("graphql")[0]
@@ -92,28 +106,29 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       })
       .finally(function () {
         setUploading(false);
+        //timeout since it was showing error when refetching
+        refetch({
+          first: 8,
+          last: null,
+          before: null,
+          after: null,
+          search: "",
+          entityId: entityID,
+        });
+        refetchHistory({
+          first: 8,
+          last: null,
+          before: null,
+          after: null,
+          search: "",
+          entityId: entityID,
+        });
+        refetchLatestImage({
+          entityId: entityID,
+        });
       });
 
     handleCancel();
-    //timeout since it was showing error when refetching
-    setTimeout(() => {
-      refetch({
-        first: 6,
-        last: null,
-        before: null,
-        after: null,
-        search: "",
-        entityId: entityID,
-      });
-      refetchHistory({
-        first: 3,
-        last: null,
-        before: null,
-        after: null,
-        search: "",
-        entityId: entityID,
-      });
-    }, 1000);
   };
   return (
     <>
@@ -155,39 +170,44 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
           >
             <Input placeholder="Description" />
           </Form.Item>
-
           <Form.Item
-            label="Attachment"
-            name="attachment"
-            required={false}
+            name="attachments"
             rules={[
               {
                 required: true,
-                message: "Please select an attachment.",
+                message: "Please select an image.",
               },
             ]}
           >
-            <Upload
-              onRemove={() => {
-                setFileList([]);
+            <Upload.Dragger
+              name="attachments"
+              fileList={fileList}
+              onRemove={(file) => {
+                setFileList(fileList.filter((f) => f.uid !== file.uid));
               }}
               beforeUpload={(file) => {
-                setFileList([file]);
+                fileList.push(file);
                 return false;
               }}
-              fileList={fileList}
+              multiple={true}
               listType={"picture"}
+              accept="image/*"
               style={{ width: "100% !important" }}
             >
-              <Button
-                icon={<UploadOutlined />}
-                shape="round"
-                style={{ width: "100% !important" }}
-                loading={uploading}
-              />
-            </Upload>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+              <p className="ant-upload-hint">
+                Support for a single or bulk upload. Strictly prohibit from
+                uploading company data or other band files
+              </p>
+            </Upload.Dragger>
           </Form.Item>
-          <Row justify="end" gutter={16}>
+
+          <Row justify="end" gutter={16} style={{ marginTop: 20 }}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
                 <Button

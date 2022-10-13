@@ -1,4 +1,4 @@
-import { UploadOutlined } from "@ant-design/icons";
+import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import Upload, { RcFile } from "antd/lib/upload";
@@ -32,31 +32,38 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
   };
 
   const onFinish = async (values: any) => {
-    const { description, attachment } = values;
+    const { description } = values;
 
     if (!description) {
       message.error("Please enter the description.");
       return;
     }
-    if (!attachment) {
-      message.error("Please select an attachment.");
+    if (!fileList) {
+      message.error("Please select an image.");
       return;
     }
-    // Whenever file is selected, upload
 
-    if (attachment.file.status === "removed") return;
-    // Max allowed file size in bytes.
-    if (attachment.file.size > MAX_FILE_SIZE) {
-      message.error("File size cannot be greater than 10 MB.");
-      return;
+    for (const f of fileList) {
+      if (!f.type.includes("image")) {
+        message.error("Please select an image file.");
+        return;
+      }
+      // Max allowed file size in bytes.
+      if (f.size > MAX_FILE_SIZE) {
+        message.error("File size cannot be greater than 10 MB.");
+        return;
+      }
     }
+    
     setUploading(true);
     // Send request as form data as files cannot be sent through graphql
     const data: any = new FormData();
     data.append("entityId", `${entity.id}`);
     data.append("checklistId", `${checklist.id}`);
     data.append("description", description.trim());
-    data.append("attachment", attachment.file);
+    for (const f of fileList) {
+      data.append("attachments", f);
+    }
     const token = localStorage.getItem("cmms_token");
     const url = `${
       process.env.REACT_APP_API_URL?.split("graphql")[0]
@@ -121,9 +128,7 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
           </Form.Item>
 
           <Form.Item
-            label="Image"
-            name="attachment"
-            required={false}
+            name="attachments"
             rules={[
               {
                 required: true,
@@ -131,26 +136,32 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
               },
             ]}
           >
-            <Upload
-              onRemove={() => {
-                setFileList([]);
+            <Upload.Dragger
+              name="attachments"
+              fileList={fileList}
+              onRemove={(file) => {
+                setFileList(fileList.filter((f) => f.uid !== file.uid));
               }}
               beforeUpload={(file) => {
-                setFileList([file]);
+                fileList.push(file);
                 return false;
               }}
-              fileList={fileList}
+              multiple={true}
               listType={"picture"}
               accept="image/*"
               style={{ width: "100% !important" }}
             >
-              <Button
-                icon={<UploadOutlined />}
-                shape="round"
-                style={{ width: "100% !important" }}
-                loading={uploading}
-              />
-            </Upload>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+              <p className="ant-upload-hint">
+                Support for a single or bulk upload. Strictly prohibit from
+                uploading company data or other band files
+              </p>
+            </Upload.Dragger>
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>
