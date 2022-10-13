@@ -93,7 +93,14 @@ const ParsedEntityAttachment = ({
   }
   return (
     <div className={classes["container"]}>
-      <div className={classes["option-wrapper"]}>
+      <div
+        className={classes["option-wrapper"]}
+        style={{
+          marginTop: checklistView ? 0 : 10,
+          marginBottom: checklistView ? 0 : 10,
+          marginRight: checklistView ? 0 : 20
+        }}
+      >
         <div className={classes["options"]}>
           {fileLoading && (
             <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
@@ -124,14 +131,14 @@ const ParsedEntityAttachment = ({
         <div
           className={classes["image-container"]}
           style={{
-            padding: checklistView ? undefined : 10,
+          
             height: checklistView ? 120 : undefined,
             width: checklistView ? 120 : undefined,
             display: "flex",
             justifyContent: "center",
           }}
         >
-          <Image src={file} />
+          <Image src={file} style={{aspectRatio: "1/1", objectFit: "contain"}} />
         </div>
       )}
       {isError && (

@@ -11,6 +11,7 @@
   color: var(--text-primary);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
   transition: transform 0.3s ease;
+  overflow: hidden;
 }
 
 .options {
@@ -20,13 +21,17 @@
 }
 
 .image-container {
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  max-height: 100px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .download-icon {
-  margin-left: 10px;
+  margin-left: 6px;
   font-size: 18px;
   transition: color 0.3s ease;
 }
@@ -39,6 +44,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .container:hover {
@@ -46,10 +53,10 @@
 }
 
 .option-wrapper {
+  width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
-  margin-top: 4px;
 }
 
 .title-wrapper {

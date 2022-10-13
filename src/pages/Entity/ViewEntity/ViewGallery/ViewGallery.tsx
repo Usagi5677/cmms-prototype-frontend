@@ -36,7 +36,7 @@ const ViewGallery = ({
       entityId: number;
     }
   >({
-    first: 6,
+    first: 8,
     last: null,
     before: null,
     after: null,
@@ -72,7 +72,7 @@ const ViewGallery = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
-          first: 6,
+          first: 8,
           last: null,
           before: null,
           after: null,
@@ -95,7 +95,7 @@ const ViewGallery = ({
   const next = () => {
     setFilter({
       ...filter,
-      first: 6,
+      first: 8,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -106,7 +106,7 @@ const ViewGallery = ({
   const back = () => {
     setFilter({
       ...filter,
-      last: 6,
+      last: 8,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -155,7 +155,7 @@ const ViewGallery = ({
         page={page}
         next={next}
         back={back}
-        pageLimit={6}
+        pageLimit={8}
       />
     </div>
   );
