@@ -56,7 +56,9 @@ const Vessels = () => {
     getFilterObjects?.status
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
+  const [divisionIds, setDivisionIds] = useState<number[]>(
+    getFilterObjects?.divisionIds
+  );
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -151,7 +153,8 @@ const Vessels = () => {
     if (
       self?.vesselAssignments.length === 0 &&
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_VESSELS"])
+      !hasPermissions(self, ["VIEW_ALL_VESSELS"]) &&
+      !self?.divisionUsers[0]?.divisionId
     ) {
       navigate("/");
       message.error(
@@ -394,7 +397,7 @@ const Vessels = () => {
     currentId: divisionIds,
     width: "100%",
   };
- 
+
   const brandOptions: DefaultStringArrayOptionProps = {
     onChange: (brand: string[]) => {
       setFilter({

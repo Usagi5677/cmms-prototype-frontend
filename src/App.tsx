@@ -21,10 +21,10 @@ import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
 import "./components/ThemeChange/antd.dark.min.css";
 import { IncompleteTasks } from "./pages/IncompleteTasks";
-import { Assignments } from "./pages/Assignments";
 import { DeveloperOptions } from "./pages/DeveloperOptions";
 import ViewAllDisposed from "./pages/ViewAllDisposed/ViewAllDisposed";
 import { Issues } from "./pages/Issues";
+import ViewAssignments from "./pages/ViewAssignments/ViewAssignments";
 
 function App() {
   {
@@ -197,7 +197,7 @@ function App() {
             <Route path="/vessels" element={<ViewAllVessel />} />
             <Route path="/vehicles" element={<ViewAllVehicle />} />
             <Route path="/dispose" element={<ViewAllDisposed />} />
-            <Route path="/assignments" element={<Assignments />} />
+            <Route path="/assignments" element={<ViewAssignments />} />
             <Route path="/users" element={<Users />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/templates" element={<Templates />} />

@@ -33,6 +33,9 @@ export const ME_QUERY = gql`
         }
         type
       }
+      divisionUsers {
+        divisionId
+      }
       location {
         id
         name
@@ -519,6 +522,15 @@ export const SEARCH_ENTITY = gql`
   }
 `;
 
+export const SEARCH_DIVISION = gql`
+  query searchDivision($query: String!, $limit: Int) {
+    searchDivision(query: $query, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
+
 export const TYPES = gql`
   query types(
     $after: String
@@ -725,6 +737,8 @@ export const ALL_ENTITY = gql`
     $lteInterService: String
     $gteInterService: String
     $isIncompleteChecklistTask: Boolean
+    $entityIds: [Int!]
+    $divisionExist: Boolean
   ) {
     getAllEntity(
       after: $after
@@ -746,6 +760,8 @@ export const ALL_ENTITY = gql`
       lteInterService: $lteInterService
       gteInterService: $gteInterService
       isIncompleteChecklistTask: $isIncompleteChecklistTask
+      entityIds: $entityIds
+      divisionExist: $divisionExist
     ) {
       pageInfo {
         endCursor
@@ -1735,6 +1751,53 @@ export const ASSIGNMENTS = gql`
               id
               name
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const DIVISION_ASSIGNMENTS = gql`
+  query divisionAssignments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $userIds: [Int!]!
+    $current: Boolean!
+    $divisionIds: [Int!]
+  ) {
+    divisionAssignments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      userIds: $userIds
+      current: $current
+      divisionIds: $divisionIds
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          createdAt
+          removedAt
+          user {
+            id
+            rcno
+            fullName
+            
+          }
+          division {
+            id
+            name
           }
         }
       }

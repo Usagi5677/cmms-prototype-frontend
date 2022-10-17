@@ -3,30 +3,31 @@ import { Checkbox, message, Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { UNASSIGN_USER_FROM_ENTITY } from "../api/mutations";
-import { ASSIGNMENTS } from "../api/queries";
-import { DeleteListing } from "../components/common/DeleteListing";
-import PaginationButtons from "../components/common/PaginationButtons/PaginationButtons";
-import { EntityListing } from "../components/EntityComponents/EntityListing";
-import UserContext from "../contexts/UserContext";
-import { DATETIME_FORMATS, PAGE_LIMIT } from "../helpers/constants";
-import { errorMessage } from "../helpers/gql";
-import { hasPermissions } from "../helpers/permissions";
-import { useIsSmallDevice } from "../helpers/useIsSmallDevice";
-import DefaultPaginationArgs from "../models/DefaultPaginationArgs";
-import { Entity } from "../models/Entity/Entity";
-import EntityAssignment from "../models/Entity/EntityAssign";
-import PaginationArgs from "../models/PaginationArgs";
-import User from "../models/User";
+import { UNASSIGN_USER_FROM_DIVISION } from "../../../api/mutations";
+import { DIVISION_ASSIGNMENTS } from "../../../api/queries";
+import { DeleteListing } from "../../../components/common/DeleteListing";
+import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
+import UserContext from "../../../contexts/UserContext";
+import { DATETIME_FORMATS, PAGE_LIMIT } from "../../../helpers/constants";
+import { errorMessage } from "../../../helpers/gql";
+import { hasPermissions } from "../../../helpers/permissions";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
+import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
+import PaginationArgs from "../../../models/PaginationArgs";
+import User from "../../../models/User";
 import moment from "moment";
-import { SearchEntities } from "../components/common/SearchEntitities";
-import AssignmentTypeSelector from "../components/common/AssignmentTypeSelector";
-import { SearchUsers } from "../components/common/SearchUsers";
-import { BulkAssignment } from "../components/EntityComponents/EntityAssignment/BulkAssignment";
+import { SearchUsers } from "../../../components/common/SearchUsers";
+import { DivisionUserBulkAssignment } from "../../../components/EntityComponents/EntityAssignment/DivisionUserBulkAssignment";
+import DivisionAssign from "../../../models/DivisionAssign";
+import Division from "../../../models/Division";
+import { SearchDivisions } from "../../../components/common/SearchDivisions";
+import classes from "./DivisionUserAssignments.module.css";
 
-export interface AssignmentsProps {}
+export interface DivisionUserAssignmentsProps {}
 
-export const Assignments: React.FC<AssignmentsProps> = ({}) => {
+export const DivisionUserAssignments: React.FC<
+  DivisionUserAssignmentsProps
+> = ({}) => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
@@ -37,30 +38,31 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
   }, []);
 
   const [page, setPage] = useState(1);
-  const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
+  const [selectedDivisions, setSelectedDivisions] = useState<Division[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [filter, setFilter] = useState<
     PaginationArgs & {
-      entityIds: number[];
+      divisionIds: number[];
       userIds: number[];
-      type: string | null;
       current: boolean;
     }
   >({
     ...DefaultPaginationArgs,
-    entityIds: [],
+    divisionIds: [],
     userIds: [],
-    type: null,
     current: true,
   });
 
-  const [getAssignments, { data, loading }] = useLazyQuery(ASSIGNMENTS, {
-    onError: (err) => {
-      errorMessage(err, "Error loading assignments.");
-    },
-    fetchPolicy: "network-only",
-    nextFetchPolicy: "cache-first",
-  });
+  const [getAssignments, { data, loading }] = useLazyQuery(
+    DIVISION_ASSIGNMENTS,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading division assignments.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
 
   useEffect(() => {
     getAssignments({ variables: filter });
@@ -89,23 +91,20 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
     setPage(page - 1);
   };
 
-  const columns: ColumnsType<EntityAssignment> = [
+  const columns: ColumnsType<DivisionAssign> = [
     {
       title: "User",
       dataIndex: "user",
       key: "user",
       render: (user: User) => `${user.fullName} (${user.rcno})`,
+      className: classes["font"],
     },
     {
-      title: "Entity",
-      dataIndex: "entity",
-      key: "entity",
-      render: (entity: Entity) => <EntityListing entity={entity} />,
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
+      title: "Division",
+      dataIndex: "division",
+      key: "division",
+      render: (division: Division) => `${division.name}`,
+      className: classes["font"],
     },
     {
       title: "From",
@@ -113,13 +112,15 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       key: "createdAt",
       render: (createdAt) =>
         moment(createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR),
+      className: classes["font"],
     },
 
     {
       title: "",
       dataIndex: "action",
       key: "action",
-      render: (val, assignment: EntityAssignment) =>
+      className: classes["font"],
+      render: (val, assignment: DivisionAssign) =>
         assignment.removedAt ? null : (
           <div
             style={{
@@ -130,14 +131,12 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
           >
             <DeleteListing
               id={assignment.id}
-              mutation={UNASSIGN_USER_FROM_ENTITY}
-              refetchQueries={["assignments"]}
+              mutation={UNASSIGN_USER_FROM_DIVISION}
+              refetchQueries={["divisionAssignments"]}
               tooltip="Unassign"
               title="Are you sure to unassign?"
               variables={{
-                entityId: assignment.entity.id,
-                type: assignment.type,
-                userId: assignment.user.id,
+                id: assignment.id,
               }}
             />
           </div>
@@ -146,10 +145,11 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
   ];
 
   if (!filter.current) {
-    columns.splice(4, 0, {
+    columns.splice(3, 0, {
       title: "To",
       dataIndex: "removedAt",
       key: "removedAt",
+      className: classes["font"],
       render: (removedAt) =>
         removedAt
           ? moment(removedAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
@@ -157,19 +157,19 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
     });
   }
 
-  const pageInfo = data?.assignments.pageInfo ?? {};
+  const pageInfo = data?.divisionAssignments.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice();
+  const isSmallDevice = useIsSmallDevice(600, false);
 
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
 
   useEffect(() => {
     setFilter({
       ...filter,
-      entityIds: selectedEntities.map((s) => s.id),
+      divisionIds: selectedDivisions.map((s) => s.id),
     });
     setPage(1);
-  }, [selectedEntities]);
+  }, [selectedDivisions]);
 
   useEffect(() => {
     setFilter({
@@ -180,40 +180,24 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
   }, [selectedUsers]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        backgroundColor: "var(--card-bg)",
-        borderRadius: 20,
-        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-        padding: 10,
-        border: "var(--card-border)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          paddingTop: 10,
-        }}
-      >
+    <div>
+      <div className={classes["options-wrapper"]}>
         <div
           style={{
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
             justifyContent: isSmallDevice ? "space-around" : undefined,
-            margin: "-.5rem 1rem 0 0",
           }}
         >
-          <SearchEntities
-            placeholder="Filter entity"
+          <SearchDivisions
+            placeholder="Filter division"
             rounded
-            current={selectedEntities}
-            onChange={(entity) => {
-              const current = selectedEntities.map((s) => s.id);
-              if (current.includes(entity.id)) return;
-              setSelectedEntities([...selectedEntities, entity]);
+            current={selectedDivisions}
+            onChange={(division) => {
+              const current = selectedDivisions.map((s) => s.id);
+              if (current.includes(division.id)) return;
+              setSelectedDivisions([...selectedDivisions, division]);
             }}
             width={190}
             margin={filterMargin}
@@ -230,15 +214,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             width={190}
             margin={filterMargin}
           />
-          <AssignmentTypeSelector
-            margin={filterMargin}
-            value={filter.type}
-            width={190}
-            onChange={(type) => {
-              setFilter({ ...filter, type });
-              setPage(1);
-            }}
-          />
+
           <Checkbox
             style={{ margin: filterMargin }}
             checked={filter.current}
@@ -250,9 +226,11 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             Active assignments only
           </Checkbox>
         </div>
-        <BulkAssignment />
+        <div className={classes["option"]}>
+          <DivisionUserBulkAssignment />
+        </div>
       </div>
-      {selectedEntities.length > 0 && (
+      {selectedDivisions.length > 0 && (
         <div
           style={{
             display: "flex",
@@ -262,18 +240,18 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             paddingRight: 10,
           }}
         >
-          {selectedEntities.map((entity) => (
+          {selectedDivisions.map((d) => (
             <Tag
-              key={entity.id}
+              key={d.id}
               closable
               onClose={() =>
-                setSelectedEntities(
-                  selectedEntities.filter((s) => s.id !== entity.id)
+                setSelectedDivisions(
+                  selectedDivisions.filter((s) => s.id !== d.id)
                 )
               }
               style={{ marginRight: "1rem" }}
             >
-              {entity.machineNumber} ({entity.location?.name})
+              {d.name}
             </Tag>
           ))}
         </div>
@@ -304,7 +282,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       )}
       <Table
         rowKey="id"
-        dataSource={data?.assignments.edges.map(
+        dataSource={data?.divisionAssignments.edges.map(
           (edge: { node: Location }) => edge.node
         )}
         columns={columns}

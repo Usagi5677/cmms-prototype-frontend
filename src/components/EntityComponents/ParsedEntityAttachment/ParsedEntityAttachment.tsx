@@ -98,7 +98,7 @@ const ParsedEntityAttachment = ({
         style={{
           marginTop: checklistView ? 0 : 10,
           marginBottom: checklistView ? 0 : 10,
-          marginRight: checklistView ? 0 : 20
+          marginRight: checklistView ? 0 : 20,
         }}
       >
         <div className={classes["options"]}>
@@ -109,12 +109,6 @@ const ParsedEntityAttachment = ({
             <>
               {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
                 assigned) && (
-                <EditEntityAttachment attachment={attachmentData} />
-              )}
-              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-                assigned) && <DeleteEntityAttachment id={attachmentData?.id} />}
-              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-                assigned) && (
                 <Tooltip title={"Download"}>
                   <DownloadOutlined
                     className={classes["download-icon"]}
@@ -122,6 +116,12 @@ const ParsedEntityAttachment = ({
                   />
                 </Tooltip>
               )}
+              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                assigned) && (
+                <EditEntityAttachment attachment={attachmentData} />
+              )}
+              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                assigned) && <DeleteEntityAttachment id={attachmentData?.id} />}
             </>
           )}
         </div>
@@ -131,14 +131,16 @@ const ParsedEntityAttachment = ({
         <div
           className={classes["image-container"]}
           style={{
-          
             height: checklistView ? 120 : undefined,
             width: checklistView ? 120 : undefined,
             display: "flex",
             justifyContent: "center",
           }}
         >
-          <Image src={file} style={{aspectRatio: "1/1", objectFit: "contain"}} />
+          <Image
+            src={file}
+            style={{ aspectRatio: "1/1", objectFit: "contain" }}
+          />
         </div>
       )}
       {isError && (
