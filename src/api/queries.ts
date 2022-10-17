@@ -734,6 +734,8 @@ export const ALL_ENTITY = gql`
     $lteInterService: String
     $gteInterService: String
     $isIncompleteChecklistTask: Boolean
+    $entityIds: [Int!]
+    $divisionExist: Boolean
   ) {
     getAllEntity(
       after: $after
@@ -755,6 +757,8 @@ export const ALL_ENTITY = gql`
       lteInterService: $lteInterService
       gteInterService: $gteInterService
       isIncompleteChecklistTask: $isIncompleteChecklistTask
+      entityIds: $entityIds
+      divisionExist: $divisionExist
     ) {
       pageInfo {
         endCursor

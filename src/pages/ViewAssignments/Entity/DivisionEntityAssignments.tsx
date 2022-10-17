@@ -25,6 +25,7 @@ import { DivisionEntityBulkAssignment } from "../../../components/EntityComponen
 import { Entity } from "../../../models/Entity/Entity";
 import { EntityListing } from "../../../components/EntityComponents/EntityListing";
 import EditEntityDivision from "./EditEntityDivision";
+import { SearchEntities } from "../../../components/common/SearchEntitities";
 
 export interface DivisionEntityAssignmentsProps {}
 
@@ -42,16 +43,19 @@ export const DivisionEntityAssignments: React.FC<
 
   const [page, setPage] = useState(1);
   const [selectedDivisions, setSelectedDivisions] = useState<Division[]>([]);
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
+  const [divisionExist, setDivisionExist] = useState<boolean>(true);
   const [filter, setFilter] = useState<
     PaginationArgs & {
       divisionIds: number[];
-      userIds: number[];
+      entityIds: number[];
+      divisionExist: boolean;
     }
   >({
     ...DefaultPaginationArgs,
     divisionIds: [],
-    userIds: [],
+    entityIds: [],
+    divisionExist: divisionExist,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
@@ -151,10 +155,10 @@ export const DivisionEntityAssignments: React.FC<
   useEffect(() => {
     setFilter({
       ...filter,
-      userIds: selectedUsers.map((s) => s.id),
+      entityIds: selectedEntities.map((s) => s.id),
     });
     setPage(1);
-  }, [selectedUsers]);
+  }, [selectedEntities]);
 
   return (
     <div>
@@ -179,18 +183,28 @@ export const DivisionEntityAssignments: React.FC<
             width={190}
             margin={filterMargin}
           />
-          <SearchUsers
-            placeholder="Filter user"
+          <SearchEntities
+            placeholder="Filter entity"
             rounded
-            current={selectedUsers}
-            onChange={(user) => {
-              const current = selectedUsers.map((s) => s.id);
-              if (current.includes(user.id)) return;
-              setSelectedUsers([...selectedUsers, user]);
+            current={selectedEntities}
+            onChange={(entity) => {
+              const current = selectedEntities.map((s) => s.id);
+              if (current.includes(entity.id)) return;
+              setSelectedEntities([...selectedEntities, entity]);
             }}
             width={190}
             margin={filterMargin}
           />
+          <Checkbox
+            style={{ margin: filterMargin }}
+            defaultChecked={divisionExist}
+            onChange={(e) => {
+              setFilter({ ...filter, divisionExist: e.target.checked });
+              setPage(1);
+            }}
+          >
+            Assigned only
+          </Checkbox>
         </div>
         <div className={classes["option"]}>
           <DivisionEntityBulkAssignment />
@@ -222,7 +236,7 @@ export const DivisionEntityAssignments: React.FC<
           ))}
         </div>
       )}
-      {selectedUsers.length > 0 && (
+      {selectedEntities.length > 0 && (
         <div
           style={{
             display: "flex",
@@ -232,16 +246,18 @@ export const DivisionEntityAssignments: React.FC<
             paddingRight: 10,
           }}
         >
-          {selectedUsers.map((user) => (
+          {selectedEntities.map((entity) => (
             <Tag
-              key={user.id}
+              key={entity.id}
               closable
               onClose={() =>
-                setSelectedUsers(selectedUsers.filter((s) => s.id !== user.id))
+                setSelectedEntities(
+                  selectedEntities.filter((s) => s.id !== entity.id)
+                )
               }
               style={{ marginRight: "1rem" }}
             >
-              {user.fullName} ({user.rcno})
+              {entity.machineNumber} ({entity.location?.name})
             </Tag>
           ))}
         </div>

@@ -1,0 +1,32 @@
+.font {
+  font-size: 9px;
+}
+
+.options-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+}
+
+@media only screen and (min-width: 600px) {
+  .font {
+    font-size: 12px;
+  }
+  .options-wrapper {
+    flex-direction: row;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .font {
+    font-size: 14px;
+  }
+}

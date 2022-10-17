@@ -23,6 +23,7 @@ import { SearchEntities } from "../../components/common/SearchEntitities";
 import AssignmentTypeSelector from "../../components/common/AssignmentTypeSelector";
 import { SearchUsers } from "../../components/common/SearchUsers";
 import { BulkAssignment } from "../../components/EntityComponents/EntityAssignment/BulkAssignment";
+import classes from "./Assignments.module.css";
 
 export interface AssignmentsProps {}
 
@@ -95,12 +96,14 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       dataIndex: "user",
       key: "user",
       render: (user: User) => `${user.fullName} (${user.rcno})`,
+      className: classes["font"],
     },
     {
       title: "Entity",
       dataIndex: "entity",
       key: "entity",
       render: (entity: Entity) => <EntityListing entity={entity} />,
+      className: classes["font"],
     },
     {
       title: "Type",
@@ -113,12 +116,14 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       key: "createdAt",
       render: (createdAt) =>
         moment(createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR),
+      className: classes["font"],
     },
 
     {
       title: "",
       dataIndex: "action",
       key: "action",
+      className: classes["font"],
       render: (val, assignment: EntityAssignment) =>
         assignment.removedAt ? null : (
           <div
@@ -159,7 +164,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
 
   const pageInfo = data?.assignments.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice();
+  const isSmallDevice = useIsSmallDevice(600, false);
 
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
 
@@ -181,13 +186,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          paddingTop: 10,
-        }}
-      >
+      <div className={classes["options-wrapper"]}>
         <div
           style={{
             display: "flex",
@@ -241,7 +240,9 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             Active assignments only
           </Checkbox>
         </div>
-        <BulkAssignment />
+        <div className={classes["option"]}>
+          <BulkAssignment />
+        </div>
       </div>
       {selectedEntities.length > 0 && (
         <div
