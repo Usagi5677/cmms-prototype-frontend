@@ -519,6 +519,15 @@ export const SEARCH_ENTITY = gql`
   }
 `;
 
+export const SEARCH_DIVISION = gql`
+  query searchDivision($query: String!, $limit: Int) {
+    searchDivision(query: $query, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
+
 export const TYPES = gql`
   query types(
     $after: String
@@ -1735,6 +1744,53 @@ export const ASSIGNMENTS = gql`
               id
               name
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const DIVISION_ASSIGNMENTS = gql`
+  query divisionAssignments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $userIds: [Int!]!
+    $current: Boolean!
+    $divisionIds: [Int!]
+  ) {
+    divisionAssignments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      userIds: $userIds
+      current: $current
+      divisionIds: $divisionIds
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          createdAt
+          removedAt
+          user {
+            id
+            rcno
+            fullName
+            
+          }
+          division {
+            id
+            name
           }
         }
       }

@@ -61,9 +61,10 @@ export const DivisionSelector: React.FC<DivisionSelectorProps> = ({
       if (currentId) {
         setValue(currentId);
       }
-      if (currentName) {
-        setSearch(currentName);
-      }
+      //if (currentName) {
+      //  setSearch(currentName);
+      //}
+      getDivisions({ variables: {first: 10, name: ""} });
       setFirstLoad(false);
     }
   }, [currentId, currentName, firstLoad]);

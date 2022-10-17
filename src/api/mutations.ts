@@ -529,6 +529,11 @@ export const ASSIGN_USER_TO_DIVISION = gql`
     assignUserToDivision(input: $input)
   }
 `;
+export const ASSIGN_ENTITY_TO_DIVISION = gql`
+  mutation assignEntityToDivision($input: DivisionAssignInput!) {
+    assignEntityToDivision(input: $input)
+  }
+`;
 export const CREATE_ENTITY = gql`
   mutation (
     $typeId: Int
@@ -885,6 +890,12 @@ export const UNASSIGN_USER_FROM_ENTITY = gql`
   }
 `;
 
+export const UNASSIGN_USER_FROM_DIVISION = gql`
+  mutation ($id: Int!) {
+    unassignUserFromDivision(id: $id)
+  }
+`;
+
 export const ADD_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
     createPeriodicMaintenanceTask(
@@ -1021,5 +1032,11 @@ export const TOGGLE_SPARE_PR_COMPLETE = gql`
 export const BULK_ASSIGN = gql`
   mutation bulkAssign($input: BulkAssignInput!) {
     bulkAssign(input: $input)
+  }
+`;
+
+export const UPDATE_ENTITY_DIVISION = gql`
+  mutation ($entityId: Int!, $divisionId: Int!) {
+    updateEntityDivision(entityId: $entityId, divisionId: $divisionId)
   }
 `;

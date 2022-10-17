@@ -64,14 +64,8 @@ const EditEntity = ({
   };
 
   const onFinish = async (values: any) => {
-    const {
-      machineNumber,
-      model,
-      brand,
-      measurement,
-      engine,
-      registeredDate,
-    } = values;
+    const { machineNumber, model, brand, measurement, engine, registeredDate } =
+      values;
 
     editEntity({
       variables: {
@@ -153,11 +147,14 @@ const EditEntity = ({
           <div className={classes["row"]}>
             {!includeSubEntity && (
               <div className={classes["col"]}>
-               <Form.Item label="Division" name="division" required={false}>
+                <Form.Item
+                  label="Division"
+                  name="division"
+                  required={false}
+                >
                   <DivisionSelector
-                    currentId={entity?.division?.id}
-                    currentName={entity?.division?.name}
                     setDivisionId={setDivisionId}
+                    currentId={entity?.division?.id}
                   />
                 </Form.Item>
               </div>

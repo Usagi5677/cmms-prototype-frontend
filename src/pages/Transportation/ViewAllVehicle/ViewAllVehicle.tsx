@@ -55,7 +55,9 @@ const Vehicles = () => {
     getFilterObjects?.status
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
+  const [divisionIds, setDivisionIds] = useState<number[]>(
+    getFilterObjects?.divisionIds
+  );
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -150,7 +152,8 @@ const Vehicles = () => {
     if (
       self?.vehicleAssignments.length === 0 &&
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_VEHICLES"])
+      !hasPermissions(self, ["VIEW_ALL_VEHICLES"]) &&
+      !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
     ) {
       navigate("/");
       message.error(
