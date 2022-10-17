@@ -121,7 +121,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
   if (
     isAssignedTypeToAny("Admin", self) ||
     isAssignedTypeToAny("Engineer", self) ||
-    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+    self?.divisionUsers[0]?.divisionId
   ) {
     SidebarData.push({
       name: "Issues",
@@ -137,12 +137,11 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     name: "Divider",
     path: "divider1",
   });
-
   if (
     self?.machineAssignments.length > 0 ||
     hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
     hasPermissions(self, ["VIEW_ALL_MACHINERY"]) ||
-    hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
+    self?.divisionUsers[0]?.divisionId
   ) {
     // Insert at second position
     SidebarData.push({
@@ -157,7 +156,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     self?.vesselAssignments.length > 0 ||
     hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
     hasPermissions(self, ["VIEW_ALL_VESSELS"]) ||
-    hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
+    self?.divisionUsers[0]?.divisionId
   ) {
     SidebarData.push({
       name: "Vessels",
@@ -171,7 +170,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     self?.vehicleAssignments.length > 0 ||
     hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
     hasPermissions(self, ["VIEW_ALL_VEHICLES"]) ||
-    hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
+    self?.divisionUsers[0]?.divisionId
   ) {
     SidebarData.push({
       name: "Vehicles",

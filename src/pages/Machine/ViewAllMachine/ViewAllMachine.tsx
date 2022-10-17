@@ -173,7 +173,7 @@ const Machinery = () => {
       self?.machineAssignments.length === 0 &&
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
       !hasPermissions(self, ["VIEW_ALL_MACHINERY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
+      !self?.divisionUsers[0]?.divisionId
     ) {
       navigate("/");
       message.error(
