@@ -109,7 +109,6 @@ export const Divisions: React.FC<DivisionsProps> = ({}) => {
             justifyContent: "end",
           }}
         >
-          <DivisionUserAssignment division={rec} />
           <EditDivision division={rec} />
           <DeleteListing
             id={rec.id}
