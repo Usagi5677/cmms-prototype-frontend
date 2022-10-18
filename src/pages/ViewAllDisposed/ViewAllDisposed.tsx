@@ -47,7 +47,9 @@ const ViewAllDisposed = () => {
   );
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
-  const [divisionIds, setDivisionIds] = useState<number[]>(getFilterObjects?.divisionIds);
+  const [divisionIds, setDivisionIds] = useState<number[]>(
+    getFilterObjects?.divisionIds
+  );
   const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
@@ -163,10 +165,7 @@ const ViewAllDisposed = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
-    if (
-      self?.machineAssignments.length === 0 &&
-      !hasPermissions(self, ["VIEW_ALL_ENTITY"])
-    ) {
+    if (!hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
       navigate("/");
       message.error("No permission to view all entity.");
     }
@@ -387,7 +386,7 @@ const ViewAllDisposed = () => {
     currentId: divisionIds,
     width: "100%",
   };
-  
+
   const brandOptions: DefaultStringArrayOptionProps = {
     onChange: (brand: string[]) => {
       setFilter({

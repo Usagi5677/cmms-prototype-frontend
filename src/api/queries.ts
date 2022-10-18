@@ -33,9 +33,6 @@ export const ME_QUERY = gql`
         }
         type
       }
-      divisionUsers {
-        divisionId
-      }
       location {
         id
         name
