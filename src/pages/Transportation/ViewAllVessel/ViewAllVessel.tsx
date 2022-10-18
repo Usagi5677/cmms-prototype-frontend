@@ -154,7 +154,7 @@ const Vessels = () => {
       self?.vesselAssignments.length === 0 &&
       !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
       !hasPermissions(self, ["VIEW_ALL_VESSELS"]) &&
-      !self?.divisionUsers[0]?.divisionId
+      !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
     ) {
       navigate("/");
       message.error(
