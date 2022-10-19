@@ -197,7 +197,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                 isOlder={isOlder}
                 isCopy={isCopy}
               />
-              {level < 2 && !isDeleted && !isOlder && (
+              {level < 2 && !isDeleted && !isOlder && !isCopy && (
                 <div>
                   <AddPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}
