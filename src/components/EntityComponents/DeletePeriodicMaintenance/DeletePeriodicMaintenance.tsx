@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
-import { DELETE_ENTITY_PERIODIC_MAINTENANCE } from "../../../api/mutations";
+import { DELETE_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeletePeriodicMaintenance.module.css";
 
@@ -14,8 +14,8 @@ const DeletePeriodicMaintenance = ({
   isDeleted?: boolean;
   isCopy?: boolean;
 }) => {
-  const [removeEntityPeriodicMaintenance, { loading: deleting }] = useMutation(
-    DELETE_ENTITY_PERIODIC_MAINTENANCE,
+  const [removePeriodicMaintenance, { loading: deleting }] = useMutation(
+    DELETE_PERIODIC_MAINTENANCE,
     {
       onCompleted: () => {
         message.success("Successfully removed periodic maintenance.");
@@ -27,14 +27,15 @@ const DeletePeriodicMaintenance = ({
         );
       },
       refetchQueries: [
-        "getAllPeriodicMaintenanceOfEntity",
+        "periodicMaintenances",
+        "getSingleEntity",
         "getAllHistoryOfEntity",
       ],
     }
   );
 
   const remove = () => {
-    removeEntityPeriodicMaintenance({
+    removePeriodicMaintenance({
       variables: {
         id,
       },
@@ -51,10 +52,13 @@ const DeletePeriodicMaintenance = ({
       placement="topRight"
     >
       <Tooltip title={"Delete"} placement="top">
-        <div className={classes["btn-delete"]} style={{
+        <div
+          className={classes["btn-delete"]}
+          style={{
             pointerEvents: isDeleted || isCopy ? "none" : "auto",
             color: isDeleted || isCopy ? "grey" : "var(--error)",
-          }}>
+          }}
+        >
           <FaTrash />
         </div>
       </Tooltip>

@@ -208,8 +208,8 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
           to
           measurement
           value
-          previousMeterReading
           currentMeterReading
+          recur
           type
           verifiedAt
           verifiedBy {
@@ -296,6 +296,115 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
+export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
+  ${APS_USER_FRAGMENT}
+  ${ENTITY_FRAGMENT}
+  query getAllPMWithPagination(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $type: String
+    $from: Date
+    $to: Date
+    $entityId: Int
+    $type2Ids: [Int!]
+    $measurement: [String!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $divisionIds: [Int!]
+    $gteInterService: String
+    $lteInterService: String
+  ) {
+    getAllPMWithPagination(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      type: $type
+      from: $from
+      to: $to
+      entityId: $entityId
+      type2Ids: $type2Ids
+      measurement: $measurement
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      divisionIds: $divisionIds
+      gteInterService: $gteInterService
+      lteInterService: $lteInterService
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          createdAt
+          entityId
+          name
+          from
+          to
+          measurement
+          value
+          currentMeterReading
+          recur
+          status
+          type
+          verifiedAt
+          verifiedBy {
+            ...UserFieldsAPS
+          }
+          entity {
+            ...EntityFields
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ALL_PERIODIC_MAINTENANCE_STATUS_COUNT = gql`
+  query allPMStatusCount(
+    $search: String
+    $type: String
+    $from: Date
+    $to: Date
+    $entityId: Int
+    $type2Ids: [Int!]
+    $measurement: [String!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $divisionIds: [Int!]
+    $gteInterService: String
+    $lteInterService: String
+  ) {
+    allPMStatusCount(
+      search: $search
+      type: $type
+      from: $from
+      to: $to
+      entityId: $entityId
+      type2Ids: $type2Ids
+      measurement: $measurement
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      divisionIds: $divisionIds
+      gteInterService: $gteInterService
+      lteInterService: $lteInterService
+    ) {
+      completed
+      ongoing
+      upcoming
+      overdue
+    }
+  }
+`;
 export const CHECKLIST_TEMPLATES = gql`
   query checklistTemplates(
     $after: String
@@ -1790,7 +1899,6 @@ export const DIVISION_ASSIGNMENTS = gql`
             id
             rcno
             fullName
-            
           }
           division {
             id
@@ -1799,5 +1907,11 @@ export const DIVISION_ASSIGNMENTS = gql`
         }
       }
     }
+  }
+`;
+
+export const CHECK_COPY_PM_EXIST = gql`
+  query checkCopyPMExist($id: Int!) {
+    checkCopyPMExist(id: $id)
   }
 `;

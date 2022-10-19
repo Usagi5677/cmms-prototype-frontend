@@ -26,6 +26,7 @@ export interface Entity {
   lastService?: number;
   currentMileage?: number;
   lastServiceMileage?: number;
+  interService?: number;
   measurement?: string;
   brand?: string;
   parentEntityId?: number;

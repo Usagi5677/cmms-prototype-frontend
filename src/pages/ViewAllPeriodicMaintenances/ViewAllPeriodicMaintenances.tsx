@@ -1,27 +1,29 @@
 import { Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PaginationArgs from "../../../models/PaginationArgs";
-import { errorMessage } from "../../../helpers/gql";
+import PaginationArgs from "../../models/PaginationArgs";
+import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY,
+  ALL_PERIODIC_MAINTENANCE_LIST,
+  ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
-} from "../../../api/queries";
-import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
-import classes from "./ViewAllMachine.module.css";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
-import UserContext from "../../../contexts/UserContext";
-import StatusCard from "../../../components/common/StatusCard/StatusCard";
+} from "../../api/queries";
+import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
+import classes from "./ViewAllPeriodicMaintenances.module.css";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import UserContext from "../../contexts/UserContext";
+import StatusCard from "../../components/common/StatusCard/StatusCard";
 import { FaCarCrash, FaTractor } from "react-icons/fa";
-import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
-import { Entity } from "../../../models/Entity/Entity";
-import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
-import { hasPermissions } from "../../../helpers/permissions";
+import AddEntity from "../../components/EntityComponents/AddEntity/AddEntity";
+import { Entity } from "../../models/Entity/Entity";
+import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
+import { hasPermissions } from "../../helpers/permissions";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
+import FilterOptions from "../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
   DefaultNumberArrayOptionProps,
@@ -32,13 +34,17 @@ import {
   SearchOptionProps,
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
-} from "../../../models/Enums";
+} from "../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { WarningOutlined } from "@ant-design/icons";
-import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import { CheckOutlined, ClockCircleOutlined, ExclamationOutlined, WarningOutlined } from "@ant-design/icons";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
+import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
+import PMCard from "../../components/common/PMCard/PMCard";
+import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 
-const Machinery = () => {
-  const getFilter = localStorage.getItem("machineryFilter");
+
+const ViewAllPeriodicMaintenances = () => {
+  const getFilter = localStorage.getItem("periodicMaintenancesFilter");
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -50,15 +56,11 @@ const Machinery = () => {
   const [locationIds, setLocationIds] = useState<number[]>(
     getFilterObjects?.locationIds
   );
-  const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
-  const [status, setStatus] = useState<EntityStatus[]>(
-    getFilterObjects?.status
-  );
+  const [type2Ids, setType2Ids] = useState<number[]>(getFilterObjects?.type2Ids);
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -77,7 +79,7 @@ const Machinery = () => {
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "machineryFilter",
+    "periodicMaintenancesFilter",
     JSON.stringify({
       first: 20,
       last: null,
@@ -85,37 +87,26 @@ const Machinery = () => {
       after: null,
       search: "",
       locationIds: [],
-      status: [],
-      entityType: ["Machine"],
-      typeIds: [],
+      type2Ids: [],
       zoneIds: [],
       divisionIds: [],
-      brand: [],
-      isAssigned: false,
       //assignedToId: null,
       measurement: [],
       lteInterService: "",
       gteInterService: "",
-      isIncompleteChecklistTask: false,
     })
   );
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
-      status: EntityStatus[];
       locationIds: number[];
-      entityType: string[];
-      typeIds: number[];
+      type2Ids: number[];
       zoneIds: number[];
       divisionIds: number[];
-      brand: string[];
-      isAssigned: boolean;
-      //assignedToId: number | null;
       measurement: string[];
       lteInterService: string;
       gteInterService: string;
-      isIncompleteChecklistTask: boolean;
     }
   >({
     first: 20,
@@ -124,23 +115,16 @@ const Machinery = () => {
     after: null,
     search: JSON.parse(saveFilterOptions)?.search,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
-    status: JSON.parse(saveFilterOptions)?.status,
-    entityType: ["Machine"],
-    typeIds: JSON.parse(saveFilterOptions)?.typeIds,
+    type2Ids: JSON.parse(saveFilterOptions)?.type2Ids,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
-    brand: JSON.parse(saveFilterOptions)?.brand,
-    isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
-    //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
     lteInterService: JSON.parse(saveFilterOptions)?.lteInterService,
     gteInterService: JSON.parse(saveFilterOptions)?.gteInterService,
-    isIncompleteChecklistTask:
-      JSON.parse(saveFilterOptions)?.isIncompleteChecklistTask,
   });
 
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
+  const [allPMStatusCount, { data: statusData }] = useLazyQuery(
+    ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
     {
       onError: (err) => {
         errorMessage(err, "Error loading status count of entities.");
@@ -159,7 +143,7 @@ const Machinery = () => {
       nextFetchPolicy: "cache-first",
     });
 
-  const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
+  const [getAllPMWithPagination, { data, loading }] = useLazyQuery(ALL_PERIODIC_MAINTENANCE_LIST, {
     onError: (err) => {
       errorMessage(err, "Error loading machines.");
     },
@@ -169,22 +153,10 @@ const Machinery = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
-    if (
-      self?.machineAssignments.length === 0 &&
-      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_MACHINERY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
-    ) {
-      navigate("/");
-      message.error(
-        "You don't have permission to view all machinery and you're not assigned to a machine."
-      );
-    }
-
-    getAllEntity({ variables: filter });
+    getAllPMWithPagination({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, getAllEntity]);
+  }, [filter, getAllPMWithPagination]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -193,17 +165,12 @@ const Machinery = () => {
   const searchDebounced = (
     value: string,
     locationIdsValue: number[],
-    typeIdsValue: number[],
-    statusValue: EntityStatus[],
+    type2IdsValue: number[],
     zoneIdsValue: number[],
     divisionIdsValue: number[],
-    brandValue: string[],
     measurementValue: string[],
-    isAssignedValue: boolean,
-    //assignedToMeValue: number,
     lteInterServiceValue: string,
     gteInterServiceValue: string,
-    isIncompleteChecklistTaskValue: boolean
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -213,17 +180,12 @@ const Machinery = () => {
           ...filter,
           search: value,
           locationIds: locationIdsValue,
-          typeIds: typeIdsValue,
-          status: statusValue,
+          type2Ids: type2IdsValue,
           zoneIds: zoneIdsValue,
           divisionIds: divisionIdsValue,
-          brand: brandValue,
           measurement: measurementValue,
-          isAssigned: isAssignedValue,
-          //assignedToId: assignedToMeValue,
           lteInterService: lteInterServiceValue,
           gteInterService: gteInterServiceValue,
-          isIncompleteChecklistTask: isIncompleteChecklistTaskValue,
           first: 20,
           last: null,
           before: null,
@@ -242,40 +204,30 @@ const Machinery = () => {
     searchDebounced(
       search,
       locationIds,
-      typeIds,
-      status,
+      type2Ids,
       zoneIds,
       divisionIds,
-      brand,
       measurement,
-      isAssigned,
-      //assignedToMe!,
       lteInterService,
       gteInterService,
-      isIncompleteChecklistTask
     );
     // eslint-disable-next-line
   }, [
     search,
     locationIds,
-    typeIds,
-    status,
+    type2Ids,
     zoneIds,
     divisionIds,
-    brand,
     measurement,
-    isAssigned,
-    //assignedToMe,
     lteInterService,
     gteInterService,
-    isIncompleteChecklistTask,
   ]);
 
   //Fetch all machine status count
   useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
+    allPMStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, allPMStatusCount, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -300,23 +252,23 @@ const Machinery = () => {
     setPage(page - 1);
   };
 
-  const pageInfo = data?.getAllEntity.pageInfo ?? {};
+  const pageInfo = data?.getAllPMWithPagination.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
+  let completed = 0;
+  let ongoing = 0;
+  let upcoming = 0;
+  let overdue = 0;
   let total = 0;
 
-  const statusCountData = statusData?.allEntityStatusCount;
+  const statusCountData = statusData?.allPMStatusCount;
   if (statusCountData) {
-    critical = statusCountData?.critical;
-    working = statusCountData?.working;
-    breakdown = statusCountData?.breakdown;
-    //dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
+    completed = statusCountData?.completed;
+    ongoing = statusCountData?.ongoing;
+    upcoming = statusCountData?.upcoming;
+    overdue = statusCountData?.overdue;
+    total = completed + ongoing + upcoming + overdue;
   }
 
   const clearAll = () => {
@@ -327,31 +279,23 @@ const Machinery = () => {
       after: null,
       search: "",
       locationIds: [],
-      status: [],
-      entityType: ["Machine"],
       typeIds: [],
       zoneIds: [],
       divisionIds: [],
-      brand: [],
-      isAssigned: false,
-      //assignedToId: null,
       measurement: [],
       lteInterService: "",
       gteInterService: "",
-      isIncompleteChecklistTask: false,
     };
     setSaveFilterOptions(JSON.stringify(clearFilter));
 
     setSearch("");
     setLteInterService("");
     setGteInterService("");
-    setStatus([]);
     setLocationIds([]);
     setZoneIds([]);
     setDivisionIds([]);
-    setBrand([]);
     setMeasurement([]);
-    setTypeIds([]);
+    setType2Ids([]);
     setIsAssigned(false);
     setIsIncompleteChecklistTask(false);
     //setAssignedToMe(null);
@@ -387,9 +331,8 @@ const Machinery = () => {
     width: "100%",
   };
   const typeSelectorOptions: TypeSelectorOptionProps = {
-    entityType: "Machine",
-    setTypeId: setTypeIds,
-    currentId: typeIds,
+    setTypeId: setType2Ids,
+    currentId: type2Ids,
     rounded: true,
     multiple: true,
     width: "100%",
@@ -400,21 +343,7 @@ const Machinery = () => {
     width: "100%",
   };
 
-  const brandOptions: DefaultStringArrayOptionProps = {
-    onChange: (brand: string[]) => {
-      setFilter({
-        ...filter,
-        brand,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setBrand(brand);
-    },
-    value: filter.brand,
-    width: "100%",
-  };
+  
   const measurementOptions: DefaultStringArrayOptionProps = {
     onChange: (measurement: string[]) => {
       setFilter({
@@ -430,82 +359,16 @@ const Machinery = () => {
     value: filter.measurement,
     width: "100%",
   };
-  const assignedOptions: DefaultBooleanOptionProps = {
-    onChange: (isAssigned: CheckboxChangeEvent) => {
-      setFilter({
-        ...filter,
-        isAssigned: isAssigned?.target?.checked,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setIsAssigned(isAssigned?.target?.checked);
-    },
-    flag: filter.isAssigned,
-    name: "Show all assigned machinery",
-  };
-  const isIncompleteChecklistTaskOptions: DefaultBooleanOptionProps = {
-    onChange: (isIncompleteChecklistTask: CheckboxChangeEvent) => {
-      setFilter({
-        ...filter,
-        isIncompleteChecklistTask: isIncompleteChecklistTask?.target?.checked,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setIsIncompleteChecklistTask(isIncompleteChecklistTask?.target?.checked);
-    },
-    flag: filter.isIncompleteChecklistTask,
-    name: "Show all machinery with incomplete checklist",
-  };
-  /*
-  const assignedToMeOptions: DefaultBooleanOptionProps = {
-    onChange: (assignedToMe: CheckboxChangeEvent) => {
-      setFilter({
-        ...filter,
-        assignedToId: assignedToMe?.target?.checked ? self?.id : null,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setAssignedToMe(assignedToMe?.target?.checked ? self?.id : null);
-    },
-    name: "Show all machinery assigned to me",
-  };
-  */
-  const entityStatusOptions: EntityStatusOptionProps = {
-    onChange: (status) => {
-      setFilter({
-        ...filter,
-        status: status,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setStatus(status);
-    },
-    value: filter.status,
-    width: "100%",
-  };
-
+ 
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,
-    entityStatusOptions,
     typeSelectorOptions,
     zoneOptions,
     divisionOptions,
-    brandOptions,
     measurementOptions,
-    assignedOptions,
-    //assignedToMeOptions,
     lteInterServiceOptions,
     gteInterServiceOptions,
-    isIncompleteChecklistTaskOptions,
   };
 
   return (
@@ -531,7 +394,7 @@ const Machinery = () => {
                 delay: 0.7,
               }}
             >
-              Machinery
+              Total
             </motion.div>
             <div className={classes["total-amount"]}>
               <CountUp end={total} duration={1} />
@@ -549,11 +412,11 @@ const Machinery = () => {
           }}
         >
           <StatusCard
-            amountOne={working}
-            icon={<FaTractor />}
+            amountOne={completed}
+            icon={<CheckOutlined />}
             iconBackgroundColor={"var(--working-bg)"}
             iconColor={"var(--working-color)"}
-            name={"Working"}
+            name={"Completed"}
           />
         </motion.div>
 
@@ -567,11 +430,11 @@ const Machinery = () => {
           }}
         >
           <StatusCard
-            amountOne={critical}
+            amountOne={ongoing}
             icon={<WarningOutlined />}
             iconBackgroundColor={"var(--critical-bg)"}
             iconColor={"var(--critical-color)"}
-            name={"Critical"}
+            name={"Ongoing"}
           />
         </motion.div>
         <motion.div
@@ -584,45 +447,46 @@ const Machinery = () => {
           }}
         >
           <StatusCard
-            amountOne={breakdown}
-            icon={<FaCarCrash />}
+            amountOne={upcoming}
+            icon={<ClockCircleOutlined />}
+            iconBackgroundColor={"var(--critical-bg)"}
+            iconColor={"var(--critical-color)"}
+            name={"Upcoming"}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.7,
+          }}
+        >
+          <StatusCard
+            amountOne={overdue}
+            icon={<ExclamationOutlined />}
             iconBackgroundColor={"var(--breakdown-bg)"}
             iconColor={"var(--breakdown-color)"}
-            name={"Breakdown"}
+            name={"Overdue"}
           />
         </motion.div>
       </div>
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
-          <div className={classes["options-wrapper"]}>
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.8,
-              }}
-            >
-              <div className={classes["item-wrapper"]}>
-                {hasPermissions(self, ["ADD_ENTITY"]) ? (
-                  <AddEntity entityType="Machine" />
-                ) : null}
-              </div>
-            </motion.div>
-          </div>
           {loading ? (
             <div>
               <Spin style={{ width: "100%", margin: "2rem auto" }} />
             </div>
-          ) : data?.getAllEntity.edges.length > 0 ? (
+          ) : data?.getAllPMWithPagination.edges.length > 0 ? (
             <div>
-              {data?.getAllEntity.edges.map((rec: { node: Entity }) => {
-                const entity = rec.node;
+              {data?.getAllPMWithPagination.edges.map((rec: { node: PeriodicMaintenance }) => {
+                const pm = rec.node;
                 return (
-                  <EntityCard
-                    entity={entity}
-                    key={entity.id}
+                  <PMCard
+                    entity={pm?.entity!}
+                    key={pm.id}
+                    periodicMaintenance={pm}
                     summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
                   />
                 );
@@ -646,10 +510,10 @@ const Machinery = () => {
             pageLimit={20}
           />
         </div>
-        <FilterOptions options={filterOptions} onClick={clearAll} />
+        <MaintenanceFilterOptions options={filterOptions} onClick={clearAll} />
       </div>
     </>
   );
 };
 
-export default Machinery;
+export default ViewAllPeriodicMaintenances;

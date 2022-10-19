@@ -33,6 +33,8 @@ const PeriodicMaintenanceCalendar = ({
 
     let allTaskCompletion = match.length;
     let someTaskCompletion = match.length;
+    let noTask = false;
+    let emptyTask = false;
     let readings = match.length;
     let verified = match.length;
     let observations = match.length;
@@ -43,6 +45,10 @@ const PeriodicMaintenanceCalendar = ({
         allTaskCompletion = allTaskCompletion - 1;
       } else if (smry.taskCompletion === "some") {
         someTaskCompletion = someTaskCompletion - 1;
+      } else if (smry.taskCompletion === "none") {
+        noTask = true;
+      } else if (smry.taskCompletion === "empty") {
+        emptyTask = true;
       }
       if (smry.currentMeterReading) {
         readings = readings - 1;
@@ -60,13 +66,18 @@ const PeriodicMaintenanceCalendar = ({
     const PeriodicMaintenancesStatusProps = {
       allTaskCompletion,
       someTaskCompletion,
+      noTask,
+      emptyTask,
       readings,
       verified,
       observations,
       remarks,
     };
     return (
-      <PeriodicMaintenancesStatus summary={PeriodicMaintenancesStatusProps} calendarView />
+      <PeriodicMaintenancesStatus
+        summary={PeriodicMaintenancesStatusProps}
+        calendarView
+      />
     );
   };
 
@@ -90,11 +101,7 @@ const PeriodicMaintenanceCalendar = ({
         width="90vw"
       >
         <Calendar
-          dateCellRender={(current) => (
-            <div>
-              {summaryMatch(current)}
-            </div>
-          )}
+          dateCellRender={(current) => <div>{summaryMatch(current)}</div>}
         />
       </Modal>
     </>

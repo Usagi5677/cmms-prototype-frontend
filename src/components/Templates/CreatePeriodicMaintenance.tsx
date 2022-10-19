@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation } from "@apollo/client";
 import {
   Button,
+  Checkbox,
   Col,
   Form,
   Input,
@@ -15,6 +16,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { CREATE_PERIODIC_MAINTENANCE } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 export interface CreatePeriodicMaintenanceProps {}
 
@@ -22,6 +24,7 @@ export const CreatePeriodicMaintenance: React.FC<
   CreatePeriodicMaintenanceProps
 > = () => {
   const [visible, setVisible] = useState(false);
+  const [checkbox, setCheckbox] = useState(true);
   const [form] = useForm();
 
   const [createPeriodicMaintenance, { loading }] = useMutation(
@@ -54,8 +57,13 @@ export const CreatePeriodicMaintenance: React.FC<
         name,
         measurement,
         value,
+        recur: checkbox,
       },
     });
+  };
+
+  const onchange = (e: CheckboxChangeEvent) => {
+    setCheckbox(e.target.checked);
   };
   return (
     <>
@@ -121,25 +129,36 @@ export const CreatePeriodicMaintenance: React.FC<
             </Select>
           </Form.Item>
           <Form.Item
-            label={
-              <>
-                Value
-                <span style={{ paddingLeft: 10, opacity: 0.5 }}>
-                  For example, value = 3 will be every hour 3 / km 3
-                </span>
-              </>
-            }
-            name="value"
+            name="recur"
             required={false}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the value.",
-              },
-            ]}
+            initialValue={checkbox}
+            valuePropName="checked"
           >
-            <InputNumber placeholder="Value" style={{ width: "100%" }} />
+            <Checkbox onChange={(e) => onchange(e)}>Recur</Checkbox>
           </Form.Item>
+          {checkbox && (
+            <Form.Item
+              label={
+                <>
+                  Value
+                  <span style={{ paddingLeft: 10, opacity: 0.5 }}>
+                    For example, value = 3 will be every 3 hour / 3 km
+                  </span>
+                </>
+              }
+              name="value"
+              required={false}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the value.",
+                },
+              ]}
+            >
+              <InputNumber placeholder="Value" style={{ width: "100%" }} min={0} />
+            </Form.Item>
+          )}
+
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>

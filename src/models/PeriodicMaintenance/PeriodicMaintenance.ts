@@ -13,9 +13,10 @@ export default interface PeriodicMaintenance {
   to?: Date;
   measurement?: string;
   value?: number;
-  previousMeterReading?: number;
   currentMeterReading?: number;
   type?: string;
+  recur?: boolean;
+  status?: string
   tasks?: PeriodicMaintenanceTask[];
   verifiedBy?: User;
   verifiedAt?: Date;

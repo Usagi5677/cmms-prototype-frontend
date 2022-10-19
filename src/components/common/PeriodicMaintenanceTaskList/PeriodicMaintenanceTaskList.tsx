@@ -48,6 +48,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
+        "periodicMaintenanceSummary",
       ],
     }
   );
@@ -62,6 +63,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
         "periodicMaintenances",
+        "periodicMaintenanceSummary",
       ],
     }
   );
@@ -193,8 +195,9 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                 level={level + 1}
                 isDeleted={isDeleted}
                 isOlder={isOlder}
+                isCopy={isCopy}
               />
-              {level < 2 && !isDeleted && !isOlder && (
+              {level < 2 && !isDeleted && !isOlder && !isCopy && (
                 <div>
                   <AddPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}

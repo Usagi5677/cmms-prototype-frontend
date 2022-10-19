@@ -1,19 +1,20 @@
 import { Checkbox, Collapse, Progress, Spin, Tooltip } from "antd";
 import moment from "moment";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FaRegClock, FaRegUser } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import classes from "./PeriodicMaintenanceCard.module.css";
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { errorMessage } from "../../../helpers/gql";
 import {
+  ACTIVATE_PERIODIC_MAINTENANCE,
   DELETE_PERIODIC_MAINTENANCE_COMMENT,
   TOGGLE_VERIFY_PERIODIC_MAINTENANCE,
 } from "../../../api/mutations";
 import DeletePeriodicMaintenance from "../DeletePeriodicMaintenance/DeletePeriodicMaintenance";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
-import { ToolOutlined } from "@ant-design/icons";
+import { RiseOutlined, ToolOutlined } from "@ant-design/icons";
 import { PeriodicMaintenanceTaskList } from "../../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
 import { AddPeriodicMaintenanceTask } from "../../common/AddPeriodicMaintenanceTask";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
@@ -28,6 +29,7 @@ import UpsertPMNotificationReminder from "../../common/EditPMNotificationReminde
 import Comment from "../../../models/Comment";
 import { AddPeriodicMaintenanceObservation } from "../../common/AddPeriodicMaintenanceObservation";
 import { Entity } from "../../../models/Entity/Entity";
+import { CHECK_COPY_PM_EXIST } from "../../../api/queries";
 
 const PeriodicMaintenanceCard = ({
   periodicMaintenance,
@@ -42,7 +44,7 @@ const PeriodicMaintenanceCard = ({
   isOlder?: boolean;
   summary?: PeriodicMaintenanceSummary[];
   isCopy?: boolean;
-  entity?: Entity,
+  entity?: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -56,9 +58,48 @@ const PeriodicMaintenanceCard = ({
         "getAllHistoryOfEntity",
         "periodicMaintenances",
         "periodicMaintenanceSummary",
+        "getSingleEntity",
+        "getAllPMWithPagination",
+        "allPMStatusCount",
       ],
     }
   );
+
+  const [toggleActivate, { loading: toggling2 }] = useMutation(
+    ACTIVATE_PERIODIC_MAINTENANCE,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while activating.");
+      },
+      refetchQueries: [
+        "checkCopyPMExist",
+        "getAllHistoryOfEntity",
+        "periodicMaintenances",
+        "periodicMaintenanceSummary",
+        "getAllPMWithPagination",
+        "allPMStatusCount",
+      ],
+    }
+  );
+
+  const [checkCopyPMExist, { data }] = useLazyQuery(CHECK_COPY_PM_EXIST, {
+    onError: (err) => {
+      errorMessage(
+        err,
+        "Error loading check if periodic maintenance copy exist"
+      );
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
+
+  useEffect(() => {
+    checkCopyPMExist({
+      variables: {
+        id: periodicMaintenance.id,
+      },
+    });
+  }, []);
 
   const taskData = periodicMaintenance?.tasks!;
 
@@ -67,7 +108,6 @@ const PeriodicMaintenanceCard = ({
       taskData?.length) *
       100
   );
-
   const summaryMatchCurrent = () => {
     if (!summary || !periodicMaintenance) return null;
     const match = summary?.find(
@@ -80,6 +120,42 @@ const PeriodicMaintenanceCard = ({
       </div>
     );
   };
+
+  const flag =
+    (!isDeleted ||
+      !(isOlder ? true : false) ||
+      isAssignedType("Technician", entity!, self) ||
+      hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"])) &&
+    periodicMaintenance.type !== "Copy";
+
+  const flag2 =
+    (!hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
+      (!isAssignedType("Technician", entity!, self) ||
+        !isAssignedType("User", entity!, self))) ||
+    isDeleted ||
+    isOlder;
+  let percentage = (
+    ((entity?.currentRunning! - periodicMaintenance?.currentMeterReading!) /
+      periodicMaintenance?.value!) *
+    100
+  ).toFixed(0);
+  let percentageStyle = "var(--text-primary)";
+  if (percentage) {
+    if (parseInt(percentage) > 100) {
+      percentage = "100";
+    }
+    if (parseInt(percentage) < 0) {
+      percentage = "0";
+    }
+    if (parseInt(percentage) >= 80) {
+      percentageStyle = "#52c41a";
+    } else if (parseInt(percentage) >= 40) {
+      percentageStyle = "#faad13";
+    } else {
+      percentageStyle = "#fa541c";
+    }
+  }
+
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -90,51 +166,82 @@ const PeriodicMaintenanceCard = ({
                 <div className={classes["level-one"]}>
                   <div className={classes["header-info-wrapper"]}>
                     <div className={classes["first-block"]}>
-                      <Checkbox
-                        checked={periodicMaintenance.verifiedAt !== null}
-                        disabled={
-                          !hasPermissions(self, [
-                            "MODIFY_PERIODIC_MAINTENANCE",
-                          ]) ||
-                          !isAssignedType(
-                            "Technician",
-                            entity!,
-                            self
-                          ) ||
-                          isDeleted ||
-                          isOlder ||
-                          periodicMaintenance.type === "Template"
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          toggleVerify({
-                            variables: {
-                              id: periodicMaintenance.id,
-                              verify: e.target.checked,
-                            },
-                          })
-                        }
-                        style={{ wordBreak: "break-all", marginRight: 40 }}
-                      >
-                        Verify{" "}
-                        {toggling && (
-                          <Spin style={{ marginRight: 5 }} size="small" />
-                        )}
-                      </Checkbox>
-                      <div
-                        className={(classes["reading"], classes["space-two"])}
-                      >
-                        <span className={classes["reading-title"]}>Value:</span>
-                        <span>
-                          <span title="Value">
-                            {periodicMaintenance?.value}{" "}
+                      {periodicMaintenance.type === "Template" ? (
+                        <Checkbox
+                          checked={data?.checkCopyPMExist}
+                          disabled={
+                            (!hasPermissions(self, [
+                              "MODIFY_PERIODIC_MAINTENANCE",
+                            ]) &&
+                              !isAssignedType("Technician", entity!, self)) ||
+                            isDeleted ||
+                            isOlder ||
+                            data?.checkCopyPMExist
+                          }
+                          onChange={(e) =>
+                            toggleActivate({
+                              variables: {
+                                id: periodicMaintenance.id,
+                              },
+                            })
+                          }
+                          style={{ wordBreak: "break-all", marginRight: 40 }}
+                        >
+                          Activate{" "}
+                          {toggling && (
+                            <Spin style={{ marginRight: 5 }} size="small" />
+                          )}
+                        </Checkbox>
+                      ) : (
+                        periodicMaintenance.type === "Copy" && (
+                          <Checkbox
+                            checked={periodicMaintenance.verifiedAt !== null}
+                            disabled={flag2}
+                            onChange={(e) =>
+                              toggleVerify({
+                                variables: {
+                                  id: periodicMaintenance.id,
+                                  verify: e.target.checked,
+                                },
+                              })
+                            }
+                            style={{ wordBreak: "break-all", marginRight: 40 }}
+                          >
+                            Verify{" "}
+                            {toggling && (
+                              <Spin style={{ marginRight: 5 }} size="small" />
+                            )}
+                          </Checkbox>
+                        )
+                      )}
+                      {periodicMaintenance?.value && (
+                        <div
+                          className={(classes["reading"], classes["space-two"])}
+                        >
+                          <span className={classes["reading-title"]}>
+                            Every:
                           </span>
-                          <span title="Measurement">
-                            {periodicMaintenance?.measurement}
+                          <span>
+                            <span title="Value">
+                              {periodicMaintenance?.value}{" "}
+                            </span>
+                            <span title="Measurement">
+                              {periodicMaintenance?.measurement}
+                            </span>
                           </span>
-                        </span>
-                      </div>
+                        </div>
+                      )}
+                      {periodicMaintenance?.currentMeterReading !== null && (
+                        <div
+                          className={(classes["reading"], classes["space-two"])}
+                        >
+                          <span className={classes["reading-title"]}>
+                            Current meter reading:
+                          </span>
+                          {periodicMaintenance?.currentMeterReading}
+                        </div>
+                      )}
+
                       <div
                         className={(classes["reading"], classes["flex-limit"])}
                       >
@@ -146,11 +253,7 @@ const PeriodicMaintenanceCard = ({
 
                   <div className={classes["second-block"]}>
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
-                    isAssignedType(
-                      "Technician",
-                      entity!,
-                      self
-                    ) ? (
+                    isAssignedType("Technician", entity!, self) ? (
                       <EditPeriodicMaintenance
                         periodicMaintenance={periodicMaintenance}
                         isDeleted={isDeleted || isOlder}
@@ -159,12 +262,8 @@ const PeriodicMaintenanceCard = ({
                         }
                       />
                     ) : null}
-                    {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
-                    (isAssignedType(
-                      "Technician",
-                      entity!,
-                      self
-                    ) &&
+                    {/*hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
+                    (isAssignedType("Technician", entity!, self) &&
                       !isDeleted) ? (
                       <UpsertPMNotificationReminder
                         periodicMaintenance={periodicMaintenance}
@@ -176,13 +275,9 @@ const PeriodicMaintenanceCard = ({
                           periodicMaintenance.type === "Template" ? true : false
                         }
                       />
-                    ) : null}
+                      ) : null */}
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
-                    isAssignedType(
-                      "Technician",
-                      entity!,
-                      self
-                    ) ? (
+                    isAssignedType("Technician", entity!, self) ? (
                       <DeletePeriodicMaintenance
                         id={periodicMaintenance?.id}
                         isDeleted={isDeleted || isOlder}
@@ -221,6 +316,32 @@ const PeriodicMaintenanceCard = ({
                       )}
                     </span>
                   </div>
+                  {periodicMaintenance?.type === "Template" &&
+                    periodicMaintenance?.value! !== null && (
+                      <div
+                        className={
+                          (classes["title-wrapper"],
+                          classes["spaceWithNoOpacity"])
+                        }
+                        title={`${
+                          entity?.currentRunning! -
+                          periodicMaintenance?.currentMeterReading!
+                        }`}
+                      >
+                        <RiseOutlined
+                          className={classes["icon"]}
+                          style={{ opacity: 0.5 }}
+                        />
+
+                        <span
+                          className={classes["title"]}
+                          style={{ color: percentageStyle, fontWeight: 700 }}
+                        >
+                          {percentage}
+                          {"%"}
+                        </span>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -228,22 +349,7 @@ const PeriodicMaintenanceCard = ({
           key={periodicMaintenance.id}
         >
           <div className={classes["collapse-container"]}>
-            {(periodicMaintenance?.type === "Copy" && !isDeleted && !isOlder) ||
-              isAssignedType("Technician", entity!, self) ||
-              (hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) && (
-                <PeriodicMaintenanceUpdateReading
-                  periodicMaintenance={periodicMaintenance}
-                  isDeleted={isDeleted}
-                  isOlder={isOlder}
-                />
-              ))}
             <div className={classes["info-wrapper"]}>
-              <div className={classes["reading"]}>
-                <span className={classes["reading-title"]}>
-                  Current meter reading:
-                </span>
-                <span>{periodicMaintenance?.currentMeterReading}</span>
-              </div>
               {periodicMaintenance.verifiedAt && (
                 <div>
                   <div className={classes["reading"]}>
@@ -272,25 +378,21 @@ const PeriodicMaintenanceCard = ({
                 </div>
               )}
             </div>
-
             <PeriodicMaintenanceTaskList
               periodicMaintenance={periodicMaintenance}
               tasks={taskData}
               level={0}
               isDeleted={isDeleted}
-              isOlder={isOlder}
+              isOlder={isOlder ? true : false}
               isCopy={isCopy}
             />
-            {!isDeleted ||
-              !isOlder ||
-              isAssignedType("Technician", entity!, self) ||
-              (hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) && (
-                <div style={{ marginTop: ".5rem", fontSize: 14 }}>
-                  <AddPeriodicMaintenanceTask
-                    periodicMaintenance={periodicMaintenance}
-                  />
-                </div>
-              ))}
+            {flag && (
+              <div style={{ marginTop: ".5rem", fontSize: 14 }}>
+                <AddPeriodicMaintenanceTask
+                  periodicMaintenance={periodicMaintenance}
+                />
+              </div>
+            )}
             <div className={classes["observation-wrapper"]}>
               {periodicMaintenance?.comments?.map((observation: Comment) => {
                 return (

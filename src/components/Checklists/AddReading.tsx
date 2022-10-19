@@ -29,7 +29,12 @@ export const AddReading: React.FC<AddReadingProps> = ({
       onError: (err) => {
         errorMessage(err, "Error adding reading.");
       },
-      refetchQueries: ["checklist", "getSingleEntity", "checklistSummary"],
+      refetchQueries: [
+        "checklist",
+        "getSingleEntity",
+        "checklistSummary",
+        "periodicMaintenances",
+      ],
     }
   );
 
@@ -42,7 +47,12 @@ export const AddReading: React.FC<AddReadingProps> = ({
       onError: (err) => {
         errorMessage(err, "Error adding reading.");
       },
-      refetchQueries: ["checklist", "getSingleEntity", "checklistSummary"],
+      refetchQueries: [
+        "checklist",
+        "getSingleEntity",
+        "checklistSummary",
+        "periodicMaintenances",
+      ],
     }
   );
 
@@ -100,7 +110,7 @@ export const AddReading: React.FC<AddReadingProps> = ({
                   addonAfter={`${entity.measurement}`}
                   placeholder={`Enter ${entity.measurement}`}
                   style={{ width: "100%", marginBottom: ".5rem" }}
-         
+
                   //@ts-ignore
                   // value={reading}
                   // onChange={(val: number) => {
