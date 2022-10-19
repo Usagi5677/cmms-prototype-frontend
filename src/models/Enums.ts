@@ -25,9 +25,10 @@ export enum SparePRStatus {
 }
 
 export enum PeriodicMaintenanceStatus {
-  Done = "Done",
-  Pending = "Pending",
-  Missed = "Missed",
+  completed = "Completed",
+  ongoing = "Ongoing",
+  overdue = "Overdue",
+  upcoming = "Upcoming",
 }
 
 export interface SearchOptionProps {

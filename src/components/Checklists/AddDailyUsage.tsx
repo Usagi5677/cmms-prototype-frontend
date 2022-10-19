@@ -28,7 +28,12 @@ export const AddDailyUsage: React.FC<AddDailyUsageProps> = ({
       onError: (err) => {
         errorMessage(err, "Error adding daily usage.");
       },
-      refetchQueries: ["checklist", "getSingleEntity", "checklistSummary"],
+      refetchQueries: [
+        "checklist",
+        "getSingleEntity",
+        "checklistSummary",
+        "periodicMaintenances",
+      ],
     }
   );
 

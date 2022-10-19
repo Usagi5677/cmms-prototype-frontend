@@ -133,6 +133,18 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     });
   }
 
+  if (
+    isAssignedTypeToAny("Admin", self) ||
+    isAssignedTypeToAny("Engineer", self) ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    SidebarData.push({
+      name: "Maintenances",
+      path: "/maintenances",
+      icon: <FaSquare />,
+    });
+  }
+
   SidebarData.push({
     name: "Divider",
     path: "divider1",

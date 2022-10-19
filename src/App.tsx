@@ -25,6 +25,7 @@ import { DeveloperOptions } from "./pages/DeveloperOptions";
 import ViewAllDisposed from "./pages/ViewAllDisposed/ViewAllDisposed";
 import { Issues } from "./pages/Issues";
 import ViewAssignments from "./pages/ViewAssignments/ViewAssignments";
+import ViewAllPeriodicMaintenances from "./pages/ViewAllPeriodicMaintenances/ViewAllPeriodicMaintenances";
 
 function App() {
   {
@@ -192,6 +193,10 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/incomplete-tasks" element={<IncompleteTasks />} />
             <Route path="/issues" element={<Issues />} />
+            <Route
+              path="/maintenances"
+              element={<ViewAllPeriodicMaintenances />}
+            />
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/entity/:id" element={<ViewEntity />} />
             <Route path="/vessels" element={<ViewAllVessel />} />

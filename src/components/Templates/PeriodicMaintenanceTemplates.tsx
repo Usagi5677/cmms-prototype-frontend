@@ -11,7 +11,7 @@ import PaginationButtons from "../common/PaginationButtons/PaginationButtons";
 import Search from "../common/Search";
 import type { ColumnsType } from "antd/es/table";
 import { DeleteListing } from "../common/DeleteListing";
-import { DELETE_PERIODIC_MAINTENANCE } from "../../api/mutations";
+import { DELETE_ORIGIN_PERIODIC_MAINTENANCE, DELETE_PERIODIC_MAINTENANCE } from "../../api/mutations";
 import { hasPermissions } from "../../helpers/permissions";
 import UserContext from "../../contexts/UserContext";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
@@ -120,17 +120,18 @@ export const PeriodicMaintenanceTemplates: React.FC<
       // width: "33%",
       render: (val, rec) => (
         <div style={{ display: "flex", alignItems: "center" }}>
-          {/* <div style={{ marginRight: ".5rem" }}>
+          <div style={{ marginRight: ".5rem" }}>
             <PeriodicMaintenanceTemplateDetails periodicMaintenance={rec} />
           </div>
-          <div style={{ marginRight: ".5rem" }}>
+          {/* <div style={{ marginRight: ".5rem" }}>
             <UpsertPMNotificationReminder periodicMaintenance={rec}/>
-          </div>
+          </div>*/}
+          
           <DeleteListing
             id={rec.id}
-            mutation={DELETE_PERIODIC_MAINTENANCE}
+            mutation={DELETE_ORIGIN_PERIODIC_MAINTENANCE}
             refetchQueries={["periodicMaintenances"]}
-          />*/}
+          />
         </div>
       ),
     });
@@ -160,9 +161,9 @@ export const PeriodicMaintenanceTemplates: React.FC<
             margin={filterMargin}
           />
         </div>
-        {/* {hasPermissions(user, ["MODIFY_TEMPLATES"]) && (
+        {hasPermissions(user, ["MODIFY_TEMPLATES"]) && (
           <CreatePeriodicMaintenance />
-        )}*/}
+        )}
       </div>
       <Table
         rowKey="id"

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
+  Checkbox,
   Divider,
   Form,
   Input,
@@ -28,6 +29,7 @@ import { Entity } from "../../models/Entity/Entity";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import { PeriodicMaintenanceTaskList } from "../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
 import { AddPeriodicMaintenanceTask } from "../common/AddPeriodicMaintenanceTask";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 export interface PeriodicMaintenanceProps {
   periodicMaintenance: PeriodicMaintenance;
@@ -37,6 +39,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
   PeriodicMaintenanceProps
 > = ({ periodicMaintenance }) => {
   const [visible, setVisible] = useState(false);
+  const [checkbox, setCheckbox] = useState(periodicMaintenance?.recur);
   const [form] = useForm();
 
   const [editPeriodicMaintenance, { loading }] = useMutation(
@@ -107,7 +110,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
   }, [visible]);
 
   const onFinish = async (values: any) => {
-    const { name, measurement, value } = values;
+    const { name, measurement, value, recur } = values;
 
     editPeriodicMaintenance({
       variables: {
@@ -115,6 +118,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
         name,
         measurement,
         value,
+        recur
       },
     });
   };
@@ -130,6 +134,10 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
   };
 
   const usedBy = getUsedBy();
+
+  const onchange = (e: CheckboxChangeEvent) => {
+    setCheckbox(e.target.checked);
+  };
 
   return (
     <>
@@ -201,26 +209,36 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
             </Select>
           </Form.Item>
           <Form.Item
-            label={
-              <>
-                Value
-                <span style={{ paddingLeft: 10, opacity: 0.5 }}>
-                  For example, value = 3 will be every 3 hour / 3 km
-                </span>
-              </>
-            }
-            name="value"
+            name="recur"
             required={false}
-            initialValue={periodicMaintenance.value}
-            rules={[
-              {
-                required: true,
-                message: "Please enter the value.",
-              },
-            ]}
+            initialValue={periodicMaintenance?.recur}
+            valuePropName="checked"
           >
-            <InputNumber placeholder="Value" style={{ width: "100%" }} />
+            <Checkbox onChange={(e) => onchange(e)}>Recur</Checkbox>
           </Form.Item>
+          {checkbox && (
+            <Form.Item
+              label={
+                <>
+                  Value
+                  <span style={{ paddingLeft: 10, opacity: 0.5 }}>
+                    For example, value = 3 will be every 3 hour / 3 km
+                  </span>
+                </>
+              }
+              name="value"
+              required={false}
+              initialValue={periodicMaintenance.value}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the value.",
+                },
+              ]}
+            >
+              <InputNumber placeholder="Value" style={{ width: "100%" }} min={0} />
+            </Form.Item>
+          )}
           <Row justify="end" gutter={16}>
             <Form.Item style={{ marginBottom: 0 }}>
               <Button
@@ -266,8 +284,8 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
                   style={{ marginLeft: ".5rem", flex: 1 }}
                 >
                   {" "}
-                  {u?.entity?.machineNumber} ({u?.entity?.location?.zone?.name} -{" "}
-                  {u?.entity?.location?.name}) <ArrowRightOutlined />
+                  {u?.entity?.machineNumber} ({u?.entity?.location?.zone?.name}{" "}
+                  - {u?.entity?.location?.name}) <ArrowRightOutlined />
                 </a>
                 <div>
                   <CloseCircleOutlined

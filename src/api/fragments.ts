@@ -106,6 +106,7 @@ export const ENTITY_FRAGMENT = gql`
     }
     currentRunning
     lastService
+    interService
     status
     measurement
     brand

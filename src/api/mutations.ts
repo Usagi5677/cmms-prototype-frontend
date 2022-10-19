@@ -608,16 +608,16 @@ export const CREATE_PERIODIC_MAINTENANCE = gql`
   mutation (
     $name: String!
     $measurement: String!
-    $value: Int!
-    $previousMeterReading: Int
+    $value: Int
     $currentMeterReading: Int
+    $recur: Boolean
   ) {
     createPeriodicMaintenance(
       name: $name
       measurement: $measurement
       value: $value
-      previousMeterReading: $previousMeterReading
       currentMeterReading: $currentMeterReading
+      recur: $recur
     )
   }
 `;
@@ -655,16 +655,16 @@ export const EDIT_PERIODIC_MAINTENANCE = gql`
     $name: String!
     $measurement: String
     $value: Int
-    $previousMeterReading: Int
     $currentMeterReading: Int
+    $recur: Boolean
   ) {
     editPeriodicMaintenance(
       id: $id
       name: $name
       measurement: $measurement
       value: $value
-      previousMeterReading: $previousMeterReading
       currentMeterReading: $currentMeterReading
+      recur: $recur
     )
   }
 `;
@@ -685,12 +685,6 @@ export const EDIT_ENTITY_PERIODIC_MAINTENANCE = gql`
       value: $value
       startDate: $startDate
     )
-  }
-`;
-
-export const DELETE_ENTITY_PERIODIC_MAINTENANCE = gql`
-  mutation ($id: Int!) {
-    deleteEntityPeriodicMaintenance(id: $id)
   }
 `;
 
@@ -924,6 +918,12 @@ export const DELETE_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
+export const DELETE_ORIGIN_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!) {
+    deleteOriginPeriodicMaintenance(id: $id)
+  }
+`;
+
 export const ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
   mutation ($entityId: Int!, $originId: Int!) {
     assignPeriodicMaintenanceTemplate(entityId: $entityId, originId: $originId)
@@ -1038,5 +1038,11 @@ export const BULK_ASSIGN = gql`
 export const UPDATE_ENTITY_DIVISION = gql`
   mutation ($entityId: Int!, $divisionId: Int!) {
     updateEntityDivision(entityId: $entityId, divisionId: $divisionId)
+  }
+`;
+
+export const ACTIVATE_PERIODIC_MAINTENANCE = gql`
+  mutation ($id: Int!) {
+    activatePM(id: $id)
   }
 `;

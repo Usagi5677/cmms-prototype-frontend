@@ -87,7 +87,12 @@
   opacity: 0.5;
   margin-left: 10px
 }
-
+.spaceWithNoOpacity {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-left: 10px
+}
 .flex-limit {
   max-width: 500px;
  

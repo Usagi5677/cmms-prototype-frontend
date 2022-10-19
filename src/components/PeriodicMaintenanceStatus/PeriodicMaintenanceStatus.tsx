@@ -22,6 +22,8 @@ export interface PeriodicMaintenanceStatusProps {
 export interface PeriodicMaintenancesSummaryStatusProps {
   allTaskCompletion: number;
   someTaskCompletion: number;
+  noTask?: boolean;
+  emptyTask?: boolean;
   readings: number;
   verified: number;
   observations: number;
@@ -264,9 +266,12 @@ export const PeriodicMaintenancesStatus: React.FC<
   } else if (summary?.someTaskCompletion < 1) {
     itemColor = "#faad13";
     itemText = "Some tasks completed";
-  } else {
+  } else if(summary?.noTask){
     itemColor = "#fa541c";
     itemText = "No tasks completed";
+  } else if(summary?.emptyTask){
+    itemColor = "#fa541c";
+    itemText = "empty";
   }
 
   if (summary?.readings === 0) {
@@ -292,10 +297,12 @@ export const PeriodicMaintenancesStatus: React.FC<
           <Badge color={readingsColor} />
           <div style={{ color: "var(--text-primary)" }}>{readingsText}</div>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Badge color={itemColor} />
-          <div style={{ color: "var(--text-primary)" }}>{itemText}</div>
-        </div>
+        {itemText !== "empty" && (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Badge color={itemColor} />
+            <div style={{ color: "var(--text-primary)" }}>{itemText}</div>
+          </div>
+        )}
 
         {summary?.observations < 1 && (
           <div
