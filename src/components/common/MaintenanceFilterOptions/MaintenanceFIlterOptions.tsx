@@ -10,6 +10,7 @@ import { AssignedOrNotCheckbox } from "../AssignedOrNotCheckbox";
 import { BrandSelector } from "../BrandSelector";
 import { DepartmentSelector } from "../DepartmentSelector";
 import { EngineSelector } from "../EngineSelector";
+import PMStatusFilter from "../PMStatusFilter";
 import EntityStatusFilter from "../EntityStatusFilter";
 import { EntityTypeSelector } from "../EntityTypeSelector";
 import { MeasurementSelector } from "../MeasurementSelector";
@@ -83,6 +84,23 @@ const MaintenanceFilterOptions = ({
 
               <div className={classes["item-container"]}>
                 <div className={classes["item-wrapper"]}>
+                  <div className={classes["title"]}>Maintenance</div>
+                  <Divider style={{ marginTop: 10 }} />
+                  <div className={classes["item"]}>
+                    <Form.Item
+                      name="pmStatus"
+                      initialValue={options?.pmStatusOptions!.value}
+                    >
+                      <PMStatusFilter
+                        onChange={options?.pmStatusOptions!.onChange}
+                        value={options?.pmStatusOptions!.value!}
+                        multiple={true}
+                        width={options?.pmStatusOptions!.width}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className={classes["item-wrapper"]}>
                   <div className={classes["title"]}>Entity</div>
                   <Divider style={{ marginTop: 10 }} />
                   <div className={classes["item"]}>
@@ -100,7 +118,7 @@ const MaintenanceFilterOptions = ({
                       />
                     </Form.Item>
                   </div>
-                  
+
                   <div className={classes["item"]}>
                     <Form.Item
                       name="measurement"

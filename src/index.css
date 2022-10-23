@@ -87,6 +87,8 @@ a {
   --working-color: rgb(0, 139, 139);
   --critical-bg: rgba(255, 165, 0, 0.2);
   --critical-color: rgb(219, 142, 0);
+  --ongoing-bg: rgba(167, 113, 11, 0.2);
+  --ongoing-color: rgb(145, 97, 7);
   --breakdown-bg: rgba(255, 0, 0, 0.2);
   --breakdown-color: rgb(139, 0, 0);
   --dispose-bg: rgba(102, 0, 0, 0.3);
@@ -241,6 +243,8 @@ a {
   --working-color: #3cdad4;
   --critical-bg: rgba(255, 165, 0, 0.4);
   --critical-color: rgb(243, 159, 4);
+  --ongoing-bg: rgba(167, 113, 11, 0.2);
+  --ongoing-color: rgb(145, 97, 7);
   --breakdown-bg: rgba(255, 0, 0, 0.3);
   --breakdown-color: #ff474a;
   --dispose-bg: rgba(102, 0, 0, 0.8);

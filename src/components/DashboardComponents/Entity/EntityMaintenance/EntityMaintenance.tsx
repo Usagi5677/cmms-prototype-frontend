@@ -27,7 +27,7 @@ import PaginationButtons from "../../../common/PaginationButtons/PaginationButto
 import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceStatusTag";
 import Search from "../../../common/Search";
 import EntityPeriodicMaintenance from "../../../../models/Entity/EntityPeriodicMaintenance";
-import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
+import PMStatusFilter from "../../../common/PMStatusFilter";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
 import { RiSailboatFill } from "react-icons/ri";

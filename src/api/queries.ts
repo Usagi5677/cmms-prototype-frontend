@@ -317,6 +317,7 @@ export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
     $divisionIds: [Int!]
     $gteInterService: String
     $lteInterService: String
+    $pmStatus: [String!]
   ) {
     getAllPMWithPagination(
       after: $after
@@ -335,6 +336,7 @@ export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
       divisionIds: $divisionIds
       gteInterService: $gteInterService
       lteInterService: $lteInterService
+      pmStatus: $pmStatus
     ) {
       pageInfo {
         endCursor
@@ -384,6 +386,7 @@ export const ALL_PERIODIC_MAINTENANCE_STATUS_COUNT = gql`
     $divisionIds: [Int!]
     $gteInterService: String
     $lteInterService: String
+    $pmStatus: [String!]
   ) {
     allPMStatusCount(
       search: $search
@@ -398,6 +401,7 @@ export const ALL_PERIODIC_MAINTENANCE_STATUS_COUNT = gql`
       divisionIds: $divisionIds
       gteInterService: $gteInterService
       lteInterService: $lteInterService
+      pmStatus: $pmStatus
     ) {
       completed
       ongoing
