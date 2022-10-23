@@ -170,14 +170,14 @@ const PMCard = ({
                           title={
                             <div>
                               <Badge
-                                color={"red"}
+                                color={"#87262c"}
                                 text={"Some tasks not completed"}
                                 status={"processing"}
                               />
                             </div>
                           }
                         >
-                          <Badge color={"red"} status={"processing"} />
+                          <Badge color={"#87262c"} status={"processing"} />
                         </Tooltip>
                       )}
                       {result[1] && (
