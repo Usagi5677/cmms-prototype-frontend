@@ -17,7 +17,7 @@ const PeriodicMaintenanceStatusTag = ({
   let color: string | undefined = undefined;
   if (status === "Completed") color = "cyan";
   else if (status === "Ongoing") color = "orange";
-  else if (status === "Upcoming") color = "#916107";
+  else if (status === "Upcoming") color = "#825b22";
   else if (status === "Overdue") color = "red";
   return (
     <Tag
