@@ -71,10 +71,6 @@ const ViewSubEntity = ({
                     </div>
                   </div>
                   <div className={classes["info"]}>
-                    <div className={classes["info-title"]}>Engine</div>
-                    <div className={classes["info-content"]}>{s.engine}</div>
-                  </div>
-                  <div className={classes["info"]}>
                     <div className={classes["info-title"]}>Model</div>
                     <div className={classes["info-content"]}>{s.model}</div>
                   </div>

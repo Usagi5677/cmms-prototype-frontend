@@ -147,11 +147,7 @@ const EditEntity = ({
           <div className={classes["row"]}>
             {!includeSubEntity && (
               <div className={classes["col"]}>
-                <Form.Item
-                  label="Division"
-                  name="division"
-                  required={false}
-                >
+                <Form.Item label="Division" name="division" required={false}>
                   <DivisionSelector
                     setDivisionId={setDivisionId}
                     currentId={entity?.division?.id}
@@ -208,18 +204,19 @@ const EditEntity = ({
           </div>
 
           <div className={classes["row"]}>
-            {!entity?.subEntities?.some((e) => e.engine !== null) && (
-              <div className={classes["col"]}>
-                <Form.Item
-                  label="Engine"
-                  name="engine"
-                  required={false}
-                  initialValue={entity?.engine}
-                >
-                  <EngineSelector />
-                </Form.Item>
-              </div>
-            )}
+            {entity?.type?.entityType !== "Sub Entity" &&
+              entity?.type?.entityType !== "Vessel" && (
+                <div className={classes["col"]}>
+                  <Form.Item
+                    label="Engine"
+                    name="engine"
+                    required={false}
+                    initialValue={entity?.engine}
+                  >
+                    <EngineSelector />
+                  </Form.Item>
+                </div>
+              )}
 
             <div className={classes["col"]}>
               <Form.Item

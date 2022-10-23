@@ -27,7 +27,7 @@ import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./AddEntity.module.css";
 
 export interface AddEntityProps {
-  entityType: "Machine" | "Vehicle" | "Vessel";
+  entityType: "Machine" | "Vehicle" | "Vessel" | "Sub Entity";
   includeSubEntity?: boolean;
 }
 
@@ -224,11 +224,14 @@ const AddEntity: React.FC<AddEntityProps> = ({
           </div>
 
           <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item label="Engine" name="engine" required={false}>
-                <EngineSelector />
-              </Form.Item>
-            </div>
+            {!includeSubEntity && (
+              <div className={classes["col"]}>
+                <Form.Item label="Engine" name="engine" required={false}>
+                  <EngineSelector />
+                </Form.Item>
+              </div>
+            )}
+
             <div className={classes["col"]}>
               <Form.Item label="Measurement" name="measurement">
                 <Radio.Group buttonStyle="solid" optionType="button">
