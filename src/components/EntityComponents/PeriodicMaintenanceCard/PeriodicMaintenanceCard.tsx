@@ -30,6 +30,8 @@ import Comment from "../../../models/Comment";
 import { AddPeriodicMaintenanceObservation } from "../../common/AddPeriodicMaintenanceObservation";
 import { Entity } from "../../../models/Entity/Entity";
 import { CHECK_COPY_PM_EXIST } from "../../../api/queries";
+import PeriodicMaintenanceStatusTag from "../../common/PeriodicMaintenanceStatusTag";
+import { PeriodicMaintenanceStatus as pmstatus } from "../../../models/Enums";
 
 const PeriodicMaintenanceCard = ({
   periodicMaintenance,
@@ -342,6 +344,15 @@ const PeriodicMaintenanceCard = ({
                         </span>
                       </div>
                     )}
+                  <div>
+                    <PeriodicMaintenanceStatusTag
+                      status={periodicMaintenance?.status as pmstatus}
+                      height={16}
+                      fontSize={9}
+                      borderRadius={6}
+                      marginBottom={2}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

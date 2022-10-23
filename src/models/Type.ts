@@ -1,5 +1,5 @@
 export default interface Type {
   id: number;
   name: string;
-  entityType: "Machine" | "Vessel" | "Vehicle";
+  entityType: "Machine" | "Vessel" | "Vehicle" | "Sub Entity";
 }
