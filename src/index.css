@@ -87,8 +87,10 @@ a {
   --working-color: rgb(0, 139, 139);
   --critical-bg: rgba(255, 165, 0, 0.2);
   --critical-color: rgb(219, 142, 0);
-  --ongoing-bg: rgba(167, 113, 11, 0.2);
-  --ongoing-color: rgb(145, 97, 7);
+  --upcoming-bg: rgba(130, 91, 34, 0.2);
+  --upcoming-color: rgb(130, 91, 34);
+  --ongoing-bg: rgba(255, 165, 0, 0.2);
+  --ongoing-color: rgb(219, 142, 0);
   --breakdown-bg: rgba(255, 0, 0, 0.2);
   --breakdown-color: rgb(139, 0, 0);
   --dispose-bg: rgba(102, 0, 0, 0.3);
@@ -243,8 +245,10 @@ a {
   --working-color: #3cdad4;
   --critical-bg: rgba(255, 165, 0, 0.4);
   --critical-color: rgb(243, 159, 4);
-  --ongoing-bg: rgba(167, 113, 11, 0.2);
-  --ongoing-color: rgb(145, 97, 7);
+  --upcoming-bg: rgba(179, 126, 48, 0.2);
+  --upcoming-color: rgb(130, 91, 34, 70);
+  --ongoing-bg: rgba(255, 165, 0, 0.2);
+  --ongoing-color: rgb(219, 142, 0);
   --breakdown-bg: rgba(255, 0, 0, 0.3);
   --breakdown-color: #ff474a;
   --dispose-bg: rgba(102, 0, 0, 0.8);
@@ -670,7 +674,11 @@ em {
   justify-content: space-between;
   padding: 10px 10px;
 }
-#filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
+#filterCollapse
+  .ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header
+  > div {
   min-height: 20px !important;
   display: flex;
   align-items: center;
@@ -688,7 +696,7 @@ em {
 }
 
 #filterCollapse .ant-collapse-ghost,
-#subEntityCollapse .ant-collapse-ghost  {
+#subEntityCollapse .ant-collapse-ghost {
   border: var(--card-border) !important;
   background-color: var(--card-bg);
   border-radius: 20px !important;

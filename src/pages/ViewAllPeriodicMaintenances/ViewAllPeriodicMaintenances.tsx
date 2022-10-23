@@ -482,8 +482,8 @@ const ViewAllPeriodicMaintenances = () => {
           <StatusCard
             amountOne={upcoming}
             icon={<ClockCircleOutlined />}
-            iconBackgroundColor={"var(--critical-bg)"}
-            iconColor={"var(--critical-color)"}
+            iconBackgroundColor={"var(--upcoming-bg)"}
+            iconColor={"var(--upcoming-color)"}
             name={"Upcoming"}
           />
         </motion.div>
