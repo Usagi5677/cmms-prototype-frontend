@@ -78,6 +78,12 @@ const PMCard = ({
 
   let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
 
+  //checks pm id
+  let result2 = findIncompleteChecklistAndTasks(
+    summaryData,
+    periodicMaintenance.id
+  );
+
   let imagePath = getListImage(entity?.type?.name);
 
   let loading = true;
@@ -153,12 +159,12 @@ const PMCard = ({
                     className={classes["inner-first-block"]}
                     style={{ flex: smallView ? 2 : 1 }}
                   >
-                    <div className={classes["title-wrapper"]}>
-                      <EntityIcon entityType={entity?.type?.entityType} />
+                    <div className={classes["id-wrapper"]}>
+                      <ToolOutlined />
                       <span className={classes["mn-title"]}>
-                        {entity?.machineNumber}
+                        {periodicMaintenance.id}
                       </span>
-                      {result[0] && (
+                      {result2[0] && (
                         <Tooltip
                           color="var(--dot-tooltip)"
                           title={
@@ -190,6 +196,12 @@ const PMCard = ({
                           <Badge color={"red"} status={"processing"} />
                         </Tooltip>
                       )}
+                    </div>
+                    <div className={classes["title-wrapper"]}>
+                      <EntityIcon entityType={entity?.type?.entityType} />
+                      <span className={classes["mn-title"]}>
+                        {entity?.machineNumber}
+                      </span>
                     </div>
                     <div className={classes["location-wrapper"]}>
                       <FaMapMarkerAlt />

@@ -10,6 +10,7 @@ import {
   ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
+  GET_ALL_PM_SUMMARY,
 } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
@@ -134,8 +135,8 @@ const ViewAllPeriodicMaintenances = () => {
     }
   );
 
-  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+  const [getAllEntityPMSummary, { data: summaryData }] =
+    useLazyQuery(GET_ALL_PM_SUMMARY, {
       onError: (err) => {
         errorMessage(err, "Error loading summary data.");
       },
@@ -226,8 +227,8 @@ const ViewAllPeriodicMaintenances = () => {
   //Fetch all machine status count
   useEffect(() => {
     allPMStatusCount({ variables: filter });
-    getAllEntityChecklistAndPMSummary();
-  }, [filter, allPMStatusCount, getAllEntityChecklistAndPMSummary]);
+    getAllEntityPMSummary();
+  }, [filter, allPMStatusCount, getAllEntityPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -487,7 +488,7 @@ const ViewAllPeriodicMaintenances = () => {
                     entity={pm?.entity!}
                     key={pm.id}
                     periodicMaintenance={pm}
-                    summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
+                    summaryData={summaryData?.getAllEntityPMSummary}
                   />
                 );
               })}

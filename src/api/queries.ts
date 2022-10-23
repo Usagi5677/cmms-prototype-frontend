@@ -1712,6 +1712,15 @@ export const GET_ALL_CHECKLIST_AND_PM_SUMMARY = gql`
   }
 `;
 
+export const GET_ALL_PM_SUMMARY = gql`
+  query getAllEntityPMSummary {
+    getAllEntityPMSummary {
+      pm
+      checklist
+    }
+  }
+`;
+
 export const INCOMPLETE_CHECKLIST_PAST_TWO = gql`
   query incompleteChecklistsPastTwoDays {
     incompleteChecklistsPastTwoDays

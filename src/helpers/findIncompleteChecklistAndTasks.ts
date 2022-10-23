@@ -2,7 +2,7 @@ import EntityChecklistAndPMSummary from "../models/Entity/EntityChecklistAndPMSu
 
 export function findIncompleteChecklistAndTasks(
   summaryData?: EntityChecklistAndPMSummary | undefined,
-  id?: number | undefined
+  id?: number | undefined,
 ) {
   let pm = false;
   let checklist = false;
