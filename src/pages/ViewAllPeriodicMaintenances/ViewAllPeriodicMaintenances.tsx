@@ -10,6 +10,7 @@ import {
   ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
+  GET_ALL_PM_SUMMARY,
 } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
@@ -31,17 +32,23 @@ import {
   EntityStatus,
   EntityStatusOptionProps,
   FilterOptionProps,
+  PeriodicMaintenanceStatus,
+  PMStatusOptionProps,
   SearchOptionProps,
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
 } from "../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { CheckOutlined, ClockCircleOutlined, ExclamationOutlined, WarningOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  ClockCircleOutlined,
+  ExclamationOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
 import PMCard from "../../components/common/PMCard/PMCard";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
-
 
 const ViewAllPeriodicMaintenances = () => {
   const getFilter = localStorage.getItem("periodicMaintenancesFilter");
@@ -56,7 +63,9 @@ const ViewAllPeriodicMaintenances = () => {
   const [locationIds, setLocationIds] = useState<number[]>(
     getFilterObjects?.locationIds
   );
-  const [type2Ids, setType2Ids] = useState<number[]>(getFilterObjects?.type2Ids);
+  const [type2Ids, setType2Ids] = useState<number[]>(
+    getFilterObjects?.type2Ids
+  );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
@@ -64,18 +73,15 @@ const ViewAllPeriodicMaintenances = () => {
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
-  const [isAssigned, setIsAssigned] = useState<boolean>(
-    getFilterObjects?.isAssigned
-  );
-  //const [assignedToMe, setAssignedToMe] = useState<number | null>(null);
   const [lteInterService, setLteInterService] = useState(
     getFilterObjects?.lteInterService
   );
   const [gteInterService, setGteInterService] = useState(
     getFilterObjects?.gteInterService
   );
-  const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
-    useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
+  const [pmStatus, setPMStatus] = useState<PeriodicMaintenanceStatus[]>(
+    getFilterObjects?.pmStatus
+  );
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
@@ -94,6 +100,7 @@ const ViewAllPeriodicMaintenances = () => {
       measurement: [],
       lteInterService: "",
       gteInterService: "",
+      pmStatus: [],
     })
   );
   // Filter has an intersection type as it has PaginationArgs + other args
@@ -107,6 +114,7 @@ const ViewAllPeriodicMaintenances = () => {
       measurement: string[];
       lteInterService: string;
       gteInterService: string;
+      pmStatus: PeriodicMaintenanceStatus[];
     }
   >({
     first: 20,
@@ -121,6 +129,7 @@ const ViewAllPeriodicMaintenances = () => {
     measurement: JSON.parse(saveFilterOptions)?.measurement,
     lteInterService: JSON.parse(saveFilterOptions)?.lteInterService,
     gteInterService: JSON.parse(saveFilterOptions)?.gteInterService,
+    pmStatus: JSON.parse(saveFilterOptions)?.pmStatus,
   });
 
   const [allPMStatusCount, { data: statusData }] = useLazyQuery(
@@ -134,22 +143,27 @@ const ViewAllPeriodicMaintenances = () => {
     }
   );
 
-  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+  const [getAllEntityPMSummary, { data: summaryData }] = useLazyQuery(
+    GET_ALL_PM_SUMMARY,
+    {
       onError: (err) => {
         errorMessage(err, "Error loading summary data.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
-    });
+    }
+  );
 
-  const [getAllPMWithPagination, { data, loading }] = useLazyQuery(ALL_PERIODIC_MAINTENANCE_LIST, {
-    onError: (err) => {
-      errorMessage(err, "Error loading machines.");
-    },
-    fetchPolicy: "network-only",
-    nextFetchPolicy: "cache-first",
-  });
+  const [getAllPMWithPagination, { data, loading }] = useLazyQuery(
+    ALL_PERIODIC_MAINTENANCE_LIST,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading machines.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
@@ -171,6 +185,7 @@ const ViewAllPeriodicMaintenances = () => {
     measurementValue: string[],
     lteInterServiceValue: string,
     gteInterServiceValue: string,
+    pmStatusValue: PeriodicMaintenanceStatus[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -186,6 +201,7 @@ const ViewAllPeriodicMaintenances = () => {
           measurement: measurementValue,
           lteInterService: lteInterServiceValue,
           gteInterService: gteInterServiceValue,
+          pmStatus: pmStatusValue,
           first: 20,
           last: null,
           before: null,
@@ -210,6 +226,7 @@ const ViewAllPeriodicMaintenances = () => {
       measurement,
       lteInterService,
       gteInterService,
+      pmStatus
     );
     // eslint-disable-next-line
   }, [
@@ -221,13 +238,14 @@ const ViewAllPeriodicMaintenances = () => {
     measurement,
     lteInterService,
     gteInterService,
+    pmStatus
   ]);
 
   //Fetch all machine status count
   useEffect(() => {
     allPMStatusCount({ variables: filter });
-    getAllEntityChecklistAndPMSummary();
-  }, [filter, allPMStatusCount, getAllEntityChecklistAndPMSummary]);
+    getAllEntityPMSummary();
+  }, [filter, allPMStatusCount, getAllEntityPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -285,20 +303,19 @@ const ViewAllPeriodicMaintenances = () => {
       measurement: [],
       lteInterService: "",
       gteInterService: "",
+      pmStatus: [],
     };
     setSaveFilterOptions(JSON.stringify(clearFilter));
 
     setSearch("");
-    setLteInterService("");
-    setGteInterService("");
     setLocationIds([]);
+    setType2Ids([]);
     setZoneIds([]);
     setDivisionIds([]);
     setMeasurement([]);
-    setType2Ids([]);
-    setIsAssigned(false);
-    setIsIncompleteChecklistTask(false);
-    //setAssignedToMe(null);
+    setLteInterService("");
+    setGteInterService("");
+    setPMStatus([]);
   };
 
   const searchOptions: SearchOptionProps = {
@@ -343,7 +360,6 @@ const ViewAllPeriodicMaintenances = () => {
     width: "100%",
   };
 
-  
   const measurementOptions: DefaultStringArrayOptionProps = {
     onChange: (measurement: string[]) => {
       setFilter({
@@ -359,7 +375,23 @@ const ViewAllPeriodicMaintenances = () => {
     value: filter.measurement,
     width: "100%",
   };
- 
+
+  const pmStatusOptions: PMStatusOptionProps = {
+    onChange: (status) => {
+      setFilter({
+        ...filter,
+        pmStatus: status,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setPMStatus(status);
+    },
+    value: filter.pmStatus,
+    width: "100%",
+  };
+
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,
@@ -369,6 +401,7 @@ const ViewAllPeriodicMaintenances = () => {
     measurementOptions,
     lteInterServiceOptions,
     gteInterServiceOptions,
+    pmStatusOptions
   };
 
   return (
@@ -432,8 +465,8 @@ const ViewAllPeriodicMaintenances = () => {
           <StatusCard
             amountOne={ongoing}
             icon={<WarningOutlined />}
-            iconBackgroundColor={"var(--critical-bg)"}
-            iconColor={"var(--critical-color)"}
+            iconBackgroundColor={"var(--ongoing-bg)"}
+            iconColor={"var(--ongoing-color)"}
             name={"Ongoing"}
           />
         </motion.div>
@@ -480,17 +513,19 @@ const ViewAllPeriodicMaintenances = () => {
             </div>
           ) : data?.getAllPMWithPagination.edges.length > 0 ? (
             <div>
-              {data?.getAllPMWithPagination.edges.map((rec: { node: PeriodicMaintenance }) => {
-                const pm = rec.node;
-                return (
-                  <PMCard
-                    entity={pm?.entity!}
-                    key={pm.id}
-                    periodicMaintenance={pm}
-                    summaryData={summaryData?.getAllEntityChecklistAndPMSummary}
-                  />
-                );
-              })}
+              {data?.getAllPMWithPagination.edges.map(
+                (rec: { node: PeriodicMaintenance }) => {
+                  const pm = rec.node;
+                  return (
+                    <PMCard
+                      entity={pm?.entity!}
+                      key={pm.id}
+                      periodicMaintenance={pm}
+                      summaryData={summaryData?.getAllEntityPMSummary}
+                    />
+                  );
+                }
+              )}
             </div>
           ) : (
             <div

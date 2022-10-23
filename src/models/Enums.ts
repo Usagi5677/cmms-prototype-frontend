@@ -25,10 +25,10 @@ export enum SparePRStatus {
 }
 
 export enum PeriodicMaintenanceStatus {
-  completed = "Completed",
-  ongoing = "Ongoing",
-  overdue = "Overdue",
-  upcoming = "Upcoming",
+  Completed = "Completed",
+  Ongoing = "Ongoing",
+  Overdue = "Overdue",
+  Upcoming = "Upcoming",
 }
 
 export interface SearchOptionProps {
@@ -56,6 +56,13 @@ export interface DefaultStringArrayOptionProps {
 export interface EntityStatusOptionProps {
   onChange?: (val: EntityStatus[]) => void;
   value: EntityStatus[] | null;
+  margin?: string;
+  width?: number | string;
+  rounded?: boolean;
+}
+export interface PMStatusOptionProps {
+  onChange?: (val: PeriodicMaintenanceStatus[]) => void;
+  value: PeriodicMaintenanceStatus[] | null;
   margin?: string;
   width?: number | string;
   rounded?: boolean;
@@ -102,4 +109,5 @@ export interface FilterOptionProps {
   gteInterServiceOptions?: SearchReadingOptionProps;
   isIncompleteChecklistTaskOptions?: DefaultBooleanOptionProps;
   entityTypeOptions?: DefaultStringArrayOptionProps;
+  pmStatusOptions?: PMStatusOptionProps;
 }

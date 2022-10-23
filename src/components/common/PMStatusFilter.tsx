@@ -2,14 +2,18 @@ import { Select } from "antd";
 import { PeriodicMaintenanceStatus } from "../../models/Enums";
 import PeriodicMaintenanceStatusTag from "./PeriodicMaintenanceStatusTag";
 
-const EntityPMStatusFilter = ({
+const PMStatusFilter = ({
   onChange,
   value,
   margin,
+  multiple,
+  width,
 }: {
-  onChange?: (val: PeriodicMaintenanceStatus) => void;
-  value: PeriodicMaintenanceStatus | null;
+  onChange?: (val: PeriodicMaintenanceStatus[]) => void;
+  value: PeriodicMaintenanceStatus[] | null;
   margin?: string;
+  multiple?: boolean;
+  width?: number | string;
 }) => {
   return (
     <div
@@ -21,12 +25,14 @@ const EntityPMStatusFilter = ({
       }}
     >
       <Select
+        style={{ width: width ?? undefined }}
         showArrow
-        style={{ minWidth: 179 }}
         placeholder="Filter status"
         onChange={onChange}
         allowClear={true}
+        mode={multiple ? "multiple" : undefined}
         value={value}
+        getPopupContainer={(trigger) => trigger.parentNode}
       >
         {(
           Object.keys(PeriodicMaintenanceStatus) as Array<
@@ -42,4 +48,4 @@ const EntityPMStatusFilter = ({
   );
 };
 
-export default EntityPMStatusFilter;
+export default PMStatusFilter;

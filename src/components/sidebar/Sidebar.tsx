@@ -300,13 +300,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                     title={
                       <div>
                         <Badge
-                          color={"red"}
+                          color={"#87262c"}
                           text={"Some tasks not completed"}
                         />
                       </div>
                     }
                   >
-                    <Badge color={"red"} />
+                    <Badge color={"#87262c"} />
                   </Tooltip>
                 )}
               {summaryData?.getAllEntityChecklistAndPMSummary
@@ -334,13 +334,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                     title={
                       <div>
                         <Badge
-                          color={"red"}
+                          color={"#87262c"}
                           text={"Some tasks not completed"}
                         />
                       </div>
                     }
                   >
-                    <Badge color={"red"} />
+                    <Badge color={"#87262c"} />
                   </Tooltip>
                 )}
               {summaryData?.getAllEntityChecklistAndPMSummary
@@ -368,13 +368,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                     title={
                       <div>
                         <Badge
-                          color={"red"}
+                          color={"#87262c"}
                           text={"Some tasks not completed"}
                         />
                       </div>
                     }
                   >
-                    <Badge color={"red"} />
+                    <Badge color={"#87262c"} />
                   </Tooltip>
                 )}
               {summaryData?.getAllEntityChecklistAndPMSummary

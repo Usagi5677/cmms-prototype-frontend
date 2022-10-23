@@ -25,7 +25,7 @@ import PaginationArgs from "../../../../models/PaginationArgs";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import PeriodicMaintenanceStatusTag from "../../../common/PeriodicMaintenanceStatusTag";
 import Search from "../../../common/Search";
-import EntityPMStatusFilter from "../../../common/EntityPMStatusFilter";
+import PMStatusFilter from "../../../common/PMStatusFilter";
 import EntityPMTask from "../../../../models/Entity/EntityPMTask";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";

@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-.location-wrapper {
+.location-wrapper, .id-wrapper {
   display: flex;
   align-items: center;
 }
