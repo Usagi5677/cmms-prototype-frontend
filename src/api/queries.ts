@@ -211,6 +211,7 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
           currentMeterReading
           recur
           type
+          status
           verifiedAt
           verifiedBy {
             ...UserFieldsAPS

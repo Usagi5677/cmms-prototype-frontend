@@ -3,8 +3,16 @@ import { PeriodicMaintenanceStatus } from "../../models/Enums";
 
 const PeriodicMaintenanceStatusTag = ({
   status,
+  height,
+  fontSize,
+  borderRadius,
+  marginBottom,
 }: {
   status: PeriodicMaintenanceStatus | undefined;
+  height?: number;
+  fontSize?: number;
+  borderRadius?: number;
+  marginBottom?: number;
 }) => {
   let color: string | undefined = undefined;
   if (status === "Completed") color = "cyan";
@@ -15,9 +23,15 @@ const PeriodicMaintenanceStatusTag = ({
       color={color}
       style={{
         fontWeight: 700,
-        borderRadius: 20,
-        textAlign: "center",
+        borderRadius: borderRadius ? borderRadius : 20,
         maxWidth: 250,
+        width: "fit-content",
+        fontSize: fontSize ? fontSize : "inherit",
+        height: height ? height : "inherit",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: marginBottom ? marginBottom : 0,
       }}
     >
       {status}
