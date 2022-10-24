@@ -48,7 +48,6 @@ const PeriodicMaintenanceUpdateReading = ({
       },
     });
   };
-
   return (
     <Form
       form={form}
@@ -71,8 +70,13 @@ const PeriodicMaintenanceUpdateReading = ({
               style={{ width: "100%" }}
               min={0}
               disabled={
-                !hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
-                !isAssignedType("Technician", periodicMaintenance.entity!, self)
+                (!hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
+                  !isAssignedType(
+                    "Technician",
+                    periodicMaintenance.entity!,
+                    self
+                  )) ||
+                isOlder
               }
             />
           </Form.Item>

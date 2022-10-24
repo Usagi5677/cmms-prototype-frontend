@@ -157,7 +157,6 @@ const PeriodicMaintenanceCard = ({
       percentageStyle = "#fa541c";
     }
   }
-
   return (
     <div id="collapseTwo">
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
@@ -391,6 +390,7 @@ const PeriodicMaintenanceCard = ({
               {periodicMaintenance.type === "Copy" && (
                 <PeriodicMaintenanceUpdateReading
                   periodicMaintenance={periodicMaintenance}
+                  isOlder={isOlder}
                 />
               )}
             </div>
