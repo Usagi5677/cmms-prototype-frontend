@@ -29,6 +29,8 @@ const PeriodicMaintenanceUpdateReading = ({
         "getAllHistoryOfEntity",
         "periodicMaintenances",
         "periodicMaintenanceSummary",
+        "getSingleEntity",
+        "getAllPMWithPagination",
       ],
     }
   );
@@ -51,18 +53,18 @@ const PeriodicMaintenanceUpdateReading = ({
       onFinish={onFinish}
       id="myForm"
     >
-      <div className={classes["row"]}>
+      <div className={classes["row"]} style={{ marginTop: 10 }}>
         <div className={classes["col"]}>
           <Form.Item
             name="reading"
             required={false}
             style={{ marginBottom: 0 }}
+            initialValue={periodicMaintenance?.currentMeterReading}
           >
             <InputNumber
               addonBefore={`Meter Reading`}
               placeholder={`Enter Meter Reading`}
               style={{ width: "100%" }}
-              max={periodicMaintenance.measurement === "Hour" ? 24 : undefined}
               min={0}
             />
           </Form.Item>

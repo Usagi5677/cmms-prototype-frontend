@@ -388,6 +388,11 @@ const PeriodicMaintenanceCard = ({
                   </div>
                 </div>
               )}
+              {periodicMaintenance.type === "Copy" && (
+                <PeriodicMaintenanceUpdateReading
+                  periodicMaintenance={periodicMaintenance}
+                />
+              )}
             </div>
             <PeriodicMaintenanceTaskList
               periodicMaintenance={periodicMaintenance}
