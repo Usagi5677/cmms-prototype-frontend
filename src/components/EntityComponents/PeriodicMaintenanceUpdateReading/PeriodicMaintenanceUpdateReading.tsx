@@ -1,8 +1,11 @@
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, InputNumber, message, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import { useContext } from "react";
 import { PERIODIC_MAINTENANCE_UPDATE_READING } from "../../../api/mutations";
+import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import classes from "./PeriodicMaintenanceUpdateReading.module.css";
 
@@ -16,6 +19,7 @@ const PeriodicMaintenanceUpdateReading = ({
   isOlder?: boolean;
 }) => {
   const [form] = useForm();
+  const { user: self } = useContext(UserContext);
   const [updateReading, { loading: loadingEntity }] = useMutation(
     PERIODIC_MAINTENANCE_UPDATE_READING,
     {
@@ -66,6 +70,10 @@ const PeriodicMaintenanceUpdateReading = ({
               placeholder={`Enter Meter Reading`}
               style={{ width: "100%" }}
               min={0}
+              disabled={
+                !hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
+                !isAssignedType("Technician", periodicMaintenance.entity!, self)
+              }
             />
           </Form.Item>
         </div>
@@ -76,7 +84,16 @@ const PeriodicMaintenanceUpdateReading = ({
               htmlType="submit"
               className={classes["btn"]}
               loading={loadingEntity}
-              disabled={isDeleted || isOlder}
+              disabled={
+                isDeleted ||
+                isOlder ||
+                (!hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
+                  !isAssignedType(
+                    "Technician",
+                    periodicMaintenance.entity!,
+                    self
+                  ))
+              }
             >
               Add
             </Button>
