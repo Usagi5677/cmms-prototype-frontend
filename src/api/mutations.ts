@@ -534,6 +534,16 @@ export const ASSIGN_ENTITY_TO_DIVISION = gql`
     assignEntityToDivision(input: $input)
   }
 `;
+export const ASSIGN_USER_TO_LOCATION = gql`
+  mutation assignUserToLocation($input: LocationAssignInput!) {
+    assignUserToLocation(input: $input)
+  }
+`;
+export const ASSIGN_ENTITY_TO_LOCATION = gql`
+  mutation assignEntityToLocation($input: LocationAssignInput!) {
+    assignEntityToLocation(input: $input)
+  }
+`;
 export const CREATE_ENTITY = gql`
   mutation (
     $typeId: Int
@@ -890,6 +900,13 @@ export const UNASSIGN_USER_FROM_DIVISION = gql`
   }
 `;
 
+export const UNASSIGN_USER_FROM_LOCATION = gql`
+  mutation ($id: Int!) {
+    unassignUserFromLocation(id: $id)
+  }
+`;
+
+
 export const ADD_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
     createPeriodicMaintenanceTask(
@@ -1038,6 +1055,12 @@ export const BULK_ASSIGN = gql`
 export const UPDATE_ENTITY_DIVISION = gql`
   mutation ($entityId: Int!, $divisionId: Int!) {
     updateEntityDivision(entityId: $entityId, divisionId: $divisionId)
+  }
+`;
+
+export const UPDATE_ENTITY_LOCATION = gql`
+  mutation ($entityId: Int!, $locationId: Int!) {
+    updateEntityLocation(entityId: $entityId, locationId: $locationId)
   }
 `;
 

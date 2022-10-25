@@ -94,11 +94,11 @@ const UserCard = ({ userData }: { userData: User }) => {
               <EditUserRoles userData={userData} />
             ) : null}
           </div>
-          <div className={classes["icon"]}>
+          {/*<div className={classes["icon"]}>
             {hasPermissions(self, ["EDIT_USER_LOCATION"]) ? (
               <EditUserLocation userData={userData} />
             ) : null}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

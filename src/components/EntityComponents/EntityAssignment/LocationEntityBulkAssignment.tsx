@@ -1,23 +1,22 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Col, Divider, message, Modal, Row, Tag } from "antd";
 import React, { useEffect, useState } from "react";
-import { ASSIGN_ENTITY_TO_DIVISION } from "../../../api/mutations";
+import { ASSIGN_ENTITY_TO_LOCATION } from "../../../api/mutations";
 import { ALL_ENTITY } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
 import { CenteredSpin } from "../../common/CenteredSpin";
 import { SearchEntities } from "../../common/SearchEntitities";
-import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 
-export interface DivisionEntityBulkAssignmentProps {}
+export interface LocationEntityBulkAssignmentProps {}
 
-export const DivisionEntityBulkAssignment: React.FC<
-  DivisionEntityBulkAssignmentProps
+export const LocationEntityBulkAssignment: React.FC<
+LocationEntityBulkAssignmentProps
 > = ({}) => {
   const [visible, setVisible] = useState(false);
-  const [divisionIds, setDivisionIds] = useState<number[]>([]);
+  const [locationIds, setLocationIds] = useState<number[]>([]);
   const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
 
   const [getEntities, { loading: loadingEntities }] = useLazyQuery(ALL_ENTITY, {
@@ -34,8 +33,8 @@ export const DivisionEntityBulkAssignment: React.FC<
     },
   });
 
-  const [assignEntityToDivision, { loading: assigning }] = useMutation(
-    ASSIGN_ENTITY_TO_DIVISION,
+  const [assignEntityToLocation, { loading: assigning }] = useMutation(
+    ASSIGN_ENTITY_TO_LOCATION,
     {
       onCompleted: (data) => {
         message.success("Successfully assigned");
@@ -74,11 +73,11 @@ export const DivisionEntityBulkAssignment: React.FC<
         bodyStyle={{ paddingTop: "1rem" }}
       >
         <Divider style={{ marginTop: 0 }} orientation="left">
-          Division
+          Location
         </Divider>
-        <DivisionSelector
-          setDivisionId={setDivisionIds}
-          currentId={divisionIds}
+        <LocationSelector
+          setLocationId={setLocationIds}
+          currentId={locationIds}
           width="100%"
           rounded={false}
         />
@@ -169,16 +168,16 @@ export const DivisionEntityBulkAssignment: React.FC<
             <Button
               type="primary"
               disabled={
-                divisionIds?.length === 0 || selectedEntities?.length === 0
+                locationIds?.length === 0 || selectedEntities?.length === 0
               }
               loading={assigning}
               className="primaryButton"
               onClick={() => {
-                assignEntityToDivision({
+                assignEntityToLocation({
                   variables: {
                     input: {
                       entityIds: selectedEntities.map((e) => e.id),
-                      divisionId: divisionIds,
+                      locationId: locationIds,
                     },
                   },
                 });

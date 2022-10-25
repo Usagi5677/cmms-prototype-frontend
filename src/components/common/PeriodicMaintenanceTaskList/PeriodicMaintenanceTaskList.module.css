@@ -91,4 +91,7 @@
   .header-container {
     font-size: 12px;
   }
+  .completedAt {
+    font-size: 12px;
+  }
 }
