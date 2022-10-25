@@ -103,7 +103,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                         {task.completedAt && (
                           <div className={classes["completedAt"]}>
                             {task?.completedBy?.fullName && (
-                              <div >Mohamed Rushdhaan Riyaz</div>
+                              <div>{task?.completedBy?.fullName}</div>
                             )}
                             <div
                               className={classes["date"]}
