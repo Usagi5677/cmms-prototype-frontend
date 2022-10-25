@@ -136,6 +136,10 @@
     flex-direction: row;
     align-items: center;
   }
+  .info-wrapper {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 @media only screen and (min-width: 800px) {
   .header-info-wrapper {
