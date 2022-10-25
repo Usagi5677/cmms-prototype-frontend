@@ -299,11 +299,18 @@ const PeriodicMaintenanceCard = ({
                 </div>
                 {periodicMaintenance.tasks!.length > 0 &&
                   periodicMaintenance.type === "Copy" && (
-                    <Progress percent={progressPercentage} strokeWidth={5} style={{paddingRight: 8}} />
+                    <Progress
+                      percent={progressPercentage}
+                      strokeWidth={5}
+                      style={{ paddingRight: 8 }}
+                    />
                   )}
                 <div className={classes["level-two"]}>
                   <div className={classes["level-two-top"]}>
-                    {summaryMatchCurrent()}
+                    <div style={{ marginRight: periodicMaintenance?.type === "Copy" ? 10 : 0 }}>
+                      {summaryMatchCurrent()}
+                    </div>
+
                     {periodicMaintenance?.type === "Template" &&
                       periodicMaintenance?.value! !== null && (
                         <div
@@ -334,7 +341,7 @@ const PeriodicMaintenanceCard = ({
                   <div className={classes["level-two-bottom"]}>
                     <div className={(classes["id-wrapper"], classes["space"])}>
                       <ToolOutlined className={classes["icon"]} />
-                      <span className={classes["title"]} >
+                      <span className={classes["title"]}>
                         {periodicMaintenance?.id}
                       </span>
                     </div>
@@ -445,7 +452,8 @@ const PeriodicMaintenanceCard = ({
             </div>
 
             {!isDeleted && !isOlder && periodicMaintenance.type === "Copy" && (
-              <AddPeriodicMaintenanceObservation
+              <div className={classes["add-observation-wrapper"]}>
+                <AddPeriodicMaintenanceObservation
                 periodicMaintenanceId={periodicMaintenance.id}
                 type={"Observation"}
                 placeholder={"Add new observation"}
@@ -453,6 +461,7 @@ const PeriodicMaintenanceCard = ({
                 isOlder={isOlder}
                 isCopy={periodicMaintenance.type === "Copy"}
               />
+              </div>
             )}
           </div>
         </Collapse.Panel>

@@ -65,7 +65,9 @@
   padding: 0 10px;
   padding-bottom: 10px;
 }
-
+.add-observation-wrapper {
+  margin: 0 4px;
+}
 .header-info-wrapper {
   display: flex;
   flex: 1;
@@ -109,6 +111,9 @@
     margin-right: 8px;
     margin-left: 8px;
   }
+  .add-observation-wrapper {
+    margin: 0 8px;
+  }
 }
 @media only screen and (min-width: 600px) {
   .header-info-wrapper {
@@ -126,6 +131,9 @@
     padding-right: 0;
     padding-left: 0;
   }
+  .add-observation-wrapper {
+    margin: 0 0;
+  }
   .space-two {
     display: flex;
     align-items: center;
@@ -139,6 +147,12 @@
   .info-wrapper {
     margin-right: 0;
     margin-left: 0;
+  }
+  .space {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    opacity: 0.5;
   }
 }
 @media only screen and (min-width: 800px) {
