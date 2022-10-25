@@ -19,7 +19,6 @@ import { errorMessage } from "../../../helpers/gql";
 import { UserTagStringToColor } from "../../../helpers/style";
 import User from "../../../models/User";
 import classes from "./EntityAssignment.module.css";
-
 import React from "react";
 
 export interface EntityAssignmentProps {

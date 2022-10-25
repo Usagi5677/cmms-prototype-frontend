@@ -109,6 +109,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
       title: "Type",
       dataIndex: "type",
       key: "type",
+      className: classes["font"],
     },
     {
       title: "From",

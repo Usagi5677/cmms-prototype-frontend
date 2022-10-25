@@ -3,28 +3,28 @@ import { Button, Col, Form, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { UPDATE_ENTITY_DIVISION } from "../../../api/mutations";
-import { DivisionSelector } from "../../../components/Config/Division/DivisionSelector";
+import { UPDATE_ENTITY_LOCATION } from "../../../api/mutations";
+import { LocationSelector } from "../../../components/Config/Location/LocationSelector";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
 import classes from "./EditEntityDivision.module.css";
 
-const EditEntityDivision = ({ entity }: { entity: Entity }) => {
+const EditEntityLocation = ({ entity }: { entity: Entity }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const [divisionId, setDivisionId] = useState<number | null>(null);
+  const [locationId, setLocationId] = useState<number | null>(null);
 
-  const [updateEntityDivision, { loading: loadingEntity }] = useMutation(
-    UPDATE_ENTITY_DIVISION,
+  const [updateEntityLocation, { loading: loadingEntity }] = useMutation(
+    UPDATE_ENTITY_LOCATION,
     {
       onCompleted: () => {
-        message.success("Successfully updated entity's division.");
+        message.success("Successfully updated entity's location.");
         handleCancel();
       },
       onError: (error) => {
         errorMessage(
           error,
-          "Unexpected error while updating entity's division."
+          "Unexpected error while updating entity's location."
         );
       },
       refetchQueries: ["getAllEntity"],
@@ -36,10 +36,10 @@ const EditEntityDivision = ({ entity }: { entity: Entity }) => {
   };
 
   const onFinish = async (values: any) => {
-    updateEntityDivision({
+    updateEntityLocation({
       variables: {
         entityId: entity.id,
-        divisionId: divisionId,
+        locationId: locationId,
       },
     });
   };
@@ -53,7 +53,7 @@ const EditEntityDivision = ({ entity }: { entity: Entity }) => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={`Update division`}
+        title={`Update location`}
         width="90vw"
         style={{ maxWidth: 700 }}
       >
@@ -66,11 +66,11 @@ const EditEntityDivision = ({ entity }: { entity: Entity }) => {
         >
           <div className={classes["row"]}>
             <div className={classes["col"]}>
-              <Form.Item label="Division" name="division" required={false}>
-                <DivisionSelector
-                  currentId={entity?.division?.id}
-                  currentName={entity?.division?.name}
-                  setDivisionId={setDivisionId}
+              <Form.Item label="Location" name="location" required={false}>
+                <LocationSelector
+                  currentId={entity?.location?.id}
+                  currentName={entity?.location?.name}
+                  setLocationId={setLocationId}
                 />
               </Form.Item>
             </div>
@@ -106,4 +106,4 @@ const EditEntityDivision = ({ entity }: { entity: Entity }) => {
   );
 };
 
-export default EditEntityDivision;
+export default EditEntityLocation;

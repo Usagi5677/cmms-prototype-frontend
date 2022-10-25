@@ -2,7 +2,7 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Col, Divider, message, Modal, Row, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { BULK_ASSIGN } from "../../../api/mutations";
-import { ALL_ENTITY } from "../../../api/queries";
+import { ALL_ENTITY, GET_ALL_USERS } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
 import User from "../../../models/User";
@@ -10,6 +10,7 @@ import AssignmentTypeSelector from "../../common/AssignmentTypeSelector";
 import { CenteredSpin } from "../../common/CenteredSpin";
 import { SearchEntities } from "../../common/SearchEntitities";
 import { SearchUsersWithPermissions } from "../../common/SearchUsersWithPermissions";
+import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 
@@ -32,6 +33,20 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
     },
     onError: (err) => {
       errorMessage(err, "Error loading entities.");
+    },
+  });
+
+  const [getUsers, { loading: loadingUsers }] = useLazyQuery(GET_ALL_USERS, {
+    onCompleted: (data) => {
+      const currentIds = selectedUsers.map((e) => e.id);
+      const users: User[] = data.getAllUsers.edges.map(
+        (edge: { node: User }) => edge.node
+      );
+      const newUsers = users.filter((e) => !currentIds.includes(e.id));
+      setSelectedUsers([...selectedUsers, ...newUsers]);
+    },
+    onError: (err) => {
+      errorMessage(err, "Error loading users.");
     },
   });
 
@@ -105,6 +120,30 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
                 setSelectedUsers([...selectedUsers, user]);
               }}
             />
+            <div style={{ marginTop: ".5rem" }}>
+              <DivisionSelector
+                onChange={(divisionId, clear) => {
+                  getUsers({
+                    variables: { first: 1000, divisionIds: [divisionId] },
+                  });
+                  clear();
+                }}
+                placeholder="Select all from division"
+                width="100%"
+              />
+            </div>
+            <div style={{ marginTop: ".5rem" }}>
+              <LocationSelector
+                onChange={(locationId, clear) => {
+                  getUsers({
+                    variables: { first: 1000, locationIds: [locationId] },
+                  });
+                  clear();
+                }}
+                placeholder="Select all from location"
+                width="100%"
+              />
+            </div>
             {selectedUsers.length > 0 && (
               <div
                 style={{
@@ -130,6 +169,7 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
                     {user.fullName} ({user.rcno})
                   </Tag>
                 ))}
+                {loadingUsers && <CenteredSpin />}
               </div>
             )}
             <Divider orientation="left">

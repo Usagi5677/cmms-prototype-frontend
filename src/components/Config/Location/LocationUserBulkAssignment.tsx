@@ -1,25 +1,25 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Col, Divider, message, Modal, Row, Tag } from "antd";
 import React, { useEffect, useState } from "react";
-import { ASSIGN_USER_TO_DIVISION } from "../../../api/mutations";
+import { ASSIGN_USER_TO_LOCATION } from "../../../api/mutations";
 import { GET_ALL_USERS } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import User from "../../../models/User";
 import { SearchUsers } from "../../common/SearchUsers";
-import { DivisionSelector } from "../../Config/Division/DivisionSelector";
-import { LocationSelector } from "../../Config/Location/LocationSelector";
+import { DivisionSelector } from "../Division/DivisionSelector";
+import { LocationSelector } from "./LocationSelector";
 
-export interface DivisionUserBulkAssignmentProps {}
+export interface LocationUserBulkAssignmentProps {}
 
-export const DivisionUserBulkAssignment: React.FC<
-  DivisionUserBulkAssignmentProps
+export const LocationUserBulkAssignment: React.FC<
+LocationUserBulkAssignmentProps
 > = ({}) => {
   const [visible, setVisible] = useState(false);
-  const [divisionIds, setDivisionIds] = useState<number[]>([]);
+  const [locationIds, setLocationIds] = useState<number[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-  const [userToDivisionAssign, { loading: assigning }] = useMutation(
-    ASSIGN_USER_TO_DIVISION,
+  const [userToLocationAssign, { loading: assigning }] = useMutation(
+    ASSIGN_USER_TO_LOCATION,
     {
       onCompleted: (data) => {
         message.success("Successfully assigned");
@@ -27,7 +27,7 @@ export const DivisionUserBulkAssignment: React.FC<
       onError: (err) => {
         errorMessage(err, "Unexpected error during user bulk assignment.");
       },
-      refetchQueries: ["divisionAssignments"],
+      refetchQueries: ["locationAssignments"],
     }
   );
 
@@ -72,11 +72,11 @@ export const DivisionUserBulkAssignment: React.FC<
         bodyStyle={{ paddingTop: "1rem" }}
       >
         <Divider style={{ marginTop: 0 }} orientation="left">
-          Division
+          Location
         </Divider>
-        <DivisionSelector
-          setDivisionId={setDivisionIds}
-          currentId={divisionIds}
+        <LocationSelector
+          setLocationId={setLocationIds}
+          currentId={locationIds}
           width="100%"
           rounded={false}
         />
@@ -166,16 +166,16 @@ export const DivisionUserBulkAssignment: React.FC<
             <Button
               type="primary"
               disabled={
-                divisionIds?.length === 0 || selectedUsers?.length === 0
+                locationIds?.length === 0 || selectedUsers?.length === 0
               }
               loading={assigning}
               className="primaryButton"
               onClick={() => {
-                userToDivisionAssign({
+                userToLocationAssign({
                   variables: {
                     input: {
                       userIds: selectedUsers.map((u) => u.id),
-                      divisionId: divisionIds,
+                      locationId: locationIds,
                     },
                   },
                 });

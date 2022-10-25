@@ -33,10 +33,6 @@ export const ME_QUERY = gql`
         }
         type
       }
-      location {
-        id
-        name
-      }
     }
   }
 `;
@@ -101,6 +97,8 @@ export const GET_ALL_USERS = gql`
     $first: Int
     $last: Int
     $search: String
+    $locationIds: [Int!]
+    $divisionIds: [Int!]
   ) {
     getAllUsers(
       after: $after
@@ -108,6 +106,8 @@ export const GET_ALL_USERS = gql`
       first: $first
       last: $last
       search: $search
+      locationIds: $locationIds
+      divisionIds: $divisionIds
     ) {
       pageInfo {
         endCursor
@@ -119,10 +119,6 @@ export const GET_ALL_USERS = gql`
       edges {
         node {
           ...UserFieldsAPS
-          location {
-            id
-            name
-          }
           roles {
             roleId
             userId
@@ -850,6 +846,7 @@ export const ALL_ENTITY = gql`
     $isIncompleteChecklistTask: Boolean
     $entityIds: [Int!]
     $divisionExist: Boolean
+    $locationExist: Boolean
   ) {
     getAllEntity(
       after: $after
@@ -873,6 +870,7 @@ export const ALL_ENTITY = gql`
       isIncompleteChecklistTask: $isIncompleteChecklistTask
       entityIds: $entityIds
       divisionExist: $divisionExist
+      locationExist: $locationExist
     ) {
       pageInfo {
         endCursor
@@ -1915,6 +1913,52 @@ export const DIVISION_ASSIGNMENTS = gql`
             fullName
           }
           division {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const LOCATION_ASSIGNMENTS = gql`
+  query locationAssignments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $userIds: [Int!]!
+    $current: Boolean!
+    $locationIds: [Int!]
+  ) {
+    locationAssignments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      userIds: $userIds
+      current: $current
+      locationIds: $locationIds
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          createdAt
+          removedAt
+          user {
+            id
+            rcno
+            fullName
+          }
+          location {
             id
             name
           }

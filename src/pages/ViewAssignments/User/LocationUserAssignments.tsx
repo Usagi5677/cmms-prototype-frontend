@@ -3,8 +3,8 @@ import { Checkbox, message, Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { UNASSIGN_USER_FROM_DIVISION } from "../../../api/mutations";
-import { DIVISION_ASSIGNMENTS } from "../../../api/queries";
+import { UNASSIGN_USER_FROM_LOCATION } from "../../../api/mutations";
+import { LOCATION_ASSIGNMENTS } from "../../../api/queries";
 import { DeleteListing } from "../../../components/common/DeleteListing";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import UserContext from "../../../contexts/UserContext";
@@ -17,16 +17,16 @@ import PaginationArgs from "../../../models/PaginationArgs";
 import User from "../../../models/User";
 import moment from "moment";
 import { SearchUsers } from "../../../components/common/SearchUsers";
-import { DivisionUserBulkAssignment } from "../../../components/EntityComponents/EntityAssignment/DivisionUserBulkAssignment";
-import DivisionAssign from "../../../models/DivisionAssign";
-import Division from "../../../models/Division";
-import { SearchDivisions } from "../../../components/common/SearchDivisions";
 import classes from "./DivisionUserAssignments.module.css";
+import Location from "../../../models/Location";
+import LocationAssign from "../../../models/LocationAssign";
+import { LocationUserBulkAssignment } from "../../../components/Config/Location/LocationUserBulkAssignment";
+import { SearchLocations } from "../../../components/common/SearchLocations";
 
-export interface DivisionUserAssignmentsProps {}
+export interface LocationUserAssignmentsProps {}
 
-export const DivisionUserAssignments: React.FC<
-  DivisionUserAssignmentsProps
+export const LocationUserAssignments: React.FC<
+  LocationUserAssignmentsProps
 > = ({}) => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -38,26 +38,26 @@ export const DivisionUserAssignments: React.FC<
   }, []);
 
   const [page, setPage] = useState(1);
-  const [selectedDivisions, setSelectedDivisions] = useState<Division[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [filter, setFilter] = useState<
     PaginationArgs & {
-      divisionIds: number[];
+      locationIds: number[];
       userIds: number[];
       current: boolean;
     }
   >({
     ...DefaultPaginationArgs,
-    divisionIds: [],
+    locationIds: [],
     userIds: [],
     current: true,
   });
 
   const [getAssignments, { data, loading }] = useLazyQuery(
-    DIVISION_ASSIGNMENTS,
+    LOCATION_ASSIGNMENTS,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading division assignments.");
+        errorMessage(err, "Error loading location assignments.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -91,7 +91,7 @@ export const DivisionUserAssignments: React.FC<
     setPage(page - 1);
   };
 
-  const columns: ColumnsType<DivisionAssign> = [
+  const columns: ColumnsType<LocationAssign> = [
     {
       title: "User",
       dataIndex: "user",
@@ -100,10 +100,10 @@ export const DivisionUserAssignments: React.FC<
       className: classes["font"],
     },
     {
-      title: "Division",
-      dataIndex: "division",
-      key: "division",
-      render: (division: Division) => `${division.name}`,
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      render: (location: Location) => `${location.name}`,
       className: classes["font"],
     },
     {
@@ -120,7 +120,7 @@ export const DivisionUserAssignments: React.FC<
       dataIndex: "action",
       key: "action",
       className: classes["font"],
-      render: (val, assignment: DivisionAssign) =>
+      render: (val, assignment: LocationAssign) =>
         assignment.removedAt ? null : (
           <div
             style={{
@@ -131,8 +131,8 @@ export const DivisionUserAssignments: React.FC<
           >
             <DeleteListing
               id={assignment.id}
-              mutation={UNASSIGN_USER_FROM_DIVISION}
-              refetchQueries={["divisionAssignments"]}
+              mutation={UNASSIGN_USER_FROM_LOCATION}
+              refetchQueries={["locationAssignments"]}
               tooltip="Unassign"
               title="Are you sure to unassign?"
               variables={{
@@ -157,7 +157,7 @@ export const DivisionUserAssignments: React.FC<
     });
   }
 
-  const pageInfo = data?.divisionAssignments.pageInfo ?? {};
+  const pageInfo = data?.locationAssignments.pageInfo ?? {};
 
   const isSmallDevice = useIsSmallDevice(600, false);
 
@@ -166,10 +166,10 @@ export const DivisionUserAssignments: React.FC<
   useEffect(() => {
     setFilter({
       ...filter,
-      divisionIds: selectedDivisions.map((s) => s.id),
+      locationIds: selectedLocations.map((s) => s.id),
     });
     setPage(1);
-  }, [selectedDivisions]);
+  }, [selectedLocations]);
 
   useEffect(() => {
     setFilter({
@@ -190,18 +190,6 @@ export const DivisionUserAssignments: React.FC<
             justifyContent: isSmallDevice ? "space-around" : undefined,
           }}
         >
-          <SearchDivisions
-            placeholder="Filter division"
-            rounded
-            current={selectedDivisions}
-            onChange={(division) => {
-              const current = selectedDivisions.map((s) => s.id);
-              if (current.includes(division.id)) return;
-              setSelectedDivisions([...selectedDivisions, division]);
-            }}
-            width={190}
-            margin={filterMargin}
-          />
           <SearchUsers
             placeholder="Filter user"
             rounded
@@ -210,6 +198,19 @@ export const DivisionUserAssignments: React.FC<
               const current = selectedUsers.map((s) => s.id);
               if (current.includes(user.id)) return;
               setSelectedUsers([...selectedUsers, user]);
+            }}
+            width={190}
+            margin={filterMargin}
+          />
+
+          <SearchLocations
+            placeholder="Filter location"
+            rounded
+            current={selectedLocations}
+            onChange={(location) => {
+              const current = selectedLocations.map((s) => s.id);
+              if (current.includes(location.id)) return;
+              setSelectedLocations([...selectedLocations, location]);
             }}
             width={190}
             margin={filterMargin}
@@ -227,10 +228,10 @@ export const DivisionUserAssignments: React.FC<
           </Checkbox>
         </div>
         <div className={classes["option"]}>
-          <DivisionUserBulkAssignment />
+          <LocationUserBulkAssignment />
         </div>
       </div>
-      {selectedDivisions.length > 0 && (
+      {selectedLocations.length > 0 && (
         <div
           style={{
             display: "flex",
@@ -240,13 +241,13 @@ export const DivisionUserAssignments: React.FC<
             paddingRight: 10,
           }}
         >
-          {selectedDivisions.map((d) => (
+          {selectedLocations.map((d) => (
             <Tag
               key={d.id}
               closable
               onClose={() =>
-                setSelectedDivisions(
-                  selectedDivisions.filter((s) => s.id !== d.id)
+                setSelectedLocations(
+                  selectedLocations.filter((s) => s.id !== d.id)
                 )
               }
               style={{ marginRight: "1rem" }}
@@ -282,7 +283,7 @@ export const DivisionUserAssignments: React.FC<
       )}
       <Table
         rowKey="id"
-        dataSource={data?.divisionAssignments.edges.map(
+        dataSource={data?.locationAssignments.edges.map(
           (edge: { node: Location }) => edge.node
         )}
         columns={columns}

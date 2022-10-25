@@ -12,19 +12,19 @@ import { hasPermissions } from "../../../helpers/permissions";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
-import Division from "../../../models/Division";
-import { SearchDivisions } from "../../../components/common/SearchDivisions";
 import classes from "./DivisionEntityAssignments.module.css";
-import { DivisionEntityBulkAssignment } from "../../../components/EntityComponents/EntityAssignment/DivisionEntityBulkAssignment";
 import { Entity } from "../../../models/Entity/Entity";
 import { EntityListing } from "../../../components/EntityComponents/EntityListing";
-import EditEntityDivision from "./EditEntityDivision";
 import { SearchEntities } from "../../../components/common/SearchEntitities";
+import Location from "../../../models/Location";
+import { SearchLocations } from "../../../components/common/SearchLocations";
+import { LocationEntityBulkAssignment } from "../../../components/EntityComponents/EntityAssignment/LocationEntityBulkAssignment";
+import EditEntityLocation from "./EditEntityLocation";
 
-export interface DivisionEntityAssignmentsProps {}
+export interface LocationEntityAssignmentsProps {}
 
-export const DivisionEntityAssignments: React.FC<
-  DivisionEntityAssignmentsProps
+export const LocationEntityAssignments: React.FC<
+  LocationEntityAssignmentsProps
 > = ({}) => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -36,25 +36,25 @@ export const DivisionEntityAssignments: React.FC<
   }, []);
 
   const [page, setPage] = useState(1);
-  const [selectedDivisions, setSelectedDivisions] = useState<Division[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
   const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
-  const [divisionExist, setDivisionExist] = useState<boolean>(true);
+  const [locationExist, setLocationExist] = useState<boolean>(true);
   const [filter, setFilter] = useState<
     PaginationArgs & {
-      divisionIds: number[];
+      locationIds: number[];
       entityIds: number[];
-      divisionExist: boolean;
+      locationExist: boolean;
     }
   >({
     ...DefaultPaginationArgs,
-    divisionIds: [],
+    locationIds: [],
     entityIds: [],
-    divisionExist: divisionExist,
+    locationExist: locationExist,
   });
 
   const [getAllEntity, { data, loading }] = useLazyQuery(ALL_ENTITY, {
     onError: (err) => {
-      errorMessage(err, "Error loading division assignments.");
+      errorMessage(err, "Error loading location assignments.");
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
@@ -93,13 +93,9 @@ export const DivisionEntityAssignments: React.FC<
       dataIndex: "entity",
       key: "entity",
       render: (val, entity: Entity) => {
-        return (
-          <div>
-            <EntityListing entity={entity} />
-          </div>
-        );
+        return <EntityListing entity={entity} />
       },
-      className: classes["font"],
+      className: classes["font"]
     },
     {
       title: "Type",
@@ -109,11 +105,11 @@ export const DivisionEntityAssignments: React.FC<
       className: classes["font"],
     },
     {
-      title: "Division",
-      dataIndex: "division",
-      key: "division",
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
       render: (val, entity: Entity) =>
-        `${entity?.division?.name ? entity?.division?.name : ""}`,
+        `${entity?.location?.name ? entity?.location?.name : ""}`,
       className: classes["font"],
     },
 
@@ -130,7 +126,7 @@ export const DivisionEntityAssignments: React.FC<
             justifyContent: "end",
           }}
         >
-          <EditEntityDivision entity={entity} />
+          <EditEntityLocation entity={entity} />
         </div>
       ),
     },
@@ -145,10 +141,10 @@ export const DivisionEntityAssignments: React.FC<
   useEffect(() => {
     setFilter({
       ...filter,
-      divisionIds: selectedDivisions.map((s) => s.id),
+      locationIds: selectedLocations.map((s) => s.id),
     });
     setPage(1);
-  }, [selectedDivisions]);
+  }, [selectedLocations]);
 
   useEffect(() => {
     setFilter({
@@ -169,14 +165,14 @@ export const DivisionEntityAssignments: React.FC<
             justifyContent: isSmallDevice ? "space-around" : undefined,
           }}
         >
-          <SearchDivisions
-            placeholder="Filter division"
+          <SearchLocations
+            placeholder="Filter location"
             rounded
-            current={selectedDivisions}
-            onChange={(division) => {
-              const current = selectedDivisions.map((s) => s.id);
-              if (current.includes(division.id)) return;
-              setSelectedDivisions([...selectedDivisions, division]);
+            current={selectedLocations}
+            onChange={(location) => {
+              const current = selectedLocations.map((s) => s.id);
+              if (current.includes(location.id)) return;
+              setSelectedLocations([...selectedLocations, location]);
             }}
             width={190}
             margin={filterMargin}
@@ -195,9 +191,9 @@ export const DivisionEntityAssignments: React.FC<
           />
           <Checkbox
             style={{ margin: filterMargin }}
-            defaultChecked={divisionExist}
+            defaultChecked={locationExist}
             onChange={(e) => {
-              setFilter({ ...filter, divisionExist: e.target.checked });
+              setFilter({ ...filter, locationExist: e.target.checked });
               setPage(1);
             }}
           >
@@ -205,10 +201,10 @@ export const DivisionEntityAssignments: React.FC<
           </Checkbox>
         </div>
         <div className={classes["option"]}>
-          <DivisionEntityBulkAssignment />
+          <LocationEntityBulkAssignment />
         </div>
       </div>
-      {selectedDivisions.length > 0 && (
+      {selectedLocations.length > 0 && (
         <div
           style={{
             display: "flex",
@@ -218,13 +214,13 @@ export const DivisionEntityAssignments: React.FC<
             paddingRight: 10,
           }}
         >
-          {selectedDivisions.map((d) => (
+          {selectedLocations.map((d) => (
             <Tag
               key={d.id}
               closable
               onClose={() =>
-                setSelectedDivisions(
-                  selectedDivisions.filter((s) => s.id !== d.id)
+                setSelectedLocations(
+                  selectedLocations.filter((s) => s.id !== d.id)
                 )
               }
               style={{ marginRight: "1rem" }}
@@ -269,7 +265,7 @@ export const DivisionEntityAssignments: React.FC<
         pagination={false}
         size="small"
         loading={loading}
-        style={{ marginTop: "1rem", marginBottom: "1rem", overflowX: "auto" }}
+        style={{ marginTop: "1rem", marginBottom: "1rem", overflowX:"auto" }}
       />
       <PaginationButtons
         pageInfo={pageInfo}
