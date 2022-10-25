@@ -73,6 +73,9 @@
     margin-right: .5rem;
     margin-left: .5rem;
   }
+  .top-wrapper {
+    margin-top: 0;
+  }
 }
 @media only screen and (min-width: 800px) {
   .collapse-container {
