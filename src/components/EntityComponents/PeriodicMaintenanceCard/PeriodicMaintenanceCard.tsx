@@ -117,7 +117,7 @@ const PeriodicMaintenanceCard = ({
     );
     if (!match) return null;
     return (
-      <div style={{ display: "flex", alignItems: "center", paddingRight: 5 }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <PeriodicMaintenanceStatus summary={match} />
       </div>
     );
@@ -186,7 +186,11 @@ const PeriodicMaintenanceCard = ({
                               },
                             })
                           }
-                          style={{ wordBreak: "break-all", marginRight: 40 }}
+                          style={{
+                            wordBreak: "break-all",
+                            marginRight: 40,
+                            width: "fit-content",
+                          }}
                         >
                           Activate{" "}
                           {toggling && (
@@ -206,7 +210,11 @@ const PeriodicMaintenanceCard = ({
                                 },
                               })
                             }
-                            style={{ wordBreak: "break-all", marginRight: 40 }}
+                            style={{
+                              wordBreak: "break-all",
+                              marginRight: 40,
+                              width: "fit-content",
+                            }}
                           >
                             Verify{" "}
                             {toggling && (
@@ -291,66 +299,79 @@ const PeriodicMaintenanceCard = ({
                 </div>
                 {periodicMaintenance.tasks!.length > 0 &&
                   periodicMaintenance.type === "Copy" && (
-                    <Progress percent={progressPercentage} strokeWidth={5} />
+                    <Progress
+                      percent={progressPercentage}
+                      strokeWidth={5}
+                      style={{ paddingRight: 8 }}
+                    />
                   )}
                 <div className={classes["level-two"]}>
-                  {summaryMatchCurrent()}
-                  <div className={(classes["id-wrapper"], classes["space"])}>
-                    <ToolOutlined className={classes["icon"]} />
-                    <span className={classes["title"]}>
-                      {periodicMaintenance?.id}
-                    </span>
-                  </div>
-                  <div className={(classes["title-wrapper"], classes["space"])}>
-                    <Tooltip title="Created Date">
-                      <FaRegClock className={classes["icon"]} />
-                    </Tooltip>
+                  <div className={classes["level-two-top"]}>
+                    <div style={{ marginRight: periodicMaintenance?.type === "Copy" ? 10 : 0 }}>
+                      {summaryMatchCurrent()}
+                    </div>
 
-                    <span
-                      className={classes["title"]}
-                      title={moment(periodicMaintenance?.createdAt).format(
-                        DATETIME_FORMATS.FULL
-                      )}
-                    >
-                      {moment(periodicMaintenance?.createdAt).format(
-                        DATETIME_FORMATS.SHORT
-                      )}
-                    </span>
-                  </div>
-                  {periodicMaintenance?.type === "Template" &&
-                    periodicMaintenance?.value! !== null && (
-                      <div
-                        className={
-                          (classes["title-wrapper"],
-                          classes["spaceWithNoOpacity"])
-                        }
-                        title={`${
-                          entity?.currentRunning! -
-                          periodicMaintenance?.currentMeterReading!
-                        }`}
-                      >
-                        <RiseOutlined
-                          className={classes["icon"]}
-                          style={{ opacity: 0.5 }}
-                        />
-
-                        <span
-                          className={classes["title"]}
-                          style={{ color: percentageStyle, fontWeight: 700 }}
+                    {periodicMaintenance?.type === "Template" &&
+                      periodicMaintenance?.value! !== null && (
+                        <div
+                          className={
+                            (classes["title-wrapper"],
+                            classes["spaceWithNoOpacity"])
+                          }
+                          title={`${
+                            entity?.currentRunning! -
+                            periodicMaintenance?.currentMeterReading!
+                          }`}
                         >
-                          {percentage}
-                          {"%"}
-                        </span>
-                      </div>
-                    )}
-                  <div>
-                    <PeriodicMaintenanceStatusTag
-                      status={periodicMaintenance?.status as pmstatus}
-                      height={16}
-                      fontSize={9}
-                      borderRadius={6}
-                      marginBottom={2}
-                    />
+                          <RiseOutlined
+                            className={classes["icon"]}
+                            style={{ opacity: 0.5 }}
+                          />
+
+                          <span
+                            className={classes["title"]}
+                            style={{ color: percentageStyle, fontWeight: 700 }}
+                          >
+                            {percentage}
+                            {"%"}
+                          </span>
+                        </div>
+                      )}
+                  </div>
+                  <div className={classes["level-two-bottom"]}>
+                    <div className={(classes["id-wrapper"], classes["space"])}>
+                      <ToolOutlined className={classes["icon"]} />
+                      <span className={classes["title"]}>
+                        {periodicMaintenance?.id}
+                      </span>
+                    </div>
+                    <div
+                      className={(classes["title-wrapper"], classes["space"])}
+                    >
+                      <Tooltip title="Created Date">
+                        <FaRegClock className={classes["icon"]} />
+                      </Tooltip>
+
+                      <span
+                        className={classes["title"]}
+                        title={moment(periodicMaintenance?.createdAt).format(
+                          DATETIME_FORMATS.FULL
+                        )}
+                      >
+                        {moment(periodicMaintenance?.createdAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <PeriodicMaintenanceStatusTag
+                        status={periodicMaintenance?.status as pmstatus}
+                        height={16}
+                        fontSize={9}
+                        borderRadius={6}
+                        marginBottom={2}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -431,7 +452,8 @@ const PeriodicMaintenanceCard = ({
             </div>
 
             {!isDeleted && !isOlder && periodicMaintenance.type === "Copy" && (
-              <AddPeriodicMaintenanceObservation
+              <div className={classes["add-observation-wrapper"]}>
+                <AddPeriodicMaintenanceObservation
                 periodicMaintenanceId={periodicMaintenance.id}
                 type={"Observation"}
                 placeholder={"Add new observation"}
@@ -439,6 +461,7 @@ const PeriodicMaintenanceCard = ({
                 isOlder={isOlder}
                 isCopy={periodicMaintenance.type === "Copy"}
               />
+              </div>
             )}
           </div>
         </Collapse.Panel>
