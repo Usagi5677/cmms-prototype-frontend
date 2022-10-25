@@ -76,22 +76,29 @@
 }
 .level-two {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  font-size: 10px;
+  flex-direction: column;
+  font-size: 8px;
+}
+.level-two-top {
+  display: flex;
+  align-items: center;
+}
+.level-two-bottom {
+  display: flex;
+  align-items: center;
 }
 .space {
   display: flex;
   align-items: center;
   margin-right: 10px;
   opacity: 0.5;
-  margin-left: 10px
 }
 .spaceWithNoOpacity {
   display: flex;
   align-items: center;
   margin-right: 10px;
-  margin-left: 10px
 }
 .flex-limit {
   max-width: 500px;
@@ -118,6 +125,11 @@
     display: flex;
     align-items: center;
     margin-right: 40px;
+  }
+  .level-two {
+    font-size: 10px;
+    flex-direction: row;
+    align-items: center;
   }
 }
 @media only screen and (min-width: 800px) {

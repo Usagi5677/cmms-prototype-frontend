@@ -19,6 +19,7 @@ import { AddPeriodicMaintenanceComment } from "../AddPeriodicMaintenanceComment"
 import { CommentCard } from "../CommentCard/CommentCard";
 import classes from "./PeriodicMaintenanceTaskList.module.css";
 import Comment from "../../../models/Comment";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 export interface TaskListProps {
   periodicMaintenance: PeriodicMaintenance;
@@ -68,6 +69,8 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
     }
   );
 
+  const isSmallDevice = useIsSmallDevice(600, true);
+
   return (
     <div id="collapseThree">
       {tasks?.length > 0 && (
@@ -75,9 +78,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
           {tasks?.map((task: any) => (
             <Collapse.Panel
               header={
-                <div
-                  className={classes["header-container"]}
-                >
+                <div className={classes["header-container"]}>
                   <div className={classes["comment-wrapper"]}>
                     <div className={classes["top-wrapper"]}>
                       <div className={classes["name-wrapper"]}>
@@ -92,22 +93,20 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                               color: "black",
                               backgroundColor: "#e5e5e5",
                               marginLeft: ".5rem",
+                              fontSize: isSmallDevice ? 12 : 8,
                             }}
                           />
                         )}
                       </div>
 
-                      <div className={classes["actions"]}>
+                      <div className={classes["actions-wrapper"]}>
                         {task.completedAt && (
-                          <div style={{ opacity: 0.5 }}>
+                          <div className={classes["completedAt"]}>
                             {task?.completedBy?.fullName && (
-                              <span>{task?.completedBy?.fullName}</span>
+                              <div >{task?.completedBy?.fullName}</div>
                             )}
-                            <span
-                              style={{
-                                marginLeft: ".5rem",
-                                marginRight: ".5rem",
-                              }}
+                            <div
+                              className={classes["date"]}
                               title={moment(task.completedAt).format(
                                 DATETIME_FORMATS.FULL
                               )}
@@ -115,58 +114,60 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                               {moment(task.completedAt).format(
                                 DATETIME_FORMATS.SHORT
                               )}
-                            </span>
+                            </div>
                           </div>
                         )}
-                        {isCopy && (
-                          <AddPeriodicMaintenanceComment
-                            periodicMaintenance={periodicMaintenance}
-                            task={task}
-                            type={"Remark"}
-                            isDeleted={isDeleted}
-                            isOlder={isOlder}
-                            isCopy={isCopy}
-                          />
-                        )}
+                        <div className={classes["actions"]}>
+                          {isCopy && (
+                            <AddPeriodicMaintenanceComment
+                              periodicMaintenance={periodicMaintenance}
+                              task={task}
+                              type={"Remark"}
+                              isDeleted={isDeleted}
+                              isOlder={isOlder}
+                              isCopy={isCopy}
+                            />
+                          )}
 
-                        {isCopy && !isDeleted && (
-                          <Checkbox
-                            checked={task.completedAt !== null}
-                            style={{ marginRight: ".5rem" }}
-                            disabled={isOlder || !isCopy}
-                            onChange={(e) =>
-                              toggleTask({
-                                variables: {
-                                  id: task.id,
-                                  complete: e.target.checked,
-                                },
-                              })
-                            }
-                          ></Checkbox>
-                        )}
-                        {(deleting || toggling) && (
-                          <Spin style={{ marginRight: 5 }} size="small" />
-                        )}
-                        {!deleting && (
-                          <div>
-                            {hasPermissions(self, [
-                              "MODIFY_PERIODIC_MAINTENANCE",
-                            ]) &&
-                            !isDeleted &&
-                            !isOlder ? (
-                              <CloseCircleOutlined
-                                onClick={() => {
-                                  deleteTask({
-                                    variables: {
-                                      id: task.id,
-                                    },
-                                  });
-                                }}
-                                disabled={isOlder}
-                              />
-                            ) : null}
-                          </div>
-                        )}
+                          {isCopy && !isDeleted && (
+                            <Checkbox
+                              checked={task.completedAt !== null}
+                              style={{ marginRight: ".5rem" }}
+                              disabled={isOlder || !isCopy}
+                              onChange={(e) =>
+                                toggleTask({
+                                  variables: {
+                                    id: task.id,
+                                    complete: e.target.checked,
+                                  },
+                                })
+                              }
+                            ></Checkbox>
+                          )}
+                          {(deleting || toggling) && (
+                            <Spin style={{ marginRight: 5 }} size="small" />
+                          )}
+                          {!deleting && (
+                            <div>
+                              {hasPermissions(self, [
+                                "MODIFY_PERIODIC_MAINTENANCE",
+                              ]) &&
+                              !isDeleted &&
+                              !isOlder ? (
+                                <CloseCircleOutlined
+                                  onClick={() => {
+                                    deleteTask({
+                                      variables: {
+                                        id: task.id,
+                                      },
+                                    });
+                                  }}
+                                  disabled={isOlder}
+                                />
+                              ) : null}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
 
