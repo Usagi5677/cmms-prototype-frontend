@@ -20,7 +20,6 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 5px;
-  margin-right: 5px;
 }
 .name-wrapper {
   display: flex;
@@ -30,7 +29,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-right: 10px;
+  padding-right: 6px;
 }
 .actions-wrapper {
   display: flex;
@@ -58,10 +57,6 @@
   .header-container {
     flex-direction: row;
     align-items: center !important;
-  }
-  .top-wrapper {
-    margin-top: 0;
-    margin-right: 0;
   }
   .comment-wrapper {
     padding-right: 0;

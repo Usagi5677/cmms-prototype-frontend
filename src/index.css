@@ -638,6 +638,16 @@ em {
   color: var(--text-primary);
 }
 
+#collapseThree {
+  margin-right: 4px;
+  margin-left: 4px;
+}
+@media only screen and (min-width: 500px) { 
+  #collapseThree {
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+}
 #collapseThree
   .ant-collapse-ghost
   > .ant-collapse-item
@@ -750,9 +760,21 @@ em {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
+  #collapseThree {
+    margin-right: 0;
+    margin-left: 0;
+  }
   #collapseThree .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     padding: 0 5px !important;
     cursor: default !important;
+  }
+  #collapseThree
+    .ant-collapse-ghost
+    > .ant-collapse-item
+    > .ant-collapse-content
+    > .ant-collapse-content-box {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }
 
