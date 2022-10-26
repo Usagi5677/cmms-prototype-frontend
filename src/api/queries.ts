@@ -435,7 +435,6 @@ export const CHECKLIST_TEMPLATES = gql`
           id
           name
           type
-          skipFriday
         }
       }
     }
@@ -721,6 +720,7 @@ export const LOCATIONS = gql`
     $name: String
     $zoneId: Int
     $showOnlyUnzoned: Boolean
+    $withSkipFriday: Boolean
   ) {
     locations(
       after: $after
@@ -730,6 +730,7 @@ export const LOCATIONS = gql`
       name: $name
       zoneId: $zoneId
       showOnlyUnzoned: $showOnlyUnzoned
+      withSkipFriday: $withSkipFriday
     ) {
       pageInfo {
         endCursor
@@ -746,6 +747,7 @@ export const LOCATIONS = gql`
             id
             name
           }
+          skipFriday
         }
       }
     }

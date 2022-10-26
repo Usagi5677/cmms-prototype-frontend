@@ -6,4 +6,5 @@ export default interface Location {
   name: string;
   zone: Zone;
   assignees?: LocationAssign[]
+  skipFriday?: boolean;
 }
