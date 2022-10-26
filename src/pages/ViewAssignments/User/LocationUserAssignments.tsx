@@ -22,6 +22,7 @@ import Location from "../../../models/Location";
 import LocationAssign from "../../../models/LocationAssign";
 import { LocationUserBulkAssignment } from "../../../components/Config/Location/LocationUserBulkAssignment";
 import { SearchLocations } from "../../../components/common/SearchLocations";
+import { LocationUserBulkUnassignment } from "../../../components/Config/Location/LocationUserBulkUnassignment";
 
 export interface LocationUserAssignmentsProps {}
 
@@ -229,6 +230,7 @@ export const LocationUserAssignments: React.FC<
         </div>
         <div className={classes["option"]}>
           <LocationUserBulkAssignment />
+          <LocationUserBulkUnassignment />
         </div>
       </div>
       {selectedLocations.length > 0 && (

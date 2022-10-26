@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Table } from "antd";
+import { Checkbox, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
@@ -16,6 +16,7 @@ import { EditLocation } from "./EditLocation";
 import { LOCATIONS } from "../../../api/queries";
 import Location from "../../../models/Location";
 import { ZoneSelector } from "../Zone/ZoneSelector";
+import classes from "./Locations.module.css";
 
 export interface LocationsProps {}
 
@@ -27,11 +28,13 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
     PaginationArgs & {
       name: string;
       zoneId: null | number;
+      withSkipFriday: boolean;
     }
   >({
     ...DefaultPaginationArgs,
     name: "",
     zoneId: null,
+    withSkipFriday: false,
   });
 
   const setZoneId = (zoneId: number) => {
@@ -102,6 +105,7 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      className: classes["font"],
       render: (name, location) => (
         <div>
           <span>{name}</span>
@@ -117,6 +121,7 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
       title: "",
       dataIndex: "action",
       key: "action",
+      className: classes["font"],
       render: (val, rec) => (
         <div
           style={{
@@ -142,7 +147,7 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={classes["options-wrapper"]}>
         <div
           style={{
             display: "flex",
@@ -173,8 +178,20 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
               placeholder="Filter zone"
             />
           </div>
+          <Checkbox
+            style={{ margin: filterMargin }}
+            checked={filter.withSkipFriday}
+            onChange={(e) => {
+              setFilter({ ...filter, withSkipFriday: e.target.checked });
+              setPage(1);
+            }}
+          >
+            Sites with skip friday
+          </Checkbox>
         </div>
-        <CreateLocation />
+        <div className={classes["option"]}>
+          <CreateLocation />
+        </div>
       </div>
       <Table
         rowKey="id"

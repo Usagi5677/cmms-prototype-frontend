@@ -1,7 +1,7 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Col, Divider, message, Modal, Row, Tag } from "antd";
 import React, { useEffect, useState } from "react";
-import { BULK_ASSIGN } from "../../../api/mutations";
+import { BULK_ASSIGN, BULK_UNASSIGN } from "../../../api/mutations";
 import { ALL_ENTITY, GET_ALL_USERS } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
@@ -14,9 +14,9 @@ import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 
-export interface BulkAssignmentProps {}
+export interface BulkUnassignmentProps {}
 
-export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
+export const BulkUnassignment: React.FC<BulkUnassignmentProps> = ({}) => {
   const [visible, setVisible] = useState(false);
   const [assignmentType, setAssignmentType] = useState<string | null>("Admin");
   const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
@@ -50,12 +50,12 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
     },
   });
 
-  const [bulkAssign, { loading: assigning }] = useMutation(BULK_ASSIGN, {
+  const [bulkUnassign, { loading: assigning }] = useMutation(BULK_UNASSIGN, {
     onCompleted: (data) => {
-      message.success(data.bulkAssign);
+      message.success(data.bulkUnassign);
     },
     onError: (err) => {
-      errorMessage(err, "Unexpected error during bulk assignment.");
+      errorMessage(err, "Unexpected error during bulk unassignment.");
     },
     refetchQueries: ["assignments"],
   });
@@ -77,15 +77,15 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
         size="middle"
         onClick={() => setVisible(true)}
         className="primaryButton"
-        style={{width: 156}}
+        style={{width: 156, marginTop: 10}}
       >
-        Bulk Assignment
+        Bulk Unassignment
       </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title="Bulk Assignment"
+        title="Bulk Unassignment"
         bodyStyle={{ paddingTop: "1rem" }}
       >
         <Divider style={{ marginTop: 0 }} orientation="left">
@@ -265,9 +265,8 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
               }
               loading={assigning}
               className="primaryButton"
-              style={{width: 156}}
               onClick={() => {
-                bulkAssign({
+                bulkUnassign({
                   variables: {
                     input: {
                       type: assignmentType,
@@ -278,7 +277,7 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
                 });
               }}
             >
-              Assign
+              Unassign
             </Button>
           </Col>
         </Row>

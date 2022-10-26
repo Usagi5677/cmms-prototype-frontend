@@ -16,6 +16,7 @@ import Type from "../../../models/Type";
 import { CreateType } from "./CreateType";
 import EntityTypeFilter from "./EntityTypeFilter";
 import { EditType } from "./EditType";
+import classes from "./Types.module.css";
 
 export interface TypesProps {}
 
@@ -100,17 +101,20 @@ export const Types: React.FC<TypesProps> = ({}) => {
       dataIndex: "name",
       key: "name",
       width: "50%",
+      className: classes["font"],
     },
     {
       title: "",
       dataIndex: "entityType",
       key: "entityType",
       width: "50%",
+      className: classes["font"],
     },
     {
       title: "",
       dataIndex: "action",
       key: "action",
+      className: classes["font"],
       // width: "33%",
       render: (val, rec) => (
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -131,7 +135,7 @@ export const Types: React.FC<TypesProps> = ({}) => {
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={classes["options-wrapper"]}>
         <div
           style={{
             display: "flex",
@@ -155,7 +159,9 @@ export const Types: React.FC<TypesProps> = ({}) => {
             margin={filterMargin}
           />
         </div>
-        <CreateType />
+        <div className={classes["option"]}>
+          <CreateType />
+        </div>
       </div>
       <Table
         rowKey="id"

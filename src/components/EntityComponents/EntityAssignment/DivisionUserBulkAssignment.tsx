@@ -5,6 +5,7 @@ import { ASSIGN_USER_TO_DIVISION } from "../../../api/mutations";
 import { GET_ALL_USERS } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import User from "../../../models/User";
+import { CenteredSpin } from "../../common/CenteredSpin";
 import { SearchUsers } from "../../common/SearchUsers";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
@@ -18,11 +19,11 @@ export const DivisionUserBulkAssignment: React.FC<
   const [divisionIds, setDivisionIds] = useState<number[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-  const [userToDivisionAssign, { loading: assigning }] = useMutation(
+  const [assignUserToDivision, { loading: assigning }] = useMutation(
     ASSIGN_USER_TO_DIVISION,
     {
       onCompleted: (data) => {
-        message.success("Successfully assigned");
+        message.success(data.assignUserToDivision);
       },
       onError: (err) => {
         errorMessage(err, "Unexpected error during user bulk assignment.");
@@ -61,6 +62,7 @@ export const DivisionUserBulkAssignment: React.FC<
         size="middle"
         onClick={() => setVisible(true)}
         className="primaryButton"
+        style={{width: 156}}
       >
         Bulk Assignment
       </Button>
@@ -150,6 +152,7 @@ export const DivisionUserBulkAssignment: React.FC<
                 {user.fullName} ({user.rcno})
               </Tag>
             ))}
+            {loadingUsers && <CenteredSpin />}
           </div>
         )}
         <Row justify="end" gutter={16} style={{ marginTop: "1rem" }}>
@@ -171,7 +174,7 @@ export const DivisionUserBulkAssignment: React.FC<
               loading={assigning}
               className="primaryButton"
               onClick={() => {
-                userToDivisionAssign({
+                assignUserToDivision({
                   variables: {
                     input: {
                       userIds: selectedUsers.map((u) => u.id),

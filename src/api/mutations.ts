@@ -529,6 +529,12 @@ export const ASSIGN_USER_TO_DIVISION = gql`
     assignUserToDivision(input: $input)
   }
 `;
+
+export const BULK_UNASSIGN_USER_FROM_DIVISION = gql`
+  mutation bulkUnassignUserFromDivision($input: DivisionAssignInput!) {
+    bulkUnassignUserFromDivision(input: $input)
+  }
+`;
 export const ASSIGN_ENTITY_TO_DIVISION = gql`
   mutation assignEntityToDivision($input: DivisionAssignInput!) {
     assignEntityToDivision(input: $input)
@@ -539,6 +545,13 @@ export const ASSIGN_USER_TO_LOCATION = gql`
     assignUserToLocation(input: $input)
   }
 `;
+
+export const BULK_UNASSIGN_USER_FROM_LOCATION = gql`
+  mutation bulkUnassignUserFromLocation($input: LocationAssignInput!) {
+    bulkUnassignUserFromLocation(input: $input)
+  }
+`;
+
 export const ASSIGN_ENTITY_TO_LOCATION = gql`
   mutation assignEntityToLocation($input: LocationAssignInput!) {
     assignEntityToLocation(input: $input)
@@ -906,7 +919,6 @@ export const UNASSIGN_USER_FROM_LOCATION = gql`
   }
 `;
 
-
 export const ADD_PERIODIC_MAINTENANCE_TASK = gql`
   mutation ($parentTaskId: Int, $periodicMaintenanceId: Int!, $name: String!) {
     createPeriodicMaintenanceTask(
@@ -1049,6 +1061,12 @@ export const TOGGLE_SPARE_PR_COMPLETE = gql`
 export const BULK_ASSIGN = gql`
   mutation bulkAssign($input: BulkAssignInput!) {
     bulkAssign(input: $input)
+  }
+`;
+
+export const BULK_UNASSIGN = gql`
+  mutation bulkUnassign($input: BulkUnassignInput!) {
+    bulkUnassign(input: $input)
   }
 `;
 
