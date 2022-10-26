@@ -16,6 +16,7 @@ import { DELETE_ZONE } from "../../../api/mutations";
 import Zone from "../../../models/Zone";
 import { CreateZone } from "./CreateZone";
 import { ZoneMapping } from "./ZoneMapping";
+import classes from "./Zones.module.css";
 
 export interface ZonesProps {}
 
@@ -96,11 +97,13 @@ export const Zones: React.FC<ZonesProps> = ({}) => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      className: classes["font"],
     },
     {
       title: "",
       dataIndex: "action",
       key: "action",
+      className: classes["font"],
       render: (val, rec) => (
         <div
           style={{
@@ -126,7 +129,7 @@ export const Zones: React.FC<ZonesProps> = ({}) => {
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={classes["options-wrapper"]}>
         <div
           style={{
             display: "flex",
@@ -143,11 +146,11 @@ export const Zones: React.FC<ZonesProps> = ({}) => {
             margin={filterMargin}
           />
         </div>
-        <div style={{ display: "flex" }}>
-          <div style={{ marginRight: "1rem" }}>
-            <ZoneMapping />
+        <div className={classes["option"]}>
+          <ZoneMapping />
+          <div style={{ marginTop: 10 }}>
+            <CreateZone />
           </div>
-          <CreateZone />
         </div>
       </div>
       <Table

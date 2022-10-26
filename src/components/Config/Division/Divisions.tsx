@@ -15,7 +15,7 @@ import { EditDivision } from "./EditDivision";
 import { DELETE_DIVISION } from "../../../api/mutations";
 import { CreateDivision } from "./CreateDivision";
 import Division from "../../../models/Division";
-import { DivisionUserAssignment } from "./DivisionUserAssignment";
+import classes from "./Divisions.module.css";
 
 export interface DivisionsProps {}
 
@@ -96,11 +96,13 @@ export const Divisions: React.FC<DivisionsProps> = ({}) => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      className: classes["font"],
     },
     {
       title: "",
       dataIndex: "action",
       key: "action",
+      className: classes["font"],
       render: (val, rec) => (
         <div
           style={{
@@ -126,7 +128,7 @@ export const Divisions: React.FC<DivisionsProps> = ({}) => {
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={classes["options-wrapper"]}>
         <div
           style={{
             display: "flex",
@@ -143,13 +145,15 @@ export const Divisions: React.FC<DivisionsProps> = ({}) => {
             margin={filterMargin}
           />
         </div>
-        <div style={{ display: "flex" }}>
+        <div className={classes["option"]}>
           <CreateDivision />
         </div>
       </div>
       <Table
         rowKey="id"
-        dataSource={data?.divisions.edges.map((edge: { node: Division }) => edge.node)}
+        dataSource={data?.divisions.edges.map(
+          (edge: { node: Division }) => edge.node
+        )}
         columns={columns}
         pagination={false}
         size="small"

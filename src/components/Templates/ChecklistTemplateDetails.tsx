@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
-  Checkbox,
   Divider,
   Form,
   Input,
@@ -25,9 +24,7 @@ import { errorMessage } from "../../helpers/gql";
 import { CHECKLIST_TEMPLATE_DETAILS } from "../../api/queries";
 import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
 import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
-import { ArrowRightOutlined } from "@ant-design/icons";
 import { SearchEntities } from "../common/SearchEntitities";
-import { EntityIcon } from "../common/EntityIcon";
 import { Entity } from "../../models/Entity/Entity";
 import { EntityListing } from "../EntityComponents/EntityListing";
 
@@ -127,7 +124,7 @@ export const ChecklistTemplateDetails: React.FC<
   };
 
   const onFinish = async (values: any) => {
-    const { name, type, skipFriday } = values;
+    const { name, type } = values;
 
     editChecklistTemplate({
       variables: {
@@ -135,7 +132,6 @@ export const ChecklistTemplateDetails: React.FC<
           id: checklistTemplate.id,
           name,
           type,
-          skipFriday,
         },
       },
     });
@@ -218,14 +214,6 @@ export const ChecklistTemplateDetails: React.FC<
                 </Select.Option>
               ))}
             </Select>
-          </Form.Item>
-          <Form.Item
-            name="skipFriday"
-            required={false}
-            initialValue={checklistTemplate?.skipFriday}
-            valuePropName="checked"
-          >
-            <Checkbox>Skip Friday</Checkbox>
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Form.Item style={{ marginBottom: 0 }}>

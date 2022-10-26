@@ -24,6 +24,7 @@ import AssignmentTypeSelector from "../../components/common/AssignmentTypeSelect
 import { SearchUsers } from "../../components/common/SearchUsers";
 import { BulkAssignment } from "../../components/EntityComponents/EntityAssignment/BulkAssignment";
 import classes from "./Assignments.module.css";
+import { BulkUnassignment } from "../../components/EntityComponents/EntityAssignment/BulkUnassignment";
 
 export interface AssignmentsProps {}
 
@@ -243,6 +244,7 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
         </div>
         <div className={classes["option"]}>
           <BulkAssignment />
+          <BulkUnassignment />
         </div>
       </div>
       {selectedEntities.length > 0 && (

@@ -1,6 +1,16 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Tooltip,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { EDIT_LOCATION } from "../../../api/mutations";
@@ -30,18 +40,18 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
   });
 
   const handleCancel = () => {
-    form.resetFields();
     setVisible(false);
   };
 
   const onFinish = async (values: any) => {
-    const { name } = values;
+    const { name, skipFriday } = values;
     edit({
       variables: {
         input: {
           id: location.id,
           name,
           zoneId,
+          skipFriday,
         },
       },
     });
@@ -85,6 +95,14 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
           </Form.Item>
           <Form.Item label="Zone" required={false}>
             <ZoneSelector setZoneId={setZoneId} currentId={zoneId} />
+          </Form.Item>
+          <Form.Item
+            name="skipFriday"
+            required={false}
+            initialValue={location?.skipFriday}
+            valuePropName="checked"
+          >
+            <Checkbox>Skip Friday</Checkbox>
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>

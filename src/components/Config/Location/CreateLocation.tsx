@@ -1,6 +1,16 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { errorMessage } from "../../../helpers/gql";
@@ -31,12 +41,13 @@ export const CreateLocation: React.FC<CreateLocationProps> = () => {
   };
 
   const onFinish = async (values: any) => {
-    const { name } = values;
+    const { name, skipFriday } = values;
     create({
       variables: {
         input: {
           name,
           zoneId,
+          skipFriday,
         },
       },
     });
@@ -81,6 +92,9 @@ export const CreateLocation: React.FC<CreateLocationProps> = () => {
           </Form.Item>
           <Form.Item label="Zone" required={false}>
             <ZoneSelector setZoneId={setZoneId} />
+          </Form.Item>
+          <Form.Item name="skipFriday" required={false} valuePropName="checked">
+            <Checkbox>Skip Friday</Checkbox>
           </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>

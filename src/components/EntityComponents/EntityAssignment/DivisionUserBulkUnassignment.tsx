@@ -1,34 +1,34 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Col, Divider, message, Modal, Row, Tag } from "antd";
 import React, { useEffect, useState } from "react";
-import { ASSIGN_USER_TO_LOCATION } from "../../../api/mutations";
+import { BULK_UNASSIGN_USER_FROM_DIVISION } from "../../../api/mutations";
 import { GET_ALL_USERS } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import User from "../../../models/User";
 import { CenteredSpin } from "../../common/CenteredSpin";
 import { SearchUsers } from "../../common/SearchUsers";
-import { DivisionSelector } from "../Division/DivisionSelector";
-import { LocationSelector } from "./LocationSelector";
+import { DivisionSelector } from "../../Config/Division/DivisionSelector";
+import { LocationSelector } from "../../Config/Location/LocationSelector";
 
-export interface LocationUserBulkAssignmentProps {}
+export interface DivisionUserBulkUnassignmentProps {}
 
-export const LocationUserBulkAssignment: React.FC<
-  LocationUserBulkAssignmentProps
+export const DivisionUserBulkUnassignment: React.FC<
+  DivisionUserBulkUnassignmentProps
 > = ({}) => {
   const [visible, setVisible] = useState(false);
-  const [locationIds, setLocationIds] = useState<number[]>([]);
+  const [divisionIds, setDivisionIds] = useState<number[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-  const [assignUserToLocation, { loading: assigning }] = useMutation(
-    ASSIGN_USER_TO_LOCATION,
+  const [bulkUnassignUserFromDivision, { loading: assigning }] = useMutation(
+    BULK_UNASSIGN_USER_FROM_DIVISION,
     {
       onCompleted: (data) => {
-        message.success(data.assignUserToLocation);
+        message.success(data.bulkUnassignUserFromDivision);
       },
       onError: (err) => {
-        errorMessage(err, "Unexpected error during user bulk assignment.");
+        errorMessage(err, "Unexpected error during user bulk unassignment.");
       },
-      refetchQueries: ["locationAssignments"],
+      refetchQueries: ["divisionAssignments"],
     }
   );
 
@@ -62,23 +62,23 @@ export const LocationUserBulkAssignment: React.FC<
         size="middle"
         onClick={() => setVisible(true)}
         className="primaryButton"
-        style={{ width: 156 }}
+        style={{ width: 156, marginTop: 10 }}
       >
-        Bulk Assignment
+        Bulk Unassignment
       </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title="Bulk Assignment"
+        title="Bulk Unassignment"
         bodyStyle={{ paddingTop: "1rem" }}
       >
         <Divider style={{ marginTop: 0 }} orientation="left">
-          Location
+          Division
         </Divider>
-        <LocationSelector
-          setLocationId={setLocationIds}
-          currentId={locationIds}
+        <DivisionSelector
+          setDivisionId={setDivisionIds}
+          currentId={divisionIds}
           width="100%"
           rounded={false}
         />
@@ -169,22 +169,22 @@ export const LocationUserBulkAssignment: React.FC<
             <Button
               type="primary"
               disabled={
-                locationIds?.length === 0 || selectedUsers?.length === 0
+                divisionIds?.length === 0 || selectedUsers?.length === 0
               }
               loading={assigning}
               className="primaryButton"
               onClick={() => {
-                assignUserToLocation({
+                bulkUnassignUserFromDivision({
                   variables: {
                     input: {
                       userIds: selectedUsers.map((u) => u.id),
-                      locationId: locationIds,
+                      divisionId: divisionIds,
                     },
                   },
                 });
               }}
             >
-              Assign
+              Unassign
             </Button>
           </Col>
         </Row>

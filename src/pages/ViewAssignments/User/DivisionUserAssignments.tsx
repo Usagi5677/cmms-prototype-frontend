@@ -22,6 +22,7 @@ import DivisionAssign from "../../../models/DivisionAssign";
 import Division from "../../../models/Division";
 import { SearchDivisions } from "../../../components/common/SearchDivisions";
 import classes from "./DivisionUserAssignments.module.css";
+import { DivisionUserBulkUnassignment } from "../../../components/EntityComponents/EntityAssignment/DivisionUserBulkUnassignment";
 
 export interface DivisionUserAssignmentsProps {}
 
@@ -228,6 +229,7 @@ export const DivisionUserAssignments: React.FC<
         </div>
         <div className={classes["option"]}>
           <DivisionUserBulkAssignment />
+          <DivisionUserBulkUnassignment />
         </div>
       </div>
       {selectedDivisions.length > 0 && (
