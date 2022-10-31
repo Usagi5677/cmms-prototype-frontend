@@ -65,7 +65,7 @@ const ViewSubEntity = ({
                       </Link>
                     </div>
                   </div>
-                  <div className={classes["info"]} style={{marginTop: 10}}>
+                  <div className={classes["info"]} style={{ marginTop: 10 }}>
                     <div className={classes["info-title"]}>Status</div>
                     <div className={classes["info-content"]}>
                       <EntityStatusTag status={s.status} noMarginRight />

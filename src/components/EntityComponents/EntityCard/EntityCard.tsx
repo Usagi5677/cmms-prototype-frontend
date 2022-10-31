@@ -636,7 +636,7 @@ const EntityCard = ({
                             />
                           </div>
                         ) : null}
-                        <Link to={"/entity/" + s.id}>
+                        <Link to={"/entity/" + s.id} >
                           <Tooltip title="Open">
                             <FaArrowAltCircleRight
                               className={classes["se-button"]}

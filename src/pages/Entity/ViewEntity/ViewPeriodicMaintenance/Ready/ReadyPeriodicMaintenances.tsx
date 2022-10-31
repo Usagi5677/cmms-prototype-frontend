@@ -85,7 +85,7 @@ const ReadyPeriodicMaintenances = ({
         dates[0].clone().endOf("month"),
       ]);
     }
-  }, [filter, periodicMaintenances, dates]);
+  }, [filter, periodicMaintenances, dates, id]);
 
   useEffect(() => {
     getSummary({
@@ -108,6 +108,7 @@ const ReadyPeriodicMaintenances = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          entityId: parseInt(id),
           from: dates[0],
           to: dates[1],
           first: 5,
@@ -127,7 +128,7 @@ const ReadyPeriodicMaintenances = ({
     }
     searchDebounced(search);
     // eslint-disable-next-line
-  }, [search, dates]);
+  }, [search, dates, id]);
 
   // Pagination functions
   const next = () => {

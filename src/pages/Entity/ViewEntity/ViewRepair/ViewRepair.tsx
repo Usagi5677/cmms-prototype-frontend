@@ -62,7 +62,7 @@ const ViewRepair = ({
   // Fetch repairs when component mounts or when the filter object changes
   useEffect(() => {
     repairs({ variables: filter });
-  }, [filter, repairs]);
+  }, [filter, repairs, id]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -76,6 +76,7 @@ const ViewRepair = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          entityId: parseInt(id),
           first: 5,
           last: null,
           before: null,
@@ -94,7 +95,7 @@ const ViewRepair = ({
     // eslint-disable-next-line no-restricted-globals
     searchDebounced(search);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, id]);
 
   // Pagination functions
   const next = () => {

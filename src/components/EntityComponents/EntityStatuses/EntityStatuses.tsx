@@ -46,6 +46,7 @@ const EntityStatuses = ({
         "getAllBreakdownOfEntity",
         "getAllHistoryOfEntity",
         "allEntityBreakdownCount",
+        "breakdowns",
       ],
     }
   );
