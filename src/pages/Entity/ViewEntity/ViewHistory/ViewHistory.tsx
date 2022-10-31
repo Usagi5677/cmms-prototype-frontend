@@ -58,7 +58,7 @@ const ViewHistory = () => {
   // Fetch history when component mounts or when the filter object changes
   useEffect(() => {
     getAllHistoryOfEntity({ variables: filter });
-  }, [filter, getAllHistoryOfEntity]);
+  }, [filter, getAllHistoryOfEntity, id]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -72,6 +72,7 @@ const ViewHistory = () => {
         setFilter((filter) => ({
           ...filter,
           search: value,
+          entityId: parseInt(id),
           locationIds,
           from: dates[0].toISOString(),
           to: dates[1].toISOString(),
@@ -92,7 +93,7 @@ const ViewHistory = () => {
     }
     searchDebounced(search, locationIds);
     // eslint-disable-next-line
-  }, [search, locationIds, dates]);
+  }, [search, locationIds, dates, id]);
 
   // Pagination functions
   const next = () => {

@@ -58,7 +58,7 @@ const ViewGallery = ({
   // Fetch attachments when component mounts or when the filter object changes
   useEffect(() => {
     getAttachment({ variables: filter });
-  }, [filter, getAttachment]);
+  }, [filter, getAttachment, id]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -72,6 +72,7 @@ const ViewGallery = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          entityId: parseInt(id),
           first: 8,
           last: null,
           before: null,
@@ -89,7 +90,7 @@ const ViewGallery = ({
     }
     searchDebounced(search);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, id]);
 
   // Pagination functions
   const next = () => {

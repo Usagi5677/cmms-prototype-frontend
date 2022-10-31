@@ -55,7 +55,7 @@ const UpcomingPeriodicMaintenances = ({
   // Fetch periodic maintenance when component mounts or when the filter object changes
   useEffect(() => {
     periodicMaintenances({ variables: filter });
-  }, [filter, periodicMaintenances]);
+  }, [filter, periodicMaintenances, id]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -69,6 +69,7 @@ const UpcomingPeriodicMaintenances = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          entityId: parseInt(id),
           first: 5,
           last: null,
           before: null,
@@ -86,7 +87,7 @@ const UpcomingPeriodicMaintenances = ({
     }
     searchDebounced(search);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, id]);
 
   // Pagination functions
   const next = () => {

@@ -52,11 +52,10 @@ const ViewBreakdown = ({
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
-
   // Fetch breakdowns when component mounts or when the filter object changes
   useEffect(() => {
     breakdowns({ variables: filter });
-  }, [filter, breakdowns]);
+  }, [filter, breakdowns, id]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -70,6 +69,7 @@ const ViewBreakdown = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          entityId: parseInt(id),
           first: 5,
           last: null,
           before: null,
@@ -87,7 +87,7 @@ const ViewBreakdown = ({
     }
     searchDebounced(search);
     // eslint-disable-next-line
-  }, [search]);
+  }, [search, id]);
 
   // Pagination functions
   const next = () => {

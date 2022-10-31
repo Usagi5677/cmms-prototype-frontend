@@ -161,6 +161,7 @@ const SparePRCard = ({
             <span className={classes["inner-header"]}>Details</span>
             {sparePR?.sparePRDetails?.map((d) => (
               <SparePRDetailCard
+                key={d.id}
                 sparePRDetail={d}
                 hasPermission={
                   hasPermissions(self, ["MODIFY_SPARE_PR"]) ||
