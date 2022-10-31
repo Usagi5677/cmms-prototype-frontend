@@ -15,6 +15,7 @@ import {
   Avatar,
   Typography,
   Skeleton,
+  Divider,
 } from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
@@ -26,6 +27,13 @@ import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncomplete
 import { stringToColor } from "../../../helpers/style";
 import { EntityIcon } from "../../common/EntityIcon";
 import { ToolOutlined } from "@ant-design/icons";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
+import { isAssignedType } from "../../../helpers/permissions";
+import { useContext } from "react";
+import UserContext from "../../../contexts/UserContext";
+import EditEntity from "../EditEntity/EditEntity";
+import { DeleteListing } from "../../common/DeleteListing";
+import { DELETE_ENTITY } from "../../../api/mutations";
 
 const EntityCard = ({
   entity,
@@ -36,6 +44,8 @@ const EntityCard = ({
   summaryData?: EntityChecklistAndPMSummary;
   smallView?: boolean;
 }) => {
+  const isSmallDevice = useIsSmallDevice(600, true);
+  const { user: self } = useContext(UserContext);
   const { Paragraph } = Typography;
   const interService =
     (entity.currentRunning ? entity.currentRunning : 0) -
@@ -590,6 +600,112 @@ const EntityCard = ({
                   <div>None</div>
                 )}
               </div>
+            </div>
+            {entity?.subEntities?.length! > 0 && (
+              <>
+                <span
+                  className={classes["reading-title"]}
+                  style={{ marginTop: 20 }}
+                >
+                  Sub Entities
+                </span>
+                <Divider style={{ marginTop: 10 }} />
+              </>
+            )}
+
+            <div className={classes["se-container"]}>
+              {entity?.subEntities?.map((s, index) => (
+                <div className={classes["se-wrapper"]} key={s.id}>
+                  <div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}></div>
+                      <div className={classes["se-options"]}>
+                        {isAssignedType("Admin", entity, self) ? (
+                          <EditEntity
+                            entity={s}
+                            fontSize={14}
+                            includeSubEntity
+                          />
+                        ) : null}
+                        {isAssignedType("Admin", entity, self) ? (
+                          <div className={classes["se-button"]}>
+                            <DeleteListing
+                              id={s.id}
+                              mutation={DELETE_ENTITY}
+                              refetchQueries={["getAllEntity"]}
+                            />
+                          </div>
+                        ) : null}
+                        <Link to={"/entity/" + s.id}>
+                          <Tooltip title="Open">
+                            <FaArrowAltCircleRight
+                              className={classes["se-button"]}
+                            />
+                          </Tooltip>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className={classes["se"]} style={{marginTop: 10}}>
+                      <div className={classes["se-title"]}>Status</div>
+                      <div className={classes["se-content"]}>
+                        <EntityStatusTag status={s.status} noMarginRight />
+                      </div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>Machine Number</div>
+                      <div className={classes["se-content"]}>
+                        {s.machineNumber}
+                      </div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>Model</div>
+                      <div className={classes["se-content"]}>{s.model}</div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>Type</div>
+                      <div className={classes["se-content"]}>
+                        {s.type?.name}
+                      </div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>Brand</div>
+                      <div className={classes["se-content"]}>{s.brand}</div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>
+                        Current running {s.measurement}
+                      </div>
+                      <div className={classes["se-content"]}>
+                        {s.currentRunning}
+                      </div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>
+                        Last service {s.measurement}
+                      </div>
+                      <div className={classes["se-content"]}>
+                        {s.lastService}
+                      </div>
+                    </div>
+                    <div className={classes["se"]}>
+                      <div className={classes["se-title"]}>
+                        Inter service {s.measurement}
+                      </div>
+                      <div className={classes["se-content"]}>
+                        {(s?.currentRunning ?? 0) - (s?.lastService ?? 0)}
+                      </div>
+                    </div>
+                  </div>
+                  {index + 1 !== entity?.subEntities?.length && (
+                    <Divider
+                      style={{
+                        height: "100%",
+                      }}
+                      type={isSmallDevice ? "vertical" : "horizontal"}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </Collapse.Panel>

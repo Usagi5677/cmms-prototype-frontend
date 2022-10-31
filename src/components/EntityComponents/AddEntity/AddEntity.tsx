@@ -224,7 +224,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
           </div>
 
           <div className={classes["row"]}>
-            {!includeSubEntity && (
+            {!includeSubEntity && entityType !== "Vessel" && (
               <div className={classes["col"]}>
                 <Form.Item label="Engine" name="engine" required={false}>
                   <EngineSelector />

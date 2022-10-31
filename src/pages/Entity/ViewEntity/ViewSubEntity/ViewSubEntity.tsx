@@ -4,6 +4,7 @@ import { FaArrowAltCircleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { DELETE_ENTITY } from "../../../../api/mutations";
 import { DeleteListing } from "../../../../components/common/DeleteListing";
+import EntityStatusTag from "../../../../components/common/EntityStatusTag";
 import EditEntity from "../../../../components/EntityComponents/EditEntity/EditEntity";
 import UserContext from "../../../../contexts/UserContext";
 import { isAssignedType } from "../../../../helpers/permissions";
@@ -62,6 +63,12 @@ const ViewSubEntity = ({
                           />
                         </Tooltip>
                       </Link>
+                    </div>
+                  </div>
+                  <div className={classes["info"]} style={{marginTop: 10}}>
+                    <div className={classes["info-title"]}>Status</div>
+                    <div className={classes["info-content"]}>
+                      <EntityStatusTag status={s.status} noMarginRight />
                     </div>
                   </div>
                   <div className={classes["info"]}>
@@ -127,215 +134,3 @@ const ViewSubEntity = ({
 };
 
 export default ViewSubEntity;
-
-/*
-
-
-<div className={classes["info-container"]}>
-            <div className={classes["info-wrapper"]}>
-              <div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Engine</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Model</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Brand</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Current running d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Last service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Inter service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-              </div>
-              <Divider
-                style={{
-                  height: "100%",
-                }}
-                type={isSmallDevice ? "vertical" : "horizontal"}
-              />
-            </div>
-            <div className={classes["info-wrapper"]}>
-              <div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Engine</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Model</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Brand</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Current running d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Last service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Inter service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-              </div>
-              <Divider
-                style={{
-                  height: "100%",
-                }}
-                type={isSmallDevice ? "vertical" : "horizontal"}
-              />
-            </div>
-            <div className={classes["info-wrapper"]}>
-              <div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Engine</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Model</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Brand</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Current running d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Last service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Inter service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-              </div>
-              <Divider
-                style={{
-                  height: "100%",
-                }}
-                type={isSmallDevice ? "vertical" : "horizontal"}
-              />
-            </div>
-            <div className={classes["info-wrapper"]}>
-              <div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Engine</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Model</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Brand</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Current running d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Last service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Inter service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-              </div>
-              <Divider
-                style={{
-                  height: "100%",
-                }}
-                type={isSmallDevice ? "vertical" : "horizontal"}
-              />
-            </div>
-            <div className={classes["info-wrapper"]}>
-              <div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Engine</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Model</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Brand</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Current running d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Last service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Inter service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-              </div>
-              <Divider
-                style={{
-                  height: "100%",
-                }}
-                type={isSmallDevice ? "vertical" : "horizontal"}
-              />
-            </div>
-            <div className={classes["info-wrapper"]}>
-              <div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Engine</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Model</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Brand</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Current running d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Last service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-                <div className={classes["info"]}>
-                  <div className={classes["info-title"]}>Inter service d</div>
-                  <div className={classes["info-content"]}>d</div>
-                </div>
-              </div>
-              <Divider
-                style={{
-                  height: "100%",
-                }}
-                type={isSmallDevice ? "vertical" : "horizontal"}
-              />
-            </div>
-          </div>
-
-*/

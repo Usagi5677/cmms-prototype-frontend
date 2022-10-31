@@ -105,7 +105,7 @@
 
 .info-btn-wrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -154,6 +154,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
 }
 
 .location-wrapper {
@@ -168,6 +169,7 @@
   align-items: center;
   font-size: 12px;
   font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .title {
@@ -183,9 +185,14 @@
   font-weight: 700;
 }
 
+.info-option-wrapper {
+  display: flex;
+  align-items: center;
+}
+
 @media only screen and (min-width: 600px) {
   .location-wrapper {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .title-wrapper {

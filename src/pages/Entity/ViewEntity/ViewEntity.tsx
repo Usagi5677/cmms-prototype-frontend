@@ -1,4 +1,8 @@
-import { CloseCircleOutlined, LeftOutlined } from "@ant-design/icons";
+import {
+  ApartmentOutlined,
+  CloseCircleOutlined,
+  LeftOutlined,
+} from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Avatar,
@@ -51,6 +55,7 @@ import { isDeleted } from "../../../helpers/isDeleted";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import { EntityIcon } from "../../../components/common/EntityIcon";
 import ViewSubEntity from "./ViewSubEntity/ViewSubEntity";
+import OpenParentEntity from "../../../components/common/OpenParentEntity/OpenParentEntity";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -194,7 +199,6 @@ const ViewEntity = () => {
   const isSmallDevice = useIsSmallDevice();
 
   const flag = isDeleted(entityData?.deletedAt, entityData?.status);
-
   return (
     <>
       <div className={classes["container"]}>
@@ -204,19 +208,26 @@ const ViewEntity = () => {
           ) : (
             <>
               <div className={classes["info-btn-wrapper"]}>
-                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-                  <EditEntityLocation entity={entityData} isDeleted={flag} />
-                ) : null}
-                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-                  <EditEntity entity={entityData} isDeleted={flag} />
-                ) : null}
-                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
-                  <DeleteEntity
-                    entityID={entityData?.id}
-                    isDeleted={flag}
-                    entityType={entityData?.type?.entityType}
-                  />
-                ) : null}
+                {entityData?.parentEntityId ? (
+                  <OpenParentEntity id={entityData?.parentEntityId} />
+                ) : (
+                  <div></div>
+                )}
+                <div className={classes["info-option-wrapper"]}>
+                  {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                    <EditEntityLocation entity={entityData} isDeleted={flag} />
+                  ) : null}
+                  {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                    <EditEntity entity={entityData} isDeleted={flag} />
+                  ) : null}
+                  {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                    <DeleteEntity
+                      entityID={entityData?.id}
+                      isDeleted={flag}
+                      entityType={entityData?.type?.entityType}
+                    />
+                  ) : null}
+                </div>
               </div>
               {entityData?.status === "Dispose" ? (
                 <div className={classes["deleted"]}>DISPOSED</div>
