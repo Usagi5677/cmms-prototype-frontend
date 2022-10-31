@@ -51,15 +51,18 @@ export function isAssignedType(
   user: any
 ) {
   if (!entity) return false;
-  const assignments = entity.assignees;
-  let ofType;
-  if (type === "any") {
-    ofType = assignments;
-  } else {
-    ofType = assignments.filter((a) => a.type === type);
+  const assignments = entity?.assignees;
+  if(assignments) {
+    let ofType;
+    if (type === "any") {
+      ofType = assignments;
+    } else {
+      ofType = assignments.filter((a) => a.type === type);
+    }
+    const ofTypeIds = ofType.map((o) => o.user.id);
+    if (ofTypeIds.includes(user.id)) return true;
   }
-  const ofTypeIds = ofType.map((o) => o.user.id);
-  if (ofTypeIds.includes(user.id)) return true;
+  
 }
 
 // Check if user is assigned to type to any entity

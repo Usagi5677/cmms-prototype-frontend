@@ -56,6 +56,7 @@ const EditEntity = ({
       "getSingleEntity",
       "getAllHistoryOfEntity",
       "singleEntityUsageHistory",
+      "getAllEntity"
     ],
   });
 

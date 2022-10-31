@@ -1,6 +1,16 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Select, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Tooltip,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { FaMinusCircle, FaPlus } from "react-icons/fa";
@@ -21,6 +31,7 @@ const EntityStatuses = ({
   isDeleted?: boolean | undefined;
   hasPermission?: boolean;
 }) => {
+  const [initStatus, setInitStatus] = useState("");
   const [setEntityStatus, { loading: settingStatus }] = useMutation(
     SET_ENTITY_STATUS,
     {
@@ -62,6 +73,7 @@ const EntityStatuses = ({
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
+    setInitStatus("");
   };
 
   const onFinish = async (values: any) => {
@@ -85,10 +97,13 @@ const EntityStatuses = ({
       variables: { entityId: entityID, status: type },
     });
   };
+
   const onChangeClick = async (status: EntityStatus) => {
     if (status === "Breakdown") {
+      setInitStatus("Breakdown");
       setVisible(true);
     } else if (status === "Critical") {
+      setInitStatus("Critical");
       setVisible(true);
     } else {
       setEntityStatus({
@@ -106,6 +121,7 @@ const EntityStatuses = ({
         width="90vw"
         title={"Add Breakdown"}
         style={{ maxWidth: 700 }}
+        destroyOnClose
       >
         <Form
           form={form}
@@ -113,6 +129,7 @@ const EntityStatuses = ({
           name="basic"
           onFinish={onFinish}
           id="myForm"
+          preserve={false}
         >
           <Form.Item
             label="Type"
@@ -124,6 +141,7 @@ const EntityStatuses = ({
                 message: "Please select the type.",
               },
             ]}
+            initialValue={initStatus}
           >
             <Select
               style={{ width: "100%" }}
