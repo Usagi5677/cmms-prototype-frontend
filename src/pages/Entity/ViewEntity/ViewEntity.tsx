@@ -356,7 +356,9 @@ const ViewEntity = () => {
               </div>
               <div className={classes["note-option-wrapper"]}>
                 <div className={classes["note-option"]}>Note</div>
-                <EditEntityNote entity={entityData} isDeleted={flag} />
+                {isAssignedType("Admin", entity?.getSingleEntity, self) ? (
+                  <EditEntityNote entity={entityData} isDeleted={flag} />
+                ) : null}
               </div>
               {entityData?.note !== null && (
                 <>
