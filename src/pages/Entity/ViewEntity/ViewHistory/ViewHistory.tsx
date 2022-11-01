@@ -122,11 +122,22 @@ const ViewHistory = () => {
 
   const date = new Date(dates[0]);
   const endDate = new Date(dates[1]);
-  const dateArray = [];
+  const dateArray: any = [];
 
-  while (date <= endDate) {
-    dateArray.push(new Date(date));
-    date.setDate(date.getDate() + 1);
+  if (data?.getAllHistoryOfEntity.edges) {
+    while (date <= endDate) {
+      for (const rec of data?.getAllHistoryOfEntity.edges) {
+        if (
+          moment(rec?.node?.createdAt).format(
+            DATETIME_FORMATS.DAY_MONTH_YEAR
+          ) === moment(date).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+        ) {
+          dateArray.push(new Date(date));
+          break;
+        }
+      }
+      date.setDate(date.getDate() + 1);
+    }
   }
 
   const dateCount = (date: Date) =>
@@ -139,17 +150,23 @@ const ViewHistory = () => {
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
-        />
-        <LocationSelector
-          setLocationId={setLocationIds}
-          multiple={true}
-          rounded={true}
-          width={190}
-        />
+        <div className={classes["block-one"]}>
+          <div className={classes["item"]}>
+            <Search
+              searchValue={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onClick={() => setSearch("")}
+            />
+          </div>
+          <div className={classes["item"]}>
+            <LocationSelector
+              setLocationId={setLocationIds}
+              multiple={true}
+              rounded={true}
+              width={190}
+            />
+          </div>
+        </div>
 
         <DatePicker.RangePicker
           className={classes["datepicker"]}
@@ -174,10 +191,14 @@ const ViewHistory = () => {
         </div>
       )}
       <div className={classes["content"]}>
-        {dateArray.reverse()?.map((dateVal, index) => {
+        {dateArray?.reverse()?.map((dateVal: any, index: number) => {
           return (
             <div className={classes["collapse-container"]} key={index + "div"}>
-              <Collapse ghost style={{ marginBottom: ".5rem" }}>
+              <Collapse
+                ghost
+                style={{ marginBottom: ".5rem" }}
+                defaultActiveKey={index + "col"}
+              >
                 <Collapse.Panel
                   header={
                     <div>
