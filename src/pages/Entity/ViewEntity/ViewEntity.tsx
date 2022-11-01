@@ -56,6 +56,8 @@ import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity"
 import { EntityIcon } from "../../../components/common/EntityIcon";
 import ViewSubEntity from "./ViewSubEntity/ViewSubEntity";
 import OpenParentEntity from "../../../components/common/OpenParentEntity/OpenParentEntity";
+import EditEntityNote from "../../../components/EntityComponents/EditEntityNote/EditEntityNote";
+import TextArea from "antd/lib/input/TextArea";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -352,6 +354,21 @@ const ViewEntity = () => {
                   attachmentData={attachmentData?.getEntityLatestAttachment}
                 />
               </div>
+              <div className={classes["note-option-wrapper"]}>
+                <div className={classes["note-option"]}>Note</div>
+                <EditEntityNote entity={entityData} isDeleted={flag} />
+              </div>
+              {entityData?.note !== null && (
+                <>
+                  <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+                  <TextArea
+                    placeholder="Description"
+                    value={entityData?.note}
+                    readOnly
+                  />
+                </>
+              )}
+
               <Divider style={{ marginTop: 10, marginBottom: 10 }} />
               <div
                 style={{

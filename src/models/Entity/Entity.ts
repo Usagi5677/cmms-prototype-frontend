@@ -30,6 +30,7 @@ export interface Entity {
   measurement?: string;
   brand?: string;
   parentEntityId?: number;
+  note?: string;
   deletedAt?: Date;
   status: EntityStatus;
   statusChangedAt: Date;

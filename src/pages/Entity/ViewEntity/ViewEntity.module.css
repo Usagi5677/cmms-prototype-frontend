@@ -190,6 +190,15 @@
   align-items: center;
 }
 
+.note-option-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.note-option {
+  margin-right: 1rem;
+}
+
 @media only screen and (min-width: 600px) {
   .location-wrapper {
     font-size: 20px;

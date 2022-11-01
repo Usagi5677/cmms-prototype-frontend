@@ -1,15 +1,17 @@
+import { FormOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
+import TextArea from "antd/lib/input/TextArea";
 import { useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { EDIT_ENTITY } from "../../../api/mutations";
+import { EDIT_ENTITY, UPDATE_ENTITY_NOTE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
-import classes from "./EditEntityLocation.module.css";
+import classes from "./EditEntityNote.module.css";
 
-const EditEntityLocation = ({
+const EditEntityNote = ({
   entity,
   isDeleted,
 }: {
@@ -20,15 +22,15 @@ const EditEntityLocation = ({
   const [form] = useForm();
   const [locationId, setLocationId] = useState<number | null>(null);
 
-  const [editEntityLocation, { loading: loadingEntity }] = useMutation(
-    EDIT_ENTITY,
+  const [updateEntityNote, { loading: loadingEntity }] = useMutation(
+    UPDATE_ENTITY_NOTE,
     {
       onCompleted: () => {
-        message.success("Successfully updated location.");
+        message.success("Successfully updated note.");
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(error, "Unexpected error while updating location.");
+        errorMessage(error, "Unexpected error while updating note.");
       },
       refetchQueries: ["getSingleEntity", "getAllHistoryOfEntity"],
     }
@@ -39,23 +41,21 @@ const EditEntityLocation = ({
     setVisible(false);
   };
 
-  const onFinish = async () => {
-    if (!locationId) {
-      message.error("Please select the location.");
-      return;
-    }
-    editEntityLocation({
+  const onFinish = async (values: any) => {
+    const { note } = values;
+
+    updateEntityNote({
       variables: {
         id: entity?.id,
-        locationId,
+        note,
       },
     });
   };
 
   return (
     <div className={classes["info-edit"]}>
-      <Tooltip title="Edit Location">
-        <FaMapMarkerAlt
+      <Tooltip title="Edit Note">
+        <FormOutlined
           onClick={() => setVisible(true)}
           style={{
             pointerEvents: isDeleted ? "none" : "auto",
@@ -67,7 +67,7 @@ const EditEntityLocation = ({
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Edit Location"}
+        title={"Edit Note"}
         width="90vw"
         style={{ maxWidth: 700 }}
         destroyOnClose={true}
@@ -81,13 +81,14 @@ const EditEntityLocation = ({
           preserve={false}
         >
           <Row>
-            <Col span={12}>
-              <Form.Item label="Location" name="location" required={false}>
-                <LocationSelector
-                  currentId={entity?.location?.id}
-                  currentName={entity?.location?.name}
-                  setLocationId={setLocationId}
-                />
+            <Col style={{ width: "100%" }}>
+              <Form.Item
+                label="Description"
+                name="note"
+                required={false}
+                initialValue={entity?.note}
+              >
+                <TextArea placeholder="Description" allowClear />
               </Form.Item>
             </Col>
           </Row>
@@ -123,4 +124,4 @@ const EditEntityLocation = ({
   );
 };
 
-export default EditEntityLocation;
+export default EditEntityNote;
