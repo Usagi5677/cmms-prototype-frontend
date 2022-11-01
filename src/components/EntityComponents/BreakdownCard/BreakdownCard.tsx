@@ -90,7 +90,25 @@ const EntityBreakdownCard = ({
                           )}
                         </Checkbox>
                       </div>
-
+                      <div
+                        className={
+                          (classes["title-wrapper"], classes["space-two"])
+                        }
+                      >
+                        <Tooltip title="Created Date">
+                          <FaRegClock className={classes["icon"]} />
+                        </Tooltip>
+                        <span
+                          className={classes["title"]}
+                          title={moment(breakdown?.createdAt).format(
+                            DATETIME_FORMATS.FULL
+                          )}
+                        >
+                          {moment(breakdown?.createdAt).format(
+                            DATETIME_FORMATS.SHORT
+                          )}
+                        </span>
+                      </div>
                       <div
                         className={
                           (classes["title-wrapper"], classes["space-two"])
@@ -207,22 +225,6 @@ const EntityBreakdownCard = ({
                   <div className={(classes["id-wrapper"], classes["space"])}>
                     <ToolOutlined className={classes["icon"]} />
                     <span className={classes["title"]}>{breakdown?.id}</span>
-                  </div>
-                  <div className={(classes["title-wrapper"], classes["space"])}>
-                    <Tooltip title="Created Date">
-                      <FaRegClock className={classes["icon"]} />
-                    </Tooltip>
-
-                    <span
-                      className={classes["title"]}
-                      title={moment(breakdown?.createdAt).format(
-                        DATETIME_FORMATS.FULL
-                      )}
-                    >
-                      {moment(breakdown?.createdAt).format(
-                        DATETIME_FORMATS.SHORT
-                      )}
-                    </span>
                   </div>
                   <div
                     className={(classes["createdBy-wrapper"], classes["space"])}
