@@ -63,6 +63,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
     measurement
     brand
     deletedAt
+    note
     assignees {
       user {
         ...UserFieldsAPS
@@ -111,6 +112,7 @@ export const ENTITY_FRAGMENT = gql`
     measurement
     brand
     deletedAt
+    note
     assignees {
       user {
         ...UserFieldsAPS

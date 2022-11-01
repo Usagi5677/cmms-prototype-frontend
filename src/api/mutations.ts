@@ -1087,3 +1087,9 @@ export const ACTIVATE_PERIODIC_MAINTENANCE = gql`
     activatePM(id: $id)
   }
 `;
+
+export const UPDATE_ENTITY_NOTE = gql`
+  mutation updateEntityNote($id: Int!, $note: String) {
+    updateEntityNote(id: $id, note: $note)
+  }
+`;

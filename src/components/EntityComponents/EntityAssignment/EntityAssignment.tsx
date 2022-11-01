@@ -16,7 +16,7 @@ import { FaUserCog } from "react-icons/fa";
 import { GET_USERS_WITH_PERMISSION, ME_QUERY } from "../../../api/queries";
 import { ASSIGN_USER_TO_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { UserTagStringToColor } from "../../../helpers/style";
+import { stringToColor } from "../../../helpers/style";
 import User from "../../../models/User";
 import classes from "./EntityAssignment.module.css";
 import React from "react";
@@ -47,7 +47,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
         "getSingleEntity",
         "getAllHistoryOfEntity",
         "getAllEntityChecklistAndPMSummary",
-        { query: ME_QUERY }
+        { query: ME_QUERY },
       ],
     }
   );
@@ -96,8 +96,8 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
           borderRadius: 20,
           textAlign: "center",
           maxWidth: 250,
-          backgroundColor: UserTagStringToColor(label),
-          borderColor: UserTagStringToColor(label),
+          backgroundColor: stringToColor(label?.split("(")[0].trim()),
+          borderColor: stringToColor(label?.split("(")[0].trim()),
           borderWidth: 1,
         }}
       >
