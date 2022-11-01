@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import { RiSailboatFill } from "react-icons/ri";
 import classes from "./Sidebar.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/UserContext";
 import { Badge, Menu, Tooltip } from "antd";
@@ -109,7 +109,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     hasPermissions(self, ["VIEW_ALL_ENTITY"])
   ) {
     SidebarData.push({
-      name: "Incomplete Tasks",
+      name: "Tasks",
       path: "/incomplete-tasks",
       icon: <FaSquare />,
       count: pastTwoIncomplete?.incompleteChecklistsPastTwoDays
@@ -273,6 +273,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
         mode="inline"
         selectedKeys={[pathname]}
         style={{ overflowX: "hidden", flex: 1 }}
+        id={"sidebar"}
       >
         {SidebarData.map((item: SidebarItem) => {
           if (item.name === "Divider") return <Divider key={item.path} />;
@@ -281,119 +282,117 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
               key={item.path}
               icon={item.icon}
               className={classes["newMenuItem"]}
-              onClick={() => {
-                navigate(item.path);
-                onClick();
-              }}
             >
-              {item.name}{" "}
-              <Badge
-                showZero={false}
-                count={item.count ?? 0}
-                style={{ marginLeft: 10, marginRight: 10 }}
-              />
-              {summaryData?.getAllEntityChecklistAndPMSummary
-                ?.machineTaskComplete === true &&
-                item.name === "Machinery" && (
-                  <Tooltip
-                    color="var(--dot-tooltip)"
-                    title={
-                      <div>
-                        <Badge
-                          color={"#87262c"}
-                          text={"Some tasks not completed"}
-                        />
-                      </div>
-                    }
-                  >
-                    <Badge color={"#87262c"} />
-                  </Tooltip>
-                )}
-              {summaryData?.getAllEntityChecklistAndPMSummary
-                ?.machineChecklistComplete === true &&
-                item.name === "Machinery" && (
-                  <Tooltip
-                    color="var(--dot-tooltip)"
-                    title={
-                      <div>
-                        <Badge
-                          color={"red"}
-                          text={"Some checklists not completed"}
-                        />
-                      </div>
-                    }
-                  >
-                    <Badge color={"red"} />
-                  </Tooltip>
-                )}
-              {summaryData?.getAllEntityChecklistAndPMSummary
-                ?.vehicleTaskComplete === true &&
-                item.name === "Vehicles" && (
-                  <Tooltip
-                    color="var(--dot-tooltip)"
-                    title={
-                      <div>
-                        <Badge
-                          color={"#87262c"}
-                          text={"Some tasks not completed"}
-                        />
-                      </div>
-                    }
-                  >
-                    <Badge color={"#87262c"} />
-                  </Tooltip>
-                )}
-              {summaryData?.getAllEntityChecklistAndPMSummary
-                ?.vehicleChecklistComplete === true &&
-                item.name === "Vehicles" && (
-                  <Tooltip
-                    color="var(--dot-tooltip)"
-                    title={
-                      <div>
-                        <Badge
-                          color={"red"}
-                          text={"Some checklists not completed"}
-                        />
-                      </div>
-                    }
-                  >
-                    <Badge color={"red"} />
-                  </Tooltip>
-                )}
-              {summaryData?.getAllEntityChecklistAndPMSummary
-                ?.vesselTaskComplete === true &&
-                item.name === "Vessels" && (
-                  <Tooltip
-                    color="var(--dot-tooltip)"
-                    title={
-                      <div>
-                        <Badge
-                          color={"#87262c"}
-                          text={"Some tasks not completed"}
-                        />
-                      </div>
-                    }
-                  >
-                    <Badge color={"#87262c"} />
-                  </Tooltip>
-                )}
-              {summaryData?.getAllEntityChecklistAndPMSummary
-                ?.vesselChecklistComplete === true &&
-                item.name === "Vessels" && (
-                  <Tooltip
-                    color="var(--dot-tooltip)"
-                    title={
-                      <div>
-                        <Badge
-                          color={"red"}
-                          text={"Some checklists not completed"}
-                        />
-                      </div>
-                    }
-                  >
-                    <Badge color={"red"} />
-                  </Tooltip>
-                )}
+              <Link to={item.path}>
+                {item.name}{" "}
+                <Badge
+                  showZero={false}
+                  count={item.count ?? 0}
+                  style={{ marginLeft: 10, marginRight: 10 }}
+                />
+                {summaryData?.getAllEntityChecklistAndPMSummary
+                  ?.machineTaskComplete === true &&
+                  item.name === "Machinery" && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge
+                            color={"#87262c"}
+                            text={"Some tasks not completed"}
+                          />
+                        </div>
+                      }
+                    >
+                      <Badge color={"#87262c"} />
+                    </Tooltip>
+                  )}
+                {summaryData?.getAllEntityChecklistAndPMSummary
+                  ?.machineChecklistComplete === true &&
+                  item.name === "Machinery" && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge
+                            color={"red"}
+                            text={"Some checklists not completed"}
+                          />
+                        </div>
+                      }
+                    >
+                      <Badge color={"red"} />
+                    </Tooltip>
+                  )}
+                {summaryData?.getAllEntityChecklistAndPMSummary
+                  ?.vehicleTaskComplete === true &&
+                  item.name === "Vehicles" && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge
+                            color={"#87262c"}
+                            text={"Some tasks not completed"}
+                          />
+                        </div>
+                      }
+                    >
+                      <Badge color={"#87262c"} />
+                    </Tooltip>
+                  )}
+                {summaryData?.getAllEntityChecklistAndPMSummary
+                  ?.vehicleChecklistComplete === true &&
+                  item.name === "Vehicles" && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge
+                            color={"red"}
+                            text={"Some checklists not completed"}
+                          />
+                        </div>
+                      }
+                    >
+                      <Badge color={"red"} />
+                    </Tooltip>
+                  )}
+                {summaryData?.getAllEntityChecklistAndPMSummary
+                  ?.vesselTaskComplete === true &&
+                  item.name === "Vessels" && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge
+                            color={"#87262c"}
+                            text={"Some tasks not completed"}
+                          />
+                        </div>
+                      }
+                    >
+                      <Badge color={"#87262c"} />
+                    </Tooltip>
+                  )}
+                {summaryData?.getAllEntityChecklistAndPMSummary
+                  ?.vesselChecklistComplete === true &&
+                  item.name === "Vessels" && (
+                    <Tooltip
+                      color="var(--dot-tooltip)"
+                      title={
+                        <div>
+                          <Badge
+                            color={"red"}
+                            text={"Some checklists not completed"}
+                          />
+                        </div>
+                      }
+                    >
+                      <Badge color={"red"} />
+                    </Tooltip>
+                  )}
+              </Link>
             </Menu.Item>
           );
         })}

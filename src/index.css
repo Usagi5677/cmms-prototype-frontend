@@ -984,3 +984,13 @@ div.ant-typography {
 .highcharts-point {
   stroke: var(--border-1) !important;
 }
+
+#sidebar a {
+  color: inherit !important;
+}
+
+#sidebar a:active, #sidebar a:focus {
+  color: var(--ant-primary-color-hover) !important;
+  border-color: var(--ant-primary-color-hover) !important;
+  background: var(--ant-picker-bg) !important;
+}
