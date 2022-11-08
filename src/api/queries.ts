@@ -1672,6 +1672,37 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
   }
 `;
 
+export const GET_ALL_GROUPED_ENTITY_USAGE = gql`
+  query getAllGroupedEntityUsage(
+    $from: Date!
+    $to: Date!
+    $search: String
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $typeIds: [Int!]
+    $measurement: [String!]
+    $entityTypes: [String!]
+  ) {
+    getAllGroupedEntityUsage(
+      from: $from
+      to: $to
+      search: $search
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      typeIds: $typeIds
+      measurement: $measurement
+      entityTypes: $entityTypes
+    ) {
+      typeId
+      name
+      workingHour
+      idleHour
+      breakdownHour
+      na
+    }
+  }
+`;
+
 export const ALL_ENTITY_WITHOUT_PAGINATION = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntityWithoutPagination(

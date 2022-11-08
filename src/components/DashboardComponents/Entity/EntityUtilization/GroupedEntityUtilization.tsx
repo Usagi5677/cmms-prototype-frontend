@@ -7,6 +7,7 @@ import {
   ALL_ENTITY_WITHOUT_PAGINATION,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_USAGE_HISTORY,
+  GET_ALL_GROUPED_ENTITY_USAGE,
 } from "../../../../api/queries";
 import { errorMessage } from "../../../../helpers/gql";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
@@ -28,7 +29,7 @@ require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 
-const EntityUtilization = ({
+const GroupedEntityUtilization = ({
   clone,
   active,
   onClick,
@@ -53,18 +54,20 @@ const EntityUtilization = ({
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
+  const [entityTypes, setEntityTypes] = useState<string[]>(["Machine"]);
   const [dates, setDates] = useState<any>([
     moment(getFilterObjects?.from),
     moment(getFilterObjects?.to),
   ]);
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "dashboardUtilizationFilter",
+    "dashboardGroupedMachineUtilizationFilter",
     JSON.stringify({
       search: "",
       zoneIds: [],
       locationIds: [],
       typeIds: [],
       measurement: [],
+      entityTypes: [],
       from: moment().subtract(1, "day"),
       to: moment(),
     })
@@ -77,23 +80,25 @@ const EntityUtilization = ({
     zoneIds: number[];
     typeIds: number[];
     measurement: string[];
+    entityTypes: string[];
   }>({
     search: JSON.parse(saveFilterOptions)?.search,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
+    entityTypes: ["Machine"],
   });
 
-  const [allEntityUsageHistory, { data: history, loading: historyLoading }] =
-    useLazyQuery(GET_ALL_ENTITY_USAGE_HISTORY, {
+  const [getAllGroupedEntityUsage, { data: history, loading: historyLoading }] =
+    useLazyQuery(GET_ALL_GROUPED_ENTITY_USAGE, {
       onError: (err) => {
         errorMessage(err, "Error loading usage history.");
       },
     });
 
   useEffect(() => {
-    allEntityUsageHistory({
+    getAllGroupedEntityUsage({
       variables: {
         machineId: parseInt(id),
         from: dates[0].toISOString(),
@@ -103,6 +108,7 @@ const EntityUtilization = ({
         zoneIds,
         typeIds,
         measurement,
+        entityTypes,
       },
     });
     const newfilter = {
@@ -113,12 +119,13 @@ const EntityUtilization = ({
     setSaveFilterOptions(JSON.stringify(newfilter));
   }, [
     dates,
-    allEntityUsageHistory,
+    getAllGroupedEntityUsage,
     search,
     locationIds,
     zoneIds,
     typeIds,
     measurement,
+    entityTypes,
   ]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -130,7 +137,8 @@ const EntityUtilization = ({
     locationIdsValue: number[],
     zoneIdsValue: number[],
     typeIdsValue: number[],
-    measurementValue: string[]
+    measurementValue: string[],
+    entityTypesValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -143,6 +151,7 @@ const EntityUtilization = ({
           zoneIds: zoneIdsValue,
           typeIds: typeIdsValue,
           measurement: measurementValue,
+          entityTypes: entityTypesValue,
         }));
       }, 500)
     );
@@ -153,9 +162,16 @@ const EntityUtilization = ({
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, locationIds, zoneIds, typeIds, measurement);
+    searchDebounced(
+      search,
+      locationIds,
+      zoneIds,
+      typeIds,
+      measurement,
+      entityTypes
+    );
     // eslint-disable-next-line
-  }, [search, locationIds, zoneIds, typeIds, measurement]);
+  }, [search, locationIds, zoneIds, typeIds, measurement, entityTypes]);
 
   const [getAllEntityWithoutPagination, { data, loading }] = useLazyQuery(
     ALL_ENTITY_WITHOUT_PAGINATION,
@@ -188,10 +204,10 @@ const EntityUtilization = ({
   }, [filter, getAllEntityWithoutPagination]);
 
   let options: any;
-  if (history?.allEntityUsageHistory) {
+  if (history?.getAllGroupedEntityUsage) {
     options = {
       title: {
-        text: `Utilization (${history?.allEntityUsageHistory.length})`,
+        text: `Utilization (${history?.getAllGroupedEntityUsage.length})`,
       },
       subtitle: {
         text: `${moment(dates[0]).format(
@@ -201,9 +217,9 @@ const EntityUtilization = ({
       chart: {
         type: "bar",
         height:
-          history?.allEntityUsageHistory.length * 43 < 600
+          history?.getAllGroupedEntityUsage.length * 43 < 600
             ? 600
-            : history?.allEntityUsageHistory.length * 43,
+            : history?.getAllGroupedEntityUsage.length * 43,
       },
       plotOptions: {
         series: {
@@ -211,8 +227,8 @@ const EntityUtilization = ({
         },
       },
       xAxis: {
-        categories: history?.allEntityUsageHistory.map(
-          (rec: any) => rec?.machineNumber
+        categories: history?.getAllGroupedEntityUsage.map(
+          (rec: any) => rec?.name
         ),
       },
       yAxis: {
@@ -235,7 +251,7 @@ const EntityUtilization = ({
           },
         },
         filename: `Utilization (${
-          history?.allEntityUsageHistory.length
+          history?.getAllGroupedEntityUsage.length
         }) (${moment(dates[0]).format(
           DATETIME_FORMATS.DAY_MONTH_YEAR
         )} - ${moment(dates[1]).format(DATETIME_FORMATS.DAY_MONTH_YEAR)})`,
@@ -261,25 +277,25 @@ const EntityUtilization = ({
       series: [
         {
           name: "NA",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
+          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
             parseInt(rec?.na?.toFixed(0))
           ),
         },
         {
           name: "Breakdown",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
+          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
             parseInt(rec?.breakdownHour?.toFixed(0))
           ),
         },
         {
           name: "Idle",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
+          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
             parseInt(rec?.idleHour?.toFixed(0))
           ),
         },
         {
           name: "Working",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
+          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
             parseInt(rec?.workingHour?.toFixed(0))
           ),
         },
@@ -442,7 +458,7 @@ const EntityUtilization = ({
           <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
         ) : (
           <div>
-            {history?.allEntityUsageHistory.length > 0 ? (
+            {history?.getAllGroupedEntityUsage.length > 0 ? (
               <HighchartsReact highcharts={Highcharts} options={options} />
             ) : (
               <div
@@ -455,61 +471,9 @@ const EntityUtilization = ({
             )}
           </div>
         )}
-        {loading ? (
-          <div>
-            <Spin style={{ width: "100%", margin: "2rem auto" }} />
-          </div>
-        ) : typeWithCountSorted.size > 0 ? (
-          <div>
-            {[...typeWithCountSorted].map((key: any) => (
-              <Collapse ghost style={{ marginBottom: ".5rem" }} key={key[0]}>
-                <Collapse.Panel
-                  header={
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <span>{key[0]}</span>
-                      <Badge
-                        count={key[1]}
-                        style={{
-                          color: "black",
-                          backgroundColor: "#e5e5e5",
-                          marginLeft: ".5rem",
-                        }}
-                      />
-                    </div>
-                  }
-                  key={key[0]}
-                >
-                  {data?.getAllEntityWithoutPagination.map((rec: Entity) => {
-                    const entity = rec;
-                    if (entity?.type?.name === key[0]) {
-                      return (
-                        <EntityCard
-                          entity={entity}
-                          key={entity.id}
-                          summaryData={
-                            summaryData?.getAllEntityChecklistAndPMSummary
-                          }
-                          smallView
-                        />
-                      );
-                    }
-                  })}
-                </Collapse.Panel>
-              </Collapse>
-            ))}
-          </div>
-        ) : (
-          <div
-            style={{
-              marginTop: 50,
-            }}
-          >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          </div>
-        )}
       </motion.div>
     </>
   );
 };
 
-export default EntityUtilization;
+export default GroupedEntityUtilization;

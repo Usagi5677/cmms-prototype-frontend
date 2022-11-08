@@ -209,6 +209,11 @@
   margin-left: 6px;
   font-size: 12px;
 }
+.bd-time-wrapper {
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+}
 @media only screen and (min-width: 500px) {
   .container-second-block-wrapper {
     display: flex;

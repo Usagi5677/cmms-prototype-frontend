@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { WarningOutlined } from "@ant-design/icons";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import CloneEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/CloneEntityUtilization";
+import GroupedEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/GroupedEntityUtilization";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
