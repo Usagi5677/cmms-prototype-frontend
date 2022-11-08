@@ -520,9 +520,6 @@ const ViewEntity = () => {
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <ViewSparePR isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair isDeleted={flag} entity={entityData} />
-              </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
                 <ViewBreakdown isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
