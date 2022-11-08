@@ -19,9 +19,9 @@ import { useParams } from "react-router";
 import { CREATE_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { BrandSelector } from "../../common/BrandSelector";
-import { DepartmentSelector } from "../../common/DepartmentSelector";
 import { EngineSelector } from "../../common/EngineSelector";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
+import { HullTypeSelector } from "../../Config/HullType/HullTypeSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./AddEntity.module.css";
@@ -38,6 +38,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
   const [typeId, setTypeId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
   const [divisionId, setDivisionId] = useState<number | null>(null);
+  const [hullTypeId, setHullTypeId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const { id }: any = useParams();
@@ -61,6 +62,10 @@ const AddEntity: React.FC<AddEntityProps> = ({
   };
 
   const onFinish = async (values: any) => {
+    if (!typeId) {
+      message.error("Please select the type.");
+      return;
+    }
     const {
       machineNumber,
       model,
@@ -70,6 +75,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
       measurement,
       engine,
       registeredDate,
+      dimension,
     } = values;
 
     createEntity({
@@ -86,6 +92,8 @@ const AddEntity: React.FC<AddEntityProps> = ({
         measurement,
         engine,
         parentEntityId: parseInt(id),
+        hullTypeId,
+        dimension,
       },
     });
   };
@@ -162,7 +170,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
             )}
 
             <div className={classes["col"]}>
-              <Form.Item label="Type" required={false}>
+              <Form.Item label="Type" required={true}>
                 <TypeSelector setTypeId={setTypeId} />
               </Form.Item>
             </div>
@@ -241,6 +249,24 @@ const AddEntity: React.FC<AddEntityProps> = ({
               </Form.Item>
             </div>
           </div>
+
+          {!includeSubEntity && entityType === "Vessel" && (
+            <div className={classes["row"]}>
+              <div className={classes["col"]}>
+                <Form.Item label="Hull Type" required={false}>
+                  <HullTypeSelector setHullTypeId={setHullTypeId} />
+                </Form.Item>
+              </div>
+              <div className={classes["col"]}>
+                <Form.Item label="Dimension" name="dimension" required={false}>
+                  <InputNumber
+                    placeholder="Dimension"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          )}
 
           <Row justify="end" gutter={16}>
             <Col>

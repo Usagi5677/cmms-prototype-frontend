@@ -5,6 +5,7 @@ import {
   DatePicker,
   Form,
   Input,
+  InputNumber,
   message,
   Modal,
   Radio,
@@ -23,6 +24,7 @@ import { BrandSelector } from "../../common/BrandSelector";
 import { DepartmentSelector } from "../../common/DepartmentSelector";
 import { EngineSelector } from "../../common/EngineSelector";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
+import { HullTypeSelector } from "../../Config/HullType/HullTypeSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import classes from "./EditEntity.module.css";
@@ -43,6 +45,7 @@ const EditEntity = ({
   const [typeId, setTypeId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
   const [divisionId, setDivisionId] = useState<number | null>(null);
+  const [hullTypeId, setHullTypeId] = useState<number | null>(null);
 
   const [editEntity, { loading: loadingEntity }] = useMutation(EDIT_ENTITY, {
     onCompleted: () => {
@@ -56,7 +59,7 @@ const EditEntity = ({
       "getSingleEntity",
       "getAllHistoryOfEntity",
       "singleEntityUsageHistory",
-      "getAllEntity"
+      "getAllEntity",
     ],
   });
 
@@ -65,8 +68,15 @@ const EditEntity = ({
   };
 
   const onFinish = async (values: any) => {
-    const { machineNumber, model, brand, measurement, engine, registeredDate } =
-      values;
+    const {
+      machineNumber,
+      model,
+      brand,
+      measurement,
+      engine,
+      registeredDate,
+      dimension,
+    } = values;
 
     editEntity({
       variables: {
@@ -80,10 +90,11 @@ const EditEntity = ({
         registeredDate,
         measurement,
         engine,
+        hullTypeId,
+        dimension,
       },
     });
   };
-
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
@@ -161,6 +172,7 @@ const EditEntity = ({
               <Form.Item label="Type" required={false}>
                 <TypeSelector
                   setTypeId={setTypeId}
+                  entityType={entity?.type?.entityType}
                   currentId={entity?.type?.id}
                 />
               </Form.Item>
@@ -232,7 +244,31 @@ const EditEntity = ({
               </Form.Item>
             </div>
           </div>
-
+          {!includeSubEntity && entity?.type?.entityType === "Vessel" && (
+            <div className={classes["row"]}>
+              <div className={classes["col"]}>
+                <Form.Item label="Hull Type" required={false}>
+                  <HullTypeSelector
+                    setHullTypeId={setHullTypeId}
+                    currentId={entity?.hullType?.id}
+                  />
+                </Form.Item>
+              </div>
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Dimension"
+                  name="dimension"
+                  required={false}
+                  initialValue={entity?.dimension}
+                >
+                  <InputNumber
+                    placeholder="Dimension"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          )}
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>

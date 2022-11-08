@@ -590,6 +590,8 @@ export const CREATE_ENTITY = gql`
     $lastService: Int
     $registeredDate: Date
     $parentEntityId: Int
+    $hullTypeId: Int
+    $dimension: Int
   ) {
     createEntity(
       typeId: $typeId
@@ -604,6 +606,8 @@ export const CREATE_ENTITY = gql`
       lastService: $lastService
       registeredDate: $registeredDate
       parentEntityId: $parentEntityId
+      hullTypeId: $hullTypeId
+      dimension: $dimension
     )
   }
 `;
@@ -619,6 +623,8 @@ export const EDIT_ENTITY = gql`
     $engine: String
     $measurement: String
     $registeredDate: Date
+    $hullTypeId: Int
+    $dimension: Int
   ) {
     editEntity(
       id: $id
@@ -630,6 +636,8 @@ export const EDIT_ENTITY = gql`
       engine: $engine
       measurement: $measurement
       registeredDate: $registeredDate
+      hullTypeId: $hullTypeId
+      dimension: $dimension
     )
   }
 `;

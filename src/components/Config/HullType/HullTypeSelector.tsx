@@ -1,12 +1,11 @@
 import { useLazyQuery } from "@apollo/client";
 import { Select, Spin } from "antd";
 import React, { useState, useEffect } from "react";
-import { TYPES } from "../../../api/queries";
-import Type from "../../../models/Type";
+import { HULL_TYPES } from "../../../api/queries";
+import HullType from "../../../models/HullType";
 
-export interface TypeSelectorProps {
-  entityType?: "Machine" | "Vehicle" | "Vessel" | "Sub Entity";
-  setTypeId: any;
+export interface HullTypeSelectorProps {
+  setHullTypeId: any;
   currentId?: number | number[];
   currentName?: string;
   rounded?: boolean;
@@ -14,9 +13,8 @@ export interface TypeSelectorProps {
   width?: number | string;
 }
 
-export const TypeSelector: React.FC<TypeSelectorProps> = ({
-  entityType,
-  setTypeId,
+export const HullTypeSelector: React.FC<HullTypeSelectorProps> = ({
+  setHullTypeId,
   currentId,
   currentName,
   rounded = false,
@@ -30,37 +28,26 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
   const [filter, setFilter] = useState<{
     first: number;
     name: string;
-    entityType: string;
   }>({
     first: 10,
     name: "",
-    entityType: "",
   });
   const [firstLoad, setFirstLoad] = useState(true);
-  const [getTypes, { data, loading }] = useLazyQuery(TYPES, {
+  const [getHullTypes, { data, loading }] = useLazyQuery(HULL_TYPES, {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
 
   useEffect(() => {
-    getTypes({ variables: filter });
-  }, [filter, getTypes]);
+    getHullTypes({ variables: filter });
+  }, [filter, getHullTypes]);
 
   useEffect(() => {
-    if (entityType) {
-      setFilter((filter) => ({
-        ...filter,
-        entityType: entityType,
-        name: search,
-      }));
-    } else {
-      setFilter((filter) => ({
-        ...filter,
-        entityType: entityType!,
-        name: search,
-      }));
-    }
-  }, [search, entityType]);
+    setFilter((filter) => ({
+      ...filter,
+      name: search,
+    }));
+  }, [search]);
 
   useEffect(() => {
     if (firstLoad) {
@@ -78,7 +65,7 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
     <Select
       style={{ width: width ?? undefined }}
       showArrow
-      placeholder="Select type"
+      placeholder="Select hull type"
       allowClear={true}
       loading={loading}
       onSearch={setSearch}
@@ -88,13 +75,13 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
       notFoundContent={loading ? <Spin size="small" /> : null}
       mode={multiple ? "multiple" : undefined}
       onChange={(val) => {
-        setTypeId(val);
+        setHullTypeId(val);
         setValue(val);
       }}
       value={value}
       getPopupContainer={trigger => trigger.parentNode}
     >
-      {data?.types.edges.map((edge: { node: Type }) => (
+      {data?.hullTypes.edges.map((edge: { node: HullType }) => (
         <Select.Option key={edge.node.id} value={edge.node.id}>
           {edge.node.name}
         </Select.Option>

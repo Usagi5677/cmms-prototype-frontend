@@ -11,6 +11,7 @@ import EntityRepairRequest from "./EntityRepairRequest";
 import SparePR from "./SparePR";
 import Repair from "./Repair";
 import Division from "../Division";
+import HullType from "../HullType";
 
 export interface Entity {
   id: number;
@@ -31,6 +32,8 @@ export interface Entity {
   brand?: string;
   parentEntityId?: number;
   note?: string;
+  hullType?: HullType;
+  dimension?: number;
   deletedAt?: Date;
   status: EntityStatus;
   statusChangedAt: Date;
