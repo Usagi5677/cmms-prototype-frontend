@@ -672,6 +672,38 @@ export const TYPES = gql`
   }
 `;
 
+export const HULL_TYPES = gql`
+  query hullTypes(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    hullTypes(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const API_KEYS = gql`
   query apiKeys(
     $after: String

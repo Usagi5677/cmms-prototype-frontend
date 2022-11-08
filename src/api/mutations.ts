@@ -452,6 +452,25 @@ export const EDIT_TYPE = gql`
   }
 `;
 
+export const CREATE_HULL_TYPE = gql`
+  mutation createHullType($input: CreateHullTypeInput!) {
+    createHullType(createHullTypeInput: $input)
+  }
+`;
+
+export const DELETE_HULL_TYPE = gql`
+  mutation removeHullType($id: Int!) {
+    removeHullType(id: $id)
+  }
+`;
+
+export const EDIT_HULL_TYPE = gql`
+  mutation updateHullType($input: UpdateHullTypeInput!) {
+    updateHullType(updateHullTypeInput: $input)
+  }
+`;
+
+
 export const CREATE_LOCATION = gql`
   mutation createLocation($input: CreateLocationInput!) {
     createLocation(input: $input)

@@ -125,7 +125,7 @@ export const Divisions: React.FC<DivisionsProps> = ({}) => {
   const pageInfo = data?.divisions.pageInfo ?? {};
 
   const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
   return (
     <div>
       <div className={classes["options-wrapper"]}>

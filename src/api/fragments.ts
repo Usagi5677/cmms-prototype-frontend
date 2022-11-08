@@ -71,6 +71,11 @@ export const SUB_ENTITY_FRAGMENT = gql`
       type
     }
     parentEntityId
+    hullType {
+      id
+      name
+    }
+    dimension
   }
 `;
 
@@ -161,6 +166,11 @@ export const ENTITY_FRAGMENT = gql`
       ...SubEntityFields
     }
     parentEntityId
+    hullType {
+      id
+      name
+    }
+    dimension
   }
 `;
 

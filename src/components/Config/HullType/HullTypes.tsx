@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { TYPES } from "../../../api/queries";
+import { HULL_TYPES } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
@@ -11,42 +11,39 @@ import PaginationButtons from "../../common/PaginationButtons/PaginationButtons"
 import Search from "../../common/Search";
 import type { ColumnsType } from "antd/es/table";
 import { DeleteListing } from "../../common/DeleteListing";
-import { DELETE_TYPE } from "../../../api/mutations";
+import { DELETE_HULL_TYPE } from "../../../api/mutations";
 import Type from "../../../models/Type";
-import { CreateType } from "./CreateType";
-import EntityTypeFilter from "./EntityTypeFilter";
-import { EditType } from "./EditType";
-import classes from "./Types.module.css";
+import classes from "./HullTypes.module.css";
+import HullType from "../../../models/HullType";
+import { EditHullType } from "./EditHullType";
+import { CreateHullType } from "./CreateHullType";
 
-export interface TypesProps {}
+export interface HullTypeProps {}
 
-export const Types: React.FC<TypesProps> = ({}) => {
+export const HullTypes: React.FC<HullTypeProps> = ({}) => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<
     PaginationArgs & {
       name: string;
-      entityType: string | null;
     }
   >({
     ...DefaultPaginationArgs,
     name: "",
-    entityType: null,
   });
 
-  const [getTypes, { data, loading }] = useLazyQuery(TYPES, {
+  const [getHullTypes, { data, loading }] = useLazyQuery(HULL_TYPES, {
     onError: (err) => {
-      errorMessage(err, "Error loading types.");
+      errorMessage(err, "Error loading hull types.");
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
 
-  // Fetch tickets when component mounts or when the filter object changes
   useEffect(() => {
-    getTypes({ variables: filter });
-  }, [filter, getTypes]);
+    getHullTypes({ variables: filter });
+  }, [filter, getHullTypes]);
 
   const searchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
@@ -95,19 +92,12 @@ export const Types: React.FC<TypesProps> = ({}) => {
     setPage(page - 1);
   };
 
-  const columns: ColumnsType<Type> = [
+  const columns: ColumnsType<HullType> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "50%",
-      className: classes["font"],
-    },
-    {
-      title: "",
-      dataIndex: "entityType",
-      key: "entityType",
-      width: "50%",
+      width: "100%",
       className: classes["font"],
     },
     {
@@ -118,18 +108,18 @@ export const Types: React.FC<TypesProps> = ({}) => {
       // width: "33%",
       render: (val, rec) => (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <EditType type={rec} />
+          <EditHullType hullType={rec} />
           <DeleteListing
             id={rec.id}
-            mutation={DELETE_TYPE}
-            refetchQueries={["types"]}
+            mutation={DELETE_HULL_TYPE}
+            refetchQueries={["hullTypes"]}
           />
         </div>
       ),
     },
   ];
 
-  const pageInfo = data?.types.pageInfo ?? {};
+  const pageInfo = data?.hullTypes.pageInfo ?? {};
 
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
@@ -151,21 +141,14 @@ export const Types: React.FC<TypesProps> = ({}) => {
             onClick={() => setSearch("")}
             margin={filterMargin}
           />
-          <EntityTypeFilter
-            onChange={(entityType) => {
-              setFilter({ ...filter, entityType, ...DefaultPaginationArgs });
-            }}
-            value={filter.entityType}
-            margin={filterMargin}
-          />
         </div>
         <div className={classes["option"]}>
-          <CreateType />
+          <CreateHullType />
         </div>
       </div>
       <Table
         rowKey="id"
-        dataSource={data?.types.edges.map((edge: { node: Type }) => edge.node)}
+        dataSource={data?.hullTypes.edges.map((edge: { node: Type }) => edge.node)}
         columns={columns}
         pagination={false}
         size="small"

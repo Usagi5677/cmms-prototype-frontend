@@ -8,6 +8,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding-top: 10px;
+  align-items: center;
 }
 
 .option {
@@ -24,6 +25,9 @@
   }
   .options-wrapper {
     flex-direction: row;
+  }
+  .option {
+    margin-top: 0;
   }
 }
 
