@@ -76,6 +76,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
       engine,
       registeredDate,
       dimension,
+      registryNumber,
     } = values;
 
     createEntity({
@@ -94,6 +95,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
         parentEntityId: parseInt(id),
         hullTypeId,
         dimension,
+        registryNumber,
       },
     });
   };
@@ -239,7 +241,17 @@ const AddEntity: React.FC<AddEntityProps> = ({
                 </Form.Item>
               </div>
             )}
-
+            {!includeSubEntity && entityType === "Vessel" && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Registry Number"
+                  name="registryNumber"
+                  required={false}
+                >
+                  <Input placeholder="Registry Number" />
+                </Form.Item>
+              </div>
+            )}
             <div className={classes["col"]}>
               <Form.Item label="Measurement" name="measurement">
                 <Radio.Group buttonStyle="solid" optionType="button">

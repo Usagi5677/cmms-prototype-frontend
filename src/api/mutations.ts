@@ -592,6 +592,7 @@ export const CREATE_ENTITY = gql`
     $parentEntityId: Int
     $hullTypeId: Int
     $dimension: Int
+    $registryNumber: String
   ) {
     createEntity(
       typeId: $typeId
@@ -608,6 +609,7 @@ export const CREATE_ENTITY = gql`
       parentEntityId: $parentEntityId
       hullTypeId: $hullTypeId
       dimension: $dimension
+      registryNumber: $registryNumber
     )
   }
 `;
@@ -625,6 +627,7 @@ export const EDIT_ENTITY = gql`
     $registeredDate: Date
     $hullTypeId: Int
     $dimension: Int
+    $registryNumber: String
   ) {
     editEntity(
       id: $id
@@ -638,6 +641,7 @@ export const EDIT_ENTITY = gql`
       registeredDate: $registeredDate
       hullTypeId: $hullTypeId
       dimension: $dimension
+      registryNumber: $registryNumber
     )
   }
 `;

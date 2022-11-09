@@ -21,7 +21,6 @@ import { EDIT_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
 import { BrandSelector } from "../../common/BrandSelector";
-import { DepartmentSelector } from "../../common/DepartmentSelector";
 import { EngineSelector } from "../../common/EngineSelector";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { HullTypeSelector } from "../../Config/HullType/HullTypeSelector";
@@ -76,6 +75,7 @@ const EditEntity = ({
       engine,
       registeredDate,
       dimension,
+      registryNumber,
     } = values;
 
     editEntity({
@@ -92,6 +92,7 @@ const EditEntity = ({
         engine,
         hullTypeId,
         dimension,
+        registryNumber,
       },
     });
   };
@@ -230,7 +231,18 @@ const EditEntity = ({
                   </Form.Item>
                 </div>
               )}
-
+            {!includeSubEntity && entity?.type?.entityType === "Vessel" && (
+              <div className={classes["col"]}>
+                <Form.Item
+                  label="Registry Number"
+                  name="registryNumber"
+                  required={false}
+                  initialValue={entity?.registryNumber}
+                >
+                  <Input placeholder="Registry Number" />
+                </Form.Item>
+              </div>
+            )}
             <div className={classes["col"]}>
               <Form.Item
                 label="Measurement"

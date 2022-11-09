@@ -76,6 +76,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
       name
     }
     dimension
+    registryNumber
   }
 `;
 
@@ -171,6 +172,7 @@ export const ENTITY_FRAGMENT = gql`
       name
     }
     dimension
+    registryNumber
   }
 `;
 
