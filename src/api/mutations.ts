@@ -942,6 +942,12 @@ export const DELETE_ENTITY_ATTACHMENT = gql`
   }
 `;
 
+export const ASSIGN_SUB_ENTITY_TO_ENTITY = gql`
+  mutation ($id: Int!, $parentEntityId: Int!) {
+    assignSubEntityToEntity(id: $id, parentEntityId: $parentEntityId)
+  }
+`;
+
 export const ASSIGN_USER_TO_ENTITY = gql`
   mutation ($entityId: Int!, $type: String!, $userIds: [Int!]!) {
     assignUserToEntity(entityId: $entityId, type: $type, userIds: $userIds)

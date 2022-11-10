@@ -14,14 +14,12 @@ import { Entity } from "../../../../models/Entity/Entity";
 import classes from "./ViewSubEntity.module.css";
 
 const ViewSubEntity = ({
-  subEntity,
+  entity,
   isDeleted,
 }: {
-  subEntity: Entity;
+  entity: Entity;
   isDeleted?: boolean;
 }) => {
-  const isSmallDevice = useIsSmallDevice(600, true);
-  const { user: self } = useContext(UserContext);
   return (
     <div id="subEntityCollapse">
       <Collapse
@@ -34,7 +32,7 @@ const ViewSubEntity = ({
           header={<div className={classes["header-title"]}>Sub Entity</div>}
         >
           <div className={classes["info-container"]}>
-            {subEntity?.subEntities?.map((s: Entity, index: number) => (
+            {entity?.subEntities?.map((s: Entity, index: number) => (
               <EntityCard entity={s} key={s.id} />
             ))}
           </div>

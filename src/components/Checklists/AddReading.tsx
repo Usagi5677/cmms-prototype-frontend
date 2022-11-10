@@ -17,6 +17,7 @@ export const AddReading: React.FC<AddReadingProps> = ({
   checklist,
 }) => {
   const [visible, setVisible] = useState(false);
+  const [currentValue, setCurrentValue] = useState(0);
   const [meterAvailable, setMeterAvailable] = useState(true);
   const [form] = useForm();
 
@@ -60,6 +61,7 @@ export const AddReading: React.FC<AddReadingProps> = ({
     form.resetFields();
     setVisible(false);
     setMeterAvailable(true);
+    setCurrentValue(0);
   };
 
   const onFinish = async (values: any) => {
@@ -110,7 +112,8 @@ export const AddReading: React.FC<AddReadingProps> = ({
                   addonAfter={`${entity.measurement}`}
                   placeholder={`Enter ${entity.measurement}`}
                   style={{ width: "100%", marginBottom: ".5rem" }}
-
+                  min={0}
+                  onChange={(e) => setCurrentValue(e)}
                   //@ts-ignore
                   // value={reading}
                   // onChange={(val: number) => {
@@ -118,6 +121,13 @@ export const AddReading: React.FC<AddReadingProps> = ({
                   // }}
                 />
               </Form.Item>
+              {currentValue !== 0 && (
+                <div>
+                  Difference between previous meter reading is{" "}
+                  {currentValue - entity?.currentRunning!}
+                </div>
+              )}
+
               <span style={{ opacity: 0.7 }}>
                 <a
                   style={{ textDecoration: "underline" }}
@@ -135,6 +145,7 @@ export const AddReading: React.FC<AddReadingProps> = ({
                   placeholder={`Enter ${entity.measurement}`}
                   style={{ width: "100%", marginBottom: ".5rem" }}
                   max={entity.measurement === "hr" ? 24 : undefined}
+                  min={0}
                 />
               </Form.Item>
             </>

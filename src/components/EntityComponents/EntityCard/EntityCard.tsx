@@ -3,7 +3,6 @@ import {
   FaMapMarkerAlt,
   FaRegClock,
 } from "react-icons/fa";
-
 import classes from "./EntityCard.module.css";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
@@ -26,14 +25,11 @@ import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistA
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
 import { EntityIcon } from "../../common/EntityIcon";
-import { ToolOutlined } from "@ant-design/icons";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
-import { isAssignedType } from "../../../helpers/permissions";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
-import EditEntity from "../EditEntity/EditEntity";
-import { DeleteListing } from "../../common/DeleteListing";
-import { DELETE_ENTITY } from "../../../api/mutations";
+import AssignSubEntity from "../AssignSubEntity/AssignSubEntity";
+import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 
 const EntityCard = ({
   entity,
@@ -44,7 +40,6 @@ const EntityCard = ({
   summaryData?: EntityChecklistAndPMSummary;
   smallView?: boolean;
 }) => {
-  const isSmallDevice = useIsSmallDevice(600, true);
   const { user: self } = useContext(UserContext);
   const { Paragraph } = Typography;
   const interService =
@@ -222,9 +217,9 @@ const EntityCard = ({
                   ) : null}
 
                   <div className={classes["third-block"]}>
-                    {entity?.breakdowns[0]?.estimatedDateOfRepair &&
-                      entity?.status === "Breakdown" && (
-                        <div className={classes["fourth-block"]}>
+                    {entity?.status === "Breakdown" && entity?.breakdowns && (
+                      <div className={classes["fourth-block"]}>
+                        {entity?.breakdowns[0]?.estimatedDateOfRepair && (
                           <div className={classes["title-wrapper"]}>
                             <Tooltip title="Estimated date of repair">
                               <FaRegClock />
@@ -240,13 +235,16 @@ const EntityCard = ({
                               ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
                             </span>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
+                    )}
                     <div>
                       <EntityStatusTag status={entity?.status} />
                     </div>
                   </div>
                 </div>
+                {hasPermissions(self, ["ADD_ENTITY"]) &&
+                  entity?.parentEntityId && <AssignSubEntity entity={entity} />}
 
                 <Link to={"/entity/" + entity.id}>
                   <Tooltip title="Open">
@@ -651,8 +649,8 @@ const EntityCard = ({
               </>
             )}
 
-            {entity?.subEntities?.map((s, index) => (
-              <EntityCard entity={s} />
+            {entity?.subEntities?.map((s) => (
+              <EntityCard entity={s} key={s.id} />
             ))}
           </div>
         </Collapse.Panel>

@@ -5,6 +5,7 @@ import { useForm } from "antd/lib/form/Form";
 import Upload, { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import React, { useState } from "react";
+import { useParams } from "react-router";
 import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../api/queries";
 import { MAX_FILE_SIZE } from "../../helpers/constants";
 import Checklist from "../../models/Checklist";
@@ -26,6 +27,7 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const { id }: any = useParams();
 
   const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
     variables: {
@@ -34,7 +36,7 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
       before: null,
       after: null,
       search: "",
-      entityId: entity.id,
+      entityId: parseInt(id),
     },
   });
 
@@ -105,7 +107,7 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
           before: null,
           after: null,
           search: "",
-          entityId: entity.id,
+          entityId: parseInt(id),
         });
         handleCancel();
       });
