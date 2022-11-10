@@ -138,10 +138,6 @@
     flex-direction: row;
     align-items: center;
   }
-  .first-block {
-    padding-top: 0;
-  }
-
   .second-block {
     flex-direction: row;
     margin-top: 0;
@@ -181,6 +177,7 @@
   .first-block {
     flex-direction: row;
     align-items: center;
+    margin-top: 4px;
   }
   .space-two {
     display: flex;
