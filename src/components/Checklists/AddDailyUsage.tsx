@@ -76,6 +76,7 @@ export const AddDailyUsage: React.FC<AddDailyUsageProps> = ({
               placeholder={`Enter hr`}
               style={{ width: "100%", marginBottom: ".5rem" }}
               max={24}
+              min={0}
             />
           </Form.Item>
           <Row justify="end" gutter={16}>
