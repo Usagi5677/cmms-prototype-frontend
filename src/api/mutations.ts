@@ -370,6 +370,17 @@ export const CHANGE_CHECKLIST_TEMPLATE = gql`
   }
 `;
 
+export const BULK_ASSIGN_CHECKLIST_TEMPLATE = gql`
+  mutation bulkAssignChecklistTemplate(
+    $entityIds: [Int!]!
+    $newChecklistId: Int!
+  ) {
+    bulkAssignChecklistTemplate(
+      entityIds: $entityIds
+      newChecklistId: $newChecklistId
+    )
+  }
+`;
 export const TOGGLE_CHECKLIST_ITEM = gql`
   mutation toggleChecklistItem($id: Int!, $complete: Boolean!) {
     toggleChecklistItem(id: $id, complete: $complete)
@@ -469,7 +480,6 @@ export const EDIT_HULL_TYPE = gql`
     updateHullType(updateHullTypeInput: $input)
   }
 `;
-
 
 export const CREATE_LOCATION = gql`
   mutation createLocation($input: CreateLocationInput!) {

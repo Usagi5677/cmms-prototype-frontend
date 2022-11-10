@@ -6,12 +6,14 @@ import Type from "../../../models/Type";
 
 export interface TypeSelectorProps {
   entityType?: "Machine" | "Vehicle" | "Vessel" | "Sub Entity";
-  setTypeId: any;
+  setTypeId?: any;
   currentId?: number | number[];
   currentName?: string;
   rounded?: boolean;
   multiple?: boolean;
   width?: number | string;
+  placeholder?: string;
+  onChange?: (typeId: number | number[], clear: any) => void;
 }
 
 export const TypeSelector: React.FC<TypeSelectorProps> = ({
@@ -22,6 +24,8 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
   rounded = false,
   multiple = false,
   width,
+  placeholder = "Select type",
+  onChange
 }) => {
   const [search, setSearch] = useState("");
   const [value, setValue] = useState<number[] | number | null>(
@@ -74,11 +78,15 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
     }
   }, [currentId, currentName, firstLoad]);
 
+  const clear = () => {
+    setValue(null);
+  };
+
   return (
     <Select
       style={{ width: width ?? undefined }}
       showArrow
-      placeholder="Select type"
+      placeholder={placeholder}
       allowClear={true}
       loading={loading}
       onSearch={setSearch}
@@ -88,8 +96,9 @@ export const TypeSelector: React.FC<TypeSelectorProps> = ({
       notFoundContent={loading ? <Spin size="small" /> : null}
       mode={multiple ? "multiple" : undefined}
       onChange={(val) => {
-        setTypeId(val);
+        if (setTypeId) setTypeId(val);
         setValue(val);
+        if (onChange) onChange(val, clear);
       }}
       value={value}
       getPopupContainer={trigger => trigger.parentNode}
