@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
+  Col,
   Divider,
   Form,
   Input,
@@ -10,6 +11,7 @@ import {
   Row,
   Select,
   Spin,
+  Tag,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
@@ -17,16 +19,19 @@ import { FaList } from "react-icons/fa";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
 import {
   ADD_CHECKLIST_TEMPLATE_ITEM,
+  BULK_ASSIGN_CHECKLIST_TEMPLATE,
   CHANGE_CHECKLIST_TEMPLATE,
   EDIT_CHECKLIST_TEMPLATE,
 } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import { CHECKLIST_TEMPLATE_DETAILS } from "../../api/queries";
+import { ALL_ENTITY, CHECKLIST_TEMPLATE_DETAILS } from "../../api/queries";
 import ChecklistTemplateItem from "../../models/ChecklistTemplateItem";
 import { RemoveChecklistTemplateItem } from "./RemoveChecklistTemplateItem";
 import { SearchEntities } from "../common/SearchEntitities";
 import { Entity } from "../../models/Entity/Entity";
 import { EntityListing } from "../EntityComponents/EntityListing";
+import { TypeSelector } from "../Config/Type/TypeSelector";
+import { CenteredSpin } from "../common/CenteredSpin";
 
 export interface ChecklistTemplateDetailsProps {
   checklistTemplate: ChecklistTemplate;
@@ -40,6 +45,7 @@ export const ChecklistTemplateDetails: React.FC<
   const [newItem, setNewItem] = useState("");
   const newItemInput = useRef<any>(null);
   const [newItemAdded, setNewItemAdded] = useState(false);
+  const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
 
   useEffect(() => {
     if (visible) {
@@ -60,6 +66,20 @@ export const ChecklistTemplateDetails: React.FC<
       },
       notifyOnNetworkStatusChange: true,
     });
+
+  const [getEntities, { loading: loadingEntities }] = useLazyQuery(ALL_ENTITY, {
+    onCompleted: (data) => {
+      const currentIds = selectedEntities.map((e) => e.id);
+      const entities: Entity[] = data.getAllEntity.edges.map(
+        (edge: { node: Entity }) => edge.node
+      );
+      const newEntities = entities.filter((e) => !currentIds.includes(e.id));
+      setSelectedEntities([...selectedEntities, ...newEntities]);
+    },
+    onError: (err) => {
+      errorMessage(err, "Error loading entities.");
+    },
+  });
 
   const [editChecklistTemplate, { loading }] = useMutation(
     EDIT_CHECKLIST_TEMPLATE,
@@ -121,6 +141,7 @@ export const ChecklistTemplateDetails: React.FC<
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
+    setSelectedEntities([]);
   };
 
   const onFinish = async (values: any) => {
@@ -147,6 +168,19 @@ export const ChecklistTemplateDetails: React.FC<
     return used;
   };
   const usedBy = getUsedBy();
+
+  const [bulkAssignChecklistTemplate, { loading: assigning }] = useMutation(
+    BULK_ASSIGN_CHECKLIST_TEMPLATE,
+    {
+      onCompleted: (data) => {
+        message.success(data.bulkAssignChecklistTemplate);
+      },
+      onError: (err) => {
+        errorMessage(err, "Unexpected error during bulk assignment.");
+      },
+      refetchQueries: ["checklistTemplate"],
+    }
+  );
 
   return (
     <>
@@ -291,6 +325,33 @@ export const ChecklistTemplateDetails: React.FC<
                 current={usedBy}
               />
             </div>
+            <div style={{ marginTop: ".5rem" }}>
+              <TypeSelector
+                onChange={(typeId, clear) => {
+                  getEntities({
+                    variables: { first: 1000, typeIds: [typeId] },
+                  });
+                  clear();
+                }}
+                placeholder="Select all from type"
+                width="100%"
+              />
+            </div>
+            {selectedEntities.map((entity) => (
+              <Tag
+                key={entity.id}
+                closable
+                onClose={() =>
+                  setSelectedEntities(
+                    selectedEntities.filter((s) => s.id !== entity.id)
+                  )
+                }
+                style={{ marginRight: ".5rem", marginTop: ".3rem" }}
+              >
+                {entity.machineNumber} ({entity.location?.name})
+              </Tag>
+            ))}
+            {loadingEntities && <CenteredSpin />}
           </>
         )}
         <Row justify="end" gutter={16} style={{ marginTop: "1rem" }}>
@@ -301,6 +362,23 @@ export const ChecklistTemplateDetails: React.FC<
           >
             Close
           </Button>
+          <Col>
+            <Button
+              type="primary"
+              loading={assigning}
+              className="primaryButton"
+              onClick={() => {
+                bulkAssignChecklistTemplate({
+                  variables: {
+                    entityIds: selectedEntities.map((e) => e.id),
+                    newChecklistId: checklistTemplate.id,
+                  },
+                });
+              }}
+            >
+              Assign
+            </Button>
+          </Col>
         </Row>
       </Modal>
     </>

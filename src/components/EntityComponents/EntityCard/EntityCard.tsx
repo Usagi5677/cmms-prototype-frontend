@@ -266,7 +266,12 @@ const EntityCard = ({
                     <FaRegClock />
                   </Tooltip>
 
-                  <span className={classes["title"]}>
+                  <span
+                    className={classes["title"]}
+                    title={moment(entity?.registeredDate).format(
+                      DATETIME_FORMATS.FULL
+                    )}
+                  >
                     {moment(entity?.registeredDate).format(
                       DATETIME_FORMATS.DAY_MONTH_YEAR
                     )}
@@ -456,19 +461,36 @@ const EntityCard = ({
                         return (
                           <div key={b.id}>
                             <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                              <div
-                                className={classes["id-wrapper"]}
-                                title={`Breakdown ID: ${b.id}`}
-                              >
-                                <ToolOutlined
-                                  className={classes["icon"]}
-                                  style={{ paddingRight: 4, opacity: 0.5 }}
-                                />
-                                <span
-                                  style={{ opacity: 0.5, paddingRight: 10 }}
-                                >
-                                  {b.id}
-                                </span>
+                              <div className={classes["bd-time-wrapper"]}>
+                                <div className={classes["title-wrapper"]}>
+                                  <Tooltip title="Created Date">
+                                    <FaRegClock />
+                                  </Tooltip>
+
+                                  <span
+                                    className={classes["title"]}
+                                    title={moment(b.createdAt).format(
+                                      DATETIME_FORMATS.FULL
+                                    )}
+                                  >
+                                    {moment(b.createdAt).format(
+                                      DATETIME_FORMATS.DAY_MONTH_YEAR
+                                    )}
+                                  </span>
+                                </div>
+                                <span style={{ marginLeft: 4 }}>•</span>
+                                <div className={classes["title-wrapper"]}>
+                                  <span
+                                    className={classes["title"]}
+                                    title={moment(b.createdAt).format(
+                                      DATETIME_FORMATS.FULL
+                                    )}
+                                  >
+                                    {moment(b.createdAt).format(
+                                      DATETIME_FORMATS.SHORT
+                                    )}
+                                  </span>
+                                </div>
                               </div>
                             </Paragraph>
                             {b?.details?.map((d) => (
@@ -538,15 +560,22 @@ const EntityCard = ({
                         return (
                           <div key={s.id}>
                             <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                              <div className={classes["title-wrapper"]}></div>
                               <div className={classes["id-wrapper"]}>
-                                <ToolOutlined
-                                  className={classes["icon"]}
-                                  style={{ paddingRight: 4, opacity: 0.5 }}
-                                />
+                                <Tooltip title="Created Date">
+                                  <FaRegClock style={{ opacity: 0.5 }} />
+                                </Tooltip>
+
                                 <span
+                                  className={classes["title"]}
+                                  title={moment(s.createdAt).format(
+                                    DATETIME_FORMATS.FULL
+                                  )}
                                   style={{ opacity: 0.5, paddingRight: 10 }}
                                 >
-                                  {s.id}
+                                  {moment(s.createdAt).format(
+                                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                                  )}
                                 </span>
                                 <span title={`Spare PR (${s.id})`}>
                                   {s.name}
@@ -582,14 +611,23 @@ const EntityCard = ({
                         <div key={r.id}>
                           <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                             <div className={classes["id-wrapper"]}>
-                              <ToolOutlined
-                                className={classes["icon"]}
-                                style={{ paddingRight: 4, opacity: 0.5 }}
-                              />
-                              <span style={{ opacity: 0.5, paddingRight: 10 }}>
-                                {r.id}
+                              <Tooltip title="Created Date">
+                                <FaRegClock style={{ opacity: 0.5 }} />
+                              </Tooltip>
+
+                              <span
+                                style={{ opacity: 0.5, paddingRight: 10 }}
+                                className={classes["title"]}
+                                title={moment(r.createdAt).format(
+                                  DATETIME_FORMATS.FULL
+                                )}
+                              >
+                                {moment(r.createdAt).format(
+                                  DATETIME_FORMATS.DAY_MONTH_YEAR
+                                )}
                               </span>
-                              <span>{r.name}</span>
+
+                              <span title={`Repair (${r.id})`}>{r.name}</span>
                             </div>
                           </Paragraph>
                         </div>
@@ -613,100 +651,9 @@ const EntityCard = ({
               </>
             )}
 
-            <div className={classes["se-container"]}>
-              {entity?.subEntities?.map((s, index) => (
-                <div className={classes["se-wrapper"]} key={s.id}>
-                  <div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}></div>
-                      <div className={classes["se-options"]}>
-                        {isAssignedType("Admin", entity, self) ? (
-                          <EditEntity
-                            entity={s}
-                            fontSize={14}
-                            includeSubEntity
-                          />
-                        ) : null}
-                        {isAssignedType("Admin", entity, self) ? (
-                          <div className={classes["se-button"]}>
-                            <DeleteListing
-                              id={s.id}
-                              mutation={DELETE_ENTITY}
-                              refetchQueries={["getAllEntity"]}
-                            />
-                          </div>
-                        ) : null}
-                        <Link to={"/entity/" + s.id} >
-                          <Tooltip title="Open">
-                            <FaArrowAltCircleRight
-                              className={classes["se-button"]}
-                            />
-                          </Tooltip>
-                        </Link>
-                      </div>
-                    </div>
-                    <div className={classes["se"]} style={{marginTop: 10}}>
-                      <div className={classes["se-title"]}>Status</div>
-                      <div className={classes["se-content"]}>
-                        <EntityStatusTag status={s.status} noMarginRight />
-                      </div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>Machine Number</div>
-                      <div className={classes["se-content"]}>
-                        {s.machineNumber}
-                      </div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>Model</div>
-                      <div className={classes["se-content"]}>{s.model}</div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>Type</div>
-                      <div className={classes["se-content"]}>
-                        {s.type?.name}
-                      </div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>Brand</div>
-                      <div className={classes["se-content"]}>{s.brand}</div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>
-                        Current running {s.measurement}
-                      </div>
-                      <div className={classes["se-content"]}>
-                        {s.currentRunning}
-                      </div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>
-                        Last service {s.measurement}
-                      </div>
-                      <div className={classes["se-content"]}>
-                        {s.lastService}
-                      </div>
-                    </div>
-                    <div className={classes["se"]}>
-                      <div className={classes["se-title"]}>
-                        Inter service {s.measurement}
-                      </div>
-                      <div className={classes["se-content"]}>
-                        {(s?.currentRunning ?? 0) - (s?.lastService ?? 0)}
-                      </div>
-                    </div>
-                  </div>
-                  {index + 1 !== entity?.subEntities?.length && (
-                    <Divider
-                      style={{
-                        height: "100%",
-                      }}
-                      type={isSmallDevice ? "vertical" : "horizontal"}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
+            {entity?.subEntities?.map((s, index) => (
+              <EntityCard entity={s} />
+            ))}
           </div>
         </Collapse.Panel>
       </Collapse>

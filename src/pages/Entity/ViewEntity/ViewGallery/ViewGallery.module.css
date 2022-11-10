@@ -7,26 +7,33 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-direction: column;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(230px, 230px));
   grid-gap: 20px;
-  padding: 20px;
 }
-
+.collapse-container {
+  margin-top: 20px;
+}
+.datepicker {
+  margin-bottom: 10px !important;
+  width: 240px !important;
+}
 @media only screen and (min-width: 500px) {
-  .grid-container {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+  .datepicker {
+    margin-right: 10px !important;
+    width: 320px !important;
+  }
+  .options {
+    flex-direction: row;
   }
 }
 
 @media only screen and (min-width: 600px) {
-  .grid-container {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+  .datepicker {
+    margin-bottom: 0 !important;
   }
 }

@@ -9,4 +9,5 @@ export default interface EntityAttachment {
   mode: string;
   createdAt?: Date;
   user: User;
+  favourite?: boolean;
 }

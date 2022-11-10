@@ -1,9 +1,11 @@
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import { useQuery } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import Upload, { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import React, { useState } from "react";
+import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../api/queries";
 import { MAX_FILE_SIZE } from "../../helpers/constants";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
@@ -24,6 +26,17 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+
+  const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
+    variables: {
+      first: 20,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      entityId: entity.id,
+    },
+  });
 
   const handleCancel = () => {
     form.resetFields();
@@ -54,7 +67,7 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
         return;
       }
     }
-    
+
     setUploading(true);
     // Send request as form data as files cannot be sent through graphql
     const data: any = new FormData();
@@ -86,6 +99,14 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
       .finally(function () {
         setUploading(false);
         refetchChecklist();
+        refetch({
+          first: 20,
+          last: null,
+          before: null,
+          after: null,
+          search: "",
+          entityId: entity.id,
+        });
         handleCancel();
       });
   };

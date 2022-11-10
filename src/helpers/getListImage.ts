@@ -77,7 +77,7 @@ export function getListImage(name?: string) {
     case "Car":
       return require("../images/vehicle/Car.png");
     case "Minibus":
-        return require("../images/vehicle/Mini bus.png");
+      return require("../images/vehicle/Mini bus.png");
     case "Speed Boat (25)":
       return require("../images/vessel/Speed Boat (25).png");
     case "Speed Boat (47)":
@@ -90,5 +90,7 @@ export function getListImage(name?: string) {
       return require("../images/vessel/Ferry (100).png");
     case "Speed Boat (18)":
       return require("../images/vessel/Speed Boat (18).png");
+    case "Launch":
+      return require("../images/vessel/Launch.png");
   }
 }

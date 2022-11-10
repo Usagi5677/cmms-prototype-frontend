@@ -32,13 +32,24 @@ export const SUB_ENTITY_FRAGMENT = gql`
   fragment SubEntityFields on Entity {
     id
     createdAt
+    machineNumber
+    registeredDate
+    model
+    engine
+    currentRunning
+    lastService
+    status
+    measurement
+    brand
+    deletedAt
+    note
+    parentEntityId
+    dimension
+    registryNumber
     createdBy {
       ...UserFieldsAPS
       email
     }
-    machineNumber
-    registeredDate
-    model
     type {
       id
       name
@@ -48,7 +59,6 @@ export const SUB_ENTITY_FRAGMENT = gql`
       id
       name
     }
-    engine
     location {
       id
       name
@@ -57,20 +67,44 @@ export const SUB_ENTITY_FRAGMENT = gql`
         name
       }
     }
-    currentRunning
-    lastService
-    status
-    measurement
-    brand
-    deletedAt
-    note
     assignees {
       user {
         ...UserFieldsAPS
       }
       type
     }
-    parentEntityId
+    hullType {
+      id
+      name
+    }
+    repairs {
+      id
+      name
+    }
+    breakdowns {
+      id
+      type
+      estimatedDateOfRepair
+      completedAt
+      createdBy {
+        ...UserFieldsAPS
+      }
+      details {
+        id
+        description
+        repairs {
+          id
+          name
+        }
+      }
+      repairs {
+        id
+        name
+        breakdownDetail {
+          id
+        }
+      }
+    }
   }
 `;
 
@@ -161,6 +195,12 @@ export const ENTITY_FRAGMENT = gql`
       ...SubEntityFields
     }
     parentEntityId
+    hullType {
+      id
+      name
+    }
+    dimension
+    registryNumber
   }
 `;
 

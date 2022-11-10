@@ -672,6 +672,38 @@ export const TYPES = gql`
   }
 `;
 
+export const HULL_TYPES = gql`
+  query hullTypes(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    hullTypes(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const API_KEYS = gql`
   query apiKeys(
     $after: String
@@ -1321,6 +1353,8 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
     $last: Int
     $search: String
     $entityId: Int!
+    $from: Date
+    $to: Date
   ) {
     entityAttachments(
       after: $after
@@ -1329,6 +1363,8 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
       last: $last
       search: $search
       entityId: $entityId
+      from: $from
+      to: $to
     ) {
       pageInfo {
         endCursor
@@ -1347,6 +1383,7 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
           description
           mode
           createdAt
+          favourite
           user {
             ...UserFieldsAPS
           }
@@ -1376,9 +1413,9 @@ export const GET_USAGE_HISTORY_OF_ENTITY = gql`
   }
 `;
 
-export const GET_ENTITY_LATEST_ATTACHMENT = gql`
-  query getEntityLatestAttachment($entityId: Int!) {
-    getEntityLatestAttachment(entityId: $entityId) {
+export const GET_LATEST_FAVOURITE_ATTACHMENT = gql`
+  query getLatestFavouriteAttachment($entityId: Int!) {
+    getLatestFavouriteAttachment(entityId: $entityId) {
       id
       createdAt
       mimeType
@@ -1668,6 +1705,37 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
       idlePercentage
       breakdownPercentage
       machineNumber
+    }
+  }
+`;
+
+export const GET_ALL_GROUPED_ENTITY_USAGE = gql`
+  query getAllGroupedEntityUsage(
+    $from: Date!
+    $to: Date!
+    $search: String
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $typeIds: [Int!]
+    $measurement: [String!]
+    $entityTypes: [String!]
+  ) {
+    getAllGroupedEntityUsage(
+      from: $from
+      to: $to
+      search: $search
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      typeIds: $typeIds
+      measurement: $measurement
+      entityTypes: $entityTypes
+    ) {
+      typeId
+      name
+      workingHour
+      idleHour
+      breakdownHour
+      na
     }
   }
 `;

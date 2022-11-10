@@ -144,7 +144,7 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
   const pageInfo = data?.locations.pageInfo ?? {};
 
   const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
   return (
     <div>
       <div className={classes["options-wrapper"]}>

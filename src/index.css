@@ -670,14 +670,14 @@ em {
 #subEntityCollapse {
   margin-bottom: 20px;
 }
-#filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+#filterCollapse > .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   padding: 0 5px;
 }
-#subEntityCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+#subEntityCollapse > .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -706,7 +706,7 @@ em {
 }
 
 #filterCollapse .ant-collapse-ghost,
-#subEntityCollapse .ant-collapse-ghost {
+#subEntityCollapse > .ant-collapse-ghost {
   border: var(--card-border) !important;
   background-color: var(--card-bg);
   border-radius: 20px !important;

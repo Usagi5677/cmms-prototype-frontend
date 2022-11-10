@@ -370,6 +370,23 @@ export const CHANGE_CHECKLIST_TEMPLATE = gql`
   }
 `;
 
+export const BULK_ASSIGN_CHECKLIST_TEMPLATE = gql`
+  mutation bulkAssignChecklistTemplate(
+    $entityIds: [Int!]!
+    $newChecklistId: Int!
+  ) {
+    bulkAssignChecklistTemplate(
+      entityIds: $entityIds
+      newChecklistId: $newChecklistId
+    )
+  }
+`;
+
+export const SET_FAVOURITE_ATTACHMENT = gql`
+  mutation setFavouriteAttachment($id: Int!, $flag: Boolean!) {
+    setFavouriteAttachment(id: $id, flag: $flag)
+  }
+`;
 export const TOGGLE_CHECKLIST_ITEM = gql`
   mutation toggleChecklistItem($id: Int!, $complete: Boolean!) {
     toggleChecklistItem(id: $id, complete: $complete)
@@ -449,6 +466,24 @@ export const DELETE_TYPE = gql`
 export const EDIT_TYPE = gql`
   mutation updateType($input: UpdateTypeInput!) {
     updateType(updateTypeInput: $input)
+  }
+`;
+
+export const CREATE_HULL_TYPE = gql`
+  mutation createHullType($input: CreateHullTypeInput!) {
+    createHullType(createHullTypeInput: $input)
+  }
+`;
+
+export const DELETE_HULL_TYPE = gql`
+  mutation removeHullType($id: Int!) {
+    removeHullType(id: $id)
+  }
+`;
+
+export const EDIT_HULL_TYPE = gql`
+  mutation updateHullType($input: UpdateHullTypeInput!) {
+    updateHullType(updateHullTypeInput: $input)
   }
 `;
 
@@ -571,6 +606,9 @@ export const CREATE_ENTITY = gql`
     $lastService: Int
     $registeredDate: Date
     $parentEntityId: Int
+    $hullTypeId: Int
+    $dimension: Int
+    $registryNumber: String
   ) {
     createEntity(
       typeId: $typeId
@@ -585,6 +623,9 @@ export const CREATE_ENTITY = gql`
       lastService: $lastService
       registeredDate: $registeredDate
       parentEntityId: $parentEntityId
+      hullTypeId: $hullTypeId
+      dimension: $dimension
+      registryNumber: $registryNumber
     )
   }
 `;
@@ -600,6 +641,9 @@ export const EDIT_ENTITY = gql`
     $engine: String
     $measurement: String
     $registeredDate: Date
+    $hullTypeId: Int
+    $dimension: Int
+    $registryNumber: String
   ) {
     editEntity(
       id: $id
@@ -611,6 +655,9 @@ export const EDIT_ENTITY = gql`
       engine: $engine
       measurement: $measurement
       registeredDate: $registeredDate
+      hullTypeId: $hullTypeId
+      dimension: $dimension
+      registryNumber: $registryNumber
     )
   }
 `;

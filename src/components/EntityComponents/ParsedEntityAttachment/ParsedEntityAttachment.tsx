@@ -16,6 +16,7 @@ import EditEntityAttachment from "../EditEntityAttachment/EditEntityAttachment";
 import DeleteEntityAttachment from "../DeleteEntityAttachment/DeleteEntityAttachment";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { Entity } from "../../../models/Entity/Entity";
+import SetFavouriteAttachment from "../SetFavouriteAttachment/SetFavouriteAttachment";
 
 const ParsedEntityAttachment = ({
   attachmentData,
@@ -92,7 +93,13 @@ const ParsedEntityAttachment = ({
     assigned = true;
   }
   return (
-    <div className={classes["container"]}>
+    <div
+      className={classes["container"]}
+      style={{
+        width: checklistView ? "100%" : 230,
+        height: checklistView ? "100%" : 165,
+      }}
+    >
       <div
         className={classes["option-wrapper"]}
         style={{
@@ -107,6 +114,10 @@ const ParsedEntityAttachment = ({
           )}
           {!checklistView && (
             <>
+              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                assigned) && (
+                <SetFavouriteAttachment attachment={attachmentData} />
+              )}
               {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
                 assigned) && (
                 <Tooltip title={"Download"}>

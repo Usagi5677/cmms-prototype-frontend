@@ -19,7 +19,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ENTITY_LATEST_ATTACHMENT,
+  GET_LATEST_FAVOURITE_ATTACHMENT,
   GET_SINGLE_ENTITY,
   ME_QUERY,
 } from "../../../api/queries";
@@ -182,21 +182,21 @@ const ViewEntity = () => {
   };
 
   const [
-    getEntityLatestAttachment,
+    getLatestFavouriteAttachment,
     { data: attachmentData, loading: loadingImage, error },
-  ] = useLazyQuery(GET_ENTITY_LATEST_ATTACHMENT, {
+  ] = useLazyQuery(GET_LATEST_FAVOURITE_ATTACHMENT, {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
 
   // Fetch attachment when component mounts or when the filter object changes
   useEffect(() => {
-    getEntityLatestAttachment({
+    getLatestFavouriteAttachment({
       variables: {
         entityId: parseInt(id),
       },
     });
-  }, [id, getEntityLatestAttachment]);
+  }, [id, getLatestFavouriteAttachment]);
 
   const isSmallDevice = useIsSmallDevice();
 
@@ -351,7 +351,7 @@ const ViewEntity = () => {
                   </div>
                 </div>
                 <GetLatestEntityImage
-                  attachmentData={attachmentData?.getEntityLatestAttachment}
+                  attachmentData={attachmentData?.getLatestFavouriteAttachment}
                 />
               </div>
               <div className={classes["note-option-wrapper"]}>
@@ -519,9 +519,6 @@ const ViewEntity = () => {
               </Tabs.TabPane>
               <Tabs.TabPane tab="Spare PR" key="sparePR">
                 <ViewSparePR isDeleted={flag} entity={entityData} />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Repair" key="repair">
-                <ViewRepair isDeleted={flag} entity={entityData} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Breakdown" key="breakdown">
                 <ViewBreakdown isDeleted={flag} entity={entityData} />

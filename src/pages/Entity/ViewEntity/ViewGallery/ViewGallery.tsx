@@ -1,12 +1,13 @@
 import { useLazyQuery } from "@apollo/client";
-import { Empty, Spin } from "antd";
+import { Badge, Collapse, DatePicker, Spin } from "antd";
+import moment from "moment";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../../../api/queries";
-import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddEntityAttachment from "../../../../components/EntityComponents/AddEntityAttachment/AddEntityAttachment";
 import ParsedEntityAttachment from "../../../../components/EntityComponents/ParsedEntityAttachment/ParsedEntityAttachment";
 import UserContext from "../../../../contexts/UserContext";
+import { DATETIME_FORMATS } from "../../../../helpers/constants";
 import { errorMessage } from "../../../../helpers/gql";
 import {
   hasPermissions,
@@ -28,20 +29,28 @@ const ViewGallery = ({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const [dates, setDates] = useState<any>([
+    moment().subtract(1, "week"),
+    moment(),
+  ]);
   const { id }: any = useParams();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
       entityId: number;
+      from: any;
+      to: any;
     }
   >({
-    first: 8,
+    first: 500,
     last: null,
     before: null,
     after: null,
     search: "",
     entityId: parseInt(id),
+    from: dates[0].toISOString(),
+    to: dates[1].toISOString(),
   });
   // This query only loads the attachment's info from the db, not the file
   const [
@@ -73,7 +82,9 @@ const ViewGallery = ({
           ...filter,
           search: value,
           entityId: parseInt(id),
-          first: 8,
+          from: dates[0].toISOString(),
+          to: dates[1].toISOString(),
+          first: 500,
           last: null,
           before: null,
           after: null,
@@ -90,13 +101,13 @@ const ViewGallery = ({
     }
     searchDebounced(search);
     // eslint-disable-next-line
-  }, [search, id]);
+  }, [search, id, dates]);
 
   // Pagination functions
   const next = () => {
     setFilter({
       ...filter,
-      first: 8,
+      first: 500,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -107,7 +118,7 @@ const ViewGallery = ({
   const back = () => {
     setFilter({
       ...filter,
-      last: 8,
+      last: 500,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -117,9 +128,52 @@ const ViewGallery = ({
 
   const pageInfo = attachment?.entityAttachments.pageInfo ?? {};
 
+  const date = new Date(dates[0]);
+  const endDate = new Date(dates[1]);
+  const dateArray: any = [];
+
+  if (attachment?.entityAttachments.edges) {
+    while (date <= endDate) {
+      for (const rec of attachment?.entityAttachments.edges) {
+        if (
+          moment(rec?.node?.createdAt).format(
+            DATETIME_FORMATS.DAY_MONTH_YEAR
+          ) === moment(date).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+        ) {
+          dateArray.push(new Date(date));
+          break;
+        }
+      }
+      date.setDate(date.getDate() + 1);
+    }
+  }
+
+  const dateCount = (date: Date) =>
+    attachment?.entityAttachments.edges?.filter(
+      (rec: { node: EntityAttachment }) =>
+        moment(rec.node.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR) ===
+        moment(date).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+    ).length;
+
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
+        <DatePicker.RangePicker
+          className={classes["datepicker"]}
+          defaultValue={dates}
+          format={DATETIME_FORMATS.DAY_MONTH_YEAR}
+          style={{ width: 350, borderRadius: 20 }}
+          popupStyle={{ borderRadius: 20 }}
+          disabledDate={(date) => date.isAfter(moment(), "day")}
+          onChange={setDates}
+          allowClear={false}
+          ranges={{
+            "Past 7 Days": [moment().subtract(1, "week"), moment()],
+            "This Week": [moment().startOf("week"), moment()],
+            "Past 30 Days": [moment().subtract(30, "day"), moment()],
+            "This Month": [moment().startOf("month"), moment()],
+          }}
+        />
         {hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
         isAssignedType("any", entity, self) ? (
           <AddEntityAttachment entityID={parseInt(id)} />
@@ -131,33 +185,62 @@ const ViewGallery = ({
           </div>
         )}
       </div>
-      {attachment?.entityAttachments.edges.length > 0 ? (
-        <div className={classes["grid-container"]}>
-          {attachment?.entityAttachments.edges.map(
-            (rec: { node: EntityAttachment }) => {
-              const attachment = rec.node;
-              return (
-                <ParsedEntityAttachment
-                  key={attachment.id}
-                  attachmentData={attachment}
-                  isDeleted={isDeleted}
-                  entity={entity}
-                />
-              );
-            }
-          )}
-        </div>
-      ) : (
-        <Empty />
-      )}
-
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-        pageLimit={8}
-      />
+      {dateArray?.reverse()?.map((dateVal: any, index: number) => {
+        return (
+          <div className={classes["collapse-container"]} key={index + "div"}>
+            <Collapse
+              ghost
+              style={{ marginBottom: ".5rem" }}
+              defaultActiveKey={index + "col"}
+            >
+              <Collapse.Panel
+                header={
+                  <div>
+                    {moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                    {dateCount(dateVal) > 0 && (
+                      <Badge
+                        count={`${dateCount(dateVal)} image${
+                          dateCount(dateVal) === 1 ? "" : "s"
+                        }`}
+                        style={{
+                          color: "black",
+                          backgroundColor: "#e5e5e5",
+                          marginLeft: ".5rem",
+                          marginBottom: ".3rem",
+                        }}
+                      />
+                    )}
+                  </div>
+                }
+                key={index + "col"}
+              >
+                <div className={classes["grid-container"]}>
+                  {attachment?.entityAttachments.edges.map(
+                    (rec: { node: EntityAttachment }, i: number) => {
+                      const attc = rec.node;
+                      if (
+                        moment(attc.createdAt).format(
+                          DATETIME_FORMATS.DAY_MONTH_YEAR
+                        ) ===
+                        moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
+                      ) {
+                        return (
+                          <ParsedEntityAttachment
+                            key={attc.id}
+                            attachmentData={attc}
+                            isDeleted={isDeleted}
+                            entity={entity}
+                          />
+                        );
+                      }
+                    }
+                  )}
+                </div>
+              </Collapse.Panel>
+            </Collapse>
+          </div>
+        );
+      })}
     </div>
   );
 };

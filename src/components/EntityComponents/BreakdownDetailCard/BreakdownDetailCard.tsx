@@ -65,7 +65,7 @@ const BreakdownDetailCard = ({
                   <Badge
                     color={"#52c41a"}
                     style={{
-                      marginLeft: 10
+                      marginLeft: 10,
                     }}
                   />
                 </Tooltip>
@@ -96,11 +96,13 @@ const BreakdownDetailCard = ({
             />
           )}
           {hover && hasPermission && (
-            <HoverAddRepairDetail
-              breakdownId={breakdown.id}
-              detail={detail}
-              isDeleted={isDeleted}
-            />
+            <div style={{ marginRight: 8 }}>
+              <HoverAddRepairDetail
+                breakdownId={breakdown.id}
+                detail={detail}
+                isDeleted={isDeleted}
+              />
+            </div>
           )}
         </div>
         {hasPermission && (

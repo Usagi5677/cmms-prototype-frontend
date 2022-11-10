@@ -15,7 +15,11 @@ const DeleteEntityAttachment = ({ id }: { id: number }) => {
       onError: (error) => {
         errorMessage(error, "Unexpected error while removing attachment.");
       },
-      refetchQueries: ["entityAttachments", "getAllHistoryOfEntity"],
+      refetchQueries: [
+        "entityAttachments",
+        "getAllHistoryOfEntity",
+        "checklist",
+      ],
     }
   );
 
