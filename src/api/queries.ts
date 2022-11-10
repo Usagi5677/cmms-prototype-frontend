@@ -1353,6 +1353,8 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
     $last: Int
     $search: String
     $entityId: Int!
+    $from: Date
+    $to: Date
   ) {
     entityAttachments(
       after: $after
@@ -1361,6 +1363,8 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
       last: $last
       search: $search
       entityId: $entityId
+      from: $from
+      to: $to
     ) {
       pageInfo {
         endCursor
