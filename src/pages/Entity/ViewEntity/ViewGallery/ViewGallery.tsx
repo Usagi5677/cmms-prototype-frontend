@@ -1,10 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Collapse, DatePicker, Divider, Empty, Spin } from "antd";
+import { Badge, Collapse, DatePicker, Spin } from "antd";
 import moment from "moment";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../../../api/queries";
-import PaginationButtons from "../../../../components/common/PaginationButtons/PaginationButtons";
 import AddEntityAttachment from "../../../../components/EntityComponents/AddEntityAttachment/AddEntityAttachment";
 import ParsedEntityAttachment from "../../../../components/EntityComponents/ParsedEntityAttachment/ParsedEntityAttachment";
 import UserContext from "../../../../contexts/UserContext";

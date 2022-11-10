@@ -381,6 +381,12 @@ export const BULK_ASSIGN_CHECKLIST_TEMPLATE = gql`
     )
   }
 `;
+
+export const SET_FAVOURITE_ATTACHMENT = gql`
+  mutation setFavouriteAttachment($id: Int!, $flag: Boolean!) {
+    setFavouriteAttachment(id: $id, flag: $flag)
+  }
+`;
 export const TOGGLE_CHECKLIST_ITEM = gql`
   mutation toggleChecklistItem($id: Int!, $complete: Boolean!) {
     toggleChecklistItem(id: $id, complete: $complete)

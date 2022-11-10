@@ -8,7 +8,6 @@ import { useState } from "react";
 import {
   GET_ALL_ATTACHMENT_OF_ENTITY,
   GET_ALL_HISTORY_OF_ENTITY,
-  GET_ENTITY_LATEST_ATTACHMENT,
 } from "../../../api/queries";
 import { MAX_FILE_SIZE } from "../../../helpers/constants";
 import classes from "./AddEntityAttachment.module.css";
@@ -21,7 +20,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
   const [form] = useForm();
   const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
     variables: {
-      first: 8,
+      first: 20,
       last: null,
       before: null,
       after: null,
@@ -32,7 +31,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
 
   const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_ENTITY, {
     variables: {
-      first: 8,
+      first: 20,
       last: null,
       before: null,
       after: null,
@@ -40,15 +39,6 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       entityId: entityID,
     },
   });
-
-  const { refetch: refetchLatestImage } = useQuery(
-    GET_ENTITY_LATEST_ATTACHMENT,
-    {
-      variables: {
-        entityId: entityID,
-      },
-    }
-  );
 
   const handleCancel = () => {
     form.resetFields();
@@ -108,7 +98,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
         setUploading(false);
         //timeout since it was showing error when refetching
         refetch({
-          first: 8,
+          first: 20,
           last: null,
           before: null,
           after: null,
@@ -116,14 +106,11 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
           entityId: entityID,
         });
         refetchHistory({
-          first: 8,
+          first: 20,
           last: null,
           before: null,
           after: null,
           search: "",
-          entityId: entityID,
-        });
-        refetchLatestImage({
           entityId: entityID,
         });
       });

@@ -1383,6 +1383,7 @@ export const GET_ALL_ATTACHMENT_OF_ENTITY = gql`
           description
           mode
           createdAt
+          favourite
           user {
             ...UserFieldsAPS
           }
@@ -1412,9 +1413,9 @@ export const GET_USAGE_HISTORY_OF_ENTITY = gql`
   }
 `;
 
-export const GET_ENTITY_LATEST_ATTACHMENT = gql`
-  query getEntityLatestAttachment($entityId: Int!) {
-    getEntityLatestAttachment(entityId: $entityId) {
+export const GET_LATEST_FAVOURITE_ATTACHMENT = gql`
+  query getLatestFavouriteAttachment($entityId: Int!) {
+    getLatestFavouriteAttachment(entityId: $entityId) {
       id
       createdAt
       mimeType
