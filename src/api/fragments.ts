@@ -43,7 +43,6 @@ export const SUB_ENTITY_FRAGMENT = gql`
     brand
     deletedAt
     note
-    parentEntityId
     dimension
     registryNumber
     createdBy {
@@ -80,6 +79,10 @@ export const SUB_ENTITY_FRAGMENT = gql`
     repairs {
       id
       name
+    }
+    parentEntityId
+    parentEntity {
+      machineNumber
     }
     breakdowns {
       id
@@ -167,6 +170,7 @@ export const ENTITY_FRAGMENT = gql`
       id
       name
     }
+    parentEntityId
     breakdowns {
       id
       type
@@ -194,7 +198,6 @@ export const ENTITY_FRAGMENT = gql`
     subEntities {
       ...SubEntityFields
     }
-    parentEntityId
     hullType {
       id
       name

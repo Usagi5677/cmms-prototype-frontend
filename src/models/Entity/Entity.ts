@@ -46,4 +46,5 @@ export interface Entity {
   sparePRs: SparePR[];
   histories: EntityHistory[];
   subEntities?: Entity[] | undefined;
+  parentEntity?: Entity;
 }

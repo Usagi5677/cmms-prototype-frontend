@@ -422,7 +422,7 @@ const ViewEntity = () => {
         {entityData?.subEntities?.length! > 0 && (
           <div>
             {hasPermissions(self, ["ADD_ENTITY"]) ? (
-              <ViewSubEntity subEntity={entityData} isDeleted={flag} />
+              <ViewSubEntity entity={entityData} isDeleted={flag} />
             ) : null}
           </div>
         )}
