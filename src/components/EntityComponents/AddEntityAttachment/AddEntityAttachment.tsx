@@ -1,10 +1,11 @@
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import { InboxOutlined } from "@ant-design/icons";
 import { useQuery } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Upload } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import { useState } from "react";
+import { useParams } from "react-router";
 import {
   GET_ALL_ATTACHMENT_OF_ENTITY,
   GET_ALL_HISTORY_OF_ENTITY,
@@ -12,12 +13,13 @@ import {
 import { MAX_FILE_SIZE } from "../../../helpers/constants";
 import classes from "./AddEntityAttachment.module.css";
 
-const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
+const AddEntityAttachment = () => {
   const [fileList, setFileList] = useState<RcFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
+  const { id }: any = useParams();
   const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
     variables: {
       first: 20,
@@ -25,7 +27,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       before: null,
       after: null,
       search: "",
-      entityId: entityID,
+      entityId: parseInt(id),
     },
   });
 
@@ -36,7 +38,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       before: null,
       after: null,
       search: "",
-      entityId: entityID,
+      entityId: parseInt(id),
     },
   });
 
@@ -70,7 +72,7 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
     setUploading(true);
     // Send request as form data as files cannot be sent through graphql
     const data: any = new FormData();
-    data.append("entityId", `${entityID}`);
+    data.append("entityId", `${parseInt(id)}`);
     data.append("description", description.trim());
     for (const f of fileList) {
       data.append("attachments", f);
@@ -97,22 +99,24 @@ const AddEntityAttachment = ({ entityID }: { entityID: number }) => {
       .finally(function () {
         setUploading(false);
         //timeout since it was showing error when refetching
-        refetch({
-          first: 20,
-          last: null,
-          before: null,
-          after: null,
-          search: "",
-          entityId: entityID,
-        });
-        refetchHistory({
-          first: 20,
-          last: null,
-          before: null,
-          after: null,
-          search: "",
-          entityId: entityID,
-        });
+        setTimeout(function () {
+          refetch({
+            first: 20,
+            last: null,
+            before: null,
+            after: null,
+            search: "",
+            entityId: parseInt(id),
+          });
+          refetchHistory({
+            first: 20,
+            last: null,
+            before: null,
+            after: null,
+            search: "",
+            entityId: parseInt(id),
+          });
+        }, 1000);
       });
 
     handleCancel();
