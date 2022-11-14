@@ -1,29 +1,40 @@
-import { Badge, Collapse, DatePicker, Empty, Spin } from "antd";
+import {
+  Badge,
+  Checkbox,
+  Collapse,
+  DatePicker,
+  Empty,
+  Spin,
+  Switch,
+  Table,
+  Tooltip,
+} from "antd";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
 import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY_WITHOUT_PAGINATION,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_USAGE_HISTORY,
-} from "../../../../api/queries";
-import { errorMessage } from "../../../../helpers/gql";
-import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import Search from "../../../common/Search";
-import { Entity } from "../../../../models/Entity/Entity";
+} from "../../api/queries";
+import { errorMessage } from "../../helpers/gql";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import { Entity } from "../../models/Entity/Entity";
 import { motion } from "framer-motion";
-import { LocationSelector } from "../../../Config/Location/LocationSelector";
-import { DATETIME_FORMATS } from "../../../../helpers/constants";
+import { DATETIME_FORMATS } from "../../helpers/constants";
 import moment from "moment";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { TypeSelector } from "../../../Config/Type/TypeSelector";
-import EntityCard from "../../../EntityComponents/EntityCard/EntityCard";
-import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
-import { useLocalStorage } from "../../../../helpers/useLocalStorage";
-import { MeasurementSelector } from "../../../common/MeasurementSelector";
 import { SwapOutlined } from "@ant-design/icons";
+import { MeasurementSelector } from "../../components/common/MeasurementSelector";
+import { LocationSelector } from "../../components/Config/Location/LocationSelector";
+import { TypeSelector } from "../../components/Config/Type/TypeSelector";
+import { ZoneSelector } from "../../components/Config/Zone/ZoneSelector";
+import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
+import Search from "../../components/common/Search";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
@@ -43,6 +54,7 @@ const EntityUtilization = ({
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
   }
   const [timerId, setTimerId] = useState(null);
+  const [showEntity, setShowEntity] = useState(false);
   const { id }: any = useParams();
   const [search, setSearch] = useState(getFilterObjects?.search);
   const [locationIds, setLocationIds] = useState<number[]>(
@@ -325,6 +337,99 @@ const EntityUtilization = ({
     }, 300);
   };
 
+  const dataSource: any = [];
+  history?.allEntityUsageHistory.map((h: any, index: number) => {
+    dataSource.push({
+      key: index,
+      machineNumber: h.machineNumber,
+      workingHour: h.workingHour,
+      idleHour: h.idleHour,
+      breakdownHour: h.breakdownHour,
+      na: h.na,
+      total: h.total,
+      description: (
+        <div className={classes["description"]}>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Working</div>
+            <div className={classes["working"]}>
+              {((h.workingHour / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Idle</div>
+            <div className={classes["idle"]}>
+              {((h.idleHour / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Breakdown</div>
+            <div className={classes["breakdown"]}>
+              {((h.breakdownHour / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Na</div>
+            <div className={classes["na"]}>
+              {((h.na / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+        </div>
+      ),
+      action: (
+        <Link to={"/entity/" + h.id}>
+          <Tooltip title="Open">
+            <FaArrowAltCircleRight className={classes["button"]} />
+          </Tooltip>
+        </Link>
+      ),
+    });
+  });
+
+  const columns = [
+    {
+      title: `Machine Number`,
+      dataIndex: "machineNumber",
+      key: "machineNumber",
+      className: classes["font"],
+    },
+    {
+      title: "Working",
+      dataIndex: "workingHour",
+      key: "workingHour",
+      className: (classes["font"], classes["working"]),
+    },
+    {
+      title: "Idle",
+      dataIndex: "idleHour",
+      key: "idleHour",
+      className: (classes["font"], classes["idle"]),
+    },
+    {
+      title: "Breakdown",
+      dataIndex: "breakdownHour",
+      key: "breakdownHour",
+      className: (classes["font"], classes["breakdown"]),
+    },
+    {
+      title: "Na",
+      dataIndex: "na",
+      key: "na",
+      className: (classes["font"], classes["na"]),
+    },
+    {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
+      className: (classes["font"], classes["total"]),
+    },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      className: classes["font"],
+    },
+  ];
+
   const isSmallDevice = useIsSmallDevice(1200, true);
 
   return (
@@ -455,12 +560,68 @@ const EntityUtilization = ({
             )}
           </div>
         )}
-        {loading ? (
+        <motion.div
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.3,
+            },
+          }}
+          viewport={{ once: true }}
+          className={classes["checkbox-wrapper"]}
+        >
+          <Checkbox
+            defaultChecked={showEntity}
+            onChange={(e) => setShowEntity(e.target.checked)}
+            style={{ fontSize: !isSmallDevice ? 9 : 14 }}
+          >
+            Show Entity
+          </Checkbox>
+        </motion.div>
+        <motion.div
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.3,
+            },
+          }}
+          viewport={{ once: true }}
+          id={"custTable"}
+        >
+          {historyLoading ? (
+            <Spin
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              size={"large"}
+            />
+          ) : (
+            <Table
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              expandable={{
+                expandedRowRender: (record) => (
+                  <div style={{ margin: 0 }}>{record?.description}</div>
+                ),
+              }}
+            />
+          )}
+        </motion.div>
+        {loading && showEntity ? (
           <div>
             <Spin style={{ width: "100%", margin: "2rem auto" }} />
           </div>
-        ) : typeWithCountSorted.size > 0 ? (
-          <div>
+        ) : typeWithCountSorted.size > 0 && showEntity ? (
+          <div style={{ marginTop: 20 }}>
             {[...typeWithCountSorted].map((key: any) => (
               <Collapse ghost style={{ marginBottom: ".5rem" }} key={key[0]}>
                 <Collapse.Panel
@@ -501,10 +662,10 @@ const EntityUtilization = ({
         ) : (
           <div
             style={{
-              marginTop: 50,
+              marginTop: showEntity ? 50 : 0,
             }}
           >
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            {showEntity && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
           </div>
         )}
       </motion.div>

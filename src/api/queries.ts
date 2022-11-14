@@ -1700,6 +1700,8 @@ export const GET_ALL_ENTITY_USAGE_HISTORY = gql`
       idleHour
       breakdownHour
       na
+      total
+      id
       totalHour
       workingPercentage
       idlePercentage
@@ -1736,6 +1738,8 @@ export const GET_ALL_GROUPED_ENTITY_USAGE = gql`
       idleHour
       breakdownHour
       na
+      total
+      count
     }
   }
 `;

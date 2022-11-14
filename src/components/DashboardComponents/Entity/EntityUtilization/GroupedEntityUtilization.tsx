@@ -1,4 +1,4 @@
-import { Badge, Collapse, DatePicker, Empty, Spin } from "antd";
+import { Badge, Collapse, DatePicker, Empty, Spin, Table } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
@@ -25,6 +25,7 @@ import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
 import { useLocalStorage } from "../../../../helpers/useLocalStorage";
 import { MeasurementSelector } from "../../../common/MeasurementSelector";
 import { SwapOutlined } from "@ant-design/icons";
+import { EntityType } from "../../../../models/Enums";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
@@ -33,12 +34,16 @@ const GroupedEntityUtilization = ({
   clone,
   active,
   onClick,
+  entityType,
 }: {
   clone?: boolean;
   active?: boolean;
   onClick?: () => void;
+  entityType?: string;
 }) => {
-  const getFilter = localStorage.getItem("dashboardUtilizationFilter");
+  const getFilter = localStorage.getItem(
+    `dashboard${entityType}GroupedUtilizationFilter`
+  );
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
@@ -54,13 +59,13 @@ const GroupedEntityUtilization = ({
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
-  const [entityTypes, setEntityTypes] = useState<string[]>(["Machine"]);
+  const [entityTypes, setEntityTypes] = useState<string[]>([entityType!]);
   const [dates, setDates] = useState<any>([
     moment(getFilterObjects?.from),
     moment(getFilterObjects?.to),
   ]);
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "dashboardGroupedMachineUtilizationFilter",
+    `dashboard${entityType}GroupedUtilizationFilter`,
     JSON.stringify({
       search: "",
       zoneIds: [],
@@ -87,7 +92,7 @@ const GroupedEntityUtilization = ({
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
-    entityTypes: ["Machine"],
+    entityTypes: [entityType!],
   });
 
   const [getAllGroupedEntityUsage, { data: history, loading: historyLoading }] =
@@ -207,7 +212,7 @@ const GroupedEntityUtilization = ({
   if (history?.getAllGroupedEntityUsage) {
     options = {
       title: {
-        text: `Utilization (${history?.getAllGroupedEntityUsage.length})`,
+        text: `${entityType} Utilization (${history?.getAllGroupedEntityUsage.length})`,
       },
       subtitle: {
         text: `${moment(dates[0]).format(
@@ -228,7 +233,7 @@ const GroupedEntityUtilization = ({
       },
       xAxis: {
         categories: history?.getAllGroupedEntityUsage.map(
-          (rec: any) => rec?.name
+          (rec: any) => `${rec?.name} (${rec?.count})`
         ),
       },
       yAxis: {
@@ -302,8 +307,10 @@ const GroupedEntityUtilization = ({
       ],
     };
   }
+  /*
   let uniqueType: any = [];
   let typeWithCountSorted: any = new Map([]);
+  
   if (data?.getAllEntityWithoutPagination) {
     const data2 = data?.getAllEntityWithoutPagination;
     const typeWithCount = new Map([]);
@@ -330,7 +337,7 @@ const GroupedEntityUtilization = ({
       )
     );
   }
-
+  */
   const work = () => {
     onClick!();
     //running after 0.3 second so that graph width adjust
@@ -342,6 +349,86 @@ const GroupedEntityUtilization = ({
   };
 
   const isSmallDevice = useIsSmallDevice(1200, true);
+
+  const dataSource: any = [];
+  history?.getAllGroupedEntityUsage.map((h: any, index: number) => {
+    dataSource.push({
+      key: index,
+      name: `${h.name} (${h.total})`,
+      workingHour: h.workingHour,
+      idleHour: h.idleHour,
+      breakdownHour: h.breakdownHour,
+      na: h.na,
+      total: h.total,
+      description: (
+        <div className={classes["description"]}>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Working</div>
+            <div className={classes["working"]}>
+              {((h.workingHour / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Idle</div>
+            <div className={classes["idle"]}>
+              {((h.idleHour / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Breakdown</div>
+            <div className={classes["breakdown"]}>
+              {((h.breakdownHour / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+          <div className={classes["title-wrapper"]}>
+            <div className={classes["title"]}>Na</div>
+            <div className={classes["na"]}>
+              {((h.na / h.total) * 100).toFixed(0)}%
+            </div>
+          </div>
+        </div>
+      ),
+    });
+  });
+
+  const columns = [
+    {
+      title: `${entityType}`,
+      dataIndex: "name",
+      key: "name",
+      className: classes["font"],
+    },
+    {
+      title: "Working",
+      dataIndex: "workingHour",
+      key: "workingHour",
+      className: (classes["font"], classes["working"]),
+    },
+    {
+      title: "Idle",
+      dataIndex: "idleHour",
+      key: "idleHour",
+      className: (classes["font"], classes["idle"]),
+    },
+    {
+      title: "Breakdown",
+      dataIndex: "breakdownHour",
+      key: "breakdownHour",
+      className: (classes["font"], classes["breakdown"]),
+    },
+    {
+      title: "Na",
+      dataIndex: "na",
+      key: "na",
+      className: (classes["font"], classes["na"]),
+    },
+    {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
+      className: (classes["font"], classes["total"]),
+    },
+  ];
 
   return (
     <>
@@ -358,30 +445,36 @@ const GroupedEntityUtilization = ({
         }}
         viewport={{ once: true }}
         style={{
-          width: active && isSmallDevice ? "48%" : "100%",
-          marginTop: active && clone && !isSmallDevice ? "20px" : 0,
+          width: entityType !== "Machine" && isSmallDevice ? "48%" : "100%",
+          marginTop: "20px",
         }}
       >
-        <div
-          className={classes["btn-wrapper"]}
-          style={{
-            visibility: clone ? "hidden" : "visible",
-          }}
-        >
+        {/* hiding this btn */}
+        {!entityType && (
           <div
-            className={classes["btn"]}
+            className={classes["btn-wrapper"]}
             style={{
-              backgroundColor: active ? "var(--ant-primary-color)" : "initial",
-              color: active ? "white" : "var(--compare-btn-color)",
-              borderColor: active
-                ? "var(--compare-btn-active-border)"
-                : "var(--compare-btn-border)",
+              visibility: clone ? "hidden" : "visible",
             }}
-            onClick={work}
           >
-            <SwapOutlined style={{ fontSize: 22 }} />
+            <div
+              className={classes["btn"]}
+              style={{
+                backgroundColor: active
+                  ? "var(--ant-primary-color)"
+                  : "initial",
+                color: active ? "white" : "var(--compare-btn-color)",
+                borderColor: active
+                  ? "var(--compare-btn-active-border)"
+                  : "var(--compare-btn-border)",
+              }}
+              onClick={work}
+            >
+              <SwapOutlined style={{ fontSize: 22 }} />
+            </div>
           </div>
-        </div>
+        )}
+
         <div className={classes["options-wrapper"]}>
           <DatePicker.RangePicker
             defaultValue={dates}
@@ -419,6 +512,7 @@ const GroupedEntityUtilization = ({
             rounded
             multiple
             width={"100%"}
+            entityType={entityType! as EntityType}
           />
         </div>
         <div className={classes["option"]}>
@@ -471,6 +565,41 @@ const GroupedEntityUtilization = ({
             )}
           </div>
         )}
+        <motion.div
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.3,
+            },
+          }}
+          viewport={{ once: true }}
+          id={"custTable"}
+        >
+          {historyLoading ? (
+            <Spin
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              size={"large"}
+            />
+          ) : (
+            <Table
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              expandable={{
+                expandedRowRender: (record) => (
+                  <div style={{ margin: 0 }}>{record?.description}</div>
+                ),
+              }}
+            />
+          )}
+        </motion.div>
       </motion.div>
     </>
   );
