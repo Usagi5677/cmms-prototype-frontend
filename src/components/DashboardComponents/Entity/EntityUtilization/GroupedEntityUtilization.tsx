@@ -434,6 +434,10 @@ const GroupedEntityUtilization = ({
     <>
       <motion.div
         className={classes["container"]}
+        initial={{
+          x: entityType === "Vehicle" || entityType === "Machine" ? -60 : 60,
+          opacity: 0,
+        }}
         whileInView={{
           x: 0,
           opacity: 1,
