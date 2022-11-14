@@ -31,6 +31,13 @@ export enum PeriodicMaintenanceStatus {
   Upcoming = "Upcoming",
 }
 
+export enum EntityType {
+  Machine = "Machine",
+  Vehicle = "Vehicle",
+  Vessel = "Vessel",
+  SubEntity = "Sub Entity",
+}
+
 export interface SearchOptionProps {
   searchValue: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;

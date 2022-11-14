@@ -835,7 +835,9 @@ em {
   width: 100% !important;
   box-shadow: none !important;
 }
-
+.sketch-picker label {
+  color: var(--text-primary) !important;
+}
 .flexbox-fix {
   border-top: 1px var(--border-1) solid !important;
 }
@@ -993,4 +995,22 @@ div.ant-typography {
   color: var(--ant-primary-color-hover) !important;
   border-color: var(--ant-primary-color-hover) !important;
   background: var(--ant-picker-bg) !important;
+}
+
+#custTable .ant-table-thead > tr > th {
+  padding: 0 !important;
+  text-align: center !important;
+}
+#custTable .ant-table-tbody > tr > td {
+  padding: 0 !important;
+  vertical-align: middle;
+}
+
+@media only screen and (min-width: 600px) { 
+  #custTable .ant-table-thead > tr > th {
+    padding: 16px !important;
+  }
+  #custTable .ant-table-tbody > tr > td {
+    padding: 16px !important;
+  }
 }

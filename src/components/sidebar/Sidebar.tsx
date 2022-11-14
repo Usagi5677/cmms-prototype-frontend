@@ -26,6 +26,7 @@ import {
   INCOMPLETE_CHECKLIST_PAST_TWO,
 } from "../../api/queries";
 import { hasPermissions, isAssignedTypeToAny } from "../../helpers/permissions";
+import { RiseOutlined, ToolOutlined, WarningOutlined } from "@ant-design/icons";
 
 const { Divider } = Menu;
 interface SidebarItem {
@@ -126,7 +127,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     SidebarData.push({
       name: "Issues",
       path: "/issues",
-      icon: <FaSquare />,
+      icon: <WarningOutlined />,
       count: pastTwoIssue?.checklistsWithIssuePastTwoDays
         ? pastTwoIssue.checklistsWithIssuePastTwoDays[0]
         : 0,
@@ -141,7 +142,19 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     SidebarData.push({
       name: "Maintenances",
       path: "/maintenances",
-      icon: <FaSquare />,
+      icon: <ToolOutlined />,
+    });
+  }
+
+  if (
+    isAssignedTypeToAny("Admin", self) ||
+    isAssignedTypeToAny("Engineer", self) ||
+    hasPermissions(self, ["VIEW_ALL_ENTITY"])
+  ) {
+    SidebarData.push({
+      name: "Utilizations",
+      path: "/utilizations",
+      icon: <RiseOutlined />,
     });
   }
 

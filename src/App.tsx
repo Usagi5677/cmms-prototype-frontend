@@ -26,6 +26,7 @@ import ViewAllDisposed from "./pages/ViewAllDisposed/ViewAllDisposed";
 import { Issues } from "./pages/Issues";
 import ViewAssignments from "./pages/ViewAssignments/ViewAssignments";
 import ViewAllPeriodicMaintenances from "./pages/ViewAllPeriodicMaintenances/ViewAllPeriodicMaintenances";
+import ViewAllUtilization from "./pages/ViewAllUtilization/ViewAllUtilization";
 
 function App() {
   {
@@ -197,6 +198,7 @@ function App() {
               path="/maintenances"
               element={<ViewAllPeriodicMaintenances />}
             />
+            <Route path="/utilizations" element={<ViewAllUtilization />} />
             <Route path="/machinery" element={<ViewAllMachine />} />
             <Route path="/entity/:id" element={<ViewEntity />} />
             <Route path="/vessels" element={<ViewAllVessel />} />

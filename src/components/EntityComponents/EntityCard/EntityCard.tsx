@@ -458,7 +458,7 @@ const EntityCard = ({
                       {entity?.breakdowns.map((b) => {
                         return (
                           <div key={b.id}>
-                            <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                            {/*  <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                               <div className={classes["bd-time-wrapper"]}>
                                 <div className={classes["title-wrapper"]}>
                                   <Tooltip title="Created Date">
@@ -490,7 +490,8 @@ const EntityCard = ({
                                   </span>
                                 </div>
                               </div>
-                            </Paragraph>
+                            </Paragraph>*/}
+                           
                             {b?.details?.map((d) => (
                               <div key={d.id}>
                                 <div className={classes["list"]} key={d.id}>
@@ -601,6 +602,7 @@ const EntityCard = ({
             </div>
             <div>
               <div className={classes["reading"]}>
+                {/* 
                 <span className={classes["reading-title"]}>Repairs:</span>
                 {entity?.repairs?.length > 0 ? (
                   <div>
@@ -635,6 +637,8 @@ const EntityCard = ({
                 ) : (
                   <div>None</div>
                 )}
+                
+                */}
               </div>
             </div>
             {entity?.subEntities?.length! > 0 && (
