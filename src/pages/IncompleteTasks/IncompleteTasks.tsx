@@ -46,7 +46,6 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
         ></Tabs.TabPane> */}
         </Tabs>
       </div>
-      <GroupedLocationIncompleteTask />
     </>
   );
 };
