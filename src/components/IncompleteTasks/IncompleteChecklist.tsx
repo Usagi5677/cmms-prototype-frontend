@@ -105,29 +105,29 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   const summaryMatch = (current: moment.Moment) => {
     if (!monthSummary) return null;
     const match: IncompleteChecklistSummary =
-      monthSummary.incompleteChecklistSummary.find(
+      monthSummary?.incompleteChecklistSummary.find(
         (cs: IncompleteChecklistSummary) => {
           if (type === "Daily") {
             return current
               .clone()
               .startOf("day")
-              .isSame(moment(cs.date), "day");
+              .isSame(moment(cs?.date), "day");
           } else {
             return current
               .clone()
               .startOf("week")
-              .isSame(moment(cs.date), "week");
+              .isSame(moment(cs?.date), "week");
           }
         }
       );
     if (!match) return null;
-    return match.count;
+    return match?.count;
   };
 
   return (
     <div style={{ width: "100%" }}>
       <div id="noZIndexBadge">
-        <Badge count={data?.incompleteChecklists.length}>
+        <Badge count={data?.incompleteChecklists?.length}>
           <div style={{ paddingRight: ".6rem" }}>{type}</div>
         </Badge>
         <Checkbox
@@ -161,7 +161,7 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
           dateRender={(current) => (
             <div>
               <Badge count={summaryMatch(current)} size="small">
-                <div className="ant-picker-cell-inner">{current.date()}</div>
+                <div className="ant-picker-cell-inner">{current?.date()}</div>
               </Badge>
             </div>
           )}
@@ -170,16 +170,16 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
       </div>
       {loading && <CenteredSpin />}
       <div style={{ marginTop: "1rem" }}>
-        {data?.incompleteChecklists.length === 0 && <Empty />}
-        {data?.incompleteChecklists.map((checklist: Checklist) => (
-          <div key={checklist.id} style={{ display: "flex" }}>
+        {data?.incompleteChecklists?.length === 0 && <Empty />}
+        {data?.incompleteChecklists?.map((checklist: Checklist) => (
+          <div key={checklist?.id} style={{ display: "flex" }}>
             <div style={{ marginRight: ".5rem" }}>
               <ChecklistStatus
                 summary={generateSummary(checklist)}
-                entity={checklist.entity as Entity}
+                entity={checklist?.entity as Entity}
               />
             </div>
-            <EntityListing entity={checklist.entity} />
+            <EntityListing entity={checklist?.entity} />
           </div>
         ))}
       </div>
