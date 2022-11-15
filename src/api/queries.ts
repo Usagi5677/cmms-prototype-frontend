@@ -1744,6 +1744,39 @@ export const GET_ALL_GROUPED_ENTITY_USAGE = gql`
   }
 `;
 
+
+export const GET_ALL_GROUPED_LOCATION_INCOMPLETE_TASKS = gql`
+  query getAllGroupedLocationIncompleteTasks(
+    $from: Date!
+    $to: Date!
+    $search: String
+    $divisionIds: [Int!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $typeIds: [Int!]
+    $measurement: [String!]
+    $entityType: [String!]
+  ) {
+    getAllGroupedLocationIncompleteTasks(
+      from: $from
+      to: $to
+      search: $search
+      divisionIds: $divisionIds
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      typeIds: $typeIds
+      measurement: $measurement
+      entityType: $entityType
+    ) {
+      locationId
+      name
+      completeTask
+      incompleteTask
+      count
+      total
+    }
+  }
+`;
 export const ALL_ENTITY_WITHOUT_PAGINATION = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntityWithoutPagination(

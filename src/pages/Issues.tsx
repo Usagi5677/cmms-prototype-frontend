@@ -12,10 +12,11 @@ export const Issues: React.FC<IssuesProps> = ({}) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (
-      !hasPermissions(user, ["ENTITY_ENGINEER"])
+      !hasPermissions(user, ["ENTITY_ENGINEER"]) &&
+      !hasPermissions(user, ["ENTITY_ADMIN"])
     ) {
       navigate("/");
-      message.error("You are not an engineer.");
+      message.error("You are not an engineer or admin.");
     }
   }, []);
 
@@ -29,7 +30,7 @@ export const Issues: React.FC<IssuesProps> = ({}) => {
         padding: 10,
         paddingTop: 5,
         paddingLeft: 15,
-        border: "var(--card-border)"
+        border: "var(--card-border)",
       }}
     >
       <Tabs defaultActiveKey="checklist">

@@ -20,7 +20,7 @@ import Permissions from "./pages/Role/Permissions";
 import { Config } from "./pages/Config";
 import ViewEntity from "./pages/Entity/ViewEntity/ViewEntity";
 import "./components/ThemeChange/antd.dark.min.css";
-import { IncompleteTasks } from "./pages/IncompleteTasks";
+import { IncompleteTasks } from "./pages/IncompleteTasks/IncompleteTasks";
 import { DeveloperOptions } from "./pages/DeveloperOptions";
 import ViewAllDisposed from "./pages/ViewAllDisposed/ViewAllDisposed";
 import { Issues } from "./pages/Issues";

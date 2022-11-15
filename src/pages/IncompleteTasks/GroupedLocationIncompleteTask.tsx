@@ -3,39 +3,39 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
 import { useLazyQuery } from "@apollo/client";
-import { GET_ALL_GROUPED_ENTITY_USAGE } from "../../../../api/queries";
-import { errorMessage } from "../../../../helpers/gql";
-import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import Search from "../../../common/Search";
+import { GET_ALL_GROUPED_LOCATION_INCOMPLETE_TASKS } from "../../api/queries";
+import { errorMessage } from "../../helpers/gql";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import { motion } from "framer-motion";
-import { LocationSelector } from "../../../Config/Location/LocationSelector";
-import { DATETIME_FORMATS } from "../../../../helpers/constants";
+import { DATETIME_FORMATS } from "../../helpers/constants";
 import moment from "moment";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { TypeSelector } from "../../../Config/Type/TypeSelector";
-import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
-import { useLocalStorage } from "../../../../helpers/useLocalStorage";
-import { MeasurementSelector } from "../../../common/MeasurementSelector";
 import { SwapOutlined } from "@ant-design/icons";
-import { EntityType } from "../../../../models/Enums";
+import { MeasurementSelector } from "../../components/common/MeasurementSelector";
+import { LocationSelector } from "../../components/Config/Location/LocationSelector";
+import { TypeSelector } from "../../components/Config/Type/TypeSelector";
+import { ZoneSelector } from "../../components/Config/Zone/ZoneSelector";
+import { useLocalStorage } from "../../helpers/useLocalStorage";
+import { EntityType } from "../../models/Enums";
+import Search from "../../components/common/Search";
+import { EntityTypeSelector } from "../../components/common/EntityTypeSelector";
+import { DivisionSelector } from "../../components/Config/Division/DivisionSelector";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 
-const GroupedEntityUtilization = ({
+const GroupedLocationIncompleteTask = ({
   clone,
   active,
   onClick,
-  entityType,
 }: {
   clone?: boolean;
   active?: boolean;
   onClick?: () => void;
-  entityType?: string;
 }) => {
   const getFilter = localStorage.getItem(
-    `dashboard${entityType}GroupedUtilizationFilter`
+    `groupedLocationIncompleteTasksFilter`
   );
   let getFilterObjects: any;
   if (getFilter) {
@@ -49,23 +49,29 @@ const GroupedEntityUtilization = ({
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
+  const [divisionIds, setDivisionIds] = useState<number[]>(
+    getFilterObjects?.divisionIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
-  const [entityTypes, setEntityTypes] = useState<string[]>([entityType!]);
+  const [entityType, setEntityType] = useState<string[]>(
+    getFilterObjects?.entityType
+  );
   const [dates, setDates] = useState<any>([
     moment(getFilterObjects?.from),
     moment(getFilterObjects?.to),
   ]);
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    `dashboard${entityType}GroupedUtilizationFilter`,
+    `groupedLocationIncompleteTasksFilter`,
     JSON.stringify({
       search: "",
+      divisionIds: [],
       zoneIds: [],
       locationIds: [],
       typeIds: [],
       measurement: [],
-      entityTypes: [],
+      entityType: [],
       from: moment().subtract(1, "day"),
       to: moment(),
     })
@@ -74,39 +80,44 @@ const GroupedEntityUtilization = ({
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<{
     search: string;
+    divisionIds: number[];
     locationIds: number[];
     zoneIds: number[];
     typeIds: number[];
     measurement: string[];
-    entityTypes: string[];
+    entityType: string[];
   }>({
     search: JSON.parse(saveFilterOptions)?.search,
+    divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
-    entityTypes: [entityType!],
+    entityType: JSON.parse(saveFilterOptions)?.entityType,
   });
 
-  const [getAllGroupedEntityUsage, { data: history, loading: historyLoading }] =
-    useLazyQuery(GET_ALL_GROUPED_ENTITY_USAGE, {
-      onError: (err) => {
-        errorMessage(err, "Error loading usage history.");
-      },
-    });
+  const [
+    getAllGroupedLocationIncompleteTasks,
+    { data: history, loading: historyLoading },
+  ] = useLazyQuery(GET_ALL_GROUPED_LOCATION_INCOMPLETE_TASKS, {
+    onError: (err) => {
+      errorMessage(err, "Error loading task statistics.");
+    },
+  });
 
   useEffect(() => {
-    getAllGroupedEntityUsage({
+    getAllGroupedLocationIncompleteTasks({
       variables: {
         machineId: parseInt(id),
         from: dates[0].toISOString(),
         to: dates[1].toISOString(),
         search,
+        divisionIds,
         locationIds,
         zoneIds,
         typeIds,
         measurement,
-        entityTypes,
+        entityType,
       },
     });
     const newfilter = {
@@ -117,13 +128,14 @@ const GroupedEntityUtilization = ({
     setSaveFilterOptions(JSON.stringify(newfilter));
   }, [
     dates,
-    getAllGroupedEntityUsage,
+    getAllGroupedLocationIncompleteTasks,
     search,
+    divisionIds,
     locationIds,
     zoneIds,
     typeIds,
     measurement,
-    entityTypes,
+    entityType,
   ]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -132,11 +144,12 @@ const GroupedEntityUtilization = ({
   // call as well).
   const searchDebounced = (
     value: string,
+    divisionIdsValue: number[],
     locationIdsValue: number[],
     zoneIdsValue: number[],
     typeIdsValue: number[],
     measurementValue: string[],
-    entityTypesValue: string[]
+    entityTypeValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -145,11 +158,12 @@ const GroupedEntityUtilization = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          divisionIds: divisionIdsValue,
           locationIds: locationIdsValue,
           zoneIds: zoneIdsValue,
           typeIds: typeIdsValue,
           measurement: measurementValue,
-          entityTypes: entityTypesValue,
+          entityType: entityTypeValue,
         }));
       }, 500)
     );
@@ -162,14 +176,23 @@ const GroupedEntityUtilization = ({
     }
     searchDebounced(
       search,
+      divisionIds,
       locationIds,
       zoneIds,
       typeIds,
       measurement,
-      entityTypes
+      entityType
     );
     // eslint-disable-next-line
-  }, [search, locationIds, zoneIds, typeIds, measurement, entityTypes]);
+  }, [
+    search,
+    divisionIds,
+    locationIds,
+    zoneIds,
+    typeIds,
+    measurement,
+    entityType,
+  ]);
 
   useEffect(() => {
     const newfilter = {
@@ -181,10 +204,10 @@ const GroupedEntityUtilization = ({
   }, [filter]);
 
   let options: any;
-  if (history?.getAllGroupedEntityUsage) {
+  if (history?.getAllGroupedLocationIncompleteTasks) {
     options = {
       title: {
-        text: `${entityType} Utilization (${history?.getAllGroupedEntityUsage.length})`,
+        text: `Site Tasks (${history?.getAllGroupedLocationIncompleteTasks.length})`,
       },
       subtitle: {
         text: `${moment(dates[0]).format(
@@ -194,9 +217,9 @@ const GroupedEntityUtilization = ({
       chart: {
         type: "bar",
         height:
-          history?.getAllGroupedEntityUsage.length * 43 < 600
+          history?.getAllGroupedLocationIncompleteTasks.length * 43 < 600
             ? 600
-            : history?.getAllGroupedEntityUsage.length * 43,
+            : history?.getAllGroupedLocationIncompleteTasks.length * 43,
       },
       plotOptions: {
         series: {
@@ -204,14 +227,14 @@ const GroupedEntityUtilization = ({
         },
       },
       xAxis: {
-        categories: history?.getAllGroupedEntityUsage.map(
+        categories: history?.getAllGroupedLocationIncompleteTasks.map(
           (rec: any) => `${rec?.name} (${rec?.count})`
         ),
       },
       yAxis: {
         min: 0,
         title: {
-          text: "Amount",
+          text: "Tasks",
         },
       },
       exporting: {
@@ -227,15 +250,15 @@ const GroupedEntityUtilization = ({
             ],
           },
         },
-        filename: `${entityType} Utilization (${
-          history?.getAllGroupedEntityUsage.length
+        filename: `Site Tasks (${
+          history?.getAllGroupedLocationIncompleteTasks.length
         }) (${moment(dates[0]).format(
           DATETIME_FORMATS.DAY_MONTH_YEAR
         )} - ${moment(dates[1]).format(DATETIME_FORMATS.DAY_MONTH_YEAR)})`,
         csv: {
           columnHeaderFormatter: function (item: any, key: any) {
             if (!item || item instanceof Highcharts.Axis) {
-              return entityType;
+              return "Location";
             } else {
               return item.name;
             }
@@ -245,71 +268,24 @@ const GroupedEntityUtilization = ({
       legend: {
         reversed: true,
       },
-      colors: [
-        "rgba(166, 166, 166)",
-        "rgba(235, 64, 52)",
-        "rgba(252, 186, 3)",
-        "rgba(8, 151, 156)",
-      ],
+      colors: ["rgba(235, 64, 52)", "rgba(8, 151, 156)"],
       series: [
         {
-          name: "NA",
-          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
-            parseInt(rec?.na?.toFixed(0))
+          name: "Incomplete",
+          data: history?.getAllGroupedLocationIncompleteTasks.map((rec: any) =>
+            parseInt(rec?.incompleteTask?.toFixed(0))
           ),
         },
         {
-          name: "Breakdown",
-          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
-            parseInt(rec?.breakdownHour?.toFixed(0))
-          ),
-        },
-        {
-          name: "Idle",
-          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
-            parseInt(rec?.idleHour?.toFixed(0))
-          ),
-        },
-        {
-          name: "Working",
-          data: history?.getAllGroupedEntityUsage.map((rec: any) =>
-            parseInt(rec?.workingHour?.toFixed(0))
+          name: "Complete",
+          data: history?.getAllGroupedLocationIncompleteTasks.map((rec: any) =>
+            parseInt(rec?.completeTask?.toFixed(0))
           ),
         },
       ],
     };
   }
-  /*
-  let uniqueType: any = [];
-  let typeWithCountSorted: any = new Map([]);
-  
-  if (data?.getAllEntityWithoutPagination) {
-    const data2 = data?.getAllEntityWithoutPagination;
-    const typeWithCount = new Map([]);
-    const type = data2?.map((e: Entity) => {
-      let count: any = typeWithCount.get(e?.type?.name);
-      if (count) {
-        typeWithCount.set(e?.type?.name, count + 1);
-      } else {
-        typeWithCount.set(e?.type?.name, 1);
-      }
-      return e?.type?.name;
-    });
 
-    const type2 = [...new Set(type)];
-    uniqueType = type2.filter(function (e) {
-      return e !== undefined;
-    });
-
-    uniqueType.sort((a: any, b: any) => a.localeCompare(b));
-    typeWithCount.delete(undefined);
-    typeWithCountSorted = new Map(
-      [...typeWithCount].sort((a: any, b: any) =>
-        String(a[0]).localeCompare(b[0])
-      )
-    );
-  }
-  */
   const work = () => {
     onClick!();
     //running after 0.3 second so that graph width adjust
@@ -323,39 +299,25 @@ const GroupedEntityUtilization = ({
   const isSmallDevice = useIsSmallDevice(1200, true);
 
   const dataSource: any = [];
-  history?.getAllGroupedEntityUsage.map((h: any, index: number) => {
+  history?.getAllGroupedLocationIncompleteTasks.map((h: any, index: number) => {
     dataSource.push({
       key: index,
-      name: `${h.name} (${h.total})`,
-      workingHour: h.workingHour,
-      idleHour: h.idleHour,
-      breakdownHour: h.breakdownHour,
-      na: h.na,
+      name: `${h.name} (${h.count})`,
+      completeTask: h.completeTask,
+      incompleteTask: h.incompleteTask,
       total: h.total,
       description: (
         <div className={classes["description"]}>
           <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Working</div>
+            <div className={classes["title"]}>Complete</div>
             <div className={classes["working"]}>
-              {((h.workingHour / h.total) * 100).toFixed(0)}%
+              {((h.completeTask / h.total) * 100).toFixed(0)}%
             </div>
           </div>
           <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Idle</div>
-            <div className={classes["idle"]}>
-              {((h.idleHour / h.total) * 100).toFixed(0)}%
-            </div>
-          </div>
-          <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Breakdown</div>
+            <div className={classes["title"]}>Incomplete</div>
             <div className={classes["breakdown"]}>
-              {((h.breakdownHour / h.total) * 100).toFixed(0)}%
-            </div>
-          </div>
-          <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Na</div>
-            <div className={classes["na"]}>
-              {((h.na / h.total) * 100).toFixed(0)}%
+              {((h.incompleteTask / h.total) * 100).toFixed(0)}%
             </div>
           </div>
         </div>
@@ -365,35 +327,22 @@ const GroupedEntityUtilization = ({
 
   const columns = [
     {
-      title: `${entityType}`,
+      title: "Location",
       dataIndex: "name",
       key: "name",
       className: classes["font"],
-      width: '40%',
     },
     {
-      title: "Working",
-      dataIndex: "workingHour",
-      key: "workingHour",
+      title: "Complete",
+      dataIndex: "completeTask",
+      key: "completeTask",
       className: (classes["font"], classes["working"]),
     },
     {
-      title: "Idle",
-      dataIndex: "idleHour",
-      key: "idleHour",
-      className: (classes["font"], classes["idle"]),
-    },
-    {
-      title: "Breakdown",
-      dataIndex: "breakdownHour",
-      key: "breakdownHour",
+      title: "Incomplete",
+      dataIndex: "incompleteTask",
+      key: "incompleteTask",
       className: (classes["font"], classes["breakdown"]),
-    },
-    {
-      title: "Na",
-      dataIndex: "na",
-      key: "na",
-      className: (classes["font"], classes["na"]),
     },
     {
       title: "Total",
@@ -407,10 +356,6 @@ const GroupedEntityUtilization = ({
     <>
       <motion.div
         className={classes["container"]}
-        initial={{
-          x: entityType === "Vehicle" || entityType === "Machine" ? -60 : 60,
-          opacity: 0,
-        }}
         whileInView={{
           x: 0,
           opacity: 1,
@@ -422,38 +367,10 @@ const GroupedEntityUtilization = ({
         }}
         viewport={{ once: true }}
         style={{
-          width: entityType !== "Machine" && isSmallDevice ? "48%" : "100%",
+          width: "100%",
           marginTop: "20px",
-          marginLeft: entityType === "Machine" && isSmallDevice ? 10 : 0,
-          marginRight: entityType === "Machine" && isSmallDevice ? 10 : 0
         }}
       >
-        {/* hiding this btn */}
-        {!entityType && (
-          <div
-            className={classes["btn-wrapper"]}
-            style={{
-              visibility: clone ? "hidden" : "visible",
-            }}
-          >
-            <div
-              className={classes["btn"]}
-              style={{
-                backgroundColor: active
-                  ? "var(--ant-primary-color)"
-                  : "initial",
-                color: active ? "white" : "var(--compare-btn-color)",
-                borderColor: active
-                  ? "var(--compare-btn-active-border)"
-                  : "var(--compare-btn-border)",
-              }}
-              onClick={work}
-            >
-              <SwapOutlined style={{ fontSize: 22 }} />
-            </div>
-          </div>
-        )}
-
         <div className={classes["options-wrapper"]}>
           <DatePicker.RangePicker
             defaultValue={dates}
@@ -483,6 +400,29 @@ const GroupedEntityUtilization = ({
             width: "100%",
             paddingRight: 10,
             paddingLeft: 10,
+            paddingBottom: 10,
+          }}
+        >
+          <EntityTypeSelector
+            onChange={(entityType: string[]) => {
+              setFilter({
+                ...filter,
+                entityType,
+              });
+              setEntityType(entityType);
+            }}
+            value={entityType}
+            rounded
+            multiple
+            width={"100%"}
+          />
+        </div>
+
+        <div
+          style={{
+            width: "100%",
+            paddingRight: 10,
+            paddingLeft: 10,
           }}
         >
           <TypeSelector
@@ -491,7 +431,15 @@ const GroupedEntityUtilization = ({
             rounded
             multiple
             width={"100%"}
-            entityType={entityType! as EntityType}
+          />
+        </div>
+        <div className={classes["option"]}>
+          <DivisionSelector
+            setDivisionId={setDivisionIds}
+            currentId={divisionIds}
+            rounded
+            multiple
+            width={"100%"}
           />
         </div>
         <div className={classes["option"]}>
@@ -531,7 +479,7 @@ const GroupedEntityUtilization = ({
           <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
         ) : (
           <div>
-            {history?.getAllGroupedEntityUsage.length > 0 ? (
+            {history?.getAllGroupedLocationIncompleteTasks.length > 0 ? (
               <HighchartsReact highcharts={Highcharts} options={options} />
             ) : (
               <div
@@ -585,4 +533,4 @@ const GroupedEntityUtilization = ({
   );
 };
 
-export default GroupedEntityUtilization;
+export default GroupedLocationIncompleteTask;
