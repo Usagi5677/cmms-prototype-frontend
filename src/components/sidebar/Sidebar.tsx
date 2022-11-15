@@ -317,7 +317,10 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge color={"#87262c"} />
+                      <Badge
+                        color={"#87262c"}
+                        style={{ marginLeft: item?.count === 0 ? 10 : 0 }}
+                      />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -334,7 +337,17 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge color={"red"} />
+                      <Badge
+                        color={"red"}
+                        style={{
+                          marginLeft:
+                            item?.count === 0 &&
+                            summaryData?.getAllEntityChecklistAndPMSummary
+                              ?.machineTaskComplete
+                              ? 0
+                              : 10,
+                        }}
+                      />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -351,7 +364,10 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge color={"#87262c"} />
+                      <Badge
+                        color={"#87262c"}
+                        style={{ marginLeft: item?.count === 0 ? 10 : 0 }}
+                      />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -368,11 +384,16 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge color={"red"} />
+                      <Badge
+                        color={"red"}
+                        style={{
+                          marginLeft: item?.count === 0 ? 10 : 0,
+                        }}
+                      />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.vesselTaskComplete === true &&
+                  ?.vesselTaskComplete &&
                   item.name === "Vessels" && (
                     <Tooltip
                       color="var(--dot-tooltip)"
@@ -385,7 +406,12 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge color={"#87262c"} />
+                      <Badge
+                        color={"#87262c"}
+                        style={{
+                          marginLeft: item?.count === 0 ? 10 : 0,
+                        }}
+                      />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -402,7 +428,17 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge color={"red"} />
+                      <Badge
+                        color={"red"}
+                        style={{
+                          marginLeft:
+                            item?.count === 0 &&
+                            summaryData?.getAllEntityChecklistAndPMSummary
+                              ?.vesselTaskComplete
+                              ? 0
+                              : 10,
+                        }}
+                      />
                     </Tooltip>
                   )}
               </Link>
