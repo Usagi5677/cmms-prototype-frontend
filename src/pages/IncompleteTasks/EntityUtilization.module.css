@@ -110,24 +110,6 @@
   text-align: center;
   font-weight: 800;
 }
-
-.button {
-  vertical-align: middle;
-  font-size: 7px;
-  text-align: center;
-}
-
-.button:hover {
-  color: var(--ant-primary-color);
-}
-
-.checkbox-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  margin-bottom: 10px;
-}
-
 @media only screen and (min-width: 600px) {
   .options-wrapper {
     flex-direction: row;
@@ -144,8 +126,7 @@
   .idle,
   .breakdown,
   .na,
-  .total,
-  .button {
+  .total {
     font-size: 9px;
   }
   .description {
@@ -178,8 +159,7 @@
   .idle,
   .breakdown,
   .na,
-  .total,
-  .button {
+  .total {
     font-size: 12px;
   }
   .description {
@@ -196,8 +176,7 @@
   .idle,
   .breakdown,
   .na,
-  .total,
-  .button {
+  .total {
     font-size: 14px;
   }
 }

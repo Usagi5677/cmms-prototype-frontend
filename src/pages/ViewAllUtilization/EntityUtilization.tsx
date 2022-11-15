@@ -612,6 +612,7 @@ const EntityUtilization = ({
                 expandedRowRender: (record) => (
                   <div style={{ margin: 0 }}>{record?.description}</div>
                 ),
+                columnWidth: 1,
               }}
             />
           )}
