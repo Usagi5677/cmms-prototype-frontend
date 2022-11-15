@@ -297,12 +297,8 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
               className={classes["newMenuItem"]}
             >
               <Link to={item.path}>
-                {item.name}{" "}
-                <Badge
-                  showZero={false}
-                  count={item.count ?? 0}
-                  style={{ marginLeft: 10, marginRight: 10 }}
-                />
+                <span style={{ marginRight: 10 }}>{item.name}</span>
+                <Badge showZero={false} count={item.count ?? 0} />
                 {summaryData?.getAllEntityChecklistAndPMSummary
                   ?.machineTaskComplete === true &&
                   item.name === "Machinery" && (
@@ -317,10 +313,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge
-                        color={"#87262c"}
-                        style={{ marginLeft: item?.count === 0 ? 10 : 0 }}
-                      />
+                      <Badge color={"#87262c"} style={{ marginLeft: 10 }} />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -337,17 +330,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge
-                        color={"red"}
-                        style={{
-                          marginLeft:
-                            item?.count === 0 &&
-                            summaryData?.getAllEntityChecklistAndPMSummary
-                              ?.machineTaskComplete
-                              ? 0
-                              : 10,
-                        }}
-                      />
+                      <Badge color={"red"} style={{
+                          marginLeft: summaryData
+                            ?.getAllEntityChecklistAndPMSummary
+                            ?.machineTaskComplete
+                            ? 0
+                            : 10,
+                        }} />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -364,10 +353,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge
-                        color={"#87262c"}
-                        style={{ marginLeft: item?.count === 0 ? 10 : 0 }}
-                      />
+                      <Badge color={"#87262c"} style={{ marginLeft: 10 }} />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -387,13 +373,17 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                       <Badge
                         color={"red"}
                         style={{
-                          marginLeft: item?.count === 0 ? 10 : 0,
+                          marginLeft: summaryData
+                            ?.getAllEntityChecklistAndPMSummary
+                            ?.vehicleTaskComplete
+                            ? 0
+                            : 10,
                         }}
                       />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.vesselTaskComplete &&
+                  ?.vesselTaskComplete === true  &&
                   item.name === "Vessels" && (
                     <Tooltip
                       color="var(--dot-tooltip)"
@@ -406,12 +396,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge
-                        color={"#87262c"}
-                        style={{
-                          marginLeft: item?.count === 0 ? 10 : 0,
-                        }}
-                      />
+                      <Badge color={"#87262c"} style={{ marginLeft: 10 }} />
                     </Tooltip>
                   )}
                 {summaryData?.getAllEntityChecklistAndPMSummary
@@ -428,17 +413,13 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
                         </div>
                       }
                     >
-                      <Badge
-                        color={"red"}
-                        style={{
-                          marginLeft:
-                            item?.count === 0 &&
-                            summaryData?.getAllEntityChecklistAndPMSummary
-                              ?.vesselTaskComplete
-                              ? 0
-                              : 10,
-                        }}
-                      />
+                      <Badge color={"red"} style={{
+                          marginLeft: summaryData
+                            ?.getAllEntityChecklistAndPMSummary
+                            ?.vesselTaskComplete
+                            ? 0
+                            : 10,
+                        }} />
                     </Tooltip>
                   )}
               </Link>
