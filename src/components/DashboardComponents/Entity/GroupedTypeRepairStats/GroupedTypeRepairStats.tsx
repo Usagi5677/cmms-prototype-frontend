@@ -1,45 +1,30 @@
-import {
-  Badge,
-  Checkbox,
-  Collapse,
-  DatePicker,
-  Empty,
-  Spin,
-  Switch,
-  Table,
-  Tooltip,
-} from "antd";
+import { DatePicker, Empty, Spin, Table } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import classes from "./EntityUtilization.module.css";
+import { useParams } from "react-router-dom";
+import classes from "./GroupedTypeRepairStats.module.css";
 import { useLazyQuery } from "@apollo/client";
-import {
-  ALL_ENTITY_WITHOUT_PAGINATION,
-  GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ALL_ENTITY_USAGE_HISTORY,
-} from "../../api/queries";
-import { errorMessage } from "../../helpers/gql";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
-import { Entity } from "../../models/Entity/Entity";
 import { motion } from "framer-motion";
-import { DATETIME_FORMATS } from "../../helpers/constants";
 import moment from "moment";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { SwapOutlined } from "@ant-design/icons";
-import { MeasurementSelector } from "../../components/common/MeasurementSelector";
-import { LocationSelector } from "../../components/Config/Location/LocationSelector";
-import { TypeSelector } from "../../components/Config/Type/TypeSelector";
-import { ZoneSelector } from "../../components/Config/Zone/ZoneSelector";
-import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
-import { useLocalStorage } from "../../helpers/useLocalStorage";
-import Search from "../../components/common/Search";
-import { FaArrowAltCircleRight } from "react-icons/fa";
+import { GET_ALL_GROUPED_TYPE_REPAIR_STATS } from "../../../../api/queries";
+import { DATETIME_FORMATS } from "../../../../helpers/constants";
+import { errorMessage } from "../../../../helpers/gql";
+import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
+import { useLocalStorage } from "../../../../helpers/useLocalStorage";
+import { EntityTypeSelector } from "../../../common/EntityTypeSelector";
+import { MeasurementSelector } from "../../../common/MeasurementSelector";
+import { DivisionSelector } from "../../../Config/Division/DivisionSelector";
+import { LocationSelector } from "../../../Config/Location/LocationSelector";
+import { TypeSelector } from "../../../Config/Type/TypeSelector";
+import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
+import Search from "../../../common/Search";
+
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 
-const EntityUtilization = ({
+const GroupedTypeRepairStats = ({
   clone,
   active,
   onClick,
@@ -48,13 +33,12 @@ const EntityUtilization = ({
   active?: boolean;
   onClick?: () => void;
 }) => {
-  const getFilter = localStorage.getItem("dashboardUtilizationFilter");
+  const getFilter = localStorage.getItem(`groupedTypeRepairStatsFilter`);
   let getFilterObjects: any;
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
   }
   const [timerId, setTimerId] = useState(null);
-  const [showEntity, setShowEntity] = useState(false);
   const { id }: any = useParams();
   const [search, setSearch] = useState(getFilterObjects?.search);
   const [locationIds, setLocationIds] = useState<number[]>(
@@ -62,21 +46,29 @@ const EntityUtilization = ({
   );
   const [zoneIds, setZoneIds] = useState<number[]>(getFilterObjects?.zoneIds);
   const [typeIds, setTypeIds] = useState<number[]>(getFilterObjects?.typeIds);
+  const [divisionIds, setDivisionIds] = useState<number[]>(
+    getFilterObjects?.divisionIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
+  );
+  const [entityType, setEntityType] = useState<string[]>(
+    getFilterObjects?.entityType
   );
   const [dates, setDates] = useState<any>([
     moment(getFilterObjects?.from),
     moment(getFilterObjects?.to),
   ]);
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
-    "dashboardUtilizationFilter",
+    `groupedTypeRepairStatsFilter`,
     JSON.stringify({
       search: "",
+      divisionIds: [],
       zoneIds: [],
       locationIds: [],
       typeIds: [],
       measurement: [],
+      entityType: [],
       from: moment().subtract(1, "day"),
       to: moment(),
     })
@@ -85,36 +77,44 @@ const EntityUtilization = ({
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<{
     search: string;
+    divisionIds: number[];
     locationIds: number[];
     zoneIds: number[];
     typeIds: number[];
     measurement: string[];
+    entityType: string[];
   }>({
     search: JSON.parse(saveFilterOptions)?.search,
+    divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     locationIds: JSON.parse(saveFilterOptions)?.locationIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
+    entityType: JSON.parse(saveFilterOptions)?.entityType,
   });
 
-  const [allEntityUsageHistory, { data: history, loading: historyLoading }] =
-    useLazyQuery(GET_ALL_ENTITY_USAGE_HISTORY, {
-      onError: (err) => {
-        errorMessage(err, "Error loading usage history.");
-      },
-    });
+  const [
+    getAllGroupedTypeRepairStats,
+    { data: history, loading: historyLoading },
+  ] = useLazyQuery(GET_ALL_GROUPED_TYPE_REPAIR_STATS, {
+    onError: (err) => {
+      errorMessage(err, "Error loading repair statistics.");
+    },
+  });
 
   useEffect(() => {
-    allEntityUsageHistory({
+    getAllGroupedTypeRepairStats({
       variables: {
         machineId: parseInt(id),
         from: dates[0].toISOString(),
         to: dates[1].toISOString(),
         search,
+        divisionIds,
         locationIds,
         zoneIds,
         typeIds,
         measurement,
+        entityType,
       },
     });
     const newfilter = {
@@ -125,12 +125,14 @@ const EntityUtilization = ({
     setSaveFilterOptions(JSON.stringify(newfilter));
   }, [
     dates,
-    allEntityUsageHistory,
+    getAllGroupedTypeRepairStats,
     search,
+    divisionIds,
     locationIds,
     zoneIds,
     typeIds,
     measurement,
+    entityType,
   ]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -139,10 +141,12 @@ const EntityUtilization = ({
   // call as well).
   const searchDebounced = (
     value: string,
+    divisionIdsValue: number[],
     locationIdsValue: number[],
     zoneIdsValue: number[],
     typeIdsValue: number[],
-    measurementValue: string[]
+    measurementValue: string[],
+    entityTypeValue: string[]
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -151,10 +155,12 @@ const EntityUtilization = ({
         setFilter((filter) => ({
           ...filter,
           search: value,
+          divisionIds: divisionIdsValue,
           locationIds: locationIdsValue,
           zoneIds: zoneIdsValue,
           typeIds: typeIdsValue,
           measurement: measurementValue,
+          entityType: entityTypeValue,
         }));
       }, 500)
     );
@@ -165,45 +171,40 @@ const EntityUtilization = ({
       initialRender.current = false;
       return;
     }
-    searchDebounced(search, locationIds, zoneIds, typeIds, measurement);
+    searchDebounced(
+      search,
+      divisionIds,
+      locationIds,
+      zoneIds,
+      typeIds,
+      measurement,
+      entityType
+    );
     // eslint-disable-next-line
-  }, [search, locationIds, zoneIds, typeIds, measurement]);
-
-  const [getAllEntityWithoutPagination, { data, loading }] = useLazyQuery(
-    ALL_ENTITY_WITHOUT_PAGINATION,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading entity.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
-      onError: (err) => {
-        errorMessage(err, "Error loading summary data.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    });
+  }, [
+    search,
+    divisionIds,
+    locationIds,
+    zoneIds,
+    typeIds,
+    measurement,
+    entityType,
+  ]);
 
   useEffect(() => {
-    getAllEntityWithoutPagination({ variables: filter });
-    getAllEntityChecklistAndPMSummary();
     const newfilter = {
       ...filter,
       from: dates[0].toISOString(),
       to: dates[1].toISOString(),
     };
     setSaveFilterOptions(JSON.stringify(newfilter));
-  }, [filter, getAllEntityWithoutPagination]);
+  }, [filter]);
 
   let options: any;
-  if (history?.allEntityUsageHistory) {
+  if (history?.getAllGroupedTypeRepairStats) {
     options = {
       title: {
-        text: `Utilization (${history?.allEntityUsageHistory.length})`,
+        text: `Repair Statistics (${history?.getAllGroupedTypeRepairStats.length})`,
       },
       subtitle: {
         text: `${moment(dates[0]).format(
@@ -213,9 +214,9 @@ const EntityUtilization = ({
       chart: {
         type: "bar",
         height:
-          history?.allEntityUsageHistory.length * 43 < 600
+          history?.getAllGroupedTypeRepairStats.length * 43 < 600
             ? 600
-            : history?.allEntityUsageHistory.length * 43,
+            : history?.getAllGroupedTypeRepairStats.length * 43,
       },
       plotOptions: {
         series: {
@@ -223,14 +224,14 @@ const EntityUtilization = ({
         },
       },
       xAxis: {
-        categories: history?.allEntityUsageHistory.map(
-          (rec: any) => rec?.machineNumber
+        categories: history?.getAllGroupedTypeRepairStats.map(
+          (rec: any) => `${rec?.name} (${rec?.count})`
         ),
       },
       yAxis: {
         min: 0,
         title: {
-          text: "Amount (hr)",
+          text: "Amount",
         },
       },
       exporting: {
@@ -246,15 +247,15 @@ const EntityUtilization = ({
             ],
           },
         },
-        filename: `Utilization (${
-          history?.allEntityUsageHistory.length
+        filename: `Repair Statistics (${
+          history?.getAllGroupedTypeRepairStats.length
         }) (${moment(dates[0]).format(
           DATETIME_FORMATS.DAY_MONTH_YEAR
         )} - ${moment(dates[1]).format(DATETIME_FORMATS.DAY_MONTH_YEAR)})`,
         csv: {
           columnHeaderFormatter: function (item: any, key: any) {
             if (!item || item instanceof Highcharts.Axis) {
-              return "Machine Number";
+              return "Type";
             } else {
               return item.name;
             }
@@ -264,67 +265,22 @@ const EntityUtilization = ({
       legend: {
         reversed: true,
       },
-      colors: [
-        "rgba(166, 166, 166)",
-        "rgba(235, 64, 52)",
-        "rgba(252, 186, 3)",
-        "rgba(8, 151, 156)",
-      ],
+      colors: ["rgba(235, 64, 52)", "rgba(8, 151, 156)"],
       series: [
         {
-          name: "NA",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
-            parseInt(rec?.na?.toFixed(0))
+          name: "Mean",
+          data: history?.getAllGroupedTypeRepairStats.map((rec: any) =>
+            parseInt(rec?.mean)
           ),
         },
         {
-          name: "Breakdown",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
-            parseInt(rec?.breakdownHour?.toFixed(0))
-          ),
-        },
-        {
-          name: "Idle",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
-            parseInt(rec?.idleHour?.toFixed(0))
-          ),
-        },
-        {
-          name: "Working",
-          data: history?.allEntityUsageHistory.map((rec: any) =>
-            parseInt(rec?.workingHour?.toFixed(0))
+          name: "Average",
+          data: history?.getAllGroupedTypeRepairStats.map((rec: any) =>
+            parseInt(rec?.averageTimeOfRepair)
           ),
         },
       ],
     };
-  }
-  let uniqueType: any = [];
-  let typeWithCountSorted: any = new Map([]);
-  if (data?.getAllEntityWithoutPagination) {
-    const data2 = data?.getAllEntityWithoutPagination;
-    const typeWithCount = new Map([]);
-    const type = data2?.map((e: Entity) => {
-      let count: any = typeWithCount.get(e?.type?.name);
-      if (count) {
-        typeWithCount.set(e?.type?.name, count + 1);
-      } else {
-        typeWithCount.set(e?.type?.name, 1);
-      }
-      return e?.type?.name;
-    });
-
-    const type2 = [...new Set(type)];
-    uniqueType = type2.filter(function (e) {
-      return e !== undefined;
-    });
-
-    uniqueType.sort((a: any, b: any) => a.localeCompare(b));
-    typeWithCount.delete(undefined);
-    typeWithCountSorted = new Map(
-      [...typeWithCount].sort((a: any, b: any) =>
-        String(a[0]).localeCompare(b[0])
-      )
-    );
   }
 
   const work = () => {
@@ -337,84 +293,53 @@ const EntityUtilization = ({
     }, 300);
   };
 
+  const isSmallDevice = useIsSmallDevice(1200, true);
+
   const dataSource: any = [];
-  history?.allEntityUsageHistory.map((h: any, index: number) => {
+  history?.getAllGroupedTypeRepairStats.map((h: any, index: number) => {
     dataSource.push({
       key: index,
-      machineNumber: h.machineNumber,
-      workingHour: h.workingHour,
-      idleHour: h.idleHour,
-      breakdownHour: h.breakdownHour,
-      na: h.na,
+      name: `${h.name} (${h.count})`,
+      averageTimeOfRepair: h.averageTimeOfRepair,
+      mean: h.mean,
       total: h.total,
       description: (
         <div className={classes["description"]}>
           <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Working</div>
+            <div className={classes["title"]}>Average time of repair</div>
             <div className={classes["working"]}>
-              {((h.workingHour / h.total) * 100).toFixed(0)}%
+              {((h.averageTimeOfRepair / h.total) * 100).toFixed(0)}%
             </div>
           </div>
           <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Idle</div>
-            <div className={classes["idle"]}>
-              {((h.idleHour / h.total) * 100).toFixed(0)}%
-            </div>
-          </div>
-          <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Breakdown</div>
+            <div className={classes["title"]}>Mean</div>
             <div className={classes["breakdown"]}>
-              {((h.breakdownHour / h.total) * 100).toFixed(0)}%
-            </div>
-          </div>
-          <div className={classes["title-wrapper"]}>
-            <div className={classes["title"]}>Na</div>
-            <div className={classes["na"]}>
-              {((h.na / h.total) * 100).toFixed(0)}%
+              {((h.mean / h.total) * 100).toFixed(0)}%
             </div>
           </div>
         </div>
-      ),
-      action: (
-        <Link to={"/entity/" + h.id}>
-          <Tooltip title="Open">
-            <FaArrowAltCircleRight className={classes["button"]} />
-          </Tooltip>
-        </Link>
       ),
     });
   });
 
   const columns = [
     {
-      title: `Machine Number`,
-      dataIndex: "machineNumber",
-      key: "machineNumber",
+      title: "Type",
+      dataIndex: "name",
+      key: "name",
       className: classes["font"],
     },
     {
-      title: "Working",
-      dataIndex: "workingHour",
-      key: "workingHour",
+      title: "Average time for repair (hr)",
+      dataIndex: "averageTimeOfRepair",
+      key: "averageTimeOfRepair",
       className: (classes["font"], classes["working"]),
     },
     {
-      title: "Idle",
-      dataIndex: "idleHour",
-      key: "idleHour",
-      className: (classes["font"], classes["idle"]),
-    },
-    {
-      title: "Breakdown",
-      dataIndex: "breakdownHour",
-      key: "breakdownHour",
+      title: "Mean distance between repair",
+      dataIndex: "mean",
+      key: "mean",
       className: (classes["font"], classes["breakdown"]),
-    },
-    {
-      title: "Na",
-      dataIndex: "na",
-      key: "na",
-      className: (classes["font"], classes["na"]),
     },
     {
       title: "Total",
@@ -422,20 +347,16 @@ const EntityUtilization = ({
       key: "total",
       className: (classes["font"], classes["total"]),
     },
-    {
-      title: "",
-      dataIndex: "action",
-      key: "action",
-      className: classes["font"],
-    },
   ];
-
-  const isSmallDevice = useIsSmallDevice(1200, true);
 
   return (
     <>
       <motion.div
         className={classes["container"]}
+        initial={{
+          x: -60,
+          opacity: 0,
+        }}
         whileInView={{
           x: 0,
           opacity: 1,
@@ -447,30 +368,12 @@ const EntityUtilization = ({
         }}
         viewport={{ once: true }}
         style={{
-          width: active && isSmallDevice ? "48%" : "100%",
-          marginTop: active && clone && !isSmallDevice ? "20px" : 0,
+          width: "100%",
+          marginTop: "20px",
+          marginLeft: isSmallDevice ? 10 : 0,
+          marginRight: isSmallDevice ? 10 : 0
         }}
       >
-        <div
-          className={classes["btn-wrapper"]}
-          style={{
-            visibility: clone ? "hidden" : "visible",
-          }}
-        >
-          <div
-            className={classes["btn"]}
-            style={{
-              backgroundColor: active ? "var(--ant-primary-color)" : "initial",
-              color: active ? "white" : "var(--compare-btn-color)",
-              borderColor: active
-                ? "var(--compare-btn-active-border)"
-                : "var(--compare-btn-border)",
-            }}
-            onClick={work}
-          >
-            <SwapOutlined style={{ fontSize: 22 }} />
-          </div>
-        </div>
         <div className={classes["options-wrapper"]}>
           <DatePicker.RangePicker
             defaultValue={dates}
@@ -500,11 +403,43 @@ const EntityUtilization = ({
             width: "100%",
             paddingRight: 10,
             paddingLeft: 10,
+            paddingBottom: 10,
+          }}
+        >
+          <EntityTypeSelector
+            onChange={(entityType: string[]) => {
+              setFilter({
+                ...filter,
+                entityType,
+              });
+              setEntityType(entityType);
+            }}
+            value={entityType}
+            rounded
+            multiple
+            width={"100%"}
+          />
+        </div>
+
+        <div
+          style={{
+            width: "100%",
+            paddingRight: 10,
+            paddingLeft: 10,
           }}
         >
           <TypeSelector
             setTypeId={setTypeIds}
             currentId={typeIds}
+            rounded
+            multiple
+            width={"100%"}
+          />
+        </div>
+        <div className={classes["option"]}>
+          <DivisionSelector
+            setDivisionId={setDivisionIds}
+            currentId={divisionIds}
             rounded
             multiple
             width={"100%"}
@@ -547,7 +482,7 @@ const EntityUtilization = ({
           <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
         ) : (
           <div>
-            {history?.allEntityUsageHistory.length > 0 ? (
+            {history?.getAllGroupedTypeRepairStats.length > 0 ? (
               <HighchartsReact highcharts={Highcharts} options={options} />
             ) : (
               <div
@@ -560,27 +495,6 @@ const EntityUtilization = ({
             )}
           </div>
         )}
-        <motion.div
-          whileInView={{
-            x: 0,
-            opacity: 1,
-            transition: {
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.3,
-            },
-          }}
-          viewport={{ once: true }}
-          className={classes["checkbox-wrapper"]}
-        >
-          <Checkbox
-            defaultChecked={showEntity}
-            onChange={(e) => setShowEntity(e.target.checked)}
-            style={{ fontSize: !isSmallDevice ? 9 : 14 }}
-          >
-            Show Entity
-          </Checkbox>
-        </motion.div>
         <motion.div
           whileInView={{
             x: 0,
@@ -617,61 +531,9 @@ const EntityUtilization = ({
             />
           )}
         </motion.div>
-        {loading && showEntity ? (
-          <div>
-            <Spin style={{ width: "100%", margin: "2rem auto" }} />
-          </div>
-        ) : typeWithCountSorted.size > 0 && showEntity ? (
-          <div style={{ marginTop: 20 }}>
-            {[...typeWithCountSorted].map((key: any) => (
-              <Collapse ghost style={{ marginBottom: ".5rem" }} key={key[0]}>
-                <Collapse.Panel
-                  header={
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <span>{key[0]}</span>
-                      <Badge
-                        count={key[1]}
-                        style={{
-                          color: "black",
-                          backgroundColor: "#e5e5e5",
-                          marginLeft: ".5rem",
-                        }}
-                      />
-                    </div>
-                  }
-                  key={key[0]}
-                >
-                  {data?.getAllEntityWithoutPagination.map((rec: Entity) => {
-                    const entity = rec;
-                    if (entity?.type?.name === key[0]) {
-                      return (
-                        <EntityCard
-                          entity={entity}
-                          key={entity.id}
-                          summaryData={
-                            summaryData?.getAllEntityChecklistAndPMSummary
-                          }
-                          smallView
-                        />
-                      );
-                    }
-                  })}
-                </Collapse.Panel>
-              </Collapse>
-            ))}
-          </div>
-        ) : (
-          <div
-            style={{
-              marginTop: showEntity ? 50 : 0,
-            }}
-          >
-            {showEntity && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
-          </div>
-        )}
       </motion.div>
     </>
   );
 };
 
-export default EntityUtilization;
+export default GroupedTypeRepairStats;

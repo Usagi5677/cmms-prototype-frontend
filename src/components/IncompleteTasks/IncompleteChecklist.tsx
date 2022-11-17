@@ -21,10 +21,12 @@ import { EntityListing } from "../EntityComponents/EntityListing";
 
 export interface IncompleteChecklistProps {
   type: string;
+  setFirstLoad?: any;
 }
 
 export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   type,
+  setFirstLoad,
 }) => {
   const { user: self } = useContext(UserContext);
   const [date, setDate] = useState(moment());
@@ -47,7 +49,12 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   );
 
   const [getSummary, { data: monthSummary }] = useLazyQuery(
-    INCOMPLETE_CHECKLIST_SUMMARY
+    INCOMPLETE_CHECKLIST_SUMMARY,
+    {
+      onCompleted: () => {
+        setFirstLoad(true);
+      },
+    }
   );
 
   useEffect(() => {

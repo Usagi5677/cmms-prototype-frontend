@@ -14,6 +14,7 @@ import { hasPermissions } from "../../helpers/permissions";
 import { motion } from "framer-motion";
 import { WarningOutlined } from "@ant-design/icons";
 import GroupedEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/GroupedEntityUtilization";
+import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -142,6 +143,7 @@ const Dashboard = () => {
           <GroupedEntityUtilization entityType="Vehicle" />
           <GroupedEntityUtilization entityType="Vessel" />
           <GroupedEntityUtilization entityType="Machine" />
+          <GroupedTypeRepairStats />
         </div>
       )}
     </>

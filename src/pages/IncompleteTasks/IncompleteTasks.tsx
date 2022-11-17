@@ -1,6 +1,7 @@
 import { message, Tabs } from "antd";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
 import { IncompleteChecklists } from "../../components/IncompleteTasks/IncompleteChecklists";
 import UserContext from "../../contexts/UserContext";
 import { hasPermissions, isAssignedTypeToAny } from "../../helpers/permissions";
@@ -10,6 +11,7 @@ export interface IncompleteTasksProps {}
 
 export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
   const { user } = useContext(UserContext);
+  const [firstLoad, setFirstLoad] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     if (
@@ -21,7 +23,7 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
       message.error("Not an admin or user of any entity.");
     }
   }, []);
-
+  console.log(firstLoad);
   return (
     <>
       <div
@@ -38,7 +40,7 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
       >
         <Tabs defaultActiveKey="checklist">
           <Tabs.TabPane tab="Checklist" key="checklist">
-            <IncompleteChecklists />
+            <IncompleteChecklists setFirstLoad={setFirstLoad} />
           </Tabs.TabPane>
           {/* <Tabs.TabPane
           tab="Periodic Maintenance"
@@ -46,7 +48,8 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
         ></Tabs.TabPane> */}
         </Tabs>
       </div>
-      <GroupedLocationIncompleteTask />
+      {firstLoad && <GroupedLocationIncompleteTask /> }
+
     </>
   );
 };
