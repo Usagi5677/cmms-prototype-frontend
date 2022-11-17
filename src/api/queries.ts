@@ -1777,6 +1777,40 @@ export const GET_ALL_GROUPED_LOCATION_INCOMPLETE_TASKS = gql`
     }
   }
 `;
+
+export const GET_ALL_GROUPED_TYPE_REPAIR_STATS = gql`
+  query getAllGroupedTypeRepairStats(
+    $from: Date!
+    $to: Date!
+    $search: String
+    $divisionIds: [Int!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $typeIds: [Int!]
+    $measurement: [String!]
+    $entityType: [String!]
+  ) {
+    getAllGroupedTypeRepairStats(
+      from: $from
+      to: $to
+      search: $search
+      divisionIds: $divisionIds
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      typeIds: $typeIds
+      measurement: $measurement
+      entityType: $entityType
+    ) {
+      typeId
+      name
+      averageTimeOfRepair
+      mean
+      count
+      total
+    }
+  }
+`;
+
 export const ALL_ENTITY_WITHOUT_PAGINATION = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntityWithoutPagination(

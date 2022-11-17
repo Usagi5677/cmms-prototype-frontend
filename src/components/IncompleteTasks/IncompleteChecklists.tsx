@@ -3,11 +3,13 @@ import React from "react";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import { IncompleteChecklist } from "./IncompleteChecklist";
 
-export interface IncompleteChecklistsProps {}
+export interface IncompleteChecklistsProps {
+  setFirstLoad?: any;
+}
 
-export const IncompleteChecklists: React.FC<
-  IncompleteChecklistsProps
-> = ({}) => {
+export const IncompleteChecklists: React.FC<IncompleteChecklistsProps> = ({
+  setFirstLoad,
+}) => {
   const isSmallDevice = useIsSmallDevice();
   return (
     <div
@@ -18,7 +20,7 @@ export const IncompleteChecklists: React.FC<
     >
       {["Daily", "Weekly"].map((type, i) => (
         <React.Fragment key={type}>
-          <IncompleteChecklist type={type} />
+          <IncompleteChecklist type={type} setFirstLoad={setFirstLoad} />
           {i === 0 && (
             <Divider
               style={{

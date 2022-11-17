@@ -211,7 +211,7 @@ const GroupedEntityUtilization = ({
       yAxis: {
         min: 0,
         title: {
-          text: "Amount",
+          text: "Amount (hr)",
         },
       },
       exporting: {
