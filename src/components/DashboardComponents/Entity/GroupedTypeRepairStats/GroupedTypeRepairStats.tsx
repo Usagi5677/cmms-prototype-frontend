@@ -353,6 +353,10 @@ const GroupedTypeRepairStats = ({
     <>
       <motion.div
         className={classes["container"]}
+        initial={{
+          x: -60,
+          opacity: 0,
+        }}
         whileInView={{
           x: 0,
           opacity: 1,
@@ -366,6 +370,8 @@ const GroupedTypeRepairStats = ({
         style={{
           width: "100%",
           marginTop: "20px",
+          marginLeft: isSmallDevice ? 10 : 0,
+          marginRight: isSmallDevice ? 10 : 0
         }}
       >
         <div className={classes["options-wrapper"]}>
