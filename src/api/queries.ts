@@ -602,6 +602,59 @@ export const PERIODIC_MAINTENANCE_SUMMARIES = gql`
   }
 `;
 
+export const ALL_PERIODIC_MAINTENANCE_SUMMARIES = gql`
+  query allPeriodicMaintenanceSummary(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $type: String
+    $from: Date
+    $to: Date
+    $entityId: Int
+    $type2Ids: [Int!]
+    $measurement: [String!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $divisionIds: [Int!]
+    $gteInterService: String
+    $lteInterService: String
+    $pmStatus: [String!]
+  ) {
+    allPeriodicMaintenanceSummary(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      type: $type
+      from: $from
+      to: $to
+      entityId: $entityId
+      type2Ids: $type2Ids
+      measurement: $measurement
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      divisionIds: $divisionIds
+      gteInterService: $gteInterService
+      lteInterService: $lteInterService
+      pmStatus: $pmStatus
+    ) {
+      id
+      from
+      to
+      type
+      entityId
+      currentMeterReading
+      hasRemarks
+      hasObservations
+      hasVerify
+      taskCompletion
+    }
+  }
+`;
+
 export const CHECKLIST_SUMMARIES = gql`
   query checklistSummary($input: ChecklistSummaryInput!) {
     checklistSummary(input: $input) {
@@ -1743,7 +1796,6 @@ export const GET_ALL_GROUPED_ENTITY_USAGE = gql`
     }
   }
 `;
-
 
 export const GET_ALL_GROUPED_LOCATION_INCOMPLETE_TASKS = gql`
   query getAllGroupedLocationIncompleteTasks(

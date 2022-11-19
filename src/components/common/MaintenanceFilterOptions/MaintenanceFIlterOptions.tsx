@@ -1,4 +1,4 @@
-import { Button, Collapse, Divider, Form } from "antd";
+import { Button, Collapse, DatePicker, Divider, Form } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect } from "react";
 import { FilterOptionProps } from "../../../models/Enums";
@@ -96,6 +96,32 @@ const MaintenanceFilterOptions = ({
                         value={options?.pmStatusOptions!.value!}
                         multiple={true}
                         width={options?.pmStatusOptions!.width}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className={classes["sub-title"]}>From</div>
+                  <Divider style={{ marginTop: 10 }} />
+                  <div className={classes["item"]}>
+                    <Form.Item
+                      name="from"
+                      initialValue={options?.fromOptions!.value}
+                    >
+                      <DatePicker
+                        onChange={options?.fromOptions!.onChange}
+                        value={options?.fromOptions!.value!}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className={classes["sub-title"]}>To</div>
+                  <Divider style={{ marginTop: 10 }} />
+                  <div className={classes["item"]}>
+                    <Form.Item
+                      name="to"
+                      initialValue={options?.toOptions!.value}
+                    >
+                      <DatePicker
+                        onChange={options?.toOptions!.onChange}
+                        value={options?.toOptions!.value!}
                       />
                     </Form.Item>
                   </div>
