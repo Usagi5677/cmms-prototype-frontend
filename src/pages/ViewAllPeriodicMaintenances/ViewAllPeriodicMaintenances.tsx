@@ -8,6 +8,7 @@ import {
   ALL_ENTITY,
   ALL_PERIODIC_MAINTENANCE_LIST,
   ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
+  ALL_PERIODIC_MAINTENANCE_SUMMARIES,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
   GET_ALL_ENTITY_STATUS_COUNT,
   GET_ALL_PM_SUMMARY,
@@ -27,6 +28,7 @@ import CountUp from "react-countup";
 import FilterOptions from "../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
+  DefaultDateOptionProps,
   DefaultNumberArrayOptionProps,
   DefaultStringArrayOptionProps,
   EntityStatus,
@@ -49,6 +51,8 @@ import { useLocalStorage } from "../../helpers/useLocalStorage";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
 import PMCard from "../../components/common/PMCard/PMCard";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
+import moment from "moment";
+import AllPeriodicMaintenanceCalendar from "./AllPeriodicMaintenanceCalendar";
 
 const ViewAllPeriodicMaintenances = () => {
   const getFilter = localStorage.getItem("periodicMaintenancesFilter");
@@ -82,6 +86,9 @@ const ViewAllPeriodicMaintenances = () => {
   const [pmStatus, setPMStatus] = useState<PeriodicMaintenanceStatus[]>(
     getFilterObjects?.pmStatus
   );
+  const [to, setTo] = useState<any>(moment(getFilterObjects?.to));
+  const [from, setFrom] = useState<any>(moment(getFilterObjects?.from));
+
   const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
@@ -101,6 +108,8 @@ const ViewAllPeriodicMaintenances = () => {
       lteInterService: "",
       gteInterService: "",
       pmStatus: [],
+      from: moment(),
+      to: moment(),
     })
   );
   // Filter has an intersection type as it has PaginationArgs + other args
@@ -115,6 +124,8 @@ const ViewAllPeriodicMaintenances = () => {
       lteInterService: string;
       gteInterService: string;
       pmStatus: PeriodicMaintenanceStatus[];
+      from: any;
+      to: any;
     }
   >({
     first: 20,
@@ -130,6 +141,8 @@ const ViewAllPeriodicMaintenances = () => {
     lteInterService: JSON.parse(saveFilterOptions)?.lteInterService,
     gteInterService: JSON.parse(saveFilterOptions)?.gteInterService,
     pmStatus: JSON.parse(saveFilterOptions)?.pmStatus,
+    from: JSON.parse(saveFilterOptions)?.from,
+    to: JSON.parse(saveFilterOptions)?.to,
   });
 
   const [allPMStatusCount, { data: statusData }] = useLazyQuery(
@@ -143,34 +156,35 @@ const ViewAllPeriodicMaintenances = () => {
     }
   );
 
-  const [getAllEntityPMSummary, { data: summaryData }] = useLazyQuery(
-    GET_ALL_PM_SUMMARY,
+  const [getAllPMWithPagination, { data, loading }] = useLazyQuery(
+    ALL_PERIODIC_MAINTENANCE_LIST,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading summary data.");
+        errorMessage(err, "Error loading maintenances.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
     }
   );
 
-  const [getAllPMWithPagination, { data, loading }] = useLazyQuery(
-    ALL_PERIODIC_MAINTENANCE_LIST,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading machines.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
+  const [
+    allPeriodicMaintenanceSummary,
+    { data: allSummary, loading: loading2 },
+  ] = useLazyQuery(ALL_PERIODIC_MAINTENANCE_SUMMARIES, {
+    onError: (err) => {
+      errorMessage(err, "Error loading maintenance summary.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
     getAllPMWithPagination({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
+    allPeriodicMaintenanceSummary({ variables: filter });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, getAllPMWithPagination]);
+  }, [filter, getAllPMWithPagination, from, to]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -185,7 +199,9 @@ const ViewAllPeriodicMaintenances = () => {
     measurementValue: string[],
     lteInterServiceValue: string,
     gteInterServiceValue: string,
-    pmStatusValue: PeriodicMaintenanceStatus[]
+    pmStatusValue: PeriodicMaintenanceStatus[],
+    fromValue: any,
+    toValue: any
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -202,6 +218,8 @@ const ViewAllPeriodicMaintenances = () => {
           lteInterService: lteInterServiceValue,
           gteInterService: gteInterServiceValue,
           pmStatus: pmStatusValue,
+          from: fromValue,
+          to: toValue,
           first: 20,
           last: null,
           before: null,
@@ -226,7 +244,9 @@ const ViewAllPeriodicMaintenances = () => {
       measurement,
       lteInterService,
       gteInterService,
-      pmStatus
+      pmStatus,
+      from,
+      to
     );
     // eslint-disable-next-line
   }, [
@@ -238,14 +258,15 @@ const ViewAllPeriodicMaintenances = () => {
     measurement,
     lteInterService,
     gteInterService,
-    pmStatus
+    pmStatus,
+    from,
+    to,
   ]);
 
   //Fetch all machine status count
   useEffect(() => {
     allPMStatusCount({ variables: filter });
-    getAllEntityPMSummary();
-  }, [filter, allPMStatusCount, getAllEntityPMSummary]);
+  }, [filter, allPMStatusCount]);
 
   // Pagination functions
   const next = () => {
@@ -392,6 +413,36 @@ const ViewAllPeriodicMaintenances = () => {
     width: "100%",
   };
 
+  const fromOptions: DefaultDateOptionProps = {
+    onChange: (from: any) => {
+      setFilter({
+        ...filter,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setFrom(from);
+    },
+    value: from,
+    width: "100%",
+  };
+
+  const toOptions: DefaultDateOptionProps = {
+    onChange: (to: any) => {
+      setFilter({
+        ...filter,
+        first: 20,
+        after: null,
+        last: null,
+        before: null,
+      });
+      setTo(to);
+    },
+    value: to,
+    width: "100%",
+  };
+
   const filterOptions: FilterOptionProps = {
     searchOptions,
     locationOptions,
@@ -401,7 +452,9 @@ const ViewAllPeriodicMaintenances = () => {
     measurementOptions,
     lteInterServiceOptions,
     gteInterServiceOptions,
-    pmStatusOptions
+    pmStatusOptions,
+    fromOptions,
+    toOptions,
   };
 
   return (
@@ -507,6 +560,21 @@ const ViewAllPeriodicMaintenances = () => {
       </div>
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
+          <div className={classes["options-wrapper"]}>
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 0.8,
+              }}
+            >
+              <div className={classes["item-wrapper"]}>
+                <AllPeriodicMaintenanceCalendar summary={allSummary} />
+              </div>
+            </motion.div>
+          </div>
           {loading ? (
             <div>
               <Spin style={{ width: "100%", margin: "2rem auto" }} />
@@ -521,7 +589,6 @@ const ViewAllPeriodicMaintenances = () => {
                       entity={pm?.entity!}
                       key={pm.id}
                       periodicMaintenance={pm}
-                      summaryData={summaryData?.getAllEntityPMSummary}
                     />
                   );
                 }

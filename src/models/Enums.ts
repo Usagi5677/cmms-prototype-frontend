@@ -97,6 +97,14 @@ export interface SearchReadingOptionProps {
   width?: number | string;
   rounded?: boolean;
 }
+
+export interface DefaultDateOptionProps {
+  onChange?: (val: any) => void;
+  width?: number | string;
+  rounded?: boolean;
+  multiple?: boolean;
+  value?: any;
+}
 export interface FilterOptionProps {
   searchOptions?: SearchOptionProps;
   locationOptions?: DefaultNumberArrayOptionProps;
@@ -117,4 +125,6 @@ export interface FilterOptionProps {
   isIncompleteChecklistTaskOptions?: DefaultBooleanOptionProps;
   entityTypeOptions?: DefaultStringArrayOptionProps;
   pmStatusOptions?: PMStatusOptionProps;
+  fromOptions?: DefaultDateOptionProps;
+  toOptions?: DefaultDateOptionProps;
 }
