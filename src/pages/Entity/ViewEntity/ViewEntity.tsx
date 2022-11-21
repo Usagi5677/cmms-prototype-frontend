@@ -12,6 +12,7 @@ import {
   message,
   Skeleton,
   Spin,
+  Switch,
   Tabs,
   Tooltip,
 } from "antd";
@@ -47,7 +48,10 @@ import DeleteEntity from "../../../components/EntityComponents/DeleteEntity/Dele
 import EntityAssignment from "../../../components/EntityComponents/EntityAssignment/EntityAssignment";
 import EntityStatuses from "../../../components/EntityComponents/EntityStatuses/EntityStatuses";
 import GetLatestEntityImage from "../../../components/EntityComponents/GetLatestEntityImage/GetLatestEntityImage";
-import { UNASSIGN_USER_FROM_ENTITY } from "../../../api/mutations";
+import {
+  TOGGLE_ENTITY_TRANSIT,
+  UNASSIGN_USER_FROM_ENTITY,
+} from "../../../api/mutations";
 import EntityUsageHistory from "../../../components/EntityComponents/EntityUsageHistory/EntityUsageHistory";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
@@ -107,6 +111,16 @@ const ViewEntity = () => {
         "getAllHistoryOfEntity",
         { query: ME_QUERY },
       ],
+    }
+  );
+
+  const [toggleComplete, { loading: toggling }] = useMutation(
+    TOGGLE_ENTITY_TRANSIT,
+    {
+      onError: (error) => {
+        errorMessage(error, "Unexpected error while updating transit.");
+      },
+      refetchQueries: ["getAllHistoryOfEntity", "getSingleEntity"],
     }
   );
 
@@ -180,7 +194,6 @@ const ViewEntity = () => {
       )
     );
   };
-
   const [
     getLatestFavouriteAttachment,
     { data: attachmentData, loading: loadingImage, error },
@@ -201,6 +214,7 @@ const ViewEntity = () => {
   const isSmallDevice = useIsSmallDevice();
 
   const flag = isDeleted(entityData?.deletedAt, entityData?.status);
+
   return (
     <>
       <div className={classes["container"]}>
@@ -346,6 +360,23 @@ const ViewEntity = () => {
                             self
                           )
                         }
+                      />
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>In transit</div>
+                    <div className={classes["info-content"]}>
+                      <Switch
+                        checked={entityData?.transit}
+                        onChange={(e) =>
+                          toggleComplete({
+                            variables: {
+                              id: entityData.id,
+                              complete: e,
+                            },
+                          })
+                        }
+                        loading={toggling}
                       />
                     </div>
                   </div>

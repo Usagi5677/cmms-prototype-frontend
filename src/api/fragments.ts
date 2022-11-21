@@ -45,6 +45,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
     note
     dimension
     registryNumber
+    transit
     createdBy {
       ...UserFieldsAPS
       email
@@ -124,6 +125,7 @@ export const ENTITY_FRAGMENT = gql`
     machineNumber
     registeredDate
     model
+    transit
     type {
       id
       name
