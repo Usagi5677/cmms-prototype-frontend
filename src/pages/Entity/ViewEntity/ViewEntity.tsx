@@ -364,7 +364,7 @@ const ViewEntity = () => {
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
-                    <div>Transit</div>
+                    <div>In transit</div>
                     <div className={classes["info-content"]}>
                       <Switch
                         checked={entityData?.transit}
