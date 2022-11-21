@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Col, Divider, message, Modal, Row, Tag } from "antd";
+import { Button, Checkbox, Col, Divider, message, Modal, Row, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { ASSIGN_ENTITY_TO_LOCATION } from "../../../api/mutations";
 import { ALL_ENTITY } from "../../../api/queries";
@@ -13,9 +13,10 @@ import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 export interface LocationEntityBulkAssignmentProps {}
 
 export const LocationEntityBulkAssignment: React.FC<
-LocationEntityBulkAssignmentProps
+  LocationEntityBulkAssignmentProps
 > = ({}) => {
   const [visible, setVisible] = useState(false);
+  const [flag, setFlag] = useState(false);
   const [locationIds, setLocationIds] = useState<number[]>([]);
   const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
 
@@ -81,6 +82,13 @@ LocationEntityBulkAssignmentProps
           width="100%"
           rounded={false}
         />
+        <Checkbox
+          defaultChecked={flag}
+          onChange={(e) => setFlag(e.target.checked)}
+          style={{ marginTop: 20, marginBottom: 10}}
+        >
+          Transition finished
+        </Checkbox>
         <Divider orientation="left">
           Entities
           {selectedEntities.length > 0 && (
@@ -178,6 +186,7 @@ LocationEntityBulkAssignmentProps
                     input: {
                       entityIds: selectedEntities.map((e) => e.id),
                       locationId: locationIds,
+                      transit: flag,
                     },
                   },
                 });

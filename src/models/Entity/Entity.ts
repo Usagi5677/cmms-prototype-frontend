@@ -35,6 +35,7 @@ export interface Entity {
   hullType?: HullType;
   dimension?: number;
   registryNumber?: string;
+  transit?: boolean;
   deletedAt?: Date;
   status: EntityStatus;
   statusChangedAt: Date;

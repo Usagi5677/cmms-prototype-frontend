@@ -1146,3 +1146,9 @@ export const UPDATE_ENTITY_NOTE = gql`
     updateEntityNote(id: $id, note: $note)
   }
 `;
+
+export const TOGGLE_ENTITY_TRANSIT = gql`
+  mutation ($id: Int!, $complete: Boolean!) {
+    toggleEntityTransit(id: $id, complete: $complete)
+  }
+`;
