@@ -1,15 +1,27 @@
-import { Button, DatePicker, Divider, Empty, InputNumber, Spin } from "antd";
+import {
+  Button,
+  DatePicker,
+  Divider,
+  Empty,
+  InputNumber,
+  Spin,
+  Tooltip,
+} from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../helpers/constants";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { CHECKLIST_SUMMARIES, GET_CHECKLIST } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
 import { ChecklistItem } from "./ChecklistItem";
 import ChecklistItemModel from "../../models/ChecklistItem";
 import { EditChecklistTemplate } from "../Templates/EditChecklistTemplate";
 import { ChecklistComments } from "./ChecklistComments";
-import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { ChecklistStatus } from "./ChecklistStatus";
 import { Entity } from "../../models/Entity/Entity";
 import { AddReading } from "./AddReading";
@@ -19,6 +31,7 @@ import { hasPermissions, isAssignedType } from "../../helpers/permissions";
 import UserContext from "../../contexts/UserContext";
 import ChecklistSummary from "../../models/ChecklistSummary";
 import { AddDailyUsage } from "./AddDailyUsage";
+import { GENERATE_SINGLE_CHECKLIST } from "../../api/mutations";
 
 export interface ChecklistsProps {
   entity: Entity;
@@ -76,6 +89,16 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
       });
     }
   }, [month, entity]);
+
+  const [generateSingleChecklist, { loading: generate }] = useMutation(
+    GENERATE_SINGLE_CHECKLIST,
+    {
+      onError: (err) => {
+        errorMessage(err, err?.graphQLErrors[0]?.message);
+      },
+      refetchQueries: ["checklists"],
+    }
+  );
 
   const changeDate = (direction: "forward" | "back") => {
     if (direction === "forward") {
@@ -149,6 +172,23 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
         {loading && <Spin style={{ marginLeft: ".5rem" }} />}
         {summaryMatchCurrent()}
         <div style={{ flex: 1 }}></div>
+        <Tooltip title={"Generate"}>
+          <ReloadOutlined
+            style={{
+              color: "var(--ant-primary-color)",
+              fontSize: "18px",
+              marginTop: "2px",
+              pointerEvents: generate ? "none" : "auto",
+            }}
+            onClick={() => {
+              generateSingleChecklist({
+                variables: {
+                  entityId: entity.id,
+                },
+              });
+            }}
+          />
+        </Tooltip>
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
         {changeDateButton("back")}

@@ -1,6 +1,8 @@
 import {
   ApartmentOutlined,
+  CheckOutlined,
   CloseCircleOutlined,
+  CloseOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
@@ -368,6 +370,16 @@ const ViewEntity = () => {
                     <div className={classes["info-content"]}>
                       <Switch
                         checked={entityData?.transit}
+                        checkedChildren={
+                          <CheckOutlined style={{ fontSize: "10px" }} />
+                        }
+                        disabled={
+                          !isAssignedType(
+                            "Admin",
+                            entity?.getSingleEntity,
+                            self
+                          )
+                        }
                         onChange={(e) =>
                           toggleComplete({
                             variables: {

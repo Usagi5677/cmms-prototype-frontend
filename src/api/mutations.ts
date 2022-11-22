@@ -1012,6 +1012,15 @@ export const ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
   }
 `;
 
+export const BULK_ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
+  mutation ($entityIds: [Int!], $originId: Int!) {
+    bulkAssignPeriodicMaintenanceTemplate(
+      entityIds: $entityIds
+      originId: $originId
+    )
+  }
+`;
+
 export const TOGGLE_VERIFY_PERIODIC_MAINTENANCE = gql`
   mutation ($id: Int!, $verify: Boolean!) {
     toggleVerifyPeriodicMaintenance(id: $id, verify: $verify)
@@ -1150,5 +1159,11 @@ export const UPDATE_ENTITY_NOTE = gql`
 export const TOGGLE_ENTITY_TRANSIT = gql`
   mutation ($id: Int!, $complete: Boolean!) {
     toggleEntityTransit(id: $id, complete: $complete)
+  }
+`;
+
+export const GENERATE_SINGLE_CHECKLIST = gql`
+  mutation ($entityId: Int!) {
+    generateSingleChecklist(entityId: $entityId)
   }
 `;
