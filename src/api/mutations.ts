@@ -1012,6 +1012,12 @@ export const ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
   }
 `;
 
+export const BULK_ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE = gql`
+  mutation ($entityIds: [Int!], $originId: Int!) {
+    bulkAssignPeriodicMaintenanceTemplate(entityIds: $entityIds, originId: $originId)
+  }
+`;
+
 export const TOGGLE_VERIFY_PERIODIC_MAINTENANCE = gql`
   mutation ($id: Int!, $verify: Boolean!) {
     toggleVerifyPeriodicMaintenance(id: $id, verify: $verify)

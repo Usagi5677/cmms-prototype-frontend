@@ -3,6 +3,7 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
   Checkbox,
+  Col,
   Divider,
   Form,
   Input,
@@ -11,17 +12,19 @@ import {
   Modal,
   Row,
   Select,
+  Tag,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { FaList } from "react-icons/fa";
 import {
   ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE,
+  BULK_ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE,
   DELETE_PERIODIC_MAINTENANCE,
   EDIT_PERIODIC_MAINTENANCE,
 } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import { ALL_TEMPLATE_OF_ORIGIN_PM } from "../../api/queries";
+import { ALL_ENTITY, ALL_TEMPLATE_OF_ORIGIN_PM } from "../../api/queries";
 import { ArrowRightOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { SearchEntities } from "../common/SearchEntitities";
 import { EntityIcon } from "../common/EntityIcon";
@@ -30,6 +33,8 @@ import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMainte
 import { PeriodicMaintenanceTaskList } from "../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
 import { AddPeriodicMaintenanceTask } from "../common/AddPeriodicMaintenanceTask";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { TypeSelector } from "../Config/Type/TypeSelector";
+import { CenteredSpin } from "../common/CenteredSpin";
 
 export interface PeriodicMaintenanceProps {
   periodicMaintenance: PeriodicMaintenance;
@@ -40,6 +45,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
 > = ({ periodicMaintenance }) => {
   const [visible, setVisible] = useState(false);
   const [checkbox, setCheckbox] = useState(periodicMaintenance?.recur);
+  const [selectedEntities, setSelectedEntities] = useState<Entity[]>([]);
   const [form] = useForm();
 
   const [editPeriodicMaintenance, { loading }] = useMutation(
@@ -71,9 +77,23 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
     }
   );
 
+  const [bulkAssignTemplate, { loading: assigningTwo }] = useMutation(
+    BULK_ASSIGN_PERIODIC_MAINTENANCE_TEMPLATE,
+    {
+      onCompleted: () => {
+        message.success("Periodic maintenance template assigned.");
+      },
+      onError: (err) => {
+        errorMessage(err, "Error while assigning template.");
+      },
+      refetchQueries: ["periodicMaintenances", "getAllTemplatesOfOriginPM"],
+    }
+  );
+
   const handleCancel = () => {
     form.resetFields();
     setVisible(false);
+    setSelectedEntities([]);
   };
 
   const [deletePeriodicMaintenance, { loading: deleting }] = useMutation(
@@ -93,6 +113,20 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
       ],
     }
   );
+
+  const [getEntities, { loading: loadingEntities }] = useLazyQuery(ALL_ENTITY, {
+    onCompleted: (data) => {
+      const currentIds = selectedEntities.map((e) => e.id);
+      const entities: Entity[] = data.getAllEntity.edges.map(
+        (edge: { node: Entity }) => edge.node
+      );
+      const newEntities = entities.filter((e) => !currentIds.includes(e.id));
+      setSelectedEntities([...selectedEntities, ...newEntities]);
+    },
+    onError: (err) => {
+      errorMessage(err, "Error loading entities.");
+    },
+  });
 
   const [getAllTemplatesOfOriginPM, { data, loading: loadingTemplate }] =
     useLazyQuery(ALL_TEMPLATE_OF_ORIGIN_PM, {
@@ -118,7 +152,7 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
         name,
         measurement,
         value,
-        recur
+        recur,
       },
     });
   };
@@ -236,7 +270,11 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
                 },
               ]}
             >
-              <InputNumber placeholder="Value" style={{ width: "100%" }} min={0} />
+              <InputNumber
+                placeholder="Value"
+                style={{ width: "100%" }}
+                min={0}
+              />
             </Form.Item>
           )}
           <Row justify="end" gutter={16}>
@@ -316,6 +354,33 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
             current={usedBy}
           />
         </div>
+        <div style={{ marginTop: ".5rem" }}>
+          <TypeSelector
+            onChange={(typeId, clear) => {
+              getEntities({
+                variables: { first: 1000, typeIds: [typeId] },
+              });
+              clear();
+            }}
+            placeholder="Select all from type"
+            width="100%"
+          />
+        </div>
+        {selectedEntities.map((entity) => (
+          <Tag
+            key={entity.id}
+            closable
+            onClose={() =>
+              setSelectedEntities(
+                selectedEntities.filter((s) => s.id !== entity.id)
+              )
+            }
+            style={{ marginRight: ".5rem", marginTop: ".3rem" }}
+          >
+            {entity.machineNumber} ({entity.location?.name})
+          </Tag>
+        ))}
+        {loadingEntities && <CenteredSpin />}
         <Row justify="end" gutter={16} style={{ marginTop: "1rem" }}>
           <Button
             type="ghost"
@@ -324,6 +389,23 @@ export const PeriodicMaintenanceTemplateDetails: React.FC<
           >
             Close
           </Button>
+          <Col>
+            <Button
+              type="primary"
+              loading={assigningTwo}
+              className="primaryButton"
+              onClick={() => {
+                bulkAssignTemplate({
+                  variables: {
+                    entityIds: selectedEntities.map((e) => e.id),
+                    originId: periodicMaintenance.id,
+                  },
+                });
+              }}
+            >
+              Assign
+            </Button>
+          </Col>
         </Row>
       </Modal>
     </>
