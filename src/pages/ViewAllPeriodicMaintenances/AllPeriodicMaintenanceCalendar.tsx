@@ -7,13 +7,14 @@ import {
 import classes from "./AllPeriodicMaintenanceCalendar.module.css";
 import PeriodicMaintenanceModal from "./PeriodicMaintenanceModal";
 
-
 const AllPeriodicMaintenanceCalendar = ({
   summary,
   isDeleted,
+  loading,
 }: {
   summary?: any;
   isDeleted?: boolean;
+  loading?: boolean;
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -23,7 +24,6 @@ const AllPeriodicMaintenanceCalendar = ({
 
   const summaryMatch = (current: any) => {
     if (!summary) return null;
-    
     const match = summary.allPeriodicMaintenanceSummary.filter(
       (ps: PeriodicMaintenanceSummary) => {
         return current.clone().startOf("day").toISOString() === ps.from;
@@ -35,7 +35,7 @@ const AllPeriodicMaintenanceCalendar = ({
 
     const arr = [];
     for (const smry of match) {
-      arr.push(<PeriodicMaintenanceModal summary={smry} key={smry.id}/>)
+      arr.push(<PeriodicMaintenanceModal summary={smry} key={smry.id} />);
     }
     return arr;
   };
@@ -45,10 +45,10 @@ const AllPeriodicMaintenanceCalendar = ({
       <Button
         htmlType="button"
         size="middle"
-        type="ghost"
+        type="primary"
         onClick={() => setVisible(true)}
         className={classes["custom-btn-primary"]}
-        disabled={isDeleted}
+        disabled={isDeleted || loading}
       >
         Calendar View
       </Button>

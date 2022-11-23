@@ -571,7 +571,10 @@ const ViewAllPeriodicMaintenances = () => {
               }}
             >
               <div className={classes["item-wrapper"]}>
-                <AllPeriodicMaintenanceCalendar summary={allSummary} />
+                <AllPeriodicMaintenanceCalendar
+                  summary={allSummary}
+                  loading={loading2}
+                />
               </div>
             </motion.div>
           </div>

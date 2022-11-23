@@ -651,6 +651,7 @@ export const ALL_PERIODIC_MAINTENANCE_SUMMARIES = gql`
       hasObservations
       hasVerify
       taskCompletion
+      status
     }
   }
 `;
