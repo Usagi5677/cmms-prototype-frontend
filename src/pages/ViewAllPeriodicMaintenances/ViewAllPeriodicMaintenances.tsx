@@ -560,7 +560,7 @@ const ViewAllPeriodicMaintenances = () => {
       </div>
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
-          <div className={classes["options-wrapper"]}>
+          {/*<div className={classes["options-wrapper"]}>
             <motion.div
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -577,7 +577,8 @@ const ViewAllPeriodicMaintenances = () => {
                 />
               </div>
             </motion.div>
-          </div>
+          </div> */}
+          
           {loading ? (
             <div>
               <Spin style={{ width: "100%", margin: "2rem auto" }} />
