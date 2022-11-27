@@ -289,6 +289,14 @@ const ViewEntity = () => {
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
+                    <div>Registered date</div>
+                    <div className={classes["info-content"]}>
+                      {moment(entityData?.registeredDate).format(
+                        DATETIME_FORMATS.DAY_MONTH_YEAR
+                      )}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
                     <div>Type</div>
                     <div className={classes["info-content"]}>
                       {entityData?.type?.name}
@@ -334,14 +342,15 @@ const ViewEntity = () => {
                         (entityData?.lastService ?? 0)}
                     </div>
                   </div>
-                  <div className={classes["info-title-wrapper"]}>
-                    <div>Registered date</div>
-                    <div className={classes["info-content"]}>
-                      {moment(entityData?.registeredDate).format(
-                        DATETIME_FORMATS.DAY_MONTH_YEAR
-                      )}
+                  {entityData?.dimension && (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Dimension</div>
+                      <div className={classes["info-content"]}>
+                        {entityData?.dimension}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
                   <div className={classes["info-title-wrapper"]}>
                     <div>Status</div>
                     <div className={classes["info-content"]}>
