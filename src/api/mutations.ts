@@ -607,7 +607,7 @@ export const CREATE_ENTITY = gql`
     $registeredDate: Date
     $parentEntityId: Int
     $hullTypeId: Int
-    $dimension: Int
+    $dimension: Float
     $registryNumber: String
   ) {
     createEntity(
@@ -642,7 +642,7 @@ export const EDIT_ENTITY = gql`
     $measurement: String
     $registeredDate: Date
     $hullTypeId: Int
-    $dimension: Int
+    $dimension: Float
     $registryNumber: String
   ) {
     editEntity(
