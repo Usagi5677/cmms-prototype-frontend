@@ -344,7 +344,7 @@ const ViewEntity = () => {
                   </div>
                   {entityData?.dimension && (
                     <div className={classes["info-title-wrapper"]}>
-                      <div>Dimension</div>
+                      <div>Length (m)</div>
                       <div className={classes["info-content"]}>
                         {entityData?.dimension}
                       </div>
