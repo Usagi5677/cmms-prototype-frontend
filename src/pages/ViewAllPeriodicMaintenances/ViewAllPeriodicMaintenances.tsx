@@ -182,7 +182,7 @@ const ViewAllPeriodicMaintenances = () => {
   useEffect(() => {
     getAllPMWithPagination({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
-    allPeriodicMaintenanceSummary({ variables: filter });
+    //allPeriodicMaintenanceSummary({ variables: filter });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, getAllPMWithPagination, from, to]);
 
