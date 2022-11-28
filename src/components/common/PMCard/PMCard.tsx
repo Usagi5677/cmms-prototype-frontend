@@ -231,21 +231,34 @@ const PMCard = ({
                       <span className={classes["reading-title"]}>Name:</span>
                       <span>{periodicMaintenance?.name}</span>
                     </div>
-                    {periodicMaintenance?.value! !== null && (
-                      <div
-                        className={classes["reading"]}
-                        style={{ color: percentageStyle, fontWeight: 700 }}
-                        title={`${
-                          entity?.currentRunning! -
-                          periodicMaintenance?.currentMeterReading!
-                        }`}
+                    <div className={classes["reading"]}>
+                      <span className={classes["reading-title"]}>
+                        Inter service ({entity?.measurement}):
+                      </span>
+                      <span
+                        className={classes["inter-reading"]}
+                        style={{ color: fontColor }}
                       >
-                        {percentage}
-                        {"%"}
-                      </div>
-                    )}
+                        {interService}
+                      </span>
+                    </div>
                   </div>
                   <div className={classes["third-block"]}>
+                    {periodicMaintenance?.value! !== null && (
+                      <div className={classes["reading"]}>
+                        <span className={classes["reading-title"]}>Every:</span>
+                        <span>
+                          {periodicMaintenance?.value} (
+                          {periodicMaintenance?.measurement === "Hour"
+                            ? "hr"
+                            : periodicMaintenance?.measurement === "Kilometer"
+                            ? "km"
+                            : ""}
+                          )
+                        </span>
+                      </div>
+                    )}
+
                     <div>
                       <PeriodicMaintenanceStatusTag
                         status={
@@ -323,24 +336,6 @@ const PMCard = ({
                       </span>
                     </div>
                   )}
-                  <div
-                    className={classes["reading"]}
-                    style={{
-                      border: `1px solid ${fontColor}`,
-                      borderRadius: 10,
-                      padding: 5,
-                    }}
-                  >
-                    <span className={classes["reading-title"]}>
-                      Inter service ({entity?.measurement}):
-                    </span>
-                    <span
-                      className={classes["inter-reading"]}
-                      style={{ color: fontColor }}
-                    >
-                      {interService}
-                    </span>
-                  </div>
                   {smallView && (
                     <div
                       className={classes["reading"]}

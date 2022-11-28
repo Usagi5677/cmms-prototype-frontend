@@ -311,7 +311,7 @@ const PeriodicMaintenanceCard = ({
                       {summaryMatchCurrent()}
                     </div>
 
-                    {periodicMaintenance?.type === "Template" &&
+                    {/* {periodicMaintenance?.type === "Template" &&
                       periodicMaintenance?.value! !== null && (
                         <div
                           className={
@@ -336,7 +336,8 @@ const PeriodicMaintenanceCard = ({
                             {"%"}
                           </span>
                         </div>
-                      )}
+                      )}*/}
+                    
                   </div>
                   <div className={classes["level-two-bottom"]}>
                     <div className={(classes["id-wrapper"], classes["space"])}>
