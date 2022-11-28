@@ -4,9 +4,11 @@ import { EntityStatus } from "../../models/Enums";
 const EntityStatusTag = ({
   status,
   noMarginRight,
+  title
 }: {
   status: EntityStatus | undefined;
   noMarginRight?: boolean;
+  title?: string;
 }) => {
   let color: string | undefined = undefined;
   if (status === "Working") color = "cyan";
@@ -23,6 +25,7 @@ const EntityStatusTag = ({
         maxWidth: 250,
         marginRight: noMarginRight ? 0 : 8,
       }}
+      title={title}
     >
       {status}
     </Tag>
