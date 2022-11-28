@@ -648,10 +648,11 @@ const EntityCard = ({
                 <Divider style={{ marginTop: 10 }} />
               </>
             )}
-
-            {entity?.subEntities?.map((s) => (
-              <EntityCard entity={s} key={s.id} />
-            ))}
+            <div style={{marginLeft: 10,}}>
+              {entity?.subEntities?.map((s) => (
+                <EntityCard entity={s} key={s.id} />
+              ))}
+            </div>
           </div>
         </Collapse.Panel>
       </Collapse>
