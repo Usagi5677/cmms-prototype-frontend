@@ -1,30 +1,30 @@
-import React from "react";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
+import { message, Tooltip, Modal, Form, Input, Row, Col, Button } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { EDIT_HULL_TYPE } from "../../../api/mutations";
-import { errorMessage } from "../../../helpers/gql";
 import { FaEdit } from "react-icons/fa";
-import HullType from "../../../models/HullType";
+import { EDIT_BRAND } from "../../../api/mutations";
+import { errorMessage } from "../../../helpers/gql";
+import Brand from "../../../models/Brand";
 
-export interface EditHullTypeProps {
-  hullType: HullType;
+
+export interface EditBrandsProps {
+  brand: Brand;
 }
 
-export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
+export const EditBrand: React.FC<EditBrandsProps> = ({ brand }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [update, { loading }] = useMutation(EDIT_HULL_TYPE, {
+  const [update, { loading }] = useMutation(EDIT_BRAND, {
     onCompleted: () => {
-      message.success("Successfully updated hull type.");
+      message.success("Successfully updated brand.");
       handleCancel();
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while updating hull type.");
+      errorMessage(error, "Unexpected error while updating brand.");
     },
-    refetchQueries: ["hullTypes"],
+    refetchQueries: ["brands"],
   });
 
   const handleCancel = () => {
@@ -37,7 +37,7 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
     update({
       variables: {
         input: {
-          id: hullType.id,
+          id: brand.id,
           name,
         },
       },
@@ -58,7 +58,7 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title="Edit Hull Type"
+        title="Edit Brand"
       >
         <Form
           form={form}
@@ -66,7 +66,7 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
           name="basic"
           onFinish={onFinish}
           id="myForm"
-          initialValues={{ name: hullType.name}}
+          initialValues={{ name: brand.name}}
         >
           <Form.Item
             label="Name"

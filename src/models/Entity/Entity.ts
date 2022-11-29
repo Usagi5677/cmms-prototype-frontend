@@ -12,6 +12,7 @@ import SparePR from "./SparePR";
 import Repair from "./Repair";
 import Division from "../Division";
 import HullType from "../HullType";
+import Brand from "../Brand";
 
 export interface Entity {
   id: number;
@@ -29,7 +30,7 @@ export interface Entity {
   lastServiceMileage?: number;
   interService?: number;
   measurement?: string;
-  brand?: string;
+  brand?: Brand;
   parentEntityId?: number;
   note?: string;
   hullType?: HullType;

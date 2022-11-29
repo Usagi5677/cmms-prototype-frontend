@@ -28,7 +28,7 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
   });
 
   const handleCancel = () => {
-    form.resetFields();
+    //form.resetFields();
     setVisible(false);
   };
 

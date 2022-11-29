@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import { Assignments } from "./Assignments";
 import DivisionAssignmentTabs from "./DivisionAssignmentTabs";
+import { BrandEntityAssignments } from "./Entity/BrandEntityAssignments";
 import LocationAssignmentTabs from "./LocationAssignmentTabs";
 import classes from "./ViewAssignments.module.css";
 const ViewAssignments = () => {
@@ -20,6 +21,9 @@ const ViewAssignments = () => {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Location Assignments" key="locationAssignments">
           <LocationAssignmentTabs />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Brand Assignments" key="brandAssignments">
+          <BrandEntityAssignments />
         </Tabs.TabPane>
       </Tabs>
     </div>

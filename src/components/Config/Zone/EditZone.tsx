@@ -28,7 +28,7 @@ export const EditZone: React.FC<EditZoneProps> = ({ zone }) => {
   });
 
   const handleCancel = () => {
-    form.resetFields();
+    //form.resetFields();
     setVisible(false);
   };
 

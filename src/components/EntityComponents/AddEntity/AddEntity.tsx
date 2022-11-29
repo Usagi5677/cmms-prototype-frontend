@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { CREATE_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { BrandSelector } from "../../common/BrandSelector";
+import { BrandSelector } from "../../Config/Brand/BrandSelector";
 import { EngineSelector } from "../../common/EngineSelector";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { HullTypeSelector } from "../../Config/HullType/HullTypeSelector";

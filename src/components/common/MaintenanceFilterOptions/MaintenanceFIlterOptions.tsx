@@ -7,7 +7,7 @@ import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 import { AssignedOrNotCheckbox } from "../AssignedOrNotCheckbox";
-import { BrandSelector } from "../BrandSelector";
+import { BrandSelector } from "../../Config/Brand/BrandSelector";
 import { DepartmentSelector } from "../DepartmentSelector";
 import { EngineSelector } from "../EngineSelector";
 import PMStatusFilter from "../PMStatusFilter";

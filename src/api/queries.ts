@@ -525,7 +525,7 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
     $divisionIds: [Int!]
     $typeIds: [Int!]
     $zoneIds: [Int!]
-    $brand: [String!]
+    $brandIds: [Int!]
     $measurement: [String!]
     $isAssigned: Boolean
     $assignedToId: Int
@@ -542,7 +542,7 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
       divisionIds: $divisionIds
       typeIds: $typeIds
       zoneIds: $zoneIds
-      brand: $brand
+      brandIds: $brandIds
       measurement: $measurement
       isAssigned: $isAssigned
       assignedToId: $assignedToId
@@ -910,6 +910,38 @@ export const DIVISIONS = gql`
   }
 `;
 
+export const BRANDS = gql`
+  query brands(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    brands(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_ENTITY = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntity(
@@ -925,7 +957,7 @@ export const ALL_ENTITY = gql`
     $divisionIds: [Int!]
     $typeIds: [Int!]
     $zoneIds: [Int!]
-    $brand: [String!]
+    $brandIds: [Int!]
     $measurement: [String!]
     $isAssigned: Boolean
     $assignedToId: Int
@@ -935,6 +967,7 @@ export const ALL_ENTITY = gql`
     $entityIds: [Int!]
     $divisionExist: Boolean
     $locationExist: Boolean
+    $brandExist: Boolean
   ) {
     getAllEntity(
       after: $after
@@ -949,7 +982,7 @@ export const ALL_ENTITY = gql`
       divisionIds: $divisionIds
       typeIds: $typeIds
       zoneIds: $zoneIds
-      brand: $brand
+      brandIds: $brandIds
       measurement: $measurement
       isAssigned: $isAssigned
       assignedToId: $assignedToId
@@ -959,6 +992,7 @@ export const ALL_ENTITY = gql`
       entityIds: $entityIds
       divisionExist: $divisionExist
       locationExist: $locationExist
+      brandExist: $brandExist
     ) {
       pageInfo {
         endCursor

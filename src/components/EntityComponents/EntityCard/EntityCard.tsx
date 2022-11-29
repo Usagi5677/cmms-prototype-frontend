@@ -56,7 +56,7 @@ const EntityCard = ({
   } else if (
     entity?.type?.entityType === "Vehicle" &&
     entity?.type?.name === "Double Decker" &&
-    entity?.brand === "YUTONG"
+    entity?.brand?.name === "YUTONG"
   ) {
     if (interService >= 12000) {
       fontColor = "red";
@@ -66,7 +66,7 @@ const EntityCard = ({
   } else if (
     entity?.type?.entityType === "Vehicle" &&
     entity?.type?.name === "Car" &&
-    entity?.brand === "MAZDA"
+    entity?.brand?.name === "MAZDA"
   ) {
     if (interService >= 5000) {
       fontColor = "red";

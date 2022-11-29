@@ -1,6 +1,7 @@
 import { message, Tabs } from "antd";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { Brands } from "../components/Config/Brand/Brands";
 import { Divisions } from "../components/Config/Division/Divisions";
 import { HullTypes } from "../components/Config/HullType/HullTypes";
 import { Locations } from "../components/Config/Location/Locations";
@@ -60,6 +61,11 @@ export const Config: React.FC<ConfigProps> = ({}) => {
         {hasPermissions(user, ["MODIFY_HULL_TYPES"]) && (
           <Tabs.TabPane tab="Hull Types" key="hullTypes">
             <HullTypes />
+          </Tabs.TabPane>
+        )}
+        {hasPermissions(user, ["MODIFY_BRANDS"]) && (
+          <Tabs.TabPane tab="Brands" key="brands">
+            <Brands />
           </Tabs.TabPane>
         )}
       </Tabs>

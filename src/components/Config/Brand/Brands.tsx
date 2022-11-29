@@ -1,25 +1,25 @@
 import { useLazyQuery } from "@apollo/client";
 import { Table } from "antd";
-import React, { useEffect, useRef, useState } from "react";
-import { HULL_TYPES } from "../../../api/queries";
+import { ColumnsType } from "antd/lib/table";
+import { useState, useEffect, useRef } from "react";
+import { DELETE_BRAND } from "../../../api/mutations";
+import { BRANDS } from "../../../api/queries";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
-import PaginationButtons from "../../common/PaginationButtons/PaginationButtons";
-import Search from "../../common/Search";
-import type { ColumnsType } from "antd/es/table";
 import { DeleteListing } from "../../common/DeleteListing";
-import { DELETE_HULL_TYPE } from "../../../api/mutations";
-import classes from "./HullTypes.module.css";
-import HullType from "../../../models/HullType";
-import { EditHullType } from "./EditHullType";
-import { CreateHullType } from "./CreateHullType";
+import PaginationButtons from "../../common/PaginationButtons/PaginationButtons";
+import { EditBrand } from "./EditBrand";
+import classes from "./Brands.module.css"
+import Brand from "../../../models/Brand";
+import Search from "../../common/Search";
+import { CreateBrand } from "./CreateBrand";
 
-export interface HullTypeProps {}
+export interface BrandsProps {}
 
-export const HullTypes: React.FC<HullTypeProps> = ({}) => {
+export const Brands: React.FC<BrandsProps> = ({}) => {
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
   const [page, setPage] = useState(1);
@@ -32,17 +32,17 @@ export const HullTypes: React.FC<HullTypeProps> = ({}) => {
     name: "",
   });
 
-  const [getHullTypes, { data, loading }] = useLazyQuery(HULL_TYPES, {
+  const [getBrands, { data, loading }] = useLazyQuery(BRANDS, {
     onError: (err) => {
-      errorMessage(err, "Error loading hull types.");
+      errorMessage(err, "Error loading brands.");
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
 
   useEffect(() => {
-    getHullTypes({ variables: filter });
-  }, [filter, getHullTypes]);
+    getBrands({ variables: filter });
+  }, [filter, getBrands]);
 
   const searchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
@@ -91,7 +91,7 @@ export const HullTypes: React.FC<HullTypeProps> = ({}) => {
     setPage(page - 1);
   };
 
-  const columns: ColumnsType<HullType> = [
+  const columns: ColumnsType<Brand> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -107,18 +107,18 @@ export const HullTypes: React.FC<HullTypeProps> = ({}) => {
       // width: "33%",
       render: (val, rec) => (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <EditHullType hullType={rec} />
+          <EditBrand brand={rec} />
           <DeleteListing
             id={rec.id}
-            mutation={DELETE_HULL_TYPE}
-            refetchQueries={["hullTypes"]}
+            mutation={DELETE_BRAND}
+            refetchQueries={["brands"]}
           />
         </div>
       ),
     },
   ];
 
-  const pageInfo = data?.hullTypes.pageInfo ?? {};
+  const pageInfo = data?.brands.pageInfo ?? {};
 
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
@@ -142,12 +142,12 @@ export const HullTypes: React.FC<HullTypeProps> = ({}) => {
           />
         </div>
         <div className={classes["option"]}>
-          <CreateHullType />
+          <CreateBrand />
         </div>
       </div>
       <Table
         rowKey="id"
-        dataSource={data?.hullTypes.edges.map((edge: { node: HullType }) => edge.node)}
+        dataSource={data?.brands.edges.map((edge: { node: Brand }) => edge.node)}
         columns={columns}
         pagination={false}
         size="small"

@@ -7,7 +7,7 @@ import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
 import { AssignedOrNotCheckbox } from "../AssignedOrNotCheckbox";
-import { BrandSelector } from "../BrandSelector";
+import { BrandSelector } from "../../Config/Brand/BrandSelector";
 import { DepartmentSelector } from "../DepartmentSelector";
 import { EngineSelector } from "../EngineSelector";
 import EntityStatusFilter from "../EntityStatusFilter";
@@ -134,14 +134,14 @@ const FilterOptions = ({
                   <div className={classes["item"]}>
                     <Form.Item
                       name="brand"
-                      initialValue={options?.brandOptions!.value}
+                      initialValue={options?.brandOptions!.currentId}
                     >
                       <BrandSelector
-                        onChange={options?.brandOptions!.onChange}
+                        setBrandId={options?.brandOptions!.setId}
                         multiple={true}
                         rounded={true}
                         width={options?.brandOptions!.width}
-                        value={options?.brandOptions!.value}
+                        currentId={options?.brandOptions!.currentId!}
                       />
                     </Form.Item>
                   </div>
