@@ -20,7 +20,7 @@ import { FaEdit } from "react-icons/fa";
 import { EDIT_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
-import { BrandSelector } from "../../common/BrandSelector";
+import { BrandSelector } from "../../Config/Brand/BrandSelector";
 import { EngineSelector } from "../../common/EngineSelector";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { HullTypeSelector } from "../../Config/HullType/HullTypeSelector";

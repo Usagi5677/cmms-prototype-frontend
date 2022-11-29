@@ -487,6 +487,24 @@ export const EDIT_HULL_TYPE = gql`
   }
 `;
 
+export const CREATE_BRAND = gql`
+  mutation createBrand($input: CreateBrandInput!) {
+    createBrand(input: $input)
+  }
+`;
+
+export const DELETE_BRAND = gql`
+  mutation removeBrand($id: Int!) {
+    removeBrand(id: $id)
+  }
+`;
+
+export const EDIT_BRAND = gql`
+  mutation updateBrand($input: UpdateBrandInput!) {
+    updateBrand(input: $input)
+  }
+`;
+
 export const CREATE_LOCATION = gql`
   mutation createLocation($input: CreateLocationInput!) {
     createLocation(input: $input)
@@ -590,6 +608,12 @@ export const BULK_UNASSIGN_USER_FROM_LOCATION = gql`
 export const ASSIGN_ENTITY_TO_LOCATION = gql`
   mutation assignEntityToLocation($input: LocationAssignInput!) {
     assignEntityToLocation(input: $input)
+  }
+`;
+
+export const BULK_ASSIGN_BRAND_TO_ENTITY = gql`
+  mutation bulkAssignBrandToEntity($input: BrandAssignInput!) {
+    bulkAssignBrandToEntity(input: $input)
   }
 `;
 export const CREATE_ENTITY = gql`
@@ -1141,6 +1165,12 @@ export const UPDATE_ENTITY_DIVISION = gql`
 export const UPDATE_ENTITY_LOCATION = gql`
   mutation ($entityId: Int!, $locationId: Int!) {
     updateEntityLocation(entityId: $entityId, locationId: $locationId)
+  }
+`;
+
+export const UPDATE_ENTITY_BRAND = gql`
+  mutation ($entityId: Int!, $brandId: Int!) {
+    updateEntityBrand(entityId: $entityId, brandId: $brandId)
   }
 `;
 

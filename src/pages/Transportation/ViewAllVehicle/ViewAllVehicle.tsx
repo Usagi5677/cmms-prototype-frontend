@@ -58,7 +58,7 @@ const Vehicles = () => {
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
+  const [brandIds, setBrandIds] = useState<number[]>(getFilterObjects?.brandIds);
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -90,7 +90,7 @@ const Vehicles = () => {
       typeIds: [],
       zoneIds: [],
       divisionIds: [],
-      brand: [],
+      brandIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -109,7 +109,7 @@ const Vehicles = () => {
       typeIds: number[];
       zoneIds: number[];
       divisionIds: number[];
-      brand: string[];
+      brandIds: number[];
       isAssigned: boolean;
       //assignedToId: number | null;
       measurement: string[];
@@ -129,7 +129,7 @@ const Vehicles = () => {
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
-    brand: JSON.parse(saveFilterOptions)?.brand,
+    brandIds: JSON.parse(saveFilterOptions)?.brandIds,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
@@ -177,7 +177,7 @@ const Vehicles = () => {
     statusValue: EntityStatus[],
     zoneIdsValue: number[],
     divisionIdsValue: number[],
-    brandValue: string[],
+    brandIdsValue: number[],
     measurementValue: string[],
     isAssignedValue: boolean,
     //assignedToMeValue: number,
@@ -197,7 +197,7 @@ const Vehicles = () => {
           status: statusValue,
           zoneIds: zoneIdsValue,
           divisionIds: divisionIdsValue,
-          brand: brandValue,
+          brandIds: brandIdsValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
           //assignedToId: assignedToMeValue,
@@ -226,7 +226,7 @@ const Vehicles = () => {
       status,
       zoneIds,
       divisionIds,
-      brand,
+      brandIds,
       measurement,
       isAssigned,
       //assignedToMe!,
@@ -242,7 +242,7 @@ const Vehicles = () => {
     status,
     zoneIds,
     divisionIds,
-    brand,
+    brandIds,
     measurement,
     isAssigned,
     //assignedToMe,
@@ -331,7 +331,7 @@ const Vehicles = () => {
       typeIds: [],
       zoneIds: [],
       divisionIds: [],
-      brand: [],
+      brandIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -348,7 +348,7 @@ const Vehicles = () => {
     setLocationIds([]);
     setZoneIds([]);
     setDivisionIds([]);
-    setBrand([]);
+    setBrandIds([]);
     setMeasurement([]);
     setTypeIds([]);
     setIsAssigned(false);
@@ -396,19 +396,9 @@ const Vehicles = () => {
     currentId: divisionIds,
     width: "100%",
   };
-  const brandOptions: DefaultStringArrayOptionProps = {
-    onChange: (brand: string[]) => {
-      setFilter({
-        ...filter,
-        brand,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setBrand(brand);
-    },
-    value: filter.brand,
+  const brandOptions: DefaultNumberArrayOptionProps = {
+    setId: setBrandIds,
+    currentId: brandIds,
     width: "100%",
   };
   const measurementOptions: DefaultStringArrayOptionProps = {

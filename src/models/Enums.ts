@@ -112,7 +112,7 @@ export interface FilterOptionProps {
   typeSelectorOptions?: TypeSelectorOptionProps;
   zoneOptions?: DefaultNumberArrayOptionProps;
   divisionOptions?: DefaultNumberArrayOptionProps;
-  brandOptions?: DefaultStringArrayOptionProps;
+  brandOptions?: DefaultNumberArrayOptionProps;
   assignedOptions?: DefaultBooleanOptionProps;
   assignedToMeOptions?: DefaultBooleanOptionProps;
   measurementOptions?: DefaultStringArrayOptionProps;

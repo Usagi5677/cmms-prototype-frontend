@@ -56,7 +56,7 @@ const EntityCard = ({
   } else if (
     entity?.type?.entityType === "Vehicle" &&
     entity?.type?.name === "Double Decker" &&
-    entity?.brand === "YUTONG"
+    entity?.brand?.name === "YUTONG"
   ) {
     if (interService >= 12000) {
       fontColor = "red";
@@ -66,7 +66,7 @@ const EntityCard = ({
   } else if (
     entity?.type?.entityType === "Vehicle" &&
     entity?.type?.name === "Car" &&
-    entity?.brand === "MAZDA"
+    entity?.brand?.name === "MAZDA"
   ) {
     if (interService >= 5000) {
       fontColor = "red";
@@ -239,7 +239,16 @@ const EntityCard = ({
                       </div>
                     )}
                     <div>
-                      <EntityStatusTag status={entity?.status} />
+                      <EntityStatusTag
+                        status={entity?.status}
+                        title={
+                          entity?.status === "Breakdown"
+                            ? moment(entity?.breakdowns[0]?.createdAt).format(
+                                DATETIME_FORMATS.FULL
+                              )
+                            : ""
+                        }
+                      />
                     </div>
                   </div>
                 </div>
@@ -458,7 +467,7 @@ const EntityCard = ({
                       {entity?.breakdowns.map((b) => {
                         return (
                           <div key={b.id}>
-                            {/*  <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                            <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                               <div className={classes["bd-time-wrapper"]}>
                                 <div className={classes["title-wrapper"]}>
                                   <Tooltip title="Created Date">
@@ -476,22 +485,9 @@ const EntityCard = ({
                                     )}
                                   </span>
                                 </div>
-                                <span style={{ marginLeft: 4 }}>•</span>
-                                <div className={classes["title-wrapper"]}>
-                                  <span
-                                    className={classes["title"]}
-                                    title={moment(b.createdAt).format(
-                                      DATETIME_FORMATS.FULL
-                                    )}
-                                  >
-                                    {moment(b.createdAt).format(
-                                      DATETIME_FORMATS.SHORT
-                                    )}
-                                  </span>
-                                </div>
                               </div>
-                            </Paragraph>*/}
-                           
+                            </Paragraph>
+
                             {b?.details?.map((d) => (
                               <div key={d.id}>
                                 <div className={classes["list"]} key={d.id}>
@@ -652,10 +648,11 @@ const EntityCard = ({
                 <Divider style={{ marginTop: 10 }} />
               </>
             )}
-
-            {entity?.subEntities?.map((s) => (
-              <EntityCard entity={s} key={s.id} />
-            ))}
+            <div style={{marginLeft: 10,}}>
+              {entity?.subEntities?.map((s) => (
+                <EntityCard entity={s} key={s.id} />
+              ))}
+            </div>
           </div>
         </Collapse.Panel>
       </Collapse>

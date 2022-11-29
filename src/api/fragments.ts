@@ -40,7 +40,10 @@ export const SUB_ENTITY_FRAGMENT = gql`
     lastService
     status
     measurement
-    brand
+    brand {
+      id
+      name
+    }
     deletedAt
     note
     dimension
@@ -149,7 +152,10 @@ export const ENTITY_FRAGMENT = gql`
     interService
     status
     measurement
-    brand
+    brand {
+      id
+      name
+    }
     deletedAt
     note
     assignees {

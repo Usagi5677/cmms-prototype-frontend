@@ -58,7 +58,9 @@ const Machinery = () => {
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brand, setBrand] = useState<string[]>(getFilterObjects?.brand);
+  const [brandIds, setBrandIds] = useState<number[]>(
+    getFilterObjects?.brandIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -90,7 +92,7 @@ const Machinery = () => {
       typeIds: [],
       zoneIds: [],
       divisionIds: [],
-      brand: [],
+      brandIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -109,7 +111,7 @@ const Machinery = () => {
       typeIds: number[];
       zoneIds: number[];
       divisionIds: number[];
-      brand: string[];
+      brandIds: number[];
       isAssigned: boolean;
       //assignedToId: number | null;
       measurement: string[];
@@ -129,7 +131,7 @@ const Machinery = () => {
     typeIds: JSON.parse(saveFilterOptions)?.typeIds,
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
-    brand: JSON.parse(saveFilterOptions)?.brand,
+    brandIds: JSON.parse(saveFilterOptions)?.brandIds,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
@@ -197,7 +199,7 @@ const Machinery = () => {
     statusValue: EntityStatus[],
     zoneIdsValue: number[],
     divisionIdsValue: number[],
-    brandValue: string[],
+    brandIdsValue: number[],
     measurementValue: string[],
     isAssignedValue: boolean,
     //assignedToMeValue: number,
@@ -217,7 +219,7 @@ const Machinery = () => {
           status: statusValue,
           zoneIds: zoneIdsValue,
           divisionIds: divisionIdsValue,
-          brand: brandValue,
+          brandIds: brandIdsValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
           //assignedToId: assignedToMeValue,
@@ -246,7 +248,7 @@ const Machinery = () => {
       status,
       zoneIds,
       divisionIds,
-      brand,
+      brandIds,
       measurement,
       isAssigned,
       //assignedToMe!,
@@ -262,7 +264,7 @@ const Machinery = () => {
     status,
     zoneIds,
     divisionIds,
-    brand,
+    brandIds,
     measurement,
     isAssigned,
     //assignedToMe,
@@ -349,7 +351,7 @@ const Machinery = () => {
     setLocationIds([]);
     setZoneIds([]);
     setDivisionIds([]);
-    setBrand([]);
+    setBrandIds([]);
     setMeasurement([]);
     setTypeIds([]);
     setIsAssigned(false);
@@ -400,21 +402,12 @@ const Machinery = () => {
     width: "100%",
   };
 
-  const brandOptions: DefaultStringArrayOptionProps = {
-    onChange: (brand: string[]) => {
-      setFilter({
-        ...filter,
-        brand,
-        first: 20,
-        after: null,
-        last: null,
-        before: null,
-      });
-      setBrand(brand);
-    },
-    value: filter.brand,
+  const brandOptions: DefaultNumberArrayOptionProps = {
+    setId: setBrandIds,
+    currentId: brandIds,
     width: "100%",
   };
+  
   const measurementOptions: DefaultStringArrayOptionProps = {
     onChange: (measurement: string[]) => {
       setFilter({

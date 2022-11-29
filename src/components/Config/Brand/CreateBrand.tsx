@@ -1,43 +1,38 @@
-import React from "react";
 import { useMutation } from "@apollo/client";
-import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
+import { message, Button, Modal, Form, Input, Row, Col } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { EDIT_HULL_TYPE } from "../../../api/mutations";
+import { CREATE_BRAND } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { FaEdit } from "react-icons/fa";
-import HullType from "../../../models/HullType";
 
-export interface EditHullTypeProps {
-  hullType: HullType;
-}
 
-export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
+export interface CreateBrandProps {}
+
+export const CreateBrand: React.FC<CreateBrandProps> = () => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
-  const [update, { loading }] = useMutation(EDIT_HULL_TYPE, {
+  const [create, { loading }] = useMutation(CREATE_BRAND, {
     onCompleted: () => {
-      message.success("Successfully updated hull type.");
+      message.success("Successfully created brand.");
       handleCancel();
     },
     onError: (error) => {
-      errorMessage(error, "Unexpected error while updating hull type.");
+      errorMessage(error, "Unexpected error while creating brand.");
     },
-    refetchQueries: ["hullTypes"],
+    refetchQueries: ["brands"],
   });
 
   const handleCancel = () => {
-    //form.resetFields();
+    form.resetFields();
     setVisible(false);
   };
 
   const onFinish = async (values: any) => {
     const { name } = values;
-    update({
+    create({
       variables: {
         input: {
-          id: hullType.id,
           name,
         },
       },
@@ -46,19 +41,20 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
 
   return (
     <>
-      <Tooltip title="Edit" placement="top">
-        <FaEdit
-          className="editButton"
-          onClick={() => setVisible(true)}
-          style={{ marginRight: ".5rem" }}
-          // size="20px"
-        />
-      </Tooltip>
+      <Button
+        htmlType="button"
+        size="middle"
+        onClick={() => setVisible(true)}
+        loading={loading}
+        className="primaryButton"
+      >
+        Add Brand
+      </Button>
       <Modal
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title="Edit Hull Type"
+        title="Add Brand"
       >
         <Form
           form={form}
@@ -66,7 +62,6 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
           name="basic"
           onFinish={onFinish}
           id="myForm"
-          initialValues={{ name: hullType.name}}
         >
           <Form.Item
             label="Name"
@@ -101,7 +96,7 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
                   loading={loading}
                   className="primaryButton"
                 >
-                  Update
+                  Add
                 </Button>
               </Form.Item>
             </Col>

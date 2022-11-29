@@ -28,7 +28,7 @@ export const EditDivision: React.FC<EditDivisionProps> = ({ division }) => {
   });
 
   const handleCancel = () => {
-    form.resetFields();
+    //form.resetFields();
     setVisible(false);
   };
 
