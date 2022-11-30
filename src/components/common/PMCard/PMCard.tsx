@@ -46,34 +46,24 @@ const PMCard = ({
     (entity.lastService ? entity.lastService : 0);
 
   let fontColor = "#00e32a";
-  if (entity?.type?.entityType === "Machine") {
-    if (interService >= 500) {
-      fontColor = "red";
-    } else if (interService >= 400) {
+  if (entity?.type?.interServiceColor) {
+    const exist = entity?.type?.interServiceColor.find((i) => {
+      if (
+        i.brand?.name === entity?.brand?.name &&
+        i.type?.name === entity?.type?.name &&
+        i.measurement === entity?.measurement
+      ) {
+        return i;
+      }
+    });
+    if (
+      interService >= exist?.lessThan! &&
+      interService <= exist?.greaterThan!
+    ) {
       fontColor = "orange";
-    }
-  } else if (
-    entity?.type?.entityType === "Vehicle" &&
-    entity?.type?.name === "Double Decker" &&
-    entity?.brand?.name === "YUTONG"
-  ) {
-    if (interService >= 12000) {
+    } else if (interService >= exist?.greaterThan!) {
       fontColor = "red";
-    } else if (interService >= 10000) {
-      fontColor = "orange";
     }
-  } else if (
-    entity?.type?.entityType === "Vehicle" &&
-    entity?.type?.name === "Car" &&
-    entity?.brand?.name === "MAZDA"
-  ) {
-    if (interService >= 5000) {
-      fontColor = "red";
-    } else if (interService >= 3000) {
-      fontColor = "orange";
-    }
-  } else {
-    fontColor = "none";
   }
 
   let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
@@ -307,7 +297,7 @@ const PMCard = ({
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Brand:</span>
-                  <span>{entity?.brand ? entity?.brand : "None"}</span>
+                  <span>{entity?.brand?.name ? entity?.brand?.name : "None"}</span>
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Engine:</span>

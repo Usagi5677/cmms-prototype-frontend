@@ -251,7 +251,7 @@ const EditEntity = ({
               >
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
-                  <Radio.Button value="hr">H</Radio.Button>
+                  <Radio.Button value="hr">HR</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>

@@ -942,6 +942,48 @@ export const BRANDS = gql`
   }
 `;
 
+export const INTER_SERVICE_COLORS = gql`
+  query interServiceColors(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    interServiceColors(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          type {
+            id
+            name
+          }
+          brand {
+            id
+            name
+          }
+          measurement
+          greaterThan
+          lessThan
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_ENTITY = gql`
   ${ENTITY_FRAGMENT}
   query getAllEntity(

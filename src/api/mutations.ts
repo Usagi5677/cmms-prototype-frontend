@@ -505,6 +505,24 @@ export const EDIT_BRAND = gql`
   }
 `;
 
+export const CREATE_INTER_SERVICE_COLOR = gql`
+  mutation createInterServiceColor($input: CreateInterServiceColorInput!) {
+    createInterServiceColor(input: $input)
+  }
+`;
+
+export const DELETE_INTER_SERVICE_COLOR = gql`
+  mutation removeInterServiceColor($id: Int!) {
+    removeInterServiceColor(id: $id)
+  }
+`;
+
+export const EDIT_INTER_SERVICE_COLOR = gql`
+  mutation updateInterServiceColor($input: UpdateInterServiceColorInput!) {
+    updateInterServiceColor(input: $input)
+  }
+`;
+
 export const CREATE_LOCATION = gql`
   mutation createLocation($input: CreateLocationInput!) {
     createLocation(input: $input)

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { Brands } from "../components/Config/Brand/Brands";
 import { Divisions } from "../components/Config/Division/Divisions";
 import { HullTypes } from "../components/Config/HullType/HullTypes";
+import { InterServiceColors } from "../components/Config/InterServiceColor/InterServiceColors";
 import { Locations } from "../components/Config/Location/Locations";
 import { Types } from "../components/Config/Type/Types";
 import { Zones } from "../components/Config/Zone/Zones";
@@ -66,6 +67,11 @@ export const Config: React.FC<ConfigProps> = ({}) => {
         {hasPermissions(user, ["MODIFY_BRANDS"]) && (
           <Tabs.TabPane tab="Brands" key="brands">
             <Brands />
+          </Tabs.TabPane>
+        )}
+        {hasPermissions(user, ["MODIFY_INTER_SERVICE_COLOR"]) && (
+          <Tabs.TabPane tab="Inter Service Color" key="interServiceColor">
+            <InterServiceColors />
           </Tabs.TabPane>
         )}
       </Tabs>

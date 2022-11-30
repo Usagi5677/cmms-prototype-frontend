@@ -256,7 +256,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
               <Form.Item label="Measurement" name="measurement">
                 <Radio.Group buttonStyle="solid" optionType="button">
                   <Radio.Button value="km">KM</Radio.Button>
-                  <Radio.Button value="hr">H</Radio.Button>
+                  <Radio.Button value="hr">HR</Radio.Button>
                 </Radio.Group>
               </Form.Item>
             </div>
