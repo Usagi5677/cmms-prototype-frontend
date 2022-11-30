@@ -57,6 +57,20 @@ export const SUB_ENTITY_FRAGMENT = gql`
       id
       name
       entityType
+      interServiceColor {
+        id
+        measurement
+        greaterThan
+        lessThan
+        brand {
+          id
+          name
+        }
+        type {
+          id
+          name
+        }
+      }
     }
     division {
       id
@@ -133,6 +147,20 @@ export const ENTITY_FRAGMENT = gql`
       id
       name
       entityType
+      interServiceColor {
+        id
+        measurement
+        greaterThan
+        lessThan
+        brand {
+          id
+          name
+        }
+        type {
+          id
+          name
+        }
+      }
     }
     division {
       id
