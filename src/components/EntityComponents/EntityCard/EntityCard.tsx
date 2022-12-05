@@ -45,7 +45,6 @@ const EntityCard = ({
   const interService =
     (entity.currentRunning ? entity.currentRunning : 0) -
     (entity.lastService ? entity.lastService : 0);
-
   let fontColor = "#00e32a";
   if (entity?.type?.interServiceColor) {
     const exist = entity?.type?.interServiceColor.find((i) => {
@@ -64,6 +63,8 @@ const EntityCard = ({
       fontColor = "orange";
     } else if (interService >= exist?.greaterThan!) {
       fontColor = "red";
+    } else if (interService < 0) {
+      fontColor = "var(--text-primary)";
     }
   }
 
@@ -185,10 +186,7 @@ const EntityCard = ({
                   </div>
                   {!smallView ? (
                     <div className={classes["service-reading-wrapper"]}>
-                      <div
-                        className={classes["reading"]}
-                        
-                      >
+                      <div className={classes["reading"]}>
                         <span className={classes["reading-title"]}>
                           Inter service ({entity?.measurement}):
                         </span>
