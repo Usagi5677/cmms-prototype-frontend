@@ -370,6 +370,10 @@ export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
 
 export const ALL_PERIODIC_MAINTENANCE_STATUS_COUNT = gql`
   query allPMStatusCount(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
     $search: String
     $type: String
     $from: Date
@@ -385,6 +389,10 @@ export const ALL_PERIODIC_MAINTENANCE_STATUS_COUNT = gql`
     $pmStatus: [String!]
   ) {
     allPMStatusCount(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
       search: $search
       type: $type
       from: $from

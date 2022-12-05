@@ -63,6 +63,8 @@ const PMCard = ({
       fontColor = "orange";
     } else if (interService >= exist?.greaterThan!) {
       fontColor = "red";
+    } else if (interService < 0) {
+      fontColor = "var(--text-primary)";
     }
   }
 
@@ -297,7 +299,9 @@ const PMCard = ({
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Brand:</span>
-                  <span>{entity?.brand?.name ? entity?.brand?.name : "None"}</span>
+                  <span>
+                    {entity?.brand?.name ? entity?.brand?.name : "None"}
+                  </span>
                 </div>
                 <div className={classes["reading"]}>
                   <span className={classes["reading-title"]}>Engine:</span>
