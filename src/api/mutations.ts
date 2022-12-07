@@ -639,7 +639,7 @@ export const CREATE_ENTITY = gql`
     $typeId: Int
     $machineNumber: String
     $model: String
-    $brand: String
+    $brandId: Int
     $divisionId: Int
     $locationId: Int
     $engine: String
@@ -656,7 +656,7 @@ export const CREATE_ENTITY = gql`
       typeId: $typeId
       machineNumber: $machineNumber
       model: $model
-      brand: $brand
+      brandId: $brandId
       divisionId: $divisionId
       locationId: $locationId
       engine: $engine
@@ -676,6 +676,7 @@ export const EDIT_ENTITY = gql`
   mutation (
     $id: Int!
     $typeId: Int
+    $brandId: Int
     $machineNumber: String
     $model: String
     $divisionId: Int
@@ -689,6 +690,7 @@ export const EDIT_ENTITY = gql`
   ) {
     editEntity(
       id: $id
+      brandId: $brandId
       typeId: $typeId
       machineNumber: $machineNumber
       model: $model

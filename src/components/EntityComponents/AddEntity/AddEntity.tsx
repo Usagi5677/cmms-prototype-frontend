@@ -36,6 +36,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
   includeSubEntity,
 }) => {
   const [typeId, setTypeId] = useState<number | null>(null);
+  const [brandId, setBrandId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
   const [divisionId, setDivisionId] = useState<number | null>(null);
   const [hullTypeId, setHullTypeId] = useState<number | null>(null);
@@ -69,7 +70,6 @@ const AddEntity: React.FC<AddEntityProps> = ({
     const {
       machineNumber,
       model,
-      brand,
       currentRunning,
       lastService,
       measurement,
@@ -84,7 +84,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
         typeId,
         machineNumber,
         model,
-        brand,
+        brandId,
         divisionId,
         locationId,
         currentRunning,
@@ -157,7 +157,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
             </div>
             <div className={classes["col"]}>
               <Form.Item label="Brand" name="brand" required={false}>
-                <BrandSelector />
+                <BrandSelector setBrandId={setBrandId} />
               </Form.Item>
             </div>
           </div>
