@@ -293,6 +293,78 @@ export const ALL_PERIODIC_MAINTENANCE = gql`
   }
 `;
 
+export const UPCOMING_PERIODIC_MAINTENANCES = gql`
+  query upcomingPeriodicMaintenances(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $search: String
+    $type: String
+    $from: Date
+    $to: Date
+    $entityId: Int
+  ) {
+    upcomingPeriodicMaintenances(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      search: $search
+      type: $type
+      from: $from
+      to: $to
+      entityId: $entityId
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          createdAt
+          entityId
+          name
+          from
+          to
+          measurement
+          value
+          currentMeterReading
+          recur
+          type
+          status
+          verifiedAt
+          tasks {
+            id
+            periodicMaintenanceId
+            parentTaskId
+            name
+            completedAt
+            subTasks {
+              id
+              periodicMaintenanceId
+              parentTaskId
+              name
+              completedAt
+              subTasks {
+                id
+                periodicMaintenanceId
+                parentTaskId
+                name
+                completedAt
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
   ${APS_USER_FRAGMENT}
   ${ENTITY_FRAGMENT}

@@ -40,6 +40,7 @@ const PeriodicMaintenanceCard = ({
   summary,
   isCopy,
   entity,
+  upcoming,
 }: {
   periodicMaintenance: PeriodicMaintenance;
   isDeleted?: boolean | undefined;
@@ -47,6 +48,7 @@ const PeriodicMaintenanceCard = ({
   summary?: PeriodicMaintenanceSummary[];
   isCopy?: boolean;
   entity?: Entity;
+  upcoming?: boolean;
 }) => {
   const { user: self } = useContext(UserContext);
 
@@ -307,7 +309,12 @@ const PeriodicMaintenanceCard = ({
                   )}
                 <div className={classes["level-two"]}>
                   <div className={classes["level-two-top"]}>
-                    <div style={{ marginRight: periodicMaintenance?.type === "Copy" ? 10 : 0 }}>
+                    <div
+                      style={{
+                        marginRight:
+                          periodicMaintenance?.type === "Copy" ? 10 : 0,
+                      }}
+                    >
                       {summaryMatchCurrent()}
                     </div>
 
@@ -337,7 +344,6 @@ const PeriodicMaintenanceCard = ({
                           </span>
                         </div>
                       )}*/}
-                    
                   </div>
                   <div className={classes["level-two-bottom"]}>
                     <div className={(classes["id-wrapper"], classes["space"])}>
@@ -423,8 +429,9 @@ const PeriodicMaintenanceCard = ({
               isDeleted={isDeleted}
               isOlder={isOlder ? true : false}
               isCopy={isCopy}
+              upcoming={upcoming}
             />
-            {flag && (
+            {flag && !upcoming && (
               <div style={{ marginTop: ".5rem", fontSize: 14 }}>
                 <AddPeriodicMaintenanceTask
                   periodicMaintenance={periodicMaintenance}
@@ -455,13 +462,13 @@ const PeriodicMaintenanceCard = ({
             {!isDeleted && !isOlder && periodicMaintenance.type === "Copy" && (
               <div className={classes["add-observation-wrapper"]}>
                 <AddPeriodicMaintenanceObservation
-                periodicMaintenanceId={periodicMaintenance.id}
-                type={"Observation"}
-                placeholder={"Add new observation"}
-                isDeleted={isDeleted}
-                isOlder={isOlder}
-                isCopy={periodicMaintenance.type === "Copy"}
-              />
+                  periodicMaintenanceId={periodicMaintenance.id}
+                  type={"Observation"}
+                  placeholder={"Add new observation"}
+                  isDeleted={isDeleted}
+                  isOlder={isOlder}
+                  isCopy={periodicMaintenance.type === "Copy"}
+                />
               </div>
             )}
           </div>

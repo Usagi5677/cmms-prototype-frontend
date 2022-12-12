@@ -42,6 +42,7 @@ const EditEntity = ({
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const [typeId, setTypeId] = useState<number | null>(null);
+  const [brandId, setBrandId] = useState<number | null>(null);
   const [locationId, setLocationId] = useState<number | null>(null);
   const [divisionId, setDivisionId] = useState<number | null>(null);
   const [hullTypeId, setHullTypeId] = useState<number | null>(null);
@@ -70,7 +71,6 @@ const EditEntity = ({
     const {
       machineNumber,
       model,
-      brand,
       measurement,
       engine,
       registeredDate,
@@ -84,7 +84,7 @@ const EditEntity = ({
         typeId,
         machineNumber,
         model,
-        brand,
+        brandId,
         divisionId,
         locationId,
         registeredDate,
@@ -150,9 +150,11 @@ const EditEntity = ({
                 label="Brand"
                 name="brand"
                 required={false}
-                initialValue={entity?.brand}
               >
-                <BrandSelector />
+                <BrandSelector
+                  setBrandId={setBrandId}
+                  currentId={entity?.brand?.id}
+                />
               </Form.Item>
             </div>
           </div>

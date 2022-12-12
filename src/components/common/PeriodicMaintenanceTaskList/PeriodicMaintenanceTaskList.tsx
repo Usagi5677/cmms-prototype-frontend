@@ -28,6 +28,7 @@ export interface TaskListProps {
   isDeleted?: boolean | undefined;
   isOlder?: boolean;
   isCopy?: boolean;
+  upcoming?: boolean;
 }
 
 export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
@@ -37,6 +38,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
   isDeleted,
   isOlder,
   isCopy,
+  upcoming,
 }) => {
   const { user: self } = useContext(UserContext);
   const [toggleTask, { loading: toggling }] = useMutation(
@@ -197,8 +199,9 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                 isDeleted={isDeleted}
                 isOlder={isOlder}
                 isCopy={isCopy}
+                upcoming={upcoming}
               />
-              {level < 2 && !isDeleted && !isOlder && !isCopy && (
+              {level < 2 && !isDeleted && !isOlder && !isCopy && !upcoming && (
                 <div>
                   <AddPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}
