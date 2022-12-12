@@ -1,7 +1,8 @@
 import { Tabs } from "antd";
-import UpcomingPeriodicMaintenances from "./Upcoming/UpcomingPeriodicMaintenances";
 import ReadyPeriodicMaintenances from "./Ready/ReadyPeriodicMaintenances";
 import { Entity } from "../../../../models/Entity/Entity";
+import TemplatePeriodicMaintenances from "./Template/TemplatePeriodicMaintenances";
+import UpcomingPeriodicMaintenances from "./Upcoming/UpcomingPeriodicMaintenances";
 
 const ViewPeriodicMaintenance = ({
   isDeleted,
@@ -22,6 +23,9 @@ const ViewPeriodicMaintenance = ({
       </Tabs.TabPane>
       <Tabs.TabPane tab="Upcoming" key="upcoming">
         <UpcomingPeriodicMaintenances isDeleted={isDeleted} entity={entity} />
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="Template" key="template">
+        <TemplatePeriodicMaintenances isDeleted={isDeleted} entity={entity} />
       </Tabs.TabPane>
     </Tabs>
   );

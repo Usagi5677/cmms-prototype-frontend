@@ -1,18 +1,18 @@
 import { useLazyQuery } from "@apollo/client";
 import { Empty, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { UPCOMING_PERIODIC_MAINTENANCES } from "../../../../../api/queries";
+import { ALL_PERIODIC_MAINTENANCE } from "../../../../../api/queries";
 import PaginationButtons from "../../../../../components/common/PaginationButtons/PaginationButtons";
 import { errorMessage } from "../../../../../helpers/gql";
 import PaginationArgs from "../../../../../models/PaginationArgs";
-import classes from "./UpcomingPeriodicMaintenances.module.css";
+import classes from "./TemplatePeriodicMaintenances.module.css";
 import UserContext from "../../../../../contexts/UserContext";
 import { useParams } from "react-router";
 import PeriodicMaintenance from "../../../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceCard from "../../../../../components/EntityComponents/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
 import { Entity } from "../../../../../models/Entity/Entity";
 
-const UpcomingPeriodicMaintenances = ({
+const TemplatePeriodicMaintenances = ({
   isDeleted,
   entity,
 }: {
@@ -42,10 +42,10 @@ const UpcomingPeriodicMaintenances = ({
   });
 
   const [periodicMaintenances, { data, loading }] = useLazyQuery(
-    UPCOMING_PERIODIC_MAINTENANCES,
+    ALL_PERIODIC_MAINTENANCE,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading upcoming periodic maintenances.");
+        errorMessage(err, "Error loading template periodic maintenances.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -112,7 +112,7 @@ const UpcomingPeriodicMaintenances = ({
     setPage(page - 1);
   };
 
-  const pageInfo = data?.upcomingPeriodicMaintenances.pageInfo ?? {};
+  const pageInfo = data?.periodicMaintenances.pageInfo ?? {};
 
   return (
     <div className={classes["container"]}>
@@ -123,9 +123,9 @@ const UpcomingPeriodicMaintenances = ({
         </div>
       )}
       <div className={classes["content"]}>
-        {data?.upcomingPeriodicMaintenances.edges.length > 0 ? (
+        {data?.periodicMaintenances.edges.length > 0 ? (
           <div>
-            {data?.upcomingPeriodicMaintenances.edges.map(
+            {data?.periodicMaintenances.edges.map(
               (rec: { node: PeriodicMaintenance }) => {
                 const periodicMaintenance = rec.node;
                 return (
@@ -134,7 +134,6 @@ const UpcomingPeriodicMaintenances = ({
                     periodicMaintenance={periodicMaintenance}
                     isDeleted={isDeleted}
                     entity={entity}
-                    upcoming
                   />
                 );
               }
@@ -156,4 +155,4 @@ const UpcomingPeriodicMaintenances = ({
   );
 };
 
-export default UpcomingPeriodicMaintenances;
+export default TemplatePeriodicMaintenances;
