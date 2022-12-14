@@ -1,6 +1,6 @@
-import { Empty, message, Spin } from "antd";
+import { Button, Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -578,7 +578,29 @@ const ViewAllPeriodicMaintenances = () => {
               </div>
             </motion.div>
           </div> */}
-          
+          <div className={classes["options-wrapper"]}>
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                ease: "easeOut",
+                duration: 0.3,
+                delay: 0.8,
+              }}
+            >
+              <Link to={"/maintenances/calendar"}>
+                <Button
+                  htmlType="button"
+                  size="middle"
+                  type="ghost"
+                  className={classes["custom-btn-primary"]}
+                >
+                  Calendar View
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+
           {loading ? (
             <div>
               <Spin style={{ width: "100%", margin: "2rem auto" }} />

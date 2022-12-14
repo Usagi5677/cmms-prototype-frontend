@@ -13,6 +13,7 @@ import Repair from "./Repair";
 import Division from "../Division";
 import HullType from "../HullType";
 import Brand from "../Brand";
+import PeriodicMaintenance from "../PeriodicMaintenance/PeriodicMaintenance";
 
 export interface Entity {
   id: number;
@@ -43,7 +44,7 @@ export interface Entity {
   statusChangedAt: Date;
   assignees: EntityAssign[];
   checklistItems: ChecklistItem[];
-  periodicMaintenancePlans: EntityPeriodicMaintenance[];
+  periodicMaintenances: PeriodicMaintenance[];
   repairs: Repair[];
   breakdowns: Breakdown[];
   sparePRs: SparePR[];

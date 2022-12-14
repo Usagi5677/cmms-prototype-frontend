@@ -3,6 +3,7 @@ import {
   APS_USER_FRAGMENT,
   CHECKLIST_TEMPLATE_FRAGMENT,
   ENTITY_FRAGMENT,
+  ENTITY_FRAGMENT_WITH_PM,
   SUB_ENTITY_FRAGMENT,
   USER_FRAGMENT,
 } from "./fragments";
@@ -2035,6 +2036,43 @@ export const ALL_ENTITY_WITHOUT_PAGINATION = gql`
       zoneIds: $zoneIds
     ) {
       ...EntityFields
+    }
+  }
+`;
+
+export const PERIODIC_MAINTENANCES_CALENDAR = gql`
+  ${ENTITY_FRAGMENT_WITH_PM}
+  query periodicMaintenancesCalendar(
+    $search: String
+    $type: String
+    $from: Date
+    $to: Date
+    $entityId: Int
+    $type2Ids: [Int!]
+    $measurement: [String!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $divisionIds: [Int!]
+    $gteInterService: String
+    $lteInterService: String
+    $pmStatus: [String!]
+  ) {
+    periodicMaintenancesCalendar(
+      search: $search
+      type: $type
+      from: $from
+      to: $to
+      entityId: $entityId
+      type2Ids: $type2Ids
+      measurement: $measurement
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      divisionIds: $divisionIds
+      gteInterService: $gteInterService
+      lteInterService: $lteInterService
+      pmStatus: $pmStatus
+    ) {
+      ...EntityFieldsWithPM
     }
   }
 `;

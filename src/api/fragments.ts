@@ -245,6 +245,56 @@ export const ENTITY_FRAGMENT = gql`
   }
 `;
 
+export const ENTITY_FRAGMENT_WITH_PM = gql`
+  fragment EntityFieldsWithPM on Entity {
+    id
+    createdAt
+    machineNumber
+    registeredDate
+    model
+    type {
+      id
+      name
+      entityType
+      interServiceColor {
+        id
+        measurement
+        greaterThan
+        lessThan
+        brand {
+          id
+          name
+        }
+        type {
+          id
+          name
+        }
+      }
+    }
+    engine
+    location {
+      id
+      name
+      zone {
+        id
+        name
+      }
+    }
+    currentRunning
+    lastService
+    interService
+    status
+    measurement
+    lastServiceUpdateAt
+    periodicMaintenances {
+      id
+      name
+      status
+      currentMeterReading
+    }
+  }
+`;
+
 export const CHECKLIST_TEMPLATE_FRAGMENT = gql`
   fragment ChecklistTemplateFields on ChecklistTemplate {
     id
