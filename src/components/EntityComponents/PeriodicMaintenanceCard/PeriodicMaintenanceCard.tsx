@@ -394,10 +394,15 @@ const PeriodicMaintenanceCard = ({
                     <span className={classes["reading-title"]}>
                       Verified by:
                     </span>
-                    <span>
-                      {periodicMaintenance.verifiedBy?.fullName} (
-                      {periodicMaintenance.verifiedBy?.rcno})
-                    </span>
+                    {periodicMaintenance.verifiedBy?.fullName === null &&
+                    periodicMaintenance.verifiedAt ? (
+                      <span>Automatically</span>
+                    ) : (
+                      <span>
+                        {periodicMaintenance.verifiedBy?.fullName} (
+                        {periodicMaintenance.verifiedBy?.rcno})
+                      </span>
+                    )}
                   </div>
                   <div className={classes["reading"]}>
                     <span className={classes["reading-title"]}>
