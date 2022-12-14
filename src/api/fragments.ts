@@ -40,6 +40,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
     lastService
     status
     measurement
+    lastServiceUpdateAt
     brand {
       id
       name
@@ -180,6 +181,7 @@ export const ENTITY_FRAGMENT = gql`
     interService
     status
     measurement
+    lastServiceUpdateAt
     brand {
       id
       name

@@ -104,7 +104,10 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                       <div className={classes["actions-wrapper"]}>
                         {task.completedAt && (
                           <div className={classes["completedAt"]}>
-                            {task?.completedBy?.fullName && (
+                            {task?.completedBy?.fullName === null &&
+                            task.completedAt ? (
+                              <div>Automatically</div>
+                            ) : (
                               <div>{task?.completedBy?.fullName}</div>
                             )}
                             <div

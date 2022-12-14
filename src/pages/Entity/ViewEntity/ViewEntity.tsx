@@ -329,12 +329,25 @@ const ViewEntity = () => {
                       {entityData?.currentRunning}
                     </div>
                   </div>
-                  <div className={classes["info-title-wrapper"]}>
-                    <div>Last service {entityData?.measurement}</div>
-                    <div className={classes["info-content"]}>
-                      {entityData?.lastService}
+                  {entityData?.lastServiceUpdateAt &&
+                  entityData?.measurement === "days" ? (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Last service {entityData?.measurement}</div>
+                      <div className={classes["info-content"]}>
+                        {moment(entityData?.lastServiceUpdateAt).format(
+                          DATETIME_FORMATS.DAY_MONTH_YEAR
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Last service {entityData?.measurement}</div>
+                      <div className={classes["info-content"]}>
+                        {entityData?.lastService}
+                      </div>
+                    </div>
+                  )}
+
                   <div className={classes["info-title-wrapper"]}>
                     <div>Inter service {entityData?.measurement}</div>
                     <div className={classes["info-content"]}>

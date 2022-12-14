@@ -37,6 +37,7 @@ export interface Entity {
   dimension?: number;
   registryNumber?: string;
   transit?: boolean;
+  lastServiceUpdateAt?: Date;
   deletedAt?: Date;
   status: EntityStatus;
   statusChangedAt: Date;
