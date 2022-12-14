@@ -592,7 +592,7 @@ const ViewAllPeriodicMaintenances = () => {
                 <Button
                   htmlType="button"
                   size="middle"
-                  type="ghost"
+                  type="primary"
                   className={classes["custom-btn-primary"]}
                 >
                   Calendar View

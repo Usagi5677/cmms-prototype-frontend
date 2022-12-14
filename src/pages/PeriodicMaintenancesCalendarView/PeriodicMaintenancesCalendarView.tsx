@@ -201,8 +201,8 @@ const PeriodicMaintenancesCalendarView = () => {
   ]);
 
   function getDatesInRange(startDate: any, endDate: any) {
-    const start = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0));
-    const end = new Date(new Date(endDate).setUTCHours(0, 0, 0, 0));
+    const start = new Date(new Date(startDate));
+    const end = new Date(new Date(endDate));
 
     const date = new Date(start.getTime());
 
