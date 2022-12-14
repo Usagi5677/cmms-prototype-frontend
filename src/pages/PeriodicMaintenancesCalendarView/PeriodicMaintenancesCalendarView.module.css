@@ -1,0 +1,32 @@
+.calendar {
+  width: 100%;
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px;
+  border: var(--card-border);
+  height: 90vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.content {
+  display: flex;
+}
+.container {
+  overflow-x: auto;
+  height: 600px;
+  overflow-y: auto;
+}
+.heading {
+  display: flex;
+  margin-left: 200px;
+}
+@media only screen and (min-width: 1280px) {
+  .wrapper {
+    flex-direction: row;
+  }
+}
