@@ -66,13 +66,31 @@ const ViewGallery = ({
 
   // Fetch attachments when component mounts or when the filter object changes
   useEffect(() => {
-    getAttachment({ variables: filter });
-  }, [filter, getAttachment, id,]);
+    console.log('here')
+    setFilter((filter) => ({
+      ...filter,
+      search: "",
+      entityId: parseInt(id),
+      from: dates[0].toISOString(),
+      to: dates[1].toISOString(),
+      first: 500,
+      last: null,
+      before: null,
+      after: null,
+    }));
+    getAttachment({ variables: {
+      ...filter,
+      entityId: parseInt(id),
+      from: dates[0].toISOString(),
+      to: dates[1].toISOString(),
+    } });
+  }, [dates, id,]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
   // this useEffect from running on the initial render (which would waste an API
   // call as well).
+  /*
   const searchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -93,6 +111,7 @@ const ViewGallery = ({
       }, 500)
     );
   };
+   
   const initialRender = useRef<boolean>(true);
   useEffect(() => {
     if (initialRender.current === true) {
@@ -102,7 +121,7 @@ const ViewGallery = ({
     searchDebounced(search);
     // eslint-disable-next-line
   }, [search, id, dates, filter, getAttachment]);
-
+  */
   // Pagination functions
   const next = () => {
     setFilter({
