@@ -197,10 +197,6 @@ function App() {
             <Route path="/issues" element={<Issues />} />
             <Route
               path="/maintenances"
-              element={<ViewAllPeriodicMaintenances />}
-            />
-            <Route
-              path="/maintenances/calendar"
               element={<PeriodicMaintenancesCalendarView />}
             />
             <Route path="/utilizations" element={<ViewAllUtilization />} />
