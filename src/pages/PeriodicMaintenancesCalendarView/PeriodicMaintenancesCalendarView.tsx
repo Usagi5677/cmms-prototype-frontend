@@ -2,11 +2,9 @@ import { useLazyQuery } from "@apollo/client";
 import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import moment from "moment";
-import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useRef, useState } from "react";
 import { PERIODIC_MAINTENANCES_CALENDAR } from "../../api/queries";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
-import UserContext from "../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
@@ -222,7 +220,7 @@ const PeriodicMaintenancesCalendarView = () => {
       title: "Machine Number",
       dataIndex: "machineNumber",
       key: "machineNumber",
-      width: "10%",
+      width: "200px",
       fixed: "left",
     },
     ...days.map((x: any) => {
@@ -230,7 +228,7 @@ const PeriodicMaintenancesCalendarView = () => {
         title: `${moment(x).format(DATETIME_FORMATS.DAY_MONTH)}`,
         dataIndex: `${moment(x).format(DATETIME_FORMATS.DAY_MONTH)}`,
         key: `${moment(x).format(DATETIME_FORMATS.DAY_MONTH)}`,
-        width: "10%",
+        width: "100px",
         render: (val: any, rec: any) => (
           <div style={{ display: "flex", alignItems: "center" }}>
             {rec?.periodicMaintenances.map((p: PeriodicMaintenance) => {
@@ -403,7 +401,6 @@ const PeriodicMaintenancesCalendarView = () => {
     fromOptions,
     toOptions,
   };
-
   return (
     <div className={classes["wrapper"]}>
       <div className={classes["calendar"]}>
@@ -413,7 +410,7 @@ const PeriodicMaintenancesCalendarView = () => {
           dataSource={data?.periodicMaintenancesCalendar.map((e: any) => e)}
           columns={columns}
           pagination={false}
-          scroll={{ x: 1500, y: "70vh" }}
+          scroll={{ x: "100%", y: "70vh" }}
         />
       </div>
       <MaintenanceFilterOptions options={filterOptions} onClick={clearAll} />
