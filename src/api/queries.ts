@@ -367,8 +367,8 @@ export const UPCOMING_PERIODIC_MAINTENANCES = gql`
 `;
 
 export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
-  ${APS_USER_FRAGMENT}
-  ${ENTITY_FRAGMENT}
+
+  ${ENTITY_FRAGMENT_WITH_PM}
   query getAllPMWithPagination(
     $after: String
     $before: String
@@ -416,25 +416,8 @@ export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
       }
       edges {
         node {
-          id
-          createdAt
-          entityId
-          name
-          from
-          to
-          measurement
-          value
-          currentMeterReading
-          recur
-          status
-          type
-          verifiedAt
-          verifiedBy {
-            ...UserFieldsAPS
-          }
-          entity {
-            ...EntityFields
-          }
+          ...EntityFieldsWithPM
+         
         }
       }
     }

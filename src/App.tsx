@@ -25,7 +25,7 @@ import { DeveloperOptions } from "./pages/DeveloperOptions";
 import ViewAllDisposed from "./pages/ViewAllDisposed/ViewAllDisposed";
 import { Issues } from "./pages/Issues";
 import ViewAssignments from "./pages/ViewAssignments/ViewAssignments";
-//import ViewAllPeriodicMaintenances from "./pages/ViewAllPeriodicMaintenances/ViewAllPeriodicMaintenances";
+import ViewAllPeriodicMaintenances from "./pages/ViewAllPeriodicMaintenances/ViewAllPeriodicMaintenances";
 import ViewAllUtilization from "./pages/ViewAllUtilization/ViewAllUtilization";
 import PeriodicMaintenancesCalendarView from "./pages/PeriodicMaintenancesCalendarView/PeriodicMaintenancesCalendarView";
 
@@ -197,6 +197,10 @@ function App() {
             <Route path="/issues" element={<Issues />} />
             <Route
               path="/maintenances"
+              element={<ViewAllPeriodicMaintenances />}
+            />
+            <Route
+              path="/maintenances/calendar"
               element={<PeriodicMaintenancesCalendarView />}
             />
             <Route path="/utilizations" element={<ViewAllUtilization />} />
