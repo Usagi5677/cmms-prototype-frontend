@@ -25,11 +25,11 @@ import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistA
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
 import { EntityIcon } from "../../common/EntityIcon";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import AssignSubEntity from "../AssignSubEntity/AssignSubEntity";
-import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
+import { hasPermissions } from "../../../helpers/permissions";
+import { useNavigate } from "react-router";
 
 const EntityCard = ({
   entity,
@@ -41,11 +41,13 @@ const EntityCard = ({
   smallView?: boolean;
 }) => {
   const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const { Paragraph } = Typography;
   const interService =
     (entity.currentRunning ? entity.currentRunning : 0) -
     (entity.lastService ? entity.lastService : 0);
   let fontColor = "#00e32a";
+  let flag = false;
   if (entity?.type?.interServiceColor) {
     const exist = entity?.type?.interServiceColor.find((i) => {
       if (
@@ -61,8 +63,10 @@ const EntityCard = ({
       interService <= exist?.greaterThan!
     ) {
       fontColor = "orange";
+      flag = true;
     } else if (interService >= exist?.greaterThan!) {
       fontColor = "red";
+      flag = true;
     } else if (interService < 0) {
       fontColor = "var(--text-primary)";
     }
@@ -190,12 +194,26 @@ const EntityCard = ({
                         <span className={classes["reading-title"]}>
                           Inter service ({entity?.measurement}):
                         </span>
-                        <span
-                          className={classes["inter-reading"]}
-                          style={{ color: fontColor }}
-                        >
-                          {interService}
-                        </span>
+                        {flag ? (
+                          <span
+                            className={classes["inter-reading"]}
+                            style={{ color: fontColor, cursor: "pointer" }}
+                            onClick={() =>
+                              navigate(
+                                `/entity/${entity.id}?tab=periodicMaintenance`
+                              )
+                            }
+                          >
+                            {interService}
+                          </span>
+                        ) : (
+                          <span
+                            className={classes["inter-reading"]}
+                            style={{ color: fontColor }}
+                          >
+                            {interService}
+                          </span>
+                        )}
                       </div>
                     </div>
                   ) : null}
