@@ -1,18 +1,16 @@
 import { Button, Empty, Spin } from "antd";
-import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import {
   ALL_PERIODIC_MAINTENANCE_LIST,
   ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
-  ALL_PERIODIC_MAINTENANCE_SUMMARIES,
 } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
-import UserContext from "../../contexts/UserContext";
 import StatusCard from "../../components/common/StatusCard/StatusCard";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
@@ -35,8 +33,6 @@ import {
 } from "@ant-design/icons";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
-import PMCard from "../../components/common/PMCard/PMCard";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import moment from "moment";
 import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../models/Entity/Entity";
@@ -596,11 +592,12 @@ const ViewAllPeriodicMaintenances = () => {
             <div>
               {data?.getAllPMWithPagination.edges.map(
                 (rec: { node: Entity }) => {
-                  const pm = rec.node;
+                  const entity = rec.node;
                   return (
                     <EntityCard
-                      entity={pm}
-                      key={pm.id}
+                      entity={entity}
+                      key={entity.id}
+                      includePM={entity?.periodicMaintenances}
                     />
                   );
                 }

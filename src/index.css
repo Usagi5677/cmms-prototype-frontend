@@ -226,6 +226,7 @@ a {
   --compare-btn-color: black;
   --compare-btn-border: black;
   --compare-btn-active-border: var(--ant-primary-color);
+  --ant-collapse-content-box: rgb(247, 247, 247);
 }
 
 [data-theme="dark"] {
@@ -382,6 +383,7 @@ a {
   --compare-btn-color: #666666;
   --compare-btn-border: var(--ant-primary-color);
   --compare-btn-active-border: var(--ant-primary-color);
+  --ant-collapse-content-box: #282828;
 }
 
 ::-webkit-scrollbar-corner {
@@ -1020,4 +1022,8 @@ div.ant-typography {
   min-width: 8px !important;
   height: 8px !important;
   margin-left: 8px;
+}
+
+#collapse .ant-collapse-content-box {
+  background-color: var(--ant-collapse-content-box) !important;
 }

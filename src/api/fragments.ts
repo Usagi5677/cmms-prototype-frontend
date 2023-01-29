@@ -292,6 +292,9 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
       name
       status
       currentMeterReading
+      value
+      measurement
+      dueAt
     }
     breakdowns {
       id

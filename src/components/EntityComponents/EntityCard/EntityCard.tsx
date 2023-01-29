@@ -30,15 +30,19 @@ import UserContext from "../../../contexts/UserContext";
 import AssignSubEntity from "../AssignSubEntity/AssignSubEntity";
 import { hasPermissions } from "../../../helpers/permissions";
 import { useNavigate } from "react-router";
+import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
+import PMCardV2 from "../../common/PMCardV2/PMCardV2";
 
 const EntityCard = ({
   entity,
   summaryData,
   smallView,
+  includePM,
 }: {
   entity: Entity;
   summaryData?: EntityChecklistAndPMSummary;
   smallView?: boolean;
+  includePM?: PeriodicMaintenance[];
 }) => {
   const { user: self } = useContext(UserContext);
   const navigate = useNavigate();
@@ -655,6 +659,26 @@ const EntityCard = ({
             <div style={{ marginLeft: 10 }}>
               {entity?.subEntities?.map((s) => (
                 <EntityCard entity={s} key={s.id} />
+              ))}
+            </div>
+            {includePM?.length! > 0 && (
+              <>
+                <span
+                  className={classes["reading-title"]}
+                  style={{ marginTop: 20 }}
+                >
+                  Maintenances
+                </span>
+                <Divider style={{ marginTop: 10 }} />
+              </>
+            )}
+            <div style={{ marginLeft: 10 }}>
+              {includePM?.map((pm: PeriodicMaintenance) => (
+                <PMCardV2
+                  key={pm.id}
+                  pm={pm}
+                  currentRunning={entity?.currentRunning}
+                />
               ))}
             </div>
           </div>
