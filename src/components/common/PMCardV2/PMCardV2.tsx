@@ -72,13 +72,13 @@ const PMCardV2 = ({
           <Tooltip title="Due In">
             <FaRegClock />
           </Tooltip>
-          <span className={classes["title"]}>{dueIn}</span>
+          <span className={classes["title"]}>{dueIn} ({pm?.measurement})</span>
         </div>
         <div className={(classes["title-wrapper"], classes["space"])}>
           <Tooltip title="Due At">
             <FaRegClock />
           </Tooltip>
-          <span className={classes["title"]}>{pm.dueAt ?? 0}</span>
+          <span className={classes["title"]}>{pm.dueAt ?? 0} ({pm?.measurement})</span>
         </div>
       </div>
     </div>
