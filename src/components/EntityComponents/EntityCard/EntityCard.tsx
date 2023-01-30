@@ -678,6 +678,7 @@ const EntityCard = ({
                   key={pm.id}
                   pm={pm}
                   currentRunning={entity?.currentRunning}
+                  entityId={entity.id}
                 />
               ))}
             </div>

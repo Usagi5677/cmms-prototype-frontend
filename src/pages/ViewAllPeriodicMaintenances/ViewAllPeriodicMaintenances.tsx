@@ -438,8 +438,6 @@ const ViewAllPeriodicMaintenances = () => {
     toOptions,
   };
 
-  console.log(data?.getAllPMWithPagination)
-
   return (
     <>
       <div className={classes["status-card"]}>

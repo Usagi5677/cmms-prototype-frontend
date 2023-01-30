@@ -227,6 +227,7 @@ a {
   --compare-btn-border: black;
   --compare-btn-active-border: var(--ant-primary-color);
   --ant-collapse-content-box: rgb(247, 247, 247);
+  --pm-card-v2-border: 1px solid #ccc;
 }
 
 [data-theme="dark"] {
@@ -384,6 +385,7 @@ a {
   --compare-btn-border: var(--ant-primary-color);
   --compare-btn-active-border: var(--ant-primary-color);
   --ant-collapse-content-box: #282828;
+  --pm-card-v2-border: 1px solid rgb(92, 91, 91);
 }
 
 ::-webkit-scrollbar-corner {

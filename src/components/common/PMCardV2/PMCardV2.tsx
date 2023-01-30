@@ -4,14 +4,21 @@ import PeriodicMaintenanceStatusTag from "../PeriodicMaintenanceStatusTag";
 import { PeriodicMaintenanceStatus } from "../../../models/Enums";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
+import { Tooltip } from "antd";
+import { FaRegClock } from "react-icons/fa";
+import { ToolOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router";
 
 const PMCardV2 = ({
   pm,
   currentRunning,
+  entityId,
 }: {
   pm: PeriodicMaintenance;
   currentRunning?: number;
+  entityId?: number;
 }) => {
+  const navigate = useNavigate();
   let color: string | undefined = undefined;
   if (pm?.status === "Completed") color = "cyan";
   else if (pm?.status === "Ongoing") color = "orange";
@@ -22,26 +29,58 @@ const PMCardV2 = ({
   return (
     <div
       className={classes["container"]}
-      style={{ borderLeft: `2px solid ${color}` }}
+      style={{ borderLeft: `6px solid ${color}` }}
+      onClick={() =>
+        navigate(
+          `/entity/${entityId}?tab=periodicMaintenance&createdAt=${pm.createdAt}`
+        )
+      }
     >
-      <div className={classes["first-block"]}>
-        <div>{pm?.id}</div>
-        <div>{pm?.name}</div>
+      <div className={classes["level-one"]}>
+        <div className={classes["first-block"]}>
+          <div className={classes["main-title"]}>{pm?.name}</div>
+          <div className={classes["second-block-wrapper"]}>
+            <div className={classes["second-block"]}>
+              <span style={{ opacity: 0.5 }}>Occurs every:</span> {pm?.value} (
+              {pm?.measurement})
+            </div>
+            <div className={classes["status"]}>
+              <PeriodicMaintenanceStatusTag
+                status={pm?.status as PeriodicMaintenanceStatus}
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className={classes["second-block"]}>
-        Occurs every: {pm?.value} ({pm?.measurement})
+      <div className={classes["level-two"]}>
+        <div className={(classes["title-wrapper"], classes["space"])}>
+          <ToolOutlined />
+          <span className={classes["id-title"]}>{pm?.id}</span>
+        </div>
+        <div className={(classes["title-wrapper"], classes["space"])}>
+          <Tooltip title="Due Date">
+            <FaRegClock />
+          </Tooltip>
+
+          <span className={classes["title"]}>
+            {moment(pm.createdAt)
+              .add(1, "days")
+              .format(DATETIME_FORMATS.DAY_MONTH)}
+          </span>
+        </div>
+        <div className={(classes["title-wrapper"], classes["space"])}>
+          <Tooltip title="Due In">
+            <FaRegClock />
+          </Tooltip>
+          <span className={classes["title"]}>{dueIn}</span>
+        </div>
+        <div className={(classes["title-wrapper"], classes["space"])}>
+          <Tooltip title="Due At">
+            <FaRegClock />
+          </Tooltip>
+          <span className={classes["title"]}>{pm.dueAt ?? 0}</span>
+        </div>
       </div>
-      <div className={classes["third-block"]}>
-        <PeriodicMaintenanceStatusTag
-          status={pm?.status as PeriodicMaintenanceStatus}
-        />
-      </div>
-      <div className={classes["fourth-block"]}>
-        Due Date:{" "}
-        {moment(pm.createdAt).add(1, "days").format(DATETIME_FORMATS.DAY_MONTH)}
-      </div>
-      <div className={classes["sixth-block"]}>Due In: {dueIn}</div>
-      <div className={classes["fifth-block"]}>Due At: {pm.dueAt ?? 0}</div>
     </div>
   );
 };

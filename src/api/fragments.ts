@@ -295,6 +295,7 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
       value
       measurement
       dueAt
+      createdAt
     }
     breakdowns {
       id

@@ -21,6 +21,7 @@ import {
 } from "../../../../../components/PeriodicMaintenanceStatus/PeriodicMaintenanceStatus";
 import PeriodicMaintenanceCalendar from "../../../../../components/EntityComponents/PeriodicMaintenanceCalendar/PeriodicMaintenanceCalendar";
 import { Entity } from "../../../../../models/Entity/Entity";
+import { useSearchParams } from "react-router-dom";
 
 const ReadyPeriodicMaintenances = ({
   isDeleted,
@@ -29,17 +30,19 @@ const ReadyPeriodicMaintenances = ({
   isDeleted?: boolean | undefined;
   entity: Entity;
 }) => {
-  const { user: self } = useContext(UserContext);
+  const [params, setParams] = useSearchParams();
+  const urlParamCreatedDate = params.get("createdAt");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [dates, setDates] = useState<any>([moment(), moment()]);
+  const [dates, setDates] = useState<any>([moment(urlParamCreatedDate), moment(urlParamCreatedDate)]);
   const [month, setMonth] = useState([
     dates[0].clone().startOf("month"),
     dates[0].clone().endOf("month"),
   ]);
   const { RangePicker } = DatePicker;
   const { id }: any = useParams();
+
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -57,8 +60,8 @@ const ReadyPeriodicMaintenances = ({
     search: "",
     entityId: parseInt(id),
     type: "Copy",
-    from: dates[0],
-    to: dates[1],
+    from: moment(urlParamCreatedDate) ?? dates[0],
+    to: moment(urlParamCreatedDate) ?? dates[1],
   });
 
   const [periodicMaintenances, { data, loading }] = useLazyQuery(
@@ -167,6 +170,7 @@ const ReadyPeriodicMaintenances = ({
         dates[1].clone().subtract(1, "day"),
       ]);
     }
+    
   };
 
   const changeDateButton = (direction: "forward" | "back") => (
