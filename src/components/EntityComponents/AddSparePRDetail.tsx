@@ -26,7 +26,7 @@ export const AddSparePRDetail: React.FC<AddSparePRDetailProps> = ({
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") setDetails("");
-    else if (event.key === "Enter") {
+    else if (event.key === "Enter" || event.keyCode === 13) {
       event.preventDefault();
       if (details.trim() === "") return;
       setDetails("");
