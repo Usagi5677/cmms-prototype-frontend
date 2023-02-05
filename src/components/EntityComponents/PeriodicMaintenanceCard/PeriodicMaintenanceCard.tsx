@@ -203,7 +203,11 @@ const PeriodicMaintenanceCard = ({
                         periodicMaintenance.type === "Copy" && (
                           <Checkbox
                             checked={periodicMaintenance.verifiedAt !== null}
-                            disabled={flag2}
+                            disabled={
+                              !isAssignedType("Admin", entity!, self) ||
+                              isDeleted ||
+                              isOlder
+                            }
                             onChange={(e) =>
                               toggleVerify({
                                 variables: {
