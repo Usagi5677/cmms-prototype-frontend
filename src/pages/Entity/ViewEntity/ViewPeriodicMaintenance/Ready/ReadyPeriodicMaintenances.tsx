@@ -9,7 +9,6 @@ import PaginationButtons from "../../../../../components/common/PaginationButton
 import { errorMessage } from "../../../../../helpers/gql";
 import PaginationArgs from "../../../../../models/PaginationArgs";
 import classes from "./ReadyPeriodicMaintenances.module.css";
-import UserContext from "../../../../../contexts/UserContext";
 import { useParams } from "react-router";
 import PeriodicMaintenance from "../../../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceCard from "../../../../../components/EntityComponents/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
@@ -35,14 +34,16 @@ const ReadyPeriodicMaintenances = ({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [dates, setDates] = useState<any>([moment(urlParamCreatedDate), moment(urlParamCreatedDate)]);
+  const [dates, setDates] = useState<any>([
+    urlParamCreatedDate ? moment(urlParamCreatedDate) : moment(),
+    urlParamCreatedDate ? moment(urlParamCreatedDate) : moment(),
+  ]);
   const [month, setMonth] = useState([
     dates[0].clone().startOf("month"),
     dates[0].clone().endOf("month"),
   ]);
   const { RangePicker } = DatePicker;
   const { id }: any = useParams();
-
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -60,10 +61,9 @@ const ReadyPeriodicMaintenances = ({
     search: "",
     entityId: parseInt(id),
     type: "Copy",
-    from: moment(urlParamCreatedDate) ?? dates[0],
-    to: moment(urlParamCreatedDate) ?? dates[1],
+    from: urlParamCreatedDate ? moment(urlParamCreatedDate) : dates[0],
+    to: urlParamCreatedDate ? moment(urlParamCreatedDate) : dates[1],
   });
-
   const [periodicMaintenances, { data, loading }] = useLazyQuery(
     ALL_PERIODIC_MAINTENANCE,
     {
@@ -170,7 +170,6 @@ const ReadyPeriodicMaintenances = ({
         dates[1].clone().subtract(1, "day"),
       ]);
     }
-    
   };
 
   const changeDateButton = (direction: "forward" | "back") => (
