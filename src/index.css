@@ -1029,3 +1029,17 @@ div.ant-typography {
 #collapse .ant-collapse-content-box {
   background-color: var(--ant-collapse-content-box) !important;
 }
+.highcharts-label text {
+  text-decoration: none !important;
+}
+.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-normal text {
+  
+  fill: var(--ant-tag-blue-color) !important;
+  
+}
+.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-pressed text {
+  fill: var(--text-primary) !important;
+}
+.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-hover text {
+  fill: var(--ant-tag-geek-blue-color) !important;
+}

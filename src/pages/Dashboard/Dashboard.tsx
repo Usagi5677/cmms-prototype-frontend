@@ -15,6 +15,8 @@ import { motion } from "framer-motion";
 import { WarningOutlined } from "@ant-design/icons";
 import GroupedEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/GroupedEntityUtilization";
 import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
+import EntityStatusPie from "../../components/common/EntityStatusPie/EntityStatusPie";
+import UserTypePie from "../../components/common/UserTypePie/UserTypePie";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -54,77 +56,9 @@ const Dashboard = () => {
     <>
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["status-card"]}>
-          <motion.div
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.3,
-            }}
-          >
-            <StatusCard
-              amountOne={working}
-              icon={<FaTractor />}
-              iconBackgroundColor={"var(--working-bg)"}
-              iconColor={"var(--working-color)"}
-              name={"Working"}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.4,
-            }}
-          >
-            <StatusCard
-              amountOne={critical}
-              icon={<WarningOutlined />}
-              iconBackgroundColor={"var(--critical-bg)"}
-              iconColor={"var(--critical-color)"}
-              name={"Critical"}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.5,
-            }}
-          >
-            <StatusCard
-              amountOne={breakdown}
-              icon={<FaCarCrash />}
-              iconBackgroundColor={"var(--breakdown-bg)"}
-              iconColor={"var(--breakdown-color)"}
-              name={"Breakdown"}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.6,
-            }}
-          >
-            <StatusCard
-              amountOne={dispose}
-              icon={<FaRecycle />}
-              iconBackgroundColor={"var(--dispose-bg)"}
-              iconColor={"var(--dispose-color)"}
-              name={"Dispose"}
-            />
-          </motion.div>
+          <EntityStatusPie/>
+          <UserTypePie/>
+          
         </div>
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
