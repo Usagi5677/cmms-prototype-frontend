@@ -246,6 +246,7 @@ export const ENTITY_FRAGMENT = gql`
 `;
 
 export const ENTITY_FRAGMENT_WITH_PM = gql`
+ ${APS_USER_FRAGMENT}
   fragment EntityFieldsWithPM on Entity {
     id
     createdAt
@@ -291,6 +292,44 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
       name
       status
       currentMeterReading
+      value
+      measurement
+      dueAt
+      createdAt
+    }
+    breakdowns {
+      id
+      type
+      estimatedDateOfRepair
+      completedAt
+      createdBy {
+        ...UserFieldsAPS
+      }
+      details {
+        id
+        description
+        repairs {
+          id
+          name
+        }
+      }
+      repairs {
+        id
+        name
+        breakdownDetail {
+          id
+        }
+      }
+    }
+    sparePRs {
+      id
+      createdAt
+      name
+      requestedDate
+      sparePRDetails {
+        id
+        description
+      }
     }
   }
 `;

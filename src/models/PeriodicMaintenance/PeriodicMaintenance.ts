@@ -23,4 +23,5 @@ export default interface PeriodicMaintenance {
   entity?: Entity;
   comments?: Comment[];
   notificationReminder?: PeriodicMaintenanceNotificationModel[];
+  dueAt?: number;
 }

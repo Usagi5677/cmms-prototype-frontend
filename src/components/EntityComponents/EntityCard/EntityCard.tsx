@@ -25,27 +25,33 @@ import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistA
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
 import { EntityIcon } from "../../common/EntityIcon";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import AssignSubEntity from "../AssignSubEntity/AssignSubEntity";
-import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
+import { hasPermissions } from "../../../helpers/permissions";
+import { useNavigate } from "react-router";
+import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
+import PMCardV2 from "../../common/PMCardV2/PMCardV2";
 
 const EntityCard = ({
   entity,
   summaryData,
   smallView,
+  includePM,
 }: {
   entity: Entity;
   summaryData?: EntityChecklistAndPMSummary;
   smallView?: boolean;
+  includePM?: PeriodicMaintenance[];
 }) => {
   const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const { Paragraph } = Typography;
   const interService =
     (entity.currentRunning ? entity.currentRunning : 0) -
     (entity.lastService ? entity.lastService : 0);
   let fontColor = "#00e32a";
+  let flag = false;
   if (entity?.type?.interServiceColor) {
     const exist = entity?.type?.interServiceColor.find((i) => {
       if (
@@ -61,8 +67,10 @@ const EntityCard = ({
       interService <= exist?.greaterThan!
     ) {
       fontColor = "orange";
+      flag = true;
     } else if (interService >= exist?.greaterThan!) {
       fontColor = "red";
+      flag = true;
     } else if (interService < 0) {
       fontColor = "var(--text-primary)";
     }
@@ -190,12 +198,26 @@ const EntityCard = ({
                         <span className={classes["reading-title"]}>
                           Inter service ({entity?.measurement}):
                         </span>
-                        <span
-                          className={classes["inter-reading"]}
-                          style={{ color: fontColor }}
-                        >
-                          {interService}
-                        </span>
+                        {flag ? (
+                          <span
+                            className={classes["inter-reading"]}
+                            style={{ color: fontColor, cursor: "pointer" }}
+                            onClick={() =>
+                              navigate(
+                                `/entity/${entity.id}?tab=periodicMaintenance`
+                              )
+                            }
+                          >
+                            {interService}
+                          </span>
+                        ) : (
+                          <span
+                            className={classes["inter-reading"]}
+                            style={{ color: fontColor }}
+                          >
+                            {interService}
+                          </span>
+                        )}
                       </div>
                     </div>
                   ) : null}
@@ -637,6 +659,27 @@ const EntityCard = ({
             <div style={{ marginLeft: 10 }}>
               {entity?.subEntities?.map((s) => (
                 <EntityCard entity={s} key={s.id} />
+              ))}
+            </div>
+            {includePM?.length! > 0 && (
+              <>
+                <span
+                  className={classes["reading-title"]}
+                  style={{ marginTop: 20 }}
+                >
+                  Maintenances
+                </span>
+                <Divider style={{ marginTop: 10 }} />
+              </>
+            )}
+            <div style={{ marginLeft: 10 }}>
+              {includePM?.map((pm: PeriodicMaintenance) => (
+                <PMCardV2
+                  key={pm.id}
+                  pm={pm}
+                  currentRunning={entity?.currentRunning}
+                  entityId={entity.id}
+                />
               ))}
             </div>
           </div>

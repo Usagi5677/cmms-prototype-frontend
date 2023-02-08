@@ -1,38 +1,23 @@
-import { Button, Empty, message, Spin } from "antd";
-import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Empty, Spin } from "antd";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
 import {
-  ALL_ENTITY,
   ALL_PERIODIC_MAINTENANCE_LIST,
   ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
-  ALL_PERIODIC_MAINTENANCE_SUMMARIES,
-  GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ALL_ENTITY_STATUS_COUNT,
-  GET_ALL_PM_SUMMARY,
 } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
-import UserContext from "../../contexts/UserContext";
 import StatusCard from "../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaTractor } from "react-icons/fa";
-import AddEntity from "../../components/EntityComponents/AddEntity/AddEntity";
-import { Entity } from "../../models/Entity/Entity";
-import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
-import { hasPermissions } from "../../helpers/permissions";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import FilterOptions from "../../components/common/FilterOptions/FIlterOptions";
 import {
-  DefaultBooleanOptionProps,
   DefaultDateOptionProps,
   DefaultNumberArrayOptionProps,
   DefaultStringArrayOptionProps,
-  EntityStatus,
-  EntityStatusOptionProps,
   FilterOptionProps,
   PeriodicMaintenanceStatus,
   PMStatusOptionProps,
@@ -40,7 +25,6 @@ import {
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
 } from "../../models/Enums";
-import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import {
   CheckOutlined,
   ClockCircleOutlined,
@@ -49,10 +33,9 @@ import {
 } from "@ant-design/icons";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
-import PMCard from "../../components/common/PMCard/PMCard";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import moment from "moment";
-import AllPeriodicMaintenanceCalendar from "./AllPeriodicMaintenanceCalendar";
+import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
+import { Entity } from "../../models/Entity/Entity";
 
 const ViewAllPeriodicMaintenances = () => {
   const getFilter = localStorage.getItem("periodicMaintenancesFilter");
@@ -60,7 +43,6 @@ const ViewAllPeriodicMaintenances = () => {
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
   }
-  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState(getFilterObjects?.search);
@@ -88,8 +70,6 @@ const ViewAllPeriodicMaintenances = () => {
   );
   const [to, setTo] = useState<any>(moment(getFilterObjects?.to));
   const [from, setFrom] = useState<any>(moment(getFilterObjects?.from));
-
-  const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
     "periodicMaintenancesFilter",
@@ -167,6 +147,7 @@ const ViewAllPeriodicMaintenances = () => {
     }
   );
 
+  /*
   const [
     allPeriodicMaintenanceSummary,
     { data: allSummary, loading: loading2 },
@@ -177,7 +158,7 @@ const ViewAllPeriodicMaintenances = () => {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
-
+  */
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
     getAllPMWithPagination({ variables: filter });
@@ -595,7 +576,7 @@ const ViewAllPeriodicMaintenances = () => {
                   type="primary"
                   className={classes["custom-btn-primary"]}
                 >
-                  Calendar View
+                  Calendar
                 </Button>
               </Link>
             </motion.div>
@@ -608,13 +589,13 @@ const ViewAllPeriodicMaintenances = () => {
           ) : data?.getAllPMWithPagination.edges.length > 0 ? (
             <div>
               {data?.getAllPMWithPagination.edges.map(
-                (rec: { node: PeriodicMaintenance }) => {
-                  const pm = rec.node;
+                (rec: { node: Entity }) => {
+                  const entity = rec.node;
                   return (
-                    <PMCard
-                      entity={pm?.entity!}
-                      key={pm.id}
-                      periodicMaintenance={pm}
+                    <EntityCard
+                      entity={entity}
+                      key={entity.id}
+                      includePM={entity?.periodicMaintenances}
                     />
                   );
                 }

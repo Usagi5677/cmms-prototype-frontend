@@ -9,7 +9,6 @@ import PaginationButtons from "../../../../../components/common/PaginationButton
 import { errorMessage } from "../../../../../helpers/gql";
 import PaginationArgs from "../../../../../models/PaginationArgs";
 import classes from "./ReadyPeriodicMaintenances.module.css";
-import UserContext from "../../../../../contexts/UserContext";
 import { useParams } from "react-router";
 import PeriodicMaintenance from "../../../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceCard from "../../../../../components/EntityComponents/PeriodicMaintenanceCard/PeriodicMaintenanceCard";
@@ -21,6 +20,7 @@ import {
 } from "../../../../../components/PeriodicMaintenanceStatus/PeriodicMaintenanceStatus";
 import PeriodicMaintenanceCalendar from "../../../../../components/EntityComponents/PeriodicMaintenanceCalendar/PeriodicMaintenanceCalendar";
 import { Entity } from "../../../../../models/Entity/Entity";
+import { useSearchParams } from "react-router-dom";
 
 const ReadyPeriodicMaintenances = ({
   isDeleted,
@@ -29,11 +29,15 @@ const ReadyPeriodicMaintenances = ({
   isDeleted?: boolean | undefined;
   entity: Entity;
 }) => {
-  const { user: self } = useContext(UserContext);
+  const [params, setParams] = useSearchParams();
+  const urlParamCreatedDate = params.get("createdAt");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const [dates, setDates] = useState<any>([moment(), moment()]);
+  const [dates, setDates] = useState<any>([
+    urlParamCreatedDate ? moment(urlParamCreatedDate) : moment(),
+    urlParamCreatedDate ? moment(urlParamCreatedDate) : moment(),
+  ]);
   const [month, setMonth] = useState([
     dates[0].clone().startOf("month"),
     dates[0].clone().endOf("month"),
@@ -57,10 +61,9 @@ const ReadyPeriodicMaintenances = ({
     search: "",
     entityId: parseInt(id),
     type: "Copy",
-    from: dates[0],
-    to: dates[1],
+    from: urlParamCreatedDate ? moment(urlParamCreatedDate) : dates[0],
+    to: urlParamCreatedDate ? moment(urlParamCreatedDate) : dates[1],
   });
-
   const [periodicMaintenances, { data, loading }] = useLazyQuery(
     ALL_PERIODIC_MAINTENANCE,
     {

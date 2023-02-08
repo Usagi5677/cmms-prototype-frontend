@@ -367,8 +367,7 @@ export const UPCOMING_PERIODIC_MAINTENANCES = gql`
 `;
 
 export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
-  ${APS_USER_FRAGMENT}
-  ${ENTITY_FRAGMENT}
+  ${ENTITY_FRAGMENT_WITH_PM}
   query getAllPMWithPagination(
     $after: String
     $before: String
@@ -416,25 +415,7 @@ export const ALL_PERIODIC_MAINTENANCE_LIST = gql`
       }
       edges {
         node {
-          id
-          createdAt
-          entityId
-          name
-          from
-          to
-          measurement
-          value
-          currentMeterReading
-          recur
-          status
-          type
-          verifiedAt
-          verifiedBy {
-            ...UserFieldsAPS
-          }
-          entity {
-            ...EntityFields
-          }
+          ...EntityFieldsWithPM
         }
       }
     }
@@ -635,6 +616,18 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
       critical
       breakdown
       dispose
+      machineWorking
+      machineCritical
+      machineBreakdown
+      machineDispose
+      vehicleWorking
+      vehicleCritical
+      vehicleBreakdown
+      vehicleDispose
+      vesselWorking
+      vesselCritical
+      vesselBreakdown
+      vesselDispose
     }
   }
 `;
@@ -2359,5 +2352,17 @@ export const LOCATION_ASSIGNMENTS = gql`
 export const CHECK_COPY_PM_EXIST = gql`
   query checkCopyPMExist($id: Int!) {
     checkCopyPMExist(id: $id)
+  }
+`;
+
+export const GET_USER_TYPE_COUNT = gql`
+  query getUserTypeCount {
+    getUserTypeCount {
+      admin
+      engineer
+      technician
+      user
+      total
+    }
   }
 `;

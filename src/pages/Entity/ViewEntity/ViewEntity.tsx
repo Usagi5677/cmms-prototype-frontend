@@ -1,8 +1,6 @@
 import {
-  ApartmentOutlined,
   CheckOutlined,
   CloseCircleOutlined,
-  CloseOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
@@ -35,7 +33,6 @@ import {
 } from "../../../helpers/constants";
 import ViewPeriodicMaintenance from "./ViewPeriodicMaintenance/ViewPeriodicMaintenance";
 import ViewSparePR from "./ViewSparePR/ViewSparePR";
-import ViewRepair from "./ViewRepair/ViewRepair";
 import ViewBreakdown from "./ViewBreakdown/ViewBreakdown";
 import ViewHistory from "./ViewHistory/ViewHistory";
 import ViewGallery from "./ViewGallery/ViewGallery";
@@ -64,11 +61,15 @@ import ViewSubEntity from "./ViewSubEntity/ViewSubEntity";
 import OpenParentEntity from "../../../components/common/OpenParentEntity/OpenParentEntity";
 import EditEntityNote from "../../../components/EntityComponents/EditEntityNote/EditEntityNote";
 import TextArea from "antd/lib/input/TextArea";
+import { useSearchParams } from "react-router-dom";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
   const navigate = useNavigate();
   const { user: self } = useContext(UserContext);
+  const [params, setParams] = useSearchParams();
+  const urlParamTab = params.get("tab");
+
   const [getSingleEntity, { data: entity, loading: loadingEntity }] =
     useLazyQuery(GET_SINGLE_ENTITY, {
       onError: (err) => {
@@ -515,7 +516,7 @@ const ViewEntity = () => {
               </div>
             </div>
             <Tabs
-              defaultActiveKey="checklist"
+              defaultActiveKey={urlParamTab ? urlParamTab : "checklist"}
               style={{
                 flex: 1,
               }}
