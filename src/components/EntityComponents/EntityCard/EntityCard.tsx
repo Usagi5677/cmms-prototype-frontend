@@ -82,7 +82,7 @@ const EntityCard = ({
       fontColor = "var(--text-primary)";
     }
   }
-
+  //test commit
   let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
 
   let imagePath = getListImage(entity?.type?.name);
