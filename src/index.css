@@ -646,7 +646,7 @@ em {
   margin-right: 4px;
   margin-left: 4px;
 }
-@media only screen and (min-width: 500px) { 
+@media only screen and (min-width: 500px) {
   #collapseThree {
     margin-right: 8px;
     margin-left: 8px;
@@ -995,7 +995,8 @@ div.ant-typography {
   color: inherit !important;
 }
 
-#sidebar a:active, #sidebar a:focus {
+#sidebar a:active,
+#sidebar a:focus {
   color: var(--ant-primary-color-hover) !important;
   border-color: var(--ant-primary-color-hover) !important;
   background: var(--ant-picker-bg) !important;
@@ -1010,7 +1011,7 @@ div.ant-typography {
   vertical-align: middle;
 }
 
-@media only screen and (min-width: 600px) { 
+@media only screen and (min-width: 600px) {
   #custTable .ant-table-thead > tr > th {
     padding: 16px !important;
   }
@@ -1032,14 +1033,19 @@ div.ant-typography {
 .highcharts-label text {
   text-decoration: none !important;
 }
-.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-normal text {
-  
+.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-normal
+  text {
   fill: var(--ant-tag-blue-color) !important;
-  
 }
-.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-pressed text {
+.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-pressed
+  text {
   fill: var(--text-primary) !important;
 }
-.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-hover text {
+.highcharts-no-tooltip.highcharts-button.highcharts-breadcrumbs-button.highcharts-button-hover
+  text {
   fill: var(--ant-tag-geek-blue-color) !important;
+}
+
+#collapse .anticon.anticon-right.ant-collapse-arrow {
+  display: none !important;
 }

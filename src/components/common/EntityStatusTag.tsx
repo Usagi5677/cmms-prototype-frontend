@@ -4,11 +4,15 @@ import { EntityStatus } from "../../models/Enums";
 const EntityStatusTag = ({
   status,
   noMarginRight,
-  title
+  title,
+  noBorderRadius,
+  fontSize = 12,
 }: {
   status: EntityStatus | undefined;
   noMarginRight?: boolean;
   title?: string;
+  noBorderRadius?: boolean;
+  fontSize?: number;
 }) => {
   let color: string | undefined = undefined;
   if (status === "Working") color = "cyan";
@@ -20,10 +24,11 @@ const EntityStatusTag = ({
       color={color}
       style={{
         fontWeight: 700,
-        borderRadius: 20,
+        borderRadius: noBorderRadius ? 2 : 20,
         textAlign: "center",
         maxWidth: 250,
         marginRight: noMarginRight ? 0 : 8,
+        fontSize,
       }}
       title={title}
     >

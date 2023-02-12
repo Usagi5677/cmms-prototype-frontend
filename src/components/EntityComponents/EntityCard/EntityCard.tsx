@@ -15,6 +15,9 @@ import {
   Typography,
   Skeleton,
   Divider,
+  Tag,
+  Timeline,
+  TimelineItemProps,
 } from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
@@ -25,13 +28,16 @@ import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistA
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
 import { EntityIcon } from "../../common/EntityIcon";
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import AssignSubEntity from "../AssignSubEntity/AssignSubEntity";
 import { hasPermissions } from "../../../helpers/permissions";
 import { useNavigate } from "react-router";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PMCardV2 from "../../common/PMCardV2/PMCardV2";
+import { friendlyFormat } from "../../../helpers/friendlyFormat";
+import SizeableTag from "../../common/SizeableTag/SizeableTag";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
 const EntityCard = ({
   entity,
@@ -45,6 +51,7 @@ const EntityCard = ({
   includePM?: PeriodicMaintenance[];
 }) => {
   const { user: self } = useContext(UserContext);
+  const isSmallDevice = useIsSmallDevice(600, true);
   const navigate = useNavigate();
   const { Paragraph } = Typography;
   const interService =
@@ -112,160 +119,206 @@ const EntityCard = ({
             <>
               <div className={classes["header-container"]}>
                 <div
-                  className={classes["first-block"]}
+                  className={classes["inner-block-wrapper"]}
                   style={{ flex: smallView ? 2 : 1 }}
                 >
-                  {loading ? (
-                    <Skeleton.Image
-                      style={{ width: 60, height: 50, borderRadius: 6 }}
-                    />
-                  ) : (
-                    <Image
-                      src={imagePath}
-                      height={50}
-                      width={60}
-                      preview={false}
-                    />
-                  )}
-                  <div
-                    className={classes["inner-first-block"]}
-                    style={{ flex: smallView ? 2 : 1 }}
-                  >
-                    <div className={classes["title-wrapper"]}>
-                      <EntityIcon entityType={entity?.type?.entityType} />
-                      <span className={classes["mn-title"]}>
-                        {entity?.machineNumber}
-                      </span>
-                      {result[0] && (
-                        <Tooltip
-                          color="var(--dot-tooltip)"
-                          title={
-                            <div>
-                              <Badge
-                                color={"#87262c"}
-                                text={"Some tasks not completed"}
-                                status={"processing"}
-                              />
-                            </div>
-                          }
-                        >
-                          <Badge color={"#87262c"} status={"processing"} />
-                        </Tooltip>
-                      )}
-                      {result[1] && (
-                        <Tooltip
-                          color="var(--dot-tooltip)"
-                          title={
-                            <div>
-                              <Badge
-                                color={"red"}
-                                text={"Some checklists not completed"}
-                                status={"processing"}
-                              />
-                            </div>
-                          }
-                        >
-                          <Badge color={"red"} status={"processing"} />
-                        </Tooltip>
-                      )}
-                    </div>
-                    <div className={classes["location-wrapper"]}>
-                      <FaMapMarkerAlt />
-                      <span className={classes["title"]}>
-                        {entity?.location?.name}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className={classes["second-block"]}>
-                  <div className={classes["inner-second-block"]}>
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>Type:</span>
-                      <span>{entity?.type?.name}</span>
-                    </div>
-                    {entity?.division && (
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Division:
-                        </span>
-                        <span>{entity?.division?.name}</span>
-                      </div>
+                  <div className={classes["first-block"]}>
+                    {loading ? (
+                      <Skeleton.Image
+                        className={classes["image"]}
+                        style={{
+                          width: isSmallDevice ? 80 : 40,
+                          height: isSmallDevice ? 70 : 30,
+                          borderRadius: 6,
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        src={imagePath}
+                        height={isSmallDevice ? 70 : 30}
+                        width={isSmallDevice ? 80 : 40}
+                        className={classes["image"]}
+                        preview={false}
+                        title={`${entity?.id}`}
+                      />
                     )}
-                  </div>
-                  {!smallView ? (
-                    <div className={classes["service-reading-wrapper"]}>
-                      <div className={classes["reading"]}>
-                        <span className={classes["reading-title"]}>
-                          Inter service ({entity?.measurement}):
+                    <div
+                      className={classes["inner-first-block"]}
+                      style={{ flex: smallView ? 2 : 2 }}
+                    >
+                      <div className={classes["inner-first-block-level-one"]}>
+                        <span
+                          className={classes["mn-title"]}
+                          title={`Machine Number`}
+                        >
+                          {entity?.machineNumber}
                         </span>
-                        {flag ? (
-                          <span
-                            className={classes["inter-reading"]}
-                            style={{ color: fontColor, cursor: "pointer" }}
-                            onClick={() =>
-                              navigate(
-                                `/entity/${entity.id}?tab=periodicMaintenance`
-                              )
+                        {entity?.division && (
+                          <SizeableTag
+                            name={entity?.division?.name}
+                            nameColor
+                            fontSize={isSmallDevice ? 9 : 6}
+                            height={isSmallDevice ? 14 : 10}
+                            fontWeight={800}
+                            title={"Division"}
+                          />
+                        )}
+                        {result[0] && (
+                          <Tooltip
+                            color="var(--dot-tooltip)"
+                            title={
+                              <div>
+                                <Badge
+                                  color={"#87262c"}
+                                  text={"Some tasks not completed"}
+                                  status={"processing"}
+                                />
+                              </div>
                             }
                           >
-                            {interService}
-                          </span>
-                        ) : (
-                          <span
-                            className={classes["inter-reading"]}
-                            style={{ color: fontColor }}
+                            <Badge color={"#87262c"} status={"processing"} />
+                          </Tooltip>
+                        )}
+                        {result[1] && (
+                          <Tooltip
+                            color="var(--dot-tooltip)"
+                            title={
+                              <div>
+                                <Badge
+                                  color={"red"}
+                                  text={"Some checklists not completed"}
+                                  status={"processing"}
+                                />
+                              </div>
+                            }
                           >
-                            {interService}
-                          </span>
+                            <Badge color={"red"} status={"processing"} />
+                          </Tooltip>
+                        )}
+                      </div>
+                      <span className={classes["inner-first-block-level-two"]}>
+                        <div title={"Type"}>{entity?.type?.name}</div>
+                        {entity?.model && (
+                          <span className={classes["dot"]}>•</span>
+                        )}
+                        <div className={classes["model"]} title={"Model"}>
+                          {entity?.model}
+                        </div>
+                        {entity?.brand?.name && (
+                          <span className={classes["dot"]}>•</span>
+                        )}
+                        <div className={classes["brand"]} title={"Brand"}>
+                          {entity?.brand?.name}
+                        </div>
+                        {entity?.engine && (
+                          <span className={classes["dot"]}>•</span>
+                        )}
+                        <div className={classes["engine"]} title={"Engine"}>
+                          {entity?.engine}
+                        </div>
+                      </span>
+                      <div className={classes["inner-first-block-level-three"]}>
+                        {entity?.registeredDate && (
+                          <div title={"Registered Date"}>
+                            {moment(entity?.registeredDate).format(
+                              DATETIME_FORMATS.DAY_MONTH_YEAR
+                            )}
+                          </div>
+                        )}
+                        {entity?.location?.name && (
+                          <span className={classes["dot"]}>•</span>
+                        )}
+                        <div title={"Location"}>{entity?.location?.name}</div>
+                        {entity?.location?.zone?.name && (
+                          <span className={classes["dot"]}>•</span>
+                        )}
+                        <div title={"Zone"}>{entity?.location?.zone?.name}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={classes["second-block"]}>
+                    <div className={classes["second-block-inner-block"]}>
+                      {flag ? (
+                        <span
+                          className={classes["inter-reading"]}
+                          style={{ color: fontColor, cursor: "pointer" }}
+                          onClick={() =>
+                            navigate(
+                              `/entity/${entity.id}?tab=periodicMaintenance`
+                            )
+                          }
+                          title={`Interservice: ${interService} (${entity?.measurement!})`}
+                        >
+                          {friendlyFormat(interService, 1)}
+                          <div className={classes["measurement"]}>
+                            {entity?.measurement}
+                          </div>
+                        </span>
+                      ) : (
+                        <span
+                          className={classes["inter-reading"]}
+                          style={{ color: fontColor }}
+                          title={`Interservice: ${interService} (${entity?.measurement!})`}
+                        >
+                          {friendlyFormat(interService, 1)}
+
+                          <div className={classes["measurement"]}>
+                            {entity?.measurement}
+                          </div>
+                        </span>
+                      )}
+                      <div className={classes["status-block"]}>
+                        {entity?.status === "Breakdown" && entity?.breakdowns && (
+                          <div className={classes["estDateOfRepair-wrapper"]}>
+                            {entity?.breakdowns[0]?.estimatedDateOfRepair && (
+                              <span
+                                className={classes["estDateOfRepair"]}
+                                title={"Estimated Date of Repair"}
+                              >
+                                {moment(
+                                  entity?.breakdowns[0]?.estimatedDateOfRepair
+                                ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {isSmallDevice ? (
+                          <EntityStatusTag
+                            status={entity?.status}
+                            noBorderRadius
+                            title={
+                              entity?.status === "Breakdown"
+                                ? moment(
+                                    entity?.breakdowns[0]?.createdAt
+                                  ).format(DATETIME_FORMATS.FULL)
+                                : entity?.status
+                            }
+                          />
+                        ) : (
+                          <SizeableTag
+                            name={entity?.status}
+                            defaultColor
+                            fontSize={6}
+                          />
                         )}
                       </div>
                     </div>
-                  ) : null}
 
-                  <div className={classes["third-block"]}>
-                    {entity?.status === "Breakdown" && entity?.breakdowns && (
-                      <div className={classes["fourth-block"]}>
-                        {entity?.breakdowns[0]?.estimatedDateOfRepair && (
-                          <div className={classes["title-wrapper"]}>
-                            <Tooltip title="Estimated date of repair">
-                              <FaRegClock />
-                            </Tooltip>
-                            <span
-                              className={classes["title"]}
-                              title={moment(
-                                entity?.breakdowns[0]?.estimatedDateOfRepair
-                              ).format(DATETIME_FORMATS.FULL)}
-                            >
-                              {moment(
-                                entity?.breakdowns[0]?.estimatedDateOfRepair
-                              ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                            </span>
-                          </div>
+                    <div className={classes["second-block-action-btn-wrapper"]}>
+                      {hasPermissions(self, ["ADD_ENTITY"]) &&
+                        entity?.parentEntityId && (
+                          <AssignSubEntity entity={entity} />
                         )}
-                      </div>
-                    )}
-                    <div>
-                      <EntityStatusTag
-                        status={entity?.status}
-                        title={
-                          entity?.status === "Breakdown"
-                            ? moment(entity?.breakdowns[0]?.createdAt).format(
-                                DATETIME_FORMATS.FULL
-                              )
-                            : ""
-                        }
-                      />
+                      <Link to={"/entity/" + entity.id}>
+                        <Tooltip title="Open">
+                          <FaArrowAltCircleRight
+                            className={classes["button"]}
+                          />
+                        </Tooltip>
+                      </Link>
                     </div>
                   </div>
                 </div>
-                {hasPermissions(self, ["ADD_ENTITY"]) &&
-                  entity?.parentEntityId && <AssignSubEntity entity={entity} />}
-
-                <Link to={"/entity/" + entity.id}>
-                  <Tooltip title="Open">
-                    <FaArrowAltCircleRight className={classes["button"]} />
-                  </Tooltip>
-                </Link>
               </div>
             </>
           }
@@ -273,203 +326,143 @@ const EntityCard = ({
         >
           <div className={classes["container"]}>
             <div className={classes["container-first-row"]}>
-              <div className={classes["container-first-block"]}>
-                <div className={classes["title-wrapper"]}>
-                  <Tooltip title="Registered Date">
-                    <FaRegClock />
-                  </Tooltip>
+              <span
+                className={classes["reading"]}
+                style={{ color: fontColor }}
+                title={`${interService}`}
+              >
+                {friendlyFormat(
+                  entity?.currentRunning ? entity?.currentRunning : 0,
+                  1
+                )}
 
-                  <span
-                    className={classes["title"]}
-                    title={moment(entity?.registeredDate).format(
-                      DATETIME_FORMATS.FULL
-                    )}
+                <div className={classes["measurement"]}>
+                  Current running ({entity?.measurement})
+                </div>
+              </span>
+              <span
+                className={classes["reading"]}
+                style={{ color: fontColor }}
+                title={`${entity?.lastService ? entity?.lastService : 0}`}
+              >
+                {friendlyFormat(
+                  entity?.lastService ? entity?.lastService : 0,
+                  1
+                )}
+
+                <div className={classes["measurement"]}>
+                  Last service ({entity?.measurement})
+                </div>
+              </span>
+            </div>
+            <div className={classes["user-container"]}>
+              <div className={classes["user-wrapper"]}>
+                <span className={classes["user-title"]}>Admin</span>
+                <Divider style={{ marginTop: 0, marginBottom: 10 }} />
+                {assignedAdmin?.length! > 0 ? (
+                  <Avatar.Group
+                    maxCount={5}
+                    maxStyle={{
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                    }}
                   >
-                    {moment(entity?.registeredDate).format(
-                      DATETIME_FORMATS.DAY_MONTH_YEAR
-                    )}
-                  </span>
-                </div>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>Zone:</span>
-                  <span>
-                    {entity?.location?.zone?.name
-                      ? entity?.location?.zone?.name
-                      : "None"}
-                  </span>
-                </div>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>Model:</span>
-                  <span>{entity?.model ? entity?.model : "None"}</span>
-                </div>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>Brand:</span>
-                  <span>
-                    {entity?.brand?.name ? entity?.brand?.name : "None"}
-                  </span>
-                </div>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>Engine:</span>
-                  <span>{entity?.engine ? entity?.engine : "None"}</span>
-                </div>
+                    {assignedAdmin?.map((assign) => {
+                      return (
+                        <Tooltip
+                          title={
+                            <>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {assign?.user?.fullName} ({assign?.user?.rcno})
+                              </div>
+                            </>
+                          }
+                          placement="bottom"
+                          key={assign?.user?.id}
+                        >
+                          <Avatar
+                            style={{
+                              backgroundColor: stringToColor(
+                                assign?.user?.fullName!
+                              ),
+                            }}
+                          >
+                            {assign?.user?.fullName
+                              .match(/^\w|\b\w(?=\S+$)/g)
+                              ?.join()
+                              .replace(",", "")
+                              .toUpperCase()}
+                          </Avatar>
+                        </Tooltip>
+                      );
+                    })}
+                  </Avatar.Group>
+                ) : (
+                  <div>None</div>
+                )}
               </div>
-              <div className={classes["container-second-block-wrapper"]}>
-                <div className={classes["container-second-block"]}>
-                  {entity?.currentRunning! >= 0 && (
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Current running ({entity?.measurement}):
-                      </span>
-                      <span>
-                        {entity?.currentRunning ? entity?.currentRunning : 0}
-                      </span>
-                    </div>
-                  )}
-                  {entity?.lastService! >= 0 && (
-                    <div className={classes["reading"]}>
-                      <span className={classes["reading-title"]}>
-                        Last service ({entity?.measurement}):
-                      </span>
-                      <span>
-                        {entity?.lastService ? entity?.lastService : 0}
-                      </span>
-                    </div>
-                  )}
-                  {smallView && (
-                    <div
-                      className={classes["reading"]}
-                      style={{
-                        border: `1px solid ${fontColor}`,
-                        borderRadius: 10,
-                        padding: 5,
-                      }}
-                    >
-                      <span className={classes["reading-title"]}>
-                        Inter service ({entity?.measurement}):
-                      </span>
-                      <span
-                        className={classes["inter-reading"]}
-                        style={{ color: fontColor }}
-                      >
-                        {interService}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className={classes["container-third-block"]}>
-                  <div className={classes["user-wrapper"]}>
-                    <span className={classes["reading-title"]}>Admin:</span>
-                    {assignedAdmin?.length! > 0 ? (
-                      <Avatar.Group
-                        maxCount={5}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                        size={"small"}
-                      >
-                        {assignedAdmin?.map((assign) => {
-                          return (
-                            <Tooltip
-                              title={
-                                <>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    {assign?.user?.fullName} (
-                                    {assign?.user?.rcno})
-                                  </div>
-                                </>
-                              }
-                              placement="bottom"
-                              key={assign?.user?.id}
-                            >
-                              <Avatar
+              <div className={classes["user-wrapper"]}>
+                <span className={classes["user-title"]}>Engineer</span>
+                <Divider style={{ marginTop: 0, marginBottom: 10 }} />
+                {assignedEngineer?.length! > 0 ? (
+                  <Avatar.Group
+                    maxCount={5}
+                    maxStyle={{
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                    }}
+                  >
+                    {assignedEngineer?.map((assign) => {
+                      return (
+                        <Tooltip
+                          title={
+                            <>
+                              <div
                                 style={{
-                                  backgroundColor: stringToColor(
-                                    assign?.user?.fullName!
-                                  ),
+                                  display: "flex",
+                                  alignItems: "center",
                                 }}
-                                size={"small"}
                               >
-                                {assign?.user?.fullName
-                                  .match(/^\w|\b\w(?=\S+$)/g)
-                                  ?.join()
-                                  .replace(",", "")
-                                  .toUpperCase()}
-                              </Avatar>
-                            </Tooltip>
-                          );
-                        })}
-                      </Avatar.Group>
-                    ) : (
-                      <div>None</div>
-                    )}
-                  </div>
-                  <div className={classes["user-wrapper"]}>
-                    <span className={classes["reading-title"]}>Engineer:</span>
-                    {assignedEngineer?.length! > 0 ? (
-                      <Avatar.Group
-                        maxCount={5}
-                        maxStyle={{
-                          color: "#f56a00",
-                          backgroundColor: "#fde3cf",
-                        }}
-                        size={"small"}
-                      >
-                        {assignedEngineer?.map((assign) => {
-                          return (
-                            <Tooltip
-                              title={
-                                <>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    {assign?.user?.fullName} (
-                                    {assign?.user?.rcno})
-                                  </div>
-                                </>
-                              }
-                              placement="bottom"
-                              key={assign?.user?.id}
-                            >
-                              <Avatar
-                                style={{
-                                  backgroundColor: stringToColor(
-                                    assign?.user?.fullName!
-                                  ),
-                                }}
-                                size={"small"}
-                              >
-                                {assign?.user?.fullName
-                                  .match(/^\w|\b\w(?=\S+$)/g)
-                                  ?.join()
-                                  .replace(",", "")
-                                  .toUpperCase()}
-                              </Avatar>
-                            </Tooltip>
-                          );
-                        })}
-                      </Avatar.Group>
-                    ) : (
-                      <div>None</div>
-                    )}
-                  </div>
-                </div>
+                                {assign?.user?.fullName} ({assign?.user?.rcno})
+                              </div>
+                            </>
+                          }
+                          placement="bottom"
+                          key={assign?.user?.id}
+                        >
+                          <Avatar
+                            style={{
+                              backgroundColor: stringToColor(
+                                assign?.user?.fullName!
+                              ),
+                            }}
+                          >
+                            {assign?.user?.fullName
+                              .match(/^\w|\b\w(?=\S+$)/g)
+                              ?.join()
+                              .replace(",", "")
+                              .toUpperCase()}
+                          </Avatar>
+                        </Tooltip>
+                      );
+                    })}
+                  </Avatar.Group>
+                ) : (
+                  <div>None</div>
+                )}
               </div>
             </div>
             <div className={classes["container-second-row"]}>
               <div className={classes["container-second-row-first-block"]}>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>
-                    Breakdown & Repair details:
+              <span className={classes["user-title"]}>
+                    Breakdown & Repair
                   </span>
+                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
                   {entity?.breakdowns?.length > 0 ? (
                     <div>
                       {entity?.breakdowns.map((b) => {
@@ -550,13 +543,12 @@ const EntityCard = ({
                   ) : (
                     <div>None</div>
                   )}
-                </div>
               </div>
               <div className={classes["container-second-row-first-block"]}>
-                <div className={classes["reading"]}>
-                  <span className={classes["reading-title"]}>
-                    Spare PR details:
+              <span className={classes["user-title"]}>
+                    Spare PR
                   </span>
+                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
                   {entity?.sparePRs?.length > 0 ? (
                     <div>
                       {entity?.sparePRs?.map((s) => {
@@ -601,59 +593,14 @@ const EntityCard = ({
                   ) : (
                     <div>None</div>
                   )}
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className={classes["reading"]}>
-                {/* 
-                <span className={classes["reading-title"]}>Repairs:</span>
-                {entity?.repairs?.length > 0 ? (
-                  <div>
-                    {entity?.repairs.map((r) => {
-                      return (
-                        <div key={r.id}>
-                          <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                            <div className={classes["id-wrapper"]}>
-                              <Tooltip title="Created Date">
-                                <FaRegClock style={{ opacity: 0.5 }} />
-                              </Tooltip>
-
-                              <span
-                                style={{ opacity: 0.5, paddingRight: 10 }}
-                                className={classes["title"]}
-                                title={moment(r.createdAt).format(
-                                  DATETIME_FORMATS.FULL
-                                )}
-                              >
-                                {moment(r.createdAt).format(
-                                  DATETIME_FORMATS.DAY_MONTH_YEAR
-                                )}
-                              </span>
-
-                              <span title={`Repair (${r.id})`}>{r.name}</span>
-                            </div>
-                          </Paragraph>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div>None</div>
-                )}
-                
-                */}
               </div>
             </div>
             {entity?.subEntities?.length! > 0 && (
               <>
-                <span
-                  className={classes["reading-title"]}
-                  style={{ marginTop: 20 }}
-                >
-                  Sub Entities
-                </span>
-                <Divider style={{ marginTop: 10 }} />
+                <span className={classes["user-title"]} style={{marginTop:20}}>
+                    Sub Entities
+                  </span>
+                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
               </>
             )}
             <div style={{ marginLeft: 10 }}>
@@ -663,13 +610,10 @@ const EntityCard = ({
             </div>
             {includePM?.length! > 0 && (
               <>
-                <span
-                  className={classes["reading-title"]}
-                  style={{ marginTop: 20 }}
-                >
-                  Maintenances
-                </span>
-                <Divider style={{ marginTop: 10 }} />
+                <span className={classes["user-title"]} style={{marginTop:20}}>
+                    Maintenances
+                  </span>
+                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
               </>
             )}
             <div style={{ marginLeft: 10 }}>
@@ -689,4 +633,4 @@ const EntityCard = ({
   );
 };
 
-export default EntityCard;
+export default memo(EntityCard);
