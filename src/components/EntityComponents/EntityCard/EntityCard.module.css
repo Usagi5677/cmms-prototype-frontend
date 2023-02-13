@@ -48,8 +48,7 @@
   display: none !important;
 }
 .min-seperator {
-  margin-top: 20px;
-
+  margin-top: 20px !important;
 }
 .mn-title {
   padding-right: 4px;
@@ -352,6 +351,9 @@
   }
   .button {
     font-size: 16px;
+  }
+  .min-seperator {
+    margin-top: 24px !important;
   }
 }
 @media only screen and (min-width: 700px) {
