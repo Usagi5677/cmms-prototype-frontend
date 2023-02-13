@@ -1,8 +1,4 @@
-import {
-  FaArrowAltCircleRight,
-  FaMapMarkerAlt,
-  FaRegClock,
-} from "react-icons/fa";
+import { FaArrowAltCircleRight, FaRegCircle } from "react-icons/fa";
 import classes from "./EntityCard.module.css";
 import moment from "moment";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
@@ -15,9 +11,6 @@ import {
   Typography,
   Skeleton,
   Divider,
-  Tag,
-  Timeline,
-  TimelineItemProps,
 } from "antd";
 import { Link } from "react-router-dom";
 import { Entity } from "../../../models/Entity/Entity";
@@ -27,8 +20,7 @@ import { motion } from "framer-motion";
 import EntityChecklistAndPMSummary from "../../../models/Entity/EntityChecklistAndPMSummary";
 import { findIncompleteChecklistAndTasks } from "../../../helpers/findIncompleteChecklistAndTasks";
 import { stringToColor } from "../../../helpers/style";
-import { EntityIcon } from "../../common/EntityIcon";
-import { memo, useContext } from "react";
+import { memo, useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import AssignSubEntity from "../AssignSubEntity/AssignSubEntity";
 import { hasPermissions } from "../../../helpers/permissions";
@@ -52,6 +44,7 @@ const EntityCard = ({
 }) => {
   const { user: self } = useContext(UserContext);
   const isSmallDevice = useIsSmallDevice(600, true);
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { Paragraph } = Typography;
   const interService =
@@ -82,7 +75,6 @@ const EntityCard = ({
       fontColor = "var(--text-primary)";
     }
   }
-  //test commit
   let result = findIncompleteChecklistAndTasks(summaryData, entity?.id);
 
   let imagePath = getListImage(entity?.type?.name);
@@ -117,7 +109,10 @@ const EntityCard = ({
         <Collapse.Panel
           header={
             <>
-              <div className={classes["header-container"]}>
+              <div
+                className={classes["header-container"]}
+                onClick={() => setIsOpen(!isOpen)}
+              >
                 <div
                   className={classes["inner-block-wrapper"]}
                   style={{ flex: smallView ? 2 : 1 }}
@@ -313,6 +308,10 @@ const EntityCard = ({
                         <Tooltip title="Open">
                           <FaArrowAltCircleRight
                             className={classes["button"]}
+                            style={{
+                              rotate: isOpen ? "90deg" : "0deg",
+                              transition: "rotate 0.3s ease",
+                            }}
                           />
                         </Tooltip>
                       </Link>
@@ -406,6 +405,11 @@ const EntityCard = ({
                   <div>None</div>
                 )}
               </div>
+              <Divider
+                type="vertical"
+                style={{ height: 18 }}
+                className={classes["min-seperator"]}
+              />
               <div className={classes["user-wrapper"]}>
                 <span className={classes["user-title"]}>Engineer</span>
                 <Divider style={{ marginTop: 0, marginBottom: 10 }} />
@@ -459,148 +463,176 @@ const EntityCard = ({
             </div>
             <div className={classes["container-second-row"]}>
               <div className={classes["container-second-row-first-block"]}>
-              <span className={classes["user-title"]}>
-                    Breakdown & Repair
-                  </span>
-                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
-                  {entity?.breakdowns?.length > 0 ? (
-                    <div>
-                      {entity?.breakdowns.map((b) => {
-                        return (
-                          <div key={b.id}>
-                            <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                              <div className={classes["bd-time-wrapper"]}>
-                                <div className={classes["title-wrapper"]}>
-                                  <Tooltip title="Created Date">
-                                    <FaRegClock />
-                                  </Tooltip>
+                <span className={classes["user-title"]}>
+                  Breakdown & Repair
+                </span>
+                <Divider style={{ marginTop: 0, marginBottom: 10 }} />
+                {entity?.breakdowns?.length > 0 ? (
+                  <div>
+                    {entity?.breakdowns.map((b) => {
+                      return (
+                        <div key={b.id}>
+                          <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                            <span
+                              className={classes["title"]}
+                              title={moment(b.createdAt).format(
+                                DATETIME_FORMATS.FULL
+                              )}
+                            >
+                              {moment(b.createdAt).format(
+                                DATETIME_FORMATS.DAY_MONTH_YEAR
+                              )}
+                            </span>
+                          </Paragraph>
 
-                                  <span
-                                    className={classes["title"]}
-                                    title={moment(b.createdAt).format(
-                                      DATETIME_FORMATS.FULL
-                                    )}
-                                  >
-                                    {moment(b.createdAt).format(
-                                      DATETIME_FORMATS.DAY_MONTH_YEAR
-                                    )}
-                                  </span>
-                                </div>
-                              </div>
-                            </Paragraph>
-
-                            {b?.details?.map((d) => (
-                              <div key={d.id}>
-                                <div className={classes["list"]} key={d.id}>
-                                  <span
-                                    title={`Breakdown detail (${d.id})`}
+                          {b?.details?.map((d) => (
+                            <div
+                              key={d.id}
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <FaRegCircle
+                                style={{
+                                  marginRight: 6,
+                                  marginLeft: 8,
+                                  fontSize: 9,
+                                  color:
+                                    b.type === "Breakdown"
+                                      ? "red"
+                                      : b.type === "Critical"
+                                      ? "orange"
+                                      : "var(--text-primary)",
+                                }}
+                              />
+                              <span title={`Breakdown detail (${d.id})`}>
+                                {d.description}
+                              </span>
+                              {d?.repairs?.map((r) => (
+                                <div
+                                  key={r.id}
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <FaRegCircle
                                     style={{
-                                      color:
-                                        b.type === "Breakdown"
-                                          ? "red"
-                                          : b.type === "Critical"
-                                          ? "orange"
-                                          : "var(--text-primary)",
+                                      marginRight: 6,
+                                      marginLeft: 8,
+                                      fontSize: 9,
+                                      color: "#52c41a",
                                     }}
+                                  />
+                                  <span
+                                    title={`Repair (${r.id}) of breakdown detail (${d.id})`}
                                   >
-                                    {d.description}
+                                    {r.name}
                                   </span>
                                 </div>
-                                {d?.repairs?.map((r) => (
-                                  <div
-                                    className={classes["list-two"]}
-                                    key={r.id}
+                              ))}
+                            </div>
+                          ))}
+                          {b?.repairs?.map((r) => {
+                            //We are only showing breakdown's repair here. Not details
+                            if (!r?.breakdownDetail?.id) {
+                              return (
+                                <div
+                                  key={r.id}
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <FaRegCircle
+                                    style={{
+                                      marginRight: 6,
+                                      marginLeft: 8,
+                                      fontSize: 9,
+                                      color: "#52c41a",
+                                    }}
+                                  />
+                                  <span
+                                    title={`Repair (${r.id}) of breakdown (${b.id})`}
                                   >
-                                    <span
-                                      style={{ color: "#52c41a" }}
-                                      title={`Repair (${r.id}) of breakdown detail (${d.id})`}
-                                    >
-                                      {r.name}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            ))}
-                            {b?.repairs?.map((r) => {
-                              //We are only showing breakdown's repair here. Not details
-                              if (!r?.breakdownDetail?.id) {
-                                return (
-                                  <div className={classes["list"]} key={r.id}>
-                                    <span
-                                      style={{ color: "#52c41a" }}
-                                      title={`Repair (${r.id}) of breakdown (${b.id})`}
-                                    >
-                                      {r.name}
-                                    </span>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div>None</div>
-                  )}
+                                    {r.name}
+                                  </span>
+                                </div>
+                              );
+                            }
+                          })}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div>None</div>
+                )}
               </div>
+              <Divider
+                type="vertical"
+                style={{ height: 24 }}
+                className={classes["seperator"]}
+              />
               <div className={classes["container-second-row-first-block"]}>
-              <span className={classes["user-title"]}>
-                    Spare PR
-                  </span>
-                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
-                  {entity?.sparePRs?.length > 0 ? (
-                    <div>
-                      {entity?.sparePRs?.map((s) => {
-                        return (
-                          <div key={s.id}>
-                            <Paragraph ellipsis={{ rows: 3, expandable: true }}>
-                              <div className={classes["title-wrapper"]}></div>
-                              <div className={classes["id-wrapper"]}>
-                                <Tooltip title="Created Date">
-                                  <FaRegClock style={{ opacity: 0.5 }} />
-                                </Tooltip>
-
-                                <span
-                                  className={classes["title"]}
-                                  title={moment(s.createdAt).format(
-                                    DATETIME_FORMATS.FULL
-                                  )}
-                                  style={{ opacity: 0.5, paddingRight: 10 }}
-                                >
-                                  {moment(s.createdAt).format(
-                                    DATETIME_FORMATS.DAY_MONTH_YEAR
-                                  )}
-                                </span>
-                                <span title={`Spare PR (${s.id})`}>
-                                  {s.name}
-                                </span>
-                              </div>
-                            </Paragraph>
-                            {s?.sparePRDetails?.map((d) => (
-                              <div className={classes["list"]} key={d.id}>
-                                <span
-                                  title={`Spare PR Detail (${d.id}) of Spare PR (${s.id})`}
-                                >
-                                  {d.description}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div>None</div>
-                  )}
+                <span className={classes["user-title"]}>Spare PR</span>
+                <Divider style={{ marginTop: 0, marginBottom: 10 }} />
+                {entity?.sparePRs?.length > 0 ? (
+                  <div>
+                    {entity?.sparePRs?.map((s) => {
+                      return (
+                        <div key={s.id}>
+                          <Paragraph ellipsis={{ rows: 3, expandable: true }}>
+                            <div className={classes["id-wrapper"]}>
+                              <span
+                                className={classes["title"]}
+                                title={moment(s.createdAt).format(
+                                  DATETIME_FORMATS.FULL
+                                )}
+                                style={{ opacity: 0.5, paddingRight: 10 }}
+                              >
+                                {moment(s.createdAt).format(
+                                  DATETIME_FORMATS.DAY_MONTH_YEAR
+                                )}
+                              </span>
+                              <span title={`Spare PR (${s.id})`}>{s.name}</span>
+                            </div>
+                          </Paragraph>
+                          {s?.sparePRDetails?.map((d) => (
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                              key={d.id}
+                            >
+                              <FaRegCircle
+                                style={{
+                                  marginRight: 6,
+                                  marginLeft: 8,
+                                  fontSize: 9,
+                                }}
+                              />
+                              <span
+                                title={`Spare PR Detail (${d.id}) of Spare PR (${s.id})`}
+                              >
+                                {d.description}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div>None</div>
+                )}
               </div>
             </div>
             {entity?.subEntities?.length! > 0 && (
               <>
-                <span className={classes["user-title"]} style={{marginTop:20}}>
-                    Sub Entities
-                  </span>
-                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
+                <span
+                  className={classes["user-title"]}
+                  style={{ marginTop: 20 }}
+                >
+                  Sub Entities
+                </span>
+                <Divider style={{ marginTop: 0, marginBottom: 10 }} />
               </>
             )}
             <div style={{ marginLeft: 10 }}>
@@ -610,10 +642,13 @@ const EntityCard = ({
             </div>
             {includePM?.length! > 0 && (
               <>
-                <span className={classes["user-title"]} style={{marginTop:20}}>
-                    Maintenances
-                  </span>
-                  <Divider style={{ marginTop: 0, marginBottom: 10 }} />
+                <span
+                  className={classes["user-title"]}
+                  style={{ marginTop: 20 }}
+                >
+                  Maintenances
+                </span>
+                <Divider style={{ marginTop: 0, marginBottom: 10 }} />
               </>
             )}
             <div style={{ marginLeft: 10 }}>
