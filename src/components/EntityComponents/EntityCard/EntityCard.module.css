@@ -193,7 +193,7 @@
   align-items: baseline;
 }
 .reading:nth-child(2) {
-  margin-left: 40px;
+  margin-left: 20px;
 }
 .image {
   aspect-ratio: 16/9;
@@ -354,6 +354,9 @@
   }
   .min-seperator {
     margin-top: 24px !important;
+  }
+  .reading:nth-child(2) {
+    margin-left: 60px;
   }
 }
 @media only screen and (min-width: 700px) {

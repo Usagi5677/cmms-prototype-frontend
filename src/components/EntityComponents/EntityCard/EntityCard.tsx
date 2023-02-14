@@ -27,7 +27,6 @@ import { hasPermissions } from "../../../helpers/permissions";
 import { useNavigate } from "react-router";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PMCardV2 from "../../common/PMCardV2/PMCardV2";
-import { friendlyFormat } from "../../../helpers/friendlyFormat";
 import SizeableTag from "../../common/SizeableTag/SizeableTag";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 
@@ -171,7 +170,7 @@ const EntityCard = ({
                               </div>
                             }
                           >
-                            <Badge color={"#87262c"} status={"processing"} />
+                            <Badge style={{marginLeft: 6}} color={"#87262c"} status={"processing"} />
                           </Tooltip>
                         )}
                         {result[1] && (
@@ -187,7 +186,7 @@ const EntityCard = ({
                               </div>
                             }
                           >
-                            <Badge color={"red"} status={"processing"} />
+                            <Badge style={{marginLeft: 6}} color={"red"} status={"processing"} />
                           </Tooltip>
                         )}
                       </div>
@@ -242,9 +241,9 @@ const EntityCard = ({
                               `/entity/${entity.id}?tab=periodicMaintenance`
                             )
                           }
-                          title={`Interservice: ${interService} (${entity?.measurement!})`}
+                          title={`Interservice`}
                         >
-                          {friendlyFormat(interService, 1)}
+                          {interService}
                           <div className={classes["measurement"]}>
                             {entity?.measurement}
                           </div>
@@ -253,9 +252,9 @@ const EntityCard = ({
                         <span
                           className={classes["inter-reading"]}
                           style={{ color: fontColor }}
-                          title={`Interservice: ${interService} (${entity?.measurement!})`}
+                          title={`Interservice`}
                         >
-                          {friendlyFormat(interService, 1)}
+                          {interService}
 
                           <div className={classes["measurement"]}>
                             {entity?.measurement}
@@ -328,12 +327,9 @@ const EntityCard = ({
               <span
                 className={classes["reading"]}
                 style={{ color: fontColor }}
-                title={`${interService}`}
+                title={`Current Running`}
               >
-                {friendlyFormat(
-                  entity?.currentRunning ? entity?.currentRunning : 0,
-                  1
-                )}
+                {entity?.currentRunning ? entity?.currentRunning : 0}
 
                 <div className={classes["measurement"]}>
                   Current running ({entity?.measurement})
@@ -344,10 +340,7 @@ const EntityCard = ({
                 style={{ color: fontColor }}
                 title={`${entity?.lastService ? entity?.lastService : 0}`}
               >
-                {friendlyFormat(
-                  entity?.lastService ? entity?.lastService : 0,
-                  1
-                )}
+                {entity?.lastService}
 
                 <div className={classes["measurement"]}>
                   Last service ({entity?.measurement})
