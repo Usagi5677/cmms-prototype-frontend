@@ -192,8 +192,8 @@
   display: flex;
   align-items: baseline;
 }
-.reading:nth-child(2) {
-  margin-left: 20px;
+.reading:nth-child(1) {
+  margin-right: 20px;
 }
 .image {
   aspect-ratio: 16/9;
@@ -355,8 +355,8 @@
   .min-seperator {
     margin-top: 24px !important;
   }
-  .reading:nth-child(2) {
-    margin-left: 60px;
+  .reading:nth-child(1) {
+    margin-right: 60px;
   }
 }
 @media only screen and (min-width: 700px) {
