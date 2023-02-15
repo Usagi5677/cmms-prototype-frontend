@@ -43,7 +43,7 @@
   object-fit: contain;
 }
 .icon {
-  color: black !important;
+  color: var(--text-primary) !important;
   font-size: 22px;
   margin: 0 6px;
   transition: color 0.3s ease;
