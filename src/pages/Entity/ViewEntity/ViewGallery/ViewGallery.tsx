@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Collapse, DatePicker, Spin } from "antd";
+import { Badge, Collapse, DatePicker, Empty, Spin } from "antd";
 import moment from "moment";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
@@ -29,6 +29,7 @@ const ViewGallery = ({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
+  const [reload, setReload] = useState(false);
   const [dates, setDates] = useState<any>([
     moment().subtract(1, "week"),
     moment(),
@@ -66,7 +67,6 @@ const ViewGallery = ({
 
   // Fetch attachments when component mounts or when the filter object changes
   useEffect(() => {
-    console.log('here')
     setFilter((filter) => ({
       ...filter,
       search: "",
@@ -78,13 +78,17 @@ const ViewGallery = ({
       before: null,
       after: null,
     }));
-    getAttachment({ variables: {
-      ...filter,
-      entityId: parseInt(id),
-      from: dates[0].toISOString(),
-      to: dates[1].toISOString(),
-    } });
-  }, [dates, id,]);
+
+    getAttachment({
+      variables: {
+        ...filter,
+        entityId: parseInt(id),
+        from: dates[0].toISOString(),
+        to: dates[1].toISOString(),
+      },
+    });
+    setReload(false);
+  }, [dates, id, reload]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -173,7 +177,6 @@ const ViewGallery = ({
         moment(rec.node.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR) ===
         moment(date).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
     ).length;
-
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
@@ -195,7 +198,7 @@ const ViewGallery = ({
         />
         {hasPermissions(self, ["VIEW_ALL_ENTITY"]) ||
         isAssignedType("any", entity, self) ? (
-          <AddEntityAttachment />
+          <AddEntityAttachment setReload={setReload} />
         ) : null}
 
         {loadingAttachment && (
@@ -204,7 +207,9 @@ const ViewGallery = ({
           </div>
         )}
       </div>
-      {dateArray?.reverse()?.map((dateVal: any, index: number) => {
+      {attachment?.entityAttachments.edges.length > 0 ? (
+        <div>
+          {dateArray?.reverse()?.map((dateVal: any, index: number) => {
         return (
           <div className={classes["collapse-container"]} key={index + "div"}>
             <Collapse
@@ -260,6 +265,12 @@ const ViewGallery = ({
           </div>
         );
       })}
+        </div>
+      ) : (
+        <Empty/>
+      )}
+
+      
     </div>
   );
 };

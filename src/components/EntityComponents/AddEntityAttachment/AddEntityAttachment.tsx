@@ -6,30 +6,17 @@ import { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import { useState } from "react";
 import { useParams } from "react-router";
-import {
-  GET_ALL_ATTACHMENT_OF_ENTITY,
-  GET_ALL_HISTORY_OF_ENTITY,
-} from "../../../api/queries";
+import { GET_ALL_HISTORY_OF_ENTITY } from "../../../api/queries";
 import { MAX_FILE_SIZE } from "../../../helpers/constants";
 import classes from "./AddEntityAttachment.module.css";
 
-const AddEntityAttachment = () => {
+const AddEntityAttachment = ({ setReload }: { setReload: any }) => {
   const [fileList, setFileList] = useState<RcFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [value, setValue] = useState("");
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const { id }: any = useParams();
-  const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
-    variables: {
-      first: 20,
-      last: null,
-      before: null,
-      after: null,
-      search: "",
-      entityId: parseInt(id),
-    },
-  });
 
   const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_ENTITY, {
     variables: {
@@ -98,16 +85,9 @@ const AddEntityAttachment = () => {
       })
       .finally(function () {
         setUploading(false);
+        setReload(true);
         //timeout since it was showing error when refetching
         setTimeout(function () {
-          refetch({
-            first: 20,
-            last: null,
-            before: null,
-            after: null,
-            search: "",
-            entityId: parseInt(id),
-          });
           refetchHistory({
             first: 20,
             last: null,
@@ -117,6 +97,10 @@ const AddEntityAttachment = () => {
             entityId: parseInt(id),
           });
         }, 1000);
+
+        message.success(
+          `Successfully uploaded ${fileList?.length > 1 ? "images" : "image"}`
+        );
       });
 
     handleCancel();

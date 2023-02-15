@@ -1,6 +1,7 @@
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { message, Tooltip } from "antd";
+import { useParams } from "react-router";
 import { SET_FAVOURITE_ATTACHMENT } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import EntityAttachment from "../../../models/Entity/EntityAttachment";
@@ -11,6 +12,7 @@ const SetFavouriteAttachment = ({
 }: {
   attachment: EntityAttachment;
 }) => {
+  const { id }: any = useParams();
   const [editEntityAttachment, { loading: loadingAttachment }] = useMutation(
     SET_FAVOURITE_ATTACHMENT,
     {
@@ -39,6 +41,7 @@ const SetFavouriteAttachment = ({
                   variables: {
                     id: attachment.id,
                     flag: !attachment.favourite,
+                    entityId: parseInt(id),
                   },
                 })
               }
@@ -50,6 +53,7 @@ const SetFavouriteAttachment = ({
                   variables: {
                     id: attachment.id,
                     flag: !attachment.favourite,
+                    entityId: parseInt(id),
                   },
                 })
               }
