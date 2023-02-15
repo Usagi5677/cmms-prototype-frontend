@@ -1,8 +1,8 @@
 .btn-delete {
   display: flex;
   justify-content: center;
-  font-size: 14px;
-  color: var(--error);
+  font-size: 22px;
+  color: black !important;
   cursor: pointer;
   margin-left: 6px;
 }

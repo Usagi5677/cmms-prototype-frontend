@@ -1,22 +1,19 @@
-.custom-btn-secondary {
-  border-radius: 20px !important;
-}
-
-.custom-btn-primary {
-  background-color: var(--ant-primary-color);
-  border-radius: 20px !important;
-  border-color: var(--ant-primary-color);
-}
-
 .info-edit {
   display: flex;
   justify-content: center;
-  font-size: 16px;
-  color: var(--ant-warning-color);
+  font-size: 22px;
+  color: black !important;
   cursor: pointer;
   transition: color 0.3s ease;
-  margin-right: 4px;
 }
 .info-edit:hover {
-  color: var(--ant-warning-color-hover);
+  color: var(--ant-warning-color-hover) !important;
+}
+.info-edit-active {
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--ant-warning-color) !important;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }

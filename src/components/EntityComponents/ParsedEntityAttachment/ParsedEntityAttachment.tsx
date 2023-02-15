@@ -5,6 +5,7 @@ import {
   FileOutlined,
   DownloadOutlined,
   WarningOutlined,
+  StarFilled,
 } from "@ant-design/icons";
 import classes from "./ParsedEntityAttachment.module.css";
 import UserContext from "../../../contexts/UserContext";
@@ -100,44 +101,6 @@ const ParsedEntityAttachment = ({
         height: checklistView ? "100%" : 165,
       }}
     >
-      <div
-        className={classes["option-wrapper"]}
-        style={{
-          marginTop: checklistView ? 0 : 10,
-          marginBottom: checklistView ? 0 : 10,
-          marginRight: checklistView ? 0 : 20,
-        }}
-      >
-        <div className={classes["options"]}>
-          {fileLoading && (
-            <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
-          )}
-          {!checklistView && (
-            <>
-              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-                assigned) && (
-                <SetFavouriteAttachment attachment={attachmentData} />
-              )}
-              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-                assigned) && (
-                <Tooltip title={"Download"}>
-                  <DownloadOutlined
-                    className={classes["download-icon"]}
-                    onClick={download}
-                  />
-                </Tooltip>
-              )}
-              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-                assigned) && (
-                <EditEntityAttachment attachment={attachmentData} />
-              )}
-              {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
-                assigned) && <DeleteEntityAttachment id={attachmentData?.id} />}
-            </>
-          )}
-        </div>
-      </div>
-
       {file && isImage && (
         <div
           className={classes["image-container"]}
@@ -148,10 +111,7 @@ const ParsedEntityAttachment = ({
             justifyContent: "center",
           }}
         >
-          <Image
-            src={file}
-            style={{ aspectRatio: "1/1", objectFit: "contain" }}
-          />
+          <Image src={file} className={classes["image"]} />
         </div>
       )}
       {isError && (
@@ -160,36 +120,61 @@ const ParsedEntityAttachment = ({
           Error loading attachment.
         </div>
       )}
-      <div className={classes["file-info-wrapper"]}>
-        {!checklistView && (
-          <>
-            <div className={classes["title-wrapper"]}>
-              <Tooltip title="Created At" className={classes["flex"]}>
-                <FaRegClock />
-              </Tooltip>
 
-              <span className={classes["title"]}>
-                {moment(attachmentData?.createdAt).format(
-                  DATETIME_FORMATS.DAY_MONTH_YEAR
+      <div className={classes["info-wrapper"]}>
+        <div
+          className={classes["option-wrapper"]}
+          style={{
+            marginTop: checklistView ? 0 : 10,
+            marginBottom: checklistView ? 0 : 10,
+            marginRight: checklistView ? 0 : 20,
+          }}
+        >
+          <div className={classes["options"]}>
+            {fileLoading && (
+              <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
+            )}
+            {!checklistView && (
+              <div className={classes["action-wrapper"]}>
+                {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                  assigned) && (
+                  <SetFavouriteAttachment attachment={attachmentData} />
                 )}
-              </span>
-            </div>
-          </>
-        )}
-        <div>{attachmentData?.description}</div>
+                {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                  assigned) && (
+                  <Tooltip title={"Download"}>
+                    <DownloadOutlined
+                      className={classes["icon"]}
+                      onClick={download}
+                    />
+                  </Tooltip>
+                )}
+                {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                  assigned) && (
+                  <EditEntityAttachment attachment={attachmentData} />
+                )}
+                {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
+                  assigned) && (
+                  <DeleteEntityAttachment id={attachmentData?.id} />
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className={classes["title"]}>
+          {attachmentData.favourite ? (
+            <StarFilled
+              style={{ marginRight: 6, color: "var(--ant-warning-color)" }}
+            />
+          ) : (
+            ""
+          )}
+          {attachmentData?.description}
+        </div>
         {checklistView && (
-          <div style={{ opacity: 0.5, fontSize: "80%" }}>
+          <div style={{ opacity: 0.8, fontSize: "96%", color: "white" }}>
             <div>
               {attachmentData.user.fullName} ({attachmentData.user.rcno})
-            </div>
-            <div
-              title={`${moment(attachmentData.createdAt).format(
-                DATETIME_FORMATS.FULL
-              )}`}
-            >
-              {moment(attachmentData.createdAt).format(
-                DATETIME_FORMATS.DAY_MONTH_YEAR
-              )}
             </div>
           </div>
         )}

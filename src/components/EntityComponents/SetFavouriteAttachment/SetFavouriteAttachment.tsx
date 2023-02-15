@@ -31,37 +31,37 @@ const SetFavouriteAttachment = ({
   );
 
   return (
-    <>
-      <div className={classes["info-edit"]}>
-        <Tooltip title="Favourite">
-          {attachment?.favourite ? (
-            <StarFilled
-              onClick={() =>
-                editEntityAttachment({
-                  variables: {
-                    id: attachment.id,
-                    flag: !attachment.favourite,
-                    entityId: parseInt(id),
-                  },
-                })
-              }
-            />
-          ) : (
-            <StarOutlined
-              onClick={() =>
-                editEntityAttachment({
-                  variables: {
-                    id: attachment.id,
-                    flag: !attachment.favourite,
-                    entityId: parseInt(id),
-                  },
-                })
-              }
-            />
-          )}
-        </Tooltip>
-      </div>
-    </>
+    <div>
+      <Tooltip title="Favourite">
+        {attachment?.favourite ? (
+          <StarFilled
+            className={classes["info-edit-active"]}
+            onClick={() =>
+              editEntityAttachment({
+                variables: {
+                  id: attachment.id,
+                  flag: !attachment.favourite,
+                  entityId: parseInt(id),
+                },
+              })
+            }
+          />
+        ) : (
+          <StarOutlined
+            className={classes["info-edit"]}
+            onClick={() =>
+              editEntityAttachment({
+                variables: {
+                  id: attachment.id,
+                  flag: !attachment.favourite,
+                  entityId: parseInt(id),
+                },
+              })
+            }
+          />
+        )}
+      </Tooltip>
+    </div>
   );
 };
 

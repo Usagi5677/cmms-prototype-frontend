@@ -14,12 +14,16 @@
   overflow: hidden;
   width: 230px;
   height: 165px;
+  position: relative;
 }
 
 .options {
   display: flex;
+  position: relative;
   justify-content: flex-end;
   align-items: center;
+  position: absolute;
+  top: 110px;
 }
 
 .image-container {
@@ -30,28 +34,31 @@
   max-height: 100px;
   width: 230px;
   overflow: hidden;
+
+
 }
 
-.download-icon {
-  margin-right: 6px;
-  font-size: 16px;
+.image {
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+.icon {
+  color: black !important;
+  font-size: 22px;
+  margin: 0 6px;
   transition: color 0.3s ease;
 }
-.download-icon:hover {
-  color: var(--primary);
+.icon:hover {
+  color: var(--ant-primary-color-hover) !important;
 }
-
-.file-info-wrapper {
+.info-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.container:hover {
-  transform: scale(1.1);
+  padding-left: 6px;
+  width: 100%;
+  min-height: 60px;
+  background: linear-gradient(to bottom, transparent, #504f4f);
 }
 
 .option-wrapper {
@@ -59,19 +66,34 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding-right: 6px;
+
 }
 
-.title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .title {
-  padding-left: 5px;
+  color: white;
+  font-size: 16px;
 }
 
 .flex {
   display: flex;
   align-items: center;
+}
+.action-wrapper {
+  display: flex;
+  position: absolute;
+  top: -20px;
+  opacity: 0;
+  transition: top 0.3s ease, opacity 0.3s ease;
+  z-index: 100;
+  
+  
+}
+.container:hover .action-wrapper {
+  display: flex;
+  position: absolute;
+  top: 0;
+  opacity: 1;
+ 
 }

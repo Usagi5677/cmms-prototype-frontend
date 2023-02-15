@@ -1,3 +1,4 @@
+import { EditOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -50,9 +51,9 @@ const EditEntityAttachment = ({ attachment }: { attachment: EntityAttachment }) 
   };
   return (
     <>
-      <div className={classes["info-edit"]}>
+      <div>
         <Tooltip title="Edit">
-          <FaEdit onClick={() => setVisible(true)} />
+          <EditOutlined className={classes["info-edit"]} onClick={() => setVisible(true)} />
         </Tooltip>
         <Modal
           visible={visible}

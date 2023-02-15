@@ -1,3 +1,4 @@
+import { DeleteOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
 import { FaTrash } from "react-icons/fa";
@@ -41,9 +42,7 @@ const DeleteEntityAttachment = ({ id }: { id: number }) => {
       placement="topRight"
     >
       <Tooltip title={"Delete"} placement="top">
-        <div className={classes["btn-delete"]}>
-          <FaTrash />
-        </div>
+        <DeleteOutlined className={classes["btn-delete"]} />
       </Tooltip>
     </Popconfirm>
   );
