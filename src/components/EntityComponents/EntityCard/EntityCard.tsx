@@ -219,7 +219,7 @@ const EntityCard = ({
                             )}
                           </div>
                         )}
-                        {entity?.location?.name && (
+                        {entity?.registeredDate && (
                           <span className={classes["dot"]}>•</span>
                         )}
                         <div title={"Location"}>{entity?.location?.name}</div>
