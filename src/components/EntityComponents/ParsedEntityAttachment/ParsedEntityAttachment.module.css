@@ -45,7 +45,7 @@
 .icon {
   color: var(--text-primary) !important;
   font-size: 22px;
-  margin: 0 6px;
+  margin-right: 6px;
   transition: color 0.3s ease;
 }
 .icon:hover {

@@ -4,7 +4,6 @@
   font-size: 22px;
   color: var(--text-primary) !important;
   cursor: pointer;
-  margin-left: 6px;
 }
 .btn-delete:hover {
   color: rgb(185, 3, 3) !important;
