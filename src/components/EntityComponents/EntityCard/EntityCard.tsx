@@ -111,6 +111,7 @@ const EntityCard = ({
               <div
                 className={classes["header-container"]}
                 onClick={() => setIsOpen(!isOpen)}
+                onDoubleClick={() => navigate(`/entity/${entity.id}`)}
               >
                 <div
                   className={classes["inner-block-wrapper"]}
@@ -170,7 +171,11 @@ const EntityCard = ({
                               </div>
                             }
                           >
-                            <Badge style={{marginLeft: 6}} color={"#87262c"} status={"processing"} />
+                            <Badge
+                              style={{ marginLeft: 6 }}
+                              color={"#87262c"}
+                              status={"processing"}
+                            />
                           </Tooltip>
                         )}
                         {result[1] && (
@@ -186,7 +191,11 @@ const EntityCard = ({
                               </div>
                             }
                           >
-                            <Badge style={{marginLeft: 6}} color={"red"} status={"processing"} />
+                            <Badge
+                              style={{ marginLeft: 6 }}
+                              color={"red"}
+                              status={"processing"}
+                            />
                           </Tooltip>
                         )}
                       </div>
@@ -329,7 +338,9 @@ const EntityCard = ({
                 style={{ color: fontColor }}
                 title={`Current Running`}
               >
-                {entity?.currentRunning ? entity?.currentRunning.toLocaleString() : 0}
+                {entity?.currentRunning
+                  ? entity?.currentRunning.toLocaleString()
+                  : 0}
 
                 <div className={classes["measurement"]}>
                   Current running ({entity?.measurement})
