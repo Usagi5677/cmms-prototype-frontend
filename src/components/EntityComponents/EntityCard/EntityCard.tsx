@@ -243,7 +243,7 @@ const EntityCard = ({
                           }
                           title={`Interservice`}
                         >
-                          {interService}
+                          {interService.toLocaleString()}
                           <div className={classes["measurement"]}>
                             {entity?.measurement}
                           </div>
@@ -254,7 +254,7 @@ const EntityCard = ({
                           style={{ color: fontColor }}
                           title={`Interservice`}
                         >
-                          {interService}
+                          {interService.toLocaleString()}
 
                           <div className={classes["measurement"]}>
                             {entity?.measurement}
@@ -329,7 +329,7 @@ const EntityCard = ({
                 style={{ color: fontColor }}
                 title={`Current Running`}
               >
-                {entity?.currentRunning ? entity?.currentRunning : 0}
+                {entity?.currentRunning ? entity?.currentRunning.toLocaleString() : 0}
 
                 <div className={classes["measurement"]}>
                   Current running ({entity?.measurement})
@@ -338,9 +338,9 @@ const EntityCard = ({
               <span
                 className={classes["reading"]}
                 style={{ color: fontColor }}
-                title={`${entity?.lastService ? entity?.lastService : 0}`}
+                title={`Last Service`}
               >
-                {entity?.lastService}
+                {entity?.lastService ? entity?.lastService.toLocaleString() : 0}
 
                 <div className={classes["measurement"]}>
                   Last service ({entity?.measurement})
