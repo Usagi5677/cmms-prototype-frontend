@@ -1,5 +1,13 @@
 import { useLazyQuery } from "@apollo/client";
-import { Badge, Collapse, DatePicker, Divider, Select, Spin } from "antd";
+import {
+  Badge,
+  Collapse,
+  DatePicker,
+  Divider,
+  Empty,
+  Select,
+  Spin,
+} from "antd";
 import { useEffect, useRef, useState } from "react";
 import { GET_ALL_HISTORY_OF_ENTITY } from "../../../../api/queries";
 import { errorMessage } from "../../../../helpers/gql";
@@ -190,60 +198,71 @@ const ViewHistory = () => {
           <Spin style={{ width: "100%", margin: "2rem auto" }} />
         </div>
       )}
-      <div className={classes["content"]}>
-        {dateArray?.reverse()?.map((dateVal: any, index: number) => {
-          return (
-            <div className={classes["collapse-container"]} key={index + "div"}>
-              <Collapse
-                ghost
-                style={{ marginBottom: ".5rem" }}
-                defaultActiveKey={index + "col"}
+      {data?.getAllHistoryOfEntity.edges.length > 0 ? (
+        <div className={classes["content"]}>
+          {dateArray?.reverse()?.map((dateVal: any, index: number) => {
+            return (
+              <div
+                className={classes["collapse-container"]}
+                key={index + "div"}
               >
-                <Collapse.Panel
-                  header={
-                    <div>
-                      {moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
-                      {dateCount(dateVal) > 0 && (
-                        <Badge
-                          count={`${dateCount(dateVal)} item${
-                            dateCount(dateVal) === 1 ? "" : "s"
-                          }`}
-                          style={{
-                            color: "black",
-                            backgroundColor: "#e5e5e5",
-                            marginLeft: ".5rem",
-                            marginBottom: ".3rem",
-                          }}
-                        />
-                      )}
-                    </div>
-                  }
-                  key={index + "col"}
+                <Collapse
+                  ghost
+                  style={{ marginBottom: ".5rem" }}
+                  defaultActiveKey={index + "col"}
                 >
-                  {data?.getAllHistoryOfEntity.edges.map(
-                    (rec: { node: EntityHistory }, i: number) => {
-                      const history = rec.node;
-                      if (
-                        moment(history.createdAt).format(
+                  <Collapse.Panel
+                    header={
+                      <div>
+                        {moment(dateVal).format(
                           DATETIME_FORMATS.DAY_MONTH_YEAR
-                        ) ===
-                        moment(dateVal).format(DATETIME_FORMATS.DAY_MONTH_YEAR)
-                      ) {
-                        return (
-                          <div key={history.id}>
-                            {i !== 0 && <Divider style={{ margin: 0 }} />}
-                            <EntityHistoryCard history={history} />
-                          </div>
-                        );
-                      }
+                        )}
+                        {dateCount(dateVal) > 0 && (
+                          <Badge
+                            count={`${dateCount(dateVal)} item${
+                              dateCount(dateVal) === 1 ? "" : "s"
+                            }`}
+                            style={{
+                              color: "black",
+                              backgroundColor: "#e5e5e5",
+                              marginLeft: ".5rem",
+                              marginBottom: ".3rem",
+                            }}
+                          />
+                        )}
+                      </div>
                     }
-                  )}
-                </Collapse.Panel>
-              </Collapse>
-            </div>
-          );
-        })}
-      </div>
+                    key={index + "col"}
+                  >
+                    {data?.getAllHistoryOfEntity.edges.map(
+                      (rec: { node: EntityHistory }, i: number) => {
+                        const history = rec.node;
+                        if (
+                          moment(history.createdAt).format(
+                            DATETIME_FORMATS.DAY_MONTH_YEAR
+                          ) ===
+                          moment(dateVal).format(
+                            DATETIME_FORMATS.DAY_MONTH_YEAR
+                          )
+                        ) {
+                          return (
+                            <div key={history.id}>
+                              {i !== 0 && <Divider style={{ marginTop: 6, marginBottom: 6 }} />}
+                              <EntityHistoryCard history={history} />
+                            </div>
+                          );
+                        }
+                      }
+                    )}
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <Empty />
+      )}
     </div>
   );
 };

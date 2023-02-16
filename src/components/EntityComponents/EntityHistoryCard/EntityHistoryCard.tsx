@@ -14,7 +14,7 @@ import classes from "./EntityHistoryCard.module.css";
 const EntityHistoryCard = ({ history }: { history: EntityHistory }) => {
   const isSmallDevice = useIsSmallDevice();
   return (
-    <div className={classes["container"]}>
+    <div >
       <div>{history?.description}</div>
       <div
         style={{
