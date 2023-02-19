@@ -1,7 +1,7 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Empty, Modal, Row, Spin } from "antd";
+import { Button, Empty, Input, Modal, Row, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaLocationArrow } from "react-icons/fa";
 import { ADD_CHECKLIST_TEMPLATE_ITEM } from "../../api/mutations";
 import { ENTITY_CHECKLIST_TEMPLATE } from "../../api/queries";
 import { errorMessage } from "../../helpers/gql";
@@ -84,7 +84,17 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
       });
     }
   };
-
+  const onBtnClick = () => {
+    if (newItem.trim() === "") return;
+    setNewItem("");
+    addItem({
+      variables: {
+        id: details.entityChecklistTemplate.id,
+        name: newItem,
+        entityId: entity.id,
+      },
+    });
+  };
   return (
     <>
       <FaEdit
@@ -131,21 +141,41 @@ export const EditChecklistTemplate: React.FC<EditChecklistTemplateProps> = ({
                 </div>
               )
             )}
-            <input
-              ref={newItemInput}
-              type="text"
-              placeholder={addingItem ? "Adding..." : "Add new item"}
-              value={newItem}
-              onChange={(e) => setNewItem(e.target.value)}
-              onKeyDown={submitNewItem}
-              disabled={addingItem}
-              style={{
-                border: "solid 1px #e5e5e5",
-                borderRadius: 5,
-                padding: ".5rem",
-                width: "100%",
-              }}
-            />
+
+            <Input.Group compact style={{ display: "flex" }}>
+              <Input
+                ref={newItemInput}
+                type="text"
+                placeholder={addingItem ? "Adding..." : "Add new item"}
+                value={newItem}
+                onChange={(e) => setNewItem(e.target.value)}
+                onKeyDown={submitNewItem}
+                disabled={addingItem}
+                style={{
+                  borderRadius: 5,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                }}
+              />
+              <div
+                style={{
+                  backgroundColor: "var(--ant-primary-color)",
+                  color: "white",
+                  height: 36,
+                  width: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: addingItem ? "not-allowed" : "pointer",
+                  borderRadius: 5,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                }}
+                onClick={() => onBtnClick()}
+              >
+                <FaLocationArrow />
+              </div>
+            </Input.Group>
             <div style={{ marginTop: ".5rem" }}>
               {!details?.entityChecklistTemplate.name &&
                 details?.entityChecklistTemplate.items.length > 0 && (
