@@ -26,8 +26,7 @@ export const AddBreakdownDetail: React.FC<AddBreakdownDetailProps> = ({
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") setDetails("");
-    else if (event.key === "Enter" || event.keyCode === 13) {
-      console.log('clicked from bd');
+    else if (event.key === "Enter") {
       event.preventDefault();
       if (details.trim() === "") return;
       setDetails("");
