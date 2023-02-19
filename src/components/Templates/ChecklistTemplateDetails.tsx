@@ -15,7 +15,7 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaList } from "react-icons/fa";
+import { FaList, FaLocationArrow } from "react-icons/fa";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
 import {
   ADD_CHECKLIST_TEMPLATE_ITEM,
@@ -124,7 +124,16 @@ export const ChecklistTemplateDetails: React.FC<
       });
     }
   };
-
+  const onBtnClick = () => {
+    if (newItem.trim() === "") return;
+    setNewItem("");
+    addItem({
+      variables: {
+        id: checklistTemplate.id,
+        name: newItem,
+      },
+    });
+  };
   const [changeTemplate, { loading: changing }] = useMutation(
     CHANGE_CHECKLIST_TEMPLATE,
     {
@@ -284,21 +293,41 @@ export const ChecklistTemplateDetails: React.FC<
                 )
               )}
             </div>
-            <input
-              ref={newItemInput}
-              type="text"
-              placeholder={addingItem ? "Adding..." : "Add new item"}
-              value={newItem}
-              onChange={(e) => setNewItem(e.target.value)}
-              onKeyDown={submitNewItem}
-              disabled={addingItem}
-              style={{
-                border: "solid 1px #e5e5e5",
-                borderRadius: 5,
-                padding: ".5rem",
-                width: "100%",
-              }}
-            />
+
+            <Input.Group compact style={{ display: "flex" }}>
+              <Input
+                ref={newItemInput}
+                type="text"
+                placeholder={addingItem ? "Adding..." : "Add new item"}
+                value={newItem}
+                onChange={(e) => setNewItem(e.target.value)}
+                onKeyDown={submitNewItem}
+                disabled={addingItem}
+                style={{
+                  borderRadius: 5,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                }}
+              />
+              <div
+                style={{
+                  backgroundColor: "var(--ant-primary-color)",
+                  color: "white",
+                  height: 36,
+                  width: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  borderRadius: 5,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                }}
+                onClick={() => onBtnClick()}
+              >
+                <FaLocationArrow />
+              </div>
+            </Input.Group>
             <Divider orientation="left">Used By</Divider>
             {usedBy.length === 0 ? (
               "No machines or transportation are using this template."
