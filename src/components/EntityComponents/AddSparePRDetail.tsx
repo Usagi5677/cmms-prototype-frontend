@@ -1,5 +1,7 @@
 import { useMutation } from "@apollo/client";
+import { Input } from "antd";
 import React, { useState } from "react";
+import { FaLocationArrow } from "react-icons/fa";
 import { ADD_SPARE_PR_DETAIL } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 
@@ -26,7 +28,7 @@ export const AddSparePRDetail: React.FC<AddSparePRDetailProps> = ({
 
   const submit = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") setDetails("");
-    else if (event.key === "Enter" || event.keyCode === 13) {
+    else if (event.key === "Enter") {
       event.preventDefault();
       if (details.trim() === "") return;
       setDetails("");
@@ -40,9 +42,21 @@ export const AddSparePRDetail: React.FC<AddSparePRDetailProps> = ({
       });
     }
   };
+  const onBtnClick = () => {
+    if (details.trim() === "") return;
+    setDetails("");
+    addSparePRDetail({
+      variables: {
+        createSparePRDetailInput: {
+          sparePRId,
+          description: details,
+        },
+      },
+    });
+  };
   return (
-    <div>
-      <input
+    <Input.Group compact style={{ display: "flex" }}>
+      <Input
         type="text"
         placeholder={loading ? "Adding..." : description}
         value={details}
@@ -50,12 +64,29 @@ export const AddSparePRDetail: React.FC<AddSparePRDetailProps> = ({
         onKeyDown={submit}
         disabled={loading}
         style={{
-          border: "solid 1px var(--border-2)",
           borderRadius: 5,
-          padding: ".5rem",
-          width: "100%",
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
         }}
       />
-    </div>
+      <div
+        style={{
+          backgroundColor: "var(--ant-primary-color)",
+          color: "white",
+          height: 36,
+          width: 40,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: loading ? "not-allowed" : "pointer",
+          borderRadius: 5,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        }}
+        onClick={() => onBtnClick()}
+      >
+        <FaLocationArrow />
+      </div>
+    </Input.Group>
   );
 };

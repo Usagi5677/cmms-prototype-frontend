@@ -1,5 +1,7 @@
 import { useMutation } from "@apollo/client";
+import { Input } from "antd";
 import React, { useState } from "react";
+import { FaLocationArrow } from "react-icons/fa";
 import { ADD_PERIODIC_MAINTENANCE_TASK } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
@@ -47,9 +49,20 @@ export const AddPeriodicMaintenanceTask: React.FC<
       });
     }
   };
+  const onBtnClick = () => {
+    if (details.trim() === "") return;
+    setDetails("");
+    addPeriodicMaintenanceTask({
+      variables: {
+        parentTaskId: parentTaskId,
+        periodicMaintenanceId: periodicMaintenance.id,
+        name: details,
+      },
+    });
+  };
   return (
-    <div>
-      <input
+    <Input.Group compact style={{ display: "flex" }}>
+      <Input
         type="text"
         placeholder={loading ? "Adding..." : text}
         value={details}
@@ -57,12 +70,29 @@ export const AddPeriodicMaintenanceTask: React.FC<
         onKeyDown={submit}
         disabled={loading}
         style={{
-          border: "solid 1px var(--border-2)",
           borderRadius: 5,
-          padding: ".5rem",
-          width: "100%",
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
         }}
       />
-    </div>
+      <div
+        style={{
+          backgroundColor: "var(--ant-primary-color)",
+          color: "white",
+          height: 36,
+          width: 40,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: loading ? "not-allowed" : "pointer",
+          borderRadius: 5,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        }}
+        onClick={() => onBtnClick()}
+      >
+        <FaLocationArrow />
+      </div>
+    </Input.Group>
   );
 };

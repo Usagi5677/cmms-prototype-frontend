@@ -1,5 +1,7 @@
 import { useMutation } from "@apollo/client";
+import { Input } from "antd";
 import React, { useState } from "react";
+import { FaLocationArrow } from "react-icons/fa";
 import { ADD_CHECKLIST_COMMENT } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
 import Checklist from "../../models/Checklist";
@@ -41,29 +43,56 @@ export const ChecklistComments: React.FC<ChecklistCommentsProps> = ({
       });
     }
   };
-
+  const onBtnClick = () => {
+    if (newItem.trim() === "") return;
+    setNewItem("");
+    addItem({
+      variables: {
+        checklistId: checklist.id,
+        comment: newItem,
+      },
+    });
+  };
   return (
-    <div>
-      <input
-        // ref={newItemInput}
-        type="text"
-        placeholder={addingItem ? "Adding..." : "Add comment"}
-        value={newItem}
-        onChange={(e) => setNewItem(e.target.value)}
-        onKeyDown={submitNewItem}
-        disabled={addingItem}
-        style={{
-          border: "solid 1px #e5e5e5",
-          borderRadius: 5,
-          padding: ".5rem",
-          width: "100%",
-        }}
-      />
+    <>
+      <Input.Group compact style={{ display: "flex" }}>
+        <Input
+          type="text"
+          placeholder={addingItem ? "Adding..." : "Add comment"}
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+          onKeyDown={submitNewItem}
+          disabled={addingItem}
+          style={{
+            borderRadius: 5,
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          }}
+        />
+        <div
+          style={{
+            backgroundColor: "var(--ant-primary-color)",
+            color: "white",
+            height: 36,
+            width: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: addingItem ? "not-allowed" : "pointer",
+            borderRadius: 5,
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+          }}
+          onClick={() => onBtnClick()}
+        >
+          <FaLocationArrow />
+        </div>
+      </Input.Group>
       <div>
         {checklist?.comments.map((comment) => (
           <ChecklistComment key={comment.id} comment={comment} />
         ))}
       </div>
-    </div>
+    </>
   );
 };
