@@ -13,6 +13,8 @@ const SizeableTag = ({
   fontWeight,
   title = "",
   defaultColor,
+  oppositeMargin = false,
+  clickable = false,
 }: {
   name: string;
   height?: number;
@@ -25,6 +27,8 @@ const SizeableTag = ({
   fontWeight?: number;
   title?: string;
   defaultColor?: boolean;
+  oppositeMargin?: boolean;
+  clickable?: boolean,
 }) => {
   let rs,
     gs,
@@ -58,6 +62,9 @@ const SizeableTag = ({
         color: fontColor,
         borderColor,
         fontSize,
+        marginLeft: oppositeMargin ? 0 : 6,
+        marginRight: oppositeMargin ? 6 : 0,
+        cursor: clickable ? "pointer" : "initial"
       }}
       title={`${title}`}
     >
@@ -91,6 +98,9 @@ const SizeableTag = ({
             borderColor: `rgb(${rs},${gs},${bs})`,
             fontSize,
             height,
+            marginLeft: oppositeMargin ? 0 : 6,
+            marginRight: oppositeMargin ? 6 : 0,
+            cursor: clickable ? "pointer" : "initial"
           }}
           title={`${title}`}
         >
@@ -109,6 +119,9 @@ const SizeableTag = ({
           fontSize,
           height,
           fontWeight,
+          marginLeft: oppositeMargin ? 0 : 6,
+          marginRight: oppositeMargin ? 6 : 0,
+          cursor: clickable ? "pointer" : "initial"
         }}
         title={`${title}`}
       >
@@ -125,6 +138,8 @@ const SizeableTag = ({
         color: fontColor,
         borderColor,
         fontSize,
+        marginLeft: oppositeMargin ? 0 : 6,
+        marginRight: oppositeMargin ? 6 : 0,
       }}
       title={`${title}`}
     >
