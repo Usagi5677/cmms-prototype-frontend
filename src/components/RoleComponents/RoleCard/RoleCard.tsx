@@ -27,7 +27,6 @@ const RoleCard = ({ role }: { role: Role }) => {
               textAlign: "center",
               maxWidth: 250,
               backgroundColor: RoleTagStringToColor(role.name),
-
               borderColor: RoleTagStringToColor(role.name),
               borderWidth: 1,
             }}
