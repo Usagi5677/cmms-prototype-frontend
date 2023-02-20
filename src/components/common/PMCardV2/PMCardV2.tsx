@@ -25,6 +25,15 @@ const PMCardV2 = ({
   else if (pm?.status === "Upcoming") color = "#825b22";
   else if (pm?.status === "Overdue") color = "red";
 
+  let measurement = "";
+  if (pm?.measurement?.toLowerCase() === "kilometer") {
+    measurement = "km";
+  } else if (pm?.measurement?.toLowerCase() === "hour") {
+    measurement = "hr";
+  } else if (pm?.measurement?.toLowerCase() === "days") {
+    measurement = "days";
+  }
+
   const dueIn = (currentRunning ?? 0) - (pm.dueAt ?? 0);
   return (
     <div
@@ -41,8 +50,8 @@ const PMCardV2 = ({
           <div className={classes["main-title"]}>{pm?.name}</div>
           <div className={classes["second-block-wrapper"]}>
             <div className={classes["second-block"]}>
-              <span style={{ opacity: 0.5 }}>Occurs every:</span> {pm?.value} (
-              {pm?.measurement})
+              <span style={{ opacity: 0.5 }}>Occurs every:</span> {pm?.value?.toLocaleString()} (
+              {measurement})
             </div>
             <div className={classes["status"]}>
               <PeriodicMaintenanceStatusTag
@@ -72,13 +81,17 @@ const PMCardV2 = ({
           <Tooltip title="Due In">
             <FaRegClock />
           </Tooltip>
-          <span className={classes["title"]}>{dueIn} ({pm?.measurement})</span>
+          <span className={classes["title"]}>
+            {dueIn?.toLocaleString()} ({measurement})
+          </span>
         </div>
         <div className={(classes["title-wrapper"], classes["space"])}>
           <Tooltip title="Due At">
             <FaRegClock />
           </Tooltip>
-          <span className={classes["title"]}>{pm.dueAt ?? 0} ({pm?.measurement})</span>
+          <span className={classes["title"]}>
+            {pm.dueAt?.toLocaleString() ?? 0} ({measurement})
+          </span>
         </div>
       </div>
     </div>
