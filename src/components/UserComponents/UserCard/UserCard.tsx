@@ -57,7 +57,7 @@ const UserCard = ({ userData }: { userData: User }) => {
             <span className={classes["dot"]}>•</span>
             <span title={"RCNO"}>{userData.rcno}</span>
           </div>
-          <div className={classes["tag"]}>
+          <div className={classes["tag-wrapper"]}>
             {userData.roles?.map((role) => (
               <Popconfirm
                 disabled={
@@ -106,6 +106,7 @@ const UserCard = ({ userData }: { userData: User }) => {
                       ? "pointer"
                       : "initial",
                   }}
+                  className={classes["tag"]}
                 >
                   {role.role.name}
                 </Tag>

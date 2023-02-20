@@ -35,10 +35,9 @@
   align-items: flex-start;
 }
 
-.tag {
+.tag-wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 2px;
 }
 .user {
   display: flex;
@@ -66,7 +65,9 @@
   font-size: 6px;
   color: var(--text-primary);
 }
-
+.tag {
+  font-size: 9px;
+}
 @media only screen and (min-width: 600px) {
   .dot {
     margin: 0 6px;
@@ -75,14 +76,20 @@
   .title-wrapper {
     font-size: 16px;
   }
+  .tag {
+    font-size: 12px;
+  }
 }
 @media only screen and (min-width: 800px) {
   .secondary {
     align-items: center;
     flex-direction: row;
   }
-  .tag {
+  .tag-wrapper {
     margin-top: 0;
+  }
+  .title-wrapper {
+    font-size: 18px;
   }
 }
 @media only screen and (min-width: 1000px) {

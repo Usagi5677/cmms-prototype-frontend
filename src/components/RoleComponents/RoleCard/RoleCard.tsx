@@ -1,7 +1,7 @@
 import { Tag, Tooltip } from "antd";
 import moment from "moment";
 import { useContext } from "react";
-import { FaRegClock, FaRegUser, FaUserAlt } from "react-icons/fa";
+import { FaRegClock, FaRegUser } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { hasPermissions } from "../../../helpers/permissions";
@@ -19,41 +19,30 @@ const RoleCard = ({ role }: { role: Role }) => {
       <div className={classes["wrapper"]}>
         {" "}
         <div className={classes["first-block"]}>
-          <div className={classes["time-wrapper"]}>
-            <Tooltip title="Created on">
-              <FaRegClock />
-            </Tooltip>
-            <div className={classes["time"]}>
+          <Tag
+            key={role.id}
+            style={{
+              fontWeight: 700,
+              borderRadius: 2,
+              textAlign: "center",
+              maxWidth: 250,
+              backgroundColor: RoleTagStringToColor(role.name),
+
+              borderColor: RoleTagStringToColor(role.name),
+              borderWidth: 1,
+            }}
+            className={classes["tag"]}
+          >
+            {role.name}
+          </Tag>
+          <div className={classes["subtitle-wrapper"]}>
+            <span title="Created By">{role?.createdBy?.fullName} ({role?.createdBy?.rcno})</span>
+            
+            <span className={classes["dot"]}>•</span>
+            <div title="Created At" className={classes["time"]}>
               {moment(role?.createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
             </div>
           </div>
-          <div style={{ marginTop: 5, marginBottom: 5 }}>
-            <Tag
-              key={role.id}
-              style={{
-                fontWeight: 700,
-                borderRadius: 20,
-                textAlign: "center",
-                maxWidth: 250,
-                backgroundColor: RoleTagStringToColor(role.name),
-
-                borderColor: RoleTagStringToColor(role.name),
-                borderWidth: 1,
-              }}
-            >
-              {role.name}
-            </Tag>
-          </div>
-          {role?.createdBy?.fullName && (
-            <div className={classes["createdBy-wrapper"]}>
-              <Tooltip title="Created by">
-                <FaRegUser />
-              </Tooltip>
-              <div className={classes["createdBy"]}>
-                {role?.createdBy?.fullName} ({role?.createdBy?.rcno})
-              </div>
-            </div>
-          )}
         </div>
         <div className={classes["icon-wrapper"]}>
           {hasPermissions(self, ["ASSIGN_PERMISSION"]) ? (
