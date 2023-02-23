@@ -324,21 +324,40 @@ const ViewEntity = () => {
                   )}
                 </div>
                 <div className={classes["grid-two"]}>
-                  <div className={classes["info-title-wrapper"]}>
-                    <div>Current running {entityData?.measurement}</div>
-                    <div className={classes["info-content"]}>
-                      {entityData?.currentRunning}
+                  {entityData?.measurement === "days" ? (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Current running {entityData?.measurement}</div>
+                      {entityData?.currentRunningUpdateAt ? (
+                        <div className={classes["info-content"]}>
+                          {moment(entityData?.currentRunningUpdateAt).format(
+                            DATETIME_FORMATS.DAY_MONTH_YEAR
+                          )}
+                        </div>
+                      ) : (
+                        <span>None</span>
+                      )}
                     </div>
-                  </div>
-                  {entityData?.lastServiceUpdateAt &&
-                  entityData?.measurement === "days" ? (
+                  ) : (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Current running {entityData?.measurement}</div>
+                      <div className={classes["info-content"]}>
+                        {entityData?.currentRunning}
+                      </div>
+                    </div>
+                  )}
+
+                  {entityData?.measurement === "days" ? (
                     <div className={classes["info-title-wrapper"]}>
                       <div>Last service {entityData?.measurement}</div>
-                      <div className={classes["info-content"]}>
-                        {moment(entityData?.lastServiceUpdateAt).format(
-                          DATETIME_FORMATS.DAY_MONTH_YEAR
-                        )}
-                      </div>
+                      {entityData?.lastServiceUpdateAt ? (
+                        <div className={classes["info-content"]}>
+                          {moment(entityData?.lastServiceUpdateAt).format(
+                            DATETIME_FORMATS.DAY_MONTH_YEAR
+                          )}
+                        </div>
+                      ) : (
+                        <span>None</span>
+                      )}
                     </div>
                   ) : (
                     <div className={classes["info-title-wrapper"]}>
@@ -348,14 +367,28 @@ const ViewEntity = () => {
                       </div>
                     </div>
                   )}
-
-                  <div className={classes["info-title-wrapper"]}>
-                    <div>Inter service {entityData?.measurement}</div>
-                    <div className={classes["info-content"]}>
-                      {(entityData?.currentRunning ?? 0) -
-                        (entityData?.lastService ?? 0)}
+                  {entityData?.measurement === "days" ? (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Inter service {entityData?.measurement}</div>
+                      <div className={classes["info-content"]}>
+                        {Math.abs(
+                          moment(entityData?.currentRunningUpdateAt).diff(
+                            moment(entityData?.lastServiceUpdateAt),
+                            "days"
+                          )
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className={classes["info-title-wrapper"]}>
+                      <div>Inter service {entityData?.measurement}</div>
+                      <div className={classes["info-content"]}>
+                        {(entityData?.currentRunning ?? 0) -
+                          (entityData?.lastService ?? 0)}
+                      </div>
+                    </div>
+                  )}
+
                   {entityData?.dimension && (
                     <div className={classes["info-title-wrapper"]}>
                       <div>Length (m)</div>

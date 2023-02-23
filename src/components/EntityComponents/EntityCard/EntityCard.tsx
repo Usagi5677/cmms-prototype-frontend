@@ -242,33 +242,81 @@ const EntityCard = ({
                   <div className={classes["second-block"]}>
                     <div className={classes["second-block-inner-block"]}>
                       {flag ? (
-                        <span
-                          className={classes["inter-reading"]}
-                          style={{ color: fontColor, cursor: "pointer" }}
-                          onClick={() =>
-                            navigate(
-                              `/entity/${entity.id}?tab=periodicMaintenance`
-                            )
-                          }
-                          title={`Interservice`}
-                        >
-                          {interService.toLocaleString()}
-                          <div className={classes["measurement"]}>
-                            {entity?.measurement}
-                          </div>
-                        </span>
+                        <div>
+                          {entity?.measurement === "days" ? (
+                            <span
+                              className={classes["inter-reading"]}
+                              style={{ color: fontColor, cursor: "pointer" }}
+                              onClick={() =>
+                                navigate(
+                                  `/entity/${entity.id}?tab=periodicMaintenance`
+                                )
+                              }
+                              title={`Interservice`}
+                            >
+                              {interService.toLocaleString()}
+                              <div className={classes["measurement"]}>
+                                {entity?.measurement}
+                              </div>
+                            </span>
+                          ) : (
+                            <span
+                              className={classes["inter-reading"]}
+                              style={{ color: fontColor, cursor: "pointer" }}
+                              onClick={() =>
+                                navigate(
+                                  `/entity/${entity.id}?tab=periodicMaintenance`
+                                )
+                              }
+                              title={`Interservice`}
+                            >
+                              {Math.abs(
+                                moment(entity?.currentRunningUpdateAt).diff(
+                                  moment(entity?.lastServiceUpdateAt),
+                                  "days"
+                                )
+                              ).toLocaleString()}
+                              <div className={classes["measurement"]}>
+                                {entity?.measurement}
+                              </div>
+                            </span>
+                          )}
+                        </div>
                       ) : (
-                        <span
-                          className={classes["inter-reading"]}
-                          style={{ color: fontColor }}
-                          title={`Interservice`}
-                        >
-                          {interService.toLocaleString()}
+                        <div>
+                          {entity?.measurement === "days" ? (
+                            <span
+                              className={classes["inter-reading"]}
+                              style={{ color: fontColor }}
+                              title={`Interservice`}
+                            >
+                              {Math.abs(
+                                moment(entity?.currentRunningUpdateAt).diff(
+                                  moment(entity?.lastServiceUpdateAt),
+                                  "days"
+                                )
+                              ).toLocaleString()}
 
-                          <div className={classes["measurement"]}>
-                            {entity?.measurement}
-                          </div>
-                        </span>
+                              <div className={classes["measurement"]}>
+                                {entity?.measurement}
+                              </div>
+                            </span>
+                          ) : (
+                            <div>
+                              <span
+                                className={classes["inter-reading"]}
+                                style={{ color: fontColor }}
+                                title={`Interservice`}
+                              >
+                                {interService.toLocaleString()}
+
+                                <div className={classes["measurement"]}>
+                                  {entity?.measurement}
+                                </div>
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       )}
                       <div className={classes["status-block"]}>
                         {entity?.status === "Breakdown" && entity?.breakdowns && (
@@ -333,30 +381,64 @@ const EntityCard = ({
         >
           <div className={classes["container"]}>
             <div className={classes["container-first-row"]}>
-              <span
-                className={classes["reading"]}
-                style={{ color: fontColor }}
-                title={`Current Running`}
-              >
-                {entity?.currentRunning
-                  ? entity?.currentRunning.toLocaleString()
-                  : 0}
+              {entity?.measurement === "days" ? (
+                <span
+                  className={classes["reading"]}
+                  style={{ color: fontColor }}
+                  title={`Current Running`}
+                >
+                  {moment(entity?.currentRunningUpdateAt).format(
+                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                  )}
 
-                <div className={classes["measurement"]}>
-                  Current running ({entity?.measurement})
-                </div>
-              </span>
-              <span
-                className={classes["reading"]}
-                style={{ color: fontColor }}
-                title={`Last Service`}
-              >
-                {entity?.lastService ? entity?.lastService.toLocaleString() : 0}
+                  <div className={classes["measurement"]}>
+                    Current running ({entity?.measurement})
+                  </div>
+                </span>
+              ) : (
+                <span
+                  className={classes["reading"]}
+                  style={{ color: fontColor }}
+                  title={`Current Running`}
+                >
+                  {entity?.currentRunning
+                    ? entity?.currentRunning.toLocaleString()
+                    : 0}
 
-                <div className={classes["measurement"]}>
-                  Last service ({entity?.measurement})
-                </div>
-              </span>
+                  <div className={classes["measurement"]}>
+                    Current running ({entity?.measurement})
+                  </div>
+                </span>
+              )}
+              {entity?.measurement === "days" ? (
+                <span
+                  className={classes["reading"]}
+                  style={{ color: fontColor }}
+                  title={`Last Service`}
+                >
+                  {moment(entity?.lastServiceUpdateAt).format(
+                    DATETIME_FORMATS.DAY_MONTH_YEAR
+                  )}
+
+                  <div className={classes["measurement"]}>
+                    Last service ({entity?.measurement})
+                  </div>
+                </span>
+              ) : (
+                <span
+                  className={classes["reading"]}
+                  style={{ color: fontColor }}
+                  title={`Last Service`}
+                >
+                  {entity?.lastService
+                    ? entity?.lastService.toLocaleString()
+                    : 0}
+
+                  <div className={classes["measurement"]}>
+                    Last service ({entity?.measurement})
+                  </div>
+                </span>
+              )}
             </div>
             <div className={classes["user-container"]}>
               <div className={classes["user-wrapper"]}>

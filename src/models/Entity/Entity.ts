@@ -37,6 +37,7 @@ export interface Entity {
   registryNumber?: string;
   transit?: boolean;
   lastServiceUpdateAt?: Date;
+  currentRunningUpdateAt?: Date;
   deletedAt?: Date;
   status: EntityStatus;
   statusChangedAt: Date;
