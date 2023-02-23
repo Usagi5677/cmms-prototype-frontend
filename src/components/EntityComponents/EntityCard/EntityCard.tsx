@@ -382,19 +382,34 @@ const EntityCard = ({
           <div className={classes["container"]}>
             <div className={classes["container-first-row"]}>
               {entity?.measurement === "days" ? (
-                <span
-                  className={classes["reading"]}
-                  style={{ color: fontColor }}
-                  title={`Current Running`}
-                >
-                  {moment(entity?.currentRunningUpdateAt).format(
-                    DATETIME_FORMATS.DAY_MONTH_YEAR
-                  )}
+                <div>
+                  {entity?.currentRunningUpdateAt !== null ? (
+                    <span
+                      className={classes["reading"]}
+                      style={{ color: fontColor }}
+                      title={`Current Running`}
+                    >
+                      {moment(entity?.currentRunningUpdateAt).format(
+                        DATETIME_FORMATS.DAY_MONTH_YEAR
+                      )}
 
-                  <div className={classes["measurement"]}>
-                    Current running ({entity?.measurement})
-                  </div>
-                </span>
+                      <div className={classes["measurement"]}>
+                        Current running ({entity?.measurement})
+                      </div>
+                    </span>
+                  ) : (
+                    <span
+                      className={classes["reading"]}
+                      style={{ color: fontColor }}
+                      title={`Current Running`}
+                    >
+                      NaN
+                      <div className={classes["measurement"]}>
+                        Current running ({entity?.measurement})
+                      </div>
+                    </span>
+                  )}
+                </div>
               ) : (
                 <span
                   className={classes["reading"]}
@@ -411,19 +426,34 @@ const EntityCard = ({
                 </span>
               )}
               {entity?.measurement === "days" ? (
-                <span
-                  className={classes["reading"]}
-                  style={{ color: fontColor }}
-                  title={`Last Service`}
-                >
-                  {moment(entity?.lastServiceUpdateAt).format(
-                    DATETIME_FORMATS.DAY_MONTH_YEAR
-                  )}
+                <div>
+                  {entity?.lastServiceUpdateAt !== null ? (
+                    <span
+                      className={classes["reading"]}
+                      style={{ color: fontColor }}
+                      title={`Last Service`}
+                    >
+                      {moment(entity?.lastServiceUpdateAt).format(
+                        DATETIME_FORMATS.DAY_MONTH_YEAR
+                      )}
 
-                  <div className={classes["measurement"]}>
-                    Last service ({entity?.measurement})
-                  </div>
-                </span>
+                      <div className={classes["measurement"]}>
+                        Last service ({entity?.measurement})
+                      </div>
+                    </span>
+                  ) : (
+                    <span
+                      className={classes["reading"]}
+                      style={{ color: fontColor }}
+                      title={`Last Service`}
+                    >
+                      NaN
+                      <div className={classes["measurement"]}>
+                        Last service ({entity?.measurement})
+                      </div>
+                    </span>
+                  )}
+                </div>
               ) : (
                 <span
                   className={classes["reading"]}

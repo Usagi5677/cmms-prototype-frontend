@@ -327,7 +327,7 @@ const ViewEntity = () => {
                   {entityData?.measurement === "days" ? (
                     <div className={classes["info-title-wrapper"]}>
                       <div>Current running {entityData?.measurement}</div>
-                      {entityData?.currentRunningUpdateAt ? (
+                      {entityData?.currentRunningUpdateAt !== null ? (
                         <div className={classes["info-content"]}>
                           {moment(entityData?.currentRunningUpdateAt).format(
                             DATETIME_FORMATS.DAY_MONTH_YEAR
@@ -349,7 +349,7 @@ const ViewEntity = () => {
                   {entityData?.measurement === "days" ? (
                     <div className={classes["info-title-wrapper"]}>
                       <div>Last service {entityData?.measurement}</div>
-                      {entityData?.lastServiceUpdateAt ? (
+                      {entityData?.lastServiceUpdateAt !== null ? (
                         <div className={classes["info-content"]}>
                           {moment(entityData?.lastServiceUpdateAt).format(
                             DATETIME_FORMATS.DAY_MONTH_YEAR
