@@ -45,7 +45,12 @@
     margin-top: 6px !important;
     margin-right: 36px !important;
   }
-  
+  .icon {
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--white);
+    margin-top: 6px;
+  }
   @media only screen and (min-width: 410px) {
     .notification-menu {
       max-width: initial;
@@ -54,6 +59,9 @@
   @media only screen and (min-width: 600px) {
     .notification-menu {
       max-width: initial;
+    }
+    .icon {
+      font-size: 18px;
     }
   }
   

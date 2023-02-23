@@ -6,16 +6,16 @@ export function findIncompleteChecklistAndTasks(
 ) {
   let pm = false;
   let checklist = false;
-  if (summaryData?.pm) {
-    for (const p of summaryData?.pm) {
-      if (parseInt(p) === id) {
+  if (summaryData?.pm?.length! > 0) {
+    for (const p of summaryData?.pm!) {
+      if (p?.id === id) {
         pm = true;
       }
     }
   }
   if (summaryData?.checklist) {
-    for (const ck of summaryData?.checklist) {
-      if (parseInt(ck) === id) {
+    for (const ck of summaryData?.checklist!) {
+      if (ck?.id === id) {
         checklist = true;
       }
     }

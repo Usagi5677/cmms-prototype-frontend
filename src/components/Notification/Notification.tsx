@@ -86,7 +86,7 @@ const Notifications = () => {
           style={{
             fontStyle: "italic",
             fontSize: ".8em",
-            color:"var(--text-primary)",
+            color: "var(--text-primary)",
             opacity: 0.8,
           }}
         >
@@ -160,22 +160,9 @@ const Notifications = () => {
         )
       }
     >
-      <div style={{ position: "relative" }}>
-        <Badge
-          size="small"
-          count={data?.notifications.length}
-          style={{ marginTop: 6 }}
-        >
-          <FaBell
-            style={{
-              cursor: "pointer",
-              color: "var(--white)",
-              fontSize: 18,
-              marginTop: 6,
-            }}
-          />
-        </Badge>
-      </div>
+      <Badge size="small" count={data?.notifications.length} offset={[0, 2]}>
+        <FaBell className={classes["icon"]} />
+      </Badge>
     </Dropdown>
   );
 };

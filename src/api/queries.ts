@@ -2083,14 +2083,14 @@ export const GET_BREAKDOWN_COUNT_OF_ALL = gql`
 export const GET_ALL_CHECKLIST_AND_PM_SUMMARY = gql`
   query getAllEntityChecklistAndPMSummary {
     getAllEntityChecklistAndPMSummary {
-      pm
-      checklist
-      machineTaskComplete
-      vehicleTaskComplete
-      vesselTaskComplete
-      machineChecklistComplete
-      vehicleChecklistComplete
-      vesselChecklistComplete
+      pm {
+        id
+        machineNumber
+      }
+      checklist {
+        id
+        machineNumber
+      }
     }
   }
 `;

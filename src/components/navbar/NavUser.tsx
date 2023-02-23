@@ -29,7 +29,7 @@ const NavUser = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          marginLeft: 20,
+          marginLeft: 10,
         }}
       >
         <UserAvatar user={user} />

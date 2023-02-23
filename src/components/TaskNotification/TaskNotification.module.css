@@ -1,0 +1,39 @@
+.tab-container {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+
+ 
+}
+.inner-container {
+  overflow-y: auto;
+  height: 100%;
+}
+.icon {
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--white);
+  margin-top: 6px;
+  margin-right: 20px;
+}
+.item-wrapper {
+  width: 100%;
+  cursor: pointer;
+}
+.item-wrapper:hover {
+  background-color: var(--ant-layout-sider-trigger-bg);
+}
+.item {
+  color: var(--ant-tag-blue-color)
+}
+.note {
+  font-size: 12px;
+  opacity: 0.5;
+  font-style: italic;
+}
+@media only screen and (min-width: 600px) {
+  .icon {
+    font-size: 18px;
+  }
+}

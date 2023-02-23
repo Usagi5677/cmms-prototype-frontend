@@ -58,17 +58,9 @@ const ThemeChange = () => {
         </div>
       }
     >
-      <div style={{ position: "relative" }}>
-        <FaCog
-          style={{
-            cursor: "pointer",
-            color: "var(--white)",
-            fontSize: 18,
-            marginTop: 6,
-            marginRight: 10,
-          }}
+      <FaCog
+          className={classes["icon"]}
         />
-      </div>
     </Popover>
   );
 };

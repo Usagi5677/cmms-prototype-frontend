@@ -7,6 +7,7 @@ import { Tag } from "antd";
 import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
 import ThemeChange from "../ThemeChange/ThemeChange";
+import TaskNotification from "../TaskNotification/TaskNotification";
 
 const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
   const { user: self } = useContext(UserContext);
@@ -22,10 +23,13 @@ const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
           </NavLink>
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <ThemeChange />
-          {self?.location?.id && <Tag color={"var(--white)"} style={{color: "black"}}>{self?.location?.name}</Tag>}
+           
+          <TaskNotification/>
+         
+          {/**self?.location?.id && <Tag color={"var(--white)"} style={{color: "black"}}>{self?.location?.name}</Tag> */}
 
           <Notification />
+          <ThemeChange />
           <NavUser />
         </div>
       </div>

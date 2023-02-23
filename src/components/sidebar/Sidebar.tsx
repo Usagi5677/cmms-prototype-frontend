@@ -75,23 +75,14 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
     };
   });
 
-  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
-      onError: (err) => {
-        errorMessage(err, "Error loading summary data.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    });
+  
 
   useEffect(() => {
     allEntityBreakdownCount();
-    getAllEntityChecklistAndPMSummary();
     getPastTwoDayIncompleteChecklists();
     getPastTwoDayChecklistsWithIssue();
   }, [
     allEntityBreakdownCount,
-    getAllEntityChecklistAndPMSummary,
     getPastTwoDayIncompleteChecklists,
     getPastTwoDayChecklistsWithIssue,
   ]);
@@ -299,129 +290,6 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
               <Link to={item.path}>
                 <span style={{ marginRight: 10 }}>{item.name}</span>
                 <Badge showZero={false} count={item.count ?? 0} />
-                {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.machineTaskComplete === true &&
-                  item.name === "Machinery" && (
-                    <Tooltip
-                      color="var(--dot-tooltip)"
-                      title={
-                        <div>
-                          <Badge
-                            color={"#87262c"}
-                            text={"Some tasks not completed"}
-                          />
-                        </div>
-                      }
-                    >
-                      <Badge color={"#87262c"} style={{ marginLeft: 10 }} />
-                    </Tooltip>
-                  )}
-                {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.machineChecklistComplete === true &&
-                  item.name === "Machinery" && (
-                    <Tooltip
-                      color="var(--dot-tooltip)"
-                      title={
-                        <div>
-                          <Badge
-                            color={"red"}
-                            text={"Some checklists not completed"}
-                          />
-                        </div>
-                      }
-                    >
-                      <Badge color={"red"} style={{
-                          marginLeft: summaryData
-                            ?.getAllEntityChecklistAndPMSummary
-                            ?.machineTaskComplete
-                            ? 0
-                            : 10,
-                        }} />
-                    </Tooltip>
-                  )}
-                {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.vehicleTaskComplete === true &&
-                  item.name === "Vehicles" && (
-                    <Tooltip
-                      color="var(--dot-tooltip)"
-                      title={
-                        <div>
-                          <Badge
-                            color={"#87262c"}
-                            text={"Some tasks not completed"}
-                          />
-                        </div>
-                      }
-                    >
-                      <Badge color={"#87262c"} style={{ marginLeft: 10 }} />
-                    </Tooltip>
-                  )}
-                {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.vehicleChecklistComplete === true &&
-                  item.name === "Vehicles" && (
-                    <Tooltip
-                      color="var(--dot-tooltip)"
-                      title={
-                        <div>
-                          <Badge
-                            color={"red"}
-                            text={"Some checklists not completed"}
-                          />
-                        </div>
-                      }
-                    >
-                      <Badge
-                        color={"red"}
-                        style={{
-                          marginLeft: summaryData
-                            ?.getAllEntityChecklistAndPMSummary
-                            ?.vehicleTaskComplete
-                            ? 0
-                            : 10,
-                        }}
-                      />
-                    </Tooltip>
-                  )}
-                {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.vesselTaskComplete === true  &&
-                  item.name === "Vessels" && (
-                    <Tooltip
-                      color="var(--dot-tooltip)"
-                      title={
-                        <div>
-                          <Badge
-                            color={"#87262c"}
-                            text={"Some tasks not completed"}
-                          />
-                        </div>
-                      }
-                    >
-                      <Badge color={"#87262c"} style={{ marginLeft: 10 }} />
-                    </Tooltip>
-                  )}
-                {summaryData?.getAllEntityChecklistAndPMSummary
-                  ?.vesselChecklistComplete === true &&
-                  item.name === "Vessels" && (
-                    <Tooltip
-                      color="var(--dot-tooltip)"
-                      title={
-                        <div>
-                          <Badge
-                            color={"red"}
-                            text={"Some checklists not completed"}
-                          />
-                        </div>
-                      }
-                    >
-                      <Badge color={"red"} style={{
-                          marginLeft: summaryData
-                            ?.getAllEntityChecklistAndPMSummary
-                            ?.vesselTaskComplete
-                            ? 0
-                            : 10,
-                        }} />
-                    </Tooltip>
-                  )}
               </Link>
             </Menu.Item>
           );
