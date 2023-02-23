@@ -4,14 +4,13 @@ import React, { useState } from "react";
 import { FaLocationArrow } from "react-icons/fa";
 import { ADD_PERIODIC_MAINTENANCE_COMMENT } from "../../api/mutations";
 import { errorMessage } from "../../helpers/gql";
-import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 
 export interface PMObservationProps {
   periodicMaintenanceId: number;
   type: string;
   placeholder?: string;
   isDeleted?: boolean;
-  isOlder?: boolean;
+  isVerified?: boolean;
   isCopy?: boolean;
 }
 
@@ -22,7 +21,7 @@ export const AddPeriodicMaintenanceObservation: React.FC<
   type,
   placeholder,
   isDeleted,
-  isOlder,
+  isVerified,
   isCopy,
 }) => {
   const [details, setDetails] = useState("");

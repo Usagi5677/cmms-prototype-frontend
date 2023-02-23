@@ -1,7 +1,7 @@
 import { Checkbox, Collapse, Progress, Spin, Tooltip } from "antd";
 import moment from "moment";
 import { useContext, useEffect } from "react";
-import { FaRegClock, FaRegUser } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
 import classes from "./PeriodicMaintenanceCard.module.css";
@@ -14,7 +14,7 @@ import {
 } from "../../../api/mutations";
 import DeletePeriodicMaintenance from "../DeletePeriodicMaintenance/DeletePeriodicMaintenance";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
-import { RiseOutlined, ToolOutlined } from "@ant-design/icons";
+import { ToolOutlined } from "@ant-design/icons";
 import { PeriodicMaintenanceTaskList } from "../../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
 import { AddPeriodicMaintenanceTask } from "../../common/AddPeriodicMaintenanceTask";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
@@ -178,7 +178,6 @@ const PeriodicMaintenanceCard = ({
                             ]) &&
                               !isAssignedType("Technician", entity!, self)) ||
                             isDeleted ||
-                            isOlder ||
                             data?.checkCopyPMExist
                           }
                           onChange={(e) =>
@@ -205,8 +204,7 @@ const PeriodicMaintenanceCard = ({
                             checked={periodicMaintenance.verifiedAt !== null}
                             disabled={
                               !isAssignedType("Admin", entity!, self) ||
-                              isDeleted ||
-                              isOlder
+                              isDeleted
                             }
                             onChange={(e) =>
                               toggleVerify({
@@ -271,7 +269,9 @@ const PeriodicMaintenanceCard = ({
                     isAssignedType("Technician", entity!, self) ? (
                       <EditPeriodicMaintenance
                         periodicMaintenance={periodicMaintenance}
-                        isDeleted={isDeleted || isOlder}
+                        isDeleted={
+                          isDeleted || periodicMaintenance?.verifiedAt !== null
+                        }
                         isCopy={
                           periodicMaintenance.type === "Copy" ? true : false
                         }
@@ -295,7 +295,9 @@ const PeriodicMaintenanceCard = ({
                     isAssignedType("Technician", entity!, self) ? (
                       <DeletePeriodicMaintenance
                         id={periodicMaintenance?.id}
-                        isDeleted={isDeleted || isOlder}
+                        isDeleted={
+                          isDeleted || periodicMaintenance?.verifiedAt !== null
+                        }
                         isCopy={
                           periodicMaintenance.type === "Copy" ? true : false
                         }
@@ -427,7 +429,7 @@ const PeriodicMaintenanceCard = ({
               {periodicMaintenance.type === "Copy" && (
                 <PeriodicMaintenanceUpdateReading
                   periodicMaintenance={periodicMaintenance}
-                  isOlder={isOlder}
+                  isVerified={periodicMaintenance?.verifiedAt !== null}
                 />
               )}
             </div>
@@ -436,7 +438,7 @@ const PeriodicMaintenanceCard = ({
               tasks={taskData}
               level={0}
               isDeleted={isDeleted}
-              isOlder={isOlder ? true : false}
+              isVerified={periodicMaintenance?.verifiedAt !== null}
               isCopy={isCopy}
               upcoming={upcoming}
             />
@@ -455,7 +457,7 @@ const PeriodicMaintenanceCard = ({
                       comment={observation}
                       key={observation.id}
                       isDeleted={isDeleted}
-                      isOlder={isOlder}
+                      isVerified={periodicMaintenance?.verifiedAt !== null}
                       isCopy={periodicMaintenance.type === "Copy"}
                       mutation={DELETE_PERIODIC_MAINTENANCE_COMMENT}
                       refetchQueries={[
@@ -475,7 +477,7 @@ const PeriodicMaintenanceCard = ({
                   type={"Observation"}
                   placeholder={"Add new observation"}
                   isDeleted={isDeleted}
-                  isOlder={isOlder}
+                  isVerified={periodicMaintenance?.verifiedAt !== null}
                   isCopy={periodicMaintenance.type === "Copy"}
                 />
               </div>

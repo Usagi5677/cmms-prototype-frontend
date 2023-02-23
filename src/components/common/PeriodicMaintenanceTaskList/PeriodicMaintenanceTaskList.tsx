@@ -26,7 +26,7 @@ export interface TaskListProps {
   tasks: PeriodicMaintenanceTask[];
   level: number;
   isDeleted?: boolean | undefined;
-  isOlder?: boolean;
+  isVerified?: boolean;
   isCopy?: boolean;
   upcoming?: boolean;
 }
@@ -36,7 +36,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
   tasks,
   level,
   isDeleted,
-  isOlder,
+  isVerified,
   isCopy,
   upcoming,
 }) => {
@@ -129,7 +129,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                               task={task}
                               type={"Remark"}
                               isDeleted={isDeleted}
-                              isOlder={isOlder}
+                              isVerified={isVerified}
                               isCopy={isCopy}
                             />
                           )}
@@ -138,7 +138,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                             <Checkbox
                               checked={task.completedAt !== null}
                               style={{ marginRight: ".5rem" }}
-                              disabled={isOlder || !isCopy}
+                              disabled={isVerified || !isCopy}
                               onChange={(e) =>
                                 toggleTask({
                                   variables: {
@@ -158,7 +158,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                                 "MODIFY_PERIODIC_MAINTENANCE",
                               ]) &&
                               !isDeleted &&
-                              !isOlder ? (
+                              !isVerified ? (
                                 <CloseCircleOutlined
                                   onClick={() => {
                                     deleteTask({
@@ -167,7 +167,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                                       },
                                     });
                                   }}
-                                  disabled={isOlder}
+                                  disabled={isVerified}
                                 />
                               ) : null}
                             </div>
@@ -182,7 +182,7 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                         isRemark
                         key={remark.id}
                         isDeleted={isDeleted}
-                        isOlder={isOlder}
+                        isVerified={isVerified}
                         mutation={DELETE_PERIODIC_MAINTENANCE_COMMENT}
                         refetchQueries={[
                           "periodicMaintenances",
@@ -200,11 +200,11 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                 tasks={task.subTasks}
                 level={level + 1}
                 isDeleted={isDeleted}
-                isOlder={isOlder}
+                isVerified={isVerified}
                 isCopy={isCopy}
                 upcoming={upcoming}
               />
-              {level < 2 && !isDeleted && !isOlder && !isCopy && !upcoming && (
+              {level < 2 && !isDeleted && !isVerified && !isCopy && !upcoming && (
                 <div>
                   <AddPeriodicMaintenanceTask
                     periodicMaintenance={periodicMaintenance}

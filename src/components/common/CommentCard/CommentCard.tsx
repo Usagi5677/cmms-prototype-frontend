@@ -13,7 +13,7 @@ export interface CommentProps {
   comment: Comment;
   isRemark?: boolean;
   isDeleted?: boolean;
-  isOlder?: boolean;
+  isVerified?: boolean;
   isCopy?: boolean;
   mutation: DocumentNode;
   refetchQueries: string[];
@@ -23,7 +23,7 @@ export const CommentCard: React.FC<CommentProps> = ({
   comment,
   isRemark,
   isDeleted,
-  isOlder,
+  isVerified,
   isCopy,
   mutation,
   refetchQueries,
@@ -68,7 +68,7 @@ export const CommentCard: React.FC<CommentProps> = ({
             <RemoveComment
               comment={comment}
               isDeleted={isDeleted}
-              isOlder={isOlder}
+              isVerified={isVerified}
               isCopy={isCopy}
               mutation={mutation}
               refetchQueries={refetchQueries}

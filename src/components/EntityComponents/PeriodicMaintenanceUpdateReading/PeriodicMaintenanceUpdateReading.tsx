@@ -12,11 +12,11 @@ import classes from "./PeriodicMaintenanceUpdateReading.module.css";
 const PeriodicMaintenanceUpdateReading = ({
   periodicMaintenance,
   isDeleted,
-  isOlder,
+  isVerified,
 }: {
   periodicMaintenance: PeriodicMaintenance;
   isDeleted?: boolean;
-  isOlder?: boolean;
+  isVerified?: boolean;
 }) => {
   const [form] = useForm();
   const { user: self } = useContext(UserContext);
@@ -76,7 +76,7 @@ const PeriodicMaintenanceUpdateReading = ({
                     periodicMaintenance.entity!,
                     self
                   )) ||
-                isOlder
+                isVerified
               }
             />
           </Form.Item>
@@ -90,7 +90,7 @@ const PeriodicMaintenanceUpdateReading = ({
               loading={loadingEntity}
               disabled={
                 isDeleted ||
-                isOlder ||
+                isVerified ||
                 (!hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) &&
                   !isAssignedType(
                     "Technician",

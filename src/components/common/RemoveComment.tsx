@@ -9,7 +9,7 @@ import Comment from "../../models/Comment";
 export interface RemoveCommentProps {
   comment: Comment;
   isDeleted?: boolean;
-  isOlder?: boolean;
+  isVerified?: boolean;
   isCopy?: boolean;
   mutation: DocumentNode;
   refetchQueries: string[];
@@ -18,7 +18,7 @@ export interface RemoveCommentProps {
 export const RemoveComment: React.FC<RemoveCommentProps> = ({
   comment,
   isDeleted,
-  isOlder,
+  isVerified,
   isCopy,
   mutation,
   refetchQueries
@@ -35,7 +35,7 @@ export const RemoveComment: React.FC<RemoveCommentProps> = ({
   ) : (
     <Popconfirm
       key="delete"
-      disabled={loading || isDeleted || isOlder}
+      disabled={loading || isDeleted || isVerified}
       title={`Are you sure to remove?`}
       onConfirm={() => {
         removeComment({

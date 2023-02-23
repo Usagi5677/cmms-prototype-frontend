@@ -13,13 +13,13 @@ export interface AddPeriodicMaintenanceCommentProps {
   task: PeriodicMaintenanceTask;
   type: string;
   isDeleted?: boolean;
-  isOlder?: boolean;
+  isVerified?: boolean;
   isCopy?: boolean;
 }
 
 export const AddPeriodicMaintenanceComment: React.FC<
   AddPeriodicMaintenanceCommentProps
-> = ({ periodicMaintenance, task, type, isDeleted, isOlder, isCopy }) => {
+> = ({ periodicMaintenance, task, type, isDeleted, isVerified, isCopy }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
 
@@ -56,7 +56,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
           style={{ marginLeft: ".5rem", marginRight: ".5rem" }}
           onClick={() => setVisible(true)}
         >
-          <MessageOutlined disabled={isDeleted || isOlder || isCopy} />
+          <MessageOutlined disabled={isDeleted || isVerified || isCopy} />
         </div>
       </Tooltip>
       <Modal
@@ -104,7 +104,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
                   htmlType="submit"
                   loading={loading}
                   className="primaryButton"
-                  disabled={isDeleted || isOlder || !isCopy}
+                  disabled={isDeleted || isVerified || !isCopy}
                 >
                   Add
                 </Button>
