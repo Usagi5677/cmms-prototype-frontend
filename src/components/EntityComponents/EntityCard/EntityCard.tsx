@@ -200,25 +200,38 @@ const EntityCard = ({
                         )}
                       </div>
                       <span className={classes["inner-first-block-level-two"]}>
-                        <div title={"Type"}>{entity?.type?.name}</div>
+                        {entity?.type?.name && (
+                          <div title={"Type"}>
+                            {entity?.type?.name}
+                            {(entity?.model ||
+                              entity?.brand?.name ||
+                              entity?.engine) && (
+                              <span className={classes["dot"]}>•</span>
+                            )}
+                          </div>
+                        )}
                         {entity?.model && (
-                          <span className={classes["dot"]}>•</span>
+                          <div className={classes["model"]} title={"Model"}>
+                            {entity?.model}
+                            {(entity?.brand?.name || entity?.engine) && (
+                              <span className={classes["dot"]}>•</span>
+                            )}
+                          </div>
                         )}
-                        <div className={classes["model"]} title={"Model"}>
-                          {entity?.model}
-                        </div>
+
                         {entity?.brand?.name && (
-                          <span className={classes["dot"]}>•</span>
+                          <div className={classes["brand"]} title={"Brand"}>
+                            {entity?.brand?.name}
+                            {entity?.engine && (
+                              <span className={classes["dot"]}>•</span>
+                            )}
+                          </div>
                         )}
-                        <div className={classes["brand"]} title={"Brand"}>
-                          {entity?.brand?.name}
-                        </div>
                         {entity?.engine && (
-                          <span className={classes["dot"]}>•</span>
+                          <div className={classes["engine"]} title={"Engine"}>
+                            {entity?.engine}
+                          </div>
                         )}
-                        <div className={classes["engine"]} title={"Engine"}>
-                          {entity?.engine}
-                        </div>
                       </span>
                       <div className={classes["inner-first-block-level-three"]}>
                         {entity?.registeredDate && (
@@ -226,16 +239,25 @@ const EntityCard = ({
                             {moment(entity?.registeredDate).format(
                               DATETIME_FORMATS.DAY_MONTH_YEAR
                             )}
+                            {(entity?.location?.name ||
+                              entity?.location?.zone?.name) && (
+                              <span className={classes["dot"]}>•</span>
+                            )}
                           </div>
                         )}
-                        {entity?.registeredDate && (
-                          <span className={classes["dot"]}>•</span>
+                        {entity?.location?.name && (
+                          <div title={"Location"}>
+                            {entity?.location?.name}
+                            {entity?.location?.zone?.name && (
+                              <span className={classes["dot"]}>•</span>
+                            )}
+                          </div>
                         )}
-                        <div title={"Location"}>{entity?.location?.name}</div>
                         {entity?.location?.zone?.name && (
-                          <span className={classes["dot"]}>•</span>
+                          <div title={"Zone"}>
+                            {entity?.location?.zone?.name}
+                          </div>
                         )}
-                        <div title={"Zone"}>{entity?.location?.zone?.name}</div>
                       </div>
                     </div>
                   </div>
