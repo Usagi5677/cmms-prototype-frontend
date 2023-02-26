@@ -34,6 +34,7 @@ const TaskNotification = () => {
       trigger={["click"]}
       content={
         <div className={classes["tab-container"]}>
+          <span className={classes["title"]}>Daily Task</span>
           <span className={classes["note"]}>checks every hour</span>
           <Tabs style={{ width: "100%" }}>
             <Tabs.TabPane

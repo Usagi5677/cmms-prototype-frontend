@@ -1049,3 +1049,7 @@ div.ant-typography {
 #collapse .anticon.anticon-right.ant-collapse-arrow {
   display: none !important;
 }
+
+#collapseTwo .anticon.anticon-right.ant-collapse-arrow {
+  display: none !important;
+}

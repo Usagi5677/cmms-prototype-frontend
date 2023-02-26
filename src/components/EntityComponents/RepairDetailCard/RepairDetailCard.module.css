@@ -3,52 +3,53 @@
   padding-bottom: 0.25rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 .container:hover {
   background-color: var(--row-hover);
 }
-.repair-detail {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 6px;
-  padding: 4px;
-}
 
-.repair-description {
-  display: flex;
-  align-items: center;
-}
-.description-wrapper {
-  display: flex;
-  flex-direction: column;
-}
 .number {
   font-size: 14px;
   margin-right: 6px;
 }
 
-.info-wrapper {
+.level-two {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px
 }
-
 .icon-text {
   display: flex;
   align-items: center;
   opacity: 0.5;
-  margin-right: 20px;
 }
 .text {
   display: inline-block;
   padding-left: 5px;
 }
 
-@media only screen and (min-width: 500px) {
-  .info-wrapper {
-    flex-direction: row;
-    align-items: center;
+.level-one {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px
+}
+.detail-wrapper {
+  display: flex; 
+  align-items: center;
+}
+.divider {
+  margin: 0 2px !important;
+}
+@media only screen and (min-width: 600px) {
+  .divider {
+    margin: 0 8px !important;
   }
 }

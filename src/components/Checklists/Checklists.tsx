@@ -63,7 +63,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
       getChecklist({
         variables: {
           input: {
-            entityId: entity.id,
+            entityId: entity?.id,
             type,
             date,
           },
@@ -80,7 +80,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
       getSummary({
         variables: {
           input: {
-            entityId: entity.id,
+            entityId: entity?.id,
             type,
             from: month[0],
             to: month[1],
@@ -183,7 +183,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
             onClick={() => {
               generateSingleChecklist({
                 variables: {
-                  entityId: entity.id,
+                  entityId: entity?.id,
                 },
               });
             }}
@@ -235,7 +235,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                       <InputNumber
                         disabled
                         addonBefore="Meter Reading"
-                        addonAfter={`${entity.measurement}`}
+                        addonAfter={`${entity?.measurement}`}
                         style={{ width: "100%", marginBottom: ".5rem" }}
                         value={data?.checklist.currentMeterReading}
                       />
@@ -253,7 +253,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                           <InputNumber
                             disabled
                             addonBefore="Daily Reading"
-                            addonAfter={`${entity.measurement}`}
+                            addonAfter={`${entity?.measurement}`}
                             style={{ width: "100%", marginBottom: ".5rem" }}
                             value={data?.checklist.workingHour}
                           />
@@ -293,7 +293,7 @@ export const Checklists: React.FC<ChecklistsProps> = ({ entity, type }) => {
                             checklist={data?.checklist}
                           />
                         </div>
-                        {entity.measurement !== "hr" && (
+                        {entity?.measurement !== "hr" && (
                           <div style={{ marginRight: "1rem" }}>
                             <AddDailyUsage
                               entity={entity}

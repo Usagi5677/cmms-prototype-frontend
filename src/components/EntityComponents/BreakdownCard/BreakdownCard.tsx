@@ -1,4 +1,4 @@
-import { Badge, Checkbox, Collapse, Spin, Tag, Tooltip } from "antd";
+import { Badge, Checkbox, Collapse, Divider, Spin, Tag, Tooltip } from "antd";
 import moment from "moment";
 import { FaCarCrash, FaRegClock, FaRegUser } from "react-icons/fa";
 import {
@@ -19,9 +19,13 @@ import EditBreakdown from "../EditEntityBreakdown/EditBreakdown";
 import Comment from "../../../models/Comment";
 import classes from "./BreakdownCard.module.css";
 import RepairDetailCard from "../RepairDetailCard/RepairDetailCard";
-import { CommentOutlined, ToolOutlined } from "@ant-design/icons";
+import {
+  CommentOutlined,
+  RightOutlined,
+  ToolOutlined,
+} from "@ant-design/icons";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
-import { useContext } from "react";
+import { memo, useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { errorMessage } from "../../../helpers/gql";
 import { useMutation } from "@apollo/client";
@@ -37,7 +41,7 @@ const EntityBreakdownCard = ({
   entity?: Entity;
 }) => {
   const { user: self } = useContext(UserContext);
-
+  const [isOpen, setIsOpen] = useState(false);
   const [toggle, { loading: toggling }] = useMutation(
     TOGGLE_BREAKDOWN_COMPLETE,
     {
@@ -61,118 +65,56 @@ const EntityBreakdownCard = ({
         <Collapse.Panel
           header={
             <>
-              <div className={classes["header-container"]}>
-                <div className={classes["level-one"]}>
-                  <div className={classes["info-wrapper"]}>
-                    <div className={classes["first-block"]}>
-                      <div className={classes["space-two"]}>
-                        <Checkbox
-                          checked={breakdown?.completedAt !== null}
-                          disabled={
-                            (!hasPermissions(self, ["MODIFY_BREAKDOWN"]) &&
-                              !isAssignedType("Admin", entity!, self) &&
-                              !isAssignedType("Engineer", entity!, self)) ||
-                            isDeleted
-                          }
-                          onChange={(e) =>
-                            toggle({
-                              variables: {
-                                id: breakdown.id,
-                                complete: e.target.checked,
-                              },
-                            })
-                          }
-                          style={{ wordBreak: "break-all" }}
-                        >
-                          Complete{" "}
-                          {toggling && (
-                            <Spin style={{ marginRight: 5 }} size="small" />
-                          )}
-                        </Checkbox>
-                      </div>
-                      <div
-                        className={
-                          (classes["title-wrapper"], classes["space-two"])
-                        }
-                      >
-                        <Tooltip title="Created Date">
-                          <FaRegClock className={classes["icon"]} />
-                        </Tooltip>
-                        <span
-                          className={classes["title"]}
-                          title={moment(breakdown?.createdAt).format(
-                            DATETIME_FORMATS.FULL
-                          )}
-                        >
-                          {moment(breakdown?.createdAt).format(
-                            DATETIME_FORMATS.SHORT
-                          )}
-                        </span>
-                      </div>
-                      <div
-                        className={
-                          (classes["title-wrapper"], classes["space-two"])
-                        }
-                      >
-                        {breakdown?.estimatedDateOfRepair ? (
-                          <>
-                            <Tooltip title="Estimated Date of Repair">
-                              <FaRegClock className={classes["icon"]} />
-                            </Tooltip>
-                            <span
-                              className={classes["title"]}
-                              title={moment(
-                                breakdown?.estimatedDateOfRepair
-                              ).format(DATETIME_FORMATS.FULL)}
-                            >
-                              {moment(breakdown?.estimatedDateOfRepair).format(
-                                DATETIME_FORMATS.SHORT
-                              )}
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <Tooltip title="Estimated Date of Repair">
-                              <FaRegClock className={classes["icon"]} />
-                            </Tooltip>
-                            <span className={classes["title"]}>None</span>
-                          </>
+              <div
+                className={classes["header-container"]}
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <div className={classes["level-wrapper"]}>
+                  <div className={classes["level-one"]}>
+                    <div className={classes["detail-wrapper"]}>
+                      <div className={classes["indicators"]}>
+                        {breakdown?.comments?.length! > 0 || rCommentExist ? (
+                          <CommentOutlined
+                            style={{
+                              marginRight: 10,
+                            }}
+                          />
+                        ) : null}
+                        {breakdown?.repairs?.length! > 0 && (
+                          <Tooltip
+                            color="var(--dot-tooltip)"
+                            title={
+                              <div>
+                                <Badge
+                                  color={"#52c41a"}
+                                  text={"Repair added"}
+                                />
+                              </div>
+                            }
+                          >
+                            <Badge
+                              color={"#52c41a"}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            />
+                          </Tooltip>
                         )}
                       </div>
-                      <div
-                        className={(classes["reading"], classes["space-two"])}
-                      >
-                        <span className={classes["reading-title"]}>Type:</span>
-                        <Tag
-                          color={
-                            breakdown?.type === "Breakdown" ? "red" : "orange"
-                          }
-                          style={{
-                            fontWeight: 700,
-                            borderRadius: 20,
-                            textAlign: "center",
-                            maxWidth: 250,
-                          }}
-                        >
-                          {breakdown?.type}
-                        </Tag>
-                      </div>
                       {breakdown?.details[0]?.description && (
-                        <div
-                          className={
-                            (classes["reading"],
-                            classes["space-two"],
-                            classes["flex-limit"])
-                          }
-                        >
-                          <span className={classes["reading-title"]}>
-                            Detail:
-                          </span>
+                        <span title={"Detail"} className={classes["title"]}>
                           {breakdown?.details[0]?.description}
-                        </div>
+                        </span>
                       )}
                     </div>
-                    <div className={classes["second-block"]}>
+                    <div className={classes["actions"]}>
+                      <RightOutlined
+                        style={{
+                          rotate: isOpen ? "90deg" : "0deg",
+                          transition: "rotate 0.3s ease",
+                        }}
+                      />
                       {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
                       isAssignedType("Admin", entity!, self) ||
                       isAssignedType("Engineer", entity!, self) ? (
@@ -191,86 +133,126 @@ const EntityBreakdownCard = ({
                       ) : null}
                     </div>
                   </div>
-                </div>
-
-                <div className={classes["level-two"]}>
-                  <div className={classes["indicators"]}>
-                    {breakdown?.comments?.length! > 0 || rCommentExist ? (
-                      <CommentOutlined
-                        style={{
-                          marginRight: 10,
-                        }}
-                      />
-                    ) : null}
-                    {breakdown?.repairs?.length! > 0 && (
-                      <Tooltip
-                        color="var(--dot-tooltip)"
-                        title={
-                          <div>
-                            <Badge color={"#52c41a"} text={"Repair added"} />
-                          </div>
+                  <div className={classes["level-two"]}>
+                    <div className={classes["date-wrapper"]}>
+                      <Checkbox
+                        className={classes["checkbox"]}
+                        checked={breakdown?.completedAt !== null}
+                        disabled={
+                          (!hasPermissions(self, ["MODIFY_BREAKDOWN"]) &&
+                            !isAssignedType("Admin", entity!, self) &&
+                            !isAssignedType("Engineer", entity!, self)) ||
+                          isDeleted
                         }
+                        onChange={(e) =>
+                          toggle({
+                            variables: {
+                              id: breakdown.id,
+                              complete: e.target.checked,
+                            },
+                          })
+                        }
+                        style={{ wordBreak: "break-all" }}
                       >
-                        <Badge
-                          color={"#52c41a"}
+                        Complete
+                        {toggling && (
+                          <Spin style={{ marginRight: 5 }} size="small" />
+                        )}
+                      </Checkbox>
+                      <Divider className={classes["divider"]} type="vertical" />
+                      <div className={classes["icon-text-wrapper"]}>
+                        <Tooltip title="Created At">
+                          <span>
+                            {moment(breakdown?.createdAt).format(
+                              DATETIME_FORMATS.SHORT
+                            )}
+                          </span>
+                        </Tooltip>
+                      </div>
+                      <Divider className={classes["divider"]} type="vertical" />
+                      <div className={classes["icon-text-wrapper"]}>
+                        {breakdown?.estimatedDateOfRepair ? (
+                          <div className={classes["icon-text-wrapper"]}>
+                            <Tooltip title="Estimated Date of Repair">
+                              <span
+                                style={{
+                                  color: "#33bcb7",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {moment(
+                                  breakdown?.estimatedDateOfRepair
+                                ).format(DATETIME_FORMATS.SHORT)}
+                              </span>
+                            </Tooltip>
+                          </div>
+                        ) : (
+                          <div className={classes["icon-text-wrapper"]}>
+                            <Tooltip title="Estimated Date of Repair">
+                              <span>None</span>
+                            </Tooltip>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className={classes["tag-wrapper"]}>
+                      <Tag
+                        color={
+                          breakdown?.type === "Breakdown" ? "red" : "orange"
+                        }
+                        style={{
+                          fontWeight: 700,
+                          borderRadius: 2,
+                          textAlign: "center",
+                        }}
+                      >
+                        {breakdown?.type}
+                      </Tag>
+                    </div>
+                  </div>
+                  <div className={classes["level-three"]}>
+                    <div className={classes["icon-text-opac-wrapper"]}>
+                      <ToolOutlined className={classes["icon"]} />
+                      <span>{breakdown?.id}</span>
+                    </div>
+                    <div className={classes["icon-text-opac-wrapper"]}>
+                      <Tooltip title="Created by">
+                        <FaRegUser />
+                      </Tooltip>
+                      <span>
+                        {breakdown?.createdBy?.fullName}{" "}
+                        {"(" + breakdown?.createdBy?.rcno + ")"}
+                      </span>
+                    </div>
+                    {!breakdown?.completedAt && (
+                      <div className={classes["icon-text-opac-wrapper"]}>
+                        <Tooltip title="Breakdown Duration">
+                          <FaCarCrash className={classes["icon"]} />
+                        </Tooltip>
+
+                        <span>{moment(breakdown?.createdAt).fromNow()}</span>
+                      </div>
+                    )}
+                    {breakdown?.completedAt && (
+                      <Tooltip title="Completed Date">
+                        <div
+                          className={classes["icon-text-opac-wrapper"]}
                           style={{
-                            display: "flex",
-                            alignItems: "center",
+                            color: "#52c41a",
+                            fontWeight: 700,
+                            opacity: 1,
                           }}
-                        />
+                        >
+                          <FaRegClock className={classes["icon"]} />
+                          <span>
+                            {moment(breakdown?.completedAt).format(
+                              DATETIME_FORMATS.SHORT
+                            )}
+                          </span>
+                        </div>
                       </Tooltip>
                     )}
                   </div>
-
-                  <div className={(classes["id-wrapper"], classes["space"])}>
-                    <ToolOutlined className={classes["icon"]} />
-                    <span className={classes["title"]}>{breakdown?.id}</span>
-                  </div>
-                  <div
-                    className={(classes["createdBy-wrapper"], classes["space"])}
-                  >
-                    <Tooltip title="Created by">
-                      <FaRegUser />
-                    </Tooltip>
-                    <div className={classes["createdBy"]}>
-                      {breakdown?.createdBy?.fullName}{" "}
-                      {"(" + breakdown?.createdBy?.rcno + ")"}
-                    </div>
-                  </div>
-                  {!breakdown?.completedAt && (
-                    <div
-                      className={(classes["title-wrapper"], classes["space"])}
-                    >
-                      <Tooltip title="Breakdown Duration">
-                        <FaCarCrash className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span className={classes["title"]}>
-                        {moment(breakdown?.createdAt).fromNow()}
-                      </span>
-                    </div>
-                  )}
-                  {breakdown?.completedAt && (
-                    <div
-                      className={classes["title-wrapper"]}
-                      style={{ color: "#52c41a", fontWeight: 700 }}
-                    >
-                      <Tooltip title="Completed Date">
-                        <FaRegClock className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span
-                        className={classes["title"]}
-                        title={moment(breakdown?.completedAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(breakdown?.completedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    </div>
-                  )}
                 </div>
               </div>
             </>
@@ -278,27 +260,34 @@ const EntityBreakdownCard = ({
           key={breakdown.id}
         >
           <div className={classes["collapse-container"]}>
-            <div className={classes["inner-info"]}></div>
-            <div className={classes["flex"]}>
+            <div className={classes["inner-block-wrapper"]}>
               <div className={classes["inner-block"]}>
                 <span className={classes["inner-header"]}>
                   Breakdown Details
                 </span>
+                <Divider style={{ marginTop: 4 }} />
                 {breakdown?.details ? (
                   <div className={classes["detail-container"]}>
                     {breakdown?.details?.map(
                       (b: BreakdownDetail, index: number) => (
-                        <BreakdownDetailCard
-                          index={index}
-                          breakdown={breakdown}
-                          detail={b}
-                          hasPermission={
-                            hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
-                            isAssignedType("Admin", entity!, self) ||
-                            isAssignedType("Engineer", entity!, self)
-                          }
-                          key={b.id}
-                        />
+                        <>
+                          <BreakdownDetailCard
+                            index={index}
+                            breakdown={breakdown}
+                            detail={b}
+                            hasPermission={
+                              hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                              isAssignedType("Admin", entity!, self) ||
+                              isAssignedType("Engineer", entity!, self)
+                            }
+                            key={b.id}
+                          />
+                          {breakdown?.details?.length !== index + 1 && (
+                            <Divider
+                              style={{ marginTop: 4, marginBottom: 4 }}
+                            />
+                          )}
+                        </>
                       )
                     )}
                   </div>
@@ -314,19 +303,25 @@ const EntityBreakdownCard = ({
               </div>
               <div className={classes["inner-block"]}>
                 <span className={classes["inner-header"]}>Repair Details</span>
+                <Divider style={{ marginTop: 4 }} />
                 {breakdown?.repairs ? (
                   <div className={classes["detail-container"]}>
                     {breakdown?.repairs?.map((r: Repair, index: number) => (
-                      <RepairDetailCard
-                        index={index}
-                        repair={r}
-                        key={r.id}
-                        hasPermission={
-                          hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
-                          isAssignedType("Admin", entity!, self) ||
-                          isAssignedType("Engineer", entity!, self)
-                        }
-                      />
+                      <>
+                        <RepairDetailCard
+                          index={index}
+                          repair={r}
+                          key={r.id}
+                          hasPermission={
+                            hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                            isAssignedType("Admin", entity!, self) ||
+                            isAssignedType("Engineer", entity!, self)
+                          }
+                        />
+                        {breakdown?.repairs?.length !== index + 1 && (
+                          <Divider style={{ marginTop: 4, marginBottom: 4 }} />
+                        )}
+                      </>
                     ))}
                   </div>
                 ) : (
@@ -366,4 +361,4 @@ const EntityBreakdownCard = ({
   );
 };
 
-export default EntityBreakdownCard;
+export default memo(EntityBreakdownCard);

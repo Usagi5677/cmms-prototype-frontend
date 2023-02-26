@@ -14,7 +14,7 @@ interface AddRepairDetailProps {
 
 export const AddRepairDetail: React.FC<AddRepairDetailProps> = ({
   breakdownId,
-  description = "Add new repair",
+  description = "Add Repair",
   isDeleted,
 }) => {
   const [details, setDetails] = useState("");

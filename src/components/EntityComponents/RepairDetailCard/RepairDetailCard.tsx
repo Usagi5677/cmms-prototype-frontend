@@ -1,6 +1,7 @@
 import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { useState } from "react";
+import { Divider, Tooltip } from "antd";
+import { memo, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { REMOVE_REPAIR, REMOVE_REPAIR_COMMENT } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
@@ -21,7 +22,6 @@ const RepairDetailCard = ({
   isDeleted?: boolean;
   hasPermission?: boolean;
 }) => {
-  const [hover, setHover] = useState(false);
   const [removeRepair, { loading }] = useMutation(REMOVE_REPAIR, {
     onError: (error) => {
       errorMessage(error, "Unexpected error while removing repair detail.");
@@ -30,49 +30,42 @@ const RepairDetailCard = ({
   });
   return (
     <div className={classes["container"]}>
-      <div
-        className={classes["repair-detail"]}
-        key={repair.id}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        <div className={classes["repair-description"]}>
-          <div className={classes["description-wrapper"]}>
-            <div style={{ fontSize: 14 }}>{repair.name}</div>
-            <div className={classes["info-wrapper"]}>
-              {repair?.breakdownDetail && (
-                <div
-                  className={classes["icon-text"]}
-                  title={`Breakdown Detail: ${repair?.breakdownDetail?.id}`}
-                >
-                  <ToolOutlined />
-                  <div className={classes["text"]}>
-                    {repair?.breakdownDetail?.id}
-                  </div>
-                </div>
-              )}
-              <div className={classes["icon-text"]}>
-                <FaRegUser />
-                <div className={classes["text"]}>
-                  {repair.createdBy.fullName} ({repair.createdBy.rcno})
-                </div>
-              </div>
-            </div>
-          </div>
-          {hover && <AddRepairComment repair={repair} isDeleted={isDeleted} />}
+      <div className={classes["level-one"]}>
+        <div className={classes["detail-wrapper"]}>
+          <div style={{ fontSize: 14 }}>{repair?.name}</div>
         </div>
-        {hasPermission && (
-          <CloseCircleOutlined
-            style={{ color: "red" }}
-            onClick={() => {
-              removeRepair({
-                variables: {
-                  id: repair.id,
-                },
-              });
-            }}
-          />
-        )}
+        <div className={classes["actions"]}>
+          <AddRepairComment repair={repair} isDeleted={isDeleted} />
+          {hasPermission && (
+            <CloseCircleOutlined
+              style={{ color: "red" }}
+              onClick={() => {
+                removeRepair({
+                  variables: {
+                    id: repair?.id,
+                  },
+                });
+              }}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className={classes["level-two"]}>
+        <div
+          className={classes["icon-text"]}
+          title={`Breakdown Detail: ${repair?.breakdownDetail?.id}`}
+        >
+          <ToolOutlined />
+          <div className={classes["text"]}>{repair?.id}</div>
+        </div>
+        <Divider className={classes["divider"]} type="vertical" />
+        <div className={classes["icon-text"]} title={"Created By"}>
+          <FaRegUser />
+          <div className={classes["text"]}>
+            {repair?.createdBy?.fullName} ({repair?.createdBy?.rcno})
+          </div>
+        </div>
       </div>
       {repair?.comments?.map((c: Comment) => (
         <CommentCard
@@ -88,4 +81,4 @@ const RepairDetailCard = ({
   );
 };
 
-export default RepairDetailCard;
+export default memo(RepairDetailCard);

@@ -61,7 +61,7 @@ export const HoverAddRepairDetail: React.FC<HoverAddRepairDetailProps> = ({
     <div>
       <Tooltip title="Add Repair">
         <div
-          style={{ marginLeft: ".5rem", cursor: "pointer", zIndex: 1 }}
+          style={{ cursor: "pointer", zIndex: 1 }}
           onClick={() => setVisible(true)}
         >
           <ToolOutlined disabled={isDeleted} />

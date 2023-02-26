@@ -1,7 +1,7 @@
 import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { Badge, Tooltip } from "antd";
-import { useState } from "react";
+import { Badge, Divider, Tooltip } from "antd";
+import { memo, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import {
   REMOVE_BREAKDOWN_COMMENT,
@@ -28,7 +28,6 @@ const BreakdownDetailCard = ({
   isDeleted?: boolean;
   hasPermission?: boolean;
 }) => {
-  const [hover, setHover] = useState(false);
   const [removeBreakdownDetail, { loading }] = useMutation(
     REMOVE_BREAKDOWN_DETAIL,
     {
@@ -43,86 +42,71 @@ const BreakdownDetailCard = ({
   );
   return (
     <div className={classes["container"]}>
-      <div
-        className={classes["breakdown-detail"]}
-        key={detail.id}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        <div className={classes["breakdown-description"]}>
-          <div className={classes["description-wrapper"]}>
-            <div className={classes["indicator-wrapper"]}>
-              <div style={{ fontSize: 14 }}>{detail.description}</div>
-              {detail?.repairs?.length! > 0 && (
-                <Tooltip
-                  color="var(--dot-tooltip)"
-                  title={
-                    <div>
-                      <Badge color={"#52c41a"} text={"Repair added"} />
-                    </div>
-                  }
-                >
-                  <Badge
-                    color={"#52c41a"}
-                    style={{
-                      marginLeft: 10,
-                    }}
-                  />
-                </Tooltip>
-              )}
-            </div>
-
-            <div className={classes["info-wrapper"]}>
-              <div
-                className={classes["icon-text"]}
-                title={`Breakdown Detail: ${detail?.id}`}
-              >
-                <ToolOutlined />
-                <div className={classes["text"]}>{detail?.id}</div>
-              </div>
-              <div className={classes["icon-text"]}>
-                <FaRegUser />
-                <div className={classes["text"]}>
-                  {detail.createdBy.fullName} ({detail.createdBy.rcno})
+      <div className={classes["level-one"]}>
+        <div className={classes["detail-wrapper"]}>
+          {detail?.repairs?.length! > 0 && (
+            <Tooltip
+              color="var(--dot-tooltip)"
+              title={
+                <div>
+                  <Badge color={"#52c41a"} text={"Repair added"} />
                 </div>
-              </div>
-            </div>
-          </div>
-          {hover && (
-            <AddBreakdownComment
-              breakdown={breakdown}
-              detail={detail}
-              isDeleted={isDeleted}
+              }
+            >
+              <Badge color={"#52c41a"} />
+            </Tooltip>
+          )}
+          <div style={{ fontSize: 14 }}>{detail?.description}</div>
+        </div>
+        <div className={classes["actions"]}>
+          <AddBreakdownComment
+            breakdown={breakdown}
+            detail={detail}
+            isDeleted={isDeleted}
+          />
+          {hasPermission && (
+            <HoverAddRepairDetail
+            breakdownId={breakdown?.id}
+            detail={detail}
+            isDeleted={isDeleted}
+          />
+          )}
+          {hasPermission && (
+            <CloseCircleOutlined
+              style={{ color: "red" }}
+              onClick={() => {
+                removeBreakdownDetail({
+                  variables: {
+                    id: detail?.id,
+                  },
+                });
+              }}
             />
           )}
-          {hover && hasPermission && (
-            <div style={{ marginRight: 8 }}>
-              <HoverAddRepairDetail
-                breakdownId={breakdown.id}
-                detail={detail}
-                isDeleted={isDeleted}
-              />
-            </div>
-          )}
         </div>
-        {hasPermission && (
-          <CloseCircleOutlined
-            style={{ color: "red" }}
-            onClick={() => {
-              removeBreakdownDetail({
-                variables: {
-                  id: detail.id,
-                },
-              });
-            }}
-          />
-        )}
+      </div>
+
+      <div className={classes["level-two"]}>
+        <div
+          className={classes["icon-text"]}
+          title={`Breakdown Detail: ${detail?.id}`}
+        >
+          <ToolOutlined />
+          <div className={classes["text"]}>{detail?.id}</div>
+        </div>
+        <Divider className={classes["divider"]} type="vertical" />
+        <div className={classes["icon-text"]} title={"Created By"}>
+          <FaRegUser />
+          <div className={classes["text"]}>
+            {detail?.createdBy?.fullName} ({detail?.createdBy?.rcno})
+          </div>
+        </div>
       </div>
       {detail?.comments?.map((remark: Comment) => (
         <CommentCard
           comment={remark}
           isRemark
-          key={remark.id}
+          key={remark?.id}
           isDeleted={isDeleted}
           mutation={REMOVE_BREAKDOWN_COMMENT}
           refetchQueries={["breakdowns", "getAllHistoryOfEntity"]}
@@ -132,4 +116,4 @@ const BreakdownDetailCard = ({
   );
 };
 
-export default BreakdownDetailCard;
+export default memo(BreakdownDetailCard);

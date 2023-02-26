@@ -12,7 +12,7 @@ interface AddBreakdownDetailProps {
 
 export const AddBreakdownDetail: React.FC<AddBreakdownDetailProps> = ({
   breakdownId,
-  description = "Add new breakdown detail",
+  description = "Add Breakdown Detail",
 }) => {
   const [details, setDetails] = useState("");
 

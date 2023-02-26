@@ -27,9 +27,15 @@
 .item {
   color: var(--ant-tag-blue-color)
 }
+.title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
 .note {
   font-size: 12px;
   opacity: 0.5;
+  color: var(--text-primary);
   font-style: italic;
 }
 @media only screen and (min-width: 600px) {

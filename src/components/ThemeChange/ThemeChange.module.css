@@ -28,7 +28,7 @@
 .title {
   padding-left: 20px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .colorpicker-container {
@@ -69,9 +69,6 @@
 }
 
 @media only screen and (min-width: 600px) {
-  .title {
-    font-size: 20px;
-  }
   .icon {
     font-size: 18px;
   }

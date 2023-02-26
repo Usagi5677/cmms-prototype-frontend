@@ -56,7 +56,7 @@ export const AddBreakdownComment: React.FC<AddBreakdownCommentProps> = ({
     <div>
       <Tooltip title="Add Remark">
         <div
-          style={{ marginLeft: ".5rem", cursor: "pointer", zIndex: 1 }}
+          style={{ cursor: "pointer", zIndex: 1 }}
           onClick={() => setVisible(true)}
         >
           <MessageOutlined disabled={isDeleted} />

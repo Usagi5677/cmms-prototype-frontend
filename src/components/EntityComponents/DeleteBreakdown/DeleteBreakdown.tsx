@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { REMOVE_BREAKDOWN } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteBreakdown.module.css";
@@ -41,7 +41,7 @@ const DeleteBreakdown = ({ id, isDeleted }: { id: number, isDeleted?: boolean })
     >
       <Tooltip title={"Delete"} placement="top">
         <div className={classes["btn-delete"]}>
-          <FaTrash />
+          <FaRegTrashAlt />
         </div>
       </Tooltip>
     </Popconfirm>
