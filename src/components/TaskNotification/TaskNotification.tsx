@@ -58,16 +58,14 @@ const TaskNotification = () => {
                         index: number
                       ) => {
                         return (
-                          <div
-                            onClick={() => navigate(`/entity/${e?.id}`)}
-                            key={index}
-                            className={classes["item-wrapper"]}
-                          >
-                            <Timeline.Item>
-                              <span className={classes["item"]}>
-                                {e?.machineNumber}
-                              </span>
-                            </Timeline.Item>
+                          <div key={index} className={classes["item-wrapper"]}>
+                            <Link to={`/entity/${e?.id}`}>
+                              <Timeline.Item>
+                                <span className={classes["item"]}>
+                                  {e?.machineNumber}
+                                </span>
+                              </Timeline.Item>
+                            </Link>
                           </div>
                         );
                       }
@@ -99,20 +97,16 @@ const TaskNotification = () => {
                         index: number
                       ) => {
                         return (
-                          <div
-                            onClick={() =>
-                              navigate(
-                                `/entity/${e?.id}?tab=periodicMaintenance`
-                              )
-                            }
-                            key={index}
-                            className={classes["item-wrapper"]}
-                          >
-                            <Timeline.Item>
-                              <span className={classes["item"]}>
-                                {e?.machineNumber}
-                              </span>
-                            </Timeline.Item>
+                          <div key={index} className={classes["item-wrapper"]}>
+                            <Link
+                              to={`/entity/${e?.id}?tab=periodicMaintenance`}
+                            >
+                              <Timeline.Item>
+                                <span className={classes["item"]}>
+                                  {e?.machineNumber}
+                                </span>
+                              </Timeline.Item>
+                            </Link>
                           </div>
                         );
                       }

@@ -18,11 +18,11 @@
   margin-right: 20px;
 }
 .item-wrapper {
-  width: 100%;
-  cursor: pointer;
+  width: 100% !important;
+  cursor: pointer !important;
 }
 .item-wrapper:hover {
-  background-color: var(--ant-layout-sider-trigger-bg);
+  background-color: var(--ant-layout-sider-trigger-bg) !important;
 }
 .item {
   color: var(--ant-tag-blue-color)
