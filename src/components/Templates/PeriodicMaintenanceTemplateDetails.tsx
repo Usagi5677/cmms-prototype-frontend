@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
@@ -30,11 +30,11 @@ import { SearchEntities } from "../common/SearchEntitities";
 import { EntityIcon } from "../common/EntityIcon";
 import { Entity } from "../../models/Entity/Entity";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
-import { PeriodicMaintenanceTaskList } from "../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
 import { AddPeriodicMaintenanceTask } from "../common/AddPeriodicMaintenanceTask";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { TypeSelector } from "../Config/Type/TypeSelector";
 import { CenteredSpin } from "../common/CenteredSpin";
+import PeriodicMaintenanceTaskList from "../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
 
 export interface PeriodicMaintenanceProps {
   periodicMaintenance: PeriodicMaintenance;

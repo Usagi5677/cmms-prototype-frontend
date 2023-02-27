@@ -6,4 +6,5 @@ export default interface SparePRDetail {
   description: string;
   sparePR: SparePR;
   createdBy: User;
+  createdAt?: Date;
 }

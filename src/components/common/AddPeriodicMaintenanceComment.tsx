@@ -52,10 +52,7 @@ export const AddPeriodicMaintenanceComment: React.FC<
   return (
     <div>
       <Tooltip title={`Add ${type}`}>
-        <div
-          style={{ marginLeft: ".5rem", marginRight: ".5rem" }}
-          onClick={() => setVisible(true)}
-        >
+        <div onClick={() => setVisible(true)}>
           <MessageOutlined disabled={isDeleted || isVerified || isCopy} />
         </div>
       </Tooltip>

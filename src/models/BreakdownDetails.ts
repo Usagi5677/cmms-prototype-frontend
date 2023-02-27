@@ -12,4 +12,5 @@ export default interface BreakdownDetail {
   entity: Entity;
   repairs?: Repair[];
   comments?: Comment[];
+  createdAt?: Date;
 }

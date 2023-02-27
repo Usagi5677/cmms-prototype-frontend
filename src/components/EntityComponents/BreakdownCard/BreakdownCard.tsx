@@ -215,6 +215,7 @@ const EntityBreakdownCard = ({
                       <ToolOutlined className={classes["icon"]} />
                       <span>{breakdown?.id}</span>
                     </div>
+                    <Divider className={classes["divider"]} type="vertical" />
                     <div className={classes["icon-text-opac-wrapper"]}>
                       <Tooltip title="Created by">
                         <FaRegUser />
@@ -224,6 +225,7 @@ const EntityBreakdownCard = ({
                         {"(" + breakdown?.createdBy?.rcno + ")"}
                       </span>
                     </div>
+                    <Divider className={classes["divider"]} type="vertical" />
                     {!breakdown?.completedAt && (
                       <div className={classes["icon-text-opac-wrapper"]}>
                         <Tooltip title="Breakdown Duration">
@@ -233,6 +235,7 @@ const EntityBreakdownCard = ({
                         <span>{moment(breakdown?.createdAt).fromNow()}</span>
                       </div>
                     )}
+                    {breakdown?.completedAt && <Divider className={classes["divider"]} type="vertical" />}
                     {breakdown?.completedAt && (
                       <Tooltip title="Completed Date">
                         <div

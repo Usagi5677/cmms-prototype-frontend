@@ -1,10 +1,10 @@
 .custom-btn-secondary {
-  border-radius: 20px !important;
+  border-radius: 2px !important;
 }
 
 .custom-btn-primary {
   background-color: var(--ant-primary-color);
-  border-radius: 20px !important;
+  border-radius: 2px !important;
   border-color: var(--ant-primary-color);
 }
 
@@ -18,22 +18,4 @@
 }
 .info-edit:hover {
   color: var(--ant-primary-color-hover);
-}
-
-.row {
-  display: flex;
-  flex-direction: column;
-}
-.col {
-  flex: 1;
-}
-
-@media only screen and (min-width: 700px) {
-  .row {
-    flex-direction: row;
-  }
-  .col {
-    flex: 1;
-    padding: 0 20px;
-  }
 }

@@ -1,5 +1,5 @@
-import { Badge, Checkbox, Collapse, Spin } from "antd";
-import React, { useContext, useState } from "react";
+import { Badge, Checkbox, Collapse, Divider, Spin } from "antd";
+import React, { memo, useContext, useState } from "react";
 import moment from "moment";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
@@ -31,7 +31,7 @@ export interface TaskListProps {
   upcoming?: boolean;
 }
 
-export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
+const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
   periodicMaintenance,
   tasks,
   level,
@@ -84,96 +84,96 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
                   <div className={classes["comment-wrapper"]}>
                     <div className={classes["top-wrapper"]}>
                       <div className={classes["name-wrapper"]}>
-                        {task.name}
-                        {task?.subTasks?.length > 0 && (
-                          <Badge
-                            count={`${task?.subTasks?.length} sub task${
-                              task?.subTasks?.length === 1 ? "" : "s"
-                            }`}
-                            size={"small"}
-                            style={{
-                              color: "black",
-                              backgroundColor: "#e5e5e5",
-                              marginLeft: ".5rem",
-                              fontSize: isSmallDevice ? 12 : 8,
-                            }}
-                          />
-                        )}
-                      </div>
-
-                      <div className={classes["actions-wrapper"]}>
-                        {task.completedAt && (
-                          <div className={classes["completedAt"]}>
-                            {task?.completedBy?.fullName === null &&
-                            task.completedAt ? (
-                              <div>Automatically</div>
-                            ) : (
-                              <div>{task?.completedBy?.fullName}</div>
+                        <div className={classes["actions-wrapper"]}>
+                          <div className={classes["actions"]}>
+                            {isCopy && !isDeleted && (
+                              <Checkbox
+                                checked={task.completedAt !== null}
+                                style={{ marginRight: ".5rem" }}
+                                disabled={isVerified || !isCopy}
+                                onChange={(e) =>
+                                  toggleTask({
+                                    variables: {
+                                      id: task.id,
+                                      complete: e.target.checked,
+                                    },
+                                  })
+                                }
+                              ></Checkbox>
                             )}
-                            <div
-                              className={classes["date"]}
-                              title={moment(task.completedAt).format(
-                                DATETIME_FORMATS.FULL
-                              )}
-                            >
-                              {moment(task.completedAt).format(
-                                DATETIME_FORMATS.SHORT
-                              )}
-                            </div>
+                            {(deleting || toggling) && (
+                              <Spin style={{ marginRight: 5 }} size="small" />
+                            )}
                           </div>
-                        )}
-                        <div className={classes["actions"]}>
-                          {isCopy && (
-                            <AddPeriodicMaintenanceComment
-                              periodicMaintenance={periodicMaintenance}
-                              task={task}
-                              type={"Remark"}
-                              isDeleted={isDeleted}
-                              isVerified={isVerified}
-                              isCopy={isCopy}
-                            />
-                          )}
-
-                          {isCopy && !isDeleted && (
-                            <Checkbox
-                              checked={task.completedAt !== null}
-                              style={{ marginRight: ".5rem" }}
-                              disabled={isVerified || !isCopy}
-                              onChange={(e) =>
-                                toggleTask({
-                                  variables: {
-                                    id: task.id,
-                                    complete: e.target.checked,
-                                  },
-                                })
-                              }
-                            ></Checkbox>
-                          )}
-                          {(deleting || toggling) && (
-                            <Spin style={{ marginRight: 5 }} size="small" />
-                          )}
-                          {!deleting && (
-                            <div>
-                              {hasPermissions(self, [
-                                "MODIFY_PERIODIC_MAINTENANCE",
-                              ]) &&
-                              !isDeleted &&
-                              !isVerified ? (
-                                <CloseCircleOutlined
-                                  onClick={() => {
-                                    deleteTask({
-                                      variables: {
-                                        id: task.id,
-                                      },
-                                    });
-                                  }}
-                                  disabled={isVerified}
-                                />
-                              ) : null}
+                        </div>
+                        <div>
+                          <div className={classes["detail-wrapper"]}>
+                            <span className={classes["title"]}>
+                              {task.name}
+                            </span>
+                            {task?.subTasks?.length > 0 && (
+                              <Badge
+                                count={task?.subTasks?.length}
+                                size={"small"}
+                                style={{
+                                  color: "black",
+                                  backgroundColor: "#e5e5e5",
+                                  fontSize: isSmallDevice ? 12 : 8,
+                                }}
+                              />
+                            )}
+                            {isCopy && (
+                              <AddPeriodicMaintenanceComment
+                                periodicMaintenance={periodicMaintenance}
+                                task={task}
+                                type={"Remark"}
+                                isDeleted={isDeleted}
+                                isVerified={isVerified}
+                                isCopy={isCopy}
+                              />
+                            )}
+                          </div>
+                          {task.completedAt && (
+                            <div className={classes["completedAt"]}>
+                              {task?.completedBy?.fullName === null &&
+                              task.completedAt ? (
+                                <div>Automatically</div>
+                              ) : (
+                                <div>{task?.completedBy?.fullName}</div>
+                              )}
+                              <Divider
+                                className={classes["divider"]}
+                                type="vertical"
+                              />
+                              <div title={"Completed At"}>
+                                {moment(task.completedAt).format(
+                                  DATETIME_FORMATS.SHORT
+                                )}
+                              </div>
                             </div>
                           )}
                         </div>
                       </div>
+                      {!deleting && (
+                        <div>
+                          {hasPermissions(self, [
+                            "MODIFY_PERIODIC_MAINTENANCE",
+                          ]) &&
+                          !isDeleted &&
+                          !isVerified ? (
+                            <CloseCircleOutlined
+                              onClick={() => {
+                                deleteTask({
+                                  variables: {
+                                    id: task.id,
+                                  },
+                                });
+                              }}
+                              disabled={isVerified}
+                            />
+                          ) : null}
+                        </div>
+                      )}
                     </div>
 
                     {task?.remarks?.map((remark: Comment) => (
@@ -220,3 +220,5 @@ export const PeriodicMaintenanceTaskList: React.FC<TaskListProps> = ({
     </div>
   );
 };
+
+export default memo(PeriodicMaintenanceTaskList);

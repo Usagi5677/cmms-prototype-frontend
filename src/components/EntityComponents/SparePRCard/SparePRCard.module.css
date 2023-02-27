@@ -1,49 +1,36 @@
 .header-container {
   display: flex;
   cursor: default !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   width: 100%;
   font-size: 9px;
   position: relative;
-  flex-direction: column;
-  align-items: initial !important;
+  align-items: center !important;
 }
 
-.bold {
-  font-weight: 700;
-}
-.id-wrapper {
+.actions {
   display: flex;
-  align-items: center;
-  margin-right: 10px;
-}
-.title-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.first-block {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.second-block {
-  display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  margin-top: 6px;
-  margin-right: 6px;
+  margin-top: 2px;
+  margin-right: 2px;
+  gap: 6px;
 }
 
-.reading-title {
-  opacity: 0.5;
-  display: inline-block;
-  padding-right: 5px;
-}
 .title {
-  padding-left: 5px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.icon-text-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.icon-text-opac-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  opacity: 0.5;
 }
 
 .collapse-container {
@@ -53,19 +40,22 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.inner-block {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid var(--border-1);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  overflow-y: auto;
+}
 
-.createdBy-wrapper {
-  display: flex;
-  align-items: center;
+.inner-block:last-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
-.createdBy {
-  display: inline-block;
-  padding-left: 5px;
-}
-.flex {
-  display: flex;
-  flex-direction: column;
-}
+
 .inner-info {
   padding-bottom: 10px;
 }
@@ -74,80 +64,119 @@
   display: flex;
   align-items: center;
   font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 10px;
 }
 .detail-container {
   margin-bottom: 20px;
 }
 
-.info-wrapper {
-  display: flex;
+.level-wrapper {
   flex: 1;
-  flex-direction: column;
 }
-.inner-block {
-  width: 100%;
-}
-
 .level-one {
   display: flex;
-  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: space-between;
 }
 .level-two {
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
-  align-items: flex-start;
+  font-size: 12px;
+}
+.checkbox * {
+  font-size: 12px !important;
+  padding-right: 0 !important
+}
+.level-three {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   margin-top: 6px;
   margin-bottom: 4px;
   font-size: 10px;
+  gap: 4px;
+  row-gap: 2px;
 }
-.space {
+
+.date-wrapper {
   display: flex;
   align-items: center;
-  margin-right: 20px;
-  opacity: 0.5;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.flex-limit {
-  flex: 2;
-}
-
-.space-two {
+.detail-wrapper {
   display: flex;
   align-items: center;
-  margin-right: 40px;
 }
-
-@media only screen and (min-width: 400px) {
+.indicators {
+  display: flex;
+}
+.divider {
+  margin: 0 2px !important;
+}
+.inner-block-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (min-width: 600px) {
+  .title {
+    font-size: 16px;
+  }
+  .actions {
+    flex-direction: row;
+    margin-top: 0;
+    margin-right: 0;
+  }
+  .level-three {
+    align-items: center;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .inner-block {
+    padding: 20px;
+  }
   .level-two {
     flex-direction: row;
-    align-items: center;
+    font-size: 14px;
+  }
+  .date-wrapper {
+    
+    justify-content: space-between;
+  }
+  .checkbox * {
+    font-size: 14px !important;
+  }
+  .divider {
+    margin: 0 8px !important;
+  }
+  .inner-header {
+    font-size: 16px;
   }
 }
+
 @media only screen and (min-width: 800px) {
-  .info-wrapper {
-    flex-direction: row;
-    align-items: center;
-  }
   .collapse-container {
     font-size: 12px;
+
   }
   .header-container {
     font-size: 12px;
   }
-  .first-block {
-    flex-direction: row;
+
+  .inner-block {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 10px;
   }
-  .flex {
-    flex-direction: row;
+  .inner-block:last-child {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 0;
   }
-  .level-one {
-    flex-direction: row;
-  }
-  .second-block {
-    margin: 0;
-    margin-left: 10px;
-    margin-top: 4px;
+  .inner-block-wrapper {
+    flex-direction: column;
   }
 }

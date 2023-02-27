@@ -14,8 +14,8 @@ import {
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
-import { EDIT_ENTITY, EDIT_PERIODIC_MAINTENANCE } from "../../../api/mutations";
+import { FaRegEdit } from "react-icons/fa";
+import { EDIT_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import classes from "./EditPeriodicMaintenance.module.css";
@@ -73,7 +73,7 @@ const EditPeriodicMaintenance = ({
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit
+        <FaRegEdit
           onClick={() => setVisible(true)}
           style={{
             pointerEvents: isDeleted || isCopy ? "none" : "auto",

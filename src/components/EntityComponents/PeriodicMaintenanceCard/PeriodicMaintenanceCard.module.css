@@ -14,17 +14,6 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.first-block {
-  display: flex;
-  flex-direction: column;
-}
-.second-block {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-right: 5px;
-  margin-top: 5px;
-}
 
 .task-progress {
   display: flex;
@@ -38,23 +27,42 @@
   margin-top: 5px;
 }
 .title {
-  padding-left: 5px;
+  font-size: 14px;
+  font-weight: 600;
 }
-
 .reading {
-  margin-right: 10px;
-}
-
-.reading-title {
-  opacity: 0.5;
-  display: inline-block;
-  padding-right: 5px;
-}
-
-.wrapper {
   display: flex;
-  flex: 1;
-  flex-direction: column;
+  align-items: baseline;
+  gap: 6px;
+}
+.name-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.collapse-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #52c41a;
+}
+.collapse-title-two {
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 2px;
+}
+.icon-text-opac {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.5;
+}
+.divider {
+  margin: 0 2px !important;
+}
+.checkbox * {
+  font-size: 12px !important;
+  padding-right: 0 !important;
 }
 .info-wrapper {
   margin-bottom: 10px;
@@ -68,44 +76,63 @@
 .add-observation-wrapper {
   margin: 0 4px;
 }
-.header-info-wrapper {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
+
 .level-one {
   display: flex;
-  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: space-between;
 }
 .level-two {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: column;
-  font-size: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  gap: 6px;
 }
-.level-two-top {
+.level-three {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  font-size: 10px;
 }
-.level-two-bottom {
-  display: flex;
-  align-items: center;
-}
-.space {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-  opacity: 0.5;
-}
-.spaceWithNoOpacity {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
+.suffix {
+  font-size: 10px;
 }
 .flex-limit {
   max-width: 500px;
 }
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+.user-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.user-avatar-detail {
+  display: flex;
+  flex-direction: column;
+}
+.user-avatar-name-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.user-avatar-level-two {
+  font-size: 12px;
+  opacity: 0.5;
+}
+.dot {
+  margin: 0 4px;
+  opacity: 0.5;
+  font-size: 6px;
+  color: var(--text-primary);
+}
+
 @media only screen and (min-width: 500px) {
   .info-wrapper {
     margin-right: 8px;
@@ -115,7 +142,26 @@
     margin: 0 8px;
   }
 }
+
 @media only screen and (min-width: 600px) {
+  .dot {
+    margin: 0 6px;
+    font-size: 12px;
+  }
+  .divider {
+    margin: 0 8px !important;
+  }
+  .collapse-title,
+  .collapse-title-two {
+    font-size: 16px;
+  }
+
+  .checkbox * {
+    font-size: 14px !important;
+  }
+  .title {
+    font-size: 16px;
+  }
   .header-info-wrapper {
     flex-direction: row;
   }
@@ -123,10 +169,6 @@
     margin-top: 0;
   }
 
-  .second-block {
-    padding-right: 0;
-    padding-bottom: 0;
-  }
   .observation-wrapper {
     padding-right: 0;
     padding-left: 0;
@@ -134,25 +176,16 @@
   .add-observation-wrapper {
     margin: 0 0;
   }
-  .space-two {
-    display: flex;
-    align-items: center;
-    margin-right: 40px;
-  }
+
   .level-two {
-    font-size: 10px;
-    flex-direction: row;
-    align-items: center;
+    font-size: 14px;
+  }
+  .level-three {
+    font-size: 12px;
   }
   .info-wrapper {
     margin-right: 0;
     margin-left: 0;
-  }
-  .space {
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    opacity: 0.5;
   }
 }
 @media only screen and (min-width: 800px) {
@@ -165,15 +198,5 @@
   }
   .header-container {
     font-size: 12px;
-  }
-  .first-block {
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
-  }
-}
-@media only screen and (min-width: 1100px) {
-  .level-one {
-    flex-direction: row;
   }
 }

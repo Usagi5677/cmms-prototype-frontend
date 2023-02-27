@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { DELETE_PERIODIC_MAINTENANCE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeletePeriodicMaintenance.module.css";
@@ -59,7 +59,7 @@ const DeletePeriodicMaintenance = ({
             color: isDeleted || isCopy ? "grey" : "var(--error)",
           }}
         >
-          <FaTrash />
+          <FaRegTrashAlt />
         </div>
       </Tooltip>
     </Popconfirm>

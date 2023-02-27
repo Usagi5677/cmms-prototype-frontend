@@ -12,7 +12,7 @@ interface AddSparePRDetailProps {
 
 export const AddSparePRDetail: React.FC<AddSparePRDetailProps> = ({
   sparePRId,
-  description = "Add new detail",
+  description = "Add Detail",
 }) => {
   const [details, setDetails] = useState("");
 

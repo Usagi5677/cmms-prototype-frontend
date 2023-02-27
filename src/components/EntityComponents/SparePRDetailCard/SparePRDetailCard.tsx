@@ -1,7 +1,10 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
-import { FaRegUser } from "react-icons/fa";
+import { Divider, Tooltip } from "antd";
+import moment from "moment";
+import { FaRegClock, FaRegUser } from "react-icons/fa";
 import { REMOVE_SPARE_PR_DETAIL } from "../../../api/mutations";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import SparePRDetail from "../../../models/SparePRDetails";
 
@@ -26,33 +29,44 @@ const SparePRDetailCard = ({
   );
   return (
     <div className={classes["container"]}>
-      <div className={classes["detail"]} key={sparePRDetail.id}>
-        <div className={classes["description"]}>
-          <div className={classes["description-wrapper"]}>
-            <div style={{ fontSize: 14 }}>{sparePRDetail.description}</div>
-            <div className={classes["info-wrapper"]}>
-              <div className={classes["icon-text"]}>
-                <FaRegUser />
-                <div className={classes["text"]}>
-                  {sparePRDetail.createdBy.fullName} (
-                  {sparePRDetail.createdBy.rcno})
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className={classes["level-one"]}>
+        <div style={{ fontSize: 14 }}>{sparePRDetail?.description}</div>
         {hasPermission && !isDeleted && (
           <CloseCircleOutlined
             style={{ color: "red" }}
             onClick={() => {
               removeSparePRDetail({
                 variables: {
-                  id: sparePRDetail.id,
+                  id: sparePRDetail?.id,
                 },
               });
             }}
           />
         )}
+      </div>
+      <div className={classes["level-two"]}>
+        <div
+          className={classes["icon-text"]}
+          title={`Breakdown Detail: ${sparePRDetail?.id}`}
+        >
+          <ToolOutlined />
+          <div>{sparePRDetail?.id}</div>
+        </div>
+        <Divider className={classes["divider"]} type="vertical" />
+        <div className={classes["icon-text"]} title={"Created By"}>
+          <FaRegUser />
+          <div>
+            {sparePRDetail?.createdBy?.fullName} (
+            {sparePRDetail?.createdBy?.rcno})
+          </div>
+        </div>
+        <Divider className={classes["divider"]} type="vertical" />
+        <div className={classes["icon-text"]} title="Created At">
+            <FaRegClock />
+            <span>
+              {moment(sparePRDetail?.createdAt).format(DATETIME_FORMATS.SHORT)}
+            </span>
+          </div>
       </div>
     </div>
   );

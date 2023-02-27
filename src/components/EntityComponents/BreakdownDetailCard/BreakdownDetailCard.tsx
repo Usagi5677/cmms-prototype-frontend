@@ -1,12 +1,14 @@
 import { CloseCircleOutlined, ToolOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { Badge, Divider, Tooltip } from "antd";
+import moment from "moment";
 import { memo, useState } from "react";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegClock, FaRegUser } from "react-icons/fa";
 import {
   REMOVE_BREAKDOWN_COMMENT,
   REMOVE_BREAKDOWN_DETAIL,
 } from "../../../api/mutations";
+import { DATETIME_FORMATS } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import BreakdownDetail from "../../../models/BreakdownDetails";
 import Comment from "../../../models/Comment";
@@ -66,10 +68,10 @@ const BreakdownDetailCard = ({
           />
           {hasPermission && (
             <HoverAddRepairDetail
-            breakdownId={breakdown?.id}
-            detail={detail}
-            isDeleted={isDeleted}
-          />
+              breakdownId={breakdown?.id}
+              detail={detail}
+              isDeleted={isDeleted}
+            />
           )}
           {hasPermission && (
             <CloseCircleOutlined
@@ -92,14 +94,21 @@ const BreakdownDetailCard = ({
           title={`Breakdown Detail: ${detail?.id}`}
         >
           <ToolOutlined />
-          <div className={classes["text"]}>{detail?.id}</div>
+          <div>{detail?.id}</div>
         </div>
         <Divider className={classes["divider"]} type="vertical" />
         <div className={classes["icon-text"]} title={"Created By"}>
           <FaRegUser />
-          <div className={classes["text"]}>
+          <div>
             {detail?.createdBy?.fullName} ({detail?.createdBy?.rcno})
           </div>
+        </div>
+        <Divider className={classes["divider"]} type="vertical" />
+        <div className={classes["icon-text"]} title="Created At">
+          <FaRegClock />
+          <span>
+            {moment(detail?.createdAt).format(DATETIME_FORMATS.SHORT)}
+          </span>
         </div>
       </div>
       {detail?.comments?.map((remark: Comment) => (

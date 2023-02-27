@@ -47,16 +47,16 @@ const EntityCard = ({
   const navigate = useNavigate();
   const { Paragraph } = Typography;
   const interService =
-    (entity.currentRunning ? entity.currentRunning : 0) -
-    (entity.lastService ? entity.lastService : 0);
+    (entity?.currentRunning ? entity?.currentRunning : 0) -
+    (entity?.lastService ? entity?.lastService : 0);
   let fontColor = "#00e32a";
   let flag = false;
   if (entity?.type?.interServiceColor) {
     const exist = entity?.type?.interServiceColor.find((i) => {
       if (
-        i.brand?.name === entity?.brand?.name &&
-        i.type?.name === entity?.type?.name &&
-        i.measurement === entity?.measurement
+        i?.brand?.name === entity?.brand?.name &&
+        i?.type?.name === entity?.type?.name &&
+        i?.measurement === entity?.measurement
       ) {
         return i;
       }
@@ -276,7 +276,12 @@ const EntityCard = ({
                               }
                               title={`Interservice`}
                             >
-                              {interService.toLocaleString()}
+                              {Math.abs(
+                                moment(entity?.currentRunningUpdateAt).diff(
+                                  moment(entity?.lastServiceUpdateAt),
+                                  "days"
+                                )
+                              ).toLocaleString()}
                               <div className={classes["measurement"]}>
                                 {entity?.measurement}
                               </div>
@@ -292,12 +297,8 @@ const EntityCard = ({
                               }
                               title={`Interservice`}
                             >
-                              {Math.abs(
-                                moment(entity?.currentRunningUpdateAt).diff(
-                                  moment(entity?.lastServiceUpdateAt),
-                                  "days"
-                                )
-                              ).toLocaleString()}
+                              
+                              {interService.toLocaleString()}
                               <div className={classes["measurement"]}>
                                 {entity?.measurement}
                               </div>
@@ -330,7 +331,7 @@ const EntityCard = ({
                                 style={{ color: fontColor }}
                                 title={`Interservice`}
                               >
-                                {interService.toLocaleString()}
+                                {interService?.toLocaleString()}
 
                                 <div className={classes["measurement"]}>
                                   {entity?.measurement}

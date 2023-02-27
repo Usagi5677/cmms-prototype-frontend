@@ -1053,3 +1053,6 @@ div.ant-typography {
 #collapseTwo .anticon.anticon-right.ant-collapse-arrow {
   display: none !important;
 }
+#collapseTwo .ant-collapse-content-box {
+  background-color: var(--ant-collapse-content-box) !important;
+}

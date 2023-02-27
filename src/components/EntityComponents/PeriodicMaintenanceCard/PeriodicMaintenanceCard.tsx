@@ -1,6 +1,14 @@
-import { Checkbox, Collapse, Progress, Spin, Tooltip } from "antd";
+import {
+  Avatar,
+  Checkbox,
+  Collapse,
+  Divider,
+  Progress,
+  Spin,
+  Tooltip,
+} from "antd";
 import moment from "moment";
-import { useContext, useEffect } from "react";
+import { memo, useContext, useEffect } from "react";
 import { FaRegClock } from "react-icons/fa";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../helpers/constants";
@@ -14,8 +22,8 @@ import {
 } from "../../../api/mutations";
 import DeletePeriodicMaintenance from "../DeletePeriodicMaintenance/DeletePeriodicMaintenance";
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
-import { ToolOutlined } from "@ant-design/icons";
-import { PeriodicMaintenanceTaskList } from "../../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
+import { CheckCircleOutlined, ToolOutlined } from "@ant-design/icons";
+
 import { AddPeriodicMaintenanceTask } from "../../common/AddPeriodicMaintenanceTask";
 import PeriodicMaintenance from "../../../models/PeriodicMaintenance/PeriodicMaintenance";
 import PeriodicMaintenanceUpdateReading from "../PeriodicMaintenanceUpdateReading/PeriodicMaintenanceUpdateReading";
@@ -32,6 +40,8 @@ import { Entity } from "../../../models/Entity/Entity";
 import { CHECK_COPY_PM_EXIST } from "../../../api/queries";
 import PeriodicMaintenanceStatusTag from "../../common/PeriodicMaintenanceStatusTag";
 import { PeriodicMaintenanceStatus as pmstatus } from "../../../models/Enums";
+import PeriodicMaintenanceTaskList from "../../common/PeriodicMaintenanceTaskList/PeriodicMaintenanceTaskList";
+import { stringToColor } from "../../../helpers/style";
 
 const PeriodicMaintenanceCard = ({
   periodicMaintenance,
@@ -164,107 +174,19 @@ const PeriodicMaintenanceCard = ({
       <Collapse ghost style={{ marginBottom: ".5rem" }}>
         <Collapse.Panel
           header={
-            <div className={classes["wrapper"]}>
+            <>
               <div className={classes["header-container"]}>
                 <div className={classes["level-one"]}>
-                  <div className={classes["header-info-wrapper"]}>
-                    <div className={classes["first-block"]}>
-                      {periodicMaintenance.type === "Template" ? (
-                        <Checkbox
-                          checked={data?.checkCopyPMExist}
-                          disabled={
-                            (!hasPermissions(self, [
-                              "MODIFY_PERIODIC_MAINTENANCE",
-                            ]) &&
-                              !isAssignedType("Technician", entity!, self)) ||
-                            isDeleted ||
-                            data?.checkCopyPMExist
-                          }
-                          onChange={(e) =>
-                            toggleActivate({
-                              variables: {
-                                id: periodicMaintenance.id,
-                              },
-                            })
-                          }
-                          style={{
-                            wordBreak: "break-all",
-                            marginRight: 40,
-                            width: "fit-content",
-                          }}
-                        >
-                          Activate{" "}
-                          {toggling && (
-                            <Spin style={{ marginRight: 5 }} size="small" />
-                          )}
-                        </Checkbox>
-                      ) : (
-                        periodicMaintenance.type === "Copy" && (
-                          <Checkbox
-                            checked={periodicMaintenance.verifiedAt !== null}
-                            disabled={
-                              !isAssignedType("Admin", entity!, self) ||
-                              isDeleted
-                            }
-                            onChange={(e) =>
-                              toggleVerify({
-                                variables: {
-                                  id: periodicMaintenance.id,
-                                  verify: e.target.checked,
-                                },
-                              })
-                            }
-                            style={{
-                              wordBreak: "break-all",
-                              marginRight: 40,
-                              width: "fit-content",
-                            }}
-                          >
-                            Verify{" "}
-                            {toggling && (
-                              <Spin style={{ marginRight: 5 }} size="small" />
-                            )}
-                          </Checkbox>
-                        )
-                      )}
-                      {periodicMaintenance?.value && (
-                        <div
-                          className={(classes["reading"], classes["space-two"])}
-                        >
-                          <span className={classes["reading-title"]}>
-                            Every:
-                          </span>
-                          <span>
-                            <span title="Value">
-                              {periodicMaintenance?.value}{" "}
-                            </span>
-                            <span title="Measurement">
-                              {periodicMaintenance?.measurement}
-                            </span>
-                          </span>
-                        </div>
-                      )}
-                      {periodicMaintenance?.currentMeterReading !== null && (
-                        <div
-                          className={(classes["reading"], classes["space-two"])}
-                        >
-                          <span className={classes["reading-title"]}>
-                            Current meter reading:
-                          </span>
-                          {periodicMaintenance?.currentMeterReading}
-                        </div>
-                      )}
-
-                      <div
-                        className={(classes["reading"], classes["flex-limit"])}
-                      >
-                        <span className={classes["reading-title"]}>Name:</span>
-                        {periodicMaintenance?.name}
-                      </div>
-                    </div>
+                  <div className={classes["name-wrapper"]}>
+                    {periodicMaintenance?.type !== "Template" && (
+                      <div>{summaryMatchCurrent()}</div>
+                    )}
+                    <span className={classes["title"]} title="Name">
+                      {periodicMaintenance?.name}
+                    </span>
                   </div>
 
-                  <div className={classes["second-block"]}>
+                  <div className={classes["actions"]}>
                     {hasPermissions(self, ["MODIFY_PERIODIC_MAINTENANCE"]) ||
                     isAssignedType("Technician", entity!, self) ? (
                       <EditPeriodicMaintenance
@@ -305,6 +227,85 @@ const PeriodicMaintenanceCard = ({
                     ) : null}
                   </div>
                 </div>
+                <div className={classes["level-two"]}>
+                  {periodicMaintenance.type === "Template" ? (
+                    <Checkbox
+                      checked={data?.checkCopyPMExist}
+                      className={classes["checkbox"]}
+                      disabled={
+                        (!hasPermissions(self, [
+                          "MODIFY_PERIODIC_MAINTENANCE",
+                        ]) &&
+                          !isAssignedType("Technician", entity!, self)) ||
+                        isDeleted ||
+                        data?.checkCopyPMExist
+                      }
+                      onChange={(e) =>
+                        toggleActivate({
+                          variables: {
+                            id: periodicMaintenance.id,
+                          },
+                        })
+                      }
+                    >
+                      Activate{" "}
+                      {toggling && (
+                        <Spin style={{ marginRight: 5 }} size="small" />
+                      )}
+                    </Checkbox>
+                  ) : (
+                    periodicMaintenance.type === "Copy" && (
+                      <Checkbox
+                        checked={periodicMaintenance.verifiedAt !== null}
+                        className={classes["checkbox"]}
+                        disabled={
+                          !isAssignedType("Admin", entity!, self) || isDeleted
+                        }
+                        onChange={(e) =>
+                          toggleVerify({
+                            variables: {
+                              id: periodicMaintenance.id,
+                              verify: e.target.checked,
+                            },
+                          })
+                        }
+                      >
+                        Verify{" "}
+                        {toggling && (
+                          <Spin style={{ marginRight: 5 }} size="small" />
+                        )}
+                      </Checkbox>
+                    )
+                  )}
+                  <Divider className={classes["divider"]} type="vertical" />
+                  {periodicMaintenance?.value && (
+                    <div className={classes["reading"]}>
+                      <span title="Value">{periodicMaintenance?.value} </span>
+                      <span title="Measurement" className={classes["suffix"]}>
+                        {periodicMaintenance?.measurement === "Kilometer"
+                          ? "km"
+                          : periodicMaintenance?.measurement === "Hour"
+                          ? "hr"
+                          : periodicMaintenance?.measurement === "Day" ||
+                            periodicMaintenance?.measurement === "Week" ||
+                            periodicMaintenance?.measurement === "Month"
+                          ? "days"
+                          : ""}
+                      </span>
+                    </div>
+                  )}
+                  {periodicMaintenance?.currentMeterReading !== null && (
+                    <Divider className={classes["divider"]} type="vertical" />
+                  )}
+
+                  {periodicMaintenance?.currentMeterReading !== null && (
+                    <div className={classes["reading"]}>
+                      <span>{periodicMaintenance?.currentMeterReading}</span>
+                      <span className={classes["suffix"]}>current reading</span>
+                    </div>
+                  )}
+                </div>
+
                 {periodicMaintenance.tasks!.length > 0 &&
                   periodicMaintenance.type === "Copy" && (
                     <Progress
@@ -313,82 +314,31 @@ const PeriodicMaintenanceCard = ({
                       style={{ paddingRight: 8 }}
                     />
                   )}
-                <div className={classes["level-two"]}>
-                  <div className={classes["level-two-top"]}>
-                    <div
-                      style={{
-                        marginRight:
-                          periodicMaintenance?.type === "Copy" ? 10 : 0,
-                      }}
-                    >
-                      {summaryMatchCurrent()}
-                    </div>
-
-                    {/* {periodicMaintenance?.type === "Template" &&
-                      periodicMaintenance?.value! !== null && (
-                        <div
-                          className={
-                            (classes["title-wrapper"],
-                            classes["spaceWithNoOpacity"])
-                          }
-                          title={`${
-                            entity?.currentRunning! -
-                            periodicMaintenance?.currentMeterReading!
-                          }`}
-                        >
-                          <RiseOutlined
-                            className={classes["icon"]}
-                            style={{ opacity: 0.5 }}
-                          />
-
-                          <span
-                            className={classes["title"]}
-                            style={{ color: percentageStyle, fontWeight: 700 }}
-                          >
-                            {percentage}
-                            {"%"}
-                          </span>
-                        </div>
-                      )}*/}
+                <div className={classes["level-three"]}>
+                  <div className={classes["icon-text-opac"]}>
+                    <ToolOutlined className={classes["icon"]} />
+                    <span>{periodicMaintenance?.id}</span>
                   </div>
-                  <div className={classes["level-two-bottom"]}>
-                    <div className={(classes["id-wrapper"], classes["space"])}>
-                      <ToolOutlined className={classes["icon"]} />
-                      <span className={classes["title"]}>
-                        {periodicMaintenance?.id}
-                      </span>
-                    </div>
-                    <div
-                      className={(classes["title-wrapper"], classes["space"])}
-                    >
-                      <Tooltip title="Created Date">
-                        <FaRegClock className={classes["icon"]} />
-                      </Tooltip>
-
-                      <span
-                        className={classes["title"]}
-                        title={moment(periodicMaintenance?.createdAt).format(
-                          DATETIME_FORMATS.FULL
-                        )}
-                      >
-                        {moment(periodicMaintenance?.createdAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
-                    </div>
-                    <div>
-                      <PeriodicMaintenanceStatusTag
-                        status={periodicMaintenance?.status as pmstatus}
-                        height={16}
-                        fontSize={9}
-                        borderRadius={6}
-                        marginBottom={2}
-                      />
-                    </div>
+                  <Divider className={classes["divider"]} type="vertical" />
+                  <div className={classes["icon-text-opac"]} title="Created At">
+                    <FaRegClock className={classes["icon"]} />
+                    <span>
+                      {moment(periodicMaintenance?.createdAt).format(
+                        DATETIME_FORMATS.SHORT
+                      )}
+                    </span>
                   </div>
+                  <Divider className={classes["divider"]} type="vertical" />
+                  <PeriodicMaintenanceStatusTag
+                    status={periodicMaintenance?.status as pmstatus}
+                    height={16}
+                    fontSize={9}
+                    borderRadius={2}
+                    marginBottom={2}
+                  />
                 </div>
               </div>
-            </div>
+            </>
           }
           key={periodicMaintenance.id}
         >
@@ -396,36 +346,71 @@ const PeriodicMaintenanceCard = ({
             <div className={classes["info-wrapper"]}>
               {periodicMaintenance.verifiedAt && (
                 <div>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>
-                      Verified by:
-                    </span>
-                    {periodicMaintenance.verifiedBy?.fullName === null &&
-                    periodicMaintenance.verifiedAt ? (
-                      <span>Automatically</span>
-                    ) : (
-                      <span>
-                        {periodicMaintenance.verifiedBy?.fullName} (
-                        {periodicMaintenance.verifiedBy?.rcno})
-                      </span>
-                    )}
-                  </div>
-                  <div className={classes["reading"]}>
-                    <span className={classes["reading-title"]}>
-                      Verified at:
-                    </span>
-                    <span
-                      title={moment(periodicMaintenance.verifiedAt).format(
-                        DATETIME_FORMATS.FULL
-                      )}
+                  <span className={classes["collapse-title"]}>
+                    Verified <CheckCircleOutlined />
+                  </span>
+                  <Divider style={{ marginTop: 0 }} />
+                  <div className={classes["user-avatar-wrapper"]}>
+                    <Avatar
+                      style={{
+                        backgroundColor: stringToColor(
+                          periodicMaintenance.verifiedBy?.fullName === null &&
+                            periodicMaintenance.verifiedAt
+                            ? "Automatically"
+                            : periodicMaintenance?.verifiedBy?.fullName!
+                        ),
+                      }}
+                      size={"large"}
                     >
-                      {moment(periodicMaintenance.verifiedAt).format(
-                        DATETIME_FORMATS.SHORT
-                      )}
-                    </span>
+                      {periodicMaintenance.verifiedBy?.fullName === null &&
+                      periodicMaintenance.verifiedAt
+                        ? "Automatically"
+                            .match(/^\w|\b\w(?=\S+$)/g)
+                            ?.join()
+                            .replace(",", "")
+                            .toUpperCase()
+                        : periodicMaintenance?.verifiedBy?.fullName
+                            .match(/^\w|\b\w(?=\S+$)/g)
+                            ?.join()
+                            .replace(",", "")
+                            .toUpperCase()}
+                    </Avatar>
+                    <div className={classes["user-avatar-detail"]}>
+                      <div className={classes["user-avatar-name-wrapper"]}>
+                        {periodicMaintenance.verifiedBy?.fullName === null &&
+                        periodicMaintenance.verifiedAt ? (
+                          <span title={"Verified By"}>Automatically</span>
+                        ) : (
+                          <span title={"Verified By"}>
+                            {periodicMaintenance.verifiedBy?.fullName}
+                          </span>
+                        )}
+                        <span className={classes["dot"]}>•</span>
+                        <span title={"RCNO"}>
+                          {periodicMaintenance.verifiedBy?.rcno}
+                        </span>
+                      </div>
+                      <span
+                        title={"Verified At"}
+                        className={classes["user-avatar-level-two"]}
+                      >
+                        {moment(periodicMaintenance.verifiedAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
+              {periodicMaintenance.type === "Copy" && (
+                <>
+                  <span className={classes["collapse-title-two"]}>
+                    Current Meter Reading
+                  </span>
+                  <Divider style={{ marginTop: 0 }} />
+                </>
+              )}
+
               {periodicMaintenance.type === "Copy" && (
                 <PeriodicMaintenanceUpdateReading
                   periodicMaintenance={periodicMaintenance}
@@ -433,6 +418,8 @@ const PeriodicMaintenanceCard = ({
                 />
               )}
             </div>
+            <span className={classes["collapse-title-two"]}>Task</span>
+            <Divider style={{ marginTop: 0 }} />
             <PeriodicMaintenanceTaskList
               periodicMaintenance={periodicMaintenance}
               tasks={taskData}
@@ -475,7 +462,7 @@ const PeriodicMaintenanceCard = ({
                 <AddPeriodicMaintenanceObservation
                   periodicMaintenanceId={periodicMaintenance.id}
                   type={"Observation"}
-                  placeholder={"Add new observation"}
+                  placeholder={"Add Observation"}
                   isDeleted={isDeleted}
                   isVerified={periodicMaintenance?.verifiedAt !== null}
                   isCopy={periodicMaintenance.type === "Copy"}
@@ -489,4 +476,4 @@ const PeriodicMaintenanceCard = ({
   );
 };
 
-export default PeriodicMaintenanceCard;
+export default memo(PeriodicMaintenanceCard);
