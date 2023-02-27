@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { DELETE_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
@@ -59,7 +59,7 @@ const DeleteEntity = ({
     >
       {isDeleted ? (
         <div className={classes["btn-delete"]}>
-          <FaTrash
+          <FaTrashAlt
             style={{
               pointerEvents: isDeleted ? "none" : "auto",
               color: isDeleted ? "grey" : "inherit",
@@ -69,7 +69,7 @@ const DeleteEntity = ({
       ) : (
         <Tooltip title={"Delete"} placement="top">
           <div className={classes["btn-delete"]}>
-            <FaTrash
+            <FaTrashAlt
               style={{
                 pointerEvents: isDeleted ? "none" : "auto",
                 color: isDeleted ? "grey" : "inherit",

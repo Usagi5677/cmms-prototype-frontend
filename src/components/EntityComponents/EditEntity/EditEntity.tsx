@@ -16,7 +16,7 @@ import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { EDIT_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { Entity } from "../../../models/Entity/Entity";
@@ -99,7 +99,7 @@ const EditEntity = ({
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit
+        <FaRegEdit
           onClick={() => setVisible(true)}
           style={{
             pointerEvents: isDeleted ? "none" : "auto",

@@ -251,24 +251,22 @@ const ViewEntity = () => {
               {entityData?.status === "Dispose" ? (
                 <div className={classes["deleted"]}>DISPOSED</div>
               ) : null}
+              <span className={classes["main-title"]} title={"Machine Number"}>
+                {entityData?.machineNumber}
+              </span>
               <div className={classes["info-wrapper"]}>
                 <div className={classes["location-wrapper"]}>
-                  <FaMapMarkerAlt />
-                  <span className={classes["title"]}>
-                    {entityData?.location?.zone?.name}
+                  <span className={classes["second-title"]} title="Location">
+                    {entityData?.location?.name}
                   </span>
                   {entityData?.location?.zone?.name && (
-                    <span className={classes["dash"]}>-</span>
+                    <span className={classes["dot"]}>•</span>
                   )}
-                  <span>{entityData?.location?.name}</span>
+
+                  <span title="Zone" className={classes["second-title"]}>{entityData?.location?.zone?.name}</span>
                 </div>
               </div>
-              <div className={classes["title-wrapper"]}>
-                <EntityIcon entityType={entityData?.type?.entityType} />
-                <span className={classes["title"]}>
-                  {entityData?.machineNumber}
-                </span>
-              </div>
+
               <div className={classes["info-title-container"]}>
                 <div className={classes["grid-one"]}>
                   <div className={classes["info-title-wrapper"]}>
