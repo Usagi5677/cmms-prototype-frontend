@@ -263,7 +263,9 @@ const ViewEntity = () => {
                     <span className={classes["dot"]}>•</span>
                   )}
 
-                  <span title="Zone" className={classes["second-title"]}>{entityData?.location?.zone?.name}</span>
+                  <span title="Zone" className={classes["second-title"]}>
+                    {entityData?.location?.zone?.name}
+                  </span>
                 </div>
               </div>
 
@@ -322,6 +324,12 @@ const ViewEntity = () => {
                   )}
                 </div>
                 <div className={classes["grid-two"]}>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Brand</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.brand?.name}
+                    </div>
+                  </div>
                   {entityData?.measurement === "days" ? (
                     <div className={classes["info-title-wrapper"]}>
                       <div>Current running {entityData?.measurement}</div>
