@@ -2,7 +2,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
 import { Badge, Button, Checkbox, DatePicker, Empty } from "antd";
 import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import {
   INCOMPLETE_CHECKLISTS,
   INCOMPLETE_CHECKLIST_SUMMARY,
@@ -24,7 +24,7 @@ export interface IncompleteChecklistProps {
   setFirstLoad?: any;
 }
 
-export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
+const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
   type,
   setFirstLoad,
 }) => {
@@ -193,3 +193,5 @@ export const IncompleteChecklist: React.FC<IncompleteChecklistProps> = ({
     </div>
   );
 };
+
+export default memo(IncompleteChecklist)

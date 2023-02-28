@@ -1,8 +1,7 @@
 .collapse-container {
   width: 100%;
   background-color: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  
   overflow-y: auto;
   margin-bottom: 20px;
 }
@@ -11,7 +10,6 @@
   width: 100%;
   height: 100%;
   background-color: var(--card-bg);
-  border-radius: 20px;
   padding: 16px 10px;
 }
 
@@ -21,6 +19,7 @@
 .header-title {
   color: var(--text-primary);
   font-size: 18px;
+  font-weight: 700;
   text-align: left;
   width: 80px;
 }
@@ -51,14 +50,16 @@
 
 .title {
   color: var(--text-primary);
-  font-size: 12px;
+  font-size: 16px;
+  font-weight: 600;
 }
 .search {
-  width: 280px;
+  width: 100%;
 }
 .sub-title {
   padding: 6px 0;
-  font-size: 10px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 @media only screen and (min-width: 600px) {
@@ -75,9 +76,7 @@
   .item-container {
     flex-direction: column;
   }
-  .search {
-    width: 100%;
-  }
+  
 
   .reading-wrapper {
     margin-bottom: 0;
@@ -88,12 +87,7 @@
     margin-bottom: 20px;
     width: 100%;
   }
-  .title {
-    font-size: 14px;
-  }
-  .sub-title {
-    font-size: 12px;
-  }
+  
 }
 
 @media only screen and (min-width: 1300px) {

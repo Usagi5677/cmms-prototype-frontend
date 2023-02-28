@@ -1,5 +1,5 @@
 import { DatePicker, Empty, Spin, Table } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
 import { useLazyQuery } from "@apollo/client";
@@ -11,13 +11,11 @@ import { DATETIME_FORMATS } from "../../helpers/constants";
 import moment from "moment";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { SwapOutlined } from "@ant-design/icons";
 import { MeasurementSelector } from "../../components/common/MeasurementSelector";
 import { LocationSelector } from "../../components/Config/Location/LocationSelector";
 import { TypeSelector } from "../../components/Config/Type/TypeSelector";
 import { ZoneSelector } from "../../components/Config/Zone/ZoneSelector";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
-import { EntityType } from "../../models/Enums";
 import Search from "../../components/common/Search";
 import { EntityTypeSelector } from "../../components/common/EntityTypeSelector";
 import { DivisionSelector } from "../../components/Config/Division/DivisionSelector";
@@ -376,7 +374,7 @@ const GroupedLocationIncompleteTask = ({
             defaultValue={dates}
             format={DATETIME_FORMATS.DAY_MONTH_YEAR}
             className={classes["datepicker"]}
-            popupStyle={{ borderRadius: 20 }}
+            popupStyle={{ borderRadius: 6 }}
             disabledDate={(date) => date.isAfter(moment(), "day")}
             onChange={setDates}
             allowClear={false}
@@ -398,8 +396,6 @@ const GroupedLocationIncompleteTask = ({
         <div
           style={{
             width: "100%",
-            paddingRight: 10,
-            paddingLeft: 10,
             paddingBottom: 10,
           }}
         >
@@ -421,8 +417,6 @@ const GroupedLocationIncompleteTask = ({
         <div
           style={{
             width: "100%",
-            paddingRight: 10,
-            paddingLeft: 10,
           }}
         >
           <TypeSelector
@@ -533,4 +527,4 @@ const GroupedLocationIncompleteTask = ({
   );
 };
 
-export default GroupedLocationIncompleteTask;
+export default memo(GroupedLocationIncompleteTask);

@@ -1,7 +1,7 @@
 import { Divider } from "antd";
 import React from "react";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
-import { ChecklistWithIssue } from "./ChecklistWithIssue";
+import ChecklistWithIssue from "./ChecklistWithIssue";
 
 export interface ChecklistsWithIssueProps {}
 

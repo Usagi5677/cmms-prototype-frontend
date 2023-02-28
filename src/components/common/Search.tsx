@@ -8,7 +8,7 @@ const Search = ({
   margin,
   width,
   noIcon = false,
-  name = "Search"
+  name = "Search",
 }: {
   searchValue: string | number;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -16,7 +16,7 @@ const Search = ({
   margin?: string;
   width?: number | string;
   noIcon?: boolean;
-  name?: string
+  name?: string;
 }) => {
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -31,18 +31,25 @@ const Search = ({
       style={{
         display: "flex",
         border: "1px solid var(--border-1)",
-        borderRadius: 20,
-        padding: 5,
+        borderRadius: 6,
         height: 32,
-        paddingLeft: 10,
-        width: width ? width : 191,
+        width: width ? width : 192,
         margin,
         alignItems: "center",
       }}
     >
-      {!noIcon && <FaSearch style={{ color: "#ccc", paddingRight: 5, fontSize: 20 }} />}
+      {!noIcon && (
+        <FaSearch
+          style={{
+            color: "#ccc",
+            marginRight: 10,
+            marginLeft: 10,
+            fontSize: 16,
+          }}
+        />
+      )}
       <input
-        style={{ width: width ?? undefined }}
+        style={{ width: "100%", height:"100%" }}
         type="text"
         name=""
         id="SearchInput"
@@ -55,10 +62,10 @@ const Search = ({
         <FaTimes
           style={{
             color: "#ccc",
-            paddingRight: 10,
+            marginLeft: 6,
             cursor: "pointer",
-            fontSize: 25,
-            marginLeft: -25,
+            fontSize: 16,
+            marginRight: 6,
           }}
           onClick={onClick}
         />

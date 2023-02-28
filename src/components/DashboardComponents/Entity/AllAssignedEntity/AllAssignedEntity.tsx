@@ -1,5 +1,5 @@
 import { Avatar, Collapse, Empty, Image, Skeleton, Spin, Tooltip } from "antd";
-import { useContext, useEffect, useRef, useState } from "react";
+import { memo, useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../helpers/gql";
@@ -522,4 +522,4 @@ const AllAssignedEntity = () => {
   );
 };
 
-export default AllAssignedEntity;
+export default memo(AllAssignedEntity);

@@ -25,11 +25,11 @@ export const Issues: React.FC<IssuesProps> = ({}) => {
       style={{
         width: "100%",
         backgroundColor: "var(--card-bg)",
-        borderRadius: 20,
-        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+        borderRadius: 10,
+        boxShadow: "rgba(0, 0, 0, 0.24) 0px 2px 4px",
         padding: 10,
-        paddingTop: 5,
-        paddingLeft: 15,
+        paddingTop: 0,
+        paddingLeft: 10,
         border: "var(--card-border)",
       }}
     >

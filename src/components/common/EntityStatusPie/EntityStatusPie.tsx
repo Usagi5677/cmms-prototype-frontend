@@ -3,8 +3,9 @@ import Highcharts from "highcharts";
 import { GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
 import { useLazyQuery } from "@apollo/client";
 import { errorMessage } from "../../../helpers/gql";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import classes from "./EntityStatusPie.module.css";
+import { motion } from "framer-motion";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
@@ -15,10 +16,7 @@ const EntityStatusPie = () => {
     GET_ALL_ENTITY_STATUS_COUNT,
     {
       onError: (err) => {
-        errorMessage(
-          err,
-          "Error loading status count of entities."
-        );
+        errorMessage(err, "Error loading status count of entities.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -147,7 +145,7 @@ const EntityStatusPie = () => {
               ["Vehicle", vehicleWorking],
               ["Vessel", vesselWorking],
             ],
-            colors: ["#086a6d", "#0b989d", "#10dde4",],
+            colors: ["#086a6d", "#0b989d", "#10dde4"],
           },
           {
             name: "Breakdown",
@@ -157,7 +155,7 @@ const EntityStatusPie = () => {
               ["Vehicle", vehicleBreakdown],
               ["Vessel", vesselBreakdown],
             ],
-            colors: ["#d72215", "#eb4034", "#f2827a",],
+            colors: ["#d72215", "#eb4034", "#f2827a"],
           },
           {
             name: "Critical",
@@ -167,7 +165,7 @@ const EntityStatusPie = () => {
               ["Vehicle", vehicleCritical],
               ["Vessel", vesselCritical],
             ],
-            colors: ["#dba203", "#fcbf15", "#fdd461",],
+            colors: ["#dba203", "#fcbf15", "#fdd461"],
           },
           {
             name: "Dispose",
@@ -177,7 +175,7 @@ const EntityStatusPie = () => {
               ["Vehicle", vehicleDispose],
               ["Vessel", vesselDispose],
             ],
-            colors: ["#930808", "#ab0909", "#f20e0e",],
+            colors: ["#930808", "#ab0909", "#f20e0e"],
           },
         ],
       },
@@ -185,10 +183,23 @@ const EntityStatusPie = () => {
   }
 
   return (
-    <div className={classes["container"]}>
+    <motion.div
+    className={classes["container"]}
+      initial={{ x: -60, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.3,
+        },
+      }}
+      viewport={{ once: true }}
+    >
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    </motion.div>
   );
 };
 
-export default EntityStatusPie;
+export default memo(EntityStatusPie);

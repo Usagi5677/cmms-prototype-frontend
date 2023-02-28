@@ -219,7 +219,7 @@ a {
   --scrollbar-thumb-bg: #cdcdcd;
   --scrollbar-thumb-bg-hover: #a6a6a6;
   --scrollbar-thumb-bg-active: #606060;
-  --card-border: none;
+  --card-border: 1px solid #ccc;
   --calendar-border-top-color: rgba(0, 0, 0, 0.06);
   --ant-picker-calendar-date-today: var(--ant-primary-1);
   --highchart-menu-btn-border: none;
@@ -422,20 +422,20 @@ a {
 }
 
 .ant-modal-content {
-  border-radius: 20px !important;
+  border-radius: 10px !important;
 }
 
 .ant-modal-header {
-  border-top-right-radius: 20px !important;
-  border-top-left-radius: 20px !important;
+  border-top-right-radius: 10px !important;
+  border-top-left-radius: 10px !important;
 }
 
 .ant-popover-inner {
-  border-radius: 20px !important;
+  border-radius: 10px !important;
 }
 
 .ant-popover-buttons .ant-btn {
-  border-radius: 20px;
+  border-radius: 10px;
   padding-right: 10px;
   padding-left: 10px;
 }
@@ -542,7 +542,7 @@ em {
 }
 
 .ant-picker-panel-container {
-  border-radius: 20px !important;
+  border-radius: 6px !important;
 }
 
 .ant-dropdown {
@@ -577,7 +577,7 @@ em {
 }
 
 .ant-select:not(.ant-select-disabled) .ant-select-selector {
-  border-radius: 20px !important;
+  border-radius: 6px !important;
 }
 
 #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
@@ -674,12 +674,14 @@ em {
 #subEntityCollapse {
   margin-bottom: 20px;
 }
+
 #filterCollapse > .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   padding: 0 5px;
+  
 }
 #subEntityCollapse > .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   display: flex;
@@ -688,16 +690,16 @@ em {
   justify-content: space-between;
   padding: 10px 10px;
 }
+
+#filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+  margin-right: 6px;
+}
 #filterCollapse
   .ant-collapse
   > .ant-collapse-item
   > .ant-collapse-header
-  > div {
-  min-height: 20px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  > div:nth-child(2) {
+  margin-left: 6px;
 }
 
 #filterCollapse
@@ -713,7 +715,9 @@ em {
 #subEntityCollapse > .ant-collapse-ghost {
   border: var(--card-border) !important;
   background-color: var(--card-bg);
-  border-radius: 20px !important;
+  border-radius: 6px !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px !important;
+
 }
 
 @media only screen and (min-width: 1280px) {
@@ -785,7 +789,9 @@ em {
 .notRounded.ant-select:not(.ant-select-disabled) .ant-select-selector {
   border-radius: 0 !important;
 }
-
+.smallRounded.ant-select:not(.ant-select-disabled) .ant-select-selector {
+  border-radius: 6px !important;
+}
 .underlineOnHover:hover {
   text-decoration: underline;
 }
@@ -803,7 +809,23 @@ em {
   border-color: var(--ant-primary-color-hover);
   background-color: var(--ant-primary-color-hover);
 }
-
+.custPrimaryButton {
+  background-color: var(--ant-primary-color);
+  border-radius: 6px !important;
+  border-color: var(--ant-primary-color);
+  padding: 4px 6px !important; 
+  font-size: 12px !important;
+}
+.custPrimaryButton:hover {
+  border-color: var(--ant-primary-color-hover);
+  background-color: var(--ant-primary-color-hover);
+}
+@media only screen and (min-width: 600px) {
+  .custPrimaryButton {
+    padding: 4px 15px !important; 
+    font-size: 14px !important;
+  }
+}
 .deleteButton {
   color: var(--error);
   cursor: pointer;

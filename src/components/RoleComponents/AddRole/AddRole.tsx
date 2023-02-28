@@ -51,7 +51,7 @@ const AddRole = () => {
         type="primary"
         onClick={() => setVisible(true)}
         loading={loadingRole}
-        className={classes["custom-btn-primary"]}
+        className="custPrimaryButton"
       >
         Add Role
       </Button>

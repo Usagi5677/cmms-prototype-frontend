@@ -104,7 +104,7 @@ const AddUserRoles = () => {
         size="middle"
         type="primary"
         onClick={() => setVisible(true)}
-        className={classes["custom-btn-primary"]}
+        className="custPrimaryButton"
       >
         Add User Roles
       </Button>

@@ -118,7 +118,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
           type="primary"
           onClick={() => setVisible(true)}
           loading={loadingEntity}
-          className={classes["custom-btn-primary"]}
+          className="custPrimaryButton"
         >
           Add {includeSubEntity ? "Sub Entity" : entityType}
         </Button>

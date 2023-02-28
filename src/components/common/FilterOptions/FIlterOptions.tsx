@@ -1,6 +1,6 @@
 import { Button, Collapse, Divider, Form } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { FilterOptionProps } from "../../../models/Enums";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
@@ -63,6 +63,7 @@ const FilterOptions = ({
                   type="ghost"
                   onClick={handleCancel}
                   className="secondaryButton"
+                  style={{width: "100%"}}
                 >
                   Clear
                 </Button>
@@ -292,4 +293,4 @@ const FilterOptions = ({
   );
 };
 
-export default FilterOptions;
+export default memo(FilterOptions);

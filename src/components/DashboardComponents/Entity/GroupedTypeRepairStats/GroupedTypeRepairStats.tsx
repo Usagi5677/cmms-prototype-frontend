@@ -1,5 +1,5 @@
 import { DatePicker, Empty, Spin, Table } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./GroupedTypeRepairStats.module.css";
 import { useLazyQuery } from "@apollo/client";
@@ -536,4 +536,4 @@ const GroupedTypeRepairStats = ({
   );
 };
 
-export default GroupedTypeRepairStats;
+export default memo(GroupedTypeRepairStats);

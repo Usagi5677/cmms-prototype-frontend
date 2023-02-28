@@ -574,7 +574,7 @@ const ViewAllPeriodicMaintenances = () => {
                   htmlType="button"
                   size="middle"
                   type="primary"
-                  className={classes["custom-btn-primary"]}
+                  className="custPrimaryButton"
                 >
                   Calendar
                 </Button>

@@ -24,7 +24,7 @@ export const EntityTypeSelector: React.FC<DefaultStringArrayOptionProps> = ({
       showArrow
       placeholder="Select entity type"
       allowClear={true}
-      className={rounded ? undefined : "notRounded"}
+      className={rounded ? "undefined" : "notRounded"}
       showSearch
       filterOption={false}
       mode={multiple ? "multiple" : undefined}

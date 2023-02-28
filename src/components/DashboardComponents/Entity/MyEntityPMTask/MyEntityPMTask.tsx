@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "antd";
 import { motion } from "framer-motion";
-import { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect, useRef, memo } from "react";
 import CountUp from "react-countup";
 import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -548,10 +548,10 @@ const MyEntityPMTask = () => {
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={5}
       />
     </motion.div>
   );
 };
 
-export default MyEntityPMTask;
+export default memo(MyEntityPMTask);

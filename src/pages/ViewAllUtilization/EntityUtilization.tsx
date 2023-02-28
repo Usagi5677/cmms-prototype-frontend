@@ -9,7 +9,7 @@ import {
   Table,
   Tooltip,
 } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
 import { useLazyQuery } from "@apollo/client";
@@ -476,7 +476,7 @@ const EntityUtilization = ({
             defaultValue={dates}
             format={DATETIME_FORMATS.DAY_MONTH_YEAR}
             className={classes["datepicker"]}
-            popupStyle={{ borderRadius: 20 }}
+            popupStyle={{ borderRadius: 6 }}
             disabledDate={(date) => date.isAfter(moment(), "day")}
             onChange={setDates}
             allowClear={false}
@@ -674,4 +674,4 @@ const EntityUtilization = ({
   );
 };
 
-export default EntityUtilization;
+export default memo(EntityUtilization);

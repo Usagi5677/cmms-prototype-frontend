@@ -8,7 +8,7 @@ import {
   Table,
   Tooltip,
 } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import classes from "./EntityUtilization.module.css";
 import { useLazyQuery } from "@apollo/client";
@@ -672,4 +672,4 @@ const CloneEntityUtilization = ({
   );
 };
 
-export default CloneEntityUtilization;
+export default memo(CloneEntityUtilization);

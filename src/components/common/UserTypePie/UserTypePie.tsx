@@ -3,8 +3,9 @@ import Highcharts from "highcharts";
 import { GET_USER_TYPE_COUNT } from "../../../api/queries";
 import { useLazyQuery } from "@apollo/client";
 import { errorMessage } from "../../../helpers/gql";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import classes from "./UserTypePie.module.css";
+import { motion } from "framer-motion";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
@@ -122,10 +123,23 @@ const UserTypePie = () => {
   }
 
   return (
-    <div className={classes["container"]}>
+    <motion.div
+      className={classes["container"]}
+      initial={{ x: 60, opacity: 0 }}
+      whileInView={{
+        x: 0,
+        opacity: 1,
+        transition: {
+          ease: "easeOut",
+          duration: 0.3,
+          delay: 0.3,
+        },
+      }}
+      viewport={{ once: true }}
+    >
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    </motion.div>
   );
 };
 
-export default UserTypePie;
+export default memo(UserTypePie);

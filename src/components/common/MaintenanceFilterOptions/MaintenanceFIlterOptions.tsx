@@ -1,21 +1,13 @@
 import { Button, Collapse, DatePicker, Divider, Form } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useEffect } from "react";
 import { FilterOptionProps } from "../../../models/Enums";
 import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
-import { AssignedOrNotCheckbox } from "../AssignedOrNotCheckbox";
-import { BrandSelector } from "../../Config/Brand/BrandSelector";
-import { DepartmentSelector } from "../DepartmentSelector";
-import { EngineSelector } from "../EngineSelector";
 import PMStatusFilter from "../PMStatusFilter";
-import EntityStatusFilter from "../EntityStatusFilter";
-import { EntityTypeSelector } from "../EntityTypeSelector";
 import { MeasurementSelector } from "../MeasurementSelector";
 import Search from "../Search";
-
 import classes from "./MaintenanceFIlterOptions.module.css";
 
 const MaintenanceFilterOptions = ({
@@ -64,6 +56,7 @@ const MaintenanceFilterOptions = ({
                   type="ghost"
                   onClick={handleCancel}
                   className="secondaryButton"
+                  style={{width: "100%"}}
                 >
                   Clear
                 </Button>
@@ -109,6 +102,7 @@ const MaintenanceFilterOptions = ({
                       <DatePicker
                         onChange={options?.fromOptions!.onChange}
                         value={options?.fromOptions!.value!}
+                        style={{width: "100%"}}
                       />
                     </Form.Item>
                   </div>
@@ -122,6 +116,7 @@ const MaintenanceFilterOptions = ({
                       <DatePicker
                         onChange={options?.toOptions!.onChange}
                         value={options?.toOptions!.value!}
+                        style={{width: "100%"}}
                       />
                     </Form.Item>
                   </div>

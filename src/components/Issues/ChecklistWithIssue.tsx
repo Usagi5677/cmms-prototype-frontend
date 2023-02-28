@@ -2,7 +2,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useLazyQuery } from "@apollo/client";
 import { Badge, Button, Checkbox, DatePicker, Empty } from "antd";
 import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import {
   CHECKLISTS_WITH_ISSUE,
   CHECKLIST_WITH_ISSUE_SUMMARY,
@@ -23,7 +23,7 @@ export interface ChecklistWithIssueProps {
   type: string;
 }
 
-export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
+const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
   type,
 }) => {
   const { user: self } = useContext(UserContext);
@@ -187,3 +187,5 @@ export const ChecklistWithIssue: React.FC<ChecklistWithIssueProps> = ({
     </div>
   );
 };
+
+export default memo(ChecklistWithIssue)

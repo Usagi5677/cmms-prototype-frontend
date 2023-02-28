@@ -2,15 +2,16 @@
   width: 100%;
   min-height: 500px;
   background-color: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 4px;
   padding: 10px;
-  border: var(--card-border);
+  padding-top: 0;
+  border: var(--card-border)
 }
 
 .options-wrapper {
   width: 100%;
-  padding: 10px;
+  padding: 10px 0px;
   font-size: 0.75rem;
   display: flex;
   flex-direction: column;

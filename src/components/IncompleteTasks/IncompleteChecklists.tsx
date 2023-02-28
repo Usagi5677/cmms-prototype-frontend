@@ -1,7 +1,7 @@
 import { Divider } from "antd";
 import React from "react";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
-import { IncompleteChecklist } from "./IncompleteChecklist";
+import IncompleteChecklist from "./IncompleteChecklist";
 
 export interface IncompleteChecklistsProps {
   setFirstLoad?: any;
