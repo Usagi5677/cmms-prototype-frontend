@@ -15,6 +15,7 @@
   width: 100%;
   color: var(--text-primary);
   border: var(--card-border);
+  margin-bottom: 10px;
 }
 
 .info-container {
@@ -24,7 +25,7 @@
   padding: 10px 10px;
   font-size: 0.75rem;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border: var(--card-border);
 }
 
@@ -228,7 +229,13 @@
   .deleted {
     font-size: 22px;
   }
+  .tab-container {
+    margin-bottom: 20px;
+  }
   
+  .info-container {
+    margin-bottom: 20px;
+  }
 }
 @media only screen and (min-width: 800px) {
   .container {
@@ -250,12 +257,13 @@
   .dot {
     font-size: 14px;
   }
+  
 }
 
 @media only screen and (min-width: 1000px) {
   .first-wrapper {
     flex-direction: row;
-    margin-bottom: 20px;
+
   }
   .info-container {
     height: fit-content;
