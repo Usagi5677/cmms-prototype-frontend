@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { Button, Col, Form, Input, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { EDIT_ROLE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import Role from "../../../models/Role";
@@ -50,7 +50,7 @@ const EditRole = ({ role }: { role: Role }) => {
     <>
       <div className={classes["info-edit"]}>
         <Tooltip title="Edit">
-          <FaEdit onClick={() => setVisible(true)} />
+          <FaRegEdit onClick={() => setVisible(true)} />
         </Tooltip>
         <Modal
           visible={visible}
@@ -89,7 +89,7 @@ const EditRole = ({ role }: { role: Role }) => {
                   <Button
                     type="ghost"
                     onClick={handleCancel}
-                    className={classes["custom-btn-secondary"]}
+                    className="secondaryButton"
                   >
                     Cancel
                   </Button>
@@ -101,7 +101,7 @@ const EditRole = ({ role }: { role: Role }) => {
                     type="primary"
                     htmlType="submit"
                     loading={loadingRole}
-                    className={classes["custom-btn-primary"]}
+                    className="primaryButton"
                   >
                     Edit
                   </Button>

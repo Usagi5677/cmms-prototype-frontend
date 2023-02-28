@@ -171,7 +171,7 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  className={classes["custom-btn-secondary"]}
+                  className="secondaryButton"
                 >
                   Cancel
                 </Button>
@@ -183,7 +183,7 @@ const AddSparePR = ({ entityID }: { entityID: number }) => {
                   type="primary"
                   htmlType="submit"
                   loading={loadingSparePR}
-                  className={classes["custom-btn-primary"]}
+                  className="primaryButton"
                 >
                   Add
                 </Button>

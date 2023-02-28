@@ -187,7 +187,7 @@ const AddEntityAttachment = ({ setReload }: { setReload: any }) => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  className={classes["custom-btn-secondary"]}
+                  className="secondaryButton"
                 >
                   Cancel
                 </Button>
@@ -199,7 +199,7 @@ const AddEntityAttachment = ({ setReload }: { setReload: any }) => {
                   type="primary"
                   htmlType="submit"
                   loading={uploading}
-                  className={classes["custom-btn-primary"]}
+                  className="primaryButton"
                 >
                   Add
                 </Button>

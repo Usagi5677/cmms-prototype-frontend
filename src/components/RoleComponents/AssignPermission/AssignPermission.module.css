@@ -1,10 +1,10 @@
 .custom-btn-secondary {
-  border-radius: 20px !important;
+  border-radius: 2px !important;
 }
 
 .custom-btn-primary {
   background-color: var(--ant-primary-color);
-  border-radius: 20px !important;
+  border-radius: 2px !important;
   border-color: var(--ant-primary-color);
 }
 .info-edit {
@@ -21,24 +21,3 @@
   color: var(--ant-primary-color-hover);
 }
 
-.checkbox-wrapper {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-}
-.checkbox {
-  font-size: 10px !important;
-}
-
-@media only screen and (min-width: 850px) {
-  .checkbox-wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media only screen and (min-width: 1130px) {
-  .checkbox-wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}

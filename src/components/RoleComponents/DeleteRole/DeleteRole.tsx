@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { message, Popconfirm, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import { DELETE_ROLE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import classes from "./DeleteRole.module.css";
@@ -45,7 +45,7 @@ const DeleteRole = ({
     >
       <Tooltip title={"Delete"} placement="top">
         <div className={classes["btn-delete"]}>
-          <FaTrash />
+          <FaTrashAlt />
         </div>
       </Tooltip>
     </Popconfirm>

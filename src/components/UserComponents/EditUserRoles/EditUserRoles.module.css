@@ -1,10 +1,10 @@
 .custom-btn-secondary {
-  border-radius: 20px !important;
+  border-radius: 2px !important;
 }
 
 .custom-btn-primary {
   background-color: var(--ant-primary-color);
-  border-radius: 20px !important;
+  border-radius: 2px !important;
   border-color: var(--ant-primary-color);
 }
 .info-edit {

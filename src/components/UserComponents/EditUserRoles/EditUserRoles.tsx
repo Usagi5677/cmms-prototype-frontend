@@ -17,7 +17,7 @@ import { ADD_USER_ROLE } from "../../../api/mutations";
 import { GET_ROLES, ME_QUERY } from "../../../api/queries";
 import Role from "../../../models/Role";
 import User from "../../../models/User";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import classes from "./EditUserRoles.module.css";
 import { RoleTagStringToColor } from "../../../helpers/style";
 
@@ -109,7 +109,7 @@ const EditUserRoles = ({ userData }: { userData?: User }) => {
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit onClick={(e) => {setVisible(true)}} />
+        <FaRegEdit onClick={(e) => {setVisible(true)}} />
       </Tooltip>
       <Modal
         visible={visible}
@@ -148,7 +148,7 @@ const EditUserRoles = ({ userData }: { userData?: User }) => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  className={classes["custom-btn-secondary"]}
+                  className="secondaryButton"
                 >
                   Cancel
                 </Button>
@@ -160,7 +160,7 @@ const EditUserRoles = ({ userData }: { userData?: User }) => {
                   type="primary"
                   htmlType="submit"
                   loading={loadingAddUserRoles}
-                  style={{ borderRadius: 20 }}
+                  className="primaryButton"
                 >
                   Edit
                 </Button>

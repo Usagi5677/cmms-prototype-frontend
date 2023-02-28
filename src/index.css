@@ -791,12 +791,12 @@ em {
 }
 
 .secondaryButton {
-  border-radius: 20px !important;
+  border-radius: 2px !important;
 }
 
 .primaryButton {
   background-color: var(--ant-primary-color);
-  border-radius: 20px !important;
+  border-radius: 2px !important;
   border-color: var(--ant-primary-color);
 }
 .primaryButton:hover {

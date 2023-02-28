@@ -289,7 +289,7 @@ const EditEntity = ({
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  className={classes["custom-btn-secondary"]}
+                  className="secondaryButton"
                 >
                   Cancel
                 </Button>
@@ -301,7 +301,7 @@ const EditEntity = ({
                   type="primary"
                   htmlType="submit"
                   loading={loadingEntity}
-                  className={classes["custom-btn-primary"]}
+                  className="primaryButton"
                 >
                   Edit
                 </Button>

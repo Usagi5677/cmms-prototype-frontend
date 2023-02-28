@@ -4,7 +4,6 @@ import {
   Button,
   Modal,
   Form,
-  Input,
   Row,
   Col,
   Select,
@@ -12,10 +11,7 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import {
-  CREATE_BRAND,
-  CREATE_INTER_SERVICE_COLOR,
-} from "../../../api/mutations";
+import { CREATE_INTER_SERVICE_COLOR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import { BrandSelector } from "../Brand/BrandSelector";
 import { TypeSelector } from "../Type/TypeSelector";
@@ -166,14 +162,14 @@ export const CreateInterServiceColor: React.FC<
           >
             <InputNumber min={0} style={{ width: "100%" }} />
           </Form.Item>
-          <div style={{ opacity: 0.5 }}>
-            {`If inter service >= 'greater than' value, it will
-            give red.`}
+          <div style={{ opacity: 0.5, fontStyle:"italic" }}>
+            {`If Interservice >= "Greater Than" value, it will
+            give red color.`}
           </div>
-          <div style={{ opacity: 0.5 }}>
-            {`If inter service >= 'less than' and inter service is <= 'greater than', it will give orange`}
+          <div style={{ opacity: 0.5, fontStyle:"italic" }}>
+            {`If Interservice >= "Less Than" and interservice is <= "Greater Than", then it will give orange color.`}
           </div>
-          <div style={{ opacity: 0.5, marginBottom: 10 }}>
+          <div style={{ opacity: 0.5, marginBottom: 10, fontStyle:"italic" }}>
             Default is green.
           </div>
           <Row justify="end" gutter={16}>

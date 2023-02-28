@@ -185,7 +185,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
                   <Button
                     type="ghost"
                     onClick={handleCancel}
-                    className={classes["custom-btn-secondary"]}
+                    className="secondaryButton"
                   >
                     Cancel
                   </Button>
@@ -197,7 +197,7 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
                     type="primary"
                     htmlType="submit"
                     loading={loadingAssign}
-                    className={classes["custom-btn-primary"]}
+                    className="primaryButton"
                   >
                     Assign
                   </Button>

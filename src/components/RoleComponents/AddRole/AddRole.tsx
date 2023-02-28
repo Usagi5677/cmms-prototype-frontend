@@ -91,7 +91,7 @@ const AddRole = () => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  className={classes["custom-btn-secondary"]}
+                  className="secondaryButton"
                 >
                   Cancel
                 </Button>
@@ -103,7 +103,7 @@ const AddRole = () => {
                   type="primary"
                   htmlType="submit"
                   loading={loadingRole}
-                  className={classes["custom-btn-primary"]}
+                  className="primaryButton"
                 >
                   Add
                 </Button>
