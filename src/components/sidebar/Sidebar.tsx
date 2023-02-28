@@ -14,7 +14,7 @@ import {
 import { RiSailboatFill } from "react-icons/ri";
 import classes from "./Sidebar.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import UserContext from "../../contexts/UserContext";
 import { Badge, Menu, Tooltip } from "antd";
 import { useLazyQuery } from "@apollo/client";
@@ -39,6 +39,7 @@ interface SidebarItem {
 const Sidebar = ({ onClick }: { onClick: () => void }) => {
   const { user: self } = useContext(UserContext);
   const { pathname } = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
 
   const [allEntityBreakdownCount, { data: breakdownData }] = useLazyQuery(
@@ -286,6 +287,7 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
               key={item.path}
               icon={item.icon}
               className={classes["newMenuItem"]}
+              onClick={onClick}
             >
               <Link to={item.path}>
                 <span style={{ marginRight: 10 }}>{item.name}</span>
@@ -299,4 +301,4 @@ const Sidebar = ({ onClick }: { onClick: () => void }) => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);
