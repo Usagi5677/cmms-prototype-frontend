@@ -227,8 +227,9 @@ const EntityBreakdownCard = ({
                         </span>
                       </div>
                     </Tooltip>
-
-                    <Divider className={classes["divider"]} type="vertical" />
+                    {!breakdown?.completedAt && (
+                      <Divider className={classes["divider"]} type="vertical" />
+                    )}
                     {!breakdown?.completedAt && (
                       <Tooltip title="Duration">
                         <div className={classes["icon-text-opac-wrapper"]}>
