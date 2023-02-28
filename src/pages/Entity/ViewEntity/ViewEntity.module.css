@@ -6,9 +6,9 @@
 
 .tab-container {
   background-color: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
-  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 2px 4px;
+  padding: 10px;
   font-size: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -19,8 +19,8 @@
 
 .info-container {
   background-color: var(--card-bg);
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 4px;
   padding: 10px 10px;
   font-size: 0.75rem;
   width: 100%;
@@ -35,7 +35,7 @@
 }
 
 .custom-btn-secondary {
-  border-radius: 20px !important;
+  border-radius: 6px !important;
 }
 
 .tab-header-wrapper {

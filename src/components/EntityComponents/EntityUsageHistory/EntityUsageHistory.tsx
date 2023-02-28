@@ -145,8 +145,8 @@ const EntityUsageHistory = ({ entity }: { entity?: Entity }) => {
         <DatePicker.RangePicker
           defaultValue={dates}
           format={DATETIME_FORMATS.DAY_MONTH_YEAR}
-          style={{ width: 350, borderRadius: 20 }}
-          popupStyle={{ borderRadius: 20 }}
+          style={{ width: 350, borderRadius: 6 }}
+          popupStyle={{ borderRadius: 6 }}
           disabledDate={(date) => date.isAfter(moment(), "day")}
           onChange={setDates}
           allowClear={false}
