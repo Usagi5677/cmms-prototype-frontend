@@ -1,16 +1,13 @@
-import { FaBars, FaCog } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import classes from "./Navbar.module.css";
 import Notification from "../Notification/Notification";
 import NavUser from "./NavUser";
-import { Tag } from "antd";
-import { useContext } from "react";
-import UserContext from "../../contexts/UserContext";
+import { memo } from "react";
 import ThemeChange from "../ThemeChange/ThemeChange";
 import TaskNotification from "../TaskNotification/TaskNotification";
 
 const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
-  const { user: self } = useContext(UserContext);
   return (
     <nav className={classes["navbar"]}>
       <div className={classes["navbar-wrapper"]}>
@@ -37,4 +34,4 @@ const Navbar = ({ openSidebar }: { openSidebar: () => void }) => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);
