@@ -181,9 +181,11 @@ const PeriodicMaintenanceCard = ({
                     {periodicMaintenance?.type !== "Template" && (
                       <div>{summaryMatchCurrent()}</div>
                     )}
-                    <span className={classes["title"]} title="Name">
-                      {periodicMaintenance?.name}
-                    </span>
+                    <Tooltip title="Name">
+                      <span className={classes["title"]}>
+                        {periodicMaintenance?.name}
+                      </span>
+                    </Tooltip>
                   </div>
 
                   <div className={classes["actions"]}>
@@ -195,7 +197,7 @@ const PeriodicMaintenanceCard = ({
                           isDeleted || periodicMaintenance?.verifiedAt !== null
                         }
                         isCopy={
-                          periodicMaintenance.type === "Copy" ? true : false
+                          periodicMaintenance?.type === "Copy" ? true : false
                         }
                       />
                     ) : null}
@@ -221,14 +223,14 @@ const PeriodicMaintenanceCard = ({
                           isDeleted || periodicMaintenance?.verifiedAt !== null
                         }
                         isCopy={
-                          periodicMaintenance.type === "Copy" ? true : false
+                          periodicMaintenance?.type === "Copy" ? true : false
                         }
                       />
                     ) : null}
                   </div>
                 </div>
                 <div className={classes["level-two"]}>
-                  {periodicMaintenance.type === "Template" ? (
+                  {periodicMaintenance?.type === "Template" ? (
                     <Checkbox
                       checked={data?.checkCopyPMExist}
                       className={classes["checkbox"]}
@@ -243,7 +245,7 @@ const PeriodicMaintenanceCard = ({
                       onChange={(e) =>
                         toggleActivate({
                           variables: {
-                            id: periodicMaintenance.id,
+                            id: periodicMaintenance?.id,
                           },
                         })
                       }
@@ -254,9 +256,9 @@ const PeriodicMaintenanceCard = ({
                       )}
                     </Checkbox>
                   ) : (
-                    periodicMaintenance.type === "Copy" && (
+                    periodicMaintenance?.type === "Copy" && (
                       <Checkbox
-                        checked={periodicMaintenance.verifiedAt !== null}
+                        checked={periodicMaintenance?.verifiedAt !== null}
                         className={classes["checkbox"]}
                         disabled={
                           !isAssignedType("Admin", entity!, self) || isDeleted
@@ -264,7 +266,7 @@ const PeriodicMaintenanceCard = ({
                         onChange={(e) =>
                           toggleVerify({
                             variables: {
-                              id: periodicMaintenance.id,
+                              id: periodicMaintenance?.id,
                               verify: e.target.checked,
                             },
                           })
@@ -280,18 +282,24 @@ const PeriodicMaintenanceCard = ({
                   <Divider className={classes["divider"]} type="vertical" />
                   {periodicMaintenance?.value && (
                     <div className={classes["reading"]}>
-                      <span title="Value">{periodicMaintenance?.value} </span>
-                      <span title="Measurement" className={classes["suffix"]}>
-                        {periodicMaintenance?.measurement === "Kilometer"
-                          ? "km"
-                          : periodicMaintenance?.measurement === "Hour"
-                          ? "hr"
-                          : periodicMaintenance?.measurement === "Day" ||
-                            periodicMaintenance?.measurement === "Week" ||
-                            periodicMaintenance?.measurement === "Month"
-                          ? "days"
-                          : ""}
-                      </span>
+                      <Tooltip title="Value">
+                        <span>
+                          {periodicMaintenance?.value?.toLocaleString()}{" "}
+                        </span>
+                      </Tooltip>
+                      <Tooltip title="Measurement">
+                        <span className={classes["suffix"]}>
+                          {periodicMaintenance?.measurement === "Kilometer"
+                            ? "km"
+                            : periodicMaintenance?.measurement === "Hour"
+                            ? "hr"
+                            : periodicMaintenance?.measurement === "Day" ||
+                              periodicMaintenance?.measurement === "Week" ||
+                              periodicMaintenance?.measurement === "Month"
+                            ? "days"
+                            : ""}
+                        </span>
+                      </Tooltip>
                     </div>
                   )}
                   {periodicMaintenance?.currentMeterReading !== null && (
@@ -300,14 +308,16 @@ const PeriodicMaintenanceCard = ({
 
                   {periodicMaintenance?.currentMeterReading !== null && (
                     <div className={classes["reading"]}>
-                      <span>{periodicMaintenance?.currentMeterReading}</span>
+                      <span>
+                        {periodicMaintenance?.currentMeterReading?.toLocaleString()}
+                      </span>
                       <span className={classes["suffix"]}>current reading</span>
                     </div>
                   )}
                 </div>
 
-                {periodicMaintenance.tasks!.length > 0 &&
-                  periodicMaintenance.type === "Copy" && (
+                {periodicMaintenance?.tasks!.length > 0 &&
+                  periodicMaintenance?.type === "Copy" && (
                     <Progress
                       percent={progressPercentage}
                       strokeWidth={5}
@@ -320,14 +330,17 @@ const PeriodicMaintenanceCard = ({
                     <span>{periodicMaintenance?.id}</span>
                   </div>
                   <Divider className={classes["divider"]} type="vertical" />
-                  <div className={classes["icon-text-opac"]} title="Created At">
-                    <FaRegClock className={classes["icon"]} />
-                    <span>
-                      {moment(periodicMaintenance?.createdAt).format(
-                        DATETIME_FORMATS.SHORT
-                      )}
-                    </span>
-                  </div>
+                  <Tooltip title="Created At">
+                    <div className={classes["icon-text-opac"]}>
+                      <FaRegClock className={classes["icon"]} />
+                      <span>
+                        {moment(periodicMaintenance?.createdAt).format(
+                          DATETIME_FORMATS.SHORT
+                        )}
+                      </span>
+                    </div>
+                  </Tooltip>
+
                   <Divider className={classes["divider"]} type="vertical" />
                   <PeriodicMaintenanceStatusTag
                     status={periodicMaintenance?.status as pmstatus}
@@ -340,11 +353,11 @@ const PeriodicMaintenanceCard = ({
               </div>
             </>
           }
-          key={periodicMaintenance.id}
+          key={periodicMaintenance?.id}
         >
           <div className={classes["collapse-container"]}>
             <div className={classes["info-wrapper"]}>
-              {periodicMaintenance.verifiedAt && (
+              {periodicMaintenance?.verifiedAt && (
                 <div>
                   <span className={classes["collapse-title"]}>
                     Verified <CheckCircleOutlined />
@@ -354,16 +367,16 @@ const PeriodicMaintenanceCard = ({
                     <Avatar
                       style={{
                         backgroundColor: stringToColor(
-                          periodicMaintenance.verifiedBy?.fullName === null &&
-                            periodicMaintenance.verifiedAt
+                          periodicMaintenance?.verifiedBy?.fullName === null &&
+                            periodicMaintenance?.verifiedAt
                             ? "Automatically"
                             : periodicMaintenance?.verifiedBy?.fullName!
                         ),
                       }}
                       size={"large"}
                     >
-                      {periodicMaintenance.verifiedBy?.fullName === null &&
-                      periodicMaintenance.verifiedAt
+                      {periodicMaintenance?.verifiedBy?.fullName === null &&
+                      periodicMaintenance?.verifiedAt
                         ? "Automatically"
                             .match(/^\w|\b\w(?=\S+$)/g)
                             ?.join()
@@ -377,32 +390,35 @@ const PeriodicMaintenanceCard = ({
                     </Avatar>
                     <div className={classes["user-avatar-detail"]}>
                       <div className={classes["user-avatar-name-wrapper"]}>
-                        {periodicMaintenance.verifiedBy?.fullName === null &&
-                        periodicMaintenance.verifiedAt ? (
-                          <span title={"Verified By"}>Automatically</span>
+                        {periodicMaintenance?.verifiedBy?.fullName === null &&
+                        periodicMaintenance?.verifiedAt ? (
+                          <Tooltip title={"Verified By"}>
+                            <span>Automatically</span>
+                          </Tooltip>
                         ) : (
-                          <span title={"Verified By"}>
-                            {periodicMaintenance.verifiedBy?.fullName}
-                          </span>
+                          <Tooltip title={"Verified By"}>
+                            <span>
+                              {periodicMaintenance?.verifiedBy?.fullName}
+                            </span>
+                          </Tooltip>
                         )}
                         <span className={classes["dot"]}>•</span>
-                        <span title={"RCNO"}>
-                          {periodicMaintenance.verifiedBy?.rcno}
-                        </span>
+                        <Tooltip title={"RCNO"}>
+                          <span>{periodicMaintenance?.verifiedBy?.rcno}</span>
+                        </Tooltip>
                       </div>
-                      <span
-                        title={"Verified At"}
-                        className={classes["user-avatar-level-two"]}
-                      >
-                        {moment(periodicMaintenance.verifiedAt).format(
-                          DATETIME_FORMATS.SHORT
-                        )}
-                      </span>
+                      <Tooltip title={"Verified At"}>
+                        <span className={classes["user-avatar-level-two"]}>
+                          {moment(periodicMaintenance?.verifiedAt).format(
+                            DATETIME_FORMATS.SHORT
+                          )}
+                        </span>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
               )}
-              {periodicMaintenance.type === "Copy" && (
+              {periodicMaintenance?.type === "Copy" && (
                 <>
                   <span className={classes["collapse-title-two"]}>
                     Current Meter Reading
@@ -411,7 +427,7 @@ const PeriodicMaintenanceCard = ({
                 </>
               )}
 
-              {periodicMaintenance.type === "Copy" && (
+              {periodicMaintenance?.type === "Copy" && (
                 <PeriodicMaintenanceUpdateReading
                   periodicMaintenance={periodicMaintenance}
                   isVerified={periodicMaintenance?.verifiedAt !== null}
@@ -442,10 +458,10 @@ const PeriodicMaintenanceCard = ({
                   observation?.type === "Observation" && (
                     <CommentCard
                       comment={observation}
-                      key={observation.id}
+                      key={observation?.id}
                       isDeleted={isDeleted}
                       isVerified={periodicMaintenance?.verifiedAt !== null}
-                      isCopy={periodicMaintenance.type === "Copy"}
+                      isCopy={periodicMaintenance?.type === "Copy"}
                       mutation={DELETE_PERIODIC_MAINTENANCE_COMMENT}
                       refetchQueries={[
                         "periodicMaintenances",
@@ -457,15 +473,15 @@ const PeriodicMaintenanceCard = ({
               })}
             </div>
 
-            {!isDeleted && !isOlder && periodicMaintenance.type === "Copy" && (
+            {!isDeleted && !isOlder && periodicMaintenance?.type === "Copy" && (
               <div className={classes["add-observation-wrapper"]}>
                 <AddPeriodicMaintenanceObservation
-                  periodicMaintenanceId={periodicMaintenance.id}
+                  periodicMaintenanceId={periodicMaintenance?.id}
                   type={"Observation"}
                   placeholder={"Add Observation"}
                   isDeleted={isDeleted}
                   isVerified={periodicMaintenance?.verifiedAt !== null}
-                  isCopy={periodicMaintenance.type === "Copy"}
+                  isCopy={periodicMaintenance?.type === "Copy"}
                 />
               </div>
             )}

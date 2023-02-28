@@ -111,7 +111,15 @@ const EntityCard = ({
               <div
                 className={classes["header-container"]}
                 onClick={() => setIsOpen(!isOpen)}
-                onDoubleClick={() => navigate(`/entity/${entity.id}`)}
+                onDoubleClick={() =>
+                  navigate(
+                    `${
+                      includePM
+                        ? `/entity/${entity.id}?tab=periodicMaintenance`
+                        : `/entity/${entity.id}`
+                    }`
+                  )
+                }
               >
                 <div
                   className={classes["inner-block-wrapper"]}
@@ -297,7 +305,6 @@ const EntityCard = ({
                               }
                               title={`Interservice`}
                             >
-                              
                               {interService.toLocaleString()}
                               <div className={classes["measurement"]}>
                                 {entity?.measurement}
@@ -383,7 +390,13 @@ const EntityCard = ({
                         entity?.parentEntityId && (
                           <AssignSubEntity entity={entity} />
                         )}
-                      <Link to={"/entity/" + entity.id}>
+                      <Link
+                        to={`${
+                          includePM
+                            ? `/entity/${entity.id}?tab=periodicMaintenance`
+                            : `/entity/${entity.id}`
+                        }`}
+                      >
                         <Tooltip title="Open">
                           <FaArrowAltCircleRight
                             className={classes["button"]}

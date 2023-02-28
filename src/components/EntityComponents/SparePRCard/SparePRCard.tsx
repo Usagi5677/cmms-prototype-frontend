@@ -49,9 +49,11 @@ const SparePRCard = ({
               >
                 <div className={classes["level-wrapper"]}>
                   <div className={classes["level-one"]}>
-                    <span title={"Detail"} className={classes["title"]}>
-                      {sparePR?.name}
-                    </span>
+                    <Tooltip title={"Detail"}>
+                      <span className={classes["title"]}>
+                        {sparePR?.name}
+                      </span>
+                    </Tooltip>
                     <div className={classes["actions"]}>
                       <RightOutlined
                         style={{
@@ -140,15 +142,16 @@ const SparePRCard = ({
                       <span>{sparePR?.id}</span>
                     </div>
                     <Divider className={classes["divider"]} type="vertical" />
-                    <div className={classes["icon-text-opac-wrapper"]}>
-                      <Tooltip title="Created by">
+                    <Tooltip title="Created By">
+                      <div className={classes["icon-text-opac-wrapper"]}>
                         <FaRegUser />
-                      </Tooltip>
-                      <span>
-                        {sparePR?.createdBy?.fullName}{" "}
-                        {"(" + sparePR?.createdBy?.rcno + ")"}
-                      </span>
-                    </div>
+                        <span>
+                          {sparePR?.createdBy?.fullName}{" "}
+                          {"(" + sparePR?.createdBy?.rcno + ")"}
+                        </span>
+                      </div>
+                    </Tooltip>
+
                     {sparePR?.completedAt && (
                       <Divider className={classes["divider"]} type="vertical" />
                     )}

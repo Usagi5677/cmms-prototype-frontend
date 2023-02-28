@@ -8,6 +8,7 @@ import { Tooltip } from "antd";
 import { FaRegClock } from "react-icons/fa";
 import { ToolOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
+import { memo } from "react";
 
 const PMCardV2 = ({
   pm,
@@ -34,14 +35,14 @@ const PMCardV2 = ({
     measurement = "days";
   }
 
-  const dueIn = (currentRunning ?? 0) - (pm.dueAt ?? 0);
+  const dueIn = (currentRunning ?? 0) - (pm?.dueAt ?? 0);
   return (
     <div
       className={classes["container"]}
       style={{ borderLeft: `6px solid ${color}` }}
       onClick={() =>
         navigate(
-          `/entity/${entityId}?tab=periodicMaintenance&createdAt=${pm.createdAt}`
+          `/entity/${entityId}?tab=periodicMaintenance&createdAt=${pm?.createdAt}`
         )
       }
     >
@@ -72,7 +73,7 @@ const PMCardV2 = ({
           </Tooltip>
 
           <span className={classes["title"]}>
-            {moment(pm.createdAt)
+            {moment(pm?.createdAt)
               .add(1, "days")
               .format(DATETIME_FORMATS.DAY_MONTH)}
           </span>
@@ -90,7 +91,7 @@ const PMCardV2 = ({
             <FaRegClock />
           </Tooltip>
           <span className={classes["title"]}>
-            {pm.dueAt?.toLocaleString() ?? 0} ({measurement})
+            {pm?.dueAt?.toLocaleString() ?? 0} ({measurement})
           </span>
         </div>
       </div>
@@ -98,4 +99,4 @@ const PMCardV2 = ({
   );
 };
 
-export default PMCardV2;
+export default memo(PMCardV2);

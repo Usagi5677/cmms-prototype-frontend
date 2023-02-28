@@ -103,9 +103,11 @@ const EntityBreakdownCard = ({
                         )}
                       </div>
                       {breakdown?.details[0]?.description && (
-                        <span title={"Detail"} className={classes["title"]}>
-                          {breakdown?.details[0]?.description}
-                        </span>
+                        <Tooltip title={"Detail"}>
+                          <span className={classes["title"]}>
+                            {breakdown?.details[0]?.description}
+                          </span>
+                        </Tooltip>
                       )}
                     </div>
                     <div className={classes["actions"]}>
@@ -216,26 +218,28 @@ const EntityBreakdownCard = ({
                       <span>{breakdown?.id}</span>
                     </div>
                     <Divider className={classes["divider"]} type="vertical" />
-                    <div className={classes["icon-text-opac-wrapper"]}>
-                      <Tooltip title="Created by">
+                    <Tooltip title="Created By">
+                      <div className={classes["icon-text-opac-wrapper"]}>
                         <FaRegUser />
-                      </Tooltip>
-                      <span>
-                        {breakdown?.createdBy?.fullName}{" "}
-                        {"(" + breakdown?.createdBy?.rcno + ")"}
-                      </span>
-                    </div>
+                        <span>
+                          {breakdown?.createdBy?.fullName}{" "}
+                          {"(" + breakdown?.createdBy?.rcno + ")"}
+                        </span>
+                      </div>
+                    </Tooltip>
+
                     <Divider className={classes["divider"]} type="vertical" />
                     {!breakdown?.completedAt && (
-                      <div className={classes["icon-text-opac-wrapper"]}>
-                        <Tooltip title="Breakdown Duration">
+                      <Tooltip title="Duration">
+                        <div className={classes["icon-text-opac-wrapper"]}>
                           <FaCarCrash className={classes["icon"]} />
-                        </Tooltip>
-
-                        <span>{moment(breakdown?.createdAt).fromNow()}</span>
-                      </div>
+                          <span>{moment(breakdown?.createdAt).fromNow()}</span>
+                        </div>
+                      </Tooltip>
                     )}
-                    {breakdown?.completedAt && <Divider className={classes["divider"]} type="vertical" />}
+                    {breakdown?.completedAt && (
+                      <Divider className={classes["divider"]} type="vertical" />
+                    )}
                     {breakdown?.completedAt && (
                       <Tooltip title="Completed Date">
                         <div
