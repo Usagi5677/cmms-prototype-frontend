@@ -55,15 +55,15 @@ const GetLatestEntityImage = ({
   return (
     <div>
       {file && isImage ? (
-        <div className={classes["image"]}>
-          <Image src={file} style={{aspectRatio: "16/9", objectFit: "contain"}}/>
+        <div className={classes["image-container"]}>
+          <Image src={file} className={classes["image"]}/>
         </div>
       ) : fileLoading ? (
-        <div className={classes["image"]}>
+        <div className={classes["image-container"]}>
           <Spin />
         </div>
       ) : (
-        <div className={classes["image"]}>No image</div>
+        <div className={classes["image-container"]}>No image</div>
       )}
     </div>
   );

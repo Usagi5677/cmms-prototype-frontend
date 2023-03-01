@@ -37,7 +37,6 @@
 .reading-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
   margin-bottom: 10px;
 }
 
@@ -98,5 +97,11 @@
 @media only screen and (min-width: 1500px) {
   .reading-container {
     flex-direction: row;
+  }
+  .reading-wrapper {
+    margin-bottom: 0;
+  }
+  .reading-wrapper:nth-child(1) {
+    padding-right: 10px;
   }
 }

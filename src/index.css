@@ -680,7 +680,7 @@ em {
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  padding: 0 5px;
+  padding: 4px 10px;
   
 }
 #subEntityCollapse > .ant-collapse > .ant-collapse-item > .ant-collapse-header {
@@ -694,13 +694,7 @@ em {
 #filterCollapse .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
   margin-right: 6px;
 }
-#filterCollapse
-  .ant-collapse
-  > .ant-collapse-item
-  > .ant-collapse-header
-  > div:nth-child(2) {
-  margin-left: 6px;
-}
+
 
 #filterCollapse
   .ant-collapse-ghost
@@ -723,7 +717,7 @@ em {
 @media only screen and (min-width: 1280px) {
   #filterCollapse {
     margin-right: 0;
-    margin-left: 20px;
+    margin-left: 10px;
     margin-bottom: 0;
   }
   #subEntityCollapse {
