@@ -3,6 +3,7 @@ import {
   Avatar,
   Checkbox,
   Collapse,
+  DatePicker,
   Empty,
   Image,
   Skeleton,
@@ -10,6 +11,7 @@ import {
   Tooltip,
 } from "antd";
 import { motion } from "framer-motion";
+import moment from "moment";
 import { useContext, useState, useEffect, useRef, memo } from "react";
 import CountUp from "react-countup";
 import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
@@ -19,6 +21,7 @@ import {
   GET_ALL_ENTITY_PM_TASK,
 } from "../../../../api/queries";
 import UserContext from "../../../../contexts/UserContext";
+import { DATETIME_FORMATS } from "../../../../helpers/constants";
 import { getListImage } from "../../../../helpers/getListImage";
 import { errorMessage } from "../../../../helpers/gql";
 import { stringToColor } from "../../../../helpers/style";
@@ -40,7 +43,10 @@ const MyEntityPMTask = () => {
   const [timerId, setTimerId] = useState(null);
   const [locationIds, setLocationIds] = useState([]);
   const [zoneIds, setZoneIds] = useState([]);
-  const [complete, setComplete] = useState(false);
+  const [dates, setDates] = useState<any>([
+    moment().subtract(1, "day"),
+    moment(),
+  ]);
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -49,9 +55,11 @@ const MyEntityPMTask = () => {
       zoneIds: number[];
       complete: boolean;
       assignedToId: number;
+      from: Date;
+      to: Date;
     }
   >({
-    first: 5,
+    first: 6,
     last: null,
     before: null,
     after: null,
@@ -60,6 +68,8 @@ const MyEntityPMTask = () => {
     zoneIds: [],
     complete: false,
     assignedToId: self.id,
+    from: dates[0].toISOString(),
+    to: dates[1].toISOString(),
   });
 
   const [
@@ -69,7 +79,7 @@ const MyEntityPMTask = () => {
     onError: (err) => {
       errorMessage(
         err,
-        "Error loading my entity periodic maintenance task status count."
+        "Error loading my periodic maintenance task status count."
       );
     },
     fetchPolicy: "network-only",
@@ -80,20 +90,25 @@ const MyEntityPMTask = () => {
     GET_ALL_ENTITY_PM_TASK,
     {
       onError: (err) => {
-        errorMessage(
-          err,
-          "Error loading my entity periodic maintenance tasks."
-        );
+        errorMessage(err, "Error loading my periodic maintenance tasks.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
     }
   );
 
-  // Fetch pm when component mounts or when the filter object changes
+  // Fetch attachments when component mounts or when the filter object changes
   useEffect(() => {
-    getAllEntityPeriodicMaintenanceTask({ variables: filter });
-    getAllEntityPMTaskStatusCount({ variables: filter });
+    getAllEntityPeriodicMaintenanceTask({
+      variables: {
+        ...filter,
+      },
+    });
+    getAllEntityPMTaskStatusCount({
+      variables: {
+        ...filter,
+      },
+    });
   }, [filter, getAllEntityPeriodicMaintenanceTask]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
@@ -104,7 +119,8 @@ const MyEntityPMTask = () => {
     value: string,
     locationIdsValue: number[],
     zoneIdsValue: number[],
-    completeValue: boolean
+    fromValue: any,
+    toValue: any
   ) => {
     if (timerId) clearTimeout(timerId);
     setTimerId(
@@ -115,8 +131,9 @@ const MyEntityPMTask = () => {
           search: value,
           locationIds: locationIdsValue,
           zoneIds: zoneIdsValue,
-          complete: completeValue,
-          first: 5,
+          from: fromValue,
+          to: toValue,
+          first: 6,
           last: null,
           before: null,
           after: null,
@@ -132,15 +149,21 @@ const MyEntityPMTask = () => {
       return;
     }
     // eslint-disable-next-line no-restricted-globals
-    searchDebounced(search, locationIds, zoneIds, complete);
+    searchDebounced(
+      search,
+      locationIds,
+      zoneIds,
+      dates[0].toISOString(),
+      dates[1].toISOString()
+    );
     // eslint-disable-next-line
-  }, [search, locationIds, zoneIds, complete]);
+  }, [search, locationIds, zoneIds, dates]);
 
   // Pagination functions
   const next = () => {
     setFilter({
       ...filter,
-      first: 5,
+      first: 6,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -151,7 +174,7 @@ const MyEntityPMTask = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 5,
+      last: 6,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -195,7 +218,7 @@ const MyEntityPMTask = () => {
         }}
         viewport={{ once: true }}
       >
-        My Periodic Maintenance Tasks
+        My Maintenance Tasks
       </motion.div>
       <div className={classes["options-wrapper"]}>
         <motion.div
@@ -210,76 +233,86 @@ const MyEntityPMTask = () => {
             },
           }}
           viewport={{ once: true }}
-          style={{ width: "100%" }}
+        >
+          <DatePicker.RangePicker
+            defaultValue={dates}
+            format={DATETIME_FORMATS.DAY_MONTH_YEAR}
+            className={classes["datepicker"]}
+            popupStyle={{ borderRadius: 6 }}
+            disabledDate={(date) => date.isAfter(moment(), "day")}
+            onChange={setDates}
+            allowClear={false}
+            ranges={{
+              "Past 7 Days": [moment().subtract(1, "week"), moment()],
+              "This Week": [moment().startOf("week"), moment()],
+              "Past 30 Days": [moment().subtract(30, "day"), moment()],
+              "This Month": [moment().startOf("month"), moment()],
+            }}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          whileInView={{
+            x: 0,
+            opacity: 1,
+            transition: {
+              ease: "easeOut",
+              duration: 0.3,
+              delay: 0.4,
+            },
+          }}
+          viewport={{ once: true }}
         >
           <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
-            width={"100%"}
           />
-        </motion.div>
-        <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          whileInView={{
-            x: 0,
-            opacity: 1,
-            transition: {
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.5,
-            },
-          }}
-          viewport={{ once: true }}
-          className={classes["option"]}
-        >
-          <LocationSelector
-            setLocationId={setLocationIds}
-            multiple={true}
-            rounded={true}
-            width={"100%"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          whileInView={{
-            x: 0,
-            opacity: 1,
-            transition: {
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.6,
-            },
-          }}
-          viewport={{ once: true }}
-          className={classes["option"]}
-        >
-          <ZoneSelector
-            setZoneId={setZoneIds}
-            multiple={true}
-            rounded={true}
-            width={"100%"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          whileInView={{
-            x: 0,
-            opacity: 1,
-            transition: {
-              ease: "easeOut",
-              duration: 0.3,
-              delay: 0.7,
-            },
-          }}
-          viewport={{ once: true }}
-          className={classes["option"]}
-        >
-          <Checkbox onChange={(e) => setComplete(e.target.checked)}>
-            Complete
-          </Checkbox>
         </motion.div>
       </div>
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        whileInView={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.5,
+          },
+        }}
+        viewport={{ once: true }}
+        className={classes["option"]}
+      >
+        <LocationSelector
+          setLocationId={setLocationIds}
+          multiple={true}
+          rounded={true}
+          width={"100%"}
+        />
+      </motion.div>
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        whileInView={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.6,
+          },
+        }}
+        viewport={{ once: true }}
+        className={classes["option"]}
+      >
+        <ZoneSelector
+          setZoneId={setZoneIds}
+          multiple={true}
+          rounded={true}
+          width={"100%"}
+        />
+      </motion.div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
           <motion.div
@@ -453,7 +486,7 @@ const MyEntityPMTask = () => {
                               </span>
                               <span>{periodicMaintenanceTask?.name}</span>
                             </div>
-                            <div
+                            {/**<div
                               className={classes["reading"]}
                               style={{ marginTop: 2 }}
                             >
@@ -512,7 +545,7 @@ const MyEntityPMTask = () => {
                                   <span>None</span>
                                 )}
                               </span>
-                            </div>
+                            </div> */}
                           </div>
                           <Link
                             to={
@@ -548,7 +581,7 @@ const MyEntityPMTask = () => {
         page={page}
         next={next}
         back={back}
-        pageLimit={5}
+        pageLimit={6}
       />
     </motion.div>
   );

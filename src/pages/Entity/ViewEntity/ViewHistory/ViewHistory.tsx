@@ -37,8 +37,8 @@ const ViewHistory = () => {
       search: string;
       locationIds: number[];
       entityId: number;
-      from: any;
-      to: any;
+      from: Date;
+      to: Date;
     }
   >({
     first: 500,

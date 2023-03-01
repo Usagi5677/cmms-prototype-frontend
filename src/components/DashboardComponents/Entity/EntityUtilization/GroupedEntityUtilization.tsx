@@ -459,7 +459,7 @@ const GroupedEntityUtilization = ({
             defaultValue={dates}
             format={DATETIME_FORMATS.DAY_MONTH_YEAR}
             className={classes["datepicker"]}
-            popupStyle={{ borderRadius: 20 }}
+            popupStyle={{ borderRadius: 6 }}
             disabledDate={(date) => date.isAfter(moment(), "day")}
             onChange={setDates}
             allowClear={false}
