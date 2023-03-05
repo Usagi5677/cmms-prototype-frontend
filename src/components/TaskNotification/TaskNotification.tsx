@@ -40,7 +40,10 @@ const TaskNotification = () => {
             <Tabs.TabPane
               tab={
                 <Badge
-                  count={`${data?.getAllEntityChecklistAndPMSummary?.checklist?.length}`}
+                  count={`${
+                    data?.getAllEntityChecklistAndPMSummary?.checklist
+                      ?.length ?? 0
+                  }`}
                   size="small"
                   offset={[4, -4]}
                 >
@@ -80,7 +83,9 @@ const TaskNotification = () => {
             <Tabs.TabPane
               tab={
                 <Badge
-                  count={`${data?.getAllEntityChecklistAndPMSummary?.pm?.length}`}
+                  count={`${
+                    data?.getAllEntityChecklistAndPMSummary?.pm?.length ?? 0
+                  }`}
                   size="small"
                   offset={[4, -4]}
                 >
@@ -125,7 +130,7 @@ const TaskNotification = () => {
       <Badge
         count={`${
           data?.getAllEntityChecklistAndPMSummary?.checklist?.length +
-          data?.getAllEntityChecklistAndPMSummary?.pm?.length
+            data?.getAllEntityChecklistAndPMSummary?.pm?.length ?? 0
         }`}
         size="small"
         offset={[-16, 2]}
