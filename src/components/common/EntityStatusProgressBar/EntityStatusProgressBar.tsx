@@ -1,10 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
-import { motion, useDragControls } from "framer-motion";
+import { motion } from "framer-motion";
 import { memo, useEffect } from "react";
 import CountUp from "react-countup";
 import { GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { EntityStatus } from "../../../models/Enums";
 import classes from "./EntityStatusProgressBar.module.css";
 
@@ -35,7 +34,6 @@ const EntityStatusProgressBar = ({
   name?: string;
   filter?: filter;
 }) => {
-  const isSmallDevice = useIsSmallDevice(1200, true);
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
     {
