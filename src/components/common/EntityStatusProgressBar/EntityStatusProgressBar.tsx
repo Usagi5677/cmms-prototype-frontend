@@ -1,17 +1,268 @@
+import { useLazyQuery } from "@apollo/client";
+import { motion } from "framer-motion";
+import { memo, useEffect } from "react";
+import CountUp from "react-countup";
+import { GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
+import { errorMessage } from "../../../helpers/gql";
+import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
+import { EntityStatus } from "../../../models/Enums";
 import classes from "./EntityStatusProgressBar.module.css";
-const EntityStatusProgressBar = ({ name }: { name: string }) => {
+
+interface filter {
+  first?: number | null;
+  last?: number | null;
+  after?: string | null;
+  before?: string | null;
+  search: string;
+  status: EntityStatus[];
+  locationIds: number[];
+  entityType: string[];
+  typeIds: number[];
+  zoneIds: number[];
+  divisionIds: number[];
+  brandIds: number[];
+  isAssigned: boolean;
+  //assignedToId: number | null;
+  measurement: string[];
+  lteInterService: string;
+  gteInterService: string;
+  isIncompleteChecklistTask: boolean;
+}
+const EntityStatusProgressBar = ({
+  name,
+  filter,
+}: {
+  name?: string;
+  filter?: filter;
+}) => {
+  const isSmallDevice = useIsSmallDevice(1200, true);
+  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
+    GET_ALL_ENTITY_STATUS_COUNT,
+    {
+      onError: (err) => {
+        errorMessage(err, "Error loading status count of entities.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    }
+  );
+
+  //Fetch all machine status count
+  useEffect(() => {
+    getAllEntityStatusCount({ variables: filter });
+  }, [filter]);
+
+  let workingBars = [];
+  let breakdownBars = [];
+  let criticalBars = [];
+  let critical = 0;
+  let working = 0;
+  let breakdown = 0;
+  let dispose = 0;
+  let total = 0;
+  let normalized_working = 0;
+  let normalized_critical = 0;
+  let normalized_breakdown = 0;
+  //console.log(statusCount?.working);
+  const statusCount = statusData?.allEntityStatusCount;
+  if (statusCount) {
+    critical = statusCount?.critical;
+    working = statusCount?.working;
+    breakdown = statusCount?.breakdown;
+    //dispose = statusCountData?.dispose;
+    total = critical + working + breakdown + dispose;
+
+    normalized_working = ((working - 0) / (total - 0)) * 100;
+    normalized_critical = ((critical - 0) / (total - 0)) * 100;
+    normalized_breakdown = ((breakdown - 0) / (total - 0)) * 100;
+
+    for (let i = 0; i < normalized_working; i++) {
+      workingBars.push(
+        <motion.div
+          animate={{ x: 0, opacity: 1 }}
+          initial={{ x: -100, opacity: 0 }}
+          transition={{ delay: (i / 4) * 0.1, type: "spring" }}
+          viewport={{ once: true }}
+          className={classes["working-bar"]}
+          key={i}
+        />
+      );
+    }
+    for (let i = 0; i < normalized_critical; i++) {
+      criticalBars.push(
+        <motion.div
+          animate={{ x: 0, opacity: 1 }}
+          initial={{ x: -100, opacity: 0 }}
+          transition={{ delay: (i / 4) * 0.1, type: "spring" }}
+          viewport={{ once: true }}
+          className={classes["critical-bar"]}
+          key={i}
+        />
+      );
+    }
+    for (let i = 0; i < normalized_breakdown; i++) {
+      breakdownBars.push(
+        <motion.div
+          animate={{ x: 0, opacity: 1 }}
+          initial={{ x: -100, opacity: 0 }}
+          transition={{ delay: (i / 4) * 0.1, type: "spring" }}
+          viewport={{ once: true }}
+          className={classes["breakdown-bar"]}
+          key={i}
+        />
+      );
+    }
+  }
+
   return (
     <div className={classes["container"]}>
-      <div className={classes["title"]}>{name}</div>
-      <div className={classes["progress-container"]}>
-        <div className={classes["bar-wrapper"]}>
-          <span>Working</span>
-          <div className={classes["bar"]}></div>
-          <span></span>
+      <div className={classes["bar-container"]}>
+        <div className={classes["status-info"]}>
+          <span className={classes["status-count"]}>{working}</span>
+          <span className={classes["status-title"]}>Working</span>
+        </div>
+
+        <div className={classes["bar-box"]}>
+          <div
+            className={classes["bar-wrapper"]}
+            style={{
+              backgroundColor: "var(--working-bg)",
+              border: "1px solid var(--working-bar-color)",
+            }}
+          >
+            {workingBars}
+            {!isSmallDevice && (
+              <motion.div
+                className={classes["percentage"]}
+                animate={{ x: 0, opacity: 1 }}
+                initial={{ x: -100, opacity: 0 }}
+                transition={{ delay: 1, type: "spring" }}
+                viewport={{ once: true }}
+              >
+                <CountUp
+                  end={parseInt(normalized_working.toFixed(0))}
+                  duration={1}
+                />
+                %
+              </motion.div>
+            )}
+          </div>
+          {isSmallDevice && (
+            <motion.div
+              className={classes["percentage"]}
+              style={{ width: 40 }}
+              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: -100, opacity: 0 }}
+              transition={{ delay: 1, type: "spring" }}
+              viewport={{ once: true }}
+            >
+              <CountUp
+                end={parseInt(normalized_working.toFixed(0))}
+                duration={1}
+              />
+              %
+            </motion.div>
+          )}
+        </div>
+      </div>
+      <div className={classes["bar-container"]}>
+        <div className={classes["status-info"]}>
+          <span className={classes["status-count"]}>{critical}</span>
+          <span className={classes["status-title"]}>Critical</span>
+        </div>
+        <div className={classes["bar-box"]}>
+          <div
+            className={classes["bar-wrapper"]}
+            style={{
+              backgroundColor: "var(--critical-bg)",
+              border: "1px solid var(--critical-bar-color)",
+            }}
+          >
+            {criticalBars}
+            {!isSmallDevice && (
+              <motion.div
+                className={classes["percentage"]}
+                animate={{ x: 0, opacity: 1 }}
+                initial={{ x: -100, opacity: 0 }}
+                transition={{ delay: 1, type: "spring" }}
+                viewport={{ once: true }}
+              >
+                <CountUp
+                  end={parseInt(normalized_critical.toFixed(0))}
+                  duration={1}
+                />
+                %
+              </motion.div>
+            )}
+          </div>
+          {isSmallDevice && (
+            <motion.div
+              className={classes["percentage"]}
+              style={{ width: 40 }}
+              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: -100, opacity: 0 }}
+              transition={{ delay: 1, type: "spring" }}
+              viewport={{ once: true }}
+            >
+              <CountUp
+                end={parseInt(normalized_critical.toFixed(0))}
+                duration={1}
+              />
+              %
+            </motion.div>
+          )}
+        </div>
+      </div>
+      <div className={classes["bar-container"]}>
+        <div className={classes["status-info"]}>
+          <span className={classes["status-count"]}>{breakdown}</span>
+          <span className={classes["status-title"]}>Breakdown</span>
+        </div>
+        <div className={classes["bar-box"]}>
+          <div
+            className={classes["bar-wrapper"]}
+            style={{
+              backgroundColor: "var(--breakdown-bg)",
+              border: "1px solid var(--breakdown-bar-color)",
+            }}
+          >
+            {breakdownBars}
+            {!isSmallDevice && (
+              <motion.div
+                className={classes["percentage"]}
+                animate={{ x: 0, opacity: 1 }}
+                initial={{ x: -100, opacity: 0 }}
+                transition={{ delay: 1, type: "spring" }}
+                viewport={{ once: true }}
+              >
+                <CountUp
+                  end={parseInt(normalized_breakdown.toFixed(0))}
+                  duration={1}
+                />
+                %
+              </motion.div>
+            )}
+          </div>
+          {isSmallDevice && (
+            <motion.div
+              className={classes["percentage"]}
+              style={{ width: 40 }}
+              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: -100, opacity: 0 }}
+              transition={{ delay: 1, type: "spring" }}
+              viewport={{ once: true }}
+            >
+              <CountUp
+                end={parseInt(normalized_breakdown.toFixed(0))}
+                duration={1}
+              />
+              %
+            </motion.div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default EntityStatusProgressBar;
+export default memo(EntityStatusProgressBar);
