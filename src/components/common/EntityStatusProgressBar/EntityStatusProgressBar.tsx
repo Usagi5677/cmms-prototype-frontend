@@ -142,8 +142,7 @@ const EntityStatusProgressBar = ({
             }}
           >
             {workingBars}
-            {!isSmallDevice && (
-              <motion.div
+            <motion.div
                 className={classes["percentage"]}
                 animate={{ x: 0, opacity: 1 }}
                 initial={{ x: -100, opacity: 0 }}
@@ -156,24 +155,8 @@ const EntityStatusProgressBar = ({
                 />
                 %
               </motion.div>
-            )}
           </motion.div>
-          {isSmallDevice && (
-            <motion.div
-              className={classes["percentage"]}
-              style={{ width: 40 }}
-              animate={{ x: 0, opacity: 1 }}
-              initial={{ x: -100, opacity: 0 }}
-              transition={{ delay: 1, type: "spring" }}
-              viewport={{ once: true }}
-            >
-              <CountUp
-                end={parseInt(normalized_working.toFixed(0))}
-                duration={1}
-              />
-              %
-            </motion.div>
-          )}
+          
         </div>
       </div>
       <div className={classes["bar-container"]}>
@@ -197,8 +180,7 @@ const EntityStatusProgressBar = ({
             transition={{ delay: 0.3, type: "spring" }}
           >
             {criticalBars}
-            {!isSmallDevice && (
-              <motion.div
+            <motion.div
                 className={classes["percentage"]}
                 animate={{ x: 0, opacity: 1 }}
                 initial={{ x: -100, opacity: 0 }}
@@ -211,24 +193,8 @@ const EntityStatusProgressBar = ({
                 />
                 %
               </motion.div>
-            )}
           </motion.div>
-          {isSmallDevice && (
-            <motion.div
-              className={classes["percentage"]}
-              style={{ width: 40 }}
-              animate={{ x: 0, opacity: 1 }}
-              initial={{ x: -100, opacity: 0 }}
-              transition={{ delay: 1, type: "spring" }}
-              viewport={{ once: true }}
-            >
-              <CountUp
-                end={parseInt(normalized_critical.toFixed(0))}
-                duration={1}
-              />
-              %
-            </motion.div>
-          )}
+          
         </div>
       </div>
       <div className={classes["bar-container"]}>
@@ -252,8 +218,7 @@ const EntityStatusProgressBar = ({
             transition={{ delay: 0.3, type: "spring" }}
           >
             {breakdownBars}
-            {!isSmallDevice && (
-              <motion.div
+            <motion.div
                 className={classes["percentage"]}
                 animate={{ x: 0, opacity: 1 }}
                 initial={{ x: -100, opacity: 0 }}
@@ -266,24 +231,8 @@ const EntityStatusProgressBar = ({
                 />
                 %
               </motion.div>
-            )}
           </motion.div>
-          {isSmallDevice && (
-            <motion.div
-              className={classes["percentage"]}
-              style={{ width: 40 }}
-              animate={{ x: 0, opacity: 1 }}
-              initial={{ x: -100, opacity: 0 }}
-              transition={{ delay: 1, type: "spring" }}
-              viewport={{ once: true }}
-            >
-              <CountUp
-                end={parseInt(normalized_breakdown.toFixed(0))}
-                duration={1}
-              />
-              %
-            </motion.div>
-          )}
+          
         </div>
       </div>
     </div>
