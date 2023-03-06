@@ -115,7 +115,10 @@ const EntityStatusProgressBar = ({
   }
 
   return (
-    <div className={classes["container"]}>
+    <div
+      className={classes["container"]}
+      title={`${working + critical + breakdown}`}
+    >
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>
           <span className={classes["status-count"]}>{working}</span>
@@ -123,7 +126,11 @@ const EntityStatusProgressBar = ({
         </div>
 
         <div className={classes["bar-box"]}>
-          <div
+          <motion.div
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            transition={{ delay: 0.3, type: "spring" }}
+            viewport={{ once: true }}
             className={classes["bar-wrapper"]}
             style={{
               backgroundColor: "var(--working-bg)",
@@ -146,7 +153,7 @@ const EntityStatusProgressBar = ({
                 %
               </motion.div>
             )}
-          </div>
+          </motion.div>
           {isSmallDevice && (
             <motion.div
               className={classes["percentage"]}
@@ -171,12 +178,15 @@ const EntityStatusProgressBar = ({
           <span className={classes["status-title"]}>Critical</span>
         </div>
         <div className={classes["bar-box"]}>
-          <div
+          <motion.div
             className={classes["bar-wrapper"]}
             style={{
               backgroundColor: "var(--critical-bg)",
               border: "1px solid var(--critical-bar-color)",
             }}
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            transition={{ delay: 0.3, type: "spring" }}
           >
             {criticalBars}
             {!isSmallDevice && (
@@ -194,7 +204,7 @@ const EntityStatusProgressBar = ({
                 %
               </motion.div>
             )}
-          </div>
+          </motion.div>
           {isSmallDevice && (
             <motion.div
               className={classes["percentage"]}
@@ -219,12 +229,15 @@ const EntityStatusProgressBar = ({
           <span className={classes["status-title"]}>Breakdown</span>
         </div>
         <div className={classes["bar-box"]}>
-          <div
+          <motion.div
             className={classes["bar-wrapper"]}
             style={{
               backgroundColor: "var(--breakdown-bg)",
               border: "1px solid var(--breakdown-bar-color)",
             }}
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            transition={{ delay: 0.3, type: "spring" }}
           >
             {breakdownBars}
             {!isSmallDevice && (
@@ -242,7 +255,7 @@ const EntityStatusProgressBar = ({
                 %
               </motion.div>
             )}
-          </div>
+          </motion.div>
           {isSmallDevice && (
             <motion.div
               className={classes["percentage"]}

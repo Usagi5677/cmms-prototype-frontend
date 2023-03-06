@@ -504,12 +504,7 @@ const Machinery = () => {
 
   return (
     <>
-    
-      <EntityStatusProgressBar
-        name={"Machinery"}
-        filter={filter}
-      />
-      
+      <EntityStatusProgressBar name={"Machinery"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>

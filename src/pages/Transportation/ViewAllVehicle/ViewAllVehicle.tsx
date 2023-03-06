@@ -36,6 +36,7 @@ import {
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import EntityStatusProgressBar from "../../../components/common/EntityStatusProgressBar/EntityStatusProgressBar";
 
 const Vehicles = () => {
   const getFilter = localStorage.getItem("vehiclesFilter");
@@ -496,87 +497,7 @@ const Vehicles = () => {
 
   return (
     <>
-      <div className={classes["status-card"]}>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.3,
-          }}
-        >
-          <div className={classes["total-card"]}>
-            <motion.div
-              className={classes["total-title"]}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.7,
-              }}
-            >
-              Vehicles
-            </motion.div>
-            <div className={classes["total-amount"]}>
-              <CountUp end={total} duration={1} />
-            </div>
-          </div>
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.4,
-          }}
-        >
-          <StatusCard
-            amountOne={working}
-            icon={<FaTruck />}
-            iconBackgroundColor={"var(--working-bg)"}
-            iconColor={"var(--working-color)"}
-            name={"Working"}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.5,
-          }}
-        >
-          <StatusCard
-            amountOne={critical}
-            icon={<WarningOutlined />}
-            iconBackgroundColor={"var(--critical-bg)"}
-            iconColor={"var(--critical-color)"}
-            name={"Critical"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.6,
-          }}
-        >
-          <StatusCard
-            amountOne={breakdown}
-            icon={<FaCarCrash />}
-            iconBackgroundColor={"var(--breakdown-bg)"}
-            iconColor={"var(--breakdown-color)"}
-            name={"Breakdown"}
-          />
-        </motion.div>
-      </div>
+      <EntityStatusProgressBar name={"Vehicle"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
