@@ -59,7 +59,9 @@ const Vehicles = () => {
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brandIds, setBrandIds] = useState<number[]>(getFilterObjects?.brandIds);
+  const [brandIds, setBrandIds] = useState<number[]>(
+    getFilterObjects?.brandIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -252,17 +254,6 @@ const Vehicles = () => {
     isIncompleteChecklistTask,
   ]);
 
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading status count of entities.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
   const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
     useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
       onError: (err) => {
@@ -273,9 +264,8 @@ const Vehicles = () => {
     });
 
   useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -303,21 +293,6 @@ const Vehicles = () => {
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
-  let total = 0;
-
-  const statusCountData = statusData?.allEntityStatusCount;
-  if (statusCountData) {
-    critical = statusCountData?.critical;
-    working = statusCountData?.working;
-    breakdown = statusCountData?.breakdown;
-    //dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
-  }
 
   const clearAll = () => {
     const clearFilter = {

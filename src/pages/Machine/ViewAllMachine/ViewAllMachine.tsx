@@ -142,17 +142,6 @@ const Machinery = () => {
       JSON.parse(saveFilterOptions)?.isIncompleteChecklistTask,
   });
 
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading status count of entities.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
   const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
     useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
       onError: (err) => {
@@ -276,9 +265,8 @@ const Machinery = () => {
 
   //Fetch all machine status count
   useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -306,21 +294,6 @@ const Machinery = () => {
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
-  let total = 0;
-
-  const statusCountData = statusData?.allEntityStatusCount;
-  if (statusCountData) {
-    critical = statusCountData?.critical;
-    working = statusCountData?.working;
-    breakdown = statusCountData?.breakdown;
-    //dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
-  }
 
   const clearAll = () => {
     const clearFilter = {
