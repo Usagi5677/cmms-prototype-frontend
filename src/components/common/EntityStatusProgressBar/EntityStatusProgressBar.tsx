@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { motion } from "framer-motion";
+import { motion, useDragControls } from "framer-motion";
 import { memo, useEffect } from "react";
 import CountUp from "react-countup";
 import { GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
@@ -51,7 +51,7 @@ const EntityStatusProgressBar = ({
   useEffect(() => {
     getAllEntityStatusCount({ variables: filter });
   }, [filter]);
-
+  const dragControls = useDragControls();
   let workingBars = [];
   let breakdownBars = [];
   let criticalBars = [];
@@ -76,36 +76,36 @@ const EntityStatusProgressBar = ({
     normalized_critical = ((critical - 0) / (total - 0)) * 100;
     normalized_breakdown = ((breakdown - 0) / (total - 0)) * 100;
 
-    for (let i = 0; i < normalized_working; i++) {
+    for (let i = 0; i < parseInt(normalized_working.toFixed(0)); i++) {
       workingBars.push(
         <motion.div
           animate={{ x: 0, opacity: 1 }}
           initial={{ x: -100, opacity: 0 }}
-          transition={{ delay: (i / 4) * 0.1, type: "spring" }}
+          transition={{ delay: i * 0.01, type: "spring" }}
           viewport={{ once: true }}
           className={classes["working-bar"]}
           key={i}
         />
       );
     }
-    for (let i = 0; i < normalized_critical; i++) {
+    for (let i = 0; i < parseInt(normalized_critical.toFixed(0)); i++) {
       criticalBars.push(
         <motion.div
           animate={{ x: 0, opacity: 1 }}
           initial={{ x: -100, opacity: 0 }}
-          transition={{ delay: (i / 4) * 0.1, type: "spring" }}
+          transition={{ delay: i * 0.01, type: "spring" }}
           viewport={{ once: true }}
           className={classes["critical-bar"]}
           key={i}
         />
       );
     }
-    for (let i = 0; i < normalized_breakdown; i++) {
+    for (let i = 0; i < parseInt(normalized_breakdown.toFixed(0)); i++) {
       breakdownBars.push(
         <motion.div
           animate={{ x: 0, opacity: 1 }}
           initial={{ x: -100, opacity: 0 }}
-          transition={{ delay: (i / 4) * 0.1, type: "spring" }}
+          transition={{ delay: i * 0.01, type: "spring" }}
           viewport={{ once: true }}
           className={classes["breakdown-bar"]}
           key={i}
