@@ -7,20 +7,16 @@ import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../api/queries";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllMachine.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
-import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash, FaTractor } from "react-icons/fa";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import { Entity } from "../../../models/Entity/Entity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { hasPermissions } from "../../../helpers/permissions";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
 import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
@@ -37,6 +33,7 @@ import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
 import EntityStatusProgressBar from "../../../components/common/EntityStatusProgressBar/EntityStatusProgressBar";
+import EntityStatusProgressBarV2 from "../../../components/common/EntityStatusProgressBarV2/EntityStatusProgressBarV2";
 
 const Machinery = () => {
   const getFilter = localStorage.getItem("machineryFilter");
@@ -477,7 +474,7 @@ const Machinery = () => {
 
   return (
     <>
-      <EntityStatusProgressBar name={"Machinery"} filter={filter} />
+      <EntityStatusProgressBarV2 name={"Machinery"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>

@@ -6,7 +6,7 @@ import { GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import { EntityStatus } from "../../../models/Enums";
-import classes from "./EntityStatusProgressBar.module.css";
+import classes from "./EntityStatusProgressBarV2.module.css";
 
 interface filter {
   first?: number | null;
@@ -28,7 +28,7 @@ interface filter {
   gteInterService: string;
   isIncompleteChecklistTask: boolean;
 }
-const EntityStatusProgressBar = ({
+const EntityStatusProgressBarV2 = ({
   name,
   filter,
 }: {
@@ -51,6 +51,7 @@ const EntityStatusProgressBar = ({
   useEffect(() => {
     getAllEntityStatusCount({ variables: filter });
   }, [filter]);
+  const dragControls = useDragControls();
   let workingBars = [];
   let breakdownBars = [];
   let criticalBars = [];
@@ -74,43 +75,6 @@ const EntityStatusProgressBar = ({
     normalized_working = ((working - 0) / (total - 0)) * 100;
     normalized_critical = ((critical - 0) / (total - 0)) * 100;
     normalized_breakdown = ((breakdown - 0) / (total - 0)) * 100;
-
-    for (let i = 0; i < parseInt(normalized_working.toFixed(0)); i++) {
-      workingBars.push(
-        <motion.div
-          animate={{ x: 0, opacity: 1 }}
-          initial={{ x: -100, opacity: 0 }}
-          transition={{ delay: i * 0.01, type: "spring" }}
-          viewport={{ once: true }}
-          className={classes["working-bar"]}
-          key={i}
-        />
-      );
-    }
-    for (let i = 0; i < parseInt(normalized_critical.toFixed(0)); i++) {
-      criticalBars.push(
-        <motion.div
-          animate={{ x: 0, opacity: 1 }}
-          initial={{ x: -100, opacity: 0 }}
-          transition={{ delay: i * 0.01, type: "spring" }}
-          viewport={{ once: true }}
-          className={classes["critical-bar"]}
-          key={i}
-        />
-      );
-    }
-    for (let i = 0; i < parseInt(normalized_breakdown.toFixed(0)); i++) {
-      breakdownBars.push(
-        <motion.div
-          animate={{ x: 0, opacity: 1 }}
-          initial={{ x: -100, opacity: 0 }}
-          transition={{ delay: i * 0.01, type: "spring" }}
-          viewport={{ once: true }}
-          className={classes["breakdown-bar"]}
-          key={i}
-        />
-      );
-    }
   }
 
   return (
@@ -140,22 +104,39 @@ const EntityStatusProgressBar = ({
               border: "1px solid var(--working-bar-color)",
             }}
           >
-            {workingBars}
-            <motion.div
-                className={classes["percentage"]}
-                animate={{ x: 0, opacity: 1 }}
-                initial={{ x: -100, opacity: 0 }}
-                transition={{ delay: 1, type: "spring" }}
+            {parseInt(normalized_working.toFixed(0)) > 0 ? (
+              <motion.div
+                className={classes["working-bar"]}
+                initial={{ width: "0%" }}
+                animate={{ width: `${normalized_working.toFixed(0)}%` }}
+                exit={{ width: "0%" }}
                 viewport={{ once: true }}
+                transition={{ type: "spring" }}
               >
+                <motion.div
+                  className={classes["percentage"]}
+                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ x: -100, opacity: 0 }}
+
+                  viewport={{ once: true }}
+                >
+                  <CountUp
+                    end={parseInt(normalized_working.toFixed(0))}
+                    duration={1}
+                  />
+                  %
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div className={classes["percentage"]} style={{color:"var(--text-primary)"}}>
                 <CountUp
                   end={parseInt(normalized_working.toFixed(0))}
                   duration={1}
                 />
                 %
               </motion.div>
+            )}
           </motion.div>
-          
         </div>
       </div>
       <div className={classes["bar-container"]}>
@@ -178,22 +159,38 @@ const EntityStatusProgressBar = ({
             initial={{ opacity: 0 }}
             transition={{ delay: 0.3, type: "spring" }}
           >
-            {criticalBars}
-            <motion.div
-                className={classes["percentage"]}
-                animate={{ x: 0, opacity: 1 }}
-                initial={{ x: -100, opacity: 0 }}
-                transition={{ delay: 1, type: "spring" }}
+            {parseInt(normalized_critical.toFixed(0)) > 0 ? (
+              <motion.div
+                className={classes["critical-bar"]}
+                initial={{ width: "0%" }}
+                animate={{ width: `${normalized_critical.toFixed(0)}%` }}
+                exit={{ width: "0%" }}
+                transition={{ type: "spring" }}
                 viewport={{ once: true }}
               >
+                <motion.div
+                  className={classes["percentage"]}
+                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ x: -100, opacity: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <CountUp
+                    end={parseInt(normalized_critical.toFixed(0))}
+                    duration={1}
+                  />
+                  %
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div className={classes["percentage"]} style={{color:"var(--text-primary)"}}>
                 <CountUp
                   end={parseInt(normalized_critical.toFixed(0))}
                   duration={1}
                 />
                 %
               </motion.div>
+            )}
           </motion.div>
-          
         </div>
       </div>
       <div className={classes["bar-container"]}>
@@ -216,26 +213,41 @@ const EntityStatusProgressBar = ({
             initial={{ opacity: 0 }}
             transition={{ delay: 0.3, type: "spring" }}
           >
-            {breakdownBars}
-            <motion.div
-                className={classes["percentage"]}
-                animate={{ x: 0, opacity: 1 }}
-                initial={{ x: -100, opacity: 0 }}
-                transition={{ delay: 1, type: "spring" }}
-                viewport={{ once: true }}
+            {parseInt(normalized_breakdown.toFixed(0)) > 0 ? (
+              <motion.div
+                className={classes["breakdown-bar"]}
+                initial={{ width: "0%" }}
+                animate={{ width: `${normalized_breakdown.toFixed(0)}%` }}
+                exit={{ width: "0%" }}
+                transition={{ type: "spring" }}
               >
+                <motion.div
+                  className={classes["percentage"]}
+                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ x: -100, opacity: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <CountUp
+                    end={parseInt(normalized_breakdown.toFixed(0))}
+                    duration={1}
+                  />
+                  %
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div className={classes["percentage"]} style={{color:"var(--text-primary)"}}>
                 <CountUp
                   end={parseInt(normalized_breakdown.toFixed(0))}
                   duration={1}
                 />
                 %
               </motion.div>
+            )}
           </motion.div>
-          
         </div>
       </div>
     </div>
   );
 };
 
-export default memo(EntityStatusProgressBar);
+export default memo(EntityStatusProgressBarV2);

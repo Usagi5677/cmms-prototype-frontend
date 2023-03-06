@@ -7,21 +7,16 @@ import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../api/queries";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
-import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash } from "react-icons/fa";
-import { RiSailboatFill } from "react-icons/ri";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
 import { hasPermissions } from "../../../helpers/permissions";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
 import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
@@ -35,9 +30,8 @@ import {
   TypeSelectorOptionProps,
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
-import EntityStatusProgressBar from "../../../components/common/EntityStatusProgressBar/EntityStatusProgressBar";
+import EntityStatusProgressBarV2 from "../../../components/common/EntityStatusProgressBarV2/EntityStatusProgressBarV2";
 
 const Vessels = () => {
   const getFilter = localStorage.getItem("vesselsFilter");
@@ -60,7 +54,9 @@ const Vessels = () => {
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brandIds, setBrandIds] = useState<number[]>(getFilterObjects?.brandIds);
+  const [brandIds, setBrandIds] = useState<number[]>(
+    getFilterObjects?.brandIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -471,7 +467,7 @@ const Vessels = () => {
 
   return (
     <>
-      <EntityStatusProgressBar name={"Vessel"} filter={filter} />
+      <EntityStatusProgressBarV2 name={"Vessels"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>

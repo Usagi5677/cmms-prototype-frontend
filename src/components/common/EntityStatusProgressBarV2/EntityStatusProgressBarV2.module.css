@@ -1,0 +1,87 @@
+.container {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 2px 4px;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--text-primary);
+  border: var(--card-border);
+  margin-bottom: 10px;
+}
+
+.bar-container {
+  margin: 6px 0;
+}
+.bar-container:nth-child(1) {
+  margin: 0;
+  margin-bottom: 6px;
+}
+.bar-box {
+  display: flex;
+  align-items: center;
+}
+.bar-wrapper {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  padding: 6px;
+  min-height: 40px;
+  border-radius: 2px;
+  width: 100%;
+}
+.working-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 40px;
+  height: 100%;
+
+  background-color: var(--working-bar-color);
+  border-radius: 2px;
+}
+
+.critical-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 40px;
+  height: 100%;
+
+  background-color: var(--critical-bar-color);
+  border-radius: 2px;
+}
+
+.breakdown-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 40px;
+  height: 100%;
+
+  background-color: var(--breakdown-bar-color);
+  border-radius: 2px;
+  
+}
+
+.status-info {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.status-title {
+  font-size: 14px;
+}
+.status-count {
+  font-size: 18px;
+  font-weight: 800;
+}
+.percentage {
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 10px;
+  color: white
+
+}
