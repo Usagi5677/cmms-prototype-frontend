@@ -121,7 +121,11 @@ const EntityStatusProgressBar = ({
     >
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>
-          <span className={classes["status-count"]}>{working}</span>
+          <CountUp
+            className={classes["status-count"]}
+            end={working}
+            duration={1}
+          />
           <span className={classes["status-title"]}>Working</span>
         </div>
 
@@ -174,7 +178,11 @@ const EntityStatusProgressBar = ({
       </div>
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>
-          <span className={classes["status-count"]}>{critical}</span>
+          <CountUp
+            className={classes["status-count"]}
+            end={critical}
+            duration={1}
+          />
           <span className={classes["status-title"]}>Critical</span>
         </div>
         <div className={classes["bar-box"]}>
@@ -225,7 +233,11 @@ const EntityStatusProgressBar = ({
       </div>
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>
-          <span className={classes["status-count"]}>{breakdown}</span>
+          <CountUp
+            className={classes["status-count"]}
+            end={breakdown}
+            duration={1}
+          />
           <span className={classes["status-title"]}>Breakdown</span>
         </div>
         <div className={classes["bar-box"]}>
