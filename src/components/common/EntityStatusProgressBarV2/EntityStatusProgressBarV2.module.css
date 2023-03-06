@@ -36,34 +36,28 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  min-width: 40px;
+  min-width: 50px;
   height: 100%;
-
   background-color: var(--working-bar-color);
   border-radius: 2px;
 }
-
 .critical-bar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  min-width: 40px;
+  min-width: 50px;
   height: 100%;
-
   background-color: var(--critical-bar-color);
   border-radius: 2px;
 }
-
 .breakdown-bar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  min-width: 40px;
+  min-width: 50px;
   height: 100%;
-
   background-color: var(--breakdown-bar-color);
   border-radius: 2px;
-  
 }
 
 .status-info {
@@ -84,4 +78,15 @@
   margin-right: 10px;
   color: white
 
+}
+@media only screen and (min-width: 600px) {
+  .working-bar {
+    min-width: 40px;
+  }
+  .critical-bar {
+    min-width: 40px;
+  }
+  .breakdown-bar {
+    min-width: 40px;
+  }
 }
