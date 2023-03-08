@@ -1080,3 +1080,7 @@ div.ant-typography {
 #collapseTwo .ant-collapse-content-box {
   background-color: var(--ant-collapse-content-box) !important;
 }
+
+#notFound .ant-result {
+  padding: 0 !important;
+}

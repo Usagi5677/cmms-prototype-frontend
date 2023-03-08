@@ -1,0 +1,17 @@
+.container {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 2px 4px;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--text-primary);
+  border: var(--card-border);
+  margin-bottom: 10px;
+}
+
+#notFound .ant-result {
+  padding: 0 !important;
+}

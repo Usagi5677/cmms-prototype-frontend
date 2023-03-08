@@ -28,6 +28,7 @@ import ViewAssignments from "./pages/ViewAssignments/ViewAssignments";
 import ViewAllPeriodicMaintenances from "./pages/ViewAllPeriodicMaintenances/ViewAllPeriodicMaintenances";
 import ViewAllUtilization from "./pages/ViewAllUtilization/ViewAllUtilization";
 import PeriodicMaintenancesCalendarView from "./pages/PeriodicMaintenancesCalendarView/PeriodicMaintenancesCalendarView";
+import NotFound from "./components/common/NotFound/NotFound";
 
 function App() {
   {
@@ -216,6 +217,7 @@ function App() {
             <Route path="/developer" element={<DeveloperOptions />} />
             <Route path="/config" element={<Config />} />
             <Route path="/role/:id/permission" element={<Permissions />} />
+            <Route path ='*' element={<NotFound />} />
           </Routes>
         </Layout>
       </ApolloProvider>
