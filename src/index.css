@@ -66,6 +66,7 @@ body,
   height: 100%;
   width: 100%;
 }
+
 a {
   color: var(--ant-primary-color) !important;
 }
@@ -1013,6 +1014,14 @@ div.ant-typography {
   stroke: var(--border-1) !important;
 }
 
+
+@media only screen and (min-width: 768px) {
+  .ant-layout-sider-children { 
+    position: fixed;
+    width: 230px; 
+    z-index: 10;
+  }
+}
 #sidebar a {
   color: inherit !important;
 }
