@@ -81,7 +81,7 @@ const EditEntityLocation = ({ entity }: { entity: Entity }) => {
                 <Button
                   type="ghost"
                   onClick={handleCancel}
-                  className={classes["custom-btn-secondary"]}
+                  className="secondaryButton"
                 >
                   Cancel
                 </Button>
@@ -93,7 +93,7 @@ const EditEntityLocation = ({ entity }: { entity: Entity }) => {
                   type="primary"
                   htmlType="submit"
                   loading={loadingEntity}
-                  className={classes["custom-btn-primary"]}
+                  className="primaryButton"
                 >
                   Edit
                 </Button>
