@@ -1,7 +1,7 @@
 import React from "react";
 import { DocumentNode, useMutation } from "@apollo/client";
 import { message, Popconfirm, Spin, Tooltip } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { errorMessage } from "../../helpers/gql";
 
 export interface DeleteListingProps {
@@ -51,7 +51,7 @@ export const DeleteListing: React.FC<DeleteListingProps> = ({
       placement="left"
     >
       <Tooltip title={tooltip} placement="top">
-        <FaTrash className="deleteButton" />
+        <FaRegTrashAlt className="deleteButton" />
       </Tooltip>
     </Popconfirm>
   );

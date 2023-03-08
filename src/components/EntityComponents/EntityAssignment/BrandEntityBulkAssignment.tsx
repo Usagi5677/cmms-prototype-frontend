@@ -8,6 +8,7 @@ import { Entity } from "../../../models/Entity/Entity";
 import { CenteredSpin } from "../../common/CenteredSpin";
 import { SearchEntities } from "../../common/SearchEntitities";
 import { BrandSelector } from "../../Config/Brand/BrandSelector";
+import { DivisionSelector } from "../../Config/Division/DivisionSelector";
 import { LocationSelector } from "../../Config/Location/LocationSelector";
 import { TypeSelector } from "../../Config/Type/TypeSelector";
 import { ZoneSelector } from "../../Config/Zone/ZoneSelector";
@@ -138,6 +139,18 @@ export const BrandEntityBulkAssignment: React.FC<
               clear();
             }}
             placeholder="Select all from location"
+            width="100%"
+          />
+        </div>
+        <div style={{ marginTop: ".5rem" }}>
+          <DivisionSelector
+            onChange={(divisionId, clear) => {
+              getEntities({
+                variables: { first: 1000, divisionIds: [divisionId] },
+              });
+              clear();
+            }}
+            placeholder="Select all from division"
             width="100%"
           />
         </div>

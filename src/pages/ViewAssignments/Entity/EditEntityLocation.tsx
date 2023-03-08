@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { Button, Col, Form, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { UPDATE_ENTITY_LOCATION } from "../../../api/mutations";
 import { LocationSelector } from "../../../components/Config/Location/LocationSelector";
 import { errorMessage } from "../../../helpers/gql";
@@ -47,7 +47,7 @@ const EditEntityLocation = ({ entity }: { entity: Entity }) => {
   return (
     <div className={classes["info-edit"]}>
       <Tooltip title="Edit">
-        <FaEdit onClick={() => setVisible(true)} />
+        <FaRegEdit onClick={() => setVisible(true)} />
       </Tooltip>
       <Modal
         visible={visible}

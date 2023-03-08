@@ -219,6 +219,18 @@ export const BulkAssignment: React.FC<BulkAssignmentProps> = ({}) => {
                 width="100%"
               />
             </div>
+            <div style={{ marginTop: ".5rem" }}>
+              <DivisionSelector
+                onChange={(divisionId, clear) => {
+                  getEntities({
+                    variables: { first: 1000, divisionIds: [divisionId] },
+                  });
+                  clear();
+                }}
+                placeholder="Select all from division"
+                width="100%"
+              />
+            </div>
             <div
               style={{
                 display: "flex",

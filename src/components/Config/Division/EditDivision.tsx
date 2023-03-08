@@ -5,7 +5,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { EDIT_DIVISION } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import Division from "../../../models/Division";
 
 export interface EditDivisionProps {
@@ -47,7 +47,7 @@ export const EditDivision: React.FC<EditDivisionProps> = ({ division }) => {
   return (
     <>
       <Tooltip title="Edit" placement="top">
-        <FaEdit
+        <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}

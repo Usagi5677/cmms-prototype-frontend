@@ -5,7 +5,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { EDIT_HULL_TYPE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import HullType from "../../../models/HullType";
 
 export interface EditHullTypeProps {
@@ -47,7 +47,7 @@ export const EditHullType: React.FC<EditHullTypeProps> = ({ hullType }) => {
   return (
     <>
       <Tooltip title="Edit" placement="top">
-        <FaEdit
+        <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}

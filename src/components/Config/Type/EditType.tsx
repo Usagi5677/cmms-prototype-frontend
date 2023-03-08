@@ -5,7 +5,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { EDIT_TYPE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import Type from "../../../models/Type";
 
 export interface EditTypeProps {
@@ -48,7 +48,7 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
   return (
     <>
       <Tooltip title="Edit" placement="top">
-        <FaEdit
+        <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}
