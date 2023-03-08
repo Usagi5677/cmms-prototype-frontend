@@ -30,10 +30,8 @@ import {
   TypeSelectorOptionProps,
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
-import EntityStatusProgressBar from "../../../components/common/EntityStatusProgressBar/EntityStatusProgressBar";
-import EntityStatusProgressBarV2 from "../../../components/common/EntityStatusProgressBarV2/EntityStatusProgressBarV2";
+import EntityStatusProgressBarV3 from "../../../components/common/EntityStatusProgressBarV3/EntityStatusProgressBarV3";
 
 const Machinery = () => {
   const getFilter = localStorage.getItem("machineryFilter");
@@ -474,7 +472,7 @@ const Machinery = () => {
 
   return (
     <>
-      <EntityStatusProgressBarV2 name={"Machinery"} filter={filter} />
+      <EntityStatusProgressBarV3 name={"Machinery"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>

@@ -1015,13 +1015,6 @@ div.ant-typography {
 }
 
 
-@media only screen and (min-width: 768px) {
-  .ant-layout-sider-children { 
-    position: fixed;
-    width: 230px; 
-    z-index: 10;
-  }
-}
 #sidebar a {
   color: inherit !important;
 }

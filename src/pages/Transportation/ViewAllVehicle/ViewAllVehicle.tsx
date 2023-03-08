@@ -31,7 +31,7 @@ import {
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
-import EntityStatusProgressBarV2 from "../../../components/common/EntityStatusProgressBarV2/EntityStatusProgressBarV2";
+import EntityStatusProgressBarV3 from "../../../components/common/EntityStatusProgressBarV3/EntityStatusProgressBarV3";
 
 const Vehicles = () => {
   const getFilter = localStorage.getItem("vehiclesFilter");
@@ -467,7 +467,7 @@ const Vehicles = () => {
 
   return (
     <>
-      <EntityStatusProgressBarV2 name={"Vehicles"} filter={filter} />
+      <EntityStatusProgressBarV3 name={"Vehicles"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>
