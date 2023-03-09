@@ -2,10 +2,12 @@ import { useLazyQuery } from "@apollo/client";
 import { Progress } from "antd";
 import { memo, useEffect } from "react";
 import CountUp from "react-countup";
-import { GET_ALL_ENTITY_STATUS_COUNT } from "../../../api/queries";
+import {
+  ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
+} from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
-import { EntityStatus } from "../../../models/Enums";
-import classes from "./EntityStatusProgressBarV3.module.css";
+import { PeriodicMaintenanceStatus } from "../../../models/Enums";
+import classes from "./MaintenanceProgressBar.module.css";
 
 interface filter {
   first?: number | null;
@@ -13,32 +15,23 @@ interface filter {
   after?: string | null;
   before?: string | null;
   search: string;
-  status: EntityStatus[];
   locationIds: number[];
-  entityType: string[];
-  typeIds: number[];
+  type2Ids: number[];
   zoneIds: number[];
   divisionIds: number[];
-  brandIds: number[];
-  isAssigned: boolean;
-  //assignedToId: number | null;
   measurement: string[];
   lteInterService: string;
   gteInterService: string;
-  isIncompleteChecklistTask: boolean;
+  pmStatus: PeriodicMaintenanceStatus[];
+  from: any;
+  to: any;
 }
-const EntityStatusProgressBarV3 = ({
-  name,
-  filter,
-}: {
-  name?: string;
-  filter?: filter;
-}) => {
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
+const MaintenanceProgressBar = ({ filter }: { filter?: filter }) => {
+  const [allPMStatusCount, { data: statusData }] = useLazyQuery(
+    ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
     {
       onError: (err) => {
-        errorMessage(err, "Error loading status count of entities.");
+        errorMessage(err, "Error loading status count.");
       },
       fetchPolicy: "network-only",
       nextFetchPolicy: "cache-first",
@@ -47,48 +40,48 @@ const EntityStatusProgressBarV3 = ({
 
   //Fetch all machine status count
   useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
+    allPMStatusCount({ variables: filter });
   }, [filter]);
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
+  let completed = 0;
+  let ongoing = 0;
+  let upcoming = 0;
+  let overdue = 0;
   let total = 0;
-  let normalized_working = 0;
-  let normalized_critical = 0;
-  let normalized_breakdown = 0;
+  let normalized_completed = 0;
+  let normalized_ongoing = 0;
+  let normalized_overdue = 0;
   //console.log(statusCount?.working);
-  const statusCount = statusData?.allEntityStatusCount;
+  const statusCount = statusData?.allPMStatusCount;
   if (statusCount) {
-    critical = statusCount?.critical;
-    working = statusCount?.working;
-    breakdown = statusCount?.breakdown;
-    //dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
+    completed = statusCount?.completed;
+    ongoing = statusCount?.ongoing;
+    upcoming = statusCount?.upcoming;
+    overdue = statusCount?.overdue;
+    total = completed + ongoing + upcoming + overdue;
 
-    normalized_working = ((working - 0) / (total - 0)) * 100;
-    normalized_critical = ((critical - 0) / (total - 0)) * 100;
-    normalized_breakdown = ((breakdown - 0) / (total - 0)) * 100;
+    normalized_completed = ((completed - 0) / (total - 0)) * 100;
+    normalized_ongoing = ((ongoing - 0) / (total - 0)) * 100;
+    normalized_overdue = ((overdue - 0) / (total - 0)) * 100;
   }
 
   return (
     <div
       className={classes["container"]}
-      title={`${working + critical + breakdown}`}
+      title={`${completed + ongoing + overdue}`}
     >
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>
           <CountUp
             className={classes["status-count"]}
-            end={working}
+            end={completed}
             duration={1}
           />
-          <span className={classes["status-title"]}>Working</span>
+          <span className={classes["status-title"]}>Completed</span>
         </div>
 
         <div className={classes["bar-box"]}>
           <Progress
-            percent={parseInt(normalized_working.toFixed(0))}
+            percent={parseInt(normalized_completed.toFixed(0))}
             strokeColor={"var(--working-bar-color)"}
           />
         </div>
@@ -97,14 +90,14 @@ const EntityStatusProgressBarV3 = ({
         <div className={classes["status-info"]}>
           <CountUp
             className={classes["status-count"]}
-            end={critical}
+            end={ongoing}
             duration={1}
           />
-          <span className={classes["status-title"]}>Critical</span>
+          <span className={classes["status-title"]}>Ongoing</span>
         </div>
         <div className={classes["bar-box"]}>
           <Progress
-            percent={parseInt(normalized_critical.toFixed(0))}
+            percent={parseInt(normalized_ongoing.toFixed(0))}
             strokeColor={"var(--critical-bar-color)"}
           />
         </div>
@@ -113,14 +106,14 @@ const EntityStatusProgressBarV3 = ({
         <div className={classes["status-info"]}>
           <CountUp
             className={classes["status-count"]}
-            end={breakdown}
+            end={overdue}
             duration={1}
           />
-          <span className={classes["status-title"]}>Breakdown</span>
+          <span className={classes["status-title"]}>Overdue</span>
         </div>
         <div className={classes["bar-box"]}>
           <Progress
-            percent={parseInt(normalized_breakdown.toFixed(0))}
+            percent={parseInt(normalized_overdue.toFixed(0))}
             strokeColor={"var(--breakdown-bar-color)"}
           />
         </div>
@@ -129,4 +122,4 @@ const EntityStatusProgressBarV3 = ({
   );
 };
 
-export default memo(EntityStatusProgressBarV3);
+export default memo(MaintenanceProgressBar);
