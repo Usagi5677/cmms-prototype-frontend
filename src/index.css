@@ -151,6 +151,7 @@ a {
   --ant-table-filter-trigger-container-open: #525252;
   --ant-layout-footer: #f0f2f5;
   --ant-layout-sider-trigger-bg: #fafafa;
+  --top-up-btn-bg: rgba(0, 0, 0, 0.06);;
   --ant-menu-not-horizontal-menu-item-selected: #fff1f0;
   --ant-modal-tr-ant-table-expanded-row-td: #272727;
   --ant-modal-ant-table-ant-table-filter: #525252;
@@ -312,6 +313,7 @@ a {
   --ant-table-filter-trigger-container-open: #525252;
   --ant-layout-footer: #000;
   --ant-layout-sider-trigger-bg: #262626;
+  --top-up-btn-bg: #262626;
   --ant-menu-not-horizontal-menu-item-selected: #2a1215;
   --ant-modal-tr-ant-table-expanded-row-td: #272727;
   --ant-modal-ant-table-ant-table-filter: #525252;

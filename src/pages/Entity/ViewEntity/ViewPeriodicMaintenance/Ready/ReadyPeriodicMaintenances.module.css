@@ -26,7 +26,11 @@
   display: flex;
   align-items: center;
 }
-
+.calendar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 @media only screen and (min-width: 600px) {
   .dropdown {
     width: 1200px;
@@ -38,6 +42,7 @@
   }
   .calendar {
     margin-left: auto;
+    margin-right: 10px;
   }
   .datepicker-wrapper {
     margin-left: auto;
