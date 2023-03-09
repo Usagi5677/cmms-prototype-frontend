@@ -368,8 +368,7 @@ const GroupedTypeRepairStats = ({
         }}
         viewport={{ once: true }}
         style={{
-          width: "100%",
-          marginTop: "20px",
+          marginTop: "40px",
           marginLeft: isSmallDevice ? 10 : 0,
           marginRight: isSmallDevice ? 10 : 0
         }}
@@ -379,7 +378,7 @@ const GroupedTypeRepairStats = ({
             defaultValue={dates}
             format={DATETIME_FORMATS.DAY_MONTH_YEAR}
             className={classes["datepicker"]}
-            popupStyle={{ borderRadius: 20 }}
+            popupStyle={{ borderRadius: 6 }}
             disabledDate={(date) => date.isAfter(moment(), "day")}
             onChange={setDates}
             allowClear={false}

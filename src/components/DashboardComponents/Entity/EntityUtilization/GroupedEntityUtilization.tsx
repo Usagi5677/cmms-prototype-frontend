@@ -422,8 +422,8 @@ const GroupedEntityUtilization = ({
         }}
         viewport={{ once: true }}
         style={{
-          width: entityType !== "Machine" && isSmallDevice ? "48%" : "100%",
-          marginTop: "20px",
+
+          marginTop: "40px",
           marginLeft: entityType === "Machine" && isSmallDevice ? 10 : 0,
           marginRight: entityType === "Machine" && isSmallDevice ? 10 : 0
         }}
@@ -530,19 +530,7 @@ const GroupedEntityUtilization = ({
         {historyLoading ? (
           <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
         ) : (
-          <div>
-            {history?.getAllGroupedEntityUsage.length > 0 ? (
-              <HighchartsReact highcharts={Highcharts} options={options} />
-            ) : (
-              <div
-                style={{
-                  marginTop: 140,
-                }}
-              >
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              </div>
-            )}
-          </div>
+          <HighchartsReact highcharts={Highcharts} options={options} />
         )}
         <motion.div
           whileInView={{
