@@ -272,6 +272,7 @@ const ReadyPeriodicMaintenances = ({
                 {summaryMatch(current)}
               </div>
             )}
+            getPopupContainer={(trigger:any) => trigger.parentNode}
           />
           {changeDateButton("forward")}
         </div>

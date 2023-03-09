@@ -15,16 +15,13 @@
   padding: 0 10px;
 }
 
-.dropdown {
-  width: 400px;
-  left: clamp(0%, 100vw, 3%) !important;
-  top: 120px !important;
-}
+
 
 .datepicker-wrapper {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+  position: relative;
 }
 .calendar {
   display: flex;
@@ -32,11 +29,7 @@
   gap: 10px;
 }
 @media only screen and (min-width: 600px) {
-  .dropdown {
-    width: 1200px;
-    left: clamp(10%, 100vw, 14%) !important;
-    top: 66.3333px;
-  }
+ 
   .options {
     flex-direction: row;
   }
@@ -51,8 +44,5 @@
 }
 
 @media only screen and (min-width: 1000px) {
-  .dropdown {
-    left: clamp(10%, 100vw, 20%) !important;
-    top: 66.3333px;
-  }
+  
 }
