@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
-import {
-  ALL_PERIODIC_MAINTENANCE_LIST,
-  ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
-} from "../../api/queries";
+import { ALL_PERIODIC_MAINTENANCE_LIST } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
@@ -36,6 +33,7 @@ import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterO
 import moment from "moment";
 import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../models/Entity/Entity";
+import MaintenanceProgressBar from "../../components/common/MaintenanceProgressBar/MaintenanceProgressBar";
 
 const ViewAllPeriodicMaintenances = () => {
   const getFilter = localStorage.getItem("periodicMaintenancesFilter");
@@ -124,17 +122,6 @@ const ViewAllPeriodicMaintenances = () => {
     from: JSON.parse(saveFilterOptions)?.from,
     to: JSON.parse(saveFilterOptions)?.to,
   });
-
-  const [allPMStatusCount, { data: statusData }] = useLazyQuery(
-    ALL_PERIODIC_MAINTENANCE_STATUS_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading status count of entities.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
 
   const [getAllPMWithPagination, { data, loading }] = useLazyQuery(
     ALL_PERIODIC_MAINTENANCE_LIST,
@@ -244,11 +231,6 @@ const ViewAllPeriodicMaintenances = () => {
     to,
   ]);
 
-  //Fetch all machine status count
-  useEffect(() => {
-    allPMStatusCount({ variables: filter });
-  }, [filter, allPMStatusCount]);
-
   // Pagination functions
   const next = () => {
     setFilter({
@@ -275,21 +257,6 @@ const ViewAllPeriodicMaintenances = () => {
   const pageInfo = data?.getAllPMWithPagination.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-
-  let completed = 0;
-  let ongoing = 0;
-  let upcoming = 0;
-  let overdue = 0;
-  let total = 0;
-
-  const statusCountData = statusData?.allPMStatusCount;
-  if (statusCountData) {
-    completed = statusCountData?.completed;
-    ongoing = statusCountData?.ongoing;
-    upcoming = statusCountData?.upcoming;
-    overdue = statusCountData?.overdue;
-    total = completed + ongoing + upcoming + overdue;
-  }
 
   const clearAll = () => {
     const clearFilter = {
@@ -440,105 +407,7 @@ const ViewAllPeriodicMaintenances = () => {
 
   return (
     <>
-      <div className={classes["status-card"]}>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.3,
-          }}
-        >
-          <div className={classes["total-card"]}>
-            <motion.div
-              className={classes["total-title"]}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.7,
-              }}
-            >
-              Total
-            </motion.div>
-            <div className={classes["total-amount"]}>
-              <CountUp end={total} duration={1} />
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.4,
-          }}
-        >
-          <StatusCard
-            amountOne={completed}
-            icon={<CheckOutlined />}
-            iconBackgroundColor={"var(--working-bg)"}
-            iconColor={"var(--working-color)"}
-            name={"Completed"}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.5,
-          }}
-        >
-          <StatusCard
-            amountOne={ongoing}
-            icon={<WarningOutlined />}
-            iconBackgroundColor={"var(--ongoing-bg)"}
-            iconColor={"var(--ongoing-color)"}
-            name={"Ongoing"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.6,
-          }}
-        >
-          <StatusCard
-            amountOne={upcoming}
-            icon={<ClockCircleOutlined />}
-            iconBackgroundColor={"var(--upcoming-bg)"}
-            iconColor={"var(--upcoming-color)"}
-            name={"Upcoming"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.7,
-          }}
-        >
-          <StatusCard
-            amountOne={overdue}
-            icon={<ExclamationOutlined />}
-            iconBackgroundColor={"var(--breakdown-bg)"}
-            iconColor={"var(--breakdown-color)"}
-            name={"Overdue"}
-          />
-        </motion.div>
-      </div>
+      <MaintenanceProgressBar filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           {/*<div className={classes["options-wrapper"]}>

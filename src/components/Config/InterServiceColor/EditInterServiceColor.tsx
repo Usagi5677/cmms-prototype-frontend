@@ -13,8 +13,8 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
-import { EDIT_BRAND, EDIT_INTER_SERVICE_COLOR } from "../../../api/mutations";
+import { FaRegEdit } from "react-icons/fa";
+import { EDIT_INTER_SERVICE_COLOR } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import InterServiceColor from "../../../models/InterServiceColor";
 import { BrandSelector } from "../Brand/BrandSelector";
@@ -80,7 +80,7 @@ export const EditInterServiceColor: React.FC<EditInterServiceColorProps> = ({
   return (
     <>
       <Tooltip title="Edit" placement="top">
-        <FaEdit
+        <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}

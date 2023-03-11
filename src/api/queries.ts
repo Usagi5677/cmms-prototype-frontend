@@ -1760,10 +1760,11 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
     $first: Int
     $last: Int
     $search: String
-    $complete: Boolean
     $locationIds: [Int!]
     $zoneIds: [Int!]
     $assignedToId: Int
+    $from: Date
+    $to: Date
   ) {
     getAllEntityPeriodicMaintenanceTask(
       after: $after
@@ -1771,10 +1772,11 @@ export const GET_ALL_ENTITY_PM_TASK = gql`
       first: $first
       last: $last
       search: $search
-      complete: $complete
       locationIds: $locationIds
       zoneIds: $zoneIds
       assignedToId: $assignedToId
+      from: $from
+      to: $to
     ) {
       pageInfo {
         endCursor
@@ -1820,12 +1822,16 @@ export const GET_ALL_ENTITY_PM_TASK_STATUS_COUNT = gql`
     $locationIds: [Int!]
     $zoneIds: [Int!]
     $assignedToId: Int
+    $from: Date
+    $to: Date
   ) {
     allEntityPMTaskStatusCount(
       search: $search
       locationIds: $locationIds
       zoneIds: $zoneIds
       assignedToId: $assignedToId
+      from: $from
+      to: $to
     ) {
       ongoing
       complete
@@ -2095,14 +2101,6 @@ export const GET_ALL_CHECKLIST_AND_PM_SUMMARY = gql`
   }
 `;
 
-export const GET_ALL_PM_SUMMARY = gql`
-  query getAllEntityPMSummary {
-    getAllEntityPMSummary {
-      pm
-      checklist
-    }
-  }
-`;
 
 export const INCOMPLETE_CHECKLIST_PAST_TWO = gql`
   query incompleteChecklistsPastTwoDays {

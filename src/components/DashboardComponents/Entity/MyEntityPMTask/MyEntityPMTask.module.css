@@ -5,22 +5,25 @@
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 10px;
-  margin: 40px 0;
+  margin: 0;
+  margin-top: 40px;
   border: var(--card-border);
 }
 
 .options-wrapper {
   width: 100%;
-  padding: 10px;
+  margin-bottom: 10px;
   font-size: 0.75rem;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
   align-items: center;
 }
-.option {
-  width: 100%;
-  margin-top: 10px;
+
+.option:nth-child(3) {
+  margin-bottom: 10px;
 }
 .header-container {
   display: flex;
@@ -94,7 +97,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 20px;
 }
 
 .counter-value {
@@ -134,8 +136,15 @@
   text-transform: uppercase;
   text-align: center;
 }
-
-@media only screen and (min-width: 770px) {
+.datepicker {
+  width: 100%;
+  border-radius: 6px !important;
+}
+@media only screen and (min-width: 600px) {
+  .options-wrapper {
+    flex-direction: row;
+    gap:0
+  }
   .container {
     font-size: 12px;
   }

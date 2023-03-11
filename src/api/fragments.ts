@@ -108,6 +108,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
       type
       estimatedDateOfRepair
       completedAt
+      createdAt
       createdBy {
         ...UserFieldsAPS
       }
@@ -214,6 +215,7 @@ export const ENTITY_FRAGMENT = gql`
       type
       estimatedDateOfRepair
       completedAt
+      createdAt
       createdBy {
         ...UserFieldsAPS
       }
@@ -302,6 +304,7 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
       type
       estimatedDateOfRepair
       completedAt
+      createdAt
       createdBy {
         ...UserFieldsAPS
       }

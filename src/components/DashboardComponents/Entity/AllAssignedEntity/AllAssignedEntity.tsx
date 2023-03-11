@@ -78,7 +78,7 @@ const AllAssignedEntity = () => {
   useEffect(() => {
     getAllAssignedEntity({ variables: filter });
     allEntityStatusCount({ variables: filter });
-  }, [filter, getAllAssignedEntity, allEntityStatusCount]);
+  }, [filter]);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -428,7 +428,7 @@ const AllAssignedEntity = () => {
                         </div>
 
                         <div className={classes["second-block"]}>
-                          <div>
+                          {/**<div>
                             <span className={classes["reading-title"]}>
                               Assigned to:
                             </span>
@@ -484,7 +484,7 @@ const AllAssignedEntity = () => {
                                 <span>None</span>
                               )}
                             </span>
-                          </div>
+                          </div> */}
                           <div className={classes["status"]}>
                             <EntityStatusTag status={entity?.status} />
                           </div>

@@ -21,6 +21,8 @@ import {
 import PeriodicMaintenanceCalendar from "../../../../../components/EntityComponents/PeriodicMaintenanceCalendar/PeriodicMaintenanceCalendar";
 import { Entity } from "../../../../../models/Entity/Entity";
 import { useSearchParams } from "react-router-dom";
+import DownloadReport from "../../../../../components/common/DownloadReport/DownloadReport";
+
 
 const ReadyPeriodicMaintenances = ({
   isDeleted,
@@ -270,12 +272,19 @@ const ReadyPeriodicMaintenances = ({
                 {summaryMatch(current)}
               </div>
             )}
+            getPopupContainer={(trigger:any) => trigger.parentNode}
           />
           {changeDateButton("forward")}
         </div>
         <div className={classes["calendar"]}>
           <PeriodicMaintenanceCalendar summary={summary} />
+          <DownloadReport
+              query={ALL_PERIODIC_MAINTENANCE}
+              filter={filter}
+              name="ReadyPM"
+            />
         </div>
+        
       </div>
       {loading && (
         <div>

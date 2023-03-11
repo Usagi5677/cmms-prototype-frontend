@@ -6,13 +6,14 @@ import { errorMessage } from "../../../helpers/gql";
 import { memo, useEffect } from "react";
 import classes from "./UserTypePie.module.css";
 import { motion } from "framer-motion";
+import { Spin } from "antd";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 require("highcharts/modules/drilldown")(Highcharts);
 
 const UserTypePie = () => {
-  const [getUserTypeCount, { data: userData }] = useLazyQuery(
+  const [getUserTypeCount, { data: userData, loading }] = useLazyQuery(
     GET_USER_TYPE_COUNT,
     {
       onError: (err) => {
@@ -137,7 +138,11 @@ const UserTypePie = () => {
       }}
       viewport={{ once: true }}
     >
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      {loading ? (
+        <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
+      ) : (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      )}
     </motion.div>
   );
 };

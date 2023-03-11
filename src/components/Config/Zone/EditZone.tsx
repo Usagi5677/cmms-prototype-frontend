@@ -5,7 +5,7 @@ import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
 import { EDIT_ZONE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import Zone from "../../../models/Zone";
 
 export interface EditZoneProps {
@@ -47,7 +47,7 @@ export const EditZone: React.FC<EditZoneProps> = ({ zone }) => {
   return (
     <>
       <Tooltip title="Edit" placement="top">
-        <FaEdit
+        <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}

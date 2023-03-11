@@ -7,21 +7,16 @@ import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../../api/queries";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
 import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
-import StatusCard from "../../../components/common/StatusCard/StatusCard";
-import { FaCarCrash } from "react-icons/fa";
-import { RiSailboatFill } from "react-icons/ri";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
 import { hasPermissions } from "../../../helpers/permissions";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
 import FilterOptions from "../../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
@@ -35,8 +30,8 @@ import {
   TypeSelectorOptionProps,
 } from "../../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { WarningOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "../../../helpers/useLocalStorage";
+import EntityStatusProgressBarV3 from "../../../components/common/EntityStatusProgressBarV3/EntityStatusProgressBarV3";
 
 const Vessels = () => {
   const getFilter = localStorage.getItem("vesselsFilter");
@@ -59,7 +54,9 @@ const Vessels = () => {
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brandIds, setBrandIds] = useState<number[]>(getFilterObjects?.brandIds);
+  const [brandIds, setBrandIds] = useState<number[]>(
+    getFilterObjects?.brandIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -251,17 +248,6 @@ const Vessels = () => {
     isIncompleteChecklistTask,
   ]);
 
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading status count of entities.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
   const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
     useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
       onError: (err) => {
@@ -272,9 +258,8 @@ const Vessels = () => {
     });
 
   useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -302,21 +287,6 @@ const Vessels = () => {
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
   const isSmallDevice = useIsSmallDevice();
   const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
-  let total = 0;
-
-  const statusCountData = statusData?.allEntityStatusCount;
-  if (statusCountData) {
-    critical = statusCountData?.critical;
-    working = statusCountData?.working;
-    breakdown = statusCountData?.breakdown;
-    //dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
-  }
 
   const clearAll = () => {
     const clearFilter = {
@@ -497,87 +467,7 @@ const Vessels = () => {
 
   return (
     <>
-      <div className={classes["status-card"]}>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.3,
-          }}
-        >
-          <div className={classes["total-card"]}>
-            <motion.div
-              className={classes["total-title"]}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.7,
-              }}
-            >
-              Vessels
-            </motion.div>
-            <div className={classes["total-amount"]}>
-              <CountUp end={total} duration={1} />
-            </div>
-          </div>
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.4,
-          }}
-        >
-          <StatusCard
-            amountOne={working}
-            icon={<RiSailboatFill />}
-            iconBackgroundColor={"var(--working-bg)"}
-            iconColor={"var(--working-color)"}
-            name={"Working"}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.5,
-          }}
-        >
-          <StatusCard
-            amountOne={critical}
-            icon={<WarningOutlined />}
-            iconBackgroundColor={"var(--critical-bg)"}
-            iconColor={"var(--critical-color)"}
-            name={"Critical"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.6,
-          }}
-        >
-          <StatusCard
-            amountOne={breakdown}
-            icon={<FaCarCrash />}
-            iconBackgroundColor={"var(--breakdown-bg)"}
-            iconColor={"var(--breakdown-color)"}
-            name={"Breakdown"}
-          />
-        </motion.div>
-      </div>
+      <EntityStatusProgressBarV3 name={"Vessels"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           <div className={classes["options-wrapper"]}>

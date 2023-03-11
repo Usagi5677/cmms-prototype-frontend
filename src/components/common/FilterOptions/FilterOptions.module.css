@@ -34,10 +34,9 @@
   flex-direction: column;
 }
 
-.reading-wrapper {
+.reading-wrapper:nth-child(1) {
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
   margin-bottom: 10px;
 }
 
@@ -87,7 +86,6 @@
     margin-bottom: 20px;
     width: 100%;
   }
-  
 }
 
 @media only screen and (min-width: 1300px) {
@@ -98,5 +96,11 @@
 @media only screen and (min-width: 1500px) {
   .reading-container {
     flex-direction: row;
+  }
+  .reading-wrapper {
+    margin-bottom: 0;
+  }
+  .reading-wrapper:nth-child(1) {
+    padding-right: 10px;
   }
 }

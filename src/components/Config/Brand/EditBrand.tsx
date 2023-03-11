@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { message, Tooltip, Modal, Form, Input, Row, Col, Button } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { EDIT_BRAND } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import Brand from "../../../models/Brand";
@@ -47,7 +47,7 @@ export const EditBrand: React.FC<EditBrandsProps> = ({ brand }) => {
   return (
     <>
       <Tooltip title="Edit" placement="top">
-        <FaEdit
+        <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}

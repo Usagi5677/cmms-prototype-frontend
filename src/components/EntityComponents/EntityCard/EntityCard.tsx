@@ -89,6 +89,9 @@ const EntityCard = ({
     (assign) => assign.type === "Admin"
   );
 
+  if(entity?.machineNumber === "ADT 04") {
+    console.log(entity?.breakdowns)
+  }
   return (
     <motion.div
       id="collapse"
@@ -627,9 +630,7 @@ const EntityCard = ({
                           <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                             <span
                               className={classes["title"]}
-                              title={moment(b.createdAt).format(
-                                DATETIME_FORMATS.FULL
-                              )}
+                              title={"Created At"}
                             >
                               {moment(b.createdAt).format(
                                 DATETIME_FORMATS.DAY_MONTH_YEAR

@@ -3,11 +3,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-
+import ErrorBoundary from "./components/common/ErrorFallBack/ErrorBoundary";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </BrowserRouter>,
   document.getElementById("root")
 );

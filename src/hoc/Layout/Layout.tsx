@@ -1,9 +1,10 @@
 import AntLayout from "antd/lib/layout";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { LeftOutlined } from "@ant-design/icons";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import PageTopButton from "../../components/common/PageTopButton/PageTopButton";
 
 const Layout = ({ children }: any) => {
   const isSmallDevice = useIsSmallDevice();
@@ -77,12 +78,14 @@ const Layout = ({ children }: any) => {
             padding: isSmallDevice ? "2rem 1rem" : "1rem",
             overflow: "auto",
           }}
+          id={"content"}
         >
           {children}
+          <PageTopButton />
         </Content>
       </AntLayout>
     </AntLayout>
   );
 };
 
-export default Layout;
+export default memo(Layout);

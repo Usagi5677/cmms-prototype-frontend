@@ -28,6 +28,12 @@ const TaskNotification = () => {
     getSummary();
   }, [getSummary]);
 
+  const ckCount = data?.getAllEntityChecklistAndPMSummary?.checklist?.length;
+  const taskCount = data?.getAllEntityChecklistAndPMSummary?.pm?.length;
+  const total =
+    data?.getAllEntityChecklistAndPMSummary?.checklist?.length +
+    data?.getAllEntityChecklistAndPMSummary?.pm?.length;
+
   return (
     <Popover
       placement="bottomRight"
@@ -40,7 +46,7 @@ const TaskNotification = () => {
             <Tabs.TabPane
               tab={
                 <Badge
-                  count={`${data?.getAllEntityChecklistAndPMSummary?.checklist?.length}`}
+                  count={ckCount > 0 ? ckCount : 0}
                   size="small"
                   offset={[4, -4]}
                 >
@@ -80,7 +86,7 @@ const TaskNotification = () => {
             <Tabs.TabPane
               tab={
                 <Badge
-                  count={`${data?.getAllEntityChecklistAndPMSummary?.pm?.length}`}
+                  count={taskCount > 0 ? taskCount : 0}
                   size="small"
                   offset={[4, -4]}
                 >
@@ -122,14 +128,7 @@ const TaskNotification = () => {
         </div>
       }
     >
-      <Badge
-        count={`${
-          data?.getAllEntityChecklistAndPMSummary?.checklist?.length +
-          data?.getAllEntityChecklistAndPMSummary?.pm?.length
-        }`}
-        size="small"
-        offset={[-16, 2]}
-      >
+      <Badge count={total > 0 ? total : 0} size="small" offset={[-16, 2]}>
         <ToolFilled className={classes["icon"]} />
       </Badge>
     </Popover>

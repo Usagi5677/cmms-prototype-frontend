@@ -278,7 +278,7 @@ const EntityBreakdownCard = ({
                   <div className={classes["detail-container"]}>
                     {breakdown?.details?.map(
                       (b: BreakdownDetail, index: number) => (
-                        <>
+                        <div key={b.id}>
                           <BreakdownDetailCard
                             index={index}
                             breakdown={breakdown}
@@ -288,14 +288,13 @@ const EntityBreakdownCard = ({
                               isAssignedType("Admin", entity!, self) ||
                               isAssignedType("Engineer", entity!, self)
                             }
-                            key={b.id}
                           />
                           {breakdown?.details?.length !== index + 1 && (
                             <Divider
                               style={{ marginTop: 4, marginBottom: 4 }}
                             />
                           )}
-                        </>
+                        </div>
                       )
                     )}
                   </div>
@@ -315,11 +314,10 @@ const EntityBreakdownCard = ({
                 {breakdown?.repairs ? (
                   <div className={classes["detail-container"]}>
                     {breakdown?.repairs?.map((r: Repair, index: number) => (
-                      <>
+                      <div key={r.id}>
                         <RepairDetailCard
                           index={index}
                           repair={r}
-                          key={r.id}
                           hasPermission={
                             hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
                             isAssignedType("Admin", entity!, self) ||
@@ -329,7 +327,7 @@ const EntityBreakdownCard = ({
                         {breakdown?.repairs?.length !== index + 1 && (
                           <Divider style={{ marginTop: 4, marginBottom: 4 }} />
                         )}
-                      </>
+                      </div>
                     ))}
                   </div>
                 ) : (

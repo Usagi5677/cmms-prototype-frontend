@@ -6,13 +6,14 @@ import { errorMessage } from "../../../helpers/gql";
 import { memo, useEffect } from "react";
 import classes from "./EntityStatusPie.module.css";
 import { motion } from "framer-motion";
+import { Spin } from "antd";
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/offline-exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 require("highcharts/modules/drilldown")(Highcharts);
 
 const EntityStatusPie = () => {
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
+  const [getAllEntityStatusCount, { data: statusData, loading }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
     {
       onError: (err) => {
@@ -181,10 +182,9 @@ const EntityStatusPie = () => {
       },
     };
   }
-
   return (
     <motion.div
-    className={classes["container"]}
+      className={classes["container"]}
       initial={{ x: -60, opacity: 0 }}
       whileInView={{
         x: 0,
@@ -197,7 +197,11 @@ const EntityStatusPie = () => {
       }}
       viewport={{ once: true }}
     >
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      {loading ? (
+        <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
+      ) : (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      )}
     </motion.div>
   );
 };
