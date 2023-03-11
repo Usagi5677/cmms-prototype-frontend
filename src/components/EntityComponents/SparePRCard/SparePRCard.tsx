@@ -61,12 +61,12 @@ const SparePRCard = ({
                           transition: "rotate 0.3s ease",
                         }}
                       />
-                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                      {hasPermissions(self, ["MODIFY_SPARE_PR"]) ||
                       isAssignedType("Admin", entity!, self) ||
                       isAssignedType("Engineer", entity!, self) ? (
                         <EditSparePR sparePR={sparePR} isDeleted={isDeleted} />
                       ) : null}
-                      {hasPermissions(self, ["MODIFY_BREAKDOWN"]) ||
+                      {hasPermissions(self, ["MODIFY_SPARE_PR"]) ||
                       isAssignedType("Admin", entity!, self) ||
                       isAssignedType("Engineer", entity!, self) ? (
                         <DeleteSparePR id={sparePR?.id} isDeleted={isDeleted} />
@@ -79,7 +79,7 @@ const SparePRCard = ({
                         className={classes["checkbox"]}
                         checked={sparePR?.completedAt !== null}
                         disabled={
-                          (!hasPermissions(self, ["MODIFY_BREAKDOWN"]) &&
+                          (!hasPermissions(self, ["MODIFY_SPARE_PR"]) &&
                             !isAssignedType("Admin", entity!, self) &&
                             !isAssignedType("Engineer", entity!, self)) ||
                           isDeleted
