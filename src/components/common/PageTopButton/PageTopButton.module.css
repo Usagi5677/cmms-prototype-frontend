@@ -22,7 +22,7 @@
 }
 .button:hover {
   background-color: var(--top-up-btn-bg) !important;
-  color: var(--ant-primary-color);
+  color: var(--top-up-btn-color-hover);
 }
 .icon {
   font-size: 16px;

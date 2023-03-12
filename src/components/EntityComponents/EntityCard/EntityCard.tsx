@@ -89,9 +89,6 @@ const EntityCard = ({
     (assign) => assign.type === "Admin"
   );
 
-  if(entity?.machineNumber === "ADT 04") {
-    console.log(entity?.breakdowns)
-  }
   return (
     <motion.div
       id="collapse"

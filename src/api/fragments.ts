@@ -114,6 +114,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
       }
       details {
         id
+        createdAt
         description
         repairs {
           id
@@ -125,6 +126,7 @@ export const SUB_ENTITY_FRAGMENT = gql`
         name
         breakdownDetail {
           id
+          createdAt
         }
       }
     }
@@ -221,6 +223,7 @@ export const ENTITY_FRAGMENT = gql`
       }
       details {
         id
+        createdAt
         description
         repairs {
           id
@@ -229,9 +232,11 @@ export const ENTITY_FRAGMENT = gql`
       }
       repairs {
         id
+        createdAt
         name
         breakdownDetail {
           id
+          createdAt
         }
       }
     }
@@ -310,6 +315,7 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
       }
       details {
         id
+        createdAt
         description
         repairs {
           id
@@ -321,6 +327,7 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
         name
         breakdownDetail {
           id
+          createdAt
         }
       }
     }
