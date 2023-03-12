@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useParams } from "react-router";
 import { CREATE_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
@@ -273,4 +273,4 @@ const AddEntity: React.FC<AddEntityProps> = ({
   );
 };
 
-export default AddEntity;
+export default memo(AddEntity);

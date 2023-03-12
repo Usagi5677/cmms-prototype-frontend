@@ -1,17 +1,13 @@
 import { Image, Spin, Tooltip } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
-  FileOutlined,
   DownloadOutlined,
   WarningOutlined,
   StarFilled,
 } from "@ant-design/icons";
 import classes from "./ParsedEntityAttachment.module.css";
 import UserContext from "../../../contexts/UserContext";
-import { FaRegClock } from "react-icons/fa";
-import moment from "moment";
-import { DATETIME_FORMATS } from "../../../helpers/constants";
 import EntityAttachment from "../../../models/Entity/EntityAttachment";
 import EditEntityAttachment from "../EditEntityAttachment/EditEntityAttachment";
 import DeleteEntityAttachment from "../DeleteEntityAttachment/DeleteEntityAttachment";
@@ -173,4 +169,4 @@ const ParsedEntityAttachment = ({
   );
 };
 
-export default ParsedEntityAttachment;
+export default memo(ParsedEntityAttachment);

@@ -15,7 +15,7 @@ import {
 import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { EDIT_ENTITY } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
@@ -284,4 +284,4 @@ const EditEntity = ({
   );
 };
 
-export default EditEntity;
+export default memo(EditEntity);

@@ -10,7 +10,6 @@ import {
 } from "../../../api/queries";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllMachine.module.css";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import { Entity } from "../../../models/Entity/Entity";
@@ -167,11 +166,14 @@ const Machinery = () => {
         "You don't have permission to view all machinery and you're not assigned to a machine."
       );
     }
-
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, getAllEntity]);
+  }, [filter]);
+
+  useEffect(() => {
+    getAllEntityChecklistAndPMSummary();
+  }, []);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -220,6 +222,7 @@ const Machinery = () => {
       }, 500)
     );
   };
+
   const initialRender = useRef<boolean>(true);
   useEffect(() => {
     if (initialRender.current === true) {
@@ -258,11 +261,6 @@ const Machinery = () => {
     isIncompleteChecklistTask,
   ]);
 
-  //Fetch all machine status count
-  useEffect(() => {
-    getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityChecklistAndPMSummary]);
-
   // Pagination functions
   const next = () => {
     setFilter({
@@ -287,8 +285,6 @@ const Machinery = () => {
   };
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   const clearAll = () => {
     const clearFilter = {
@@ -469,7 +465,7 @@ const Machinery = () => {
     gteInterServiceOptions,
     isIncompleteChecklistTaskOptions,
   };
-
+  
   return (
     <>
       <EntityStatusProgressBarV3 name={"Machinery"} filter={filter} />

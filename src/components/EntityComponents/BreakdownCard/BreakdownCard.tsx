@@ -31,7 +31,7 @@ import { errorMessage } from "../../../helpers/gql";
 import { useMutation } from "@apollo/client";
 import { Entity } from "../../../models/Entity/Entity";
 
-const EntityBreakdownCard = ({
+const BreakdownCard = ({
   breakdown,
   isDeleted,
   entity,
@@ -367,4 +367,4 @@ const EntityBreakdownCard = ({
   );
 };
 
-export default memo(EntityBreakdownCard);
+export default memo(BreakdownCard);

@@ -1,7 +1,7 @@
 import { Tooltip } from "antd";
 import moment from "moment";
+import { memo } from "react";
 import {
-  FaMapMarker,
   FaMapMarkerAlt,
   FaRegClock,
   FaRegUser,
@@ -71,4 +71,4 @@ const EntityHistoryCard = ({ history }: { history: EntityHistory }) => {
   );
 };
 
-export default EntityHistoryCard;
+export default memo(EntityHistoryCard);

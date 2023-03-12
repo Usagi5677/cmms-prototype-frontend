@@ -10,7 +10,6 @@ import {
 } from "../../../api/queries";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVehicle.module.css";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../../models/Entity/Entity";
@@ -144,6 +143,14 @@ const Vehicles = () => {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
+  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
+  useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+    onError: (err) => {
+      errorMessage(err, "Error loading summary data.");
+    },
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
+  });
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
@@ -158,11 +165,14 @@ const Vehicles = () => {
         "You don't have permission to view all vehicles and you're not assigned to a vehicle."
       );
     }
-
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, getAllEntity]);
+  }, [filter]);
+
+  useEffect(() => {
+    getAllEntityChecklistAndPMSummary();
+  }, []);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -249,19 +259,6 @@ const Vehicles = () => {
     isIncompleteChecklistTask,
   ]);
 
-  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
-      onError: (err) => {
-        errorMessage(err, "Error loading summary data.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    });
-
-  useEffect(() => {
-    getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityChecklistAndPMSummary]);
-
   // Pagination functions
   const next = () => {
     setFilter({
@@ -286,8 +283,6 @@ const Vehicles = () => {
   };
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   const clearAll = () => {
     const clearFilter = {

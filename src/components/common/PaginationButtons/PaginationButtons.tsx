@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import { memo } from "react";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import classes from "./PaginationButtons.module.css";
 
@@ -54,4 +55,4 @@ const PaginationButtons = ({
   );
 };
 
-export default PaginationButtons;
+export default memo(PaginationButtons);

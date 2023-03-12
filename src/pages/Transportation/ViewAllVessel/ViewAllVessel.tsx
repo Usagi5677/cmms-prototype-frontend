@@ -10,7 +10,6 @@ import {
 } from "../../../api/queries";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllVessel.module.css";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import UserContext from "../../../contexts/UserContext";
 import AddEntity from "../../../components/EntityComponents/AddEntity/AddEntity";
 import EntityCard from "../../../components/EntityComponents/EntityCard/EntityCard";
@@ -144,6 +143,14 @@ const Vessels = () => {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
   });
+  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
+    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+      onError: (err) => {
+        errorMessage(err, "Error loading summary data.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
@@ -161,7 +168,11 @@ const Vessels = () => {
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, getAllEntity]);
+  }, [filter]);
+
+  useEffect(() => {
+    getAllEntityChecklistAndPMSummary();
+  }, []);
 
   // Debounce the search, meaning the search will only execute 500ms after the
   // last input. This prevents unnecessary API calls. useRef is used to prevent
@@ -248,19 +259,6 @@ const Vessels = () => {
     isIncompleteChecklistTask,
   ]);
 
-  const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
-      onError: (err) => {
-        errorMessage(err, "Error loading summary data.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    });
-
-  useEffect(() => {
-    getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityChecklistAndPMSummary]);
-
   // Pagination functions
   const next = () => {
     setFilter({
@@ -285,8 +283,6 @@ const Vessels = () => {
   };
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   const clearAll = () => {
     const clearFilter = {
