@@ -495,7 +495,7 @@ const ViewEntity = () => {
                           : undefined,
                       }}
                     >
-                      <div>
+                      <div style={{marginBottom:6}}>
                         {entityData?.type?.entityType} {type}
                       </div>
                       {(isAssignedType(

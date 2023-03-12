@@ -99,7 +99,17 @@ const AddEntity: React.FC<AddEntityProps> = ({
       },
     });
   };
-
+  const formItemLayout = {
+    labelCol: {
+      span: 6,
+      style: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-start",
+      },
+    },
+    wrapperCol: { span: 24 },
+  };
   return (
     <>
       {includeSubEntity ? (
@@ -134,150 +144,102 @@ const AddEntity: React.FC<AddEntityProps> = ({
       >
         <Form
           form={form}
-          layout="vertical"
-          name="basic"
+          layout="horizontal"
+          name="form_in_modal"
           onFinish={onFinish}
           id="myForm"
+          {...formItemLayout}
         >
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Machine Number"
-                name="machineNumber"
-                required={false}
-              >
-                <Input placeholder="Machine Number" />
-              </Form.Item>
-            </div>
+          <Form.Item
+            label="Machine Number"
+            name="machineNumber"
+            required={false}
+          >
+            <Input placeholder="Machine Number" />
+          </Form.Item>
 
-            <div className={classes["col"]}>
-              <Form.Item label="Model" name="model" required={false}>
-                <Input placeholder="Model" />
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item label="Brand" name="brand" required={false}>
-                <BrandSelector setBrandId={setBrandId} />
-              </Form.Item>
-            </div>
-          </div>
-
-          <div className={classes["row"]}>
-            {!includeSubEntity && (
-              <div className={classes["col"]}>
-                <Form.Item label="Division" name="division" required={false}>
-                  <DivisionSelector setDivisionId={setDivisionId} />
-                </Form.Item>
-              </div>
-            )}
-
-            <div className={classes["col"]}>
-              <Form.Item label="Type" required={true}>
-                <TypeSelector setTypeId={setTypeId} />
-              </Form.Item>
-            </div>
-            {!includeSubEntity && (
-              <div className={classes["col"]}>
-                <Form.Item
-                  label="Registered Date"
-                  name="registeredDate"
-                  required={false}
-                >
-                  <DatePicker
-                    placeholder="Select registered date"
-                    style={{
-                      width: 200,
-                      marginRight: "1rem",
-                    }}
-                    allowClear={false}
-                  />
-                </Form.Item>
-              </div>
-            )}
-          </div>
+          <Form.Item label="Model" name="model" required={false}>
+            <Input placeholder="Model" />
+          </Form.Item>
+          <Form.Item label="Brand" name="brand" required={false}>
+            <BrandSelector setBrandId={setBrandId} />
+          </Form.Item>
 
           {!includeSubEntity && (
-            <div className={classes["row"]}>
-              <div className={classes["col"]}>
-                <Form.Item label="Location" name="location" required={false}>
-                  <LocationSelector setLocationId={setLocationId} />
-                </Form.Item>
-              </div>
-            </div>
+            <Form.Item label="Division" name="division" required={false}>
+              <DivisionSelector setDivisionId={setDivisionId} />
+            </Form.Item>
           )}
 
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Current running"
-                name="currentRunning"
-                required={false}
-              >
-                <InputNumber
-                  placeholder="Current running"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-            <div className={classes["col"]}>
-              <Form.Item
-                label="Last service"
-                name="lastService"
-                required={false}
-              >
-                <InputNumber
-                  placeholder="Last service"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </div>
-          </div>
+          <Form.Item label="Type" required={true}>
+            <TypeSelector setTypeId={setTypeId} />
+          </Form.Item>
+          {!includeSubEntity && (
+            <Form.Item
+              label="Registered Date"
+              name="registeredDate"
+              required={false}
+            >
+              <DatePicker
+                placeholder="Select registered date"
+                style={{
+                  width: 200,
+                  marginRight: "1rem",
+                }}
+                allowClear={false}
+              />
+            </Form.Item>
+          )}
 
-          <div className={classes["row"]}>
-            {!includeSubEntity && entityType !== "Vessel" && (
-              <div className={classes["col"]}>
-                <Form.Item label="Engine" name="engine" required={false}>
-                  <EngineSelector />
-                </Form.Item>
-              </div>
-            )}
-            {!includeSubEntity && entityType === "Vessel" && (
-              <div className={classes["col"]}>
-                <Form.Item
-                  label="Registry Number"
-                  name="registryNumber"
-                  required={false}
-                >
-                  <Input placeholder="Registry Number" />
-                </Form.Item>
-              </div>
-            )}
-            <div className={classes["col"]}>
-              <Form.Item label="Measurement" name="measurement">
-                <Radio.Group buttonStyle="solid" optionType="button">
-                  <Radio.Button value="km">KM</Radio.Button>
-                  <Radio.Button value="hr">HR</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-            </div>
-          </div>
+          {!includeSubEntity && (
+            <Form.Item label="Location" name="location" required={false}>
+              <LocationSelector setLocationId={setLocationId} />
+            </Form.Item>
+          )}
+
+          <Form.Item
+            label="Current running"
+            name="currentRunning"
+            required={false}
+          >
+            <InputNumber
+              placeholder="Current running"
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item label="Last service" name="lastService" required={false}>
+            <InputNumber placeholder="Last service" style={{ width: "100%" }} />
+          </Form.Item>
+          {!includeSubEntity && entityType !== "Vessel" && (
+            <Form.Item label="Engine" name="engine" required={false}>
+              <EngineSelector />
+            </Form.Item>
+          )}
+          {!includeSubEntity && entityType === "Vessel" && (
+            <Form.Item
+              label="Registry Number"
+              name="registryNumber"
+              required={false}
+            >
+              <Input placeholder="Registry Number" />
+            </Form.Item>
+          )}
+          <Form.Item label="Measurement" name="measurement">
+            <Radio.Group buttonStyle="solid" optionType="button">
+              <Radio.Button value="km">KM</Radio.Button>
+              <Radio.Button value="hr">HR</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
 
           {!includeSubEntity && entityType === "Vessel" && (
-            <div className={classes["row"]}>
-              <div className={classes["col"]}>
-                <Form.Item label="Hull Type" required={false}>
-                  <HullTypeSelector setHullTypeId={setHullTypeId} />
-                </Form.Item>
-              </div>
-              <div className={classes["col"]}>
-                <Form.Item label="Dimension" name="dimension" required={false}>
-                  <InputNumber
-                    placeholder="Dimension"
-                    style={{ width: "100%" }}
-                  />
-                </Form.Item>
-              </div>
-            </div>
+            <Form.Item label="Hull Type" required={false}>
+              <HullTypeSelector setHullTypeId={setHullTypeId} />
+            </Form.Item>
+          )}
+          {!includeSubEntity && entityType === "Vessel" && (
+            <Form.Item label="Dimension" name="dimension" required={false}>
+              <InputNumber placeholder="Dimension" style={{ width: "100%" }} />
+            </Form.Item>
           )}
 
           <Row justify="end" gutter={16}>
