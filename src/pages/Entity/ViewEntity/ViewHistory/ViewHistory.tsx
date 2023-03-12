@@ -201,15 +201,13 @@ const ViewHistory = () => {
       {data?.getAllHistoryOfEntity.edges.length > 0 ? (
         <div className={classes["content"]}>
           {dateArray?.reverse()?.map((dateVal: any, index: number) => {
+            let skip = true;
             return (
-              <div
-                className={classes["collapse-container"]}
-                key={index + "div"}
-              >
+              <div className={classes["collapse-container"]} key={index}>
                 <Collapse
                   ghost
                   style={{ marginBottom: ".5rem" }}
-                  defaultActiveKey={index + "col"}
+                  defaultActiveKey={index}
                 >
                   <Collapse.Panel
                     header={
@@ -232,7 +230,7 @@ const ViewHistory = () => {
                         )}
                       </div>
                     }
-                    key={index + "col"}
+                    key={index}
                   >
                     {data?.getAllHistoryOfEntity.edges.map(
                       (rec: { node: EntityHistory }, i: number) => {
@@ -245,12 +243,23 @@ const ViewHistory = () => {
                             DATETIME_FORMATS.DAY_MONTH_YEAR
                           )
                         ) {
-                          return (
-                            <div key={history.id}>
-                              {i !== 0 && <Divider style={{ marginTop: 6, marginBottom: 6 }} />}
-                              <EntityHistoryCard history={history} />
-                            </div>
-                          );
+                          if (skip) {
+                            skip = false;
+                            return (
+                              <div key={history.id}>
+                                <EntityHistoryCard history={history} />
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div key={history.id}>
+                                <Divider
+                                  style={{ marginTop: 6, marginBottom: 6 }}
+                                />
+                                <EntityHistoryCard history={history} />
+                              </div>
+                            );
+                          }
                         }
                       }
                     )}
