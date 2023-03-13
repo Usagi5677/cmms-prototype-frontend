@@ -2310,6 +2310,7 @@ export const LOCATION_ASSIGNMENTS = gql`
     $userIds: [Int!]!
     $current: Boolean!
     $locationIds: [Int!]
+    $userTypes:[String!]
   ) {
     locationAssignments(
       after: $after
@@ -2319,6 +2320,7 @@ export const LOCATION_ASSIGNMENTS = gql`
       userIds: $userIds
       current: $current
       locationIds: $locationIds
+      userTypes: $userTypes
     ) {
       pageInfo {
         endCursor

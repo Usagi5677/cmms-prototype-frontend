@@ -3,9 +3,7 @@ import { Checkbox, message, Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { UNASSIGN_USER_FROM_LOCATION } from "../../../api/mutations";
 import { LOCATION_ASSIGNMENTS } from "../../../api/queries";
-import { DeleteListing } from "../../../components/common/DeleteListing";
 import PaginationButtons from "../../../components/common/PaginationButtons/PaginationButtons";
 import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS, PAGE_LIMIT } from "../../../helpers/constants";
@@ -71,7 +69,7 @@ export const LocationUserAssignments: React.FC<
 
   useEffect(() => {
     getAssignments({ variables: filter });
-  }, [filter, getAssignments]);
+  }, [filter]);
 
   // Pagination functions
   const next = () => {
@@ -166,6 +164,7 @@ export const LocationUserAssignments: React.FC<
   useEffect(() => {
     setFilter({
       ...filter,
+      userTypes: selectedUserTypes.map((t) => t),
     });
     setPage(1);
   }, [selectedUserTypes]);
