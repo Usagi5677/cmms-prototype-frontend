@@ -5,10 +5,13 @@ import { BULK_UNASSIGN_USER_FROM_LOCATION } from "../../../api/mutations";
 import { GET_ALL_USERS } from "../../../api/queries";
 import { errorMessage } from "../../../helpers/gql";
 import User from "../../../models/User";
+import AssignmentTypeSelector from "../../common/AssignmentTypeSelector";
 import { CenteredSpin } from "../../common/CenteredSpin";
+import { SearchLocations } from "../../common/SearchLocations";
 import { SearchUsers } from "../../common/SearchUsers";
 import { DivisionSelector } from "../Division/DivisionSelector";
 import { LocationSelector } from "./LocationSelector";
+import Location from "../../../models/Location";
 
 export interface LocationUserBulkUnassignmentProps {}
 
@@ -16,7 +19,8 @@ export const LocationUserBulkUnassignment: React.FC<
   LocationUserBulkUnassignmentProps
 > = ({}) => {
   const [visible, setVisible] = useState(false);
-  const [locationIds, setLocationIds] = useState<number[]>([]);
+  const [assignmentType, setAssignmentType] = useState<string | null>("Admin");
+  const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
   const [bulkUnassignUserFromLocation, { loading: assigning }] = useMutation(
@@ -48,12 +52,13 @@ export const LocationUserBulkUnassignment: React.FC<
 
   const handleCancel = () => {
     setSelectedUsers([]);
+    setSelectedLocations([]);
     setVisible(false);
   };
 
   useEffect(() => {
     setSelectedUsers([]);
-  }, []);
+  }, [assignmentType]);
 
   return (
     <div>
@@ -74,14 +79,64 @@ export const LocationUserBulkUnassignment: React.FC<
         bodyStyle={{ paddingTop: "1rem" }}
       >
         <Divider style={{ marginTop: 0 }} orientation="left">
-          Location
+          Assignment type
         </Divider>
-        <LocationSelector
-          setLocationId={setLocationIds}
-          currentId={locationIds}
+        <AssignmentTypeSelector
+          value={assignmentType}
           width="100%"
           rounded={false}
+          onChange={(type) => setAssignmentType(type)}
         />
+        <Divider orientation="left">
+          Location
+          {selectedLocations.length > 0 && (
+            <Tag
+              style={{ marginLeft: "1rem", cursor: "pointer" }}
+              closable
+              onClick={() => setSelectedLocations([])}
+              onClose={() => setSelectedLocations([])}
+            >
+              Clear all locations
+            </Tag>
+          )}
+        </Divider>
+        <SearchLocations
+          current={selectedLocations}
+          onChange={(loc) => {
+            const current = selectedLocations.map((location) => location.id);
+            if (current.includes(loc.id)) return;
+            setSelectedLocations([...selectedLocations, loc]);
+          }}
+        />
+        {selectedLocations.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              opacity: 0.7,
+              marginTop: 10,
+              flexWrap: "wrap",
+              maxHeight: 200,
+              overflowY: "auto",
+            }}
+          >
+            {selectedLocations.map((loc) => (
+              <Tag
+                key={loc.id}
+                closable
+                onClose={() =>
+                  setSelectedLocations(
+                    selectedLocations.filter(
+                      (location) => location.id !== loc.id
+                    )
+                  )
+                }
+                style={{ marginRight: ".5rem", marginTop: ".3rem" }}
+              >
+                {loc.name}
+              </Tag>
+            ))}
+          </div>
+        )}
         <Divider orientation="left">
           Users
           {selectedUsers.length > 0 && (
@@ -127,6 +182,7 @@ export const LocationUserBulkUnassignment: React.FC<
             width="100%"
           />
         </div>
+
         {selectedUsers.length > 0 && (
           <div
             style={{
@@ -169,7 +225,7 @@ export const LocationUserBulkUnassignment: React.FC<
             <Button
               type="primary"
               disabled={
-                locationIds?.length === 0 || selectedUsers?.length === 0
+                selectedLocations?.length === 0 || selectedUsers?.length === 0
               }
               loading={assigning}
               className="primaryButton"
@@ -178,7 +234,8 @@ export const LocationUserBulkUnassignment: React.FC<
                   variables: {
                     input: {
                       userIds: selectedUsers.map((u) => u.id),
-                      locationId: locationIds,
+                      locationIds: selectedLocations.map((loc) => loc.id),
+                      userType: assignmentType
                     },
                   },
                 });

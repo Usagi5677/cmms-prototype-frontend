@@ -2341,6 +2341,7 @@ export const LOCATION_ASSIGNMENTS = gql`
             id
             name
           }
+          userType
         }
       }
     }

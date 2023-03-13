@@ -39,7 +39,6 @@ import ViewGallery from "./ViewGallery/ViewGallery";
 import ViewChecklist from "./ViewChecklist/ViewChecklist";
 import UserContext from "../../../contexts/UserContext";
 import { stringToColor } from "../../../helpers/style";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import { Entity } from "../../../models/Entity/Entity";
 import EditEntityLocation from "../../../components/EntityComponents/EditEntityLocation/EditEntityLocation";
 import EditEntity from "../../../components/EntityComponents/EditEntity/EditEntity";

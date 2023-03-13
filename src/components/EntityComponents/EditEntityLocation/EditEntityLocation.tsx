@@ -54,7 +54,7 @@ const EditEntityLocation = ({
 
   return (
     <div className={classes["info-edit"]}>
-      <Tooltip title="Edit Location">
+      <Tooltip title="Update Location">
         <FaMapMarkerAlt
           onClick={() => setVisible(true)}
           style={{
@@ -67,7 +67,7 @@ const EditEntityLocation = ({
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        title={"Edit Location"}
+        title={"Update Location"}
         width="90vw"
         style={{ maxWidth: 700 }}
         destroyOnClose={true}
@@ -80,17 +80,13 @@ const EditEntityLocation = ({
           id="myForm"
           preserve={false}
         >
-          <Row>
-            <Col span={12}>
-              <Form.Item label="Location" name="location" required={false}>
-                <LocationSelector
-                  currentId={entity?.location?.id}
-                  currentName={entity?.location?.name}
-                  setLocationId={setLocationId}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item label="Location" name="location" required={false}>
+            <LocationSelector
+              currentId={entity?.location?.id}
+              currentName={entity?.location?.name}
+              setLocationId={setLocationId}
+            />
+          </Form.Item>
 
           <Row justify="end" gutter={16}>
             <Col>

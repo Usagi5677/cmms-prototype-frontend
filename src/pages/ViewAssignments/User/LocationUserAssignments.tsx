@@ -23,6 +23,7 @@ import LocationAssign from "../../../models/LocationAssign";
 import { LocationUserBulkAssignment } from "../../../components/Config/Location/LocationUserBulkAssignment";
 import { SearchLocations } from "../../../components/common/SearchLocations";
 import { LocationUserBulkUnassignment } from "../../../components/Config/Location/LocationUserBulkUnassignment";
+import AssignmentTypeSelector from "../../../components/common/AssignmentTypeSelector";
 
 export interface LocationUserAssignmentsProps {}
 
@@ -41,17 +42,20 @@ export const LocationUserAssignments: React.FC<
   const [page, setPage] = useState(1);
   const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [selectedUserTypes, setSelectedUserTypes] = useState<string[]>([]);
   const [filter, setFilter] = useState<
     PaginationArgs & {
       locationIds: number[];
       userIds: number[];
       current: boolean;
+      userTypes: string[];
     }
   >({
     ...DefaultPaginationArgs,
     locationIds: [],
     userIds: [],
     current: true,
+    userTypes: [],
   });
 
   const [getAssignments, { data, loading }] = useLazyQuery(
@@ -101,6 +105,13 @@ export const LocationUserAssignments: React.FC<
       className: classes["font"],
     },
     {
+      title: "Type",
+      dataIndex: "userType",
+      key: "userType",
+      render: (userType) => `${userType}`,
+      className: classes["font"],
+    },
+    {
       title: "Location",
       dataIndex: "location",
       key: "location",
@@ -114,34 +125,6 @@ export const LocationUserAssignments: React.FC<
       render: (createdAt) =>
         moment(createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR),
       className: classes["font"],
-    },
-
-    {
-      title: "",
-      dataIndex: "action",
-      key: "action",
-      className: classes["font"],
-      render: (val, assignment: LocationAssign) =>
-        assignment.removedAt ? null : (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "end",
-            }}
-          >
-            <DeleteListing
-              id={assignment.id}
-              mutation={UNASSIGN_USER_FROM_LOCATION}
-              refetchQueries={["locationAssignments"]}
-              tooltip="Unassign"
-              title="Are you sure to unassign?"
-              variables={{
-                id: assignment.id,
-              }}
-            />
-          </div>
-        ),
     },
   ];
 
@@ -180,6 +163,13 @@ export const LocationUserAssignments: React.FC<
     setPage(1);
   }, [selectedUsers]);
 
+  useEffect(() => {
+    setFilter({
+      ...filter,
+    });
+    setPage(1);
+  }, [selectedUserTypes]);
+
   return (
     <div>
       <div className={classes["options-wrapper"]}>
@@ -203,7 +193,20 @@ export const LocationUserAssignments: React.FC<
             width={190}
             margin={filterMargin}
           />
-
+          <AssignmentTypeSelector
+            margin={filterMargin}
+            width={190}
+            value={selectedUserTypes[-1]}
+            onChange={(userTypes) => {
+              if (
+                !selectedUserTypes.includes(userTypes!) &&
+                userTypes !== undefined
+              ) {
+                setSelectedUserTypes([...selectedUserTypes, userTypes!]);
+                setPage(1);
+              }
+            }}
+          />
           <SearchLocations
             placeholder="Filter location"
             rounded
@@ -237,10 +240,9 @@ export const LocationUserAssignments: React.FC<
         <div
           style={{
             display: "flex",
+            flexWrap: "wrap",
             opacity: 0.7,
             paddingTop: 10,
-            paddingLeft: 10,
-            paddingRight: 10,
           }}
         >
           {selectedLocations.map((d) => (
@@ -252,7 +254,7 @@ export const LocationUserAssignments: React.FC<
                   selectedLocations.filter((s) => s.id !== d.id)
                 )
               }
-              style={{ marginRight: "1rem" }}
+              style={{ marginRight: 10 }}
             >
               {d.name}
             </Tag>
@@ -263,10 +265,9 @@ export const LocationUserAssignments: React.FC<
         <div
           style={{
             display: "flex",
+            flexWrap: "wrap",
             opacity: 0.7,
             paddingTop: 10,
-            paddingLeft: 10,
-            paddingRight: 10,
           }}
         >
           {selectedUsers.map((user) => (
@@ -276,9 +277,34 @@ export const LocationUserAssignments: React.FC<
               onClose={() =>
                 setSelectedUsers(selectedUsers.filter((s) => s.id !== user.id))
               }
-              style={{ marginRight: "1rem" }}
+              style={{ marginRight: 10 }}
             >
               {user.fullName} ({user.rcno})
+            </Tag>
+          ))}
+        </div>
+      )}
+      {selectedUserTypes.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            opacity: 0.7,
+            paddingTop: 10,
+          }}
+        >
+          {selectedUserTypes.map((userType) => (
+            <Tag
+              key={userType}
+              closable
+              onClose={() =>
+                setSelectedUserTypes(
+                  selectedUserTypes.filter((type) => type !== userType)
+                )
+              }
+              style={{ marginRight: 10 }}
+            >
+              {userType}
             </Tag>
           ))}
         </div>
@@ -292,7 +318,7 @@ export const LocationUserAssignments: React.FC<
         pagination={false}
         size="small"
         loading={loading}
-        style={{ marginTop: "1rem", marginBottom: "1rem", overflowX:"auto" }}
+        style={{ marginTop: "1rem", marginBottom: "1rem", overflowX: "auto" }}
       />
       <PaginationButtons
         pageInfo={pageInfo}
