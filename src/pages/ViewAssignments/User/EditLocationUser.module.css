@@ -1,0 +1,13 @@
+
+.info-edit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 18px;
+  color: var(--ant-primary-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.info-edit:hover {
+  color: var(--ant-primary-color-hover);
+}

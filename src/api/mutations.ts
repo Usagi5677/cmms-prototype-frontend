@@ -1217,3 +1217,9 @@ export const GENERATE_SINGLE_CHECKLIST = gql`
     generateSingleChecklist(entityId: $entityId)
   }
 `;
+
+export const UPDATE_LOCATION_USER = gql`
+  mutation ($id: Int!, $locationId: Int!, $userType: String!) {
+    updateLocationUser(id: $id, locationId: $locationId, userType: $userType)
+  }
+`;

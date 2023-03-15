@@ -6,5 +6,6 @@ export default interface LocationAssign {
   divisionId: number;
   removedAt?: Date;
   location?: Location;
+  userType?: string;
   user?: User;
 }

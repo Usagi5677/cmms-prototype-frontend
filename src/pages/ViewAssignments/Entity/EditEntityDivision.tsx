@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { UPDATE_ENTITY_DIVISION } from "../../../api/mutations";
 import { DivisionSelector } from "../../../components/Config/Division/DivisionSelector";
@@ -64,17 +64,13 @@ const EditEntityDivision = ({ entity }: { entity: Entity }) => {
           onFinish={onFinish}
           id="myForm"
         >
-          <div className={classes["row"]}>
-            <div className={classes["col"]}>
-              <Form.Item label="Division" name="division" required={false}>
+          <Form.Item label="Division" name="division" required={false}>
                 <DivisionSelector
                   currentId={entity?.division?.id}
                   currentName={entity?.division?.name}
                   setDivisionId={setDivisionId}
                 />
               </Form.Item>
-            </div>
-          </div>
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>
@@ -106,4 +102,4 @@ const EditEntityDivision = ({ entity }: { entity: Entity }) => {
   );
 };
 
-export default EditEntityDivision;
+export default memo(EditEntityDivision);

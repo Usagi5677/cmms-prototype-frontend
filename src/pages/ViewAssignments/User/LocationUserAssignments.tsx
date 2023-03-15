@@ -22,6 +22,7 @@ import { LocationUserBulkAssignment } from "../../../components/Config/Location/
 import { SearchLocations } from "../../../components/common/SearchLocations";
 import { LocationUserBulkUnassignment } from "../../../components/Config/Location/LocationUserBulkUnassignment";
 import AssignmentTypeSelector from "../../../components/common/AssignmentTypeSelector";
+import EditLocationUser from "./EditLocationUser";
 
 export interface LocationUserAssignmentsProps {}
 
@@ -124,6 +125,14 @@ export const LocationUserAssignments: React.FC<
         moment(createdAt).format(DATETIME_FORMATS.DAY_MONTH_YEAR),
       className: classes["font"],
     },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      className: classes["font"],
+      render: (val, assignment: LocationAssign) =>
+      <EditLocationUser locAssign={assignment} />
+    },
   ];
 
   if (!filter.current) {
@@ -168,6 +177,7 @@ export const LocationUserAssignments: React.FC<
     });
     setPage(1);
   }, [selectedUserTypes]);
+  
 
   return (
     <div>

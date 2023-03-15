@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { Button, Col, Form, message, Modal, Row, Tooltip } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { UPDATE_ENTITY_BRAND } from "../../../api/mutations";
 import { BrandSelector } from "../../../components/Config/Brand/BrandSelector";
@@ -106,4 +106,4 @@ const EditEntityBrand = ({ entity }: { entity: Entity }) => {
   );
 };
 
-export default EditEntityBrand;
+export default memo(EditEntityBrand);
