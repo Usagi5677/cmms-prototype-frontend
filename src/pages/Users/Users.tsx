@@ -15,12 +15,14 @@ import UserCard from "../../components/UserComponents/UserCard/UserCard";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router";
 import { hasPermissions } from "../../helpers/permissions";
+import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 
 const Users = () => {
   const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState("");
+  const isSmallDevice = useIsSmallDevice(600, true);
   const navigate = useNavigate();
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -123,7 +125,13 @@ const Users = () => {
         <div>
           {data?.getAllUsers.edges.map((rec: { node: User }) => {
             const userData = rec.node;
-            return <UserCard userData={userData} key={userData.id} />;
+            return (
+              <UserCard
+                userData={userData}
+                key={userData.id}
+                small={isSmallDevice}
+              />
+            );
           })}
         </div>
       ) : (

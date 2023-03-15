@@ -12,7 +12,7 @@ import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { hasPermissions } from "../../../helpers/permissions";
 
-const UserCard = ({ userData }: { userData: User }) => {
+const UserCard = ({ userData, small }: { userData: User; small?: boolean }) => {
   const { user: self } = useContext(UserContext);
 
   const [removeUserRole, { loading: removingUserRole }] = useMutation(
@@ -43,7 +43,7 @@ const UserCard = ({ userData }: { userData: User }) => {
             backgroundColor: stringToColor(userData?.fullName ?? " "),
             marginRight: 10,
           }}
-          size={"large"}
+          size={small ? "large" : "small"}
         >
           {userData?.fullName
             .match(/^\w|\b\w(?=\S+$)/g)
@@ -53,66 +53,69 @@ const UserCard = ({ userData }: { userData: User }) => {
         </Avatar>
         <div>
           <div className={classes["title-wrapper"]}>
-            <span>{userData.fullName}</span>{" "}
-            <span className={classes["dot"]}>•</span>
-            <span title={"RCNO"}>{userData.rcno}</span>
-          </div>
-          <div className={classes["tag-wrapper"]}>
-            {userData.roles?.map((role) => (
-              <Popconfirm
-                disabled={
-                  removingUserRole || !hasPermissions(self, ["EDIT_USER_ROLE"])
-                }
-                key={v1()}
-                title={
-                  <div>
-                    Do you want to remove{" "}
-                    <Tag
-                      style={{
-                        fontWeight: 800,
-                        borderRadius: 2,
-                        textAlign: "center",
-                        maxWidth: 250,
-                        backgroundColor: RoleTagStringToColor(role.role.name),
-                        borderColor: RoleTagStringToColor(role.role.name),
-                        borderWidth: 1,
-                        cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
-                          ? "pointer"
-                          : "initial",
-                      }}
-                    >
-                      {role.role.name}
-                    </Tag>
-                    role from{" "}
-                    <span style={{ fontWeight: 700 }}>{userData.fullName}</span>
-                    ?
-                  </div>
-                }
-                onConfirm={() => remove(role.role.id)}
-                okText="Confirm"
-                cancelText="No"
-                placement="topRight"
-              >
-                <Tag
-                  style={{
-                    fontWeight: 700,
-                    borderRadius: 2,
-                    textAlign: "center",
-                    maxWidth: 250,
-                    backgroundColor: RoleTagStringToColor(role.role.name),
-                    borderColor: RoleTagStringToColor(role.role.name),
-                    borderWidth: 1,
-                    cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
-                      ? "pointer"
-                      : "initial",
-                  }}
-                  className={classes["tag"]}
+            <span>{userData.fullName}</span>
+            <div className={classes["tag-wrapper"]}>
+              {userData.roles?.map((role) => (
+                <Popconfirm
+                  disabled={
+                    removingUserRole ||
+                    !hasPermissions(self, ["EDIT_USER_ROLE"])
+                  }
+                  key={v1()}
+                  title={
+                    <div>
+                      Do you want to remove{" "}
+                      <Tag
+                        style={{
+                          fontWeight: 800,
+                          borderRadius: 2,
+                          textAlign: "center",
+                          maxWidth: 250,
+                          backgroundColor: RoleTagStringToColor(role.role.name),
+                          borderColor: RoleTagStringToColor(role.role.name),
+                          borderWidth: 1,
+                          cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
+                            ? "pointer"
+                            : "initial",
+                        }}
+                      >
+                        {role.role.name}
+                      </Tag>
+                      role from{" "}
+                      <span style={{ fontWeight: 700 }}>
+                        {userData.fullName}
+                      </span>
+                      ?
+                    </div>
+                  }
+                  onConfirm={() => remove(role.role.id)}
+                  okText="Confirm"
+                  cancelText="No"
+                  placement="topRight"
                 >
-                  {role.role.name}
-                </Tag>
-              </Popconfirm>
-            ))}
+                  <Tag
+                    style={{
+                      fontWeight: 700,
+                      borderRadius: 2,
+                      textAlign: "center",
+                      maxWidth: 250,
+
+                      backgroundColor: RoleTagStringToColor(role.role.name),
+                      borderColor: RoleTagStringToColor(role.role.name),
+                      borderWidth: 1,
+                      cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
+                        ? "pointer"
+                        : "initial",
+                    }}
+                    className={classes["tag"]}
+                  >
+                    {role.role.name}
+                  </Tag>
+                </Popconfirm>
+              ))}
+            </div>
           </div>
+          <span title={"RCNO"} className={classes["sub-title"]}>{userData.rcno}</span>
           {/**{userData?.location?.name && (
             <div className={classes["sub-title"]}>
               <FaMapMarkerAlt style={{ marginRight: 5 }} />
