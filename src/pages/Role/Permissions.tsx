@@ -14,6 +14,7 @@ import { errorMessage } from "../../helpers/gql";
 import { hasPermissions } from "../../helpers/permissions";
 import { RoleTagStringToColor } from "../../helpers/style";
 import Permission from "../../models/Permission";
+import classes from "./Permissions.module.css";
 
 const Permissions = () => {
   const { user } = useContext(UserContext);
@@ -90,7 +91,7 @@ const Permissions = () => {
         border: "var(--card-border)",
       }}
     >
-      <div style={{ marginTop: "1rem", display: "flex" }}>
+      <div style={{ marginTop: "10px" }}>
         <Button
           className="secondaryButton"
           onClick={() => navigate(-1)}
@@ -98,17 +99,11 @@ const Permissions = () => {
         >
           Back
         </Button>
-        <Typography.Title level={3} style={{ marginLeft: "1rem" }}>
-          Role Permissions
-        </Typography.Title>
       </div>
-      <div>
+      <div className={classes["title-wrapper"]}>
         <Tag
           style={{
-            fontWeight: 700,
-            borderRadius: 20,
-            textAlign: "center",
-            maxWidth: "fit-content",
+   
             backgroundColor: RoleTagStringToColor(
               roleData?.getRoleWithPermission?.name
             ),
@@ -117,10 +112,13 @@ const Permissions = () => {
             ),
             borderWidth: 1,
           }}
+          className={classes["tag"]}
         >
           {roleData?.getRoleWithPermission?.name}
         </Tag>
+        <span className={classes["title"]}>Permissions</span>
       </div>
+
       {(loadingAllPermissions || loadingRoleWithPermission) && <CenteredSpin />}
       {uniqueTypes?.map((type) => (
         <div key={type}>

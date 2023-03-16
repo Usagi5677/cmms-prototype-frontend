@@ -6,7 +6,6 @@ import { FaRegEdit } from "react-icons/fa";
 import { EDIT_ROLE } from "../../../api/mutations";
 import { errorMessage } from "../../../helpers/gql";
 import Role from "../../../models/Role";
-import classes from "./EditRole.module.css";
 
 const EditRole = ({ role }: { role: Role }) => {
   const [visible, setVisible] = useState(false);
@@ -48,7 +47,7 @@ const EditRole = ({ role }: { role: Role }) => {
   };
   return (
     <>
-      <div className={classes["info-edit"]}>
+      <div className="editButtonTwo">
         <Tooltip title="Edit">
           <FaRegEdit onClick={() => setVisible(true)} />
         </Tooltip>

@@ -18,7 +18,6 @@ import { GET_ROLES, ME_QUERY } from "../../../api/queries";
 import Role from "../../../models/Role";
 import User from "../../../models/User";
 import { FaRegEdit } from "react-icons/fa";
-import classes from "./EditUserRoles.module.css";
 import { RoleTagStringToColor } from "../../../helpers/style";
 
 
@@ -89,7 +88,7 @@ const EditUserRoles = ({ userData }: { userData?: User }) => {
         onClose={onClose}
         style={{
           fontWeight: 700,
-          borderRadius: 20,
+          borderRadius: 2,
           textAlign: "center",
           maxWidth: 250,
           backgroundColor: RoleTagStringToColor(label),
@@ -107,7 +106,7 @@ const EditUserRoles = ({ userData }: { userData?: User }) => {
   });
 
   return (
-    <div className={classes["info-edit"]}>
+    <div className="editButtonTwo">
       <Tooltip title="Edit">
         <FaRegEdit onClick={(e) => {setVisible(true)}} />
       </Tooltip>

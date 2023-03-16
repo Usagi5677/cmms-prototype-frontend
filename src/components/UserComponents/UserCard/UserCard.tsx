@@ -51,91 +51,95 @@ const UserCard = ({ userData, small }: { userData: User; small?: boolean }) => {
             .replace(",", "")
             .toUpperCase()}
         </Avatar>
-        <div>
+        <div className={classes["content"]}>
           <div className={classes["title-wrapper"]}>
-            <span>{userData.fullName}</span>
-            <div className={classes["tag-wrapper"]}>
-              {userData.roles?.map((role) => (
-                <Popconfirm
-                  disabled={
-                    removingUserRole ||
-                    !hasPermissions(self, ["EDIT_USER_ROLE"])
-                  }
-                  key={v1()}
-                  title={
-                    <div>
-                      Do you want to remove{" "}
-                      <Tag
-                        style={{
-                          fontWeight: 800,
-                          borderRadius: 2,
-                          textAlign: "center",
-                          maxWidth: 250,
-                          backgroundColor: RoleTagStringToColor(role.role.name),
-                          borderColor: RoleTagStringToColor(role.role.name),
-                          borderWidth: 1,
-                          cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
-                            ? "pointer"
-                            : "initial",
-                        }}
-                      >
-                        {role.role.name}
-                      </Tag>
-                      role from{" "}
-                      <span style={{ fontWeight: 700 }}>
-                        {userData.fullName}
-                      </span>
-                      ?
-                    </div>
-                  }
-                  onConfirm={() => remove(role.role.id)}
-                  okText="Confirm"
-                  cancelText="No"
-                  placement="topRight"
-                >
-                  <Tag
-                    style={{
-                      fontWeight: 700,
-                      borderRadius: 2,
-                      textAlign: "center",
-                      maxWidth: 250,
-
-                      backgroundColor: RoleTagStringToColor(role.role.name),
-                      borderColor: RoleTagStringToColor(role.role.name),
-                      borderWidth: 1,
-                      cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
-                        ? "pointer"
-                        : "initial",
-                    }}
-                    className={classes["tag"]}
+            <div className={classes["info-wrapper"]}>
+              <span>{userData.fullName}</span>
+              <div className={classes["tag-wrapper"]}>
+                {userData.roles?.map((role) => (
+                  <Popconfirm
+                    disabled={
+                      removingUserRole ||
+                      !hasPermissions(self, ["EDIT_USER_ROLE"])
+                    }
+                    key={v1()}
+                    title={
+                      <div>
+                        Do you want to remove{" "}
+                        <Tag
+                          style={{
+                            fontWeight: 800,
+                            borderRadius: 2,
+                            textAlign: "center",
+                            maxWidth: 250,
+                            backgroundColor: RoleTagStringToColor(
+                              role.role.name
+                            ),
+                            borderColor: RoleTagStringToColor(role.role.name),
+                            borderWidth: 1,
+                            cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
+                              ? "pointer"
+                              : "initial",
+                          }}
+                        >
+                          {role.role.name}
+                        </Tag>
+                        role from{" "}
+                        <span style={{ fontWeight: 700 }}>
+                          {userData.fullName}
+                        </span>
+                        ?
+                      </div>
+                    }
+                    onConfirm={() => remove(role.role.id)}
+                    okText="Confirm"
+                    cancelText="No"
+                    placement="topRight"
                   >
-                    {role.role.name}
-                  </Tag>
-                </Popconfirm>
-              ))}
+                    <Tag
+                      style={{
+                        fontWeight: 700,
+                        borderRadius: 2,
+                        textAlign: "center",
+                        maxWidth: 250,
+
+                        backgroundColor: RoleTagStringToColor(role.role.name),
+                        borderColor: RoleTagStringToColor(role.role.name),
+                        borderWidth: 1,
+                        cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
+                          ? "pointer"
+                          : "initial",
+                      }}
+                      className={classes["tag"]}
+                    >
+                      {role.role.name}
+                    </Tag>
+                  </Popconfirm>
+                ))}
+              </div>
+            </div>
+            <div className={classes["icon-wrapper"]}>
+              <div className={classes["icon"]}>
+                {hasPermissions(self, ["EDIT_USER_ROLE"]) ? (
+                  <EditUserRoles userData={userData} />
+                ) : null}
+              </div>
+              {/*<div className={classes["icon"]}>
+            {hasPermissions(self, ["EDIT_USER_LOCATION"]) ? (
+              <EditUserLocation userData={userData} />
+            ) : null}
+          </div> */}
             </div>
           </div>
-          <span title={"RCNO"} className={classes["sub-title"]}>{userData.rcno}</span>
+          <span title={"RCNO"} className={classes["sub-title"]}>
+            {userData.rcno}
+          </span>
           {/**{userData?.location?.name && (
             <div className={classes["sub-title"]}>
               <FaMapMarkerAlt style={{ marginRight: 5 }} />
               {userData?.location?.name}
             </div>
           )} */}
-        </div>
-      </div>
-      <div className={classes["secondary"]}>
-        <div className={classes["icon-wrapper"]}>
-          <div className={classes["icon"]}>
-            {hasPermissions(self, ["EDIT_USER_ROLE"]) ? (
-              <EditUserRoles userData={userData} />
-            ) : null}
-          </div>
-          {/*<div className={classes["icon"]}>
-            {hasPermissions(self, ["EDIT_USER_LOCATION"]) ? (
-              <EditUserLocation userData={userData} />
-            ) : null}
-          </div> */}
         </div>
       </div>
     </div>

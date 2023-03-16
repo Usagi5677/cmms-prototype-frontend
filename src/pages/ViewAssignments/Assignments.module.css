@@ -1,5 +1,5 @@
 .font {
-  font-size: 9px;
+  font-size: 9px !important;
   vertical-align: middle;
 }
 
@@ -20,7 +20,7 @@
 
 @media only screen and (min-width: 600px) {
   .font {
-    font-size: 12px;
+    font-size: 12px !important;
   }
   .options-wrapper {
     flex-direction: row;
@@ -29,6 +29,6 @@
 
 @media only screen and (min-width: 800px) {
   .font {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 }
