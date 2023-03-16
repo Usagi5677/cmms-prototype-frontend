@@ -483,7 +483,13 @@ a {
 #AddChecklistItemInput::placeholder {
   color: rgb(191, 191, 191, 1);
 }
-
+#SearchInputWrapper:focus-within,
+#SearchInputWrapper:hover {
+  border-color: var(--ant-primary-color) !important;
+  box-shadow: 0 0 0 2px var(--ant-primary-color-outline) !important;
+  outline: 0 !important;
+  transition: all 0.3s;
+}
 #SearchInput::placeholder {
   color: rgb(191, 191, 191, 1);
 }
@@ -1082,6 +1088,9 @@ div.ant-typography {
   margin-left: 8px;
 }
 
+#collapse .ant-collapse-ghost {
+  border: var(--card-border) !important;
+}
 #collapse .ant-collapse-content-box {
   background-color: var(--ant-collapse-content-box) !important;
 }
@@ -1111,7 +1120,12 @@ div.ant-typography {
 #collapseTwo .ant-collapse-content-box {
   background-color: var(--ant-collapse-content-box) !important;
 }
-
+#collapseTwo .ant-collapse-ghost {
+  border: var(--card-border) !important;
+}
+#collapseThree .ant-collapse-ghost {
+  border: var(--card-border) !important;
+}
 #notFound .ant-result {
   padding: 0 !important;
 }

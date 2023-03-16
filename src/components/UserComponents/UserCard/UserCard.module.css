@@ -8,9 +8,8 @@
   margin: 10px 0;
   border-radius: 6px;
   background-color: var(--card-bg);
-  border: 1px solid var(--border-1);
-  color: var(--text-primary);
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 4px;
+  border: var(--card-border);
+  box-shadow: rgba(0, 0, 0, 0.24) 0 1px 2px;
   transition: all 0.3s ease;
 }
 .container:hover {
@@ -19,6 +18,9 @@
 }
 .container:nth-child(1) {
   margin-top: 0;
+}
+.container:last-child {
+  margin-bottom: 0;
 }
 .completedBy {
   font-size: 10;

@@ -122,7 +122,7 @@ const Permissions = () => {
       {(loadingAllPermissions || loadingRoleWithPermission) && <CenteredSpin />}
       {uniqueTypes?.map((type) => (
         <div key={type}>
-          <Divider />
+          <Divider style={{marginTop: 10}} />
           <Typography.Title level={5}>{type}</Typography.Title>
           {}
           {allPermissions?.permissions

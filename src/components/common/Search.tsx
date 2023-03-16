@@ -37,6 +37,7 @@ const Search = ({
         margin,
         alignItems: "center",
       }}
+      id="SearchInputWrapper"
     >
       {!noIcon && (
         <FaSearch
@@ -49,7 +50,7 @@ const Search = ({
         />
       )}
       <input
-        style={{ width: "100%", height:"100%", paddingLeft: noIcon ? 10 : 0 }}
+        style={{ width: "100%", height:"100%", paddingLeft: noIcon ? 10 : 0, }}
         type="text"
         name=""
         id="SearchInput"
