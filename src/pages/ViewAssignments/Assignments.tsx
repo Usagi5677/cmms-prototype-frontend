@@ -12,7 +12,6 @@ import UserContext from "../../contexts/UserContext";
 import { DATETIME_FORMATS, PAGE_LIMIT } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
 import { hasPermissions } from "../../helpers/permissions";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import { Entity } from "../../models/Entity/Entity";
 import EntityAssignment from "../../models/Entity/EntityAssign";
@@ -166,10 +165,6 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
 
   const pageInfo = data?.assignments.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice(600, false);
-
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
-
   useEffect(() => {
     setFilter({
       ...filter,
@@ -194,8 +189,9 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
-            margin: "-.5rem 1rem 0 0",
+            justifyContent: "center",
+
+            gap: "8px",
           }}
         >
           <SearchEntities
@@ -208,7 +204,6 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
               setSelectedEntities([...selectedEntities, entity]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <SearchUsers
             placeholder="Filter user"
@@ -220,10 +215,8 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
               setSelectedUsers([...selectedUsers, user]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <AssignmentTypeSelector
-            margin={filterMargin}
             value={filter.type}
             width={190}
             onChange={(type) => {
@@ -232,7 +225,6 @@ export const Assignments: React.FC<AssignmentsProps> = ({}) => {
             }}
           />
           <Checkbox
-            style={{ margin: filterMargin }}
             checked={filter.current}
             onChange={(e) => {
               setFilter({ ...filter, current: e.target.checked });

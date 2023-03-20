@@ -9,7 +9,6 @@ import UserContext from "../../../contexts/UserContext";
 import { DATETIME_FORMATS, PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { hasPermissions } from "../../../helpers/permissions";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import User from "../../../models/User";
@@ -150,10 +149,6 @@ export const LocationUserAssignments: React.FC<
 
   const pageInfo = data?.locationAssignments.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice(600, false);
-
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
-
   useEffect(() => {
     setFilter({
       ...filter,
@@ -187,7 +182,8 @@ export const LocationUserAssignments: React.FC<
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
+            justifyContent: "center",
+            gap:"8px"
           }}
         >
           <SearchUsers
@@ -200,10 +196,8 @@ export const LocationUserAssignments: React.FC<
               setSelectedUsers([...selectedUsers, user]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <AssignmentTypeSelector
-            margin={filterMargin}
             width={190}
             value={selectedUserTypes[-1]}
             onChange={(userTypes) => {
@@ -226,11 +220,9 @@ export const LocationUserAssignments: React.FC<
               setSelectedLocations([...selectedLocations, location]);
             }}
             width={190}
-            margin={filterMargin}
           />
 
           <Checkbox
-            style={{ margin: filterMargin }}
             checked={filter.current}
             onChange={(e) => {
               setFilter({ ...filter, current: e.target.checked });

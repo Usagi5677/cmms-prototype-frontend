@@ -3,7 +3,6 @@ import { Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { DATETIME_FORMATS, PAGE_LIMIT } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../models/PaginationArgs";
 import PaginationButtons from "../common/PaginationButtons/PaginationButtons";
@@ -17,6 +16,7 @@ import ApiKey from "../../models/ApiKey";
 import { FaCheck } from "react-icons/fa";
 import moment from "moment";
 import { EditApiKey } from "./EditApiKey";
+import classes from "./ApiKeys.module.css";
 
 export interface ApiKeysProps {}
 
@@ -151,36 +151,16 @@ export const ApiKeys: React.FC<ApiKeysProps> = ({}) => {
 
   const pageInfo = data?.apiKeys.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
-            margin: "-.5rem 1rem 0 0",
-          }}
-        >
-          <Search
+      <div className={classes["option-container"]}>
+      <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
-            margin={filterMargin}
           />
-          <div
-            style={{
-              display: "flex",
-              padding: "1px 5px 1px 5px",
-              margin: filterMargin,
-              alignItems: "center",
-            }}
-          ></div>
-        </div>
-        <CreateApiKey />
+          <CreateApiKey />
+        
       </div>
       <Table
         rowKey="id"

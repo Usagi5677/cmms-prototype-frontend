@@ -9,7 +9,6 @@ import UserContext from "../../../contexts/UserContext";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { hasPermissions } from "../../../helpers/permissions";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import classes from "./DivisionEntityAssignments.module.css";
@@ -134,10 +133,6 @@ export const BrandEntityAssignments: React.FC<
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice(600, false);
-
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
-
   useEffect(() => {
     setFilter({
       ...filter,
@@ -162,7 +157,8 @@ export const BrandEntityAssignments: React.FC<
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
+            justifyContent: "center",
+            gap: "8px",
           }}
         >
           <SearchBrands
@@ -175,7 +171,6 @@ export const BrandEntityAssignments: React.FC<
               setSelectedBrands([...selectedBrands, brand]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <SearchEntities
             placeholder="Filter entity"
@@ -187,10 +182,8 @@ export const BrandEntityAssignments: React.FC<
               setSelectedEntities([...selectedEntities, entity]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <Checkbox
-            style={{ margin: filterMargin }}
             defaultChecked={brandExist}
             onChange={(e) => {
               setFilter({ ...filter, brandExist: e.target.checked });
@@ -219,9 +212,7 @@ export const BrandEntityAssignments: React.FC<
               key={d.id}
               closable
               onClose={() =>
-                setSelectedBrands(
-                  selectedBrands.filter((s) => s.id !== d.id)
-                )
+                setSelectedBrands(selectedBrands.filter((s) => s.id !== d.id))
               }
               style={{ marginRight: "1rem" }}
             >

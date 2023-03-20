@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { CHECKLIST_TEMPLATES } from "../../api/queries";
 import { PAGE_LIMIT } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import ChecklistTemplate from "../../models/ChecklistTemplate";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -18,6 +17,7 @@ import { DELETE_CHECKLIST_TEMPLATE } from "../../api/mutations";
 import { ChecklistTemplateDetails } from "./ChecklistTemplateDetails";
 import { hasPermissions, isAssignedType } from "../../helpers/permissions";
 import UserContext from "../../contexts/UserContext";
+import classes from "./Templates.module.css";
 
 export interface ChecklistTemplatesProps {}
 
@@ -139,32 +139,20 @@ export const ChecklistTemplates: React.FC<ChecklistTemplatesProps> = ({}) => {
 
   const pageInfo = data?.checklistTemplates.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
-            margin: "-.5rem 1rem 0 0",
-          }}
-        >
+      <div className={classes["option-container"]}>
+        <div className={classes["option-wrapper"]}>
           <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
-            margin={filterMargin}
           />
           <ChecklistTemplateTypeFilter
             onChange={(type) => {
               setFilter({ ...filter, type, ...DefaultPaginationArgs });
             }}
             value={filter.type}
-            margin={filterMargin}
           />
         </div>
         {hasPermissions(user, ["MODIFY_TEMPLATES"]) && (

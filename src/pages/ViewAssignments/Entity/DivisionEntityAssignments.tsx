@@ -9,7 +9,6 @@ import UserContext from "../../../contexts/UserContext";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { hasPermissions } from "../../../helpers/permissions";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import Division from "../../../models/Division";
@@ -138,10 +137,6 @@ export const DivisionEntityAssignments: React.FC<
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice(600, false);
-
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
-
   useEffect(() => {
     setFilter({
       ...filter,
@@ -166,7 +161,8 @@ export const DivisionEntityAssignments: React.FC<
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
+            justifyContent: "center",
+            gap: "8px",
           }}
         >
           <SearchDivisions
@@ -179,7 +175,6 @@ export const DivisionEntityAssignments: React.FC<
               setSelectedDivisions([...selectedDivisions, division]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <SearchEntities
             placeholder="Filter entity"
@@ -191,10 +186,8 @@ export const DivisionEntityAssignments: React.FC<
               setSelectedEntities([...selectedEntities, entity]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <Checkbox
-            style={{ margin: filterMargin }}
             defaultChecked={divisionExist}
             onChange={(e) => {
               setFilter({ ...filter, divisionExist: e.target.checked });

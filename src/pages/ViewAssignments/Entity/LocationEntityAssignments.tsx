@@ -9,7 +9,6 @@ import UserContext from "../../../contexts/UserContext";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
 import { hasPermissions } from "../../../helpers/permissions";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import classes from "./DivisionEntityAssignments.module.css";
@@ -134,10 +133,6 @@ export const LocationEntityAssignments: React.FC<
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice(600, false);
-
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
-
   useEffect(() => {
     setFilter({
       ...filter,
@@ -162,7 +157,8 @@ export const LocationEntityAssignments: React.FC<
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
+            justifyContent: "center",
+            gap:"8px"
           }}
         >
           <SearchLocations
@@ -175,7 +171,6 @@ export const LocationEntityAssignments: React.FC<
               setSelectedLocations([...selectedLocations, location]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <SearchEntities
             placeholder="Filter entity"
@@ -187,10 +182,8 @@ export const LocationEntityAssignments: React.FC<
               setSelectedEntities([...selectedEntities, entity]);
             }}
             width={190}
-            margin={filterMargin}
           />
           <Checkbox
-            style={{ margin: filterMargin }}
             defaultChecked={locationExist}
             onChange={(e) => {
               setFilter({ ...filter, locationExist: e.target.checked });

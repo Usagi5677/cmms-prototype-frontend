@@ -933,10 +933,7 @@ div.ant-typography {
 .ant-layout-sider {
   background: var(--card-bg) !important;
 }
-.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background-color: var(--ant-picker-bg) !important;
-  border: 1px solid var(--ant-btn-border) !important;
-}
+
 .ant-tooltip-inner {
   box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 6px -4px,
     rgba(0, 0, 0, 0.08) 0px 6px 16px 0px, rgba(0, 0, 0, 0.05) 0px 9px 28px 8px !important;

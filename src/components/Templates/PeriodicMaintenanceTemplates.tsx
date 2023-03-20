@@ -4,20 +4,23 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ALL_PERIODIC_MAINTENANCE } from "../../api/queries";
 import { PAGE_LIMIT } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../models/PaginationArgs";
 import PaginationButtons from "../common/PaginationButtons/PaginationButtons";
 import Search from "../common/Search";
 import type { ColumnsType } from "antd/es/table";
 import { DeleteListing } from "../common/DeleteListing";
-import { DELETE_ORIGIN_PERIODIC_MAINTENANCE, DELETE_PERIODIC_MAINTENANCE } from "../../api/mutations";
+import {
+  DELETE_ORIGIN_PERIODIC_MAINTENANCE,
+  DELETE_PERIODIC_MAINTENANCE,
+} from "../../api/mutations";
 import { hasPermissions } from "../../helpers/permissions";
 import UserContext from "../../contexts/UserContext";
 import PeriodicMaintenance from "../../models/PeriodicMaintenance/PeriodicMaintenance";
 import { PeriodicMaintenanceTemplateDetails } from "./PeriodicMaintenanceTemplateDetails";
 import { CreatePeriodicMaintenance } from "./CreatePeriodicMaintenance";
 import UpsertPMNotificationReminder from "../common/EditPMNotificationReminder/UpsertPMNotificationReminder";
+import classes from "./Templates.module.css";
 
 export interface PeriodicMaintenanceTemplatesProps {}
 
@@ -126,7 +129,7 @@ export const PeriodicMaintenanceTemplates: React.FC<
           {/* <div style={{ marginRight: ".5rem" }}>
             <UpsertPMNotificationReminder periodicMaintenance={rec}/>
           </div>*/}
-          
+
           <DeleteListing
             id={rec.id}
             mutation={DELETE_ORIGIN_PERIODIC_MAINTENANCE}
@@ -139,26 +142,14 @@ export const PeriodicMaintenanceTemplates: React.FC<
 
   const pageInfo = data?.periodicMaintenances.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
-            margin: "-.5rem 1rem 0 0",
-          }}
-        >
+      <div className={classes["option-container"]}>
+        <div className={classes["option-wrapper"]}>
           <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
-            margin={filterMargin}
           />
         </div>
         {hasPermissions(user, ["MODIFY_TEMPLATES"]) && (

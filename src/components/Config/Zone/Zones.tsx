@@ -3,7 +3,6 @@ import { Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { PAGE_LIMIT } from "../../../helpers/constants";
 import { errorMessage } from "../../../helpers/gql";
-import { useIsSmallDevice } from "../../../helpers/useIsSmallDevice";
 import DefaultPaginationArgs from "../../../models/DefaultPaginationArgs";
 import PaginationArgs from "../../../models/PaginationArgs";
 import PaginationButtons from "../../common/PaginationButtons/PaginationButtons";
@@ -125,8 +124,6 @@ export const Zones: React.FC<ZonesProps> = ({}) => {
 
   const pageInfo = data?.zones.pageInfo ?? {};
 
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem .5rem 0 0";
   return (
     <div>
       <div className={classes["options-wrapper"]}>
@@ -135,15 +132,14 @@ export const Zones: React.FC<ZonesProps> = ({}) => {
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
-            justifyContent: isSmallDevice ? "space-around" : undefined,
-            margin: "-.5rem 1rem 0 0",
+            justifyContent: "center",
+            gap: "8px",
           }}
         >
           <Search
             searchValue={search}
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
-            margin={filterMargin}
           />
         </div>
         <div className={classes["option"]}>
