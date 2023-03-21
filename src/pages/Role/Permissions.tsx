@@ -79,18 +79,7 @@ const Permissions = () => {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        backgroundColor: "var(--card-bg)",
-        borderRadius: 20,
-        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-        padding: 10,
-        paddingTop: 5,
-        paddingLeft: 15,
-        border: "var(--card-border)",
-      }}
-    >
+    <div className={classes["container"]}>
       <div style={{ marginTop: "10px" }}>
         <Button
           className="secondaryButton"
@@ -103,7 +92,6 @@ const Permissions = () => {
       <div className={classes["title-wrapper"]}>
         <Tag
           style={{
-   
             backgroundColor: RoleTagStringToColor(
               roleData?.getRoleWithPermission?.name
             ),
@@ -122,9 +110,8 @@ const Permissions = () => {
       {(loadingAllPermissions || loadingRoleWithPermission) && <CenteredSpin />}
       {uniqueTypes?.map((type) => (
         <div key={type}>
-          <Divider style={{marginTop: 10}} />
+          <Divider style={{ marginTop: 10 }} />
           <Typography.Title level={5}>{type}</Typography.Title>
-          {}
           {allPermissions?.permissions
             .filter((p: Permission) => p.type === type)
             .map((p: Permission) => (

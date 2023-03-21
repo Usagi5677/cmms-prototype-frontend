@@ -1,16 +1,27 @@
+.container {
+  width: 100%;
+  min-height: 500px;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 4px;
+  padding: 10px;
+  padding-top: 0;
+  border: var(--card-border)
+}
+
 .title-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   margin-top: 20px;
   flex-wrap: wrap;
 }
 .title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
 }
 .tag {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
 }
 @media only screen and (min-width: 600px) {
