@@ -5893,6 +5893,7 @@ a.ant-btn-sm {
 .ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content {
   background-color: var(--ant-picker-bg);
   border-top: 0;
+  padding-bottom:2px;
 }
 .ant-collapse-ghost
   > .ant-collapse-item
