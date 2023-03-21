@@ -1,5 +1,5 @@
 import { Badge, ConfigProvider, Popover, Switch } from "antd";
-import { FaCog, FaRegMoon, FaSun } from "react-icons/fa";
+import { FaCog, FaRegMoon, FaRegSun } from "react-icons/fa";
 import classes from "./ThemeChange.module.css";
 import { AnyColorFormat, Colorpicker } from "antd-colorpicker";
 import { useState } from "react";
@@ -32,6 +32,7 @@ const ThemeChange = () => {
     <Popover
       placement="bottomRight"
       trigger={["click"]}
+      id={"themeChangerPopOver"}
       content={
         <div className={classes["theme-menu"]}>
           <div className={classes["title-wrapper"]}>
@@ -45,7 +46,7 @@ const ThemeChange = () => {
             <Switch
               checkedChildren={<FaRegMoon size={14} style={{ marginTop: 4 }} />}
               unCheckedChildren={
-                <FaSun size={14} style={{ marginTop: 4, color:"black" }} />
+                <FaRegSun size={14} style={{ marginTop: 4, color:"black" }} />
               }
               defaultChecked={mode === "dark" ? true : false}
               onChange={switchMode}
