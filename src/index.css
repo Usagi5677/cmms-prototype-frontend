@@ -600,7 +600,6 @@ em {
 #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 !important;
   padding-left: 5px !important;
-  border-bottom: 1px solid var(--border-1);
   cursor: default !important;
 }
 #collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
@@ -618,12 +617,12 @@ em {
   > .ant-collapse-content-box {
   padding: 5px !important;
   cursor: default !important;
+  border-top: 1px solid var(--border-1);
 }
 
 #collapseTwo .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 !important;
   padding-left: 5px !important;
-  border-bottom: 1px solid var(--border-1);
   cursor: default !important;
 }
 #collapseTwo .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
@@ -634,7 +633,15 @@ em {
   cursor: pointer;
   color: var(--text-primary);
 }
-
+#collapseTwo
+  .ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-top: 1px solid var(--border-1);
+}
 #collapseThree
   .ant-collapse-ghost
   > .ant-collapse-item
@@ -642,12 +649,12 @@ em {
   > .ant-collapse-content-box {
   padding: 5px !important;
   cursor: default !important;
+  border-top: 1px solid var(--border-1);
 }
 
 #collapseThree .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 !important;
   padding-left: 5px !important;
-  border-bottom: 1px solid var(--border-1);
   cursor: default !important;
 }
 #collapseThree .ant-collapse > .ant-collapse-item > .ant-collapse-header > div {
@@ -668,23 +675,6 @@ em {
     margin-right: 8px;
     margin-left: 8px;
   }
-}
-#collapseThree
-  .ant-collapse-ghost
-  > .ant-collapse-item
-  > .ant-collapse-content
-  > .ant-collapse-content-box {
-  padding: 5px !important;
-  cursor: default !important;
-}
-
-#collapseTwo
-  .ant-collapse-ghost
-  > .ant-collapse-item
-  > .ant-collapse-content
-  > .ant-collapse-content-box {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 }
 
 #filterCollapse,
