@@ -132,7 +132,7 @@ const EntityStatusProgressBarV3 = ({
   ) : (
     <div
       className={classes["container"]}
-      title={`Total: ${working + critical + breakdown}`}
+      title={`Total: ${total_with_dispose}`}
     >
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>

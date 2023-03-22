@@ -1,6 +1,6 @@
-import { Breadcrumb, Empty, message, Spin } from "antd";
+import { Breadcrumb, Button, Empty, Result, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -16,8 +16,6 @@ import UserContext from "../../contexts/UserContext";
 import { Entity } from "../../models/Entity/Entity";
 import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
 import { hasPermissions } from "../../helpers/permissions";
-import { motion } from "framer-motion";
-import CountUp from "react-countup";
 import FilterOptions from "../../components/common/FilterOptions/FIlterOptions";
 import {
   DefaultBooleanOptionProps,
@@ -32,6 +30,7 @@ import {
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import EntityStatusProgressBarV3 from "../../components/common/EntityStatusProgressBarV3/EntityStatusProgressBarV3";
+import { NO_AUTH_MESSAGE_ONE } from "../../helpers/constants";
 
 const ViewAllDisposed = () => {
   const getFilter = localStorage.getItem("disposeFilter");
@@ -51,7 +50,9 @@ const ViewAllDisposed = () => {
   const [divisionIds, setDivisionIds] = useState<number[]>(
     getFilterObjects?.divisionIds
   );
-  const [brandIds, setBrandIds] = useState<number[]>(getFilterObjects?.brandIds);
+  const [brandIds, setBrandIds] = useState<number[]>(
+    getFilterObjects?.brandIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -71,7 +72,6 @@ const ViewAllDisposed = () => {
   const [entityType, setEntityType] = useState<string[]>(
     getFilterObjects?.entityType
   );
-  const navigate = useNavigate();
 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
     "disposeFilter",
@@ -166,11 +166,6 @@ const ViewAllDisposed = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
-    if (!hasPermissions(self, ["VIEW_ALL_ENTITY"])) {
-      navigate("/");
-      message.error("No permission to view all entity.");
-    }
-
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -469,9 +464,24 @@ const ViewAllDisposed = () => {
     entityTypeOptions,
   };
 
-  return (
+  return !hasPermissions(self, ["VIEW_ALL_ENTITY"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_ONE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
-    <Breadcrumb style={{ marginBottom: 6 }}>
+      <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>
           <Link to={"/"}>Home</Link>
         </Breadcrumb.Item>

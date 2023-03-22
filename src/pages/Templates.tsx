@@ -1,25 +1,37 @@
-import { Breadcrumb, message, Tabs } from "antd";
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Breadcrumb, Button, Result, Tabs } from "antd";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ChecklistTemplates } from "../components/Templates/ChecklistTemplates";
 import { PeriodicMaintenanceTemplates } from "../components/Templates/PeriodicMaintenanceTemplates";
 import UserContext from "../contexts/UserContext";
+import { NO_AUTH_MESSAGE_THREE } from "../helpers/constants";
 import { hasPermissions } from "../helpers/permissions";
 
 export interface TemplatesProps {}
 
 export const Templates: React.FC<TemplatesProps> = ({}) => {
-  const { user } = useContext(UserContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!hasPermissions(user, ["VIEW_TEMPLATES", "MODIFY_TEMPLATES"], "any")) {
-      navigate("/");
-      message.error("No permission to view templates.");
-    }
-  }, []);
+  const { user: self } = useContext(UserContext);
 
-  return (
+  return !hasPermissions(
+    self,
+    ["VIEW_TEMPLATES", "MODIFY_TEMPLATES"],
+    "any"
+  ) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_THREE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>

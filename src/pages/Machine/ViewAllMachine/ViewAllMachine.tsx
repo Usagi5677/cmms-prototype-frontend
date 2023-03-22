@@ -1,6 +1,6 @@
-import { Breadcrumb, Empty, message, Spin } from "antd";
+import { Breadcrumb, Button, Empty, Result, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -71,8 +71,7 @@ const Machinery = () => {
   );
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
     useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
-  const navigate = useNavigate();
-
+ 
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
     "machineryFilter",
     JSON.stringify({
@@ -155,17 +154,6 @@ const Machinery = () => {
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
-    if (
-      self?.machineAssignments.length === 0 &&
-      !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_MACHINERY"]) &&
-      !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"])
-    ) {
-      navigate("/");
-      message.error(
-        "You don't have permission to view all machinery and you're not assigned to a machine."
-      );
-    }
     getAllEntity({ variables: filter });
     setSaveFilterOptions(JSON.stringify(filter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -466,7 +454,25 @@ const Machinery = () => {
     isIncompleteChecklistTaskOptions,
   };
 
-  return (
+  return self?.machineAssignments.length === 0 &&
+    !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+    !hasPermissions(self, ["VIEW_ALL_MACHINERY"]) &&
+    !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle="Sorry, but it seems that you do not have the appropriate permissions to access this page. Additionally, we have noticed that you are not assigned to a machine. Please contact your administrator for further assistance in assigning you to a machine and granting you access to this page."
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>

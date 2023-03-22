@@ -1,64 +1,41 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
 import classes from "./Dashboard.module.css";
-import { useLazyQuery } from "@apollo/client";
-import { GET_ALL_ENTITY_STATUS_COUNT } from "../../api/queries";
-import { errorMessage } from "../../helpers/gql";
-import { FaCarCrash, FaRecycle, FaSpinner, FaTractor } from "react-icons/fa";
-import StatusCard from "../../components/common/StatusCard/StatusCard";
 import MyEntityPMTask from "../../components/DashboardComponents/Entity/MyEntityPMTask/MyEntityPMTask";
 import AllAssignedEntity from "../../components/DashboardComponents/Entity/AllAssignedEntity/AllAssignedEntity";
-import AllEntityPMTask from "../../components/DashboardComponents/Entity/AllEntityPMTask/AllEntityPMTask";
-import EntityMaintenance from "../../components/DashboardComponents/Entity/EntityMaintenance/EntityMaintenance";
 import { hasPermissions } from "../../helpers/permissions";
-import { motion } from "framer-motion";
-import { WarningOutlined } from "@ant-design/icons";
 import GroupedEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/GroupedEntityUtilization";
 import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
 import EntityStatusPie from "../../components/common/EntityStatusPie/EntityStatusPie";
 import UserTypePie from "../../components/common/UserTypePie/UserTypePie";
+import { Button, Result } from "antd";
+import { NO_AUTH_MESSAGE_ONE } from "../../helpers/constants";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
 
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(
-          err,
-          "Error loading status count of machinery & transports."
-        );
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
-
-  useEffect(() => {
-    getAllEntityStatusCount();
-  }, [getAllEntityStatusCount]);
-
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
-
-  const statusCountData = statusData?.allEntityStatusCount;
-  if (statusCountData) {
-    critical = statusCountData?.critical;
-    working = statusCountData?.working;
-    breakdown = statusCountData?.breakdown;
-    dispose = statusCountData?.dispose;
-  }
-
   return (
     <>
+      {!hasPermissions(self, ["VIEW_DASHBOARD"]) && (
+        <Result
+          status="403"
+          title="403"
+          subTitle={NO_AUTH_MESSAGE_ONE}
+          extra={
+            <Button
+              type="primary"
+              onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+              style={{ borderRadius: 2 }}
+            >
+              Get Help
+            </Button>
+          }
+        />
+      )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["status-card"]}>
-          <EntityStatusPie/>
-          <UserTypePie/>
-          
+          <EntityStatusPie />
+          <UserTypePie />
         </div>
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (

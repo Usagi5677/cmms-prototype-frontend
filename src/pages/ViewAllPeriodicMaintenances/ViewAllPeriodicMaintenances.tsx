@@ -1,5 +1,5 @@
-import { Breadcrumb, Button, Empty, Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { Breadcrumb, Button, Empty, Result, Spin } from "antd";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
@@ -26,6 +26,9 @@ import moment from "moment";
 import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
 import { Entity } from "../../models/Entity/Entity";
 import MaintenanceProgressBar from "../../components/common/MaintenanceProgressBar/MaintenanceProgressBar";
+import { hasPermissions } from "../../helpers/permissions";
+import UserContext from "../../contexts/UserContext";
+import { NO_AUTH_MESSAGE_TWO } from "../../helpers/constants";
 
 const ViewAllPeriodicMaintenances = () => {
   const getFilter = localStorage.getItem("periodicMaintenancesFilter");
@@ -33,6 +36,7 @@ const ViewAllPeriodicMaintenances = () => {
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
   }
+  const { user: self } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState(getFilterObjects?.search);
@@ -397,7 +401,29 @@ const ViewAllPeriodicMaintenances = () => {
     toOptions,
   };
 
-  return (
+  return self?.machineAssignments.length === 0 &&
+    self?.vehicleAssignments.length === 0 &&
+    self?.vesselAssignments.length === 0 &&
+    !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+    !hasPermissions(self, ["VIEW_ALL_MACHINERY"]) &&
+    !hasPermissions(self, ["VIEW_ALL_VEHICLES"]) &&
+    !hasPermissions(self, ["VIEW_ALL_VESSELS"]) &&
+    !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_TWO}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>
@@ -409,23 +435,23 @@ const ViewAllPeriodicMaintenances = () => {
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           {/*<div className={classes["options-wrapper"]}>
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.8,
-              }}
-            >
-              <div className={classes["item-wrapper"]}>
-                <AllPeriodicMaintenanceCalendar
-                  summary={allSummary}
-                  loading={loading2}
-                />
-              </div>
-            </motion.div>
-          </div> */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            ease: "easeOut",
+            duration: 0.3,
+            delay: 0.8,
+          }}
+        >
+          <div className={classes["item-wrapper"]}>
+            <AllPeriodicMaintenanceCalendar
+              summary={allSummary}
+              loading={loading2}
+            />
+          </div>
+        </motion.div>
+      </div> */}
           <div className={classes["options-wrapper"]}>
             <motion.div
               initial={{ y: -20, opacity: 0 }}

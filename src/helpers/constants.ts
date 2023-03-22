@@ -239,7 +239,12 @@ export const ENTITY_TYPES = ["Machine", "Vehicle", "Vessel", "Sub Entity"];
 
 export const REPAIR_LOCATION = ["Site", "Workshop"];
 
-export const ENTITY_ASSIGNMENT_TYPES = ["Admin", "Engineer", "Technician", "User"] as const;
+export const ENTITY_ASSIGNMENT_TYPES = [
+  "Admin",
+  "Engineer",
+  "Technician",
+  "User",
+] as const;
 
 export const BRAND = [
   "CAT",
@@ -297,3 +302,10 @@ export const ENGINE = ["STBD", "CTR", "PORT"];
 
 // 10 MB
 export const MAX_FILE_SIZE = 10 * 1000000;
+
+export const NO_AUTH_MESSAGE_ONE =
+  "Sorry, but it seems that you do not have the appropriate permissions to access this page. Please contact your administrator for further assistance in assigning you to an entity or granting you access to this page.";
+export const NO_AUTH_MESSAGE_TWO =
+  "Sorry, but it seems that you do not have the appropriate permissions to access this page. Additionally, we have noticed that you are not assigned to an entity. Please contact your administrator for further assistance in assigning you to a entity and granting you access to this page.";
+export const NO_AUTH_MESSAGE_THREE =
+  "Sorry, but it seems that you do not have the appropriate permissions to access this page. Please contact your administrator for further assistance in granting you access to this page.";

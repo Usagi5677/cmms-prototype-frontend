@@ -1,13 +1,13 @@
-import { Breadcrumb, Empty, message, Spin } from "antd";
+import { Breadcrumb, Button, Empty, Result, Spin } from "antd";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import classes from "./Roles.module.css";
 import PaginationArgs from "../../models/PaginationArgs";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import { errorMessage } from "../../helpers/gql";
-import { PAGE_LIMIT } from "../../helpers/constants";
+import { NO_AUTH_MESSAGE_THREE, PAGE_LIMIT } from "../../helpers/constants";
 import Search from "../../components/common/Search";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import Role from "../../models/Role";
@@ -22,7 +22,6 @@ const Roles = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
-  const navigate = useNavigate();
   // Filter has an intersection type as it has PaginationArgs + other args
   const [filter, setFilter] = useState<
     PaginationArgs & {
@@ -43,10 +42,6 @@ const Roles = () => {
 
   // Fetch roles when component mounts or when the filter object changes
   useEffect(() => {
-    if (!hasPermissions(self, ["VIEW_ROLES"])) {
-      navigate("/");
-      message.error("No permission to view roles.");
-    }
     getAllRoles({ variables: filter });
   }, [filter, getAllRoles]);
 
@@ -103,7 +98,22 @@ const Roles = () => {
 
   const pageInfo = data?.getAllRoles.pageInfo ?? {};
 
-  return (
+  return !hasPermissions(self, ["VIEW_ROLES"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_THREE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>

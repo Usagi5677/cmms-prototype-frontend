@@ -1,24 +1,32 @@
-import { Breadcrumb, message, Tabs } from "antd";
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Breadcrumb, Button, Result, Tabs } from "antd";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ApiKeys } from "../components/DeveloperOptions/ApiKeys";
 import UserContext from "../contexts/UserContext";
+import { NO_AUTH_MESSAGE_THREE } from "../helpers/constants";
 import { hasPermissions } from "../helpers/permissions";
 
 export interface DeveloperOptionsProps {}
 
 export const DeveloperOptions: React.FC<DeveloperOptionsProps> = ({}) => {
-  const { user } = useContext(UserContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!hasPermissions(user, ["VIEW_KEYS", "MODIFY_KEYS"], "any")) {
-      navigate("/");
-      message.error("No permission to view developer options.");
-    }
-  }, []);
+  const { user: self } = useContext(UserContext);
 
-  return (
+  return !hasPermissions(self, ["VIEW_KEYS", "MODIFY_KEYS"], "any") ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_THREE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>
@@ -39,7 +47,7 @@ export const DeveloperOptions: React.FC<DeveloperOptionsProps> = ({}) => {
         }}
       >
         <Tabs defaultActiveKey="keys">
-          {hasPermissions(user, ["VIEW_KEYS", "MODIFY_KEYS"], "any") && (
+          {hasPermissions(self, ["VIEW_KEYS", "MODIFY_KEYS"], "any") && (
             <Tabs.TabPane tab="API Keys" key="keys">
               <ApiKeys />
             </Tabs.TabPane>

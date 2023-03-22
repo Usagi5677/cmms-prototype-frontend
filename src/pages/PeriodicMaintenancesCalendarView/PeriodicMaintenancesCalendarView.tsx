@@ -1,13 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
-import { Breadcrumb, Table } from "antd";
+import { Breadcrumb, Button, Result, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { PERIODIC_MAINTENANCES_CALENDAR } from "../../api/queries";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
-import { DATETIME_FORMATS } from "../../helpers/constants";
+import UserContext from "../../contexts/UserContext";
+import { DATETIME_FORMATS, NO_AUTH_MESSAGE_TWO } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
+import { hasPermissions } from "../../helpers/permissions";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import {
   DefaultDateOptionProps,
@@ -30,6 +32,7 @@ const PeriodicMaintenancesCalendarView = () => {
   if (getFilter) {
     getFilterObjects = JSON.parse(JSON.parse(getFilter));
   }
+  const { user: self } = useContext(UserContext);
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState(getFilterObjects?.search);
   const [locationIds, setLocationIds] = useState<number[]>(
@@ -402,7 +405,29 @@ const PeriodicMaintenancesCalendarView = () => {
     fromOptions,
     toOptions,
   };
-  return (
+  return self?.machineAssignments.length === 0 &&
+    self?.vehicleAssignments.length === 0 &&
+    self?.vesselAssignments.length === 0 &&
+    !hasPermissions(self, ["VIEW_ALL_ENTITY"]) &&
+    !hasPermissions(self, ["VIEW_ALL_MACHINERY"]) &&
+    !hasPermissions(self, ["VIEW_ALL_VEHICLES"]) &&
+    !hasPermissions(self, ["VIEW_ALL_VESSELS"]) &&
+    !hasPermissions(self, ["VIEW_ALL_DIVISION_ENTITY"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_TWO}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>

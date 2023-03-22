@@ -1,6 +1,5 @@
-import { Breadcrumb, message, Tabs } from "antd";
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Breadcrumb, Button, Result, Tabs } from "antd";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Brands } from "../components/Config/Brand/Brands";
 import { Divisions } from "../components/Config/Division/Divisions";
@@ -10,21 +9,29 @@ import { Locations } from "../components/Config/Location/Locations";
 import { Types } from "../components/Config/Type/Types";
 import { Zones } from "../components/Config/Zone/Zones";
 import UserContext from "../contexts/UserContext";
+import { NO_AUTH_MESSAGE_THREE } from "../helpers/constants";
 import { hasPermissions } from "../helpers/permissions";
 
 export interface ConfigProps {}
 
 export const Config: React.FC<ConfigProps> = ({}) => {
-  const { user } = useContext(UserContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!hasPermissions(user, ["MODIFY_TYPES", "MODIFY_LOCATIONS"], "any")) {
-      navigate("/");
-      message.error("No permission to view config.");
-    }
-  }, []);
-
-  return (
+  const { user: self } = useContext(UserContext);
+  return !hasPermissions(self, ["MODIFY_TYPES", "MODIFY_LOCATIONS"], "any") ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_THREE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>
@@ -45,12 +52,12 @@ export const Config: React.FC<ConfigProps> = ({}) => {
         }}
       >
         <Tabs defaultActiveKey="types">
-          {hasPermissions(user, ["MODIFY_TYPES"]) && (
+          {hasPermissions(self, ["MODIFY_TYPES"]) && (
             <Tabs.TabPane tab="Types" key="types">
               <Types />
             </Tabs.TabPane>
           )}
-          {hasPermissions(user, ["MODIFY_LOCATIONS"]) && (
+          {hasPermissions(self, ["MODIFY_LOCATIONS"]) && (
             <>
               <Tabs.TabPane tab="Locations" key="locations">
                 <Locations />
@@ -60,24 +67,24 @@ export const Config: React.FC<ConfigProps> = ({}) => {
               </Tabs.TabPane>
             </>
           )}
-          {hasPermissions(user, ["MODIFY_DIVISIONS"]) && (
+          {hasPermissions(self, ["MODIFY_DIVISIONS"]) && (
             <>
               <Tabs.TabPane tab="Divisions" key="divisions">
                 <Divisions />
               </Tabs.TabPane>
             </>
           )}
-          {hasPermissions(user, ["MODIFY_HULL_TYPES"]) && (
+          {hasPermissions(self, ["MODIFY_HULL_TYPES"]) && (
             <Tabs.TabPane tab="Hull Types" key="hullTypes">
               <HullTypes />
             </Tabs.TabPane>
           )}
-          {hasPermissions(user, ["MODIFY_BRANDS"]) && (
+          {hasPermissions(self, ["MODIFY_BRANDS"]) && (
             <Tabs.TabPane tab="Brands" key="brands">
               <Brands />
             </Tabs.TabPane>
           )}
-          {hasPermissions(user, ["MODIFY_INTER_SERVICE_COLOR"]) && (
+          {hasPermissions(self, ["MODIFY_INTER_SERVICE_COLOR"]) && (
             <Tabs.TabPane tab="Inter Service Color" key="interServiceColor">
               <InterServiceColors />
             </Tabs.TabPane>

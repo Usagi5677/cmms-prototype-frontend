@@ -1,19 +1,18 @@
 import { useLazyQuery } from "@apollo/client";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Breadcrumb, Empty, message, Spin } from "antd";
+import { Breadcrumb, Button, Empty, Result, Spin } from "antd";
 import { errorMessage } from "../../helpers/gql";
 import Search from "../../components/common/Search";
 import PaginationArgs from "../../models/PaginationArgs";
 import DefaultPaginationArgs from "../../models/DefaultPaginationArgs";
 import classes from "./Users.module.css";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
-import { PAGE_LIMIT } from "../../helpers/constants";
+import { NO_AUTH_MESSAGE_THREE, PAGE_LIMIT } from "../../helpers/constants";
 import AddUserRoles from "../../components/UserComponents/AddUserRoles/AddUserRoles";
 import { GET_ALL_USERS } from "../../api/queries";
 import User from "../../models/User";
 import UserCard from "../../components/UserComponents/UserCard/UserCard";
 import UserContext from "../../contexts/UserContext";
-import { useNavigate } from "react-router";
 import { hasPermissions } from "../../helpers/permissions";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import { Link } from "react-router-dom";
@@ -24,7 +23,6 @@ const Users = () => {
   const [timerId, setTimerId] = useState(null);
   const [search, setSearch] = useState("");
   const isSmallDevice = useIsSmallDevice(600, true);
-  const navigate = useNavigate();
   const [filter, setFilter] = useState<
     PaginationArgs & {
       search: string;
@@ -44,10 +42,6 @@ const Users = () => {
 
   // Fetch users when component mounts
   useEffect(() => {
-    if (!hasPermissions(self, ["VIEW_USERS"])) {
-      navigate("/");
-      message.error("No permission to view users.");
-    }
     getAllUsers({ variables: filter });
   }, [filter, getAllUsers]);
 
@@ -103,7 +97,23 @@ const Users = () => {
   };
 
   const pageInfo = data?.getAllUsers?.pageInfo ?? {};
-  return (
+
+  return !hasPermissions(self, ["VIEW_USERS"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_THREE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>

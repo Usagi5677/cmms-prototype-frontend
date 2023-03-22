@@ -1,30 +1,36 @@
-import { Breadcrumb, message, Tabs } from "antd";
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Breadcrumb, Button, Result, Tabs } from "antd";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
 import { IncompleteChecklists } from "../../components/IncompleteTasks/IncompleteChecklists";
 import UserContext from "../../contexts/UserContext";
+import { NO_AUTH_MESSAGE_ONE } from "../../helpers/constants";
 import { hasPermissions, isAssignedTypeToAny } from "../../helpers/permissions";
 import GroupedLocationIncompleteTask from "./GroupedLocationIncompleteTask";
 
 export interface IncompleteTasksProps {}
 
 export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
-  const { user } = useContext(UserContext);
+  const { user: self } = useContext(UserContext);
   const [firstLoad, setFirstLoad] = useState(false);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (
-      !isAssignedTypeToAny("Admin", user) &&
-      !isAssignedTypeToAny("User", user) &&
-      !hasPermissions(user, ["VIEW_ALL_ENTITY"])
-    ) {
-      navigate("/");
-      message.error("Not an admin or user of any entity.");
-    }
-  }, []);
-  return (
+  return !isAssignedTypeToAny("Admin", self) &&
+    !isAssignedTypeToAny("User", self) &&
+    !hasPermissions(self, ["VIEW_ALL_ENTITY"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_ONE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>

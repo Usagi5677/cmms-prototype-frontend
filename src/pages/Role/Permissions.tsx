@@ -1,8 +1,15 @@
-import { LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Breadcrumb, Button, Divider, Switch, Tag, Typography } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Divider,
+  Result,
+  Switch,
+  Tag,
+  Typography,
+} from "antd";
 import { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { TOGGLE_PERMISSION } from "../../api/mutations";
 import {
@@ -11,6 +18,7 @@ import {
 } from "../../api/queries";
 import { CenteredSpin } from "../../components/common/CenteredSpin";
 import UserContext from "../../contexts/UserContext";
+import { NO_AUTH_MESSAGE_THREE } from "../../helpers/constants";
 import { errorMessage } from "../../helpers/gql";
 import { hasPermissions } from "../../helpers/permissions";
 import { RoleTagStringToColor } from "../../helpers/style";
@@ -18,10 +26,8 @@ import Permission from "../../models/Permission";
 import classes from "./Permissions.module.css";
 
 const Permissions = () => {
-  const { user } = useContext(UserContext);
+  const { user: self } = useContext(UserContext);
   const { id }: any = useParams();
-  const navigate = useNavigate();
-
   const [
     getAllPermissions,
     { data: allPermissions, loading: loadingAllPermissions },
@@ -50,7 +56,6 @@ const Permissions = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  // Set permissions when component mounts
   useEffect(() => {
     getAllPermissions();
     getRoleWithPermission({
@@ -61,7 +66,7 @@ const Permissions = () => {
   }, [getAllPermissions, getRoleWithPermission]);
 
   let permissions = allPermissions?.permissions;
-  if (!hasPermissions(user, ["MODIFY_DEVELOPER_PERMISSIONS"])) {
+  if (!hasPermissions(self, ["MODIFY_DEVELOPER_PERMISSIONS"])) {
     permissions = permissions?.filter(
       (p: Permission) => p.type !== "Developer"
     );
@@ -79,7 +84,22 @@ const Permissions = () => {
     if (userPermissions.includes(permission)) return true;
   };
 
-  return (
+  return !hasPermissions(self, ["VIEW_PERMISSION"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_THREE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>
@@ -127,6 +147,7 @@ const Permissions = () => {
                 >
                   <Switch
                     checked={hasPermission(p.name)}
+                    loading={loading}
                     onChange={(e) =>
                       togglePermission({
                         variables: {

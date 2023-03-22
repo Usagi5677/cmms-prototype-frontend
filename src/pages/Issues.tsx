@@ -1,27 +1,32 @@
-import { Breadcrumb, message, Tabs } from "antd";
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Breadcrumb, Button, Result, Tabs } from "antd";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ChecklistsWithIssue } from "../components/Issues/ChecklistsWithIssue";
 import UserContext from "../contexts/UserContext";
+import { NO_AUTH_MESSAGE_ONE } from "../helpers/constants";
 import { hasPermissions } from "../helpers/permissions";
 
 export interface IssuesProps {}
 
 export const Issues: React.FC<IssuesProps> = ({}) => {
-  const { user } = useContext(UserContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (
-      !hasPermissions(user, ["ENTITY_ENGINEER"]) &&
-      !hasPermissions(user, ["ENTITY_ADMIN"])
-    ) {
-      navigate("/");
-      message.error("You are not an engineer or admin.");
-    }
-  }, []);
-
-  return (
+  const { user: self } = useContext(UserContext);
+  return !hasPermissions(self, ["ENTITY_ENGINEER"]) &&
+    !hasPermissions(self, ["ENTITY_ADMIN"]) ? (
+    <Result
+      status="403"
+      title="403"
+      subTitle={NO_AUTH_MESSAGE_ONE}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => `${window.open("https://helpdesk.mtcc.com.mv/")}`}
+          style={{ borderRadius: 2 }}
+        >
+          Get Help
+        </Button>
+      }
+    />
+  ) : (
     <>
       <Breadcrumb style={{ marginBottom: 6 }}>
         <Breadcrumb.Item>
