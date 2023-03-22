@@ -1,6 +1,6 @@
-import { Empty, message, Spin } from "antd";
+import { Breadcrumb, Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -144,13 +144,13 @@ const Vehicles = () => {
     nextFetchPolicy: "cache-first",
   });
   const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
-  useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
-    onError: (err) => {
-      errorMessage(err, "Error loading summary data.");
-    },
-    fetchPolicy: "network-only",
-    nextFetchPolicy: "cache-first",
-  });
+    useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
+      onError: (err) => {
+        errorMessage(err, "Error loading summary data.");
+      },
+      fetchPolicy: "network-only",
+      nextFetchPolicy: "cache-first",
+    });
 
   // Fetch when component mounts or when the filter object changes
   useEffect(() => {
@@ -462,6 +462,12 @@ const Vehicles = () => {
 
   return (
     <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Vehicles</Breadcrumb.Item>
+      </Breadcrumb>
       <EntityStatusProgressBarV3 name={"Vehicles"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>

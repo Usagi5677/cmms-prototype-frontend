@@ -1,7 +1,7 @@
-import { Empty, message, Spin } from "antd";
+import { Breadcrumb, Empty, message, Spin } from "antd";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import classes from "./Roles.module.css";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -104,45 +104,53 @@ const Roles = () => {
   const pageInfo = data?.getAllRoles.pageInfo ?? {};
 
   return (
-    <div className={classes["container"]}>
-      <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
+    <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Roles</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className={classes["container"]}>
+        <div className={classes["options-wrapper"]}>
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+          <div className={classes["add-wrapper"]}>
+            {hasPermissions(self, ["ADD_ROLE"]) ? <AddRole /> : null}
+          </div>
+        </div>
+        {loading && (
+          <div>
+            <Spin style={{ width: "100%", margin: "2rem auto" }} />
+          </div>
+        )}
+        {data?.getAllRoles.edges.length > 0 ? (
+          <div>
+            {data?.getAllRoles.edges.map((rec: { node: Role }) => {
+              const roles = rec.node;
+              return <RoleCard key={roles.id} role={roles} />;
+            })}
+          </div>
+        ) : (
+          <div
+            style={{
+              marginTop: 50,
+            }}
+          >
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
+        )}
+        <PaginationButtons
+          pageInfo={pageInfo}
+          page={page}
+          next={next}
+          back={back}
         />
-        <div className={classes["add-wrapper"]}>
-          {hasPermissions(self, ["ADD_ROLE"]) ? <AddRole /> : null}
-        </div>
       </div>
-      {loading && (
-        <div>
-          <Spin style={{ width: "100%", margin: "2rem auto" }} />
-        </div>
-      )}
-      {data?.getAllRoles.edges.length > 0 ? (
-        <div>
-          {data?.getAllRoles.edges.map((rec: { node: Role }) => {
-            const roles = rec.node;
-            return <RoleCard key={roles.id} role={roles} />;
-          })}
-        </div>
-      ) : (
-        <div
-          style={{
-            marginTop: 50,
-          }}
-        >
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        </div>
-      )}
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-      />
-    </div>
+    </>
   );
 };
 

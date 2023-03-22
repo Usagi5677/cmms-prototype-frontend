@@ -26,7 +26,7 @@
 }
 .content-wrapper-two {
   flex: 1;
-  padding: 10px 20px;
+  padding: 10px;
   border: 1px solid var(--border-2);
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;

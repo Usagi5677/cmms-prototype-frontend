@@ -616,6 +616,7 @@ export const GET_ALL_ENTITY_STATUS_COUNT = gql`
       critical
       breakdown
       dispose
+      total
       machineWorking
       machineCritical
       machineBreakdown

@@ -75,7 +75,7 @@ const Layout = ({ children }: any) => {
         <Navbar openSidebar={() => setCollapsed(!collapsed)} />
         <Content
           style={{
-            padding: isSmallDevice ? "2rem 1rem" : "1rem",
+            padding: isSmallDevice ? "1rem 1rem" : "1rem",
             overflow: "auto",
           }}
           id={"content"}

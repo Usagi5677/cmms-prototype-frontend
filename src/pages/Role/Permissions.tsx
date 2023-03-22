@@ -1,8 +1,9 @@
 import { LeftOutlined } from "@ant-design/icons";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Button, Divider, Switch, Tag, Typography } from "antd";
+import { Breadcrumb, Button, Divider, Switch, Tag, Typography } from "antd";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { TOGGLE_PERMISSION } from "../../api/mutations";
 import {
   GET_ALL_PERMISSIONS,
@@ -79,69 +80,75 @@ const Permissions = () => {
   };
 
   return (
-    <div className={classes["container"]}>
-      <div style={{ marginTop: "10px" }}>
-        <Button
-          className="secondaryButton"
-          onClick={() => navigate(-1)}
-          icon={<LeftOutlined />}
-        >
-          Back
-        </Button>
-      </div>
-      <div className={classes["title-wrapper"]}>
-        <Tag
-          style={{
-            backgroundColor: RoleTagStringToColor(
-              roleData?.getRoleWithPermission?.name
-            ),
-            borderColor: RoleTagStringToColor(
-              roleData?.getRoleWithPermission?.name
-            ),
-            borderWidth: 1,
-          }}
-          className={classes["tag"]}
-        >
+    <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to={"/roles"}>Roles</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
           {roleData?.getRoleWithPermission?.name}
-        </Tag>
-        <span className={classes["title"]}>Permissions</span>
-      </div>
+        </Breadcrumb.Item>
+      </Breadcrumb>
+      <div className={classes["container"]}>
+        <div className={classes["title-wrapper"]}>
+          <Tag
+            style={{
+              backgroundColor: RoleTagStringToColor(
+                roleData?.getRoleWithPermission?.name
+              ),
+              borderColor: RoleTagStringToColor(
+                roleData?.getRoleWithPermission?.name
+              ),
+              borderWidth: 1,
+            }}
+            className={classes["tag"]}
+          >
+            {roleData?.getRoleWithPermission?.name}
+          </Tag>
+          <span className={classes["title"]}>permissions</span>
+        </div>
 
-      {(loadingAllPermissions || loadingRoleWithPermission) && <CenteredSpin />}
-      {uniqueTypes?.map((type) => (
-        <div key={type}>
-          <Divider style={{ marginTop: 10 }} />
-          <Typography.Title level={5}>{type}</Typography.Title>
-          {allPermissions?.permissions
-            .filter((p: Permission) => p.type === type)
-            .map((p: Permission) => (
-              <div
-                key={p.name}
-                style={{ display: "flex", alignItems: "center" }}
-              >
-                <Switch
-                  checked={hasPermission(p.name)}
-                  onChange={(e) =>
-                    togglePermission({
-                      variables: {
-                        roleId: parseInt(id),
-                        permission: p.name,
-                        complete: e,
-                      },
-                    })
-                  }
-                />
-                <div style={{ marginLeft: ".5rem" }}>
-                  {p.name}
-                  <div style={{ opacity: 0.7, marginTop: -5 }}>
-                    {p.description}
+        {(loadingAllPermissions || loadingRoleWithPermission) && (
+          <CenteredSpin />
+        )}
+        {uniqueTypes?.map((type) => (
+          <div key={type}>
+            <Divider style={{ marginTop: 10 }} />
+            <Typography.Title level={5}>{type}</Typography.Title>
+            {allPermissions?.permissions
+              .filter((p: Permission) => p.type === type)
+              .map((p: Permission) => (
+                <div
+                  key={p.name}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <Switch
+                    checked={hasPermission(p.name)}
+                    onChange={(e) =>
+                      togglePermission({
+                        variables: {
+                          roleId: parseInt(id),
+                          permission: p.name,
+                          complete: e,
+                        },
+                      })
+                    }
+                  />
+                  <div style={{ marginLeft: ".5rem" }}>
+                    {p.name}
+                    <div style={{ opacity: 0.7, marginTop: -5 }}>
+                      {p.description}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-        </div>
-      ))}
-    </div>
+              ))}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

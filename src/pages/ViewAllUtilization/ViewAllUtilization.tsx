@@ -1,4 +1,6 @@
+import { Breadcrumb } from "antd";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import CloneEntityUtilization from "./CloneEntityUtilization";
 import EntityUtilization from "./EntityUtilization";
@@ -11,16 +13,24 @@ const ViewAllUtilization = () => {
   };
   const isSmallDevice = useIsSmallDevice(1200, true);
   return (
-    <div className={classes["content"]}>
-      {active && (
-        <div
-          className={classes["compare"]}
-          style={{ display: active && isSmallDevice ? "block" : "none" }}
-        ></div>
-      )}
-      <EntityUtilization active={active} onClick={compare} />
-      {active && <CloneEntityUtilization active={active} clone={true} />}
-    </div>
+    <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Utilizations</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className={classes["content"]}>
+        {active && (
+          <div
+            className={classes["compare"]}
+            style={{ display: active && isSmallDevice ? "block" : "none" }}
+          ></div>
+        )}
+        <EntityUtilization active={active} onClick={compare} />
+        {active && <CloneEntityUtilization active={active} clone={true} />}
+      </div>
+    </>
   );
 };
 

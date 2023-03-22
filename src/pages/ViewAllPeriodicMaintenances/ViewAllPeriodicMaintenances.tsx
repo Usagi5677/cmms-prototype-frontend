@@ -1,4 +1,4 @@
-import { Button, Empty, Spin } from "antd";
+import { Breadcrumb, Button, Empty, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -8,9 +8,7 @@ import { ALL_PERIODIC_MAINTENANCE_LIST } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
-import StatusCard from "../../components/common/StatusCard/StatusCard";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
 import {
   DefaultDateOptionProps,
   DefaultNumberArrayOptionProps,
@@ -22,12 +20,6 @@ import {
   SearchReadingOptionProps,
   TypeSelectorOptionProps,
 } from "../../models/Enums";
-import {
-  CheckOutlined,
-  ClockCircleOutlined,
-  ExclamationOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
 import moment from "moment";
@@ -407,6 +399,12 @@ const ViewAllPeriodicMaintenances = () => {
 
   return (
     <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Maintenances</Breadcrumb.Item>
+      </Breadcrumb>
       <MaintenanceProgressBar filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>

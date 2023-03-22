@@ -1,6 +1,6 @@
-import { Empty, message, Spin } from "antd";
+import { Breadcrumb, Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PaginationArgs from "../../../models/PaginationArgs";
 import { errorMessage } from "../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -463,6 +463,12 @@ const Vessels = () => {
 
   return (
     <>
+    <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Vessels</Breadcrumb.Item>
+      </Breadcrumb>
       <EntityStatusProgressBarV3 name={"Vessels"} filter={filter} />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>

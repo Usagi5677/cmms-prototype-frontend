@@ -1,6 +1,6 @@
-import { Empty, message, Spin } from "antd";
+import { Breadcrumb, Empty, message, Spin } from "antd";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PaginationArgs from "../../models/PaginationArgs";
 import { errorMessage } from "../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -31,6 +31,7 @@ import {
 } from "../../models/Enums";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useLocalStorage } from "../../helpers/useLocalStorage";
+import EntityStatusProgressBarV3 from "../../components/common/EntityStatusProgressBarV3/EntityStatusProgressBarV3";
 
 const ViewAllDisposed = () => {
   const getFilter = localStorage.getItem("disposeFilter");
@@ -470,35 +471,13 @@ const ViewAllDisposed = () => {
 
   return (
     <>
-      <div className={classes["status-card"]}>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            ease: "easeOut",
-            duration: 0.3,
-            delay: 0.3,
-          }}
-        >
-          <div className={classes["total-card"]}>
-            <motion.div
-              className={classes["total-title"]}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                ease: "easeOut",
-                duration: 0.3,
-                delay: 0.7,
-              }}
-            >
-              Entities
-            </motion.div>
-            <div className={classes["total-amount"]}>
-              <CountUp end={total} duration={1} />
-            </div>
-          </div>
-        </motion.div>
-      </div>
+    <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Dispose</Breadcrumb.Item>
+      </Breadcrumb>
+      <EntityStatusProgressBarV3 name={"Dispose"} filter={filter} disposeView />
       <div className={classes["wrapper"]}>
         <div className={classes["container"]}>
           {loading && (

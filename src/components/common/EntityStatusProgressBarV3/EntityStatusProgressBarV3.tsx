@@ -30,9 +30,11 @@ interface filter {
 const EntityStatusProgressBarV3 = ({
   name,
   filter,
+  disposeView,
 }: {
   name?: string;
   filter?: filter;
+  disposeView?: boolean;
 }) => {
   const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
     GET_ALL_ENTITY_STATUS_COUNT,
@@ -54,6 +56,7 @@ const EntityStatusProgressBarV3 = ({
   let breakdown = 0;
   let dispose = 0;
   let total = 0;
+  let total_with_dispose = 0;
   let normalized_working = 0;
   let normalized_critical = 0;
   let normalized_breakdown = 0;
@@ -63,18 +66,18 @@ const EntityStatusProgressBarV3 = ({
     critical = statusCount?.critical;
     working = statusCount?.working;
     breakdown = statusCount?.breakdown;
-    //dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
-
+    dispose = statusCount?.dispose;
+    total = critical + working + breakdown;
+    total_with_dispose = statusCount?.total;
     normalized_working = ((working - 0) / (total - 0)) * 100;
     normalized_critical = ((critical - 0) / (total - 0)) * 100;
     normalized_breakdown = ((breakdown - 0) / (total - 0)) * 100;
   }
 
-  return (
+  return !disposeView ? (
     <div
       className={classes["container"]}
-      title={`${working + critical + breakdown}`}
+      title={`Total: ${working + critical + breakdown}`}
     >
       <div className={classes["bar-container"]}>
         <div className={classes["status-info"]}>
@@ -122,6 +125,29 @@ const EntityStatusProgressBarV3 = ({
           <Progress
             percent={parseInt(normalized_breakdown.toFixed(0))}
             strokeColor={"var(--breakdown-bar-color)"}
+          />
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div
+      className={classes["container"]}
+      title={`Total: ${working + critical + breakdown}`}
+    >
+      <div className={classes["bar-container"]}>
+        <div className={classes["status-info"]}>
+          <CountUp
+            className={classes["status-count"]}
+            end={dispose}
+            duration={1}
+          />
+          <span className={classes["status-title"]}>Dispose</span>
+        </div>
+
+        <div className={classes["bar-box"]}>
+          <Progress
+            percent={parseInt(((dispose / total_with_dispose) * 100).toFixed(0))}
+            strokeColor={"var(--dispose-bar-color)"}
           />
         </div>
       </div>

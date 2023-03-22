@@ -1,8 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
-import { Table } from "antd";
+import { Breadcrumb, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { PERIODIC_MAINTENANCES_CALENDAR } from "../../api/queries";
 import MaintenanceFilterOptions from "../../components/common/MaintenanceFilterOptions/MaintenanceFIlterOptions";
 import { DATETIME_FORMATS } from "../../helpers/constants";
@@ -402,19 +403,30 @@ const PeriodicMaintenancesCalendarView = () => {
     toOptions,
   };
   return (
-    <div className={classes["wrapper"]}>
-      <div className={classes["calendar"]}>
-        <Table
-          rowKey="id"
-          loading={loading}
-          dataSource={data?.periodicMaintenancesCalendar.map((e: any) => e)}
-          columns={columns}
-          pagination={false}
-          scroll={{ x: "100%", y: "70vh" }}
-        />
+    <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to={"/maintenances"}>Maintenances</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Calendar</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className={classes["wrapper"]}>
+        <div className={classes["calendar"]}>
+          <Table
+            rowKey="id"
+            loading={loading}
+            dataSource={data?.periodicMaintenancesCalendar.map((e: any) => e)}
+            columns={columns}
+            pagination={false}
+            scroll={{ x: "100%", y: "70vh" }}
+          />
+        </div>
+        <MaintenanceFilterOptions options={filterOptions} onClick={clearAll} />
       </div>
-      <MaintenanceFilterOptions options={filterOptions} onClick={clearAll} />
-    </div>
+    </>
   );
 };
 

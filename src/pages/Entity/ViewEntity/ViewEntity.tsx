@@ -7,8 +7,10 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import {
   Avatar,
   Badge,
+  Breadcrumb,
   Button,
   Divider,
+  Menu,
   message,
   Skeleton,
   Spin,
@@ -60,7 +62,7 @@ import ViewSubEntity from "./ViewSubEntity/ViewSubEntity";
 import OpenParentEntity from "../../../components/common/OpenParentEntity/OpenParentEntity";
 import EditEntityNote from "../../../components/EntityComponents/EditEntityNote/EditEntityNote";
 import TextArea from "antd/lib/input/TextArea";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -220,6 +222,41 @@ const ViewEntity = () => {
   return (
     <>
       <div className={classes["container"]}>
+        <Breadcrumb style={{ marginBottom: 6 }}>
+          <Breadcrumb.Item>
+            <Link to={"/"}>Home</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Link
+              to={`${
+                entityData?.status === "Dispose"
+                  ? "/dispose"
+                  : urlParamTab
+                  ? "/maintenances"
+                  : entityData?.type?.entityType === "Machine"
+                  ? "/machinery"
+                  : entityData?.type?.entityType === "Vehicle"
+                  ? "/vehicles"
+                  : "/vessels"
+              }`}
+            >{`${
+              entityData?.status === "Dispose"
+                ? "Dispose"
+                : urlParamTab
+                ? "Maintenances"
+                : entityData?.type?.entityType === "Machine"
+                ? "Machinery"
+                : entityData?.type?.entityType === "Vehicle"
+                ? "Vehicles"
+                : "Vessels"
+            }`}</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {entityData?.machineNumber
+              ? entityData?.machineNumber
+              : entityData?.id}
+          </Breadcrumb.Item>
+        </Breadcrumb>
         <div className={classes["info-container"]}>
           {loading ? (
             <Skeleton active />
@@ -494,7 +531,7 @@ const ViewEntity = () => {
                           : undefined,
                       }}
                     >
-                      <div style={{marginBottom:6}}>
+                      <div style={{ marginBottom: 6 }}>
                         {entityData?.type?.entityType} {type}
                       </div>
                       {(isAssignedType(

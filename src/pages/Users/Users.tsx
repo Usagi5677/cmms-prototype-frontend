@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Empty, message, Spin } from "antd";
+import { Breadcrumb, Empty, message, Spin } from "antd";
 import { errorMessage } from "../../helpers/gql";
 import Search from "../../components/common/Search";
 import PaginationArgs from "../../models/PaginationArgs";
@@ -16,6 +16,7 @@ import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router";
 import { hasPermissions } from "../../helpers/permissions";
 import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const { user: self } = useContext(UserContext);
@@ -103,53 +104,61 @@ const Users = () => {
 
   const pageInfo = data?.getAllUsers?.pageInfo ?? {};
   return (
-    <div className={classes["container"]}>
-      <div className={classes["options-wrapper"]}>
-        <Search
-          searchValue={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onClick={() => setSearch("")}
+    <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Users</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className={classes["container"]}>
+        <div className={classes["options-wrapper"]}>
+          <Search
+            searchValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={() => setSearch("")}
+          />
+          <div className={classes["add-wrapper"]}>
+            {hasPermissions(self, ["ADD_USER_WITH_ROLE"]) ? (
+              <AddUserRoles />
+            ) : null}
+          </div>
+        </div>
+        {loading && (
+          <div>
+            <Spin style={{ width: "100%", margin: "2rem auto" }} />
+          </div>
+        )}
+        {data?.getAllUsers.edges.length > 0 ? (
+          <div>
+            {data?.getAllUsers.edges.map((rec: { node: User }) => {
+              const userData = rec.node;
+              return (
+                <UserCard
+                  userData={userData}
+                  key={userData.id}
+                  small={isSmallDevice}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div
+            style={{
+              marginTop: 50,
+            }}
+          >
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
+        )}
+        <PaginationButtons
+          pageInfo={pageInfo}
+          page={page}
+          next={next}
+          back={back}
         />
-        <div className={classes["add-wrapper"]}>
-          {hasPermissions(self, ["ADD_USER_WITH_ROLE"]) ? (
-            <AddUserRoles />
-          ) : null}
-        </div>
       </div>
-      {loading && (
-        <div>
-          <Spin style={{ width: "100%", margin: "2rem auto" }} />
-        </div>
-      )}
-      {data?.getAllUsers.edges.length > 0 ? (
-        <div>
-          {data?.getAllUsers.edges.map((rec: { node: User }) => {
-            const userData = rec.node;
-            return (
-              <UserCard
-                userData={userData}
-                key={userData.id}
-                small={isSmallDevice}
-              />
-            );
-          })}
-        </div>
-      ) : (
-        <div
-          style={{
-            marginTop: 50,
-          }}
-        >
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        </div>
-      )}
-      <PaginationButtons
-        pageInfo={pageInfo}
-        page={page}
-        next={next}
-        back={back}
-      />
-    </div>
+    </>
   );
 };
 

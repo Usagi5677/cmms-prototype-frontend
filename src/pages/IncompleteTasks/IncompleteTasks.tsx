@@ -1,6 +1,7 @@
-import { message, Tabs } from "antd";
+import { Breadcrumb, message, Tabs } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
 import { IncompleteChecklists } from "../../components/IncompleteTasks/IncompleteChecklists";
 import UserContext from "../../contexts/UserContext";
@@ -23,9 +24,14 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
       message.error("Not an admin or user of any entity.");
     }
   }, []);
-  console.log(firstLoad);
   return (
     <>
+      <Breadcrumb style={{ marginBottom: 6 }}>
+        <Breadcrumb.Item>
+          <Link to={"/"}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>Incomplete Tasks</Breadcrumb.Item>
+      </Breadcrumb>
       <div
         style={{
           width: "100%",
@@ -48,8 +54,7 @@ export const IncompleteTasks: React.FC<IncompleteTasksProps> = ({}) => {
         ></Tabs.TabPane> */}
         </Tabs>
       </div>
-      {firstLoad && <GroupedLocationIncompleteTask /> }
-
+      {firstLoad && <GroupedLocationIncompleteTask />}
     </>
   );
 };
