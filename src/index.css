@@ -70,7 +70,12 @@ body,
 a {
   color: var(--ant-primary-color) !important;
 }
-
+a:hover {
+  color: var(--ant-primary-color-active) !important;
+}
+a:active {
+  color: var(--ant-primary-color-active) !important;
+}
 :root {
   --primary: #1aaa7a;
   --error: #ff4d4f;
