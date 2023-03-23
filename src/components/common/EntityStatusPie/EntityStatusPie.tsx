@@ -198,7 +198,15 @@ const EntityStatusPie = () => {
       viewport={{ once: true }}
     >
       {loading ? (
-        <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Spin style={{ marginTop: 140, marginBottom: 140 }} size={"large"} />
+        </div>
       ) : (
         <HighchartsReact highcharts={Highcharts} options={options} />
       )}
