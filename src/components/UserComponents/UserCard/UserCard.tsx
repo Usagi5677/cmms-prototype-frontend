@@ -11,6 +11,7 @@ import EditUserRoles from "../EditUserRoles/EditUserRoles";
 import { useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { hasPermissions } from "../../../helpers/permissions";
+import { Link } from "react-router-dom";
 
 const UserCard = ({ userData, small }: { userData: User; small?: boolean }) => {
   const { user: self } = useContext(UserContext);
@@ -66,25 +67,27 @@ const UserCard = ({ userData, small }: { userData: User; small?: boolean }) => {
                     title={
                       <div>
                         Do you want to remove{" "}
-                        <Tag
-                          style={{
-                            fontWeight: 800,
-                            borderRadius: 2,
-                            textAlign: "center",
-                            maxWidth: 250,
-                            marginRight: 4,
-                            backgroundColor: RoleTagStringToColor(
-                              role.role.name
-                            ),
-                            borderColor: RoleTagStringToColor(role.role.name),
-                            borderWidth: 1,
-                            cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
-                              ? "pointer"
-                              : "initial",
-                          }}
-                        >
-                          {role.role.name}
-                        </Tag>
+                        <Link to={"/role/" + role?.role?.id + "/permission"}>
+                          <Tag
+                            style={{
+                              fontWeight: 800,
+                              borderRadius: 2,
+                              textAlign: "center",
+                              maxWidth: 250,
+                              marginRight: 4,
+                              backgroundColor: RoleTagStringToColor(
+                                role.role.name
+                              ),
+                              borderColor: RoleTagStringToColor(role.role.name),
+                              borderWidth: 1,
+                              cursor: hasPermissions(self, ["EDIT_USER_ROLE"])
+                                ? "pointer"
+                                : "initial",
+                            }}
+                          >
+                            {role.role.name}
+                          </Tag>
+                        </Link>
                         role from{" "}
                         <span style={{ fontWeight: 700 }}>
                           {userData.fullName}
