@@ -72,6 +72,7 @@ const UserCard = ({ userData, small }: { userData: User; small?: boolean }) => {
                             borderRadius: 2,
                             textAlign: "center",
                             maxWidth: 250,
+                            marginRight: 4,
                             backgroundColor: RoleTagStringToColor(
                               role.role.name
                             ),
