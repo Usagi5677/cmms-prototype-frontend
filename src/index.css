@@ -453,7 +453,7 @@ a:active {
 }
 
 .ant-popover-buttons .ant-btn {
-  border-radius: 10px;
+  border-radius: 4px;
   padding-right: 10px;
   padding-left: 10px;
 }
