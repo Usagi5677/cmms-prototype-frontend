@@ -73,6 +73,9 @@
 .title {
   color: white;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .flex {
@@ -86,7 +89,7 @@
   opacity: 0;
   transition: top 0.3s ease, opacity 0.3s ease;
   z-index: 100;
-  margin-top: 24px;
+  margin-top: 26px;
   
 }
 .container:hover .action-wrapper {

@@ -421,7 +421,7 @@ const EntityCard = ({
                 <div>
                   {entity?.currentRunningUpdateAt !== null ? (
                     <span
-                      className={classes["reading"]}
+                      className={classes["inter-reading"]}
                       style={{ color: fontColor }}
                       title={`Current Running`}
                     >
@@ -435,7 +435,7 @@ const EntityCard = ({
                     </span>
                   ) : (
                     <span
-                      className={classes["reading"]}
+                      className={classes["inter-reading"]}
                       style={{ color: fontColor }}
                       title={`Current Running`}
                     >
@@ -448,7 +448,7 @@ const EntityCard = ({
                 </div>
               ) : (
                 <span
-                  className={classes["reading"]}
+                  className={classes["inter-reading"]}
                   style={{ color: fontColor }}
                   title={`Current Running`}
                 >
@@ -465,8 +465,8 @@ const EntityCard = ({
                 <div>
                   {entity?.lastServiceUpdateAt !== null ? (
                     <span
-                      className={classes["reading"]}
-                      style={{ color: fontColor }}
+                      className={classes["inter-reading"]}
+                      style={{ color: fontColor, marginLeft: 10 }}
                       title={`Last Service`}
                     >
                       {moment(entity?.lastServiceUpdateAt).format(
@@ -479,8 +479,8 @@ const EntityCard = ({
                     </span>
                   ) : (
                     <span
-                      className={classes["reading"]}
-                      style={{ color: fontColor }}
+                      className={classes["inter-reading"]}
+                      style={{ color: fontColor, marginLeft: 10 }}
                       title={`Last Service`}
                     >
                       NaN
@@ -492,8 +492,8 @@ const EntityCard = ({
                 </div>
               ) : (
                 <span
-                  className={classes["reading"]}
-                  style={{ color: fontColor }}
+                  className={classes["inter-reading"]}
+                  style={{ color: fontColor, marginLeft: 10 }}
                   title={`Last Service`}
                 >
                   {entity?.lastService
@@ -517,6 +517,7 @@ const EntityCard = ({
                       color: "#f56a00",
                       backgroundColor: "#fde3cf",
                     }}
+                    size={isSmallDevice ? "default" : "small"}
                   >
                     {assignedAdmin?.map((assign) => {
                       return (
@@ -542,6 +543,7 @@ const EntityCard = ({
                                 assign?.user?.fullName!
                               ),
                             }}
+                            size={isSmallDevice ? "default" : "small"}
                           >
                             {assign?.user?.fullName
                               .match(/^\w|\b\w(?=\S+$)/g)
@@ -572,6 +574,7 @@ const EntityCard = ({
                       color: "#f56a00",
                       backgroundColor: "#fde3cf",
                     }}
+                    size={isSmallDevice ? "default" : "small"}
                   >
                     {assignedEngineer?.map((assign) => {
                       return (
@@ -597,6 +600,7 @@ const EntityCard = ({
                                 assign?.user?.fullName!
                               ),
                             }}
+                            size={isSmallDevice ? "default" : "small"}
                           >
                             {assign?.user?.fullName
                               .match(/^\w|\b\w(?=\S+$)/g)

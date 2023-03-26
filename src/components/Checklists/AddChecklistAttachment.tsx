@@ -6,7 +6,10 @@ import Upload, { RcFile } from "antd/lib/upload";
 import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import { GET_ALL_ATTACHMENT_OF_ENTITY } from "../../api/queries";
+import {
+  GET_ALL_ATTACHMENT_OF_ENTITY,
+  GET_ALL_HISTORY_OF_ENTITY,
+} from "../../api/queries";
 import { MAX_FILE_SIZE } from "../../helpers/constants";
 import Checklist from "../../models/Checklist";
 import { Entity } from "../../models/Entity/Entity";
@@ -30,6 +33,16 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
   const { id }: any = useParams();
 
   const { refetch } = useQuery(GET_ALL_ATTACHMENT_OF_ENTITY, {
+    variables: {
+      first: 20,
+      last: null,
+      before: null,
+      after: null,
+      search: "",
+      entityId: parseInt(id),
+    },
+  });
+  const { refetch: refetchHistory } = useQuery(GET_ALL_HISTORY_OF_ENTITY, {
     variables: {
       first: 20,
       last: null,
@@ -101,14 +114,25 @@ export const AddChecklistAttachment: React.FC<AddChecklistAttachmentProps> = ({
       .finally(function () {
         setUploading(false);
         refetchChecklist();
-        refetch({
-          first: 20,
-          last: null,
-          before: null,
-          after: null,
-          search: "",
-          entityId: parseInt(id),
-        });
+        //timeout since it was showing error when refetching
+        setTimeout(function () {
+          refetch({
+            first: 20,
+            last: null,
+            before: null,
+            after: null,
+            search: "",
+            entityId: parseInt(id),
+          });
+          refetchHistory({
+            first: 20,
+            last: null,
+            before: null,
+            after: null,
+            search: "",
+            entityId: parseInt(id),
+          });
+        }, 1000);
         handleCancel();
       });
   };

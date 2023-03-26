@@ -1,4 +1,4 @@
-import { Image, Spin, Tooltip } from "antd";
+import { Avatar, Image, Spin, Tooltip } from "antd";
 import { memo, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -14,6 +14,8 @@ import DeleteEntityAttachment from "../DeleteEntityAttachment/DeleteEntityAttach
 import { hasPermissions, isAssignedType } from "../../../helpers/permissions";
 import { Entity } from "../../../models/Entity/Entity";
 import SetFavouriteAttachment from "../SetFavouriteAttachment/SetFavouriteAttachment";
+import { CenteredSpin } from "../../common/CenteredSpin";
+import { stringToColor } from "../../../helpers/style";
 
 const ParsedEntityAttachment = ({
   attachmentData,
@@ -118,9 +120,7 @@ const ParsedEntityAttachment = ({
         {!checklistView && (
           <div className={classes["option-wrapper"]}>
             <div className={classes["options"]}>
-              {fileLoading && (
-                <Spin size="small" style={{ marginRight: 5, marginLeft: 5 }} />
-              )}
+              {fileLoading && <CenteredSpin />}
               {!checklistView && (
                 <div className={classes["action-wrapper"]}>
                   {((file && hasPermissions(self, ["VIEW_ALL_ENTITY"])) ||
@@ -157,13 +157,39 @@ const ParsedEntityAttachment = ({
           ) : (
             ""
           )}
+          <Tooltip
+            title={
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {attachmentData?.user?.fullName} ({attachmentData?.user?.rcno}
+                  )
+                </div>
+              </>
+            }
+            placement="bottom"
+            key={attachmentData?.user?.id}
+          >
+            <Avatar
+              style={{
+                backgroundColor: stringToColor(attachmentData?.user?.fullName!),
+                marginRight: 6
+              }}
+              size={"small"}
+            >
+              {attachmentData?.user?.fullName
+                .match(/^\w|\b\w(?=\S+$)/g)
+                ?.join()
+                .replace(",", "")
+                .toUpperCase()}
+            </Avatar>
+          </Tooltip>
           {attachmentData?.description}
         </div>
-        {checklistView && (
-          <div style={{ opacity: 0.8, fontSize: "96%", color: "white" }}>
-            {attachmentData.user.fullName} ({attachmentData.user.rcno})
-          </div>
-        )}
       </div>
     </div>
   );

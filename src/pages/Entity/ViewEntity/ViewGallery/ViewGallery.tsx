@@ -180,6 +180,9 @@ const ViewGallery = ({
   return (
     <div className={classes["container"]}>
       <div className={classes["options"]}>
+      {loadingAttachment && (
+          <Spin style={{marginRight: 10}}  />
+        )}
         <DatePicker.RangePicker
           className={classes["datepicker"]}
           defaultValue={dates}
@@ -201,11 +204,7 @@ const ViewGallery = ({
           <AddEntityAttachment setReload={setReload} />
         ) : null}
 
-        {loadingAttachment && (
-          <div>
-            <Spin style={{ width: "100%", margin: "2rem auto" }} />
-          </div>
-        )}
+        
       </div>
       {attachment?.entityAttachments.edges.length > 0 ? (
         <div>
