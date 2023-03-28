@@ -160,8 +160,8 @@ const EntityCard = ({
                           <SizeableTag
                             name={entity?.division?.name}
                             nameColor
-                            fontSize={isSmallDevice ? 9 : 6}
-                            height={isSmallDevice ? 14 : 10}
+                            fontSize={isSmallDevice ? 12 : 6}
+                            height={isSmallDevice ? 18 : 10}
                             fontWeight={800}
                             title={"Division"}
                           />

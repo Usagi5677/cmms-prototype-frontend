@@ -95,9 +95,11 @@ export const EntityAssignment: React.FC<EntityAssignmentProps> = ({
           fontWeight: 700,
           borderRadius: 20,
           textAlign: "center",
+          margin: 2,
           maxWidth: 250,
           backgroundColor: stringToColor(label?.split("(")[0].trim()),
           borderColor: stringToColor(label?.split("(")[0].trim()),
+          color:"white",
           borderWidth: 1,
         }}
       >

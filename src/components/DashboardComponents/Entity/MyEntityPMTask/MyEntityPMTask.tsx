@@ -15,7 +15,7 @@ import moment from "moment";
 import { useContext, useState, useEffect, useRef, memo } from "react";
 import CountUp from "react-countup";
 import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   GET_ALL_ENTITY_PM_TASK_STATUS_COUNT,
   GET_ALL_ENTITY_PM_TASK,
@@ -29,15 +29,16 @@ import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
 import EntityAssignment from "../../../../models/Entity/EntityAssign";
 import EntityPMTask from "../../../../models/Entity/EntityPMTask";
 import PaginationArgs from "../../../../models/PaginationArgs";
-import { EntityIcon } from "../../../common/EntityIcon";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import Search from "../../../common/Search";
+import SizeableTag from "../../../common/SizeableTag/SizeableTag";
 import { LocationSelector } from "../../../Config/Location/LocationSelector";
 import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
 import classes from "./MyEntityPMTask.module.css";
 
 const MyEntityPMTask = () => {
   const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -183,8 +184,7 @@ const MyEntityPMTask = () => {
   };
 
   const pageInfo = data?.getAllEntityPeriodicMaintenanceTask.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+  const isSmallDevice = useIsSmallDevice(600, true);
 
   let complete2 = statusData?.allEntityPMTaskStatusCount?.complete;
   let ongoing = statusData?.allEntityPMTaskStatusCount?.ongoing;
@@ -436,117 +436,216 @@ const MyEntityPMTask = () => {
                   <Collapse.Panel
                     header={
                       <>
-                        <div className={classes["header-container"]}>
-                          <div className={classes["first-block"]}>
-                            {loading ? (
-                              <Skeleton.Image
-                                style={{
-                                  width: 60,
-                                  height: 50,
-                                  borderRadius: 6,
-                                }}
-                              />
-                            ) : (
-                              <Image
-                                src={imagePath}
-                                height={50}
-                                width={60}
-                                preview={false}
-                              />
-                            )}
-                            <div>
-                              <div className={classes["title-wrapper"]}>
-                                <EntityIcon
-                                  entityType={
-                                    periodicMaintenanceTask?.periodicMaintenance
-                                      ?.entity?.type?.entityType
-                                  }
+                        <div
+                          className={classes["header-container"]}
+                          onDoubleClick={() =>
+                            navigate(
+                              `${`/entity/${periodicMaintenanceTask?.periodicMaintenance?.entity?.id}`}`
+                            )
+                          }
+                        >
+                          <div
+                            className={classes["inner-block-wrapper"]}
+                            style={{ flex: 1 }}
+                          >
+                            <div className={classes["first-block"]}>
+                              {loading ? (
+                                <Skeleton.Image
+                                  className={classes["image"]}
+                                  style={{
+                                    width: isSmallDevice ? 80 : 40,
+                                    height: isSmallDevice ? 70 : 30,
+                                    borderRadius: 6,
+                                  }}
                                 />
-                                <span className={classes["title"]}>
-                                  {
-                                    periodicMaintenanceTask?.periodicMaintenance
-                                      ?.entity?.machineNumber
-                                  }
+                              ) : (
+                                <Image
+                                  src={imagePath}
+                                  height={isSmallDevice ? 70 : 30}
+                                  width={isSmallDevice ? 80 : 40}
+                                  className={classes["image"]}
+                                  preview={false}
+                                  title={`${periodicMaintenanceTask?.periodicMaintenance?.entity?.id}`}
+                                />
+                              )}
+                              <div
+                                className={classes["inner-first-block"]}
+                                style={{ flex: 2 }}
+                              >
+                                <span className={classes["task-title"]} title={"Task"}>
+                                  {periodicMaintenanceTask?.name}
                                 </span>
-                              </div>
-                              <div className={classes["title-wrapper"]}>
-                                <FaMapMarkerAlt style={{ marginRight: 5 }} />
-                                {
-                                  periodicMaintenanceTask?.periodicMaintenance
-                                    ?.entity?.location?.name
-                                }
+                                <div
+                                  className={
+                                    classes["inner-first-block-level-one"]
+                                  }
+                                >
+                                  <span
+                                    className={classes["mn-title"]}
+                                    title={`Machine Number`}
+                                  >
+                                    {
+                                      periodicMaintenanceTask
+                                        ?.periodicMaintenance?.entity
+                                        ?.machineNumber
+                                    }
+                                  </span>
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.division && (
+                                    <SizeableTag
+                                      name={
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.division?.name
+                                      }
+                                      nameColor
+                                      fontSize={isSmallDevice ? 9 : 6}
+                                      height={isSmallDevice ? 14 : 10}
+                                      fontWeight={800}
+                                      title={"Division"}
+                                    />
+                                  )}
+                                </div>
+                                <span
+                                  className={
+                                    classes["inner-first-block-level-two"]
+                                  }
+                                >
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.type?.name && (
+                                    <div title={"Type"}>
+                                      {
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity?.type
+                                          ?.name
+                                      }
+                                      {(periodicMaintenanceTask
+                                        ?.periodicMaintenance?.entity?.model ||
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity?.brand
+                                          ?.name ||
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.engine) && (
+                                        <span className={classes["dot"]}>
+                                          •
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.model && (
+                                    <div
+                                      className={classes["model"]}
+                                      title={"Model"}
+                                    >
+                                      {
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity?.model
+                                      }
+                                      {(periodicMaintenanceTask
+                                        ?.periodicMaintenance?.entity?.brand
+                                        ?.name ||
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.engine) && (
+                                        <span className={classes["dot"]}>
+                                          •
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.brand?.name && (
+                                    <div
+                                      className={classes["brand"]}
+                                      title={"Brand"}
+                                    >
+                                      {
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity?.brand
+                                          ?.name
+                                      }
+                                      {periodicMaintenanceTask
+                                        ?.periodicMaintenance?.entity
+                                        ?.engine && (
+                                        <span className={classes["dot"]}>
+                                          •
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.engine && (
+                                    <div
+                                      className={classes["engine"]}
+                                      title={"Engine"}
+                                    >
+                                      {
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity?.engine
+                                      }
+                                    </div>
+                                  )}
+                                </span>
+                                <div
+                                  className={
+                                    classes["inner-first-block-level-three"]
+                                  }
+                                >
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.registeredDate && (
+                                    <div title={"Registered Date"}>
+                                      {moment(
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.registeredDate
+                                      ).format(DATETIME_FORMATS.DAY_MONTH_YEAR)}
+                                      {(periodicMaintenanceTask
+                                        ?.periodicMaintenance?.entity?.location
+                                        ?.name ||
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.location?.zone?.name) && (
+                                        <span className={classes["dot"]}>
+                                          •
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.location?.name && (
+                                    <div title={"Location"}>
+                                      {
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.location?.name
+                                      }
+                                      {periodicMaintenanceTask
+                                        ?.periodicMaintenance?.entity?.location
+                                        ?.zone?.name && (
+                                        <span className={classes["dot"]}>
+                                          •
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {periodicMaintenanceTask?.periodicMaintenance
+                                    ?.entity?.location?.zone?.name && (
+                                    <div title={"Zone"}>
+                                      {
+                                        periodicMaintenanceTask
+                                          ?.periodicMaintenance?.entity
+                                          ?.location?.zone?.name
+                                      }
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className={classes["second-block"]}>
-                            <div className={classes["reading"]}>
-                              <span className={classes["reading-title"]}>
-                                Task:
-                              </span>
-                              <span>{periodicMaintenanceTask?.name}</span>
-                            </div>
-                            {/**<div
-                              className={classes["reading"]}
-                              style={{ marginTop: 2 }}
-                            >
-                              <span className={classes["reading-title"]}>
-                                Assigned to:
-                              </span>
-                              <span>
-                                {uniqueAssign?.length > 0 ? (
-                                  <Avatar.Group
-                                    maxCount={5}
-                                    maxStyle={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf",
-                                    }}
-                                  >
-                                    {uniqueAssign.map(
-                                      (assign: EntityAssignment) => {
-                                        return (
-                                          <Tooltip
-                                            title={
-                                              <>
-                                                <div
-                                                  style={{
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                  }}
-                                                >
-                                                  {assign?.user?.fullName} (
-                                                  {assign?.user?.rcno})
-                                                </div>
-                                              </>
-                                            }
-                                            placement="bottom"
-                                            key={assign?.user?.id}
-                                          >
-                                            <Avatar
-                                              style={{
-                                                backgroundColor: stringToColor(
-                                                  assign?.user?.fullName!
-                                                ),
-                                              }}
-                                              size={20}
-                                            >
-                                              {assign?.user?.fullName
-                                                .match(/^\w|\b\w(?=\S+$)/g)
-                                                ?.join()
-                                                .replace(",", "")
-                                                .toUpperCase()}
-                                            </Avatar>
-                                          </Tooltip>
-                                        );
-                                      }
-                                    )}
-                                  </Avatar.Group>
-                                ) : (
-                                  <span>None</span>
-                                )}
-                              </span>
-                            </div> */}
-                          </div>
                           <Link
                             to={
                               "/entity/" +

@@ -35,6 +35,7 @@ export const SearchEntities: React.FC<SearchEntitiesProps> = ({
   useEffect(() => {
     if (selected) {
       const entity = data.searchEntity.find((x: Entity) => x.id === selected);
+      console.log(entity)
       if (entity) {
         onChange(entity);
         setSelected(null);

@@ -523,6 +523,24 @@ export const EDIT_INTER_SERVICE_COLOR = gql`
   }
 `;
 
+export const CREATE_USER_ASSIGNMENT = gql`
+  mutation createUSerAssignment($input: CreateUserAssignmentInput!) {
+    createUserAssignment(input: $input)
+  }
+`;
+
+export const DELETE_USER_ASSIGNMENT = gql`
+  mutation removeUserAssignment($id: Int!) {
+    removeUserAssignment(id: $id)
+  }
+`;
+
+export const EDIT_USER_ASSIGNMENT = gql`
+  mutation updateUserAssignment($input: UpdateUserAssignmentInput!) {
+    updateUserAssignment(input: $input)
+  }
+`;
+
 export const CREATE_LOCATION = gql`
   mutation createLocation($input: CreateLocationInput!) {
     createLocation(input: $input)
@@ -1173,6 +1191,18 @@ export const BULK_ASSIGN = gql`
 export const BULK_UNASSIGN = gql`
   mutation bulkUnassign($input: BulkUnassignInput!) {
     bulkUnassign(input: $input)
+  }
+`;
+
+export const USER_ASSIGNMENT_BULK_CREATE = gql`
+  mutation bulkCreateUserAssignment($input: UserAssignmentBulkCreateInput!) {
+    bulkCreateUserAssignment(input: $input)
+  }
+`;
+
+export const USER_ASSIGNMENT_BULK_REMOVE = gql`
+  mutation bulkRemoveUserAssignment($input: UserAssignmentBulkCreateInput!) {
+    bulkRemoveUserAssignment(input: $input)
   }
 `;
 

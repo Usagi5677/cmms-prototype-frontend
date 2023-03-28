@@ -1,5 +1,6 @@
 import UserRole from "./UserRole";
 import Location from "./Location";
+import DivisionUser from "./DivisionUser";
 
 export default interface User {
   id: number;
@@ -14,4 +15,5 @@ export default interface User {
   isAgent?: boolean;
   isSuperAdmin: boolean;
   user?: User;
+  divisionUsers?: DivisionUser[];
 }

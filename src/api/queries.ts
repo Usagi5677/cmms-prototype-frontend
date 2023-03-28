@@ -100,6 +100,7 @@ export const GET_ALL_USERS = gql`
     $search: String
     $locationIds: [Int!]
     $divisionIds: [Int!]
+    $type: String
   ) {
     getAllUsers(
       after: $after
@@ -109,6 +110,7 @@ export const GET_ALL_USERS = gql`
       search: $search
       locationIds: $locationIds
       divisionIds: $divisionIds
+      type: $type
     ) {
       pageInfo {
         endCursor
@@ -766,6 +768,15 @@ export const SEARCH_DIVISION = gql`
   }
 `;
 
+export const SEARCH_LOCATION = gql`
+  query searchLocation($query: String!, $limit: Int) {
+    searchLocation(query: $query, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
+
 export const TYPES = gql`
   query types(
     $after: String
@@ -1053,6 +1064,58 @@ export const INTER_SERVICE_COLORS = gql`
           measurement
           greaterThan
           lessThan
+        }
+      }
+    }
+  }
+`;
+
+export const USER_ASSIGNMENTS = gql`
+  query userAssignments(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $type: String
+  ) {
+    userAssignments(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      type: $type
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          type
+          user {
+            id
+            rcno
+            fullName
+            divisionUsers {
+              id
+              division {
+                id
+                name
+              }
+            }
+          }
+          location {
+            id
+            name
+          }
+          zone {
+            id
+            name
+          }
         }
       }
     }
@@ -2102,7 +2165,6 @@ export const GET_ALL_CHECKLIST_AND_PM_SUMMARY = gql`
   }
 `;
 
-
 export const INCOMPLETE_CHECKLIST_PAST_TWO = gql`
   query incompleteChecklistsPastTwoDays {
     incompleteChecklistsPastTwoDays
@@ -2311,7 +2373,7 @@ export const LOCATION_ASSIGNMENTS = gql`
     $userIds: [Int!]!
     $current: Boolean!
     $locationIds: [Int!]
-    $userTypes:[String!]
+    $userTypes: [String!]
   ) {
     locationAssignments(
       after: $after

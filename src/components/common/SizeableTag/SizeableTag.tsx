@@ -1,4 +1,3 @@
-import { HSLToRGB } from "../../../helpers/style";
 import classes from "./SizeableTag.module.css";
 
 const SizeableTag = ({
@@ -64,7 +63,8 @@ const SizeableTag = ({
         fontSize,
         marginLeft: oppositeMargin ? 0 : 6,
         marginRight: oppositeMargin ? 6 : 0,
-        cursor: clickable ? "pointer" : "initial"
+        cursor: clickable ? "pointer" : "initial",
+        display: "flex",
       }}
       title={`${title}`}
     >
@@ -79,7 +79,6 @@ const SizeableTag = ({
     }
     rt = `hsl(${hash % 360}, 20%, 80%)`;
     rs = `hsl(${hash % 360}, 100%, 25%)`;
-    const hex = `hsl(${hash % 360}, 100%, 40%)`;
     //if overwriting the color based on name
     if (customColor?.length === 3) {
       const [r, g, b] = customColor;
@@ -100,7 +99,8 @@ const SizeableTag = ({
             height,
             marginLeft: oppositeMargin ? 0 : 6,
             marginRight: oppositeMargin ? 6 : 0,
-            cursor: clickable ? "pointer" : "initial"
+            cursor: clickable ? "pointer" : "initial",
+            display: "flex",
           }}
           title={`${title}`}
         >
@@ -121,7 +121,8 @@ const SizeableTag = ({
           fontWeight,
           marginLeft: oppositeMargin ? 0 : 6,
           marginRight: oppositeMargin ? 6 : 0,
-          cursor: clickable ? "pointer" : "initial"
+          cursor: clickable ? "pointer" : "initial",
+          display: "flex",
         }}
         title={`${title}`}
       >
@@ -140,6 +141,7 @@ const SizeableTag = ({
         fontSize,
         marginLeft: oppositeMargin ? 0 : 6,
         marginRight: oppositeMargin ? 6 : 0,
+        display: "flex",
       }}
       title={`${title}`}
     >

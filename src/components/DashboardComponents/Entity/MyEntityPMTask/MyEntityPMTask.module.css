@@ -60,14 +60,10 @@
 
 .first-block {
   display: flex;
-  flex-direction: column;
-  flex: 5;
-}
-
-.second-block {
-  display: flex;
-  flex-direction: column;
-  flex: 6;
+  flex-direction: row;
+  flex: 2;
+  margin-right: 10px;
+  align-items: center;
 }
 
 .container {
@@ -140,6 +136,51 @@
   width: 100%;
   border-radius: 6px !important;
 }
+.image {
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+.inner-first-block {
+  margin-left: 10px;
+  flex: 2;
+}
+.inner-first-block-level-one {
+  display: flex;
+  align-items: center;
+}
+.inner-first-block-level-two {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 8px;
+}
+.dot {
+  margin: 0 4px;
+  opacity: 0.5;
+  font-size: 8px;
+  color: var(--text-primary);
+}
+.model,
+.engine,
+.brand,
+.estDateOfRepair {
+  font-size: 8px;
+}
+.inner-first-block-level-three {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 8px;
+  opacity: 0.5;
+}
+.task-title {
+  font-size: 10px;
+  font-weight: 600;
+}
+.mn-title {
+  font-size: 8px;
+  font-weight: 600;
+}
 @media only screen and (min-width: 600px) {
   .options-wrapper {
     flex-direction: row;
@@ -151,9 +192,7 @@
   .header-container {
     font-size: 10px;
   }
-  .second-block {
-    padding: 0;
-  }
+ 
   .first-block {
     flex-direction: row;
     align-items: center;
@@ -166,7 +205,55 @@
     margin-right: 5px;
     margin-left: 20px;
   }
+  .inner-first-block-level-two {
+    font-size: 10px;
+  }
+  .dot {
+    margin: 0 6px;
+    font-size: 10px;
+  }
+  .model,
+  .engine,
+  .brand,
+  .estDateOfRepair {
+    font-size: 10px;
+  }
+  .inner-first-block-level-three {
+    font-size: 10px;
+    opacity: 0.5;
+  }
+  .task-title {
+    font-size: 14px;
+  }
+  .mn-title {
+    font-size: 12px;
+  }
 }
+@media only screen and (min-width: 1000px) {
+  .inner-first-block-level-two {
+    font-size: 12px;
+  }
+  .dot {
+    font-size: 12px;
+  }
+  .model,
+  .engine,
+  .brand,
+  .estDateOfRepair {
+    font-size: 12px;
+  }
+  .inner-first-block-level-three {
+    font-size: 12px;
+    opacity: 0.5;
+  }
+  .task-title {
+    font-size: 16px;
+  }
+  .mn-title {
+    font-size: 14px;
+  }
+}
+
 @media only screen and (min-width: 1200px) {
   .pm-container {
     width: 48%;

@@ -7,6 +7,7 @@ import { HullTypes } from "../components/Config/HullType/HullTypes";
 import { InterServiceColors } from "../components/Config/InterServiceColor/InterServiceColors";
 import { Locations } from "../components/Config/Location/Locations";
 import { Types } from "../components/Config/Type/Types";
+import { UserAssignments } from "../components/Config/UserAssignment/UserAssignments";
 import { Zones } from "../components/Config/Zone/Zones";
 import UserContext from "../contexts/UserContext";
 import { NO_AUTH_MESSAGE_THREE } from "../helpers/constants";
@@ -87,6 +88,11 @@ export const Config: React.FC<ConfigProps> = ({}) => {
           {hasPermissions(self, ["MODIFY_INTER_SERVICE_COLOR"]) && (
             <Tabs.TabPane tab="Inter Service Color" key="interServiceColor">
               <InterServiceColors />
+            </Tabs.TabPane>
+          )}
+          {hasPermissions(self, ["MODIFY_USER_ASSIGNMENTS"]) && (
+            <Tabs.TabPane tab="User" key="userAssignments">
+              <UserAssignments/>
             </Tabs.TabPane>
           )}
         </Tabs>

@@ -7,6 +7,7 @@ import { hasPermissions } from "../../helpers/permissions";
 import { Assignments } from "./Assignments";
 import DivisionAssignmentTabs from "./DivisionAssignmentTabs";
 import { BrandEntityAssignments } from "./Entity/BrandEntityAssignments";
+import { LocationEntityAssignments } from "./Entity/LocationEntityAssignments";
 import LocationAssignmentTabs from "./LocationAssignmentTabs";
 import classes from "./ViewAssignments.module.css";
 const ViewAssignments = () => {
@@ -48,7 +49,7 @@ const ViewAssignments = () => {
             <DivisionAssignmentTabs />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Location Assignments" key="locationAssignments">
-            <LocationAssignmentTabs />
+            <LocationEntityAssignments />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Brand Assignments" key="brandAssignments">
             <BrandEntityAssignments />

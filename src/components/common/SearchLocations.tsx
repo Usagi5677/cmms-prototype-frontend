@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
-import { LOCATIONS } from "../../api/queries";
+import { SEARCH_LOCATION } from "../../api/queries";
 import Location from "../../models/Location";
 
 export interface SearchLocationsProps {
@@ -28,14 +28,14 @@ export const SearchLocations: React.FC<SearchLocationsProps> = ({
   margin,
 }) => {
   const [selected, setSelected] = useState<null | number>(null);
-  const [getAllLocations, { data: data, loading: searchLoading }] =
-    useLazyQuery(LOCATIONS);
+  const [searchLocation, { data: data, loading: searchLoading }] =
+    useLazyQuery(SEARCH_LOCATION);
 
   useEffect(() => {
     if (selected) {
-      const location = data.locations.edges.find(
-        (edge: { node: Location }) => edge.node.id === selected
-      ).node;
+      const location = data.searchLocation.find(
+        (x: Location) => x.id === selected
+      );
       if (location) {
         onChange(location);
         setSelected(null);
@@ -43,12 +43,11 @@ export const SearchLocations: React.FC<SearchLocationsProps> = ({
     }
   }, [selected]);
 
-  const fetchLocations = (value: string) => {
+  const fetchLocation = (value: string) => {
     if (value.length < 20) {
-      getAllLocations({
+      searchLocation({
         variables: {
-          search: value,
-          first: 10,
+          query: value,
         },
       });
     }
@@ -59,21 +58,19 @@ export const SearchLocations: React.FC<SearchLocationsProps> = ({
   const fetchDebounced = (value: string) => {
     if (timerId) clearTimeout(timerId);
     //@ts-ignore
-    setTimerId(setTimeout(() => fetchLocations(value), 500));
+    setTimerId(setTimeout(() => fetchLocation(value), 500));
   };
 
-  const filtered = data?.locations.edges
-    .map((edge: { node: Location }) => edge.node)
-    .filter((loc: Location) => {
-      if (current) {
-        for (const e of current) {
-          if (e.id === loc.id) {
-            return false;
-          }
+  const filtered = data?.searchLocation.filter((location: Location) => {
+    if (current) {
+      for (const e of current) {
+        if (e.id === location.id) {
+          return false;
         }
       }
-      return true;
-    });
+    }
+    return true;
+  });
 
   return (
     <Select
