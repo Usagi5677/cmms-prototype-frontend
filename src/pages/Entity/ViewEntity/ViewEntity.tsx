@@ -219,7 +219,7 @@ const ViewEntity = () => {
   const isSmallDevice = useIsSmallDevice();
 
   const flag = isDeleted(entityData?.deletedAt, entityData?.status);
-
+  //test
   return (
     <>
       <div className={classes["container"]}>
