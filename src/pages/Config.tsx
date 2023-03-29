@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Brands } from "../components/Config/Brand/Brands";
 import { Divisions } from "../components/Config/Division/Divisions";
+import { Engines } from "../components/Config/Engine/Engines";
 import { HullTypes } from "../components/Config/HullType/HullTypes";
 import { InterServiceColors } from "../components/Config/InterServiceColor/InterServiceColors";
 import { Locations } from "../components/Config/Location/Locations";
@@ -92,7 +93,12 @@ export const Config: React.FC<ConfigProps> = ({}) => {
           )}
           {hasPermissions(self, ["MODIFY_USER_ASSIGNMENTS"]) && (
             <Tabs.TabPane tab="User" key="userAssignments">
-              <UserAssignments/>
+              <UserAssignments />
+            </Tabs.TabPane>
+          )}
+          {hasPermissions(self, ["MODIFY_ENGINES"]) && (
+            <Tabs.TabPane tab="Engine" key="engines">
+              <Engines />
             </Tabs.TabPane>
           )}
         </Tabs>

@@ -46,6 +46,7 @@ const EditEntity = ({
   const [locationId, setLocationId] = useState<number | null>(null);
   const [divisionId, setDivisionId] = useState<number | null>(null);
   const [hullTypeId, setHullTypeId] = useState<number | null>(null);
+  const [engineId, setEngineId] = useState<number | null>(null);
 
   const [editEntity, { loading: loadingEntity }] = useMutation(EDIT_ENTITY, {
     onCompleted: () => {
@@ -80,19 +81,21 @@ const EditEntity = ({
 
     editEntity({
       variables: {
-        id: entity?.id,
-        typeId,
-        machineNumber,
-        model,
-        brandId,
-        divisionId,
-        locationId,
-        registeredDate,
-        measurement,
-        engine,
-        hullTypeId,
-        dimension,
-        registryNumber,
+        input: {
+          id: entity?.id,
+          typeId,
+          machineNumber,
+          model,
+          brandId,
+          divisionId,
+          locationId,
+          registeredDate,
+          measurement,
+          engineId,
+          hullTypeId,
+          dimension,
+          registryNumber,
+        },
       },
     });
   };
@@ -205,13 +208,11 @@ const EditEntity = ({
           )}
           {entity?.type?.entityType !== "Sub Entity" &&
             entity?.type?.entityType !== "Vessel" && (
-              <Form.Item
-                label="Engine"
-                name="engine"
-                required={false}
-                initialValue={entity?.engine}
-              >
-                <EngineSelector />
+              <Form.Item label="Engine" required={false}>
+                <EngineSelector
+                  setEngineId={setEngineId}
+                  currentId={entity?.engine?.id}
+                />
               </Form.Item>
             )}
           {!includeSubEntity && entity?.type?.entityType === "Vessel" && (
@@ -253,6 +254,32 @@ const EditEntity = ({
               <InputNumber placeholder="Dimension" style={{ width: "100%" }} />
             </Form.Item>
           )}
+          <Form.Item
+            label="Capacity"
+            name="capacity"
+            required={false}
+            initialValue={entity?.capacity}
+          >
+            <Input placeholder="Capacity" />
+          </Form.Item>
+
+          <Form.Item
+            label="VIN/SN"
+            name="identificationNumber"
+            required={false}
+            initialValue={entity?.identificationNumber}
+          >
+            <Input placeholder="VIN/SN" />
+          </Form.Item>
+
+          <Form.Item
+            label="FA Code"
+            name="faCode"
+            required={false}
+            initialValue={entity?.faCode}
+          >
+            <Input placeholder="FA Code" />
+          </Form.Item>
           <Row justify="end" gutter={16}>
             <Col>
               <Form.Item style={{ marginBottom: 0 }}>

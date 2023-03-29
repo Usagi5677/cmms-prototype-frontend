@@ -844,6 +844,39 @@ export const HULL_TYPES = gql`
   }
 `;
 
+export const ENGINES = gql`
+  query engines(
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+    $name: String
+  ) {
+    engines(
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+      name: $name
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        count
+      }
+      edges {
+        node {
+          id
+          name
+          model
+          serial
+        }
+      }
+    }
+  }
+`;
 export const API_KEYS = gql`
   query apiKeys(
     $after: String
@@ -1138,6 +1171,7 @@ export const ALL_ENTITY = gql`
     $typeIds: [Int!]
     $zoneIds: [Int!]
     $brandIds: [Int!]
+    $engineIds: [Int!]
     $measurement: [String!]
     $isAssigned: Boolean
     $assignedToId: Int
@@ -1163,6 +1197,7 @@ export const ALL_ENTITY = gql`
       typeIds: $typeIds
       zoneIds: $zoneIds
       brandIds: $brandIds
+      engineIds: $engineIds
       measurement: $measurement
       isAssigned: $isAssigned
       assignedToId: $assignedToId

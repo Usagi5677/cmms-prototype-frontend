@@ -453,7 +453,7 @@ export const EDIT_TRANSPORTATION_LOCATION = gql`
 
 export const CREATE_TYPE = gql`
   mutation createType($input: CreateTypeInput!) {
-    createType(createTypeInput: $input)
+    createType(input: $input)
   }
 `;
 
@@ -465,13 +465,13 @@ export const DELETE_TYPE = gql`
 
 export const EDIT_TYPE = gql`
   mutation updateType($input: UpdateTypeInput!) {
-    updateType(updateTypeInput: $input)
+    updateType(input: $input)
   }
 `;
 
 export const CREATE_HULL_TYPE = gql`
   mutation createHullType($input: CreateHullTypeInput!) {
-    createHullType(createHullTypeInput: $input)
+    createHullType(input: $input)
   }
 `;
 
@@ -483,7 +483,25 @@ export const DELETE_HULL_TYPE = gql`
 
 export const EDIT_HULL_TYPE = gql`
   mutation updateHullType($input: UpdateHullTypeInput!) {
-    updateHullType(updateHullTypeInput: $input)
+    updateHullType(input: $input)
+  }
+`;
+
+export const CREATE_ENGINE = gql`
+  mutation createEngine($input: CreateEngineInput!) {
+    createEngine(input: $input)
+  }
+`;
+
+export const DELETE_ENGINE = gql`
+  mutation removeEngine($id: Int!) {
+    removeEngine(id: $id)
+  }
+`;
+
+export const EDIT_ENGINE = gql`
+  mutation updateEngine($input: UpdateEngineInput!) {
+    updateEngine(input: $input)
   }
 `;
 
@@ -653,74 +671,14 @@ export const BULK_ASSIGN_BRAND_TO_ENTITY = gql`
   }
 `;
 export const CREATE_ENTITY = gql`
-  mutation (
-    $typeId: Int
-    $machineNumber: String
-    $model: String
-    $brandId: Int
-    $divisionId: Int
-    $locationId: Int
-    $engine: String
-    $measurement: String
-    $currentRunning: Int
-    $lastService: Int
-    $registeredDate: Date
-    $parentEntityId: Int
-    $hullTypeId: Int
-    $dimension: Float
-    $registryNumber: String
-  ) {
-    createEntity(
-      typeId: $typeId
-      machineNumber: $machineNumber
-      model: $model
-      brandId: $brandId
-      divisionId: $divisionId
-      locationId: $locationId
-      engine: $engine
-      measurement: $measurement
-      currentRunning: $currentRunning
-      lastService: $lastService
-      registeredDate: $registeredDate
-      parentEntityId: $parentEntityId
-      hullTypeId: $hullTypeId
-      dimension: $dimension
-      registryNumber: $registryNumber
-    )
+  mutation createEntity($input: CreateEntityInput!) {
+    createEntity(input: $input)
   }
 `;
 
 export const EDIT_ENTITY = gql`
-  mutation (
-    $id: Int!
-    $typeId: Int
-    $brandId: Int
-    $machineNumber: String
-    $model: String
-    $divisionId: Int
-    $locationId: Int
-    $engine: String
-    $measurement: String
-    $registeredDate: Date
-    $hullTypeId: Int
-    $dimension: Float
-    $registryNumber: String
-  ) {
-    editEntity(
-      id: $id
-      brandId: $brandId
-      typeId: $typeId
-      machineNumber: $machineNumber
-      model: $model
-      divisionId: $divisionId
-      locationId: $locationId
-      engine: $engine
-      measurement: $measurement
-      registeredDate: $registeredDate
-      hullTypeId: $hullTypeId
-      dimension: $dimension
-      registryNumber: $registryNumber
-    )
+  mutation editEntity($input: UpdateEntityInput!) {
+    editEntity(input: $input)
   }
 `;
 

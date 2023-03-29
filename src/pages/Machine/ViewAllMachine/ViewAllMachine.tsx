@@ -56,6 +56,9 @@ const Machinery = () => {
   const [brandIds, setBrandIds] = useState<number[]>(
     getFilterObjects?.brandIds
   );
+  const [engineIds, setEngineIds] = useState<number[]>(
+    getFilterObjects?.engineIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -71,7 +74,7 @@ const Machinery = () => {
   );
   const [isIncompleteChecklistTask, setIsIncompleteChecklistTask] =
     useState<boolean>(getFilterObjects?.isIncompleteChecklistTask);
- 
+
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
     "machineryFilter",
     JSON.stringify({
@@ -87,6 +90,7 @@ const Machinery = () => {
       zoneIds: [],
       divisionIds: [],
       brandIds: [],
+      engineIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -106,6 +110,7 @@ const Machinery = () => {
       zoneIds: number[];
       divisionIds: number[];
       brandIds: number[];
+      engineIds: number[];
       isAssigned: boolean;
       //assignedToId: number | null;
       measurement: string[];
@@ -126,6 +131,7 @@ const Machinery = () => {
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brandIds: JSON.parse(saveFilterOptions)?.brandIds,
+    engineIds: JSON.parse(saveFilterOptions)?.engineIds,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
@@ -175,6 +181,7 @@ const Machinery = () => {
     zoneIdsValue: number[],
     divisionIdsValue: number[],
     brandIdsValue: number[],
+    engineIdsValue: number[],
     measurementValue: string[],
     isAssignedValue: boolean,
     //assignedToMeValue: number,
@@ -195,6 +202,7 @@ const Machinery = () => {
           zoneIds: zoneIdsValue,
           divisionIds: divisionIdsValue,
           brandIds: brandIdsValue,
+          engineIds: engineIdsValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
           //assignedToId: assignedToMeValue,
@@ -225,6 +233,7 @@ const Machinery = () => {
       zoneIds,
       divisionIds,
       brandIds,
+      engineIds,
       measurement,
       isAssigned,
       //assignedToMe!,
@@ -241,6 +250,7 @@ const Machinery = () => {
     zoneIds,
     divisionIds,
     brandIds,
+    engineIds,
     measurement,
     isAssigned,
     //assignedToMe,
@@ -287,7 +297,8 @@ const Machinery = () => {
       typeIds: [],
       zoneIds: [],
       divisionIds: [],
-      brand: [],
+      brandIds: [],
+      engineIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -358,6 +369,12 @@ const Machinery = () => {
   const brandOptions: DefaultNumberArrayOptionProps = {
     setId: setBrandIds,
     currentId: brandIds,
+    width: "100%",
+  };
+
+  const engineOptions: DefaultNumberArrayOptionProps = {
+    setId: setEngineIds,
+    currentId: engineIds,
     width: "100%",
   };
 
@@ -446,6 +463,7 @@ const Machinery = () => {
     zoneOptions,
     divisionOptions,
     brandOptions,
+    engineOptions,
     measurementOptions,
     assignedOptions,
     //assignedToMeOptions,

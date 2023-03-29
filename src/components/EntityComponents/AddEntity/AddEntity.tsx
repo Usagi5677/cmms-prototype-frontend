@@ -40,6 +40,7 @@ const AddEntity: React.FC<AddEntityProps> = ({
   const [locationId, setLocationId] = useState<number | null>(null);
   const [divisionId, setDivisionId] = useState<number | null>(null);
   const [hullTypeId, setHullTypeId] = useState<number | null>(null);
+  const [engineId, setEngineId] = useState<number | null>(null);
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
   const { id }: any = useParams();
@@ -77,25 +78,34 @@ const AddEntity: React.FC<AddEntityProps> = ({
       registeredDate,
       dimension,
       registryNumber,
+      capacity,
+      identificationNumber,
+      faCode,
     } = values;
 
     createEntity({
       variables: {
-        typeId,
-        machineNumber,
-        model,
-        brandId,
-        divisionId,
-        locationId,
-        currentRunning,
-        lastService,
-        registeredDate,
-        measurement,
-        engine,
-        parentEntityId: parseInt(id),
-        hullTypeId,
-        dimension,
-        registryNumber,
+        input: {
+          typeId,
+          machineNumber,
+          model,
+          brandId,
+          divisionId,
+          locationId,
+          currentRunning,
+          lastService,
+          registeredDate,
+          measurement,
+          engine,
+          parentEntityId: parseInt(id),
+          hullTypeId,
+          engineId,
+          dimension,
+          registryNumber,
+          capacity,
+          identificationNumber,
+          faCode,
+        },
       },
     });
   };
@@ -211,8 +221,8 @@ const AddEntity: React.FC<AddEntityProps> = ({
             <InputNumber placeholder="Last service" style={{ width: "100%" }} />
           </Form.Item>
           {!includeSubEntity && entityType !== "Vessel" && (
-            <Form.Item label="Engine" name="engine" required={false}>
-              <EngineSelector />
+            <Form.Item label="Engine" required={false}>
+              <EngineSelector setEngineId={setEngineId} />
             </Form.Item>
           )}
           {!includeSubEntity && entityType === "Vessel" && (
@@ -241,6 +251,22 @@ const AddEntity: React.FC<AddEntityProps> = ({
               <InputNumber placeholder="Dimension" style={{ width: "100%" }} />
             </Form.Item>
           )}
+
+          <Form.Item label="Capacity" name="capacity" required={false}>
+            <Input placeholder="Capacity" />
+          </Form.Item>
+
+          <Form.Item
+            label="VIN/SN"
+            name="identificationNumber"
+            required={false}
+          >
+            <Input placeholder="VIN/SN" />
+          </Form.Item>
+
+          <Form.Item label="FA Code" name="faCode" required={false}>
+            <Input placeholder="FA Code" />
+          </Form.Item>
 
           <Row justify="end" gutter={16}>
             <Col>

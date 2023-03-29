@@ -33,9 +33,17 @@ export const SUB_ENTITY_FRAGMENT = gql`
     id
     createdAt
     machineNumber
+    faCode
+    capacity
+    identificationNumber
     registeredDate
     model
-    engine
+    engine {
+      id
+      name
+      model
+      serial
+    }
     currentRunning
     lastService
     status
@@ -144,6 +152,9 @@ export const ENTITY_FRAGMENT = gql`
       email
     }
     machineNumber
+    faCode
+    capacity
+    identificationNumber
     registeredDate
     model
     transit
@@ -170,7 +181,6 @@ export const ENTITY_FRAGMENT = gql`
       id
       name
     }
-    engine
     location {
       id
       name
@@ -247,17 +257,26 @@ export const ENTITY_FRAGMENT = gql`
       id
       name
     }
+    engine {
+      id
+      name
+      model
+      serial
+    }
     dimension
     registryNumber
   }
 `;
 
 export const ENTITY_FRAGMENT_WITH_PM = gql`
- ${APS_USER_FRAGMENT}
+  ${APS_USER_FRAGMENT}
   fragment EntityFieldsWithPM on Entity {
     id
     createdAt
     machineNumber
+    faCode
+    capacity
+    identificationNumber
     registeredDate
     model
     type {
@@ -279,7 +298,12 @@ export const ENTITY_FRAGMENT_WITH_PM = gql`
         }
       }
     }
-    engine
+    engine {
+      id
+      name
+      model
+      serial
+    }
     location {
       id
       name

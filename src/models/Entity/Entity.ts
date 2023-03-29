@@ -14,6 +14,7 @@ import Division from "../Division";
 import HullType from "../HullType";
 import Brand from "../Brand";
 import PeriodicMaintenance from "../PeriodicMaintenance/PeriodicMaintenance";
+import Engine from "../Engine";
 
 export interface Entity {
   id: number;
@@ -24,7 +25,7 @@ export interface Entity {
   model?: string;
   location?: Location;
   division?: Division;
-  engine?: string;
+  engine?: Engine;
   currentRunning?: number;
   lastService?: number;
   interService?: number;
@@ -36,6 +37,9 @@ export interface Entity {
   dimension?: number;
   registryNumber?: string;
   transit?: boolean;
+  capacity?: string;
+  identificationNumber?: string;
+  faCode?: string;
   lastServiceUpdateAt?: Date;
   currentRunningUpdateAt?: Date;
   deletedAt?: Date;

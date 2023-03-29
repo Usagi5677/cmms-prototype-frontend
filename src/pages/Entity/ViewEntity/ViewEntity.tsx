@@ -63,6 +63,7 @@ import OpenParentEntity from "../../../components/common/OpenParentEntity/OpenPa
 import EditEntityNote from "../../../components/EntityComponents/EditEntityNote/EditEntityNote";
 import TextArea from "antd/lib/input/TextArea";
 import { Link, useSearchParams } from "react-router-dom";
+import SizeableTag from "../../../components/common/SizeableTag/SizeableTag";
 
 const ViewEntity = () => {
   const { id }: any = useParams();
@@ -289,7 +290,18 @@ const ViewEntity = () => {
               ) : null}
               <span className={classes["main-title"]} title={"Machine Number"}>
                 {entityData?.machineNumber}
+                {entityData?.division?.name && (
+                  <SizeableTag
+                    name={entityData?.division?.name!}
+                    fontSize={isSmallDevice ? 10 : 14}
+                    height={isSmallDevice ? 16 : 22}
+                    nameColor
+                    fontWeight={800}
+                    title={"Division"}
+                  />
+                )}
               </span>
+
               <div className={classes["info-wrapper"]}>
                 <div className={classes["location-wrapper"]}>
                   <span className={classes["second-title"]} title="Location">
@@ -314,9 +326,9 @@ const ViewEntity = () => {
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
-                    <div>Machine Number</div>
+                    <div>Brand</div>
                     <div className={classes["info-content"]}>
-                      {entityData?.machineNumber}
+                      {entityData?.brand?.name}
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
@@ -326,23 +338,33 @@ const ViewEntity = () => {
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
-                    <div>Registered date</div>
+                    <div>Capacity</div>
                     <div className={classes["info-content"]}>
-                      {moment(entityData?.registeredDate).format(
-                        DATETIME_FORMATS.DAY_MONTH_YEAR
-                      )}
+                      {entityData?.capacity}
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
-                    <div>Type</div>
+                    <div>VIN/SN</div>
                     <div className={classes["info-content"]}>
-                      {entityData?.type?.name}
+                      {entityData?.identificationNumber}
                     </div>
                   </div>
                   <div className={classes["info-title-wrapper"]}>
-                    <div>Zone</div>
+                    <div>Engine Brand</div>
                     <div className={classes["info-content"]}>
-                      {entityData?.location?.zone?.name}
+                      {entityData?.engine?.name}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Engine Model</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.engine?.model}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Engine Serial</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.engine?.serial}
                     </div>
                   </div>
                   {entityData.parentEntityId == null && (
@@ -361,9 +383,29 @@ const ViewEntity = () => {
                 </div>
                 <div className={classes["grid-two"]}>
                   <div className={classes["info-title-wrapper"]}>
-                    <div>Brand</div>
+                    <div>FA Code</div>
                     <div className={classes["info-content"]}>
-                      {entityData?.brand?.name}
+                      {entityData?.faCode}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Registry Number</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.registryNumber}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Registered date</div>
+                    <div className={classes["info-content"]}>
+                      {moment(entityData?.registeredDate).format(
+                        DATETIME_FORMATS.DAY_MONTH_YEAR
+                      )}
+                    </div>
+                  </div>
+                  <div className={classes["info-title-wrapper"]}>
+                    <div>Type</div>
+                    <div className={classes["info-content"]}>
+                      {entityData?.type?.name}
                     </div>
                   </div>
                   {entityData?.measurement === "days" ? (

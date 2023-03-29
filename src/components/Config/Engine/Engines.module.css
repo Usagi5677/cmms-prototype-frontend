@@ -1,0 +1,38 @@
+.font {
+  font-size: 9px;
+  vertical-align: middle;
+}
+
+.options-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 10px;
+  align-items: center;
+}
+
+.option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+@media only screen and (min-width: 600px) {
+  .font {
+    font-size: 12px;
+  }
+  .options-wrapper {
+    flex-direction: row;
+  }
+  .option {
+    margin-top: 0;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .font {
+    font-size: 14px;
+  }
+}

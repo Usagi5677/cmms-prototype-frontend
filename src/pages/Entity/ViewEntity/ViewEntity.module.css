@@ -194,6 +194,9 @@
 .main-title {
   font-size: 16px;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
 }
 .second-title {
   font-size: 14px;

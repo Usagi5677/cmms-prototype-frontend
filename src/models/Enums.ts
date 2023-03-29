@@ -113,6 +113,7 @@ export interface FilterOptionProps {
   zoneOptions?: DefaultNumberArrayOptionProps;
   divisionOptions?: DefaultNumberArrayOptionProps;
   brandOptions?: DefaultNumberArrayOptionProps;
+  engineOptions?: DefaultNumberArrayOptionProps;
   assignedOptions?: DefaultBooleanOptionProps;
   assignedToMeOptions?: DefaultBooleanOptionProps;
   measurementOptions?: DefaultStringArrayOptionProps;

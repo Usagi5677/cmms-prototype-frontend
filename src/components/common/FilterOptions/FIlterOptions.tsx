@@ -160,6 +160,20 @@ const FilterOptions = ({
                       />
                     </Form.Item>
                   </div>
+                  <div className={classes["item"]}>
+                    <Form.Item
+                      name="engine"
+                      initialValue={options?.engineOptions!.currentId}
+                    >
+                      <EngineSelector
+                        setEngineId={options?.engineOptions!.setId}
+                        multiple={true}
+                        rounded={true}
+                        width={options?.engineOptions!.width}
+                        currentId={options?.engineOptions!.currentId!}
+                      />
+                    </Form.Item>
+                  </div>
                 </div>
 
                 <div className={classes["item-wrapper"]}>
