@@ -7,7 +7,6 @@ import { useLazyQuery } from "@apollo/client";
 import { ALL_PERIODIC_MAINTENANCE_LIST } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllPeriodicMaintenances.module.css";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import { motion } from "framer-motion";
 import {
   DefaultDateOptionProps,
@@ -251,8 +250,6 @@ const ViewAllPeriodicMaintenances = () => {
   };
 
   const pageInfo = data?.getAllPMWithPagination.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
 
   const clearAll = () => {
     const clearFilter = {

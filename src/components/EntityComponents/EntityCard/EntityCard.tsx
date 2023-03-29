@@ -235,9 +235,9 @@ const EntityCard = ({
                             )}
                           </div>
                         )}
-                        {entity?.engine && (
+                        {entity?.engine?.name && (
                           <div className={classes["engine"]} title={"Engine"}>
-                            {entity?.engine}
+                            {entity?.engine?.name}
                           </div>
                         )}
                       </span>

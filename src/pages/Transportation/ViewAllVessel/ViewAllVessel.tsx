@@ -56,6 +56,9 @@ const Vessels = () => {
   const [brandIds, setBrandIds] = useState<number[]>(
     getFilterObjects?.brandIds
   );
+  const [engineIds, setEngineIds] = useState<number[]>(
+    getFilterObjects?.engineIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -86,6 +89,7 @@ const Vessels = () => {
       zoneIds: [],
       divisionIds: [],
       brandIds: [],
+      engineIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -105,6 +109,7 @@ const Vessels = () => {
       zoneIds: number[];
       divisionIds: number[];
       brandIds: number[];
+      engineIds: number[];
       isAssigned: boolean;
       //assignedToId: number | null;
       measurement: string[];
@@ -125,6 +130,7 @@ const Vessels = () => {
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brandIds: JSON.parse(saveFilterOptions)?.brandIds,
+    engineIds: JSON.parse(saveFilterOptions)?.engineIds,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
@@ -173,6 +179,7 @@ const Vessels = () => {
     zoneIdsValue: number[],
     divisionIdsValue: number[],
     brandIdsValue: number[],
+    engineIdsValue: number[],
     measurementValue: string[],
     isAssignedValue: boolean,
     //assignedToMeValue: number,
@@ -193,6 +200,7 @@ const Vessels = () => {
           zoneIds: zoneIdsValue,
           divisionIds: divisionIdsValue,
           brandIds: brandIdsValue,
+          engineIds: engineIdsValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
           //assignedToId: assignedToMeValue,
@@ -222,6 +230,7 @@ const Vessels = () => {
       zoneIds,
       divisionIds,
       brandIds,
+      engineIds,
       measurement,
       isAssigned,
       //assignedToMe!,
@@ -238,6 +247,7 @@ const Vessels = () => {
     zoneIds,
     divisionIds,
     brandIds,
+    engineIds,
     measurement,
     isAssigned,
     //assignedToMe,
@@ -285,6 +295,7 @@ const Vessels = () => {
       zoneIds: [],
       divisionIds: [],
       brandIds: [],
+      engineIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -302,6 +313,7 @@ const Vessels = () => {
     setZoneIds([]);
     setDivisionIds([]);
     setBrandIds([]);
+    setEngineIds([]);
     setMeasurement([]);
     setTypeIds([]);
     setIsAssigned(false);
@@ -353,6 +365,11 @@ const Vessels = () => {
   const brandOptions: DefaultNumberArrayOptionProps = {
     setId: setBrandIds,
     currentId: brandIds,
+    width: "100%",
+  };
+  const engineOptions: DefaultNumberArrayOptionProps = {
+    setId: setEngineIds,
+    currentId: engineIds,
     width: "100%",
   };
   const measurementOptions: DefaultStringArrayOptionProps = {
@@ -440,6 +457,7 @@ const Vessels = () => {
     zoneOptions,
     divisionOptions,
     brandOptions,
+    engineOptions,
     measurementOptions,
     assignedOptions,
     //assignedToMeOptions,

@@ -7,11 +7,9 @@ import { useLazyQuery } from "@apollo/client";
 import {
   ALL_ENTITY,
   GET_ALL_CHECKLIST_AND_PM_SUMMARY,
-  GET_ALL_ENTITY_STATUS_COUNT,
 } from "../../api/queries";
 import PaginationButtons from "../../components/common/PaginationButtons/PaginationButtons";
 import classes from "./ViewAllDisposed.module.css";
-import { useIsSmallDevice } from "../../helpers/useIsSmallDevice";
 import UserContext from "../../contexts/UserContext";
 import { Entity } from "../../models/Entity/Entity";
 import EntityCard from "../../components/EntityComponents/EntityCard/EntityCard";
@@ -53,6 +51,9 @@ const ViewAllDisposed = () => {
   const [brandIds, setBrandIds] = useState<number[]>(
     getFilterObjects?.brandIds
   );
+  const [engineIds, setEngineIds] = useState<number[]>(
+    getFilterObjects?.engineIds
+  );
   const [measurement, setMeasurement] = useState<string[]>(
     getFilterObjects?.measurement
   );
@@ -88,6 +89,7 @@ const ViewAllDisposed = () => {
       zoneIds: [],
       divisionIds: [],
       brandIds: [],
+      engineIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -107,6 +109,7 @@ const ViewAllDisposed = () => {
       zoneIds: number[];
       divisionIds: number[];
       brandIds: number[];
+      engineIds: number[];
       isAssigned: boolean;
       //assignedToId: number | null;
       measurement: string[];
@@ -127,6 +130,7 @@ const ViewAllDisposed = () => {
     zoneIds: JSON.parse(saveFilterOptions)?.zoneIds,
     divisionIds: JSON.parse(saveFilterOptions)?.divisionIds,
     brandIds: JSON.parse(saveFilterOptions)?.brandIds,
+    engineIds: JSON.parse(saveFilterOptions)?.engineIds,
     isAssigned: JSON.parse(saveFilterOptions)?.isAssigned,
     //assignedToId: null,
     measurement: JSON.parse(saveFilterOptions)?.measurement,
@@ -135,17 +139,6 @@ const ViewAllDisposed = () => {
     isIncompleteChecklistTask:
       JSON.parse(saveFilterOptions)?.isIncompleteChecklistTask,
   });
-
-  const [getAllEntityStatusCount, { data: statusData }] = useLazyQuery(
-    GET_ALL_ENTITY_STATUS_COUNT,
-    {
-      onError: (err) => {
-        errorMessage(err, "Error loading status count of entities.");
-      },
-      fetchPolicy: "network-only",
-      nextFetchPolicy: "cache-first",
-    }
-  );
 
   const [getAllEntityChecklistAndPMSummary, { data: summaryData }] =
     useLazyQuery(GET_ALL_CHECKLIST_AND_PM_SUMMARY, {
@@ -182,6 +175,7 @@ const ViewAllDisposed = () => {
     zoneIdsValue: number[],
     divisionIdsValue: number[],
     brandIdsValue: number[],
+    engineIdsValue: number[],
     measurementValue: string[],
     isAssignedValue: boolean,
     //assignedToMeValue: number,
@@ -202,6 +196,7 @@ const ViewAllDisposed = () => {
           zoneIds: zoneIdsValue,
           divisionIds: divisionIdsValue,
           brandIds: brandIdsValue,
+          engineIds: engineIdsValue,
           measurement: measurementValue,
           isAssigned: isAssignedValue,
           //assignedToId: assignedToMeValue,
@@ -231,6 +226,7 @@ const ViewAllDisposed = () => {
       zoneIds,
       divisionIds,
       brandIds,
+      engineIds,
       measurement,
       isAssigned,
       //assignedToMe!,
@@ -247,6 +243,7 @@ const ViewAllDisposed = () => {
     zoneIds,
     divisionIds,
     brandIds,
+    engineIds,
     measurement,
     isAssigned,
     //assignedToMe,
@@ -258,9 +255,8 @@ const ViewAllDisposed = () => {
 
   //Fetch all machine status count
   useEffect(() => {
-    getAllEntityStatusCount({ variables: filter });
     getAllEntityChecklistAndPMSummary();
-  }, [filter, getAllEntityStatusCount, getAllEntityChecklistAndPMSummary]);
+  }, [filter, getAllEntityChecklistAndPMSummary]);
 
   // Pagination functions
   const next = () => {
@@ -286,23 +282,6 @@ const ViewAllDisposed = () => {
   };
 
   const pageInfo = data?.getAllEntity.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
-
-  let critical = 0;
-  let working = 0;
-  let breakdown = 0;
-  let dispose = 0;
-  let total = 0;
-
-  const statusCountData = statusData?.allEntityStatusCount;
-  if (statusCountData) {
-    critical = statusCountData?.critical;
-    working = statusCountData?.working;
-    breakdown = statusCountData?.breakdown;
-    dispose = statusCountData?.dispose;
-    total = critical + working + breakdown + dispose;
-  }
 
   const clearAll = () => {
     const clearFilter = {
@@ -318,6 +297,7 @@ const ViewAllDisposed = () => {
       zoneIds: [],
       divisionIds: [],
       brandIds: [],
+      engineIds: [],
       isAssigned: false,
       //assignedToId: null,
       measurement: [],
@@ -334,6 +314,7 @@ const ViewAllDisposed = () => {
     setZoneIds([]);
     setDivisionIds([]);
     setBrandIds([]);
+    setEngineIds([]);
     setMeasurement([]);
     setTypeIds([]);
     setIsAssigned(false);
@@ -385,6 +366,11 @@ const ViewAllDisposed = () => {
   const brandOptions: DefaultNumberArrayOptionProps = {
     setId: setBrandIds,
     currentId: brandIds,
+    width: "100%",
+  };
+  const engineOptions: DefaultNumberArrayOptionProps = {
+    setId: setEngineIds,
+    currentId: engineIds,
     width: "100%",
   };
   const measurementOptions: DefaultStringArrayOptionProps = {
@@ -456,6 +442,7 @@ const ViewAllDisposed = () => {
     zoneOptions,
     divisionOptions,
     brandOptions,
+    engineOptions,
     measurementOptions,
     assignedOptions,
     lteInterServiceOptions,
