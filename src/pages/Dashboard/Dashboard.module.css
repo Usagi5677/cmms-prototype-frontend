@@ -1,5 +1,10 @@
-.status-card {
+.level-one {
   display: flex;
+  align-items: center;
+}
+.pie-card-wrapper {
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
   flex: 1;

@@ -147,7 +147,6 @@ export const HullTypes: React.FC<HullTypeProps> = ({}) => {
         columns={columns}
         pagination={false}
         size="small"
-        showHeader={false}
         loading={loading}
         style={{ marginTop: "1rem", marginBottom: "1rem" }}
       />

@@ -1,7 +1,6 @@
 import { Breadcrumb, Button, Result, Tabs } from "antd";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
 import { IncompleteChecklists } from "../../components/IncompleteTasks/IncompleteChecklists";
 import UserContext from "../../contexts/UserContext";
 import { NO_AUTH_MESSAGE_ONE } from "../../helpers/constants";

@@ -1,6 +1,5 @@
 .container {
   background-color: var(--card-bg);
-  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0 2px 4px;
   font-size: 0.75rem;
   display: flex;

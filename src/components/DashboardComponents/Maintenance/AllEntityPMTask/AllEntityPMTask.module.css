@@ -3,28 +3,22 @@
   min-height: 400px;
   background-color: var(--card-bg);
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 10px;
-  margin: 0;
-  margin-top: 40px;
+  margin: 40px 0;
   border: var(--card-border);
 }
 
 .options-wrapper {
   width: 100%;
-  margin-bottom: 10px;
+  padding: 10px;
   font-size: 0.75rem;
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
   align-items: center;
 }
 
-.option:nth-child(3) {
-  margin-bottom: 10px;
-}
 .header-container {
   display: flex;
   align-items: center;
@@ -41,11 +35,32 @@
 .title-wrapper {
   display: flex;
   align-items: center;
-  margin-left: 10px;
+}
+
+.location-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.service-reading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  flex: 5;
+  padding: 5px 0;
 }
 
 .reading {
+  margin-right: 10px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -60,10 +75,8 @@
 
 .first-block {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 2;
-  margin-right: 10px;
-  align-items: center;
 }
 
 .container {
@@ -81,11 +94,10 @@
   display: flex;
   align-items: center;
   transition: color 0.3s ease;
-  margin-right: 4px;
 }
 
 .button:hover {
-  color: var(--ant-primary-color-hover);
+  color: var(--primary);
 }
 
 .counter-container {
@@ -93,6 +105,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .counter-value {
@@ -118,11 +131,28 @@
   border-radius: 4px;
   text-transform: uppercase;
 }
+.missed {
+  color: red;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  padding: 2px 4px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
 
 .counter-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.status-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
 }
 
 .heading {
@@ -132,70 +162,33 @@
   text-transform: uppercase;
   text-align: center;
 }
-.datepicker {
-  width: 100%;
-  border-radius: 6px !important;
+
+.no-info {
+  text-align: center;
 }
-.image {
-  aspect-ratio: 16/9;
-  object-fit: contain;
+
+.location {
+  width: 190px;
+  margin: 10px 0 !important;
 }
-.inner-first-block {
-  margin-left: 10px;
-  flex: 2;
+
+.location-width {
+  flex: 1;
 }
-.inner-first-block-level-one {
-  display: flex;
-  align-items: center;
-}
-.inner-first-block-level-two {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 8px;
-}
-.dot {
-  margin: 0 4px;
-  opacity: 0.5;
-  font-size: 8px;
-  color: var(--text-primary);
-}
-.model,
-.engine,
-.brand,
-.estDateOfRepair {
-  font-size: 8px;
-}
-.inner-first-block-level-three {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 8px;
-  opacity: 0.5;
-}
-.task-title {
-  font-size: 10px;
-  font-weight: 600;
-}
-.mn-title {
-  font-size: 8px;
-  font-weight: 600;
-}
-@media only screen and (min-width: 600px) {
-  .options-wrapper {
-    flex-direction: row;
-    gap:0
-  }
+@media only screen and (min-width: 770px) {
   .container {
     font-size: 12px;
   }
+
   .header-container {
     font-size: 10px;
   }
- 
+  .service-reading-wrapper {
+    flex-direction: row;
+    padding: 0;
+  }
   .first-block {
     flex-direction: row;
-    align-items: center;
   }
   .counter-container {
     flex-direction: row;
@@ -205,55 +198,11 @@
     margin-right: 5px;
     margin-left: 20px;
   }
-  .inner-first-block-level-two {
-    font-size: 10px;
-  }
-  .dot {
-    margin: 0 6px;
-    font-size: 10px;
-  }
-  .model,
-  .engine,
-  .brand,
-  .estDateOfRepair {
-    font-size: 10px;
-  }
-  .inner-first-block-level-three {
-    font-size: 10px;
-    opacity: 0.5;
-  }
-  .task-title {
-    font-size: 14px;
-  }
-  .mn-title {
-    font-size: 12px;
+  .options-wrapper {
+    flex-direction: row;
+    margin-bottom: 0;
   }
 }
-@media only screen and (min-width: 1000px) {
-  .inner-first-block-level-two {
-    font-size: 12px;
-  }
-  .dot {
-    font-size: 12px;
-  }
-  .model,
-  .engine,
-  .brand,
-  .estDateOfRepair {
-    font-size: 12px;
-  }
-  .inner-first-block-level-three {
-    font-size: 12px;
-    opacity: 0.5;
-  }
-  .task-title {
-    font-size: 16px;
-  }
-  .mn-title {
-    font-size: 14px;
-  }
-}
-
 @media only screen and (min-width: 1200px) {
   .pm-container {
     width: 48%;

@@ -1,15 +1,18 @@
 import { useContext } from "react";
 import UserContext from "../../contexts/UserContext";
 import classes from "./Dashboard.module.css";
-import MyEntityPMTask from "../../components/DashboardComponents/Entity/MyEntityPMTask/MyEntityPMTask";
-import AllAssignedEntity from "../../components/DashboardComponents/Entity/AllAssignedEntity/AllAssignedEntity";
+import AllAssignedEntity from "../../components/DashboardComponents/Maintenance/AllAssignedEntity/AllAssignedEntity";
 import { hasPermissions } from "../../helpers/permissions";
-import GroupedEntityUtilization from "../../components/DashboardComponents/Entity/EntityUtilization/GroupedEntityUtilization";
-import GroupedTypeRepairStats from "../../components/DashboardComponents/Entity/GroupedTypeRepairStats/GroupedTypeRepairStats";
+import GroupedEntityUtilization from "../../components/DashboardComponents/Maintenance/EntityUtilization/GroupedEntityUtilization";
+import GroupedTypeRepairStats from "../../components/DashboardComponents/Maintenance/GroupedTypeRepairStats/GroupedTypeRepairStats";
 import EntityStatusPie from "../../components/common/EntityStatusPie/EntityStatusPie";
 import UserTypePie from "../../components/common/UserTypePie/UserTypePie";
 import { Button, Result } from "antd";
 import { NO_AUTH_MESSAGE_ONE } from "../../helpers/constants";
+import ValueCard from "../../components/common/ValueCard/ValueCard";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import MyEntityPMTask from "../../components/DashboardComponents/Maintenance/MyEntityPMTask/MyEntityPMTask";
+import ValueCardContainer from "../../components/DashboardComponents/Maintenance/ValueCardContainer/ValueCardContainer";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -33,10 +36,10 @@ const Dashboard = () => {
         />
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
-        <div className={classes["status-card"]}>
-          <EntityStatusPie />
-          <UserTypePie />
-        </div>
+        <div className={classes["pie-card-wrapper"]}>
+        <EntityStatusPie />
+        <UserTypePie />
+      </div>
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["content"]}>

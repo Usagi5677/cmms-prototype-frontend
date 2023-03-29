@@ -157,9 +157,7 @@ const AllAssignedEntity = () => {
         x: 0,
         opacity: 1,
         transition: {
-          ease: "easeOut",
           duration: 0.3,
-          delay: 0.3,
         },
       }}
       viewport={{ once: true }}
@@ -171,7 +169,6 @@ const AllAssignedEntity = () => {
           y: 0,
           opacity: 1,
           transition: {
-            ease: "easeOut",
             duration: 0.3,
             delay: 0.5,
           },
@@ -187,7 +184,6 @@ const AllAssignedEntity = () => {
             x: 0,
             opacity: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.3,
               delay: 0.4,
             },
@@ -208,7 +204,6 @@ const AllAssignedEntity = () => {
             x: 0,
             opacity: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.3,
               delay: 0.5,
             },
@@ -229,7 +224,6 @@ const AllAssignedEntity = () => {
             x: 0,
             opacity: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.3,
               delay: 0.6,
             },
@@ -254,7 +248,6 @@ const AllAssignedEntity = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -270,7 +263,6 @@ const AllAssignedEntity = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -288,7 +280,6 @@ const AllAssignedEntity = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -304,7 +295,6 @@ const AllAssignedEntity = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -322,7 +312,6 @@ const AllAssignedEntity = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -338,7 +327,6 @@ const AllAssignedEntity = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -382,7 +370,6 @@ const AllAssignedEntity = () => {
                 x: 0,
                 opacity: 1,
                 transition: {
-                  ease: "easeOut",
                   duration: 0.3,
                   delay: 0.3,
                 },

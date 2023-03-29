@@ -1,7 +1,6 @@
 .collapse-container {
   width: 100%;
   background-color: var(--card-bg);
-  
   overflow-y: auto;
   margin-bottom: 20px;
 }

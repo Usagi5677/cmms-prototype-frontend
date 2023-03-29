@@ -197,9 +197,7 @@ const MyEntityPMTask = () => {
         x: 0,
         opacity: 1,
         transition: {
-          ease: "easeOut",
           duration: 0.3,
-          delay: 0.3,
         },
       }}
       viewport={{ once: true }}
@@ -211,7 +209,6 @@ const MyEntityPMTask = () => {
           y: 0,
           opacity: 1,
           transition: {
-            ease: "easeOut",
             duration: 0.3,
             delay: 0.5,
           },
@@ -227,7 +224,6 @@ const MyEntityPMTask = () => {
             x: 0,
             opacity: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.3,
               delay: 0.4,
             },
@@ -257,7 +253,6 @@ const MyEntityPMTask = () => {
             x: 0,
             opacity: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.3,
               delay: 0.4,
             },
@@ -277,7 +272,6 @@ const MyEntityPMTask = () => {
           x: 0,
           opacity: 1,
           transition: {
-            ease: "easeOut",
             duration: 0.3,
             delay: 0.5,
           },
@@ -298,7 +292,6 @@ const MyEntityPMTask = () => {
           x: 0,
           opacity: 1,
           transition: {
-            ease: "easeOut",
             duration: 0.3,
             delay: 0.6,
           },
@@ -322,7 +315,6 @@ const MyEntityPMTask = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -338,7 +330,6 @@ const MyEntityPMTask = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -356,7 +347,6 @@ const MyEntityPMTask = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -372,7 +362,6 @@ const MyEntityPMTask = () => {
               x: 0,
               opacity: 1,
               transition: {
-                ease: "easeOut",
                 duration: 0.3,
                 delay: 0.8,
               },
@@ -425,7 +414,6 @@ const MyEntityPMTask = () => {
                   x: 0,
                   opacity: 1,
                   transition: {
-                    ease: "easeOut",
                     duration: 0.3,
                     delay: 0.3,
                   },

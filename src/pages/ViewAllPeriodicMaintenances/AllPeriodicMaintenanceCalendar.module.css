@@ -7,21 +7,3 @@
   border-radius: 20px !important;
   border-color: var(--ant-primary-color);
 }
-
-.row {
-  display: flex;
-  flex-direction: column;
-}
-.col {
-  flex: 1;
-}
-
-@media only screen and (min-width: 700px) {
-  .row {
-    flex-direction: row;
-  }
-  .col {
-    flex: 1;
-    padding: 0 20px;
-  }
-}

@@ -7,7 +7,7 @@
 .tab-container {
   background-color: var(--card-bg);
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 2px 4px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 10px;
   font-size: 0.75rem;
   display: flex;
@@ -21,7 +21,7 @@
 .info-container {
   background-color: var(--card-bg);
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 4px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 10px 10px;
   font-size: 0.75rem;
   width: 100%;

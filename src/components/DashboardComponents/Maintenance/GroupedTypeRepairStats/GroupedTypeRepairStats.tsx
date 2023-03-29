@@ -125,7 +125,6 @@ const GroupedTypeRepairStats = ({
     setSaveFilterOptions(JSON.stringify(newfilter));
   }, [
     dates,
-    getAllGroupedTypeRepairStats,
     search,
     divisionIds,
     locationIds,
@@ -361,9 +360,7 @@ const GroupedTypeRepairStats = ({
           x: 0,
           opacity: 1,
           transition: {
-            ease: "easeOut",
             duration: 0.3,
-            delay: 0.3,
           },
         }}
         viewport={{ once: true }}
@@ -499,7 +496,6 @@ const GroupedTypeRepairStats = ({
             x: 0,
             opacity: 1,
             transition: {
-              ease: "easeOut",
               duration: 0.3,
               delay: 0.3,
             },

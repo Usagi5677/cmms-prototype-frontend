@@ -395,7 +395,7 @@ a:active {
   --scrollbar-thumb-bg: #747474;
   --scrollbar-thumb-bg-hover: #606062;
   --scrollbar-thumb-bg-active: #606060;
-  --card-border: 1px solid var(--ant-primary-color);
+  --card-border: 1px solid var(--border-1);
   --calendar-border-top-color: #303030;
   --ant-picker-calendar-date-today: var(--ant-primary-10);
   --highchart-menu-btn-border: var(--ant-primary-color);
@@ -726,7 +726,7 @@ em {
   border: var(--card-border) !important;
   background-color: var(--card-bg);
   border-radius: 6px !important;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px !important;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
 }
 
 @media only screen and (min-width: 1280px) {

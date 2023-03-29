@@ -39,7 +39,7 @@ export const Issues: React.FC<IssuesProps> = ({}) => {
           width: "100%",
           backgroundColor: "var(--card-bg)",
           borderRadius: 10,
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 2px 4px",
+          boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
           padding: 10,
           paddingTop: 0,
           paddingLeft: 10,

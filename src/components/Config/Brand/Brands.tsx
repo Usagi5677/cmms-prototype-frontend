@@ -149,7 +149,6 @@ export const Brands: React.FC<BrandsProps> = ({}) => {
         columns={columns}
         pagination={false}
         size="small"
-        showHeader={false}
         loading={loading}
         style={{ marginTop: "1rem", marginBottom: "1rem" }}
       />

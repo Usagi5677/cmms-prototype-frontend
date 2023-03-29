@@ -103,7 +103,7 @@ export const Types: React.FC<TypesProps> = ({}) => {
       className: classes["font"],
     },
     {
-      title: "",
+      title: "Type",
       dataIndex: "entityType",
       key: "entityType",
       width: "50%",
@@ -164,7 +164,6 @@ export const Types: React.FC<TypesProps> = ({}) => {
         columns={columns}
         pagination={false}
         size="small"
-        showHeader={false}
         loading={loading}
         style={{ marginTop: "1rem", marginBottom: "1rem" }}
       />

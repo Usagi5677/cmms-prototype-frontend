@@ -186,7 +186,6 @@ export const Locations: React.FC<LocationsProps> = ({}) => {
         columns={columns}
         pagination={false}
         size="small"
-        showHeader={false}
         loading={loading}
         style={{ marginTop: "1rem", marginBottom: "1rem" }}
       />

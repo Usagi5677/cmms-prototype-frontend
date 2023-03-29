@@ -190,9 +190,7 @@ const EntityStatusPie = () => {
         x: 0,
         opacity: 1,
         transition: {
-          ease: "easeOut",
           duration: 0.3,
-          delay: 0.3,
         },
       }}
       viewport={{ once: true }}
