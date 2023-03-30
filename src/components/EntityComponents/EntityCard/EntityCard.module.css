@@ -105,10 +105,6 @@
   align-items: center;
 }
 
-.button:hover {
-  color: var(--ant-primary-color);
-}
-
 .container-first-row {
   display: flex;
   flex-wrap: wrap;
@@ -398,11 +394,10 @@
   .se {
     font-size: 12px;
   }
-  
+
   .seperator {
     display: block !important;
   }
-  
 }
 @media only screen and (min-width: 1000px) {
   .mn-title {
