@@ -1,6 +1,6 @@
 import { Avatar, Collapse, Empty, Image, Skeleton, Spin, Tooltip } from "antd";
 import { memo, useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import { errorMessage } from "../../../../helpers/gql";
 import { useLazyQuery } from "@apollo/client";
@@ -10,23 +10,23 @@ import {
 } from "../../../../api/queries";
 import classes from "./AllAssignedEntity.module.css";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
-import { stringToColor } from "../../../../helpers/style";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 import Search from "../../../common/Search";
 import { Entity } from "../../../../models/Entity/Entity";
-import EntityStatusTag from "../../../common/EntityStatusTag";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { LocationSelector } from "../../../Config/Location/LocationSelector";
 import { getListImage } from "../../../../helpers/getListImage";
-import { EntityIcon } from "../../../common/EntityIcon";
-import EntityAssignment from "../../../../models/Entity/EntityAssign";
 import { ZoneSelector } from "../../../Config/Zone/ZoneSelector";
 import UserContext from "../../../../contexts/UserContext";
+import SizeableTag from "../../../common/SizeableTag/SizeableTag";
+import moment from "moment";
+import { DATETIME_FORMATS } from "../../../../helpers/constants";
 
 const AllAssignedEntity = () => {
   const { user: self } = useContext(UserContext);
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [timerId, setTimerId] = useState(null);
@@ -142,8 +142,7 @@ const AllAssignedEntity = () => {
   };
 
   const pageInfo = data?.getAllAssignedEntity.pageInfo ?? {};
-  const isSmallDevice = useIsSmallDevice();
-  const filterMargin = isSmallDevice ? ".5rem 0 0 0" : ".5rem 0 0 .5rem";
+  const isSmallDevice = useIsSmallDevice(600, true);
 
   let working = statusData?.allEntityStatusCount?.working;
   let breakdown = statusData?.allEntityStatusCount?.breakdown;
@@ -198,47 +197,47 @@ const AllAssignedEntity = () => {
             width={"100%"}
           />
         </motion.div>
-        <motion.div
-          initial={{ x: 20, opacity: 0 }}
-          whileInView={{
-            x: 0,
-            opacity: 1,
-            transition: {
-              duration: 0.3,
-              delay: 0.5,
-            },
-          }}
-          viewport={{ once: true }}
-          className={classes["option"]}
-        >
-          <LocationSelector
-            setLocationId={setLocationIds}
-            multiple={true}
-            rounded={true}
-            width={"100%"}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ x: 20, opacity: 0 }}
-          whileInView={{
-            x: 0,
-            opacity: 1,
-            transition: {
-              duration: 0.3,
-              delay: 0.6,
-            },
-          }}
-          viewport={{ once: true }}
-          className={classes["option"]}
-        >
-          <ZoneSelector
-            setZoneId={setZoneIds}
-            multiple={true}
-            rounded={true}
-            width={"100%"}
-          />
-        </motion.div>
       </div>
+      <motion.div
+        initial={{ x: 20, opacity: 0 }}
+        whileInView={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            duration: 0.3,
+            delay: 0.5,
+          },
+        }}
+        viewport={{ once: true }}
+        className={classes["option"]}
+      >
+        <LocationSelector
+          setLocationId={setLocationIds}
+          multiple={true}
+          rounded={true}
+          width={"100%"}
+        />
+      </motion.div>
+      <motion.div
+        initial={{ x: 20, opacity: 0 }}
+        whileInView={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            duration: 0.3,
+            delay: 0.6,
+          },
+        }}
+        viewport={{ once: true }}
+        className={classes["option"]}
+      >
+        <ZoneSelector
+          setZoneId={setZoneIds}
+          multiple={true}
+          rounded={true}
+          width={"100%"}
+        />
+      </motion.div>
       <div className={classes["counter-container"]}>
         <div className={classes["counter-wrapper"]}>
           <motion.div
@@ -380,113 +379,153 @@ const AllAssignedEntity = () => {
                 <Collapse.Panel
                   header={
                     <>
-                      <div className={classes["header-container"]}>
-                        <div className={classes["first-block"]}>
-                          {loading ? (
-                            <Skeleton.Image
-                              style={{
-                                width: 60,
-                                height: 50,
-                                borderRadius: 6,
-                              }}
-                            />
-                          ) : (
-                            <Image
-                              src={imagePath}
-                              height={50}
-                              width={60}
-                              preview={false}
-                            />
-                          )}
-                          <div>
-                            <div className={classes["title-wrapper"]}>
-                              <EntityIcon
-                                entityType={entity?.type?.entityType}
+                      <div
+                        className={classes["header-container"]}
+                        onDoubleClick={() =>
+                          navigate(`${`/entity/${entity?.id}`}`)
+                        }
+                      >
+                        <div
+                          className={classes["inner-block-wrapper"]}
+                          style={{ flex: 1 }}
+                        >
+                          <div className={classes["first-block"]}>
+                            {loading ? (
+                              <Skeleton.Image
+                                className={classes["image"]}
+                                style={{
+                                  width: isSmallDevice ? 80 : 40,
+                                  height: isSmallDevice ? 70 : 30,
+                                  borderRadius: 6,
+                                }}
                               />
-                              <span className={classes["title"]}>
-                                {entity?.machineNumber}
+                            ) : (
+                              <Image
+                                src={imagePath}
+                                height={isSmallDevice ? 70 : 30}
+                                width={isSmallDevice ? 80 : 40}
+                                className={classes["image"]}
+                                preview={false}
+                                title={`${entity?.id}`}
+                              />
+                            )}
+                            <div
+                              className={classes["inner-first-block"]}
+                              style={{ flex: 2 }}
+                            >
+                              <div
+                                className={
+                                  classes["inner-first-block-level-one"]
+                                }
+                              >
+                                <span
+                                  className={classes["mn-title"]}
+                                  title={`Machine Number`}
+                                >
+                                  {entity?.machineNumber}
+                                </span>
+                                {entity?.division && (
+                                  <SizeableTag
+                                    name={entity?.division?.name}
+                                    nameColor
+                                    fontSize={isSmallDevice ? 9 : 6}
+                                    height={isSmallDevice ? 14 : 10}
+                                    fontWeight={800}
+                                    title={"Division"}
+                                  />
+                                )}
+                              </div>
+                              <span
+                                className={
+                                  classes["inner-first-block-level-two"]
+                                }
+                              >
+                                {entity?.type?.name && (
+                                  <div title={"Type"}>
+                                    {entity?.type?.name}
+                                    {(entity?.model ||
+                                      entity?.brand?.name ||
+                                      entity?.engine?.name) && (
+                                      <span className={classes["dot"]}>•</span>
+                                    )}
+                                  </div>
+                                )}
+                                {entity?.model && (
+                                  <div
+                                    className={classes["model"]}
+                                    title={"Model"}
+                                  >
+                                    {entity?.model}
+                                    {(entity?.brand?.name ||
+                                      entity?.engine?.name) && (
+                                      <span className={classes["dot"]}>•</span>
+                                    )}
+                                  </div>
+                                )}
+
+                                {entity?.brand?.name && (
+                                  <div
+                                    className={classes["brand"]}
+                                    title={"Brand"}
+                                  >
+                                    {entity?.brand?.name}
+                                    {entity?.engine?.name && (
+                                      <span className={classes["dot"]}>•</span>
+                                    )}
+                                  </div>
+                                )}
+                                {entity?.engine?.name && (
+                                  <div
+                                    className={classes["engine"]}
+                                    title={"Engine"}
+                                  >
+                                    {entity?.engine?.name}
+                                  </div>
+                                )}
                               </span>
-                            </div>
-                            <div className={classes["title-wrapper"]}>
-                              <FaMapMarkerAlt style={{ marginRight: 5 }} />
-                              {entity?.location?.name}
+                              <div
+                                className={
+                                  classes["inner-first-block-level-three"]
+                                }
+                              >
+                                {entity?.registeredDate && (
+                                  <div title={"Registered Date"}>
+                                    {moment(entity?.registeredDate).format(
+                                      DATETIME_FORMATS.DAY_MONTH_YEAR
+                                    )}
+                                    {(entity?.location?.name ||
+                                      entity?.location?.zone?.name) && (
+                                      <span className={classes["dot"]}>•</span>
+                                    )}
+                                  </div>
+                                )}
+                                {entity?.location?.name && (
+                                  <div title={"Location"}>
+                                    {entity?.location?.name}
+                                    {entity?.location?.zone?.name && (
+                                      <span className={classes["dot"]}>•</span>
+                                    )}
+                                  </div>
+                                )}
+                                {entity?.location?.zone?.name && (
+                                  <div title={"Zone"}>
+                                    {entity?.location?.zone?.name}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        <div className={classes["second-block"]}>
-                          {/**<div>
-                            <span className={classes["reading-title"]}>
-                              Assigned to:
-                            </span>
-                            <span className={classes["center"]}>
-                              {uniqueAssign?.length! > 0 ? (
-                                <Avatar.Group
-                                  maxCount={5}
-                                  maxStyle={{
-                                    color: "#f56a00",
-                                    backgroundColor: "#fde3cf",
-                                  }}
-                                >
-                                  {uniqueAssign.map(
-                                    (assign: EntityAssignment) => {
-                                      return (
-                                        <Tooltip
-                                          title={
-                                            <>
-                                              <div
-                                                style={{
-                                                  display: "flex",
-                                                  alignItems: "center",
-                                                }}
-                                              >
-                                                {assign?.user?.fullName} (
-                                                {assign?.user?.rcno})
-                                              </div>
-                                            </>
-                                          }
-                                          placement="bottom"
-                                          key={assign?.user?.id}
-                                        >
-                                          <Avatar
-                                            style={{
-                                              backgroundColor: stringToColor(
-                                                assign?.user?.fullName!
-                                              ),
-                                            }}
-                                            size={20}
-                                          >
-                                            {assign?.user?.fullName
-                                              .match(/^\w|\b\w(?=\S+$)/g)
-                                              ?.join()
-                                              .replace(",", "")
-                                              .toUpperCase()}
-                                          </Avatar>
-                                        </Tooltip>
-                                      );
-                                    }
-                                  )}
-                                </Avatar.Group>
-                              ) : (
-                                <span>None</span>
-                              )}
-                            </span>
-                          </div> */}
-                          <div className={classes["status"]}>
-                            <EntityStatusTag status={entity?.status} />
-                          </div>
-                        </div>
                         <Link to={"/entity/" + entity?.id}>
-                          <Tooltip title="Open">
-                            <FaArrowAltCircleRight
-                              className={classes["button"]}
-                            />
-                          </Tooltip>
+                          <FaArrowAltCircleRight
+                            className={classes["button"]}
+                          />
                         </Link>
                       </div>
                     </>
                   }
-                  key={entity?.id!}
+                  key={entity?.id}
                 >
                   <div className={classes["container"]}></div>
                 </Collapse.Panel>
@@ -503,7 +542,7 @@ const AllAssignedEntity = () => {
         page={page}
         next={next}
         back={back}
-        pageLimit={3}
+        pageLimit={6}
       />
     </motion.div>
   );

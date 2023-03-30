@@ -397,15 +397,13 @@ const EntityCard = ({
                             : `/entity/${entity.id}`
                         }`}
                       >
-                        <Tooltip title="Open">
-                          <FaArrowAltCircleRight
-                            className={classes["button"]}
-                            style={{
-                              rotate: isOpen ? "90deg" : "0deg",
-                              transition: "rotate 0.3s ease",
-                            }}
-                          />
-                        </Tooltip>
+                        <FaArrowAltCircleRight
+                          className={classes["button"]}
+                          style={{
+                            rotate: isOpen ? "90deg" : "0deg",
+                            transition: "rotate 0.3s ease",
+                          }}
+                        />
                       </Link>
                     </div>
                   </div>

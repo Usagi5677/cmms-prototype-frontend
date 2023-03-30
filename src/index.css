@@ -832,6 +832,7 @@ em {
 .deleteButton {
   color: var(--ant-error-color);
   cursor: pointer;
+  font-size: 18px;
 }
 .deleteButton:hover .deleteButton:focus {
   color: var(--ant-error-color-hover) !important;
@@ -843,6 +844,7 @@ em {
   transition: color 0.3s ease;
   display: flex;
   align-items: center;
+  font-size: 18px;
 }
 .editButton:hover {
   color: var(--ant-primary-color-hover);

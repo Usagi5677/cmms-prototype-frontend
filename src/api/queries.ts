@@ -2482,3 +2482,28 @@ export const GET_USER_TYPE_COUNT = gql`
     }
   }
 `;
+
+export const GET_ENTITY_TYPE_COUNT = gql`
+  query getEntityTypeCount {
+    getEntityTypeCount {
+      machine
+      vehicle
+      vessel
+      subEntity
+      total
+    }
+  }
+`;
+
+export const GET_CONFIG_COUNT = gql`
+  query getConfigCount {
+    getConfigCount {
+      location
+      zone
+      division
+      hullType
+      brand
+      engine
+    }
+  }
+`;

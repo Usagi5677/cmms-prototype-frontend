@@ -22,10 +22,7 @@ const EditEntityBrand = ({ entity }: { entity: Entity }) => {
         handleCancel();
       },
       onError: (error) => {
-        errorMessage(
-          error,
-          "Unexpected error while updating entity's brand."
-        );
+        errorMessage(error, "Unexpected error while updating entity's brand.");
       },
       refetchQueries: ["getAllEntity"],
     }
@@ -46,9 +43,7 @@ const EditEntityBrand = ({ entity }: { entity: Entity }) => {
 
   return (
     <div className={classes["info-edit"]}>
-      <Tooltip title="Edit">
-        <FaRegEdit onClick={() => setVisible(true)} />
-      </Tooltip>
+      <FaRegEdit onClick={() => setVisible(true)} />
       <Modal
         visible={visible}
         onCancel={handleCancel}

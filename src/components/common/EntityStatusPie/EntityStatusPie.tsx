@@ -185,7 +185,7 @@ const EntityStatusPie = () => {
   return (
     <motion.div
       className={classes["container"]}
-      initial={{ x: -60, opacity: 0 }}
+      initial={{ x: 60, opacity: 0 }}
       whileInView={{
         x: 0,
         opacity: 1,

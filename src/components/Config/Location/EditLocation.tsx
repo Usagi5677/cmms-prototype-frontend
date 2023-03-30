@@ -59,13 +59,11 @@ export const EditLocation: React.FC<EditLocationProps> = ({ location }) => {
 
   return (
     <>
-      <Tooltip title="Edit" placement="top">
-        <FaRegEdit
+      <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}
         />
-      </Tooltip>
       <Modal
         visible={visible}
         onCancel={handleCancel}

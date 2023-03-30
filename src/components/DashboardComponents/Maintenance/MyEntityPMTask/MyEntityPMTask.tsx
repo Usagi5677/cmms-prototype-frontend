@@ -1,7 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
 import {
-  Avatar,
-  Checkbox,
   Collapse,
   DatePicker,
   Empty,
@@ -14,7 +12,7 @@ import { motion } from "framer-motion";
 import moment from "moment";
 import { useContext, useState, useEffect, useRef, memo } from "react";
 import CountUp from "react-countup";
-import { FaArrowAltCircleRight, FaMapMarkerAlt } from "react-icons/fa";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import {
   GET_ALL_ENTITY_PM_TASK_STATUS_COUNT,
@@ -24,9 +22,7 @@ import UserContext from "../../../../contexts/UserContext";
 import { DATETIME_FORMATS } from "../../../../helpers/constants";
 import { getListImage } from "../../../../helpers/getListImage";
 import { errorMessage } from "../../../../helpers/gql";
-import { stringToColor } from "../../../../helpers/style";
 import { useIsSmallDevice } from "../../../../helpers/useIsSmallDevice";
-import EntityAssignment from "../../../../models/Entity/EntityAssign";
 import EntityPMTask from "../../../../models/Entity/EntityPMTask";
 import PaginationArgs from "../../../../models/PaginationArgs";
 import PaginationButtons from "../../../common/PaginationButtons/PaginationButtons";
@@ -60,7 +56,7 @@ const MyEntityPMTask = () => {
       to: Date;
     }
   >({
-    first: 6,
+    first: 5,
     last: null,
     before: null,
     after: null,
@@ -134,7 +130,7 @@ const MyEntityPMTask = () => {
           zoneIds: zoneIdsValue,
           from: fromValue,
           to: toValue,
-          first: 6,
+          first: 5,
           last: null,
           before: null,
           after: null,
@@ -164,7 +160,7 @@ const MyEntityPMTask = () => {
   const next = () => {
     setFilter({
       ...filter,
-      first: 6,
+      first: 5,
       after: pageInfo.endCursor,
       last: null,
       before: null,
@@ -175,7 +171,7 @@ const MyEntityPMTask = () => {
   const back = () => {
     setFilter({
       ...filter,
-      last: 6,
+      last: 5,
       before: pageInfo.startCursor,
       first: null,
       after: null,
@@ -460,7 +456,10 @@ const MyEntityPMTask = () => {
                                 className={classes["inner-first-block"]}
                                 style={{ flex: 2 }}
                               >
-                                <span className={classes["task-title"]} title={"Task"}>
+                                <span
+                                  className={classes["task-title"]}
+                                  title={"Task"}
+                                >
                                   {periodicMaintenanceTask?.name}
                                 </span>
                                 <div
@@ -513,8 +512,8 @@ const MyEntityPMTask = () => {
                                           ?.periodicMaintenance?.entity?.brand
                                           ?.name ||
                                         periodicMaintenanceTask
-                                          ?.periodicMaintenance?.entity
-                                          ?.engine) && (
+                                          ?.periodicMaintenance?.entity?.engine
+                                          ?.name) && (
                                         <span className={classes["dot"]}>
                                           •
                                         </span>
@@ -535,8 +534,8 @@ const MyEntityPMTask = () => {
                                         ?.periodicMaintenance?.entity?.brand
                                         ?.name ||
                                         periodicMaintenanceTask
-                                          ?.periodicMaintenance?.entity
-                                          ?.engine) && (
+                                          ?.periodicMaintenance?.entity?.engine
+                                          ?.name) && (
                                         <span className={classes["dot"]}>
                                           •
                                         </span>
@@ -556,8 +555,8 @@ const MyEntityPMTask = () => {
                                           ?.name
                                       }
                                       {periodicMaintenanceTask
-                                        ?.periodicMaintenance?.entity
-                                        ?.engine && (
+                                        ?.periodicMaintenance?.entity?.engine
+                                        ?.name && (
                                         <span className={classes["dot"]}>
                                           •
                                         </span>
@@ -565,7 +564,7 @@ const MyEntityPMTask = () => {
                                     </div>
                                   )}
                                   {periodicMaintenanceTask?.periodicMaintenance
-                                    ?.entity?.engine && (
+                                    ?.entity?.engine?.name && (
                                     <div
                                       className={classes["engine"]}
                                       title={"Engine"}
@@ -573,6 +572,7 @@ const MyEntityPMTask = () => {
                                       {
                                         periodicMaintenanceTask
                                           ?.periodicMaintenance?.entity?.engine
+                                          ?.name
                                       }
                                     </div>
                                   )}
@@ -641,11 +641,9 @@ const MyEntityPMTask = () => {
                                 ?.entity?.id
                             }
                           >
-                            <Tooltip title="Open">
-                              <FaArrowAltCircleRight
-                                className={classes["button"]}
-                              />
-                            </Tooltip>
+                            <FaArrowAltCircleRight
+                              className={classes["button"]}
+                            />
                           </Link>
                         </div>
                       </>
@@ -668,7 +666,7 @@ const MyEntityPMTask = () => {
         page={page}
         next={next}
         back={back}
-        pageLimit={6}
+        pageLimit={5}
       />
     </motion.div>
   );

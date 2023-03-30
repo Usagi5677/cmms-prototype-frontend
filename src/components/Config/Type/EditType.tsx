@@ -47,14 +47,12 @@ export const EditType: React.FC<EditTypeProps> = ({ type }) => {
 
   return (
     <>
-      <Tooltip title="Edit" placement="top">
-        <FaRegEdit
-          className="editButton"
-          onClick={() => setVisible(true)}
-          style={{ marginRight: ".5rem" }}
-          // size="20px"
-        />
-      </Tooltip>
+      <FaRegEdit
+        className="editButton"
+        onClick={() => setVisible(true)}
+        style={{ marginRight: ".5rem" }}
+        // size="20px"
+      />
       <Modal
         visible={visible}
         onCancel={handleCancel}

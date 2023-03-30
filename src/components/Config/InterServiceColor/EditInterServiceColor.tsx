@@ -79,14 +79,12 @@ export const EditInterServiceColor: React.FC<EditInterServiceColorProps> = ({
 
   return (
     <>
-      <Tooltip title="Edit" placement="top">
-        <FaRegEdit
+      <FaRegEdit
           className="editButton"
           onClick={() => setVisible(true)}
           style={{ marginRight: ".5rem" }}
           // size="20px"
         />
-      </Tooltip>
       <Modal
         visible={visible}
         onCancel={handleCancel}

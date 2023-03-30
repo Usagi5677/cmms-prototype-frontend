@@ -12,18 +12,19 @@
 
 .options-wrapper {
   width: 100%;
-  padding: 10px;
+  margin-bottom: 10px;
   font-size: 0.75rem;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
   align-items: center;
 }
-.option {
-  width: 100%;
-  margin-top: 10px;
-}
 
+.option:nth-child(3) {
+  margin-bottom: 10px;
+}
 .header-container {
   display: flex;
   align-items: center;
@@ -44,14 +45,8 @@
 }
 
 .reading {
-  margin-right: 10px;
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-.center {
-  display: flex;
 }
 
 .reading-title {
@@ -65,15 +60,12 @@
 
 .first-block {
   display: flex;
-  flex-direction: column;
-  flex: 5;
+  flex-direction: row;
+  flex: 2;
+  margin-right: 10px;
+  align-items: center;
 }
-.second-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  flex: 6;
-}
+
 .container {
   font-size: 9px;
   display: flex;
@@ -101,13 +93,12 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 20px;
 }
 
 .counter-value {
   font-size: 16px;
   font-weight: 700;
-  margin: 5px 20px;
+  margin: 5px 10px;
 }
 .working {
   color: #08979c;
@@ -150,24 +141,67 @@
   text-transform: uppercase;
   text-align: center;
 }
-
-.status {
-  margin-top: 4px;
+.datepicker {
+  width: 100%;
+  border-radius: 6px !important;
 }
-@media only screen and (min-width: 500px) {
-  .second-block {
+.image {
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+.inner-first-block {
+  margin-left: 10px;
+  flex: 2;
+}
+.inner-first-block-level-one {
+  display: flex;
+  align-items: center;
+}
+.inner-first-block-level-two {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 8px;
+}
+.dot {
+  margin: 0 4px;
+  opacity: 0.5;
+  font-size: 8px;
+  color: var(--text-primary);
+}
+.model,
+.engine,
+.brand,
+.estDateOfRepair {
+  font-size: 8px;
+}
+.inner-first-block-level-three {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 8px;
+  opacity: 0.5;
+}
+.task-title {
+  font-size: 10px;
+  font-weight: 600;
+}
+.mn-title {
+  font-size: 8px;
+  font-weight: 600;
+}
+@media only screen and (min-width: 600px) {
+  .options-wrapper {
     flex-direction: row;
-    align-items: center;
+    gap:0
   }
-}
-@media only screen and (min-width: 770px) {
   .container {
     font-size: 12px;
   }
   .header-container {
     font-size: 10px;
   }
-
+ 
   .first-block {
     flex-direction: row;
     align-items: center;
@@ -180,12 +214,52 @@
     margin-right: 5px;
     margin-left: 20px;
   }
-  .center {
-    justify-content: center;
-    align-items: center;
+  .inner-first-block-level-two {
+    font-size: 10px;
   }
-  .status {
-    margin-top: 0;
+  .dot {
+    margin: 0 6px;
+    font-size: 10px;
+  }
+  .model,
+  .engine,
+  .brand,
+  .estDateOfRepair {
+    font-size: 10px;
+  }
+  .inner-first-block-level-three {
+    font-size: 10px;
+    opacity: 0.5;
+  }
+  .task-title {
+    font-size: 14px;
+  }
+  .mn-title {
+    font-size: 12px;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .inner-first-block-level-two {
+    font-size: 12px;
+  }
+  .dot {
+    font-size: 12px;
+  }
+  .model,
+  .engine,
+  .brand,
+  .estDateOfRepair {
+    font-size: 12px;
+  }
+  .inner-first-block-level-three {
+    font-size: 12px;
+    opacity: 0.5;
+  }
+  .task-title {
+    font-size: 16px;
+  }
+  .mn-title {
+    font-size: 14px;
   }
 }
 

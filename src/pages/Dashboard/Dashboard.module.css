@@ -1,21 +1,21 @@
 .level-one {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 .pie-card-wrapper {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
   flex: 1;
 }
 
 .content{
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  gap: 20px;
   flex-direction: column;
-  flex: 1;
+  justify-content: space-between;
 }
 
 .compare {
@@ -25,15 +25,20 @@
   margin-right: 24.8%;
   margin-left: 24.8%;
   border-bottom: 0;
+  
 }
 
 @media only screen and (min-width: 1200px) {
   .content{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    
     flex-direction: row;
-    flex: 1;
+  }
+  .level-one {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
   }
 }
 

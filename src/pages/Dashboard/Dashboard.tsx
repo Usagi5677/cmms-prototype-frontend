@@ -13,6 +13,7 @@ import ValueCard from "../../components/common/ValueCard/ValueCard";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import MyEntityPMTask from "../../components/DashboardComponents/Maintenance/MyEntityPMTask/MyEntityPMTask";
 import ValueCardContainer from "../../components/DashboardComponents/Maintenance/ValueCardContainer/ValueCardContainer";
+import EntityTypePieChart from "../../components/common/EntityTypePieChart/EntityTypePieChart";
 
 const Dashboard = () => {
   const { user: self } = useContext(UserContext);
@@ -36,10 +37,18 @@ const Dashboard = () => {
         />
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
-        <div className={classes["pie-card-wrapper"]}>
-        <EntityStatusPie />
-        <UserTypePie />
-      </div>
+        <div className={classes["level-one"]}>
+          <div className={classes["value-card-wrapper"]}>
+            <ValueCardContainer />
+            <GroupedEntityUtilization entityType="Vessel" />
+          </div>
+
+          <div className={classes["pie-card-wrapper"]}>
+            <EntityStatusPie />
+            <UserTypePie />
+            <EntityTypePieChart/>
+          </div>
+        </div>
       )}
       {hasPermissions(self, ["VIEW_DASHBOARD"]) && (
         <div className={classes["content"]}>
@@ -55,7 +64,7 @@ const Dashboard = () => {
             )}
 
           <GroupedEntityUtilization entityType="Vehicle" />
-          <GroupedEntityUtilization entityType="Vessel" />
+          
           <GroupedEntityUtilization entityType="Machine" />
           <GroupedTypeRepairStats />
         </div>

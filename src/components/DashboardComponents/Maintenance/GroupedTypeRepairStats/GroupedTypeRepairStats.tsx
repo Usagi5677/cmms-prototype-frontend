@@ -1,4 +1,4 @@
-import { DatePicker, Empty, Spin, Table } from "antd";
+import { Checkbox, DatePicker, Empty, Spin, Table } from "antd";
 import { memo, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./GroupedTypeRepairStats.module.css";
@@ -59,6 +59,7 @@ const GroupedTypeRepairStats = ({
     moment(getFilterObjects?.from),
     moment(getFilterObjects?.to),
   ]);
+  const [showTable, setShowTable] = useState(false);
   const [saveFilterOptions, setSaveFilterOptions] = useLocalStorage(
     `groupedTypeRepairStatsFilter`,
     JSON.stringify({
@@ -365,9 +366,9 @@ const GroupedTypeRepairStats = ({
         }}
         viewport={{ once: true }}
         style={{
-          marginTop: "40px",
+          marginTop: "20px",
           marginLeft: isSmallDevice ? 10 : 0,
-          marginRight: isSmallDevice ? 10 : 0
+          marginRight: isSmallDevice ? 10 : 0,
         }}
       >
         <div className={classes["options-wrapper"]}>
@@ -513,17 +514,42 @@ const GroupedTypeRepairStats = ({
               size={"large"}
             />
           ) : (
-            <Table
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              expandable={{
-                expandedRowRender: (record) => (
-                  <div style={{ margin: 0 }}>{record?.description}</div>
-                ),
-                columnWidth: 1,
-              }}
-            />
+            <>
+              <motion.div
+                whileInView={{
+                  x: 0,
+                  opacity: 1,
+                  transition: {
+                    ease: "easeOut",
+                    duration: 0.3,
+                    delay: 0.3,
+                  },
+                }}
+                viewport={{ once: true }}
+                className={classes["checkbox-wrapper"]}
+              >
+                <Checkbox
+                  defaultChecked={showTable}
+                  onChange={(e) => setShowTable(e.target.checked)}
+                  style={{ fontSize: !isSmallDevice ? 9 : 14 }}
+                >
+                  Show Table
+                </Checkbox>
+              </motion.div>
+              {showTable && (
+                <Table
+                  dataSource={dataSource}
+                  columns={columns}
+                  pagination={false}
+                  expandable={{
+                    expandedRowRender: (record) => (
+                      <div style={{ margin: 0 }}>{record?.description}</div>
+                    ),
+                    columnWidth: 1,
+                  }}
+                />
+              )}
+            </>
           )}
         </motion.div>
       </motion.div>

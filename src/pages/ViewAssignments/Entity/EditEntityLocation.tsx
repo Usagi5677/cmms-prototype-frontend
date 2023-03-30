@@ -46,9 +46,7 @@ const EditEntityLocation = ({ entity }: { entity: Entity }) => {
 
   return (
     <div className={classes["info-edit"]}>
-      <Tooltip title="Edit">
-        <FaRegEdit onClick={() => setVisible(true)} />
-      </Tooltip>
+      <FaRegEdit onClick={() => setVisible(true)} />
       <Modal
         visible={visible}
         onCancel={handleCancel}
