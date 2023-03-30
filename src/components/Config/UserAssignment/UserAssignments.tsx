@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { Avatar, Table } from "antd";
+import { Avatar, Table, Tag } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useState, useEffect, useRef } from "react";
 import { DELETE_USER_ASSIGNMENT } from "../../../api/mutations";
@@ -21,6 +21,13 @@ import UserAvatar from "../../common/UserAvatar";
 import { stringToColor } from "../../../helpers/style";
 import { UserAssignmentBulkCreate } from "./UserAssignmentBulkCreate";
 import { UserAssignmentBulkRemove } from "./UserAssignmentBulkRemove";
+import { SearchUsers } from "../../common/SearchUsers";
+import User from "../../../models/User";
+import Zone from "../../../models/Zone";
+import Location from "../../../models/Location";
+import AssignmentTypeSelector from "../../common/AssignmentTypeSelector";
+import { SearchLocations } from "../../common/SearchLocations";
+import { SearchZones } from "../../common/SearchZones";
 
 export interface UserAssignmentsProps {}
 
@@ -29,13 +36,25 @@ export const UserAssignments: React.FC<UserAssignmentsProps> = ({}) => {
   const [timerId, setTimerId] = useState(null);
   const [page, setPage] = useState(1);
   const isSmallDevice = useIsSmallDevice(600, true);
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [selectedUserTypes, setSelectedUserTypes] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
+  const [selectedZones, setSelectedZones] = useState<Zone[]>([]);
   const [filter, setFilter] = useState<
     PaginationArgs & {
-      type: string;
+      search: string | null;
+      types: string[];
+      userIds: number[];
+      locationIds: number[];
+      zoneIds: number[];
     }
   >({
     ...DefaultPaginationArgs,
-    type: "",
+    search: null,
+    types: [],
+    userIds: [],
+    locationIds: [],
+    zoneIds: [],
   });
 
   const [getUserAssignments, { data, loading }] = useLazyQuery(
@@ -99,6 +118,38 @@ export const UserAssignments: React.FC<UserAssignmentsProps> = ({}) => {
     });
     setPage(page - 1);
   };
+
+  useEffect(() => {
+    setFilter({
+      ...filter,
+      locationIds: selectedLocations.map((s) => s.id),
+    });
+    setPage(1);
+  }, [selectedLocations]);
+
+  useEffect(() => {
+    setFilter({
+      ...filter,
+      userIds: selectedUsers.map((s) => s.id),
+    });
+    setPage(1);
+  }, [selectedUsers]);
+
+  useEffect(() => {
+    setFilter({
+      ...filter,
+      types: selectedUserTypes.map((t) => t),
+    });
+    setPage(1);
+  }, [selectedUserTypes]);
+
+  useEffect(() => {
+    setFilter({
+      ...filter,
+      zoneIds: selectedZones.map((z) => z.id),
+    });
+    setPage(1);
+  }, [selectedZones]);
 
   const columns: ColumnsType<UserAssignment> = [
     {
@@ -232,12 +283,154 @@ export const UserAssignments: React.FC<UserAssignmentsProps> = ({}) => {
             onChange={(e) => setSearch(e.target.value)}
             onClick={() => setSearch("")}
           />
+          <SearchUsers
+            placeholder="Filter user"
+            rounded
+            current={selectedUsers}
+            onChange={(user) => {
+              const current = selectedUsers.map((s) => s.id);
+              if (current.includes(user.id)) return;
+              setSelectedUsers([...selectedUsers, user]);
+            }}
+            width={190}
+          />
+          <AssignmentTypeSelector
+            width={190}
+            value={selectedUserTypes[-1]}
+            onChange={(userTypes) => {
+              if (
+                !selectedUserTypes.includes(userTypes!) &&
+                userTypes !== undefined
+              ) {
+                setSelectedUserTypes([...selectedUserTypes, userTypes!]);
+                setPage(1);
+              }
+            }}
+          />
+          <SearchLocations
+            placeholder="Filter location"
+            rounded
+            current={selectedLocations}
+            onChange={(location) => {
+              const current = selectedLocations.map((s) => s.id);
+              if (current.includes(location.id)) return;
+              setSelectedLocations([...selectedLocations, location]);
+            }}
+            width={190}
+          />
+          <SearchZones
+            placeholder="Filter zone"
+            rounded
+            current={selectedZones}
+            onChange={(zone) => {
+              const current = selectedZones.map((s) => s.id);
+              if (current.includes(zone.id)) return;
+              setSelectedZones([...selectedZones, zone]);
+            }}
+            width={190}
+          />
         </div>
         <div className={classes["option"]}>
-          <UserAssignmentBulkCreate/>
-          <UserAssignmentBulkRemove/>
+          <UserAssignmentBulkCreate />
+          <UserAssignmentBulkRemove />
         </div>
       </div>
+      {selectedLocations.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            opacity: 0.7,
+            paddingTop: 10,
+            gap: 10,
+          }}
+        >
+          {selectedLocations.map((d) => (
+            <Tag
+              key={d.id}
+              closable
+              onClose={() =>
+                setSelectedLocations(
+                  selectedLocations.filter((s) => s.id !== d.id)
+                )
+              }
+            >
+              {d.name}
+            </Tag>
+          ))}
+        </div>
+      )}
+      {selectedZones.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            opacity: 0.7,
+            paddingTop: 10,
+            gap: 10,
+          }}
+        >
+          {selectedZones.map((d) => (
+            <Tag
+              key={d.id}
+              closable
+              onClose={() =>
+                setSelectedZones(selectedZones.filter((s) => s.id !== d.id))
+              }
+            >
+              {d.name}
+            </Tag>
+          ))}
+        </div>
+      )}
+      {selectedUsers.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            opacity: 0.7,
+            paddingTop: 10,
+            gap: 10,
+          }}
+        >
+          {selectedUsers.map((user) => (
+            <Tag
+              key={user.id}
+              closable
+              onClose={() =>
+                setSelectedUsers(selectedUsers.filter((s) => s.id !== user.id))
+              }
+            >
+              {user.fullName} ({user.rcno})
+            </Tag>
+          ))}
+        </div>
+      )}
+      {selectedUserTypes.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            opacity: 0.7,
+            paddingTop: 10,
+            gap: 10,
+          }}
+        >
+          {selectedUserTypes.map((userType) => (
+            <Tag
+              key={userType}
+              closable
+              onClose={() =>
+                setSelectedUserTypes(
+                  selectedUserTypes.filter((type) => type !== userType)
+                )
+              }
+            >
+              {userType}
+            </Tag>
+          ))}
+        </div>
+      )}
       <Table
         rowKey="id"
         dataSource={data?.userAssignments.edges.map(

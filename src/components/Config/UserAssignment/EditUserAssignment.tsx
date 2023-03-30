@@ -19,8 +19,8 @@ export interface EditUserAssignmentProps {
 export const EditUserAssignment: React.FC<EditUserAssignmentProps> = ({ userAssignment }) => {
   const [visible, setVisible] = useState(false);
   const [form] = useForm();
-  const [divisionIds, setDivisionIds] = useState<number>(userAssignment?.division?.id!);
-  const [locationIds, setLocationIds] = useState<number>(userAssignment?.location?.id!);
+  const [zoneId, setZoneIds] = useState<number>(userAssignment?.zone?.id!);
+  const [locationId, setLocationIds] = useState<number>(userAssignment?.location?.id!);
   const [update, { loading }] = useMutation(EDIT_USER_ASSIGNMENT, {
     onCompleted: () => {
       message.success("Successfully updated user assignment.");
@@ -48,8 +48,8 @@ export const EditUserAssignment: React.FC<EditUserAssignmentProps> = ({ userAssi
         input: {
           id: userAssignment.id,
           type,
-          divisionId: divisionIds,
-          locationId: locationIds,
+          zoneId,
+          locationId,
         },
       },
     });
@@ -77,7 +77,6 @@ export const EditUserAssignment: React.FC<EditUserAssignmentProps> = ({ userAssi
           name="basic"
           onFinish={onFinish}
           id="myForm"
-          initialValues={{ type: userAssignment.type}}
         >
           <Form.Item
             label="Type"
@@ -87,11 +86,11 @@ export const EditUserAssignment: React.FC<EditUserAssignmentProps> = ({ userAssi
           >
             <AssignmentTypeSelector value={userAssignment?.type} />
           </Form.Item>
-          <Form.Item label="Division" name="division" required={false}>
-            <DivisionSelector
-              currentId={userAssignment?.division?.id}
-              currentName={userAssignment?.division?.name}
-              setDivisionId={setDivisionIds}
+          <Form.Item label="Zone" name="zone" required={false}>
+            <ZoneSelector
+              currentId={userAssignment?.zone?.id}
+              currentName={userAssignment?.zone?.name}
+              setZoneId={setZoneIds}
             />
           </Form.Item>
           <Form.Item label="Location" name="location" required={false}>

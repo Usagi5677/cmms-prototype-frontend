@@ -777,6 +777,15 @@ export const SEARCH_LOCATION = gql`
   }
 `;
 
+export const SEARCH_ZONES = gql`
+  query searchZone($query: String!, $limit: Int) {
+    searchZone(query: $query, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
+
 export const TYPES = gql`
   query types(
     $after: String
@@ -1109,14 +1118,22 @@ export const USER_ASSIGNMENTS = gql`
     $before: String
     $first: Int
     $last: Int
-    $type: String
+    $search: String
+    $types: [String!]
+    $locationIds: [Int!]
+    $zoneIds: [Int!]
+    $userIds: [Int!]
   ) {
     userAssignments(
       after: $after
       before: $before
       first: $first
       last: $last
-      type: $type
+      search: $search
+      types: $types
+      locationIds: $locationIds
+      zoneIds: $zoneIds
+      userIds: $userIds
     ) {
       pageInfo {
         endCursor
