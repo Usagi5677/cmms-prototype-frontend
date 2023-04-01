@@ -46,8 +46,7 @@ const EditEntityLocation = ({
     }
     editEntityLocation({
       variables: {
-        id: entity?.id,
-        locationId,
+        input: { id: entity?.id, locationId },
       },
     });
   };
