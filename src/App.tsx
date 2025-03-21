@@ -103,14 +103,17 @@ function App() {
     nextFetchPolicy: "cache-first",
   });
 
-  const redirect = () => {
-    localStorage.setItem("logOutClicked", "false");
-    window.location.href = `https://id.mtcc.com.mv/?returnUrl=${process.env.REACT_APP_RETURN_URL}&type=employee&appId=${process.env.REACT_APP_APP_ID}`;
+  // New login function for local auth
+  const handleLogin = (token: any) => {
+    localStorage.setItem("cmms_token", token);
+    me();
   };
 
-  const logoutRedirect = () => {
-    setPrevRoute();
-    window.location.href = `https://id.mtcc.com.mv/logout/?returnUrl=${process.env.REACT_APP_RETURN_URL}&type=employee&appId=${process.env.REACT_APP_APP_ID}`;
+  // Simplified logout
+  const logout = () => {
+    localStorage.removeItem("cmms_token");
+    setUser(null);
+    setLoggedOut(true);
   };
 
   const setPrevRoute = () => {
@@ -120,58 +123,36 @@ function App() {
       localStorage.setItem("prevRoute", currentPath);
   };
 
-  interface SSOToken {
-    id: number;
-    type: string;
-    iat: number;
-    exp: number;
-  }
-
+  
   useEffect(() => {
-    const setLogOutStates = () => {
-      setPrevRoute();
-      setLoggedOut(true);
-      setAppLoading(false);
-    };
+    setPrevRoute()
     if (user === null) {
       const token = localStorage.getItem("cmms_token");
       if (token) {
-        const decoded = jwtDecode<SSOToken>(token);
-        if (decoded.id) {
-          me();
-        } else {
-          setLogOutStates();
+        try {
+          const decoded = jwtDecode(token);
+          if (decoded) {
+            me();
+          } else {
+            setLoggedOut(true);
+            setAppLoading(false);
+          }
+        } catch (error) {
+          console.error("Invalid token:", error);
+          localStorage.removeItem("cmms_token");
+          setLoggedOut(true);
+          setAppLoading(false);
         }
       } else {
-        if (window.location) {
-          const tkn = qs.parse(window.location.search, {
-            ignoreQueryPrefix: true,
-          }).token as string;
-          if (tkn) {
-            localStorage.setItem("cmms_token", `${tkn}`);
-            const decoded = jwtDecode<SSOToken>(tkn);
-            if (decoded.id) {
-              me();
-            } else {
-              setLogOutStates();
-            }
-          } else {
-            setLogOutStates();
-          }
-        } else {
-          setLogOutStates();
-        }
+        setLoggedOut(true);
+        setAppLoading(false);
       }
     } else {
       setAppLoading(false);
     }
   }, [user, me]);
 
-  const logout = () => {
-    localStorage.removeItem("cmms_token");
-    localStorage.setItem("logOutClicked", "true");
-    logoutRedirect();
-  };
+  
 
   if (appLoading) {
     return (
@@ -181,13 +162,16 @@ function App() {
     );
   }
 
-  if (!appLoading && loggedOut) {
-    if (localStorage.getItem("logOutClicked") === "true") {
-      return <Login login={redirect} />;
-    }
-    redirect();
+  if (appLoading) {
+    return (
+      <div style={{ padding: "40px" }}>
+        <h3>Loading...</h3>
+      </div>
+    );
   }
-
+  if (!appLoading && loggedOut) {
+    return <Login login={handleLogin} />;
+  }
   return (
     <UserContext.Provider value={{ user, setUser, logout }}>
       <ApolloProvider client={apolloClient}>

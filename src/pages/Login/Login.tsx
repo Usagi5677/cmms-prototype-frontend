@@ -1,54 +1,124 @@
-import { Button, Card, Col, Divider, Row } from "antd";
-import { UnlockOutlined } from "@ant-design/icons";
+// Updated Login Container Component
+import React, { useState, useEffect } from "react";
+import { Button, Form, Input, Card, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useMutation, gql } from "@apollo/client";
+import { apolloClient } from "../../api/client";
 
-function getDate(): number {
-  return new Date().getFullYear();
-}
+const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+      user {
+        id
+        name
+        email
+      }
+    }
+  }
+`;
 
-const Login = ({ login }: { login: () => void }) => {
+const Login = ({ login }: any) => {
+  const [loginForm] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
+  // Log environment variables on component mount
+  useEffect(() => {
+    console.log("API URL:", process.env.REACT_APP_API_URL);
+    console.log("WebSocket URL:", process.env.REACT_APP_WEBSOCKET_URL);
+  }, []);
+
+  const [loginMutation] = useMutation(LOGIN_MUTATION, {
+    client: apolloClient,
+    onCompleted: (data) => {
+      console.log("Login successful, response data:", data);
+      setLoading(false);
+      message.success("Login successful!");
+      login(data.login.token);
+    },
+    onError: (error) => {
+      setLoading(false);
+      message.error("Invalid credentials. Please try again.");
+      console.error("Login error:", error);
+
+      // Detailed error logging
+      console.log("Error name:", error.name);
+      console.log("Error message:", error.message);
+      console.log("Network error:", error.networkError);
+      console.log("GraphQL errors:", error.graphQLErrors);
+
+      // Check response structure if available
+      if (error.networkError && "response" in error.networkError) {
+        console.log("Response:", error.networkError.response);
+      }
+    },
+  });
+
+  const onFinish = (values: any) => {
+    console.log("Attempting login with:", {
+      email: values.email,
+      password: "********",
+    });
+    console.log("Using API URL:", process.env.REACT_APP_API_URL);
+
+    setLoading(true);
+    loginMutation({
+      variables: {
+        email: values.email,
+        password: values.password,
+      },
+    }).catch((error) => {
+      // This catch block handles any errors not caught by onError
+      console.log("Uncaught error during login:", error);
+    });
+  };
+
   return (
     <div
       style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         height: "100vh",
-        width: "100vw",
-        backgroundImage: "url(/MTCC-Background.jpg)",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
       }}
     >
-      <Col
-        style={{
-          position: "absolute",
-          minWidth: "23em",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <Card style={{ backgroundColor: "white" }}>
-          <Row justify="center">
-            <img height="240" src="/MTCC-logo.png" alt="" />
-          </Row>
-          <Row id={"loginBtn"}>
+      <Card title="CMMS Login" style={{ width: 400 }}>
+        <Form
+          form={loginForm}
+          name="login"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          layout="vertical"
+        >
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="Email" size="large" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              placeholder="Password"
+              size="large"
+            />
+          </Form.Item>
+          <Form.Item>
             <Button
-              type={"primary"}
-              icon={<UnlockOutlined style={{ fontSize: "14px" }} />}
-              htmlType="button"
+              type="primary"
+              htmlType="submit"
+              loading={loading}
               block
-              onClick={login}
+              size="large"
             >
-              Login
+              Log in
             </Button>
-          </Row>
-          <Row justify="center">
-            <Divider style={{ borderTop: "1px solid rgba(0,0,0,.06)" }} />
-            <small style={{ color: "black" }}>
-              © {getDate()} MTCC Plc. All Rights Reserved.{" "}
-            </small>
-          </Row>
-        </Card>
-      </Col>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 };
