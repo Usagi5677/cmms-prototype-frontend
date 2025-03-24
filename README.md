@@ -1,46 +1,130 @@
-# Getting Started with Create React App
+# CMMS - Asset Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive **Computerized Maintenance Management System (CMMS)** designed for asset tracking, maintenance scheduling, and task management. This system helps organizations efficiently manage their machinery, vessels, vehicles, and other assets by providing structured workflows, checklists, and utilization insights.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 🏠 Dashboard
+- View zones, locations, divisions, hull types, brands, and engines.
+- See assigned entities, users, and tasks.
+- Monitor asset utilization for vehicles, vessels, and machines.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 📋 Tasks
+- View assigned tasks categorized by **daily** and **weekly** schedules.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### ⚠️ Issues
+- Track machines, assets, vessels, and vehicles with reported issues.
 
-### `npm test`
+### 🔧 Maintenance
+- View assets currently undergoing maintenance.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 📊 Utilization
+- Analyze breakdown frequencies for different asset types.
 
-### `npm run build`
+### 🚢 Assets
+- View lists of **machinery, vessels, and vehicles**.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🗑️ Disposal
+- Manage and track disposed assets.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 👥 Users & Roles
+- View all users and their roles.
+- Create and manage roles with custom permissions.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📌 Assignments
+- Bulk-assign assets to **users, divisions, locations, and brands**.
 
-### `npm run eject`
+### 📑 Templates
+- Create and store checklists for asset maintenance.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 🛠️ Developer API
+- Generate API keys with expiration and permissions.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ⚙️ Configuration
+- Modify asset-related settings (locations, zones, hull types, engines, inter-service colors, etc.).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 🔍 Asset Details
+- Detailed asset view with:
+  - Assignment to users
+  - Editable information
+  - Checklists
+  - Periodic maintenance
+  - Spare part requests
+  - Breakdown logs
+  - Change history
+  - Image gallery
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 🔔 Notifications & Automation
+- **Cron jobs** for generating checklists at scheduled intervals.
+- **Role-based access control (RBAC)** to restrict user actions based on assigned roles.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🛠️ Tech Stack
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Frontend
+- **React** + **TypeScript**
+- **GraphQL** with **Apollo Client**
+
+### Backend
+- **NestJS** + **TypeScript**
+- **Apollo GraphQL**
+- **Redis** (caching & background jobs)
+- **Prisma** (database ORM)
+- **PostgreSQL**
+
+---
+
+## 📸 Screenshots
+_(Screenshots will be added here)_
+
+---
+
+## 🏆 My Role  
+
+I was responsible for both **frontend and backend development**. This repository contains the **frontend** part of the project, built with **React + TypeScript**. Backend part (available [here](https://github.com/Usagi5677/cmms-prototype-backend)).
+
+Key contributions:
+- Implemented UI components and state management
+- Integrated **Apollo GraphQL** for API calls
+- Developed **real-time notifications** using **GraphQL subscriptions & Redis**
+- Designed and implemented **role-based access control**
+- Built dashboard features and filtering functionality
+
+---
+
+## 📌 Notes
+
+The backend is required for full functionality.
+Redis is needed for real-time notifications.
+If you are using a different API URL, update the .env file accordingly.
+
+---
+
+## 📄 License
+
+This project is for portfolio purposes. Do not use it for commercial projects without permission.
+
+
+## 🚀 Setup & Installation
+
+
+```sh
+# Clone the repository
+git clone https://github.com/Usagi5677/cmms-prototype-frontend.git
+cd cmms-prototype-frontend
+
+# Install dependencies
+npm install
+
+# Create a .env file in the root directory with the following:
+echo "REACT_APP_API_URL=http://localhost:4000/graphql
+REACT_APP_WEBSOCKET_URL=ws://localhost:4000/graphql
+REACT_APP_RETURN_URL=http://localhost:3002
+REACT_APP_APP_ID=
+PORT=3002" > .env
+
+# Start the development server
+npm run dev
