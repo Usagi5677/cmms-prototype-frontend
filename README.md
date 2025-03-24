@@ -78,7 +78,12 @@ A comprehensive **Computerized Maintenance Management System (CMMS)** designed f
 ---
 
 ## 📸 Screenshots
-_(Screenshots will be added here)_
+| ![Screenshot 2025-03-24 at 16-00-55 CMMS](https://github.com/user-attachments/assets/5fb18ef1-4c36-4d12-b3c4-475781672714) | ![Screenshot 2025-03-24 at 15-58-13 CMMS](https://github.com/user-attachments/assets/09c900be-cee9-4be8-adf7-edb1e8543a9c) | ![Screenshot 2025-03-24 at 15-58-01 CMMS](https://github.com/user-attachments/assets/c41dbaae-5388-469d-bd89-f6dd7981d5eb) |
+|---|---|---|
+| ![Screenshot 2025-03-24 at 15-57-54 CMMS](https://github.com/user-attachments/assets/0f1b14fd-dc98-451f-8ac6-9db93dfeaef9) | ![Screenshot 2025-03-24 at 15-57-48 CMMS](https://github.com/user-attachments/assets/91cc5ee5-719f-4a55-a6a4-5d92e12e7f0c) | ![Screenshot 2025-03-24 at 15-57-41 CMMS](https://github.com/user-attachments/assets/ec4d9885-d5e6-47c0-8fc9-044e4e301894) |
+| ![Screenshot 2025-03-24 at 15-57-31 CMMS](https://github.com/user-attachments/assets/76e15510-2236-46d2-a745-a4f2cd662321) | ![Screenshot 2025-03-24 at 15-57-08 CMMS](https://github.com/user-attachments/assets/2818765c-777c-4255-b8e7-7287bf13bdd9) | ![Screenshot 2025-03-24 at 15-56-59 CMMS](https://github.com/user-attachments/assets/4900d222-f54d-461f-b759-8de863e896d8) |
+| ![Screenshot 2025-03-24 at 15-56-36 CMMS](https://github.com/user-attachments/assets/4779ee02-2351-4fa1-a1fd-2098fa68b132) | ![Screenshot 2025-03-24 at 15-55-31 CMMS](https://github.com/user-attachments/assets/d9d9eeff-f71d-4adb-8048-2c539c657b9e) | ![Screenshot 2025-03-24 at 15-55-18 CMMS](https://github.com/user-attachments/assets/8768644b-e2e8-4c1a-8fb7-79202a6b8608) |
+| ![Screenshot 2025-03-24 at 15-54-39 CMMS](https://github.com/user-attachments/assets/8e47f3b3-a4d7-41c0-b7f8-55f05930a31d) |  |  |
 
 ---
 
